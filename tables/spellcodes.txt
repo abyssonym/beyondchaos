@@ -1,0 +1,255 @@
+00,weak,Fire
+01,weak,Ice
+02,weak,Bolt
+03,weak,Poison
+04,medium,Drain
+05,medium,Fire 2
+06,medium,Ice 2
+07,medium,Bolt 2
+08,medium,Bio
+09,strong,Fire 3
+0A,strong,Ice 3
+0B,strong,Bolt 3
+0C,medium,Break
+0D,medium,Doom
+0E,strong,Pearl
+0F,strong,Flare
+10,weak,Demi
+11,weak,Quartr
+12,strong,X-Zone
+13,broken,Meteor
+14,broken,Ultima
+15,medium,Quake
+16,medium,W Wind
+17,medium,Merton
+18,weak,Scan
+19,weak,Slow
+1A,weak,Rasp
+1B,weak,Mute
+1C,weak,Safe
+1D,weak,Sleep
+1E,weak,Muddle
+1F,weak,Haste
+20,weak,Stop
+21,weak,Bserk
+22,weak,Float
+23,weak,Imp
+24,weak,Rflect
+25,weak,Shell
+26,medium,Vanish
+27,medium,Haste 2
+28,medium,Slow 2
+29,medium,Osmose
+2A,weak,Warp
+2B,strong,Quick
+2C,weak,Dispel
+2D,weak,Cure
+2E,weak,Cure 2
+2F,medium,Cure 3
+30,worthless,Life
+31,worthless,Life 2
+32,weak,Antdot
+33,weak,Remedy
+34,weak,Regen
+35,strong,Life 3
+36,medium,Ramuh
+37,medium,Ifrit
+38,medium,Shiva
+39,weak,Siren
+3A,medium,Terrato
+3B,medium,Shoat
+3C,medium,Maduin
+3D,medium,Bismark
+3E,weak,Stray
+3F,strong,Palador
+40,strong,Tritoch
+41,strong,Odin
+42,strong,Raiden
+43,strong,Bahamut
+44,strong,Alexandr
+45,medium,Crusader
+46,strong,Ragnarok
+47,weak,Kirin
+48,weak,ZoneSeek
+49,weak,Carbunkl
+4A,medium,Phantom
+4B,weak,Sraphim
+4C,medium,Golem
+4D,weak,Unicorn
+4E,medium,Fenrir
+4F,medium,Starlet
+50,medium,Phoenix
+51,medium,Fire Skean
+52,medium,Water Edge
+53,medium,Bolt Edge
+54,medium,Storm
+55,weak,Dispatch
+56,weak,Retort
+57,medium,Slash
+58,medium,Quadra Slam
+59,medium,Empowerer
+5A,strong,Stunner
+5B,strong,Quadra Slice
+5C,strong,Cleave
+5D,weak,Pummel
+5E,weak,AuraBolt
+5F,weak,Suplex
+60,medium,Fire Dance
+61,medium,Mantra
+62,medium,Air Blade
+63,weak,Spiraler
+64,strong,Bum Rush
+65,medium,Wind Slash
+66,weak,Sun Bath
+67,medium,Rage
+68,weak,Harvester
+69,medium,Sand Storm
+6A,weak,Antlion
+6B,medium,Elf Fire
+6C,weak,Specter
+6D,medium,Land Slide
+6E,medium,Sonic Boom
+6F,medium,El Nino
+70,strong,Plasma
+71,strong,Snare
+72,medium,Cave In
+73,medium,Snowball
+74,medium,Surge
+75,strong,Cokatrice
+76,strong,Wombat
+77,weak,Kitty
+78,weak,Tapir
+79,strong,Whump
+7A,strong,Wild Bear
+7B,medium,Pois. Frog
+7C,weak,Ice Rabbit
+7D,weak,Super Ball
+7E,medium,Flash
+7F,medium,Chocobop
+80,strong,H-Bomb
+81,medium,7-Flush
+82,strong,Megahit
+83,strong,Fire Beam
+84,strong,Bolt Beam
+85,strong,Ice Beam
+86,strong,Bio Blast
+87,weak,Heal Force
+88,weak,Confuser
+89,medium,X-Fer
+8A,strong,TekMissile
+8B,weak,Condemned
+8C,broken,Roulette
+8D,medium,CleanSweep
+8E,medium,Aqua Rake
+8F,medium,Aero
+90,weak,Blow Fish
+91,medium,Big Guard
+92,weak,Revenge
+93,weak,Pearl Wind
+94,weak,L.5 Doom
+95,medium,L.4 Flare
+96,weak,L.3 Muddle
+97,weak,Reflect???
+98,weak,L.? Pearl
+99,weak,Step Mine
+9A,strong,ForceField
+9B,medium,Dischord
+9C,medium,Sour Mouth
+9D,worthless,Pep Up
+9E,weak,Rippler
+9F,weak,Stone
+A0,strong,Quasar
+A1,strong,GrandTrain
+A2,weak,Exploder
+A3,weak,Imp Song
+A4,weak,Clear
+A5,weak,Virite
+A6,worthless,ChokeSmoke
+A7,worthless,Schiller
+A8,weak,Lullaby
+A9,medium,Acid Rain
+AA,weak,Confusion
+AB,weak,Megazerk
+AC,weak,Mute
+AD,weak,Net
+AE,weak,Slimer
+AF,medium,Delta Hit
+B0,weak,Entwine
+B1,medium,Blaster
+B2,medium,Cyclonic
+B3,medium,Fire Ball
+B4,medium,Atomic Ray
+B5,medium,Tek Laser
+B6,medium,Diffuser
+B7,medium,WaveCannon
+B8,medium,Mega Volt
+B9,strong,Giga Volt
+BA,weak,Blizzard
+BB,medium,Absolute 0
+BC,medium,Magnitude8
+BD,medium,Raid
+BE,weak,Flash Rain
+BF,weak,TekBarrier
+C0,broken,Fallen One
+C1,strong,WallChange
+C2,broken,Escape
+C3,worthless,50 Gs
+C4,medium,Mind Blast
+C5,medium,N. Cross
+C6,strong,Flare Star
+C7,medium,Love Token
+C8,broken,Seize
+C9,worthless,R.Polarity
+CA,worthless,Targetting
+CB,broken,Sneeze
+CC,strong,S. Cross
+CD,strong,Launcher
+CE,broken,Charm
+CF,strong,Cold Dust
+D0,weak,Tentacle
+D1,broken,HyperDrive
+D2,strong,Train
+D3,medium,Evil Toot
+D4,medium,Grav Bomb
+D5,broken,Engulf
+D6,medium,Disaster
+D7,strong,Shrapnel
+D8,worthless,Bomblet
+D9,weak,Heart Burn
+DA,broken,Zinger
+DB,broken,Discard
+DC,worthless,Overcast
+DD,medium,Missile
+DE,broken,Goner
+DF,strong,Meteo
+E0,medium,Revenger
+E1,weak,Phantasm
+E2,medium,Dread
+E3,medium,Shock Wave
+E4,medium,Blaze
+E5,worthless,Soul Out
+E6,medium,Gale Cut
+E7,weak,Shimsham
+E8,medium,Lode Stone
+E9,medium,Scar Beam
+EA,broken,BabaBreath
+EB,medium,LifeShaver
+EC,medium,Fire Wall
+ED,medium,Slide
+EE,broken,Battle
+EF,broken,Special
+F0,broken,Riot Blade
+F1,broken,Mirager
+F2,broken,Back Blade
+F3,broken,ShadowFang
+F4,broken,RoyalShock
+F5,broken,TigerBreak
+F6,broken,Spin Edge
+F7,broken,Sabre Soul
+F8,broken,Star Prism
+F9,broken,Red Card
+FA,broken,MoogleRush
+FB,broken,X-Meteo
+FC,broken,Takedown
+FD,broken,Wild Fang
+FE,weak,Lagomorph

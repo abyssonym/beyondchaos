@@ -1,0 +1,255 @@
+0,185000,Dirk
+1,18501e,MithrilKnife
+2,18503c,Guardian
+3,18505a,Air Lancet
+4,185078,ThiefKnife
+5,185096,Assassin
+6,1850b4,Man Eater
+7,1850d2,SwordBreaker
+8,1850f0,Graedus
+9,18510e,ValiantKnife
+a,18512c,MithrilBlade
+b,18514a,RegalCutlass
+c,185168,Rune Edge
+d,185186,Flame Sabre
+e,1851a4,Blizzard
+f,1851c2,ThunderBlade
+10,1851e0,Epee
+11,1851fe,BreakBlade
+12,18521c,Drainer
+13,18523a,Enhancer
+14,185258,Crystal
+15,185276,Falchion
+16,185294,Soul Sabre
+17,1852b2,Ogre Nix
+18,1852d0,Excalibur
+19,1852ee,Scimitar
+1a,18530c,Illumina
+1b,18532a,Ragnarok
+1c,185348,Atma Weapon
+1d,185366,Mithril Pike
+1e,185384,Trident
+1f,1853a2,Stout Spear
+20,1853c0,Partisan
+21,1853de,Pearl Lance
+22,1853fc,Gold Lance
+23,18541a,Aura Lance
+24,185438,Imp Halberd
+25,185456,Imperial
+26,185474,Kodachi
+27,185492,Blossom
+28,1854b0,Hardened
+29,1854ce,Striker
+2a,1854ec,Stunner
+2b,18550a,Ashura
+2c,185528,Kotetsu
+2d,185546,Forged
+2e,185564,Tempest
+2f,185582,Murasame
+30,1855a0,Aura
+31,1855be,Strato
+32,1855dc,Sky Render
+33,1855fa,Heal Rod
+34,185618,Mithril Rod
+35,185636,Fire Rod
+36,185654,Ice Rod
+37,185672,Thunder Rod
+38,185690,Poison Rod
+39,1856ae,Pearl Rod
+3a,1856cc,Gravity Rod
+3b,1856ea,Punisher
+3c,185708,Magus Rod
+3d,185726,Chocobo Brsh
+3e,185744,DaVinci Brsh
+3f,185762,Magical Brsh
+40,185780,Rainbow Brsh
+41,18579e,Shuriken
+42,1857bc,Ninja Star
+43,1857da,Tack Star
+44,1857f8,Flail
+45,185816,Full Moon
+46,185834,Morning Star
+47,185852,Boomerang
+48,185870,Rising Sun
+49,18588e,Hawk Eye
+4a,1858ac,Bone Club
+4b,1858ca,Sniper
+4c,1858e8,Wing Edge
+4d,185906,Cards
+4e,185924,Darts
+4f,185942,Doom Darts
+50,185960,Trump
+51,18597e,Dice
+52,18599c,Fixed Dice
+53,1859ba,MetalKnuckle
+54,1859d8,MithrilClaw
+55,1859f6,Kaiser
+56,185a14,Poison Claw
+57,185a32,Fire Knuckle
+58,185a50,Dragon Claw
+59,185a6e,Tiger Fangs
+5a,185a8c,Buckler
+5b,185aaa,Heavy Shld
+5c,185ac8,Mithril Shld
+5d,185ae6,Gold Shld
+5e,185b04,Aegis Shld
+5f,185b22,Diamond Shld
+60,185b40,Flame Shld
+61,185b5e,Ice Shld
+62,185b7c,Thunder Shld
+63,185b9a,Crystal Shld
+64,185bb8,Genji Shld
+65,185bd6,TortoiseShld
+66,185bf4,Cursed Shld
+67,185c12,Paladin Shld
+68,185c30,Force Shld
+69,185c4e,Leather Hat
+6a,185c6c,Hair Band
+6b,185c8a,Plumed Hat
+6c,185ca8,Beret
+6d,185cc6,Magus Hat
+6e,185ce4,Bandana
+6f,185d02,Iron Helmet
+70,185d20,Coronet
+71,185d3e,Bard's Hat
+72,185d5c,Green Beret
+73,185d7a,Head Band
+74,185d98,Mithril Helm
+75,185db6,Tiara
+76,185dd4,Gold Helmet
+77,185df2,Tiger Mask
+78,185e10,Red Cap
+79,185e2e,Mystery Veil
+7a,185e4c,Circlet
+7b,185e6a,Regal Crown
+7c,185e88,Diamond Helm
+7d,185ea6,Dark Hood
+7e,185ec4,Crystal Helm
+7f,185ee2,Oath Veil
+80,185f00,Cat Hood
+81,185f1e,Genji Helmet
+82,185f3c,Thornlet
+83,185f5a,Titanium
+84,185f78,LeatherArmor
+85,185f96,Cotton Robe
+86,185fb4,Kung Fu Suit
+87,185fd2,Iron Armor
+88,185ff0,Silk Robe
+89,18600e,Mithril Vest
+8a,18602c,Ninja Gear
+8b,18604a,White Dress
+8c,186068,Mithril Mail
+8d,186086,Gaia Gear
+8e,1860a4,Mirage Vest
+8f,1860c2,Gold Armor
+90,1860e0,Power Sash
+91,1860fe,Light Robe
+92,18611c,Diamond Vest
+93,18613a,Red Jacket
+94,186158,Force Armor
+95,186176,DiamondArmor
+96,186194,Dark Gear
+97,1861b2,Tao Robe
+98,1861d0,Crystal Mail
+99,1861ee,Czarina Gown
+9a,18620c,Genji Armor
+9b,18622a,Imp's Armor
+9c,186248,Minerva
+9d,186266,Tabby Suit
+9e,186284,Chocobo Suit
+9f,1862a2,Moogle Suit
+a0,1862c0,Nutkin Suit
+a1,1862de,BehemothSuit
+a2,1862fc,Snow Muffler
+a3,18631a,NoiseBlaster
+a4,186338,Bio Blaster
+a5,186356,Flash
+a6,186374,Chain Saw
+a7,186392,Debilitator
+a8,1863b0,Drill
+a9,1863ce,Air Anchor
+aa,1863ec,AutoCrossbow
+ab,18640a,Fire Skean
+ac,186428,Water Edge
+ad,186446,Bolt Edge
+ae,186464,Inviz Edge
+af,186482,Shadow Edge
+b0,1864a0,Goggles
+b1,1864be,Star Pendant
+b2,1864dc,Peace Ring
+b3,1864fa,Amulet
+b4,186518,White Cape
+b5,186536,Jewel Ring
+b6,186554,Fairy Ring
+b7,186572,Barrier Ring
+b8,186590,MithrilGlove
+b9,1865ae,Guard Ring
+ba,1865cc,RunningShoes
+bb,1865ea,Wall Ring
+bc,186608,Cherub Down
+bd,186626,Cure Ring
+be,186644,True Knight
+bf,186662,DragoonBoots
+c0,186680,Zephyr Cape
+c1,18669e,Czarina Ring
+c2,1866bc,Cursed Ring
+c3,1866da,Earrings
+c4,1866f8,Atlas Armlet
+c5,186716,Blizzard Orb
+c6,186734,Rage Ring
+c7,186752,Sneak Ring
+c8,186770,Pod Bracelet
+c9,18678e,Hero Ring
+ca,1867ac,Ribbon
+cb,1867ca,Muscle Belt
+cc,1867e8,Crystal Orb
+cd,186806,Gold Hairpin
+ce,186824,Economizer
+cf,186842,Thief Glove
+d0,186860,Gauntlet
+d1,18687e,Genji Glove
+d2,18689c,Hyper Wrist
+d3,1868ba,Offering
+d4,1868d8,Beads
+d5,1868f6,Black Belt
+d6,186914,Coin Toss
+d7,186932,FakeMustache
+d8,186950,Gem Box
+d9,18696e,Dragon Horn
+da,18698c,Merit Award
+db,1869aa,Memento Ring
+dc,1869c8,Safety Bit
+dd,1869e6,Relic Ring
+de,186a04,Moogle Charm
+df,186a22,Charm Bangle
+e0,186a40,Marvel Shoes
+e1,186a5e,Back Guard
+e2,186a7c,Gale Hairpin
+e3,186a9a,Sniper Sight
+e4,186ab8,Exp. Egg
+e5,186ad6,Tintinabar
+e6,186af4,Sprint Shoes
+e7,186b12,Rename Card
+e8,186b30,Tonic
+e9,186b4e,Potion
+ea,186b6c,X-Potion
+eb,186b8a,Tincture
+ec,186ba8,Ether
+ed,186bc6,X-Ether
+ee,186be4,Elixir
+ef,186c02,Megalixir
+f0,186c20,Fenix Down
+f1,186c3e,Revivify
+f2,186c5c,Antidote
+f3,186c7a,Eyedrop
+f4,186c98,Soft
+f5,186cb6,Remedy
+f6,186cd4,Sleeping Bag
+f7,186cf2,Tent
+f8,186d10,Green Cherry
+f9,186d2e,Magicite
+fa,186d4c,Super Ball
+fb,186d6a,Echo Screen
+fc,186d88,Smoke Bomb
+fd,186da6,Warp Stone
+fe,186dc4,Dried Meat

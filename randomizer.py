@@ -5,6 +5,7 @@ from os import system
 from utils import hex2int, int2bytes
 from skillrandomizer import SpellBlock, CommandBlock
 from monsterrandomizer import MonsterBlock
+from itemrandomizer import ItemBlock
 
 seed = time()
 random.seed(seed)
@@ -199,6 +200,20 @@ def characters_from_table(tablefile):
     return characters
 
 
+def items_from_table(tablefile):
+    items = []
+    for i, line in enumerate(open(tablefile)):
+        line = line.strip()
+        if line[0] == '#':
+            continue
+
+        while '  ' in line:
+            line = line.replace('  ', ' ')
+        c = ItemBlock(*line.split(','))
+        items.append(c)
+    return items
+
+
 if __name__ == "__main__":
     sourcefile = argv[1]
     outfile = sourcefile.rsplit('.', 1)
@@ -383,3 +398,16 @@ if __name__ == "__main__":
         m.screw_vargas()
         m.mutate()
         m.write_stats(outfile)
+
+    items = items_from_table('tables/itemcodes.txt')
+    for i in items:
+        i.read_stats(sourcefile)
+
+    items = sorted(items, key=lambda i: i.rank())
+    for n, i in enumerate(items):
+        i.set_degree(n / float(len(items)))
+
+    for i in items:
+        i.mutate()
+        i.unrestrict()
+        i.write_stats(outfile)

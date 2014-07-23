@@ -148,7 +148,6 @@ class MonsterBlock:
             boosted = level_boost(self.stats[stat])
             if stat in ['def', 'mdef']:
                 boosted = (self.stats[stat] + boosted) / 2.0
-                boosted = (self.stats[stat] + boosted) / 2.0
             self.stats[stat] = int(boosted)
 
         self.stats['hp'] = level_boost(self.stats['hp'], limit=0xFEFE)

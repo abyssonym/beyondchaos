@@ -1,15 +1,21 @@
+00,0,Fire
+01,0,Ice
+02,0,Bolt
 12,50,X-Zone
 2B,200,Quick
+2D,0,Cure
 30,0,Life
 31,0,Life 2
+32,0,Antdot
 35,100,Life 3
-3F,100,Palador
+3F,300,Palador
 41,100,Odin
 42,100,Raiden
 46,100,Ragnarok
+5C,100,Cleave
 8C,0,Roulette
 9A,100,ForceField
-#9D,0,Pep Up
+9D,0,Pep Up
 A4,0,Clear
 A6,0,ChokeSmoke
 AF,100,Delta Hit
@@ -22,7 +28,7 @@ C7,50,Love Token
 C8,0,Seize
 C9,0,R.Polarity
 CA,0,Targetting
-CB,200,Sneeze
+CB,500,Sneeze
 CE,9000,Charm
 CF,9000,Cold Dust
 D5,9000,Engulf
@@ -33,5 +39,7 @@ E5,100,Soul Out
 EA,9000,BabaBreath
 EE,0,Battle
 EF,0,Special
+F7,100,Sabre Soul
+F8,100,Star Prism
 FC,0,Takedown
 FD,0,Wild Fang

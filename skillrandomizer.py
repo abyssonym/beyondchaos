@@ -30,10 +30,11 @@ f.close()
 
 restriction_enemy = lambda s: s.target_enemy_default and not s.target_group_default
 SELF_ALLOW = [0x2a, 0x2b, 0x4c, 0x63, 0x3f, 0x9a]
-SELF_RESTRICT = [0x30, 0x31, 0x27, 0x28, 0x51, 0x52, 0x53]
+SELF_RESTRICT = [0x30, 0x31, 0x27, 0x28, 0x45]
+# also, mute?
 restriction_self = (
     lambda s: ((s.target_one and not s.target_group_default and not s.target_enemy_default)
-               or (s.target_enemy_default and s.target_one_side_only)
+               #or (s.target_enemy_default and s.target_one_side_only)
                or (s.target_everyone and not s.target_one_side_only)
                or s.spellid in SELF_ALLOW) and s.spellid not in SELF_RESTRICT)
 ALLIES_ALLOW = [0xab]
@@ -62,15 +63,16 @@ class SpellBlock:
         f = open(filename, 'r+b')
 
         f.seek(self.pointer)
-        targetting = ord(f.read(1))
-        self.target_random = targetting & 0x80
-        self.target_enemy_default = targetting & 0x40
-        self.target_group = targetting & 0x20
-        self.target_auto = targetting & 0x10
-        self.target_group_default = targetting & 0x08
-        self.target_everyone = targetting & 0x04
-        self.target_one_side_only = targetting & 0x02
-        self.target_one = targetting & 0x01
+        targeting = ord(f.read(1))
+        self.targeting = targeting
+        self.target_random = targeting & 0x80
+        self.target_enemy_default = targeting & 0x40
+        self.target_group = targeting & 0x20
+        self.target_auto = targeting & 0x10
+        self.target_group_default = targeting & 0x08
+        self.target_everyone = targeting & 0x04
+        self.target_one_side_only = targeting & 0x02
+        self.target_one = targeting & 0x01
 
         f.seek(self.pointer+1)
         elements = ord(f.read(1))
@@ -116,49 +118,68 @@ class SpellBlock:
 
     def rank(self):
         if self.power >= 1 and not self.percentage and not self.draining:
-            baseline = self.power
+            power = self.power
+            baseline = power
         else:
+            power = None
             baseline = 20
 
         if self.accuracy:
             baseline = baseline * 0.9
-        if self.ignore_defense and not self.draining and self.power >= 1:
-            baseline = baseline * 2
-        if self.power and self.elemental:
-            baseline = baseline * 0.75
-        if self.power and self.no_split_damage:
-            baseline = baseline * 1.5
-        if self.power and self.invert_undead:
-            baseline = baseline * 0.75
+
+        if self.target_enemy_default or \
+                (self.target_everyone and not
+                 self.target_one_side_only):
+            if power:
+                if self.ignore_defense:
+                    baseline = baseline * 2
+                if self.elemental:
+                    baseline = baseline * 0.75
+                if self.no_split_damage:
+                    baseline = baseline * 1.5
+                if self.invert_undead:
+                    baseline = baseline * 0.75
+                if self.uses_stamina:
+                    baseline = baseline * 0.75
+
+            if self.power and self.draining:
+                baseline = baseline * 2
+
+            if self.physical:
+                baseline = baseline * 0.75
+            if self.unblockable:
+                baseline = baseline * 1.25
+            if self.statuses:
+                baseline = baseline * 1.25
+
+            if self.miss_if_death_prot:
+                if self.death:
+                    baseline = baseline * 8
+                elif self.petrify:
+                    baseline = baseline * 4
+                elif self.condemned:
+                    baseline = baseline * 1
+                elif self.percentage:
+                    baseline = baseline * 1
+                else:
+                    baseline = baseline * 6
+            elif self.petrify and not power:
+                baseline = baseline * 3
+            elif self.petrify:
+                baseline = baseline * 1.5
+
+        else:
+            if self.death:
+                baseline = baseline * 0.1
+
         if self.healing or not self.target_enemy_default:
             baseline = baseline * 0.5
-        if self.power and self.draining:
-            baseline = baseline * 2
         if self.level_spell:
             baseline = baseline * 0.25
-        if self.miss_if_death_prot and self.target_enemy_default:
-            if self.death:
-                baseline = baseline * 8
-            elif self.petrify:
-                baseline = baseline * 4
-            elif self.condemned:
-                baseline = baseline * 1
-            elif self.percentage:
-                baseline = baseline * 2
-            else:
-                baseline = baseline * 6
-        elif self.petrify and self.target_enemy_default and not self.power:
-            baseline = baseline * 3
-        if self.uses_stamina:
-            baseline = baseline * 0.75
-        if self.physical:
-            baseline = baseline * 0.75
-        if self.unblockable:
-            baseline = baseline * 1.25
-        if self.statuses and not self.cure_status and not self.invert_status:
-            baseline = baseline * 1.5
+
         if self.spellid in spellbans:
             baseline += spellbans[self.spellid]
+
         return int(baseline)
 
 

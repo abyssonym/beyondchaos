@@ -4,17 +4,18 @@ from sys import argv
 from os import system
 from utils import hex2int, int2bytes
 from skillrandomizer import SpellBlock, CommandBlock
+from monsterrandomizer import MonsterBlock
 
 seed = time()
 random.seed(seed)
 print seed
 
-NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore", "jump", "mimic", "xmagic"]
+NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore", "jump", "mimic", "xmagic", "summon"]
 # note: x-magic targets random party member
 # replacing lore screws up enemy skills
 # replacing jump makes the character never come back down
 # replacing mimic screws up enemy skills too
-ALWAYS_REPLACE = ["leap", "summon", "possess", "revert", "health", "shock"]
+ALWAYS_REPLACE = ["leap", "possess", "revert", "health", "shock"]
 
 
 class Substitution(object):
@@ -168,6 +169,21 @@ def commands_from_table(tablefile):
     return commands
 
 
+def monsters_from_table(tablefile):
+    monsters = []
+    for i, line in enumerate(open(tablefile)):
+        line = line.strip()
+        if line[0] == '#':
+            continue
+
+        while '  ' in line:
+            line = line.replace('  ', ' ')
+        c = MonsterBlock(*line.split(','))
+        c.set_id(i)
+        monsters.append(c)
+    return monsters
+
+
 def characters_from_table(tablefile):
     characters = []
     for i, line in enumerate(open(tablefile)):
@@ -266,8 +282,11 @@ if __name__ == "__main__":
         if c.name not in ALWAYS_REPLACE:
             if random.randint(1, 100) > 75:
                 continue
+            if c.target == "self" and random.randint(1, 100) > 50:
+                continue
 
         POWER_LEVEL = 100
+        MULLIGAN_LEVEL = 15
         while True:
             power = POWER_LEVEL / 2
             while True:
@@ -310,7 +329,6 @@ if __name__ == "__main__":
 
         c.newname(sb.name, outfile)
         c.unsetmenu(outfile)
-        #print spellnames[s.spellid], "%x" % s.location
 
     characters = characters_from_table('tables/charcodes.txt')
     valid = set(list(commands))
@@ -319,7 +337,8 @@ if __name__ == "__main__":
     def populate_unused():
         unused_commands = set(commands.values())
         invalid_commands = set([c for c in commands.values() if c.name in
-                                ["fight", "item", "magic", "xmagic", "def", "row"]])
+                                ["fight", "item", "magic", "xmagic",
+                                 "def", "row", "summon"]])
         unused_commands = list(unused_commands - invalid_commands)
         return unused_commands
 
@@ -342,7 +361,10 @@ if __name__ == "__main__":
             while len(using) < 3:
                 if not unused:
                     unused = populate_unused()
-                using.append(random.choice(unused))
+                com = random.choice(unused)
+                unused.remove(com)
+                if com not in using:
+                    using.append(com)
             for i, command in enumerate(reversed(using)):
                 #print command.name,
                 c.set_battle_command(i+1, command=command)
@@ -354,3 +376,10 @@ if __name__ == "__main__":
             c.set_battle_command(2, command_id=0xFF)
         c.write_battle_commands(outfile)
         #print
+
+    monsters = monsters_from_table('tables/enemycodes.txt')
+    for m in monsters:
+        m.read_stats(sourcefile)
+        m.screw_vargas()
+        m.mutate()
+        m.write_stats(outfile)

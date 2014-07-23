@@ -18,6 +18,7 @@ class MonsterBlock:
         self.controlptr = hex2int(controlptr)
         self.sketchptr = hex2int(sketchptr)
         self.rageptr = hex2int(rageptr)
+        self.is_boss = self.pointer > 0xF1FC0
         self.stats = {}
 
     def set_id(self, i):
@@ -37,6 +38,9 @@ class MonsterBlock:
         self.stats['level'] = ord(f.read(1))
 
         self.morph = ord(f.read(1))
+        self.misc1 = ord(f.read(1))
+        self.misc2 = ord(f.read(1))
+
         f.seek(self.pointer + 20)
         self.immunities = map(ord, f.read(3))
         self.absorb = ord(f.read(1))
@@ -59,8 +63,9 @@ class MonsterBlock:
         f.seek(self.rageptr)
         self.rages = map(ord, f.read(2))
 
-        all_spells = sorted([SpellBlock(i, filename) for i in xrange(0xFF)],
-                            key=lambda s: s.rank())
+        if all_spells is None:
+            all_spells = sorted([SpellBlock(i, filename) for i in xrange(0xFF)],
+                                key=lambda s: s.rank())
         valid_spells = filter(lambda sb: sb.spellid not in unrageable and
                               not sb.abort_on_allies, all_spells)
 
@@ -78,6 +83,9 @@ class MonsterBlock:
         f.write(chr(self.stats['level']))
 
         f.write(chr(self.morph))
+        f.write(chr(self.misc1))
+        f.write(chr(self.misc2))
+
         f.seek(self.pointer + 20)
         for i in self.immunities:
             f.write(chr(i))
@@ -108,6 +116,20 @@ class MonsterBlock:
         if 'vargas' in self.name.lower():
             self.stats['hp'] = 1000 + random.randint(0, 400) + random.randint(0, 400)
 
+    def mutate_misc(self):
+        # invert "escapable" bit
+        if self.is_boss:
+            if random.randint(1, 200) == 100:
+                self.misc2 = self.misc2 ^ 0x08
+        elif random.randint(1, 15) == 15:
+            self.misc2 = self.misc2 | 0x08
+
+        if random.randint(1, 10) == 10:
+            self.misc2 = self.misc2 ^ 0x10  # invert scan bit
+
+        if random.randint(1, 20) == 20:
+            self.misc1 = self.misc1 ^ 0x80  # invert undead bit
+
     def mutate_stats(self):
         level = self.stats['level']
 
@@ -123,7 +145,11 @@ class MonsterBlock:
 
         for stat in ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
                      'def', 'mdef', 'mpow']:
-            self.stats[stat] = level_boost(self.stats[stat])
+            boosted = level_boost(self.stats[stat])
+            if stat in ['def', 'mdef']:
+                boosted = (self.stats[stat] + boosted) / 2.0
+                boosted = (self.stats[stat] + boosted) / 2.0
+            self.stats[stat] = int(boosted)
 
         self.stats['hp'] = level_boost(self.stats['hp'], limit=0xFEFE)
         self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFEFE)
@@ -139,20 +165,29 @@ class MonsterBlock:
         self.stats['xp'] = fuddle(self.stats['xp'])
         self.stats['gp'] = fuddle(self.stats['gp'])
 
-        if random.randint(1, 10) == 10:
-            level += random.choice([1, -1])
-            if random.randint(1, 5) == 5:
+        if random.randint(1, 5) == 10:
+            if not self.is_boss or random.randint(1, 4) == 4:
                 level += random.choice([1, -1])
+                if random.randint(1, 5) == 5:
+                    level += random.choice([1, -1])
         level = min(level, 99)
         level = max(level, 0)
         self.stats['level'] = level
 
     def mutate_statuses(self):
-        new_immunities = [0x00] * 3
-        new_statuses = [0x00] * 4
         immcount = sum([bin(v).count('1') for v in self.immunities])
+        while random.randint(1, 5) == 5:
+            immcount += random.choice([1, -1])
+        immcount = min(24, max(immcount, 0))
+
         stacount = sum([bin(v).count('1') for v in self.statuses])
         stacount += 1
+        while random.randint(1, 5) == 5:
+            stacount += random.choice([1, -1])
+        stacount = min(29, max(immcount, 0))
+
+        new_immunities = [0x00] * 3
+        new_statuses = [0x00] * 4
         while stacount > 0:
             byte = random.randint(0, 3)
             bit = 1 << random.randint(0, 7)
@@ -178,9 +213,21 @@ class MonsterBlock:
         self.immunities = new_immunities
 
     def mutate_affinities(self):
-        abscount = min(bin(self.absorb).count('1') + 1, 8)
-        nullcount = min(bin(self.null).count('1') + 1, 8)
-        weakcount = min(bin(self.weakness).count('1'), 8)
+        abscount = bin(self.absorb).count('1') + 1
+        while random.randint(1, 10) == 10:
+            abscount += random.choice([1, -1])
+        abscount = min(8, max(abscount, 0))
+
+        nullcount = bin(self.null).count('1') + 1
+        while random.randint(1, 10) == 10:
+            nullcount += random.choice([1, -1])
+        nullcount = min(8, max(nullcount, 0))
+
+        weakcount = bin(self.weakness).count('1')
+        while random.randint(1, 10) == 10:
+            weakcount += random.choice([1, -1])
+        weakcount = min(8, max(weakcount, 0))
+
         self.absorb, self.null, self.weakness = 0, 0, 0
         while abscount > 0:
             bit = 1 << random.randint(0, 7)
@@ -220,8 +267,7 @@ class MonsterBlock:
             while index is None or index in unrageable:
                 median = len(valid_spells) / 2
                 index = random.randint(0, median) + random.randint(0, median)
-                if len(valid_spells) % 2:
-                    index += random.randint(0, 1)
+                index = min(index, len(valid_spells) - 1)
                 sb = valid_spells[index]
             candidates.add(sb.spellid)
 
@@ -229,7 +275,9 @@ class MonsterBlock:
         self.controls = sorted(random.sample(candidates,
                                              min(4, len(candidates))))
         self.sketches = random.sample(candidates, 2)
-        self.rages = random.sample(candidates, 2)
+        if not self.is_boss:
+            self.rages = random.sample(candidates, 2)
+
         while len(self.controls) < 4:
             self.controls.append(0xFF)
 
@@ -246,7 +294,7 @@ class MonsterBlock:
             special = random.choice(list(valid))
         if branch <= 9:
             # physical special
-            factor = int(self.stats['level'] * 16 / 99.0) + 1
+            factor = int(self.stats['level'] * 16 / 99.0) + 2
             power = random.randint(0, factor) + random.randint(0, factor)
             power = max(power, 0x00)
             power = min(power, 0x0F)
@@ -263,6 +311,7 @@ class MonsterBlock:
     def mutate(self):
         self.mutate_stats()
         self.mutate_items()
+        self.mutate_misc()
         self.mutate_control()
         if random.randint(1, 10) > 8:
             self.mutate_statuses()

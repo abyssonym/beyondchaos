@@ -24,6 +24,7 @@ STATPROTECT = {"fieldeffect": 0x7c,
                "statusacquire2": 0x00}
 
 all_spells = None
+effects_used = []
 
 
 def bit_mutate(byte, op="on", nochange=0x00):
@@ -137,17 +138,27 @@ class ItemBlock:
         else:
             spells = all_spells
 
-        normal = len(spells) / 2
-        if self.degree:
+        normal = len(spells)
+        if self.degree is not None:
             normal = int(normal * self.degree)
         else:
-            normal = normal / 4
+            print self.name, "NO DEGREE"
+            normal = int(normal / 4.0)
 
+        right = False
+        if normal > len(spells) / 2.0:
+            right = True
+            normal = len(spells) - normal
+
+        normal = max(normal, 2)
         index = random.randint(0, normal) + random.randint(0, normal)
         while random.randint(1, 10) == 10:
             index = index + random.randint(0, normal)
         index = min(index, len(spells)-1)
-        return spells[index], index / float(len(spells))
+        if right:
+            index = len(spells) - index - 1
+        spell = spells[index]
+        return spell, index / float(len(spells))
 
     def mutate_feature(self):
         if self.is_consumable or self.is_tool:
@@ -158,15 +169,20 @@ class ItemBlock:
                                             nochange=STATPROTECT[feature])
 
     def mutate_break_effect(self):
+        global effects_used
         if self.is_consumable:
             return
 
-        spell, _ = self.pick_a_spell(magic_only=True)
+        for _ in xrange(100):
+            spell, _ = self.pick_a_spell(magic_only=True)
+            if spell.spellid not in effects_used:
+                effects_used.append(spell.spellid)
+                break
         self.features['breakeffect'] = spell.spellid
         if not self.is_weapon or random.randint(1, 2) == 2:
             self.itemtype = self.itemtype | 0x20
         self.features['targeting'] = spell.targeting & 0xef
-        print self.name, "%x" % self.features['targeting'], spell.name, "%x" % spell.targeting
+        print self.name, spell.name
 
     def mutate_elements(self):
         if self.is_consumable or self.is_tool:
@@ -315,15 +331,17 @@ class ItemBlock:
     def mutate(self):
         self.mutate_stats()
         self.mutate_price()
-        while random.randint(1, 8) == 8:
+        broken, learned = False, False
+        while random.randint(1, 5) == 5:
             x = random.randint(0, 99)
             if x < 10:
                 self.mutate_special_action()
-            elif x < 20:
+            elif x < 20 and not learned:
                 self.mutate_learning()
-            elif x < 40:
+            elif x < 50 and not broken:
                 self.mutate_break_effect()
-            elif x < 60:
+                broken = True
+            elif x < 75:
                 self.mutate_elements()
             else:
                 self.mutate_feature()

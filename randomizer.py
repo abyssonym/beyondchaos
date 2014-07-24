@@ -5,7 +5,8 @@ from os import system
 from utils import hex2int, int2bytes
 from skillrandomizer import SpellBlock, CommandBlock
 from monsterrandomizer import MonsterBlock
-from itemrandomizer import ItemBlock
+from itemrandomizer import ItemBlock, reset_equippable
+from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 
 seed = time()
 random.seed(seed)
@@ -130,6 +131,14 @@ class FreeBlock:
         return newfree
 
 
+equip_offsets = {"weapon": 15,
+                 "shield": 16,
+                 "helm": 17,
+                 "armor": 18,
+                 "relic1": 19,
+                 "relic2": 20}
+
+
 class CharacterBlock:
     def __init__(self, address, name):
         self.address = hex2int(address)
@@ -149,6 +158,12 @@ class CharacterBlock:
                 continue
             f.seek(self.address + 2 + i)
             f.write(chr(command))
+        f.close()
+
+    def write_default_equipment(self, filename, equipid, equiptype):
+        f = open(filename, 'r+b')
+        f.seek(self.address + equip_offsets[equiptype])
+        f.write(chr(equipid))
         f.close()
 
     def set_id(self, i):
@@ -210,6 +225,20 @@ def items_from_table(tablefile):
         while '  ' in line:
             line = line.replace('  ', ' ')
         c = ItemBlock(*line.split(','))
+        items.append(c)
+    return items
+
+
+def chests_from_table(tablefile):
+    items = []
+    for i, line in enumerate(open(tablefile)):
+        line = line.strip()
+        if line[0] == '#':
+            continue
+
+        while '  ' in line:
+            line = line.replace('  ', ' ')
+        c = ChestBlock(*line.split(','))
         items.append(c)
     return items
 
@@ -407,7 +436,39 @@ if __name__ == "__main__":
     for n, i in enumerate(items):
         i.set_degree(n / float(len(items)))
 
+    reset_equippable(items)
     for i in items:
         i.mutate()
         i.unrestrict()
         i.write_stats(outfile)
+
+    for c in characters:
+        if c.id > 13:
+            continue
+
+        equippable_items = filter(lambda i: i.equippable & (1 << c.id), items)
+        equippable_weapons = [i for i in equippable_items if i.is_weapon]
+        equippable_shields = [i for i in equippable_items if i.is_shield]
+        equippable_helms = [i for i in equippable_items if i.is_helm]
+        equippable_body_armors = [i for i in equippable_items if i.is_body_armor]
+
+        weakest_weapon = min(equippable_weapons, key=lambda i: i.rank()).itemid if equippable_weapons else 0xFF
+        weakest_shield = min(equippable_shields, key=lambda i: i.rank()).itemid if equippable_shields else 0xFF
+        weakest_helm = min(equippable_helms, key=lambda i: i.rank()).itemid if equippable_helms else 0xFF
+        weakest_body_armor = min(equippable_body_armors, key=lambda i: i.rank()).itemid if equippable_body_armors else 0xFF
+
+        c.write_default_equipment(outfile, weakest_weapon, "weapon")
+        c.write_default_equipment(outfile, weakest_shield, "shield")
+        c.write_default_equipment(outfile, weakest_helm, "helm")
+        c.write_default_equipment(outfile, weakest_body_armor, "armor")
+
+    chests = chests_from_table("tables/chestcodes.txt")
+    for c in chests:
+        c.read_data(sourcefile)
+        c.mutate_contents()
+
+    shuffle_locations(chests)
+    shuffle_monster_boxes(chests)
+
+    for c in chests:
+        c.write_data(outfile)

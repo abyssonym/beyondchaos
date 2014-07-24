@@ -339,3 +339,16 @@ class MonsterBlock:
             self.mutate_affinities()
         if random.randint(1, 10) > 8:
             self.mutate_special()
+
+
+def get_ranked_monsters(filename, bosses=True):
+    from randomizer import monsters_from_table
+    monsters = monsters_from_table('tables/enemycodes.txt')
+    for m in monsters:
+        m.read_stats(filename)
+
+    if not bosses:
+        monsters = filter(lambda m: m.id <= 0xFF, monsters)
+    monsters = sorted(monsters, key=lambda i: i.stats['level'])
+
+    return monsters

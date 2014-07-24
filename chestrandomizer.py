@@ -13,7 +13,6 @@ class ChestBlock:
 
     def read_data(self, filename):
         global items
-        from randomizer import items_from_table
 
         f = open(filename, 'r+b')
         f.seek(self.pointer+2)
@@ -59,6 +58,7 @@ class ChestBlock:
             self.contents = self.contents / 2
             self.contents += (random.randint(0, self.contents) +
                               random.randint(0, self.contents))
+            self.contents = min(0xFF, max(0, self.contents))
         elif self.empty:
             pass
 

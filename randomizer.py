@@ -4,7 +4,7 @@ from sys import argv
 from os import system
 from utils import hex2int, int2bytes
 from skillrandomizer import SpellBlock, CommandBlock
-from monsterrandomizer import MonsterBlock
+from monsterrandomizer import MonsterBlock, get_ranked_monsters
 from itemrandomizer import ItemBlock, reset_equippable, get_ranked_items
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 
@@ -243,6 +243,64 @@ def chests_from_table(tablefile):
     return items
 
 
+def randomize_colosseum(filename, pointer):
+    item_objs = get_ranked_items(filename)
+    monster_objs = get_ranked_monsters(filename, bosses=False)
+    items = [i.itemid for i in item_objs]
+    monsters = [m.id for m in monster_objs]
+    f = open(filename, 'r+b')
+    for i in range(0xFF):
+        #if i == 0x29:
+        #    continue  # striker
+
+        index = items.index(i)
+        trade = index
+        while index == trade:
+            trade = index
+            while random.randint(1, 3) < 3:
+                trade += random.randint(-3, 3)
+                trade = max(0, min(trade, len(items)-1))
+
+        opponent = trade
+        while random.randint(1, 3) < 3:
+            opponent += random.randint(-1, 1)
+            opponent = max(0, min(opponent, len(monsters)-1))
+
+        trade = items[trade]
+        opponent = monsters[opponent]
+        wager_obj = [j for j in item_objs if j.itemid == i][0]
+        opponent_obj = [m for m in monster_objs if m.id == opponent][0]
+        win_obj = [j for j in item_objs if j.itemid == trade][0]
+        print wager_obj.name, opponent_obj.name, win_obj.name
+        f.seek(pointer + (i*4))
+        f.write(chr(opponent))
+        f.seek(pointer + (i*4) + 2)
+        f.write(chr(trade))
+        if abs(wager_obj.rank() - win_obj.rank()) >= 5000 and random.randint(1, 2) == 2:
+            f.write(chr(0xFF))
+        else:
+            f.write(chr(0x00))
+    f.close()
+
+
+def randomize_slots(filename, pointer):
+    from skillrandomizer import get_ranked_spells
+    spells = get_ranked_spells(filename)
+    spells = [s.spellid for s in spells if s.target_enemy_default]
+    f = open(filename, 'r+b')
+    for i in xrange(7):
+        if i == 2:
+            continue
+        else:
+            if i in [1, 2, 4]:
+                index = random.randint(len(spells)/2, len(spells)-1)
+            else:
+                index = random.randint(0, len(spells)-1)
+            value = spells[index]
+        f.seek(pointer+i)
+        f.write(chr(value))
+    f.close()
+
 if __name__ == "__main__":
     sourcefile = argv[1]
     outfile = sourcefile.rsplit('.', 1)
@@ -465,3 +523,6 @@ if __name__ == "__main__":
 
     for c in chests:
         c.write_data(outfile)
+
+    randomize_colosseum(outfile, 0x1fb600)
+    randomize_slots(outfile, 0x24E4A)

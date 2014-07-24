@@ -253,3 +253,9 @@ class CommandBlock:
         f.seek(self.textptr)
         f.write(text)
         f.close()
+
+
+def get_ranked_spells(filename):
+    spells = [SpellBlock(i, filename) for i in xrange(0xFF)]
+    spells = sorted(spells, key=lambda i: i.rank())
+    return spells

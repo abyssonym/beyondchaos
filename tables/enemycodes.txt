@@ -253,6 +253,7 @@ Veteran___,f1f60,f33ec,f40ec,f44f6,f47f6
 Sky Base__,f1f80,f33f0,f40f0,f44f8,f47f8
 IronHitman,f1fa0,f33f4,f40f4,f44fa,f47fa
 Io________,f1fc0,f33f8,f40f8,f44fc,f47fc
+Pugs______,f1fe0,f33fc,f40fc,f44fe,f47fe
 Whelk_____,f2000,f3400,f4100,f4500,f4800
 Presenter_,f2020,f3404,f4104,f4502,f4802
 Mega Armor,f2040,f3408,f4108,f4504,f4804

@@ -1,5 +1,6 @@
 from utils import hex2int
 import random
+from itemrandomizer import get_ranked_items
 
 items = None
 
@@ -36,14 +37,7 @@ class ChestBlock:
         f.close()
 
         if items is None:
-            items = items_from_table('tables/itemcodes.txt')
-            for i in items:
-                i.read_stats(filename)
-
-            items = sorted(items, key=lambda i: i.rank())
-            for n, i in enumerate(items):
-                i.set_degree(n / float(len(items)))
-
+            items = get_ranked_items(filename)
             items = [i.itemid for i in items]
 
     def write_data(self, filename):

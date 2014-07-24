@@ -1,5 +1,6 @@
 from utils import hex2int, write_multi, read_multi
 from skillrandomizer import SpellBlock
+from itemrandomizer import get_ranked_items
 import random
 
 
@@ -27,7 +28,6 @@ class MonsterBlock:
 
     def read_stats(self, filename):
         global all_spells, valid_spells, items
-        from randomizer import items_from_table
 
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -74,14 +74,7 @@ class MonsterBlock:
         f.close()
 
         if items is None:
-            items = items_from_table('tables/itemcodes.txt')
-            for i in items:
-                i.read_stats(filename)
-
-            items = sorted(items, key=lambda i: i.rank())
-            for n, i in enumerate(items):
-                i.set_degree(n / float(len(items)))
-
+            items = get_ranked_items(filename)
             items = [i.itemid for i in items]
 
     def write_stats(self, filename):

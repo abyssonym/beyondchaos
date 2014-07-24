@@ -470,3 +470,16 @@ def reset_equippable(items):
             item.equippable |= (1 << random.randint(0, NUM_CHARS-1))
 
     return items
+
+
+def get_ranked_items(filename):
+    from randomizer import items_from_table
+    items = items_from_table('tables/itemcodes.txt')
+    for i in items:
+        i.read_stats(filename)
+
+    items = sorted(items, key=lambda i: i.rank())
+    for n, i in enumerate(items):
+        i.set_degree(n / float(len(items)))
+
+    return items

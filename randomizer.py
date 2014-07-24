@@ -5,7 +5,7 @@ from os import system
 from utils import hex2int, int2bytes
 from skillrandomizer import SpellBlock, CommandBlock
 from monsterrandomizer import MonsterBlock
-from itemrandomizer import ItemBlock, reset_equippable
+from itemrandomizer import ItemBlock, reset_equippable, get_ranked_items
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 
 seed = time()
@@ -428,14 +428,7 @@ if __name__ == "__main__":
         m.mutate()
         m.write_stats(outfile)
 
-    items = items_from_table('tables/itemcodes.txt')
-    for i in items:
-        i.read_stats(sourcefile)
-
-    items = sorted(items, key=lambda i: i.rank())
-    for n, i in enumerate(items):
-        i.set_degree(n / float(len(items)))
-
+    items = get_ranked_items(sourcefile)
     reset_equippable(items)
     for i in items:
         i.mutate()

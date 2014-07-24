@@ -7,10 +7,7 @@ from skillrandomizer import SpellBlock, CommandBlock
 from monsterrandomizer import MonsterBlock, get_ranked_monsters
 from itemrandomizer import ItemBlock, reset_equippable, get_ranked_items
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
-
-seed = time()
-random.seed(seed)
-print seed
+from esperrandomizer import EsperBlock
 
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore", "jump", "mimic", "xmagic", "summon"]
 # note: x-magic targets random party member
@@ -243,6 +240,20 @@ def chests_from_table(tablefile):
     return items
 
 
+def espers_from_table(tablefile):
+    espers = []
+    for i, line in enumerate(open(tablefile)):
+        line = line.strip()
+        if line[0] == '#':
+            continue
+
+        while '  ' in line:
+            line = line.replace('  ', ' ')
+        c = EsperBlock(*line.split(','))
+        espers.append(c)
+    return espers
+
+
 def randomize_colosseum(filename, pointer):
     item_objs = get_ranked_items(filename)
     monster_objs = get_ranked_monsters(filename, bosses=False)
@@ -271,7 +282,6 @@ def randomize_colosseum(filename, pointer):
         wager_obj = [j for j in item_objs if j.itemid == i][0]
         opponent_obj = [m for m in monster_objs if m.id == opponent][0]
         win_obj = [j for j in item_objs if j.itemid == trade][0]
-        print wager_obj.name, opponent_obj.name, win_obj.name
         f.seek(pointer + (i*4))
         f.write(chr(opponent))
         f.seek(pointer + (i*4) + 2)
@@ -302,6 +312,10 @@ def randomize_slots(filename, pointer):
     f.close()
 
 if __name__ == "__main__":
+    seed = time()
+    random.seed(seed)
+    print seed
+
     sourcefile = argv[1]
     outfile = sourcefile.rsplit('.', 1)
     outfile = '.'.join([outfile[0], "rand", outfile[1]])
@@ -413,7 +427,7 @@ if __name__ == "__main__":
             used.append(sb.spellid)
             c.set_retarget(sb, outfile)
             s = SpellSub(spellid=sb.spellid)
-            print power, sb.rank(), sb.name
+            #print power, sb.rank(), sb.name
             break
 
         myfs = None
@@ -523,6 +537,14 @@ if __name__ == "__main__":
 
     for c in chests:
         c.write_data(outfile)
+
+    espers = espers_from_table("tables/espercodes.txt")
+    random.shuffle(espers)
+    for e in espers:
+        e.read_data(sourcefile)
+        e.generate_spells()
+        e.generate_bonus()
+        e.write_data(outfile)
 
     randomize_colosseum(outfile, 0x1fb600)
     randomize_slots(outfile, 0x24E4A)

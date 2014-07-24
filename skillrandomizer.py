@@ -24,7 +24,9 @@ for line in f:
     line = line.strip()
     if line[0] == '#':
         continue
-    spellid, modifier, name = tuple(line.split(','))
+    spellid, modifier, name, ban = tuple(line.split(','))
+    if ban == "ban":
+        modifier = int(modifier) * -1
     spellbans[hex2int(spellid)] = int(modifier)
 f.close()
 
@@ -54,7 +56,7 @@ restrictions = {'self': restriction_self,
 class SpellBlock:
     def __init__(self, spellid, filename):
         self.spellid = spellid
-        if self.spellid in spellbans and spellbans[self.spellid] == 0:
+        if self.spellid in spellbans and spellbans[self.spellid] < 0:
             self.valid = False
         else:
             self.valid = True
@@ -106,14 +108,15 @@ class SpellBlock:
         self.power = ord(f.read(1))
         f.seek(self.pointer+7)
         self.accuracy = ord(f.read(1))
-        f.seek(self.pointer+10)
+        f.seek(self.pointer+9)
         self.special = ord(f.read(1))
-        f.seek(self.pointer+11)
+        f.seek(self.pointer+10)
         statuses = map(ord, f.read(4))
         self.death = statuses[0] & 0x80
         self.petrify = statuses[0] & 0x40
-        self.condemned = statuses[0] & 0x1
-        self.statuses = sum([bin(b).count("1") for b in statuses])
+        self.condemned = statuses[1] & 0x1
+        self.statuses = statuses
+        self.has_status = sum([bin(b).count("1") for b in statuses])
         f.close()
 
     def rank(self):
@@ -149,20 +152,20 @@ class SpellBlock:
                 baseline = baseline * 0.75
             if self.unblockable:
                 baseline = baseline * 1.25
-            if self.statuses:
+            if self.has_status:
                 baseline = baseline * 1.25
 
             if self.miss_if_death_prot:
                 if self.death:
-                    baseline = baseline * 8
+                    baseline = baseline * 3.5
                 elif self.petrify:
-                    baseline = baseline * 4
+                    baseline = baseline * 3
                 elif self.condemned:
                     baseline = baseline * 1
                 elif self.percentage:
                     baseline = baseline * 1
                 else:
-                    baseline = baseline * 6
+                    baseline = baseline * 2
             elif self.petrify and not power:
                 baseline = baseline * 3
             elif self.petrify:
@@ -178,7 +181,7 @@ class SpellBlock:
             baseline = baseline * 0.25
 
         if self.spellid in spellbans:
-            baseline += spellbans[self.spellid]
+            baseline += abs(spellbans[self.spellid])
 
         return int(baseline)
 
@@ -255,7 +258,10 @@ class CommandBlock:
         f.close()
 
 
-def get_ranked_spells(filename):
-    spells = [SpellBlock(i, filename) for i in xrange(0xFF)]
+def get_ranked_spells(filename, magic_only=False):
+    if magic_only:
+        spells = [SpellBlock(i, filename) for i in xrange(0x36)]
+    else:
+        spells = [SpellBlock(i, filename) for i in xrange(0xFF)]
     spells = sorted(spells, key=lambda i: i.rank())
     return spells

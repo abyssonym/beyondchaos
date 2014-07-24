@@ -149,7 +149,6 @@ class ItemBlock:
         if self.degree is not None:
             normal = int(normal * self.degree)
         else:
-            print self.name, "NO DEGREE"
             normal = int(normal / 4.0)
 
         right = False
@@ -189,7 +188,7 @@ class ItemBlock:
         if not self.is_weapon or random.randint(1, 2) == 2:
             self.itemtype = self.itemtype | 0x20
         self.features['targeting'] = spell.targeting & 0xef
-        print self.name, spell.name
+        #print self.name, spell.name
 
     def mutate_elements(self):
         if self.is_consumable or self.is_tool:

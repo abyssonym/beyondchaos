@@ -7,6 +7,7 @@ stat_order = ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
               'def', 'mdef', 'mpow']
 all_spells = None
 valid_spells = None
+items = None
 unrageable = [0x7E, 0x7F, 0x80, 0x81]
 
 
@@ -25,7 +26,8 @@ class MonsterBlock:
         self.id = i
 
     def read_stats(self, filename):
-        global all_spells, valid_spells
+        global all_spells, valid_spells, items
+        from randomizer import items_from_table
 
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -70,6 +72,17 @@ class MonsterBlock:
                               not sb.abort_on_allies, all_spells)
 
         f.close()
+
+        if items is None:
+            items = items_from_table('tables/itemcodes.txt')
+            for i in items:
+                i.read_stats(filename)
+
+            items = sorted(items, key=lambda i: i.rank())
+            for n, i in enumerate(items):
+                i.set_degree(n / float(len(items)))
+
+            items = [i.itemid for i in items]
 
     def write_stats(self, filename):
         f = open(filename, 'r+b')
@@ -251,7 +264,21 @@ class MonsterBlock:
             weakcount += -1
 
     def mutate_items(self):
-        self.itemptr
+        random.shuffle(self.items)
+        new_items = []
+        for i in self.items:
+            if i == 0xFF:
+                i = random.choice(self.items + ([0xFF] * 2))
+                if i == 0xFF:
+                    continue
+
+            index = items.index(i)
+            while random.randint(1, 4) == 4:
+                index += random.randint(-3, 3)
+                index = max(0, min(index, len(items)-1))
+
+            new_items.append(items[index])
+        self.items = new_items
 
     def mutate_control(self):
         # shuffle skills between control, sketch, rage
@@ -309,9 +336,10 @@ class MonsterBlock:
 
     def mutate(self):
         self.mutate_stats()
-        self.mutate_items()
         self.mutate_misc()
         self.mutate_control()
+        if random.randint(1, 2) == 2:
+            self.mutate_items()
         if random.randint(1, 10) > 8:
             self.mutate_statuses()
         if random.randint(1, 10) > 8:

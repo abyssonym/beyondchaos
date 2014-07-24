@@ -67,12 +67,19 @@ class ItemBlock:
         itemtype = self.itemtype & 0x0f
         (self.is_tool, self.is_weapon, self.is_armor, self.is_relic,
             self.is_consumable) = (False, False, False, False, False)
+        self.is_shield, self.is_helm, self.is_body_armor = False, False, False
         if itemtype == 0x00:
             self.is_tool = True
         elif itemtype == 0x01:
             self.is_weapon = True
         elif itemtype in [2, 3, 4]:
             self.is_armor = True
+            if itemtype == 3:
+                self.is_shield = True
+            elif itemtype == 4:
+                self.is_helm = True
+            elif itemtype == 2:
+                self.is_body_armor = True
         elif itemtype == 0x05:
             self.is_relic = True
         elif itemtype == 0x06:
@@ -406,3 +413,60 @@ class ItemBlock:
         baseline += (bl * 100)
 
         return int(baseline)
+
+
+NUM_CHARS = 13
+CHAR_MASK = 0x1fff
+IMP_MASK = 0x4000
+
+
+def reset_equippable(items):
+    items = filter(lambda i: not i.is_consumable and not i.is_tool, items)
+    new_weaps = range(NUM_CHARS)
+    random.shuffle(new_weaps)
+    new_weaps = dict(zip(range(NUM_CHARS), new_weaps))
+    for item in items:
+        if item.is_weapon:
+            equippable = item.equippable
+            item.equippable = 0x00
+            for i in range(NUM_CHARS):
+                if equippable & (1 << i):
+                    item.equippable |= (1 << new_weaps[i])
+        elif item.is_relic:
+            item.equippable = CHAR_MASK
+
+    charequips = []
+    valid_items = filter(lambda i: (not i.is_weapon and not i.is_relic
+                                    and not i.equippable & 0x4000), items)
+    for c in range(NUM_CHARS):
+        myequips = []
+        for i in valid_items:
+            if i.equippable & (1 << c):
+                myequips.append(True)
+            else:
+                myequips.append(False)
+        random.shuffle(myequips)
+        charequips.append(myequips)
+
+    for item in valid_items:
+        item.equippable &= 0xc000
+
+    random.shuffle(charequips)
+    for c in range(NUM_CHARS):
+        assert len(valid_items) == len(charequips[c])
+        for equippable, item in zip(charequips[c], valid_items):
+            if equippable:
+                item.equippable |= (1 << c)
+
+    if random.randint(1, 3) == 3:
+        weaponstoo = True
+    else:
+        weaponstoo = False
+
+    for item in items:
+        if item.equippable == 0:
+            if not weaponstoo:
+                continue
+            item.equippable |= (1 << random.randint(0, NUM_CHARS-1))
+
+    return items

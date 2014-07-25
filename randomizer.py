@@ -8,6 +8,7 @@ from monsterrandomizer import MonsterBlock, get_ranked_monsters
 from itemrandomizer import ItemBlock, reset_equippable, get_ranked_items
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
+from shoprandomizer import ShopBlock
 
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore", "jump", "mimic", "xmagic", "summon"]
 # note: x-magic targets random party member
@@ -161,6 +162,31 @@ class CharacterBlock:
         f = open(filename, 'r+b')
         f.seek(self.address + equip_offsets[equiptype])
         f.write(chr(equipid))
+        f.close()
+
+    def mutate_stats(self, filename):
+        f = open(filename, 'r+b')
+        def mutation(value):
+            value = value / 2
+            value += random.randint(0, value) + random.randint(0, value)
+            while random.randint(1, 10) == 10:
+                value = value / 2
+                value += random.randint(0, value) + random.randint(0, value)
+            value = max(1, min(value, 0xFE))
+            return value
+
+        f.seek(self.address)
+        hpmp = map(ord, f.read(2))
+        hpmp = map(lambda v: mutation(v), hpmp)
+        f.seek(self.address)
+        f.write("".join(map(chr, hpmp)))
+
+        f.seek(self.address + 6)
+        stats = map(ord, f.read(9))
+        stats = map(lambda v: mutation(v), stats)
+        f.seek(self.address + 6)
+        f.write("".join(map(chr, stats)))
+
         f.close()
 
     def set_id(self, i):
@@ -527,6 +553,9 @@ if __name__ == "__main__":
         c.write_default_equipment(outfile, weakest_helm, "helm")
         c.write_default_equipment(outfile, weakest_body_armor, "armor")
 
+    for c in characters:
+        c.mutate_stats(outfile)
+
     chests = chests_from_table("tables/chestcodes.txt")
     for c in chests:
         c.read_data(sourcefile)
@@ -548,3 +577,11 @@ if __name__ == "__main__":
 
     randomize_colosseum(outfile, 0x1fb600)
     randomize_slots(outfile, 0x24E4A)
+
+    for i in xrange(0x80):
+        pointer = 0x47AC0 + (9*i)
+        s = ShopBlock(pointer)
+        s.read_data(sourcefile)
+        s.mutate_misc()
+        s.mutate_items(outfile)
+        s.write_data(outfile)

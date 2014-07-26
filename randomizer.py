@@ -10,12 +10,13 @@ from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 
-NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore", "jump", "mimic", "xmagic", "summon"]
+NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
+                 "jump", "mimic", "xmagic", "summon", "morph", "revert"]
 # note: x-magic targets random party member
 # replacing lore screws up enemy skills
 # replacing jump makes the character never come back down
 # replacing mimic screws up enemy skills too
-ALWAYS_REPLACE = ["leap", "possess", "revert", "health", "shock"]
+ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
 
 
 class Substitution(object):
@@ -514,7 +515,7 @@ if __name__ == "__main__":
         unused_commands = set(commands.values())
         invalid_commands = set([c for c in commands.values() if c.name in
                                 ["fight", "item", "magic", "xmagic",
-                                 "def", "row", "summon"]])
+                                 "def", "row", "summon", "revert"]])
         unused_commands = list(unused_commands - invalid_commands)
         return unused_commands
 

@@ -187,6 +187,19 @@ class ItemBlock:
         self.features['breakeffect'] = spell.spellid
         if not self.is_weapon or random.randint(1, 2) == 2:
             self.itemtype = self.itemtype | 0x20
+
+        # flag to break when used as an item
+        if random.randint(1, 20) == 20:
+            self.features['breakeffect'] |= 0x80
+        else:
+            self.features['breakeffect'] &= 0x7F
+
+        # flag to set chance to proc a spell
+        if random.randint(1, 2) == 2:
+            self.features['breakeffect'] |= 0x40
+        else:
+            self.features['breakeffect'] &= 0xcF
+
         self.features['targeting'] = spell.targeting & 0xef
         #print self.name, spell.name
 

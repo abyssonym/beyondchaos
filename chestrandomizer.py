@@ -18,26 +18,28 @@ class ChestBlock:
         f.seek(self.pointer+2)
         self.misc = ord(f.read(1))
         self.contenttype = ord(f.read(1))
-        self.empty, self.treasure, self.gold, self.monster = \
-            False, False, False, False
-
-        if self.contenttype == 0x8:
-            self.empty = True
-        elif self.contenttype in [0x40, 0x41]:
-            self.treasure = True
-        elif self.contenttype == 0x80:
-            self.gold = True
-        elif self.contenttype == 0x20:
-            self.monster = True
-        else:
-            raise Exception("%x" % self.contenttype)
-
         self.contents = ord(f.read(1))
         f.close()
 
         if items is None:
             items = get_ranked_items(filename)
             items = [i.itemid for i in items]
+
+    @property
+    def empty(self):
+        return self.contenttype == 0x8
+
+    @property
+    def treasure(self):
+        return self.contenttype in [0x40, 0x41]
+
+    @property
+    def gold(self):
+        return self.contenttype == 0x80
+
+    @property
+    def monster(self):
+        return self.contenttype == 0x20
 
     def write_data(self, filename):
         f = open(filename, 'r+b')

@@ -394,6 +394,9 @@ class ItemBlock:
             if self.features['special1'] & 0x88:
                 bl += 100
 
+            if self.features['special1'] & 0x08:
+                bl += 400
+
             if self.features['special2'] & 0x31:
                 bl += 200
 

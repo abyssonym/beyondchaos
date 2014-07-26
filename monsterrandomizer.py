@@ -207,7 +207,7 @@ class MonsterBlock:
             if new_statuses[byte] & bit:
                 continue
 
-            new_statuses[byte] = new_statuses[byte] | bit
+            new_statuses[byte] = new_statuses[byte] ^ bit
             if byte <= 2 and random.randint(1, 10) > 3:
                 new_immunities[byte] = new_immunities[byte] | bit
             stacount += -1

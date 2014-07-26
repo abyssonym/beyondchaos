@@ -156,7 +156,11 @@ class MonsterBlock:
                 boosted = (self.stats[stat] + boosted) / 2.0
             self.stats[stat] = int(boosted)
 
-        self.stats['hp'] = level_boost(self.stats['hp'], limit=0xFEFE)
+        self.stats['hp'] = level_boost(self.stats['hp'], limit=0x10000)
+        if self.stats['hp'] == 0x10000:
+            self.statuses[3] |= 0x04  # life3
+            self.stats['hp'] = 0xFEFE
+
         self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFEFE)
 
         def fuddle(value, limit=0xFEFE):

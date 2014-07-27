@@ -450,7 +450,7 @@ def reset_equippable(items):
     for item in items:
         if item.is_weapon:
             equippable = item.equippable
-            item.equippable = 0x00
+            item.equippable &= IMP_MASK
             for i in range(NUM_CHARS):
                 if equippable & (1 << i):
                     item.equippable |= (1 << new_weaps[i])

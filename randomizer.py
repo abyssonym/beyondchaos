@@ -594,6 +594,8 @@ def manage_equipment(items, characters):
 
         equippable_items = filter(lambda i: i.equippable & (1 << c.id), items)
         equippable_items = filter(lambda i: not i.has_disabling_status, equippable_items)
+        if random.randint(1, 4) < 4:
+            equippable_items = filter(lambda i: not i.imp_only, equippable_items)
         equippable_dict = {"weapon": lambda i: i.is_weapon,
                            "shield": lambda i: i.is_shield,
                            "helm": lambda i: i.is_helm,

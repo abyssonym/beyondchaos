@@ -10,12 +10,12 @@ from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 
+
+VERSION = "1"
+
+
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
                  "jump", "mimic", "xmagic", "summon", "morph", "revert"]
-# note: x-magic targets random party member
-# replacing lore screws up enemy skills
-# replacing jump makes the character never come back down
-# replacing mimic screws up enemy skills too
 ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
 
 
@@ -338,16 +338,8 @@ def randomize_slots(filename, pointer):
         f.write(chr(value))
     f.close()
 
-if __name__ == "__main__":
-    seed = time()
-    random.seed(seed)
-    print seed
 
-    sourcefile = argv[1]
-    outfile = sourcefile.rsplit('.', 1)
-    outfile = '.'.join([outfile[0], "rand", outfile[1]])
-    system("cp %s %s" % (sourcefile, outfile))
-
+def manage_commands(commands, characters):
     alrs = AutoLearnRageSub(require_gau=False)
     alrs.set_location(0x23b73)
     alrs.write(outfile)
@@ -356,10 +348,10 @@ if __name__ == "__main__":
     args.set_location(0xcfe1a)
     args.write(outfile)
 
-    autosprint = Substitution()
-    autosprint.set_location(0x4E2D)
-    autosprint.bytestring = [0x80, 0x00]
-    autosprint.write(outfile)
+    recruit_gau_sub = Substitution()
+    recruit_gau_sub.bytestring = [0x89, 0xFF]
+    recruit_gau_sub.set_location(0x24856)
+    recruit_gau_sub.write(outfile)
 
     learn_lore_sub = Substitution()
     learn_lore_sub.bytestring = [0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00,
@@ -382,59 +374,9 @@ if __name__ == "__main__":
     learn_blitz_sub.set_location(0x261E5)
     learn_blitz_sub.write(outfile)
 
-    #NOTE: Break's Gau's rages that cast magic
-    #m_m_magic_sub = Substitution()
-    #m_m_magic_sub.bytestring = [0x80, 0x19]
-    #m_m_magic_sub.set_location(0x2174A)
-    #m_m_magic_sub.write(outfile)
-
-    recruit_gau_sub = Substitution()
-    recruit_gau_sub.bytestring = [0x89, 0xFF]
-    recruit_gau_sub.set_location(0x24856)
-    recruit_gau_sub.write(outfile)
-
     eems = EnableEsperMagicSub()
     eems.set_location(0x3F091)
     eems.write(outfile)
-
-    flashback_skip_sub = Substitution()
-    flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
-    flashback_skip_sub.set_location(0xAC582)
-    flashback_skip_sub.write(outfile)
-
-    boat_skip_sub = Substitution()
-    boat_skip_sub.bytestring = (
-        [0x97, 0x5C] +
-        [0xD0, 0x87] +
-        [0x3D, 0x03, 0x3F, 0x03, 0x01] +
-        [0x6B, 0x00, 0x04, 0xE8, 0x96, 0x40, 0xFF]
-        )
-    boat_skip_sub.set_location(0xC615A)
-    boat_skip_sub.write(outfile)
-
-    leo_skip_sub = Substitution()
-    leo_skip_sub.bytestring = (
-        [0x97, 0x5C] +
-        [0xDB, 0xF7, 0xD5, 0xF2, 0xD5, 0xF3, 0xD5, 0xF4, 0xD5, 0xF5, 0xD5, 0xF9, 0xD5, 0xFB, 0xD5, 0xF6] +
-        [0x77, 0x02, 0x77, 0x03, 0x77, 0x04, 0x77, 0x05, 0x77, 0x09, 0x77, 0x0B, 0x77, 0x06] +
-        [0xD4, 0xF2, 0xD4, 0xF4, 0xD4, 0xF5, 0xD4, 0xF9, 0xD4, 0xFB, 0xD4, 0xF6] +
-        [0xB2, 0x35, 0x09, 0x02] +
-        [0xD3, 0xCC, 0xD0, 0x9D, 0xD2, 0xBA, 0xDA, 0x5A, 0xDA, 0xD9, 0xDB, 0x20, 0xDA, 0x68] +
-        #[0xB2, 0x28, 0x69, 0x02] +
-        #[0xB2, 0xBD, 0xCF, 0x00] +
-        #[0xB2, 0x37, 0x6a, 0x01] +
-        #[0xB2, 0x95, 0xCB, 0x00] +
-        # required flags
-        [0xD2, 0xB3, 0xD2, 0xB4] +
-        #[0xD0, 0x7A, 0xD1, 0x9D] +
-        [0xD0, 0x7A] +
-        [0xD2, 0x76, 0xD2, 0x6F] +
-        #[0xD0, 0x9E] +
-        [0x6B, 0x00, 0x04, 0xF9, 0x80, 0x00] +
-        [0xC7, 0xF9, 0x7F, 0xFF]
-        )
-    leo_skip_sub.set_location(0xBF2B5)
-    leo_skip_sub.write(outfile)
 
     # Prevent Runic, SwdTech, and Capture from being disabled/altered
     protect_battle_commands_sub = Substitution()
@@ -443,94 +385,10 @@ if __name__ == "__main__":
     protect_battle_commands_sub.set_location(0x252E9)
     protect_battle_commands_sub.write(outfile)
 
-    vanish_doom_sub = Substitution()
-    vanish_doom_sub.bytestring = [
-        0xAD, 0xA2, 0x11, 0x89, 0x02, 0xF0, 0x07, 0xB9, 0xA1, 0x3A, 0x89, 0x04,
-        0xD0, 0x6E, 0xA5, 0xB3, 0x10, 0x1C, 0xB9, 0xE4, 0x3E, 0x89, 0x10, 0xF0,
-        0x15, 0xAD, 0xA4, 0x11, 0x0A, 0x30, 0x07, 0xAD, 0xA2, 0x11, 0x4A, 0x4C,
-        0xB3, 0x22, 0xB9, 0xFC, 0x3D, 0x09, 0x10, 0x99, 0xFC, 0x3D, 0xAD, 0xA3,
-        0x11, 0x89, 0x02, 0xD0, 0x0F, 0xB9, 0xF8, 0x3E, 0x10, 0x0A, 0xC2, 0x20,
-        0xB9, 0x18, 0x30, 0x04, 0xA6, 0x4C, 0xE5, 0x22
-        ]
-    vanish_doom_sub.set_location(0x22215)
-    vanish_doom_sub.write(outfile)
-
-    evade_mblock_sub = Substitution()
-    evade_mblock_sub.bytestring = [
-        0xF0, 0x17, 0x20, 0x5A, 0x4B, 0xC9, 0x40, 0xB0, 0x9C, 0xB9, 0xFD, 0x3D,
-        0x09, 0x04, 0x99, 0xFD, 0x3D, 0x80, 0x92, 0xB9, 0x55, 0x3B, 0x48,
-        0x80, 0x43, 0xB9, 0x54, 0x3B, 0x48, 0xEA
-        ]
-    evade_mblock_sub.set_location(0x2232C)
-    evade_mblock_sub.write(outfile)
-
-    commands = commands_from_table('tables/commandcodes.txt')
-    commands = dict([(c.name, c) for c in commands])
-
-    freespaces = []
-    freespaces.append(FreeBlock(0x2A65A, 0x2A800))
-    freespaces.append(FreeBlock(0x2FAAC, 0x2FC6D))
-
-    used = []
-    all_spells = [SpellBlock(i, sourcefile) for i in xrange(0xFF)]
-    for c in commands.values():
-        if c.name in NEVER_REPLACE:
-            continue
-
-        if c.name not in ALWAYS_REPLACE:
-            if random.randint(1, 100) > 75:
-                continue
-            if c.target == "self" and random.randint(1, 100) > 50:
-                continue
-
-        POWER_LEVEL = 100
-        MULLIGAN_LEVEL = 15
-        while True:
-            power = POWER_LEVEL / 2
-            while True:
-                power += random.randint(0, POWER_LEVEL)
-                if random.choice([True, False]):
-                    break
-
-            def spell_is_valid(s):
-                if not s.valid:
-                    return False
-                if s.spellid in used:
-                    return False
-                if not c.restriction(s):
-                    return False
-                return s.rank() <= power
-
-            valid_spells = filter(spell_is_valid, all_spells)
-            if not valid_spells:
-                continue
-
-            sb = random.choice(valid_spells)
-            used.append(sb.spellid)
-            c.set_retarget(sb, outfile)
-            s = SpellSub(spellid=sb.spellid)
-            #print power, sb.rank(), sb.name
-            break
-
-        myfs = None
-        for fs in freespaces:
-            if fs.size > s.size:
-                myfs = fs
-                break
-
-        freespaces.remove(myfs)
-        s.set_location(myfs.start)
-        s.write(outfile)
-        c.setpointer(s.location, outfile)
-        fss = myfs.unfree(s.location, s.size)
-        freespaces.extend(fss)
-
-        c.newname(sb.name, outfile)
-        c.unsetmenu(outfile)
-
-    characters = characters_from_table('tables/charcodes.txt')
-    valid = set(list(commands))
-    valid = list(valid - set(["row", "def"]))
+    #morph_charge_sub = Substitution()
+    #morph_charge_sub.bytestring = [0xEA] * 2
+    #morph_charge_sub.set_location(0x25E34)
+    #morph_charge_sub.write(outfile)
 
     def populate_unused():
         unused_commands = set(commands.values())
@@ -575,6 +433,142 @@ if __name__ == "__main__":
         c.write_battle_commands(outfile)
         #print
 
+
+def manage_commands_new(commands, characters):
+    # note: x-magic targets random party member
+    # replacing lore screws up enemy skills
+    # replacing jump makes the character never come back down
+    # replacing mimic screws up enemy skills too
+    freespaces = []
+    freespaces.append(FreeBlock(0x2A65A, 0x2A800))
+    freespaces.append(FreeBlock(0x2FAAC, 0x2FC6D))
+
+    valid = set(list(commands))
+    valid = list(valid - set(["row", "def"]))
+    used = []
+    all_spells = [SpellBlock(i, sourcefile) for i in xrange(0xFF)]
+    for c in commands.values():
+        if c.name in NEVER_REPLACE:
+            continue
+
+        if c.name not in ALWAYS_REPLACE:
+            if random.randint(1, 100) > 75:
+                continue
+            if c.target == "self" and random.randint(1, 100) > 50:
+                continue
+
+        POWER_LEVEL = 100
+        while True:
+            power = POWER_LEVEL / 2
+            while True:
+                power += random.randint(0, POWER_LEVEL)
+                if random.choice([True, False]):
+                    break
+
+            def spell_is_valid(s):
+                if not s.valid:
+                    return False
+                if s.spellid in used:
+                    return False
+                if not c.restriction(s):
+                    return False
+                return s.rank() <= power
+
+            valid_spells = filter(spell_is_valid, all_spells)
+            if not valid_spells:
+                continue
+
+            sb = random.choice(valid_spells)
+            used.append(sb.spellid)
+            c.set_retarget(sb, outfile)
+            s = SpellSub(spellid=sb.spellid)
+            #print power, sb.rank(), sb.name
+            break
+
+        myfs = None
+        for fs in freespaces:
+            if fs.size > s.size:
+                myfs = fs
+                break
+
+        freespaces.remove(myfs)
+        s.set_location(myfs.start)
+        s.write(outfile)
+        c.setpointer(s.location, outfile)
+        fss = myfs.unfree(s.location, s.size)
+        freespaces.extend(fss)
+
+        c.newname(sb.name, outfile)
+        c.unsetmenu(outfile)
+
+
+def manage_sprint():
+    autosprint = Substitution()
+    autosprint.set_location(0x4E2D)
+    autosprint.bytestring = [0x80, 0x00]
+    autosprint.write(outfile)
+
+
+def manage_skips():
+    flashback_skip_sub = Substitution()
+    flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
+    flashback_skip_sub.set_location(0xAC582)
+    flashback_skip_sub.write(outfile)
+
+    boat_skip_sub = Substitution()
+    boat_skip_sub.bytestring = (
+        [0x97, 0x5C] +
+        [0xD0, 0x87] +
+        [0x3D, 0x03, 0x3F, 0x03, 0x01] +
+        [0x6B, 0x00, 0x04, 0xE8, 0x96, 0x40, 0xFF]
+        )
+    boat_skip_sub.set_location(0xC615A)
+    boat_skip_sub.write(outfile)
+
+    leo_skip_sub = Substitution()
+    leo_skip_sub.bytestring = (
+        [0x97, 0x5C] +
+        [0xDB, 0xF7, 0xD5, 0xF2, 0xD5, 0xF3, 0xD5, 0xF4, 0xD5, 0xF5, 0xD5, 0xF9, 0xD5, 0xFB, 0xD5, 0xF6] +
+        [0x77, 0x02, 0x77, 0x03, 0x77, 0x04, 0x77, 0x05, 0x77, 0x09, 0x77, 0x0B, 0x77, 0x06] +
+        [0xD4, 0xF2, 0xD4, 0xF4, 0xD4, 0xF5, 0xD4, 0xF9, 0xD4, 0xFB, 0xD4, 0xF6] +
+        [0xB2, 0x35, 0x09, 0x02] +
+        [0xD3, 0xCC, 0xD0, 0x9D, 0xD2, 0xBA, 0xDA, 0x5A, 0xDA, 0xD9, 0xDB, 0x20, 0xDA, 0x68] +
+        [0xD2, 0xB3, 0xD2, 0xB4] +
+        [0xD0, 0x7A] +
+        [0xD2, 0x76, 0xD2, 0x6F] +
+        [0x6B, 0x00, 0x04, 0xF9, 0x80, 0x00] +
+        [0xC7, 0xF9, 0x7F, 0xFF]
+        )
+    leo_skip_sub.set_location(0xBF2B5)
+    leo_skip_sub.write(outfile)
+
+
+def manage_balance():
+    vanish_doom_sub = Substitution()
+    vanish_doom_sub.bytestring = [
+        0xAD, 0xA2, 0x11, 0x89, 0x02, 0xF0, 0x07, 0xB9, 0xA1, 0x3A, 0x89, 0x04,
+        0xD0, 0x6E, 0xA5, 0xB3, 0x10, 0x1C, 0xB9, 0xE4, 0x3E, 0x89, 0x10, 0xF0,
+        0x15, 0xAD, 0xA4, 0x11, 0x0A, 0x30, 0x07, 0xAD, 0xA2, 0x11, 0x4A, 0x4C,
+        0xB3, 0x22, 0xB9, 0xFC, 0x3D, 0x09, 0x10, 0x99, 0xFC, 0x3D, 0xAD, 0xA3,
+        0x11, 0x89, 0x02, 0xD0, 0x0F, 0xB9, 0xF8, 0x3E, 0x10, 0x0A, 0xC2, 0x20,
+        0xB9, 0x18, 0x30, 0x04, 0xA6, 0x4C, 0xE5, 0x22
+        ]
+    vanish_doom_sub.set_location(0x22215)
+    vanish_doom_sub.write(outfile)
+
+    evade_mblock_sub = Substitution()
+    evade_mblock_sub.bytestring = [
+        0xF0, 0x17, 0x20, 0x5A, 0x4B, 0xC9, 0x40, 0xB0, 0x9C, 0xB9, 0xFD, 0x3D,
+        0x09, 0x04, 0x99, 0xFD, 0x3D, 0x80, 0x92, 0xB9, 0x55, 0x3B, 0x48,
+        0x80, 0x43, 0xB9, 0x54, 0x3B, 0x48, 0xEA
+        ]
+    evade_mblock_sub.set_location(0x2232C)
+    evade_mblock_sub.write(outfile)
+
+    randomize_slots(outfile, 0x24E4A)
+
+
+def manage_monsters():
     monsters = monsters_from_table('tables/enemycodes.txt')
     for m in monsters:
         m.read_stats(sourcefile)
@@ -582,13 +576,16 @@ if __name__ == "__main__":
         m.mutate()
         m.write_stats(outfile)
 
-    items = get_ranked_items(sourcefile)
-    reset_equippable(items)
+
+def manage_items(items):
     for i in items:
         i.mutate()
         i.unrestrict()
         i.write_stats(outfile)
 
+
+def manage_equipment(items, characters):
+    reset_equippable(items)
     for c in characters:
         if c.id > 13:
             continue
@@ -612,6 +609,21 @@ if __name__ == "__main__":
     for c in characters:
         c.mutate_stats(outfile)
 
+    for i in items:
+        i.write_stats(outfile)
+
+
+def manage_espers():
+    espers = espers_from_table("tables/espercodes.txt")
+    random.shuffle(espers)
+    for e in espers:
+        e.read_data(sourcefile)
+        e.generate_spells()
+        e.generate_bonus()
+        e.write_data(outfile)
+
+
+def manage_treasure():
     chests = chests_from_table("tables/chestcodes.txt")
     for c in chests:
         c.read_data(sourcefile)
@@ -622,18 +634,10 @@ if __name__ == "__main__":
 
     for c in chests:
         c.write_data(outfile)
-
-    espers = espers_from_table("tables/espercodes.txt")
-    random.shuffle(espers)
-    for e in espers:
-        e.read_data(sourcefile)
-        e.generate_spells()
-        e.generate_bonus()
-        e.write_data(outfile)
-
     randomize_colosseum(outfile, 0x1fb600)
-    randomize_slots(outfile, 0x24E4A)
 
+
+def manage_shops():
     for i in xrange(0x80):
         pointer = 0x47AC0 + (9*i)
         s = ShopBlock(pointer)
@@ -641,3 +645,66 @@ if __name__ == "__main__":
         s.mutate_misc()
         s.mutate_items(outfile)
         s.write_data(outfile)
+
+
+if __name__ == "__main__":
+    sourcefile = argv[1]
+
+    version, flags, seed = tuple(argv[2].split(':'))
+    if not seed.strip():
+        seed = str(int(time()))
+    else:
+        random.seed(seed)
+    print seed
+
+    flags = flags.lower()
+    if not flags.strip():
+        flags = 'abcdefghijklmnopqrstuvwxyz'
+
+    if version != VERSION:
+        print ("WARNING! Version mismatch! "
+               "This seed will not produce the expected result!")
+
+    outfile = sourcefile.rsplit('.', 1)
+    outfile = '.'.join([outfile[0], "rand", outfile[1]])
+    system("cp %s %s" % (sourcefile, outfile))
+
+    commands = commands_from_table('tables/commandcodes.txt')
+    commands = dict([(c.name, c) for c in commands])
+
+    characters = characters_from_table('tables/charcodes.txt')
+
+    if 'c' in flags:
+        manage_commands(commands, characters)
+
+    if 'w' in flags:
+        manage_commands_new(commands, characters)
+
+    if 'z' in flags:
+        manage_sprint()
+
+    if 's' in flags:
+        manage_skips()
+
+    if 'b' in flags:
+        manage_balance()
+
+    if 'm' in flags:
+        manage_monsters()
+
+    items = get_ranked_items(sourcefile)
+    if 'i' in flags:
+        manage_items(items)
+
+    if 'q' in flags:
+        manage_equipment(items, characters)
+
+    if 'e' in flags:
+        manage_espers()
+
+    if 't' in flags:
+        manage_treasure()
+
+    if 'p' in flags:
+        # do this after items
+        manage_shops()

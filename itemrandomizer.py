@@ -135,6 +135,10 @@ class ItemBlock:
         return self.equippable & 0x4000
 
     @property
+    def prevent_encounters(self):
+        return bool(self.features['fieldeffect'] & 0x02)
+
+    @property
     def evade(self):
         evademblock = self.features['evademblock']
         evade = evademblock & 0x0f
@@ -443,7 +447,23 @@ IMP_MASK = 0x4000
 
 
 def reset_equippable(items):
-    items = filter(lambda i: not i.is_consumable and not i.is_tool, items)
+    prevents = filter(lambda i: i.prevent_encounters, items)
+    for item in prevents:
+        if not CHAR_MASK & item.equippable:
+            continue
+
+        while True:
+            test = 1 << random.randint(0, NUM_CHARS-1)
+            if item.itemid == 0xDE:
+                item.equippable = test
+                break
+
+            if test & item.equippable:
+                test |= IMP_MASK
+                item.equippable &= test
+                break
+
+    items = filter(lambda i: not (i.is_consumable or i.is_tool or i.prevent_encounters), items)
     new_weaps = range(NUM_CHARS)
     random.shuffle(new_weaps)
     new_weaps = dict(zip(range(NUM_CHARS), new_weaps))
@@ -455,7 +475,13 @@ def reset_equippable(items):
                 if equippable & (1 << i):
                     item.equippable |= (1 << new_weaps[i])
         elif item.is_relic:
-            item.equippable = CHAR_MASK
+            if random.randint(1, 10) == 10:
+                if random.randint(1, 5) == 5:
+                    item.equippable = 1 << (random.randint(0, NUM_CHARS-1))
+                else:
+                    item.equippable = random.randint(1, CHAR_MASK)
+            else:
+                item.equippable = CHAR_MASK
 
     charequips = []
     valid_items = filter(lambda i: (not i.is_weapon and not i.is_relic

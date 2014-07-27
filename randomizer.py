@@ -705,6 +705,7 @@ if __name__ == "__main__":
         manage_items(items)
 
     if 'q' in flags:
+        # do this after items
         manage_equipment(items, characters)
 
     if 'e' in flags:

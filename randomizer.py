@@ -168,6 +168,7 @@ class CharacterBlock:
 
     def mutate_stats(self, filename):
         f = open(filename, 'r+b')
+
         def mutation(value):
             value = value / 2
             value += random.randint(0, value) + random.randint(0, value)
@@ -592,20 +593,18 @@ def manage_equipment(items, characters):
             continue
 
         equippable_items = filter(lambda i: i.equippable & (1 << c.id), items)
-        equippable_weapons = [i for i in equippable_items if i.is_weapon]
-        equippable_shields = [i for i in equippable_items if i.is_shield]
-        equippable_helms = [i for i in equippable_items if i.is_helm]
-        equippable_body_armors = [i for i in equippable_items if i.is_body_armor]
+        equippable_items = filter(lambda i: not i.has_disabling_status, equippable_items)
+        equippable_dict = {"weapon": lambda i: i.is_weapon,
+                           "shield": lambda i: i.is_shield,
+                           "helm": lambda i: i.is_helm,
+                           "armor": lambda i: i.is_body_armor}
 
-        weakest_weapon = min(equippable_weapons, key=lambda i: i.rank()).itemid if equippable_weapons else 0xFF
-        weakest_shield = min(equippable_shields, key=lambda i: i.rank()).itemid if equippable_shields else 0xFF
-        weakest_helm = min(equippable_helms, key=lambda i: i.rank()).itemid if equippable_helms else 0xFF
-        weakest_body_armor = min(equippable_body_armors, key=lambda i: i.rank()).itemid if equippable_body_armors else 0xFF
-
-        c.write_default_equipment(outfile, weakest_weapon, "weapon")
-        c.write_default_equipment(outfile, weakest_shield, "shield")
-        c.write_default_equipment(outfile, weakest_helm, "helm")
-        c.write_default_equipment(outfile, weakest_body_armor, "armor")
+        for equiptype, func in equippable_dict.items():
+            equippable = filter(func, equippable_items)
+            weakest = 0xFF
+            if equippable:
+                weakest = min(equippable, key=lambda i: i.rank()).itemid
+            c.write_default_equipment(outfile, weakest, equiptype)
 
     for c in characters:
         c.mutate_stats(outfile)
@@ -656,7 +655,7 @@ if __name__ == "__main__":
     if not seed:
         seed = str(int(time()))
     else:
-        random.seed(seed)
+        random.seed(str(int(seed)))
     print "Using seed: %s" % seed
 
     flags = flags.lower()

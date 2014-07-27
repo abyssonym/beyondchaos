@@ -124,6 +124,13 @@ class ItemBlock:
             self.features['otherproperties'] |= 0x82
 
     @property
+    def has_disabling_status(self):
+        #self.features['statusacquire2'] & 0xA0
+        if (self.features['statusacquire3'] & 0x10):
+            return True
+        return False
+
+    @property
     def imp_only(self):
         return self.equippable & 0x4000
 

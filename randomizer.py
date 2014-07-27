@@ -1,7 +1,7 @@
 import random
 from time import time
 from sys import argv
-from os import system
+from shutil import copyfile
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE)
 from skillrandomizer import SpellBlock, CommandBlock
@@ -668,8 +668,8 @@ if __name__ == "__main__":
                "This seed will not produce the expected result!")
 
     outfile = sourcefile.rsplit('.', 1)
-    outfile = '.'.join([outfile[0], "rand", outfile[1]])
-    system("cp %s %s" % (sourcefile, outfile))
+    outfile = '.'.join([outfile[0], seed, outfile[1]])
+    copyfile(sourcefile, outfile)
 
     commands = commands_from_table(COMMAND_TABLE)
     commands = dict([(c.name, c) for c in commands])

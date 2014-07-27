@@ -1,7 +1,7 @@
-from utils import hex2int, int2bytes
+from utils import hex2int, int2bytes, TEXT_TABLE, SPELL_TABLE, SPELLBANS_TABLE
 
 texttable = {}
-f = open("tables/text.txt")
+f = open(TEXT_TABLE)
 for line in f:
     line = line.strip()
     char, value = tuple(line.split())
@@ -9,7 +9,7 @@ for line in f:
 f.close()
 
 spellnames = {}
-f = open("tables/spellcodes.txt")
+f = open(SPELL_TABLE)
 for line in f:
     line = line.strip()
     while '  ' in line:
@@ -19,7 +19,7 @@ for line in f:
 f.close()
 
 spellbans = {}
-f = open("tables/spellbans.txt")
+f = open(SPELLBANS_TABLE)
 for line in f:
     line = line.strip()
     if line[0] == '#':

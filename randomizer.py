@@ -2,7 +2,8 @@ import random
 from time import time
 from sys import argv
 from os import system
-from utils import hex2int, int2bytes
+from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
+                   CHAR_TABLE, COMMAND_TABLE)
 from skillrandomizer import SpellBlock, CommandBlock
 from monsterrandomizer import MonsterBlock, get_ranked_monsters
 from itemrandomizer import ItemBlock, reset_equippable, get_ranked_items
@@ -569,7 +570,7 @@ def manage_balance():
 
 
 def manage_monsters():
-    monsters = monsters_from_table('tables/enemycodes.txt')
+    monsters = monsters_from_table(ENEMY_TABLE)
     for m in monsters:
         m.read_stats(sourcefile)
         m.screw_vargas()
@@ -614,7 +615,7 @@ def manage_equipment(items, characters):
 
 
 def manage_espers():
-    espers = espers_from_table("tables/espercodes.txt")
+    espers = espers_from_table(ESPER_TABLE)
     random.shuffle(espers)
     for e in espers:
         e.read_data(sourcefile)
@@ -624,7 +625,7 @@ def manage_espers():
 
 
 def manage_treasure():
-    chests = chests_from_table("tables/chestcodes.txt")
+    chests = chests_from_table(CHEST_TABLE)
     for c in chests:
         c.read_data(sourcefile)
         c.mutate_contents()
@@ -651,11 +652,12 @@ if __name__ == "__main__":
     sourcefile = argv[1]
 
     version, flags, seed = tuple(argv[2].split(':'))
-    if not seed.strip():
+    seed = seed.strip()
+    if not seed:
         seed = str(int(time()))
     else:
         random.seed(seed)
-    print seed
+    print "Using seed: %s" % seed
 
     flags = flags.lower()
     if not flags.strip():
@@ -669,10 +671,10 @@ if __name__ == "__main__":
     outfile = '.'.join([outfile[0], "rand", outfile[1]])
     system("cp %s %s" % (sourcefile, outfile))
 
-    commands = commands_from_table('tables/commandcodes.txt')
+    commands = commands_from_table(COMMAND_TABLE)
     commands = dict([(c.name, c) for c in commands])
 
-    characters = characters_from_table('tables/charcodes.txt')
+    characters = characters_from_table(CHAR_TABLE)
 
     if 'c' in flags:
         manage_commands(commands, characters)

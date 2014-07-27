@@ -1,4 +1,4 @@
-from utils import hex2int, write_multi, read_multi
+from utils import hex2int, write_multi, read_multi, ITEM_TABLE
 from skillrandomizer import SpellBlock
 import random
 # future blocks: chests, morphs, shops
@@ -489,7 +489,7 @@ def reset_equippable(items):
 
 def get_ranked_items(filename):
     from randomizer import items_from_table
-    items = items_from_table('tables/itemcodes.txt')
+    items = items_from_table(ITEM_TABLE)
     for i in items:
         i.read_stats(filename)
 

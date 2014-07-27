@@ -1,4 +1,4 @@
-from utils import hex2int, write_multi, read_multi
+from utils import hex2int, write_multi, read_multi, ENEMY_TABLE
 from skillrandomizer import SpellBlock
 from itemrandomizer import get_ranked_items
 import random
@@ -347,7 +347,7 @@ class MonsterBlock:
 
 def get_ranked_monsters(filename, bosses=True):
     from randomizer import monsters_from_table
-    monsters = monsters_from_table('tables/enemycodes.txt')
+    monsters = monsters_from_table(ENEMY_TABLE)
     for m in monsters:
         m.read_stats(filename)
 

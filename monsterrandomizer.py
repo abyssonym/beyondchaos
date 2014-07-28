@@ -200,8 +200,8 @@ class MonsterBlock:
         while stacount > 0:
             byte = random.randint(0, 3)
             bit = 1 << random.randint(0, 7)
-            if byte == 0 and bit in [0x02, 0x40, 0x80]:
-                # zombie, dead, petrify
+            if byte == 0 and bit in [0x02, 0x08, 0x40, 0x80]:
+                # zombie, magitek, petrify, dead
                 continue
 
             if new_statuses[byte] & bit:

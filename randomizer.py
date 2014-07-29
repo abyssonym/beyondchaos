@@ -13,6 +13,7 @@ from shoprandomizer import ShopBlock
 
 
 VERSION = "1"
+VERBOSE = False
 
 
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
@@ -404,7 +405,6 @@ def manage_commands(commands, characters):
     xmagic_taken = False
     random.shuffle(characters)
     for c in characters:
-        #print c.name,
         if c.id <= 11:
             using = []
             while not using:
@@ -424,7 +424,6 @@ def manage_commands(commands, characters):
                 if com not in using:
                     using.append(com)
             for i, command in enumerate(reversed(using)):
-                #print command.name,
                 c.set_battle_command(i+1, command=command)
             if c.id == 11:
                 #Fixing Gau
@@ -433,7 +432,6 @@ def manage_commands(commands, characters):
             c.set_battle_command(1, command_id=0xFF)
             c.set_battle_command(2, command_id=0xFF)
         c.write_battle_commands(outfile)
-        #print
 
 
 def manage_commands_new(commands, characters):
@@ -484,7 +482,6 @@ def manage_commands_new(commands, characters):
             used.append(sb.spellid)
             c.set_retarget(sb, outfile)
             s = SpellSub(spellid=sb.spellid)
-            #print power, sb.rank(), sb.name
             break
 
         myfs = None
@@ -682,11 +679,24 @@ if __name__ == "__main__":
 
     characters = characters_from_table(CHAR_TABLE)
 
+    if 'v' in flags:
+        VERBOSE = True
+
     if 'c' in flags:
         manage_commands(commands, characters)
 
     if 'w' in flags:
         manage_commands_new(commands, characters)
+
+    if VERBOSE:
+        for c in sorted(characters, key=lambda c: c.id):
+            print "%s:" % c.name,
+            ms = [m for m in c.battle_commands if m]
+            ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
+            for m in ms:
+                if m:
+                    print m[0].name.lower(),
+            print
 
     if 'z' in flags:
         manage_sprint()

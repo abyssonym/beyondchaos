@@ -5,7 +5,7 @@ from shutil import copyfile
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE)
 from skillrandomizer import SpellBlock, CommandBlock
-from monsterrandomizer import MonsterBlock, get_ranked_monsters
+from monsterrandomizer import MonsterBlock, MonsterGraphicBlock, get_ranked_monsters
 from itemrandomizer import ItemBlock, reset_equippable, get_ranked_items
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
@@ -388,16 +388,29 @@ def manage_commands(commands, characters):
     protect_battle_commands_sub.set_location(0x252E9)
     protect_battle_commands_sub.write(outfile)
 
+    enable_morph_sub = Substitution()
+    enable_morph_sub.bytestring = [0xEA] * 2
+    enable_morph_sub.set_location(0x25410)
+    enable_morph_sub.write(outfile)
+
+    enable_mpoint_sub = Substitution()
+    enable_mpoint_sub.bytestring = [0xEA] * 2
+    enable_mpoint_sub.set_location(0x25E38)
+    enable_mpoint_sub.write(outfile)
+
     #morph_charge_sub = Substitution()
     #morph_charge_sub.bytestring = [0xEA] * 2
     #morph_charge_sub.set_location(0x25E34)
     #morph_charge_sub.write(outfile)
 
+    invalid_commands = ["fight", "item", "magic", "xmagic",
+                        "def", "row", "summon", "revert"]
+    if random.randint(1, 5) != 5:
+        invalid_commands.append("magitek")
+    invalid_commands = set([c for c in commands.values() if c.name in invalid_commands])
+
     def populate_unused():
         unused_commands = set(commands.values())
-        invalid_commands = set([c for c in commands.values() if c.name in
-                                ["fight", "item", "magic", "xmagic",
-                                 "def", "row", "summon", "revert"]])
         unused_commands = list(unused_commands - invalid_commands)
         return unused_commands
 
@@ -423,6 +436,12 @@ def manage_commands(commands, characters):
                 unused.remove(com)
                 if com not in using:
                     using.append(com)
+                    if com.name == "morph":
+                        invalid_commands.add(com)
+                        morph_char_sub = Substitution()
+                        morph_char_sub.bytestring = [0xC9, c.id]
+                        morph_char_sub.set_location(0x25E32)
+                        morph_char_sub.write(outfile)
             for i, command in enumerate(reversed(using)):
                 c.set_battle_command(i+1, command=command)
             if c.id == 11:
@@ -432,6 +451,8 @@ def manage_commands(commands, characters):
             c.set_battle_command(1, command_id=0xFF)
             c.set_battle_command(2, command_id=0xFF)
         c.write_battle_commands(outfile)
+
+    return commands, characters
 
 
 def manage_commands_new(commands, characters):
@@ -499,6 +520,8 @@ def manage_commands_new(commands, characters):
 
         c.newname(sb.name, outfile)
         c.unsetmenu(outfile)
+
+    return commands, characters
 
 
 def manage_sprint():
@@ -580,12 +603,16 @@ def manage_monsters():
         m.mutate()
         m.write_stats(outfile)
 
+    return monsters
+
 
 def manage_items(items):
     for i in items:
         i.mutate()
         i.unrestrict()
         i.write_stats(outfile)
+
+    return items
 
 
 def manage_equipment(items, characters):
@@ -616,6 +643,8 @@ def manage_equipment(items, characters):
     for i in items:
         i.write_stats(outfile)
 
+    return items, characters
+
 
 def manage_espers():
     espers = espers_from_table(ESPER_TABLE)
@@ -625,6 +654,8 @@ def manage_espers():
         e.generate_spells()
         e.generate_bonus()
         e.write_data(outfile)
+
+    return espers
 
 
 def manage_treasure():
@@ -639,6 +670,8 @@ def manage_treasure():
     for c in chests:
         c.write_data(outfile)
     randomize_colosseum(outfile, 0x1fb600)
+
+    return chests
 
 
 def manage_shops():
@@ -682,7 +715,7 @@ if __name__ == "__main__":
     if 'v' in flags:
         VERBOSE = True
 
-    if 'c' in flags:
+    if 'o' in flags:
         manage_commands(commands, characters)
 
     if 'w' in flags:
@@ -690,13 +723,14 @@ if __name__ == "__main__":
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):
-            print "%s:" % c.name,
             ms = [m for m in c.battle_commands if m]
             ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
-            for m in ms:
-                if m:
-                    print m[0].name.lower(),
-            print
+            if any(ms):
+                print "%s:" % c.name,
+                for m in ms:
+                    if m:
+                        print m[0].name.lower(),
+                print
 
     if 'z' in flags:
         manage_sprint()
@@ -708,7 +742,16 @@ if __name__ == "__main__":
         manage_balance()
 
     if 'm' in flags:
-        manage_monsters()
+        monsters = manage_monsters()
+
+    if 'c' in flags:
+        for j, m in enumerate(monsters):
+            mg = MonsterGraphicBlock(pointer=0x127000 + (5*j), name=m.name)
+            mg.read_data(sourcefile)
+            mg.mutate_palette()
+            mg.write_data(outfile)
+            mg = MonsterGraphicBlock(pointer=0x127000 + (5*j), name=m.name)
+            mg.read_data(outfile)
 
     items = get_ranked_items(sourcefile)
     if 'i' in flags:

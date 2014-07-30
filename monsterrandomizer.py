@@ -1,6 +1,7 @@
 from utils import hex2int, write_multi, read_multi, ENEMY_TABLE
 from skillrandomizer import SpellBlock
 from itemrandomizer import get_ranked_items
+from math import sin, cos, radians
 import random
 
 
@@ -356,3 +357,79 @@ def get_ranked_monsters(filename, bosses=True):
     monsters = sorted(monsters, key=lambda i: i.stats['level'])
 
     return monsters
+
+
+class MonsterGraphicBlock:
+    def __init__(self, pointer, name=None):
+        self.pointer = pointer
+        self.name = name
+
+    def read_data(self, filename):
+        global palettepools
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        self.graphics = read_multi(f, length=2)
+        f.seek(self.pointer+2)
+        self.palette = read_multi(f, length=2, reverse=False)
+        self.palette_index = self.palette & 0x3FF
+        self.palette_pointer = 0x127820 + (self.palette_index * 16)
+        f.seek(self.palette_pointer)
+        self.palette_data = []
+        for i in xrange(16):
+            color = read_multi(f, length=2)
+            blue = (color & 0x7c00) >> 10
+            green = (color & 0x03e0) >> 5
+            red = color & 0x001f
+            self.palette_data.append((red, green, blue))
+        f.close()
+
+    def write_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.palette_pointer)
+        for red, green, blue in self.palette_data:
+            color = 0x00
+            color |= red
+            color |= (green << 5)
+            color |= (blue << 10)
+            write_multi(f, color, length=2)
+        f.close()
+
+    def mutate_palette(self):
+        colorsets = {}
+        palette_dict = dict(enumerate(self.palette_data))
+        for n, (red, green, blue) in palette_dict.items():
+            key = (red >= green, red >= blue, green >= blue)
+            if key not in colorsets:
+                colorsets[key] = []
+            colorsets[key].append(n)
+
+        for key in colorsets:
+            degree = random.randint(-90, 90)
+
+            f = lambda w: w
+            g = lambda w: w
+            h = lambda w: w
+            if random.choice([True, False]):
+                f = lambda (x, y, z): (y, x, z)
+            if random.choice([True, False]):
+                g = lambda (x, y, z): (z, y, x)
+            if random.choice([True, False]):
+                h = lambda (x, y, z): (x, z, y)
+            swapfunc = lambda w: f(g(h(w)))
+
+            for n in colorsets[key]:
+                red, green, blue = palette_dict[n]
+                low, medium, high = tuple(sorted([red, green, blue]))
+                if degree < 0:
+                    value = low
+                else:
+                    value = high
+                degree = abs(degree)
+                a = (1 - (degree/90.0)) * medium
+                b = (degree/90.0) * value
+                medium = a + b
+                medium = int(round(medium))
+                assert low <= medium <= high
+                palette_dict[n] = swapfunc((low, medium, high))
+
+        self.palette_data = [palette_dict[i] for i in range(len(palette_dict))]

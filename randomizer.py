@@ -5,7 +5,8 @@ from shutil import copyfile
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
-from monsterrandomizer import MonsterBlock, MonsterGraphicBlock, get_ranked_monsters
+from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
+                               MetamorphBlock, get_ranked_monsters)
 from itemrandomizer import ItemBlock, reset_equippable, get_ranked_items
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
@@ -459,7 +460,7 @@ def manage_commands(commands, characters):
             for i, command in enumerate(reversed(using)):
                 c.set_battle_command(i+1, command=command)
             if c.id == 11:
-                #Fixing Gau
+                # Fixing Gau
                 c.set_battle_command(0, commands["fight"])
         else:
             c.set_battle_command(1, command_id=0xFF)
@@ -725,7 +726,7 @@ def manage_espers():
     return espers
 
 
-def manage_treasure():
+def manage_treasure(monsters):
     chests = chests_from_table(CHEST_TABLE)
     for c in chests:
         c.read_data(sourcefile)
@@ -737,6 +738,18 @@ def manage_treasure():
     for c in chests:
         c.write_data(outfile)
     randomize_colosseum(outfile, 0x1fb600)
+
+    for i in range(26):
+        address = 0x47f40 + (i*4)
+        mm = MetamorphBlock(pointer=address)
+        mm.read_data(sourcefile)
+        mm.mutate_items()
+        mm.write_data(outfile)
+
+    for m in monsters:
+        m.mutate_items()
+        m.mutate_metamorph()
+        m.write_stats(outfile)
 
     return chests
 
@@ -819,7 +832,7 @@ if __name__ == "__main__":
         manage_espers()
 
     if 't' in flags:
-        manage_treasure()
+        manage_treasure(monsters)
 
     if 'p' in flags:
         # do this after items

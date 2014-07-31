@@ -52,8 +52,10 @@ class ChestBlock:
     def mutate_contents(self):
         if self.treasure:
             index = items.index(self.contents)
+            index += random.randint(-4, 4)
+            index = max(0, min(index, len(items)-1))
             while random.randint(1, 2) == 2:
-                index += random.randint(-4, 4)
+                index += random.randint(-2, 2)
                 index = max(0, min(index, len(items)-1))
             self.contents = items[index]
         elif self.gold:

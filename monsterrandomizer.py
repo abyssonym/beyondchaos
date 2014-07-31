@@ -1,7 +1,6 @@
 from utils import hex2int, write_multi, read_multi, ENEMY_TABLE
 from skillrandomizer import SpellBlock
 from itemrandomizer import get_ranked_items
-from math import sin, cos, radians
 import random
 
 
@@ -10,6 +9,7 @@ stat_order = ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
 all_spells = None
 valid_spells = None
 items = None
+itemids = None
 unrageable = [0x7E, 0x7F, 0x80, 0x81]
 
 
@@ -28,7 +28,7 @@ class MonsterBlock:
         self.id = i
 
     def read_stats(self, filename):
-        global all_spells, valid_spells, items
+        global all_spells, valid_spells, items, itemids
 
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -76,7 +76,7 @@ class MonsterBlock:
 
         if items is None:
             items = get_ranked_items(filename)
-            items = [i.itemid for i in items]
+            itemids = [i.itemid for i in items]
 
     def write_stats(self, filename):
         f = open(filename, 'r+b')
@@ -262,21 +262,28 @@ class MonsterBlock:
             weakcount += -1
 
     def mutate_items(self):
-        random.shuffle(self.items)
+        if random.choice([True, False]):
+            random.shuffle(self.items)
+
         new_items = []
         for i in self.items:
             if i == 0xFF:
-                i = random.choice(self.items + ([0xFF] * 2))
+                i = random.choice(self.items + ([0xFF] * 4))
                 if i == 0xFF:
                     continue
 
-            index = items.index(i)
+            index = itemids.index(i)
             while random.randint(1, 4) == 4:
                 index += random.randint(-3, 3)
-                index = max(0, min(index, len(items)-1))
+                index = max(0, min(index, len(itemids)-1))
 
-            new_items.append(items[index])
+            new_items.append(itemids[index])
+
         self.items = new_items
+
+    def mutate_metamorph(self):
+        # mutates both metamorph template and miss ratio
+        self.morph = random.randint(0, 0xFF)
 
     def mutate_control(self):
         # shuffle skills between control, sketch, rage
@@ -336,8 +343,6 @@ class MonsterBlock:
         self.mutate_stats()
         self.mutate_misc()
         self.mutate_control()
-        if random.randint(1, 2) == 2:
-            self.mutate_items()
         if random.randint(1, 10) > 8:
             self.mutate_statuses()
         if random.randint(1, 10) > 8:
@@ -433,3 +438,31 @@ class MonsterGraphicBlock:
                 palette_dict[n] = swapfunc((low, medium, high))
 
         self.palette_data = [palette_dict[i] for i in range(len(palette_dict))]
+
+
+class MetamorphBlock:
+    def __init__(self, pointer):
+        self.pointer = pointer
+
+    def read_data(self, filename):
+        global items
+        if items is None:
+            items = get_ranked_items(filename)
+
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        self.items = map(ord, f.read(4))
+        f.close()
+
+    def write_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        f.write("".join(map(chr, self.items)))
+        f.close()
+
+    def mutate_items(self):
+        base = ((len(items)-1) / 2)
+        for i in xrange(4):
+            index = random.randint(0, base) + random.randint(0, base)
+            item = items[index]
+            self.items[i] = item.itemid

@@ -554,7 +554,7 @@ def manage_umaro(characters):
     equip_umaro_sub.set_location(0x39EF6)
     equip_umaro_sub.write(outfile)
 
-    umaro_risk = random.randint(0, 13)
+    umaro_risk = random.randint(0, 12)
     umaro_risk = [c for c in characters if c.id == umaro_risk][0]
     umaro = [c for c in characters if c.id == 13][0]
     umaro.battle_commands = list(umaro_risk.battle_commands)

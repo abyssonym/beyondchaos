@@ -7,7 +7,8 @@ from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
                                MetamorphBlock, get_ranked_monsters)
-from itemrandomizer import ItemBlock, reset_equippable, get_ranked_items
+from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
+                            reset_special_relics)
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
@@ -840,6 +841,10 @@ if __name__ == "__main__":
 
     if 'b' in flags:
         manage_umaro(characters)
+
+    if 'q' in flags:
+        # do this after swapping beserk
+        reset_special_relics(items, characters, outfile)
 
     for c in characters:
         # do this after swapping beserk

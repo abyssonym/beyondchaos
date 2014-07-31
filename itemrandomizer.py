@@ -525,6 +525,64 @@ def reset_equippable(items, numchars=NUM_CHARS):
     return items
 
 
+sperelic = {0x04: (0x25456, 0x2545B),
+            0x08: (0x25455, 0x2545A),
+            0x10: (0x25454, 0x25459),
+            0x20: (0x25453, 0x25458),
+            0x40: (0x25452, 0x25457)}
+
+invalid_commands = [0x00, 0x04, 0x14, 0x15, 0x19, 0xFF]
+
+
+def reset_special_relics(items, characters, filename):
+    f = open(filename, 'r+b')
+    characters = [c for c in characters if c.id != 13]
+    for item in items:
+        if (item.is_consumable or item.is_tool or
+                not item.features['special1'] & 0x7C):
+            continue
+
+        item.equippable &= IMP_MASK
+        item.equippable |= 1 << 12  # gogo
+        for flag in [0x04, 0x08, 0x10, 0x20, 0x40]:
+            if flag & item.features['special1']:
+                before, after = sperelic[flag]
+                while True:
+                    bcomm = random.randint(0, 0x1D)
+                    if bcomm in [0x04, 0x14, 0x15, 0x19]:
+                        continue
+
+                    if bcomm == 0:
+                        tempchars = list(characters)
+                    else:
+                        tempchars = [c for c in characters if bcomm in c.battle_commands]
+
+                    if not tempchars:
+                        continue
+
+                    unused = set(range(0, 0x1E)) - set(invalid_commands)
+                    if len(tempchars) <= 4:
+                        for t in tempchars:
+                            unused = unused - set(t.battle_commands)
+
+                    if not unused:
+                        continue
+
+                    acomm = random.choice(list(unused))
+                    f.seek(before)
+                    f.write(chr(bcomm))
+                    f.seek(after)
+                    f.write(chr(acomm))
+                    for t in tempchars:
+                        print t.name,
+                        item.equippable |= (1 << t.id)
+
+                    item.write_stats(filename)
+                    break
+
+    f.close()
+
+
 def get_ranked_items(filename):
     from randomizer import items_from_table
     items = items_from_table(ITEM_TABLE)

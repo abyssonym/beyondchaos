@@ -40,6 +40,7 @@ CE,9000,Charm,noban
 CF,9000,Cold Dust,noban
 D5,9000,Engulf,noban
 D8,1,Bomblet,ban
+DA,1,Zinger,ban
 DB,1,Discard,ban
 DC,1,Overcast,ban
 E5,100,Soul Out,noban

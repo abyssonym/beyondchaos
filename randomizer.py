@@ -569,6 +569,11 @@ def manage_skips():
     leo_skip_sub.set_location(0xBF2B5)
     leo_skip_sub.write(outfile)
 
+    shadow_leaving_sub = Substitution()
+    shadow_leaving_sub.bytestring = [0xEA] * 2
+    shadow_leaving_sub.set_location(0x2488A)
+    shadow_leaving_sub.write(outfile)
+
 
 def manage_balance():
     vanish_doom_sub = Substitution()
@@ -750,8 +755,6 @@ if __name__ == "__main__":
             mg.read_data(sourcefile)
             mg.mutate_palette()
             mg.write_data(outfile)
-            mg = MonsterGraphicBlock(pointer=0x127000 + (5*j), name=m.name)
-            mg.read_data(outfile)
 
     items = get_ranked_items(sourcefile)
     if 'i' in flags:

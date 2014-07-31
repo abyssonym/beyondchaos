@@ -398,10 +398,11 @@ def manage_commands(commands, characters):
     enable_mpoint_sub.set_location(0x25E38)
     enable_mpoint_sub.write(outfile)
 
-    #morph_charge_sub = Substitution()
-    #morph_charge_sub.bytestring = [0xEA] * 2
-    #morph_charge_sub.set_location(0x25E34)
-    #morph_charge_sub.write(outfile)
+    ungray_statscreen_sub = Substitution()
+    ungray_statscreen_sub.bytestring = [0x20, 0x6F, 0x61, 0x30, 0x26, 0xEA,
+                                        0xEA, 0xEA]
+    ungray_statscreen_sub.set_location(0x35EE1)
+    ungray_statscreen_sub.write(outfile)
 
     invalid_commands = ["fight", "item", "magic", "xmagic",
                         "def", "row", "summon", "revert"]

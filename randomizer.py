@@ -404,6 +404,11 @@ def manage_commands(commands, characters):
     ungray_statscreen_sub.set_location(0x35EE1)
     ungray_statscreen_sub.write(outfile)
 
+    gogo_enable_all_sub = Substitution()
+    gogo_enable_all_sub.bytestring = [0xEA] * 2
+    gogo_enable_all_sub.set_location(0x35E58)
+    gogo_enable_all_sub.write(outfile)
+
     invalid_commands = ["fight", "item", "magic", "xmagic",
                         "def", "row", "summon", "revert"]
     if random.randint(1, 5) != 5:

@@ -4,7 +4,7 @@ from sys import argv
 from shutil import copyfile
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE)
-from skillrandomizer import SpellBlock, CommandBlock
+from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import MonsterBlock, MonsterGraphicBlock, get_ranked_monsters
 from itemrandomizer import ItemBlock, reset_equippable, get_ranked_items
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
@@ -146,6 +146,7 @@ class CharacterBlock:
         self.name = name.lower()
         self.battle_commands = [None, None, None, None]
         self.id = None
+        self.beserk = False
 
     def set_battle_command(self, slot, command=None, command_id=None):
         if command:
@@ -170,13 +171,23 @@ class CharacterBlock:
     def mutate_stats(self, filename):
         f = open(filename, 'r+b')
 
-        def mutation(value):
-            value = value / 2
-            value += random.randint(0, value) + random.randint(0, value)
-            while random.randint(1, 10) == 10:
-                value = value / 2
+        def mutation(base):
+            while True:
+                value = max(base / 2, 1)
+                if self.beserk:
+                    value += 1
+
                 value += random.randint(0, value) + random.randint(0, value)
-            value = max(1, min(value, 0xFE))
+                while random.randint(1, 10) == 10:
+                    value = max(value / 2, 1)
+                    value += random.randint(0, value) + random.randint(0, value)
+                value = max(1, min(value, 0xFE))
+
+                if not self.beserk:
+                    break
+                elif value >= base:
+                    break
+
             return value
 
         f.seek(self.address)
@@ -195,6 +206,8 @@ class CharacterBlock:
 
     def set_id(self, i):
         self.id = i
+        if self.id == 13:
+            self.beserk = True
 
 
 def commands_from_table(tablefile):
@@ -404,11 +417,6 @@ def manage_commands(commands, characters):
     ungray_statscreen_sub.set_location(0x35EE1)
     ungray_statscreen_sub.write(outfile)
 
-    gogo_enable_all_sub = Substitution()
-    gogo_enable_all_sub.bytestring = [0xEA] * 2
-    gogo_enable_all_sub.set_location(0x35E58)
-    gogo_enable_all_sub.write(outfile)
-
     invalid_commands = ["fight", "item", "magic", "xmagic",
                         "def", "row", "summon", "revert"]
     if random.randint(1, 5) != 5:
@@ -527,7 +535,55 @@ def manage_commands_new(commands, characters):
         c.newname(sb.name, outfile)
         c.unsetmenu(outfile)
 
+    gogo_enable_all_sub = Substitution()
+    gogo_enable_all_sub.bytestring = [0xEA] * 2
+    gogo_enable_all_sub.set_location(0x35E58)
+    gogo_enable_all_sub.write(outfile)
+
     return commands, characters
+
+
+def manage_umaro(characters):
+    # ship unequip - cc3510
+    equip_umaro_sub = Substitution()
+    equip_umaro_sub.bytestring = [0xC9, 0x0E]
+    equip_umaro_sub.set_location(0x31E6E)
+    equip_umaro_sub.write(outfile)
+    equip_umaro_sub.bytestring = [0xEA] * 2
+    equip_umaro_sub.set_location(0x39EF6)
+    equip_umaro_sub.write(outfile)
+
+    umaro_risk = random.randint(0, 13)
+    umaro_risk = [c for c in characters if c.id == umaro_risk][0]
+    umaro = [c for c in characters if c.id == 13][0]
+    umaro.battle_commands = list(umaro_risk.battle_commands)
+    umaro_risk.battle_commands = [None, 0xFF, 0xFF, 0xFF]
+
+    umaro.beserk = False
+    umaro_risk.beserk = True
+
+    umaro_exchange_sub = Substitution()
+    umaro_exchange_sub.bytestring = [0xC9, umaro_risk.id]
+    umaro_exchange_sub.set_location(0x21617)
+    umaro_exchange_sub.write(outfile)
+    umaro_exchange_sub.set_location(0x20926)
+    umaro_exchange_sub.write(outfile)
+
+    spells = get_ranked_spells(sourcefile)
+    spells = filter(lambda x: x.target_enemy_default, spells)
+    spells = filter(lambda x: x.valid, spells)
+    spells = filter(lambda x: x.rank() < 1000, spells)
+    spell_ids = [s.spellid for s in spells]
+    index = spell_ids.index(0x54)  # storm
+    index += random.randint(0, 10)
+    while random.choice([True, False]):
+        index += random.randint(-10, 10)
+    index = max(0, min(index, len(spell_ids)-1))
+    spell_id = spell_ids[index]
+    storm_sub = Substitution()
+    storm_sub.bytestring = [0xA9, spell_id]
+    storm_sub.set_location(0x21710)
+    storm_sub.write(outfile)
 
 
 def manage_sprint():
@@ -648,9 +704,6 @@ def manage_equipment(items, characters):
                 weakest = min(equippable, key=lambda i: i.rank()).itemid
             c.write_default_equipment(outfile, weakest, equiptype)
 
-    for c in characters:
-        c.mutate_stats(outfile)
-
     for i in items:
         i.write_stats(outfile)
 
@@ -732,17 +785,6 @@ if __name__ == "__main__":
     if 'w' in flags:
         manage_commands_new(commands, characters)
 
-    if VERBOSE:
-        for c in sorted(characters, key=lambda c: c.id):
-            ms = [m for m in c.battle_commands if m]
-            ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
-            if any(ms):
-                print "%s:" % c.name,
-                for m in ms:
-                    if m:
-                        print m[0].name.lower(),
-                print
-
     if 'z' in flags:
         manage_sprint()
 
@@ -779,3 +821,23 @@ if __name__ == "__main__":
     if 'p' in flags:
         # do this after items
         manage_shops()
+
+    if 'b' in flags:
+        manage_umaro(characters)
+
+    for c in characters:
+        # do this after swapping beserk
+        c.mutate_stats(outfile)
+
+    if VERBOSE:
+        for c in sorted(characters, key=lambda c: c.id):
+            if c.id > 13:
+                continue
+
+            ms = [m for m in c.battle_commands if m]
+            ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
+            print "%s:" % c.name,
+            for m in ms:
+                if m:
+                    print m[0].name.lower(),
+            print

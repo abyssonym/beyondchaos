@@ -441,19 +441,20 @@ class ItemBlock:
         return int(baseline)
 
 
-NUM_CHARS = 13
-CHAR_MASK = 0x1fff
+NUM_CHARS = 14
+CHAR_MASK = 0x3fff
 IMP_MASK = 0x4000
+UMARO_ID = 13
 
 
-def reset_equippable(items):
+def reset_equippable(items, numchars=NUM_CHARS):
     prevents = filter(lambda i: i.prevent_encounters, items)
     for item in prevents:
         if not CHAR_MASK & item.equippable:
             continue
 
         while True:
-            test = 1 << random.randint(0, NUM_CHARS-1)
+            test = 1 << random.randint(0, numchars-1)
             if item.itemid == 0xDE:
                 item.equippable = test
                 break
@@ -464,20 +465,24 @@ def reset_equippable(items):
                 break
 
     items = filter(lambda i: not (i.is_consumable or i.is_tool or i.prevent_encounters), items)
-    new_weaps = range(NUM_CHARS)
+    new_weaps = range(numchars)
     random.shuffle(new_weaps)
-    new_weaps = dict(zip(range(NUM_CHARS), new_weaps))
+    new_weaps = dict(zip(range(numchars), new_weaps))
     for item in items:
+        if numchars == 14 and random.randint(1, 10) == 10:
+            # for umaro's benefit
+            item.equippable |= 0x2000
+
         if item.is_weapon:
             equippable = item.equippable
             item.equippable &= IMP_MASK
-            for i in range(NUM_CHARS):
+            for i in range(numchars):
                 if equippable & (1 << i):
                     item.equippable |= (1 << new_weaps[i])
         elif item.is_relic:
             if random.randint(1, 10) == 10:
                 if random.randint(1, 5) == 5:
-                    item.equippable = 1 << (random.randint(0, NUM_CHARS-1))
+                    item.equippable = 1 << (random.randint(0, numchars-1))
                 else:
                     item.equippable = random.randint(1, CHAR_MASK)
             else:
@@ -486,7 +491,7 @@ def reset_equippable(items):
     charequips = []
     valid_items = filter(lambda i: (not i.is_weapon and not i.is_relic
                                     and not i.equippable & 0x4000), items)
-    for c in range(NUM_CHARS):
+    for c in range(numchars):
         myequips = []
         for i in valid_items:
             if i.equippable & (1 << c):
@@ -500,7 +505,7 @@ def reset_equippable(items):
         item.equippable &= 0xc000
 
     random.shuffle(charequips)
-    for c in range(NUM_CHARS):
+    for c in range(numchars):
         assert len(valid_items) == len(charequips[c])
         for equippable, item in zip(charequips[c], valid_items):
             if equippable:
@@ -515,7 +520,7 @@ def reset_equippable(items):
         if item.equippable == 0:
             if not weaponstoo:
                 continue
-            item.equippable |= (1 << random.randint(0, NUM_CHARS-1))
+            item.equippable |= (1 << random.randint(0, numchars-1))
 
     return items
 

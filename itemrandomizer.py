@@ -201,9 +201,9 @@ class ItemBlock:
 
         # flag to break when used as an item
         if random.randint(1, 20) == 20:
-            self.features['breakeffect'] |= 0x80
-        else:
             self.features['breakeffect'] &= 0x7F
+        else:
+            self.features['breakeffect'] |= 0x80
 
         # flag to set chance to proc a spell
         if random.randint(1, 2) == 2:

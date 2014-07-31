@@ -562,6 +562,9 @@ def manage_umaro(characters):
     umaro.beserk = False
     umaro_risk.beserk = True
 
+    umaro_risk.write_battle_commands(outfile)
+    umaro.write_battle_commands(outfile)
+
     umaro_exchange_sub = Substitution()
     umaro_exchange_sub.bytestring = [0xC9, umaro_risk.id]
     umaro_exchange_sub.set_location(0x21617)

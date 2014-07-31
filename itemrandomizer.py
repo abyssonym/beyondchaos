@@ -150,11 +150,14 @@ class ItemBlock:
         mblock = (evademblock & 0xf0) >> 4
         return mblock
 
-    def pick_a_spell(self, magic_only=False):
+    def pick_a_spell(self, magic_only=False, custom=None):
         if magic_only:
             spells = filter(lambda s: s.spellid in range(0, 36), all_spells)
         else:
             spells = all_spells
+
+        if custom:
+            spells = filter(custom, spells)
 
         normal = len(spells)
         if self.degree is not None:
@@ -190,11 +193,17 @@ class ItemBlock:
         if self.is_consumable:
             return
 
+        success = False
         for _ in xrange(100):
-            spell, _ = self.pick_a_spell(magic_only=True)
+            spell, _ = self.pick_a_spell(custom=lambda x: x.spellid < 0x3F)
             if spell.spellid not in effects_used:
                 effects_used.append(spell.spellid)
+                success = True
                 break
+
+        if not success:
+            return
+
         self.features['breakeffect'] = spell.spellid
         if not self.is_weapon or random.randint(1, 2) == 2:
             self.itemtype = self.itemtype | 0x20
@@ -209,10 +218,9 @@ class ItemBlock:
         if random.randint(1, 2) == 2:
             self.features['breakeffect'] |= 0x40
         else:
-            self.features['breakeffect'] &= 0xcF
+            self.features['breakeffect'] &= 0xBF
 
         self.features['targeting'] = spell.targeting & 0xef
-        #print self.name, spell.name
 
     def mutate_elements(self):
         if self.is_consumable or self.is_tool:

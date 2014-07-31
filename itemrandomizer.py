@@ -574,13 +574,21 @@ def reset_special_relics(items, characters, filename):
                     f.seek(after)
                     f.write(chr(acomm))
                     for t in tempchars:
-                        print t.name,
                         item.equippable |= (1 << t.id)
 
                     item.write_stats(filename)
                     break
 
     f.close()
+
+
+def reset_rage_blizzard(items, umaro_risk, filename):
+    for item in items:
+        if item.itemid not in [0xC5, 0xC6]:
+            continue
+
+        item.equippable = 1 << (umaro_risk.id)
+        item.write_stats(filename)
 
 
 def get_ranked_items(filename):

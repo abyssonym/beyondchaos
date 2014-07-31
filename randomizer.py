@@ -8,7 +8,7 @@ from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
                                MetamorphBlock, get_ranked_monsters)
 from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
-                            reset_special_relics)
+                            reset_special_relics, reset_rage_blizzard)
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
@@ -590,6 +590,8 @@ def manage_umaro(characters):
     storm_sub.set_location(0x21710)
     storm_sub.write(outfile)
 
+    return umaro_risk
+
 
 def manage_sprint():
     autosprint = Substitution()
@@ -840,15 +842,15 @@ if __name__ == "__main__":
         manage_shops()
 
     if 'b' in flags:
-        manage_umaro(characters)
+        umaro_risk = manage_umaro(characters)
+        reset_rage_blizzard(items, umaro_risk, outfile)
 
     if 'q' in flags:
         # do this after swapping beserk
         reset_special_relics(items, characters, outfile)
 
-    for c in characters:
-        # do this after swapping beserk
-        c.mutate_stats(outfile)
+        for c in characters:
+            c.mutate_stats(outfile)
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

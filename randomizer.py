@@ -339,7 +339,6 @@ def randomize_colosseum(filename, pointer):
 
 
 def randomize_slots(filename, pointer):
-    from skillrandomizer import get_ranked_spells
     spells = get_ranked_spells(filename)
     spells = [s.spellid for s in spells if s.target_enemy_default]
     f = open(filename, 'r+b')
@@ -543,6 +542,84 @@ def manage_commands_new(commands, characters):
     gogo_enable_all_sub.write(outfile)
 
     return commands, characters
+
+
+def manage_natural_magic(characters):
+    candidates = [c for c in characters if 0x02 in c.battle_commands or
+                  0x17 in c.battle_commands]
+    candidates = random.sample(candidates, 2)
+    natmag_learn_sub = Substitution()
+    natmag_learn_sub.bytestring = [0xC9, candidates[0].id]
+    natmag_learn_sub.set_location(0x261B9)
+    natmag_learn_sub.write(outfile)
+    natmag_learn_sub.set_location(0xA182)
+    natmag_learn_sub.write(outfile)
+    address = 0x1A6E + (54 * candidates[0].id)
+    natmag_learn_sub.bytestring = [0x99, address & 0xFF, address >> 8]
+    natmag_learn_sub.set_location(0xA1AB)
+    natmag_learn_sub.write(outfile)
+
+    natmag_learn_sub.bytestring = [0xC9, candidates[1].id]
+    natmag_learn_sub.set_location(0x261C0)
+    natmag_learn_sub.write(outfile)
+    natmag_learn_sub.set_location(0xA186)
+    natmag_learn_sub.write(outfile)
+    address = 0x1A6E + (54 * candidates[1].id)
+    natmag_learn_sub.bytestring = [0x99, address & 0xFF, address >> 8]
+    natmag_learn_sub.set_location(0xA1CD)
+    natmag_learn_sub.write(outfile)
+
+    spells = get_ranked_spells(sourcefile, magic_only=True)
+    spellids = [s.spellid for s in spells]
+    f = open(outfile, 'r+b')
+    address = 0x2CE3C0
+
+    def mutate_spell(pointer, used):
+        f.seek(pointer)
+        spell, level = tuple(map(ord, f.read(2)))
+
+        while True:
+            index = spellids.index(spell)
+            print spells[index].name, level, "---",
+            index += random.randint(-3, 3)
+            index = max(0, min(index, len(spells)-1))
+            while random.choice([True, False]):
+                index += random.randint(-1, 1)
+                index = max(0, min(index, len(spells)-1))
+
+            level += random.randint(-2, 2)
+            level = max(1, min(level, 99))
+            while random.choice([True, False]):
+                level += random.randint(-1, 1)
+                level = max(0, min(level, 99))
+
+            newspell = spellids[index]
+            if newspell in used:
+                print "ERROR: %s" % spells[index].name
+                continue
+            break
+
+        used.append(newspell)
+        print spells[index].name, level
+        f.seek(address + (2*i))
+        f.write(chr(newspell))
+        f.write(chr(level))
+
+    usedspells = []
+    for i in xrange(16):
+        pointer = address + (2*i)
+        mutate_spell(pointer, usedspells)
+
+    print
+    usedspells = []
+    for i in xrange(16):
+        pointer = address + 32 + (2*i)
+        mutate_spell(pointer, usedspells)
+
+    for c in candidates:
+        print c.name
+    print
+    f.close()
 
 
 def manage_umaro(characters):
@@ -851,6 +928,10 @@ if __name__ == "__main__":
 
         for c in characters:
             c.mutate_stats(outfile)
+
+    if 'o' in flags:
+        # do this after swapping beserk
+        manage_natural_magic(characters)
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

@@ -397,6 +397,11 @@ def manage_commands(commands, characters):
     learn_blitz_sub.set_location(0xA190)
     learn_blitz_sub.write(outfile)
 
+    rage_blank_sub = Substitution()
+    rage_blank_sub.bytestring = [0x01] + ([0x00] * 31)
+    rage_blank_sub.set_location(0x47AA0)
+    rage_blank_sub.write(outfile)
+
     eems = EnableEsperMagicSub()
     eems.set_location(0x3F091)
     eems.write(outfile)

@@ -6,7 +6,8 @@ from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, read_multi, write_multi)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
-                               MetamorphBlock, get_ranked_monsters)
+                               MetamorphBlock, get_ranked_monsters,
+                               equalize_pools)
 from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
                             reset_special_relics, reset_rage_blizzard)
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
@@ -928,9 +929,16 @@ if __name__ == "__main__":
         monsters = manage_monsters()
 
     if 'c' in flags:
+        mgs = []
         for j, m in enumerate(monsters):
             mg = MonsterGraphicBlock(pointer=0x127000 + (5*j), name=m.name)
             mg.read_data(sourcefile)
+            mgs.append(mg)
+
+        mgs = sorted(mgs, key=lambda mg: mg.graphics)
+        equalize_pools(mgs)
+
+        for mg in mgs:
             mg.mutate_palette()
             mg.write_data(outfile)
 

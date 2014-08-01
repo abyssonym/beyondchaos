@@ -1,6 +1,7 @@
 from utils import hex2int, write_multi, read_multi, ENEMY_TABLE
 from skillrandomizer import SpellBlock
 from itemrandomizer import get_ranked_items
+from itertools import izip
 import random
 
 
@@ -364,13 +365,50 @@ def get_ranked_monsters(filename, bosses=True):
     return monsters
 
 
+palette_pools = {}
+palette_cand_pools = {}
+
+
+def equalize_pools(mgblocks):
+    global palette_pools
+    global palette_cand_pools
+
+    def chain_union(key):
+        values = palette_pools[key]
+        for key2 in list(palette_pools[key]):
+            values |= palette_pools[key2]
+        for key2 in list(palette_pools[key]):
+            palette_pools[key2] |= values
+        if values == palette_pools[key]:
+            return
+        else:
+            for key2 in list(palette_pools[key]):
+                chain_union(key2)
+            chain_union(key)
+
+    for key in palette_pools:
+        chain_union(key)
+
+    palette_cand_pools = {}
+    for key, graphics in palette_pools.items():
+        if key not in palette_cand_pools:
+            palette_cands = [m.palette_data for m in mgblocks if m.graphics in graphics]
+            palette_cands2 = []
+            for p in palette_cands:
+                if p in palette_cands2:
+                    continue
+                palette_cands2.append(p)
+            for g in graphics:
+                palette_cand_pools[g] = palette_cands2
+
+
 class MonsterGraphicBlock:
     def __init__(self, pointer, name=None):
         self.pointer = pointer
         self.name = name
 
     def read_data(self, filename):
-        global palettepools
+        global palette_pools
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.graphics = read_multi(f, length=2)
@@ -380,13 +418,54 @@ class MonsterGraphicBlock:
         self.palette_pointer = 0x127820 + (self.palette_index * 16)
         f.seek(self.palette_pointer)
         self.palette_data = []
+        self.palette_values = []
         for i in xrange(16):
             color = read_multi(f, length=2)
             blue = (color & 0x7c00) >> 10
             green = (color & 0x03e0) >> 5
             red = color & 0x001f
             self.palette_data.append((red, green, blue))
+            self.palette_values.append(int(round(sum([red, green, blue])/3.0)))
+        self.palette_data = tuple(self.palette_data)
+        if self.graphics not in palette_pools:
+            palette_pools[self.graphics] = set([])
+        palette_pools[self.graphics].add(self.graphics)
         f.close()
+
+    @property
+    def poolsize(self):
+        global palette_cand_pools
+        return len(palette_cand_pools[self.graphics])
+
+    def unite_palette_pools(self, other):
+        global palette_pools
+        palette_pools[self.graphics] |= palette_pools[other.graphics]
+        palette_pools[other.graphics] |= palette_pools[self.graphics]
+
+    def compare_palette_values(self, other, tolerance=3):
+        if other.graphics == self.graphics:
+            return False
+
+        valmin = min(other.palette_values)
+        values = map(lambda x: x - valmin, other.palette_values)
+        valmin2 = min(self.palette_values)
+        values2 = map(lambda x: x - valmin2, self.palette_values)
+        zipped = []
+        for a, b in izip(values, values2):
+            if abs(a-b) <= tolerance and False:
+                avg = (a + b) / 2
+                zipped.append((avg, avg))
+            else:
+                zipped.append((a, b))
+        sortzipped = sorted(zipped, key=lambda (x, y): x)
+        sortzipped2 = sorted(sortzipped, key=lambda (x, y): y)
+        for i, ((a, b), (c, d)) in enumerate(zip(sortzipped, sortzipped2)):
+            if a != c or b != d:
+                index2 = sortzipped2.index((a, b))
+                if abs(i - index2) > (tolerance-1):
+                    return False
+        palette_pools[self.graphics].add(other.graphics)
+        return True
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
@@ -399,7 +478,9 @@ class MonsterGraphicBlock:
             write_multi(f, color, length=2)
         f.close()
 
-    def mutate_palette(self):
+    def mutate_palette(self, alternatives=None):
+        global palette_cand_pools
+        self.palette_data = random.choice(palette_cand_pools[self.graphics])
         colorsets = {}
         palette_dict = dict(enumerate(self.palette_data))
         for n, (red, green, blue) in palette_dict.items():
@@ -408,17 +489,24 @@ class MonsterGraphicBlock:
                 colorsets[key] = []
             colorsets[key].append(n)
 
+        pastswap = []
         for key in colorsets:
-            degree = random.randint(-90, 90)
+            degree = random.randint(-75, 75)
 
+            while True:
+                swapcode = random.randint(0, 7)
+                if swapcode not in pastswap or random.randint(1, 10) == 10:
+                    break
+
+            pastswap.append(swapcode)
             f = lambda w: w
             g = lambda w: w
             h = lambda w: w
-            if random.choice([True, False]):
+            if swapcode & 1:
                 f = lambda (x, y, z): (y, x, z)
-            if random.choice([True, False]):
+            if swapcode & 2:
                 g = lambda (x, y, z): (z, y, x)
-            if random.choice([True, False]):
+            if swapcode & 4:
                 h = lambda (x, y, z): (x, z, y)
             swapfunc = lambda w: f(g(h(w)))
 
@@ -437,7 +525,7 @@ class MonsterGraphicBlock:
                 assert low <= medium <= high
                 palette_dict[n] = swapfunc((low, medium, high))
 
-        self.palette_data = [palette_dict[i] for i in range(len(palette_dict))]
+        self.palette_data = tuple([palette_dict[i] for i in range(len(palette_dict))])
 
 
 class MetamorphBlock:

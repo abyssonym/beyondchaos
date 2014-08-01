@@ -3,7 +3,7 @@ from time import time
 from sys import argv
 from shutil import copyfile
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
-                   CHAR_TABLE, COMMAND_TABLE)
+                   CHAR_TABLE, COMMAND_TABLE, read_multi, write_multi)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
                                MetamorphBlock, get_ranked_monsters)
@@ -385,10 +385,16 @@ def manage_commands(commands, characters):
     learn_swdtech_sub.bytestring = [0xEA] * 2
     learn_swdtech_sub.set_location(0x261C9)
     learn_swdtech_sub.write(outfile)
+    learn_swdtech_sub.bytestring = [0x4C, 0xDA, 0xA1, 0xEA]
+    learn_swdtech_sub.set_location(0xA18A)
+    learn_swdtech_sub.write(outfile)
 
     learn_blitz_sub = Substitution()
     learn_blitz_sub.bytestring = [0xEA] * 2
     learn_blitz_sub.set_location(0x261E5)
+    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.bytestring = [0xEA] * 2
+    learn_blitz_sub.set_location(0xA190)
     learn_blitz_sub.write(outfile)
 
     eems = EnableEsperMagicSub()
@@ -619,6 +625,40 @@ def manage_natural_magic(characters):
     for c in candidates:
         print c.name
     print
+
+    lores = get_ranked_spells(sourcefile, magic_only=False)
+    lores = filter(lambda s: 0x8B <= s.spellid <= 0xA2, lores)
+    lore_ids = [l.spellid for l in lores]
+    lores_in_order = sorted(lore_ids)
+    address = 0x26F564
+    f.seek(address)
+    known_lores = read_multi(f, length=3)
+    known_lore_ids = []
+    print "%x" % known_lores
+    for i in xrange(24):
+        if (1 << i) & known_lores:
+            known_lore_ids.append(lores_in_order[i])
+
+    new_known_lores = 0
+    random.shuffle(known_lore_ids)
+    for lore_id in known_lore_ids:
+        if new_known_lores and random.choice([True, False]):
+            continue
+
+        index = lore_ids.index(lore_id)
+        index += random.randint(-4, 2)
+        index = max(0, min(index, len(lores)-1))
+        while random.choice([True, False]):
+            index += random.randint(-2, 1)
+            index = max(0, min(index, len(lores)-1))
+        new_lore = lores[index]
+        order = lores_in_order.index(new_lore.spellid)
+        new_known_lores |= (1 << order)
+        print order,
+        print new_lore.name
+
+    f.seek(address)
+    write_multi(f, new_known_lores, length=3)
     f.close()
 
 

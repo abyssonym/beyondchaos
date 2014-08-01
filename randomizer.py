@@ -591,7 +591,6 @@ def manage_natural_magic(characters):
 
         while True:
             index = spellids.index(spell)
-            print spells[index].name, level, "---",
             index += random.randint(-3, 3)
             index = max(0, min(index, len(spells)-1))
             while random.choice([True, False]):
@@ -606,12 +605,10 @@ def manage_natural_magic(characters):
 
             newspell = spellids[index]
             if newspell in used:
-                print "ERROR: %s" % spells[index].name
                 continue
             break
 
         used.append(newspell)
-        print spells[index].name, level
         f.seek(address + (2*i))
         f.write(chr(newspell))
         f.write(chr(level))
@@ -621,15 +618,10 @@ def manage_natural_magic(characters):
         pointer = address + (2*i)
         mutate_spell(pointer, usedspells)
 
-    print
     usedspells = []
     for i in xrange(16):
         pointer = address + 32 + (2*i)
         mutate_spell(pointer, usedspells)
-
-    for c in candidates:
-        print c.name
-    print
 
     lores = get_ranked_spells(sourcefile, magic_only=False)
     lores = filter(lambda s: 0x8B <= s.spellid <= 0xA2, lores)
@@ -639,7 +631,6 @@ def manage_natural_magic(characters):
     f.seek(address)
     known_lores = read_multi(f, length=3)
     known_lore_ids = []
-    print "%x" % known_lores
     for i in xrange(24):
         if (1 << i) & known_lores:
             known_lore_ids.append(lores_in_order[i])
@@ -659,8 +650,6 @@ def manage_natural_magic(characters):
         new_lore = lores[index]
         order = lores_in_order.index(new_lore.spellid)
         new_known_lores |= (1 << order)
-        print order,
-        print new_lore.name
 
     f.seek(address)
     write_multi(f, new_known_lores, length=3)

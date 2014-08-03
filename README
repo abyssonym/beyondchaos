@@ -19,7 +19,7 @@ Program Flags:
 Randomizer Flags:
     o   Shuffle characters' in-battle commands.
     w   Generate new commands for characters, replacing old commands.
-    z   Always have "Spring Shoes" effect.
+    z   Always have "Sprint Shoes" effect.
     s   Skip select cutscenes.
     b   Make the game more balanced by removing exploits such as Joker Doom,
             Vanish/Doom, and the Evade/Mblock bug.

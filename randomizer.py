@@ -757,6 +757,11 @@ def manage_skips():
     shadow_leaving_sub.set_location(0x2488A)
     shadow_leaving_sub.write(outfile)
 
+    narshe_skip_sub = Substitution()
+    narshe_skip_sub.bytestring = [0xB2, 0x55, 0xBC, 0x02]
+    narshe_skip_sub.set_location(0xAADC4)
+    narshe_skip_sub.write(outfile)
+
 
 def manage_balance():
     vanish_doom_sub = Substitution()

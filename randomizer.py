@@ -1,6 +1,7 @@
 from time import time
 from sys import argv
 from shutil import copyfile
+from hashlib import md5
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, read_multi, write_multi,
                    utilrandom as random)
@@ -21,6 +22,9 @@ VERBOSE = False
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
                  "jump", "mimic", "xmagic", "summon", "morph", "revert"]
 ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
+
+
+MD5HASH = "e986575b98300f721ce27c180264d890"
 
 
 class Substitution(object):
@@ -897,6 +901,12 @@ def manage_shops():
 
 if __name__ == "__main__":
     sourcefile = argv[1]
+    f = open(sourcefile, 'rb')
+    h = md5(f.read()).hexdigest()
+    if h != MD5HASH:
+        print ("WARNING! The md5 hash of this file does not match the known "
+               "hash of the english FF6 1.0 rom!")
+    f.close()
 
     version, flags, seed = tuple(argv[2].split('.'))
     seed = seed.strip()

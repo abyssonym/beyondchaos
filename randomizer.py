@@ -1,4 +1,3 @@
-import random
 from time import time
 from sys import argv
 from shutil import copyfile

@@ -1,0 +1,35 @@
+Usage:
+    python randomizer.py <ROMFILE> <VERSION>.<FLAGS>.<SEED VALUE>
+
+Arguments:
+    ROMFILE - Filepath to a copy of the FF3 US 1.0 rom.
+    VERSION - The version of this program that generated this seed. Used to
+        check that the program will generate the same randomization as before.
+    FLAGS - A list of flags to configure what is randomized (see below)
+    SEED VALUE - A number that can be used to generate the same randomization
+        for multiple executions of this program.
+
+VERSION, FLAGS, and SEED VALUE do not need to be supplied. To generate a
+randomization without any options, simply run:
+    python randomizer.py ..
+
+Program Flags:
+    v   Display each character's battle commands after randomization.
+
+Randomizer Flags:
+    o   Shuffle characters' in-battle commands.
+    w   Generate new commands for characters, replacing old commands.
+    z   Always have "Spring Shoes" effect.
+    s   Skip select cutscenes.
+    b   Make the game more balanced by removing exploits such as Joker Doom,
+            Vanish/Doom, and the Evade/Mblock bug.
+    m   Randomize enemy stats.
+    c   Randomize enemy colors.
+    i   Randomize the stats of equippable items.
+    q   Randomize what equipment each character can wear.
+    e   Randomize esper spells and levelup bonuses.
+    t   Randomize treasure, including chests, colosseum, and enemy drops.
+    p   Randomize shops and shop prices.
+    b   Umaro risk.
+
+If no randomizer flags are provided, all of them will be activated.

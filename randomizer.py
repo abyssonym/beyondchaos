@@ -990,7 +990,7 @@ if __name__ == "__main__":
         # do this after items
         manage_shops()
 
-    if 'b' in flags:
+    if 'u' in flags:
         umaro_risk = manage_umaro(characters)
         reset_rage_blizzard(items, umaro_risk, outfile)
 

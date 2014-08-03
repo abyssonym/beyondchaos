@@ -897,15 +897,19 @@ if __name__ == "__main__":
     else:
         seed = int(seed)
     random.seed(seed)
-    print "Using seed: %s" % seed
-
-    flags = flags.lower()
-    if not flags.strip():
-        flags = 'abcdefghijklmnopqrstuvwxyz'
 
     if version != VERSION:
         print ("WARNING! Version mismatch! "
                "This seed will not produce the expected result!")
+    print "Using seed: %s:%s:%s" % (VERSION, flags, seed)
+
+    if 'v' in flags:
+        VERBOSE = True
+        flags = "".join([c for c in flags if c != 'v'])
+
+    flags = flags.lower()
+    if not flags.strip():
+        flags = 'abcdefghijklmnopqrstuvwxyz'
 
     outfile = sourcefile.rsplit('.', 1)
     outfile = '.'.join([outfile[0], str(seed), outfile[1]])
@@ -915,9 +919,6 @@ if __name__ == "__main__":
     commands = dict([(c.name, c) for c in commands])
 
     characters = characters_from_table(CHAR_TABLE)
-
-    if 'v' in flags:
-        VERBOSE = True
 
     if 'o' in flags:
         manage_commands(commands, characters)

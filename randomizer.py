@@ -3,11 +3,11 @@ from time import time
 from sys import argv
 from shutil import copyfile
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
-                   CHAR_TABLE, COMMAND_TABLE, read_multi, write_multi)
+                   CHAR_TABLE, COMMAND_TABLE, read_multi, write_multi,
+                   utilrandom as random)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
-                               MetamorphBlock, get_ranked_monsters,
-                               equalize_pools)
+                               MetamorphBlock, get_ranked_monsters)
 from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
                             reset_special_relics, reset_rage_blizzard)
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
@@ -319,10 +319,10 @@ def randomize_colosseum(filename, pointer):
                 trade = max(0, min(trade, len(items)-1))
 
         opponent = trade
+        opponent = max(0, min(opponent, len(monsters)-1))
         while random.randint(1, 3) < 3:
             opponent += random.randint(-1, 1)
             opponent = max(0, min(opponent, len(monsters)-1))
-
         trade = items[trade]
         opponent = monsters[opponent]
         wager_obj = [j for j in item_objs if j.itemid == i][0]
@@ -332,10 +332,12 @@ def randomize_colosseum(filename, pointer):
         f.write(chr(opponent))
         f.seek(pointer + (i*4) + 2)
         f.write(chr(trade))
+
         if abs(wager_obj.rank() - win_obj.rank()) >= 5000 and random.randint(1, 2) == 2:
             f.write(chr(0xFF))
         else:
             f.write(chr(0x00))
+
     f.close()
 
 
@@ -439,7 +441,7 @@ def manage_commands(commands, characters):
     def populate_unused():
         unused_commands = set(commands.values())
         unused_commands = list(unused_commands - invalid_commands)
-        return unused_commands
+        return sorted(unused_commands, key=lambda c: c.name)
 
     unused = populate_unused()
     xmagic_taken = False
@@ -492,7 +494,7 @@ def manage_commands_new(commands, characters):
     freespaces.append(FreeBlock(0x2FAAC, 0x2FC6D))
 
     valid = set(list(commands))
-    valid = list(valid - set(["row", "def"]))
+    valid = sorted(valid - set(["row", "def"]))
     used = []
     all_spells = [SpellBlock(i, sourcefile) for i in xrange(0xFF)]
     for c in commands.values():
@@ -852,6 +854,7 @@ def manage_treasure(monsters):
 
     for c in chests:
         c.write_data(outfile)
+
     randomize_colosseum(outfile, 0x1fb600)
 
     for i in range(26):
@@ -885,9 +888,10 @@ if __name__ == "__main__":
     version, flags, seed = tuple(argv[2].split(':'))
     seed = seed.strip()
     if not seed:
-        seed = str(int(time()))
+        seed = int(time())
     else:
-        random.seed(str(int(seed)))
+        seed = int(seed)
+    random.seed(seed)
     print "Using seed: %s" % seed
 
     flags = flags.lower()
@@ -899,7 +903,7 @@ if __name__ == "__main__":
                "This seed will not produce the expected result!")
 
     outfile = sourcefile.rsplit('.', 1)
-    outfile = '.'.join([outfile[0], seed, outfile[1]])
+    outfile = '.'.join([outfile[0], str(seed), outfile[1]])
     copyfile(sourcefile, outfile)
 
     commands = commands_from_table(COMMAND_TABLE)
@@ -927,6 +931,10 @@ if __name__ == "__main__":
 
     if 'm' in flags:
         monsters = manage_monsters()
+    else:
+        monsters = monsters_from_table(ENEMY_TABLE)
+        for m in monsters:
+            m.read_stats(sourcefile)
 
     if 'c' in flags:
         mgs = []
@@ -936,8 +944,6 @@ if __name__ == "__main__":
             mgs.append(mg)
 
         mgs = sorted(mgs, key=lambda mg: mg.graphics)
-        equalize_pools(mgs)
-
         for mg in mgs:
             mg.mutate_palette()
             mg.write_data(outfile)

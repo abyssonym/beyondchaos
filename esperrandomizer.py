@@ -1,5 +1,4 @@
-from utils import hex2int
-import random
+from utils import hex2int, utilrandom as random
 from skillrandomizer import get_ranked_spells
 
 items = None

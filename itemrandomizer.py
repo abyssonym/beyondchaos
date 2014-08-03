@@ -1,6 +1,6 @@
-from utils import hex2int, write_multi, read_multi, ITEM_TABLE
+from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
+                   utilrandom as random)
 from skillrandomizer import SpellBlock
-import random
 # future blocks: chests, morphs, shops
 
 ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
@@ -561,7 +561,7 @@ def reset_special_relics(items, characters, filename):
                         continue
 
                     if bcomm == 0:
-                        tempchars = list(characters)
+                        tempchars = [c for c in characters]
                     else:
                         tempchars = [c for c in characters if bcomm in c.battle_commands]
 
@@ -576,7 +576,7 @@ def reset_special_relics(items, characters, filename):
                     if not unused:
                         continue
 
-                    acomm = random.choice(list(unused))
+                    acomm = random.choice(sorted(unused))
                     f.seek(before)
                     f.write(chr(bcomm))
                     f.seek(after)

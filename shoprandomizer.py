@@ -1,5 +1,4 @@
-from utils import hex2int
-import random
+from utils import utilrandom as random
 from itemrandomizer import get_ranked_items
 
 items = None

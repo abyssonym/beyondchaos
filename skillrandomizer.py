@@ -1,4 +1,5 @@
-from utils import hex2int, int2bytes, TEXT_TABLE, SPELL_TABLE, SPELLBANS_TABLE
+from utils import (hex2int, int2bytes, TEXT_TABLE, SPELL_TABLE,
+                   SPELLBANS_TABLE, utilrandom as random)
 
 texttable = {}
 f = open(TEXT_TABLE)

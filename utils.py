@@ -1,4 +1,5 @@
 from os import path
+import random
 
 ENEMY_TABLE = path.join("tables", "enemycodes.txt")
 ITEM_TABLE = path.join("tables", "itemcodes.txt")
@@ -55,3 +56,5 @@ def write_multi(f, value, length=2, reverse=True):
         vals = reversed(vals)
 
     f.write(''.join(map(chr, vals)))
+
+utilrandom = random.Random()

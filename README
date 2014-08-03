@@ -2,7 +2,7 @@ Usage:
     python randomizer.py <ROMFILE> <VERSION>.<FLAGS>.<SEED VALUE>
 
 Arguments:
-    ROMFILE - Filepath to a copy of the FF3 US 1.0 rom.
+    ROMFILE - Filepath to a copy of the FF3 US 1.0 rom (unheadered).
     VERSION - The version of this program that generated this seed. Used to
         check that the program will generate the same randomization as before.
     FLAGS - A list of flags to configure what is randomized (see below)

@@ -890,7 +890,7 @@ def manage_shops():
 if __name__ == "__main__":
     sourcefile = argv[1]
 
-    version, flags, seed = tuple(argv[2].split(':'))
+    version, flags, seed = tuple(argv[2].split('.'))
     seed = seed.strip()
     if not seed:
         seed = int(time())
@@ -898,10 +898,10 @@ if __name__ == "__main__":
         seed = int(seed)
     random.seed(seed)
 
-    if version != VERSION:
+    if version and version != VERSION:
         print ("WARNING! Version mismatch! "
                "This seed will not produce the expected result!")
-    print "Using seed: %s:%s:%s" % (VERSION, flags, seed)
+    print "Using seed: %s.%s.%s" % (VERSION, flags, seed)
 
     if 'v' in flags:
         VERBOSE = True

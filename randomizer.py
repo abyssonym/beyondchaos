@@ -758,7 +758,16 @@ def manage_skips():
     shadow_leaving_sub.write(outfile)
 
     narshe_skip_sub = Substitution()
-    narshe_skip_sub.bytestring = [0xB2, 0x55, 0xBC, 0x02]
+    narshe_skip_sub.bytestring = []
+    narshe_skip_sub.bytestring += [0x3E, 0x0D, 0x3D, 0x00, 0x3D, 0x04,
+                                   0x3D, 0x0E, 0x3D, 0x05, 0x3D, 0x02,
+                                   0x3D, 0x0B, 0x3D, 0x01, 0x3D, 0x06]
+    narshe_skip_sub.bytestring += [0xD2, 0xCC, 0xD4, 0xBC]
+    narshe_skip_sub.bytestring += [0x3F, 0x00, 0x01, 0x3F, 0x0D, 0x00]
+    address = 0x2BC44 - len(narshe_skip_sub.bytestring)
+    narshe_skip_sub.set_location(address + 0xA0000)
+    narshe_skip_sub.write(outfile)
+    narshe_skip_sub.bytestring = [0xB2, address & 0xFF, (address >> 8) & 0xFF, address >> 16]
     narshe_skip_sub.set_location(0xAADC4)
     narshe_skip_sub.write(outfile)
 

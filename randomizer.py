@@ -900,7 +900,11 @@ def manage_shops():
 
 
 if __name__ == "__main__":
-    sourcefile = argv[1]
+    if len(argv) > 2:
+        sourcefile = argv[1].strip()
+    else:
+        sourcefile = raw_input("Path to rom file? ").strip()
+
     f = open(sourcefile, 'rb')
     h = md5(f.read()).hexdigest()
     if h != MD5HASH:
@@ -908,7 +912,14 @@ if __name__ == "__main__":
                "hash of the english FF6 1.0 rom!")
     f.close()
 
-    version, flags, seed = tuple(argv[2].split('.'))
+    if len(argv) > 2:
+        fullseed = argv[2].strip()
+    else:
+        fullseed = raw_input("Seed? ").strip()
+        if '.' not in fullseed:
+            fullseed = "..%s" % fullseed
+
+    version, flags, seed = tuple(fullseed.split('.'))
     seed = seed.strip()
     if not seed:
         seed = int(time())

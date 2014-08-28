@@ -12,7 +12,7 @@ Arguments:
 
 VERSION, FLAGS, and SEED VALUE do not need to be supplied. To generate a
 randomization without any options, simply run:
-    python randomizer.py ..
+    python randomizer.py <ROMFILE> ..
 
 Program Flags:
     v   Display each character's battle commands after randomization.

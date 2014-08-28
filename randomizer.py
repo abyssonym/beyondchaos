@@ -454,6 +454,11 @@ def manage_commands(commands, characters):
     ungray_statscreen_sub.set_location(0x35EE1)
     ungray_statscreen_sub.write(outfile)
 
+    locke_scenario_sub = Substitution()
+    locke_scenario_sub.bytestring = [0x9D, 0xAB]
+    locke_scenario_sub.set_location(0x42AC4)
+    locke_scenario_sub.write(outfile)
+
     invalid_commands = ["fight", "item", "magic", "xmagic",
                         "def", "row", "summon", "revert"]
     if random.randint(1, 5) != 5:

@@ -399,9 +399,28 @@ def manage_commands(commands, characters):
     learn_blitz_sub.bytestring = [0xEA] * 2
     learn_blitz_sub.set_location(0x261E5)
     learn_blitz_sub.write(outfile)
-    learn_blitz_sub.bytestring = [0xEA] * 2
-    learn_blitz_sub.set_location(0xA190)
+    learn_blitz_sub.bytestring = [0xEA] * 4
+    learn_blitz_sub.set_location(0xA18E)
     learn_blitz_sub.write(outfile)
+
+    learn_multiple_sub = Substitution()
+    learn_multiple_sub.set_location(0xA1B4)
+    reljump = 0xFE - (learn_multiple_sub.location - 0xA186)
+    learn_multiple_sub.bytestring = [0xF0, reljump]
+    learn_multiple_sub.write(outfile)
+
+    learn_multiple_sub.set_location(0xA1D6)
+    reljump = 0xFE - (learn_multiple_sub.location - 0xA18A)
+    learn_multiple_sub.bytestring = [0xF0, reljump]
+    learn_multiple_sub.write(outfile)
+
+    learn_multiple_sub.set_location(0xA200)
+    learn_multiple_sub.bytestring = [0xEA]
+    learn_multiple_sub.write(outfile)
+
+    learn_multiple_sub.set_location(0x261DD)
+    learn_multiple_sub.bytestring = [0xEA] * 3
+    learn_multiple_sub.write(outfile)
 
     rage_blank_sub = Substitution()
     rage_blank_sub.bytestring = [0x01] + ([0x00] * 31)

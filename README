@@ -32,7 +32,7 @@ Randomizer Flags:
     t   Randomize treasure, including chests, colosseum, and enemy drops.
     p   Randomize shops and shop prices.
     u   Umaro risk.
-    z   Randomize blitz inputs.
+    l   Randomize blitz inputs.
 
 If no randomizer flags are provided, all of them will be activated.
 

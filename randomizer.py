@@ -1057,7 +1057,7 @@ if __name__ == "__main__":
         # do this after swapping beserk
         manage_natural_magic(characters)
 
-    if 'z' in flags:
+    if 'l' in flags:
         manage_blitz()
 
     if VERBOSE:

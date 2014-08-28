@@ -914,14 +914,38 @@ def manage_treasure(monsters):
 
 def manage_blitz():
     blitzspecptr = 0x47a40
+    adjacency = {0x7: [0xE, 0x8],
+                 0x8: [0x7, 0x9],
+                 0x9: [0x8, 0xA],
+                 0xA: [0x9, 0xB],
+                 0xB: [0xA, 0xC],
+                 0xC: [0xB, 0xD],
+                 0xD: [0xC, 0xE],
+                 0xE: [0xD, 0x7]}
     f = open(outfile, 'r+b')
-    for i in xrange(0, 8):
+    for i in xrange(1, 8):
+        # skip pummel
         current = blitzspecptr + (i * 12)
         f.seek(current + 11)
         length = ord(f.read(1)) / 2
         newlength = random.randint(1, length) + random.randint(0, length)
         newlength = min(newlength, 10)
-        newcmd = [random.randint(0x03, 0x0E) for _ in xrange(newlength)]
+
+        newcmd = []
+        while len(newcmd) < newlength:
+            prev = newcmd[-1] if newcmd else None
+            pprev = newcmd[-2] if len(newcmd) > 1 else None
+            if (prev and prev in adjacency and random.randint(1, 3) != 3):
+                nextin = random.choice(adjacency[prev])
+                if nextin == pprev and random.randint(1, 4) != 4:
+                    nextin = [i for i in adjacency[prev] if i != nextin][0]
+                newcmd.append(nextin)
+            else:
+                if random.choice([True, False]):
+                    newcmd.append(random.randint(0x07, 0x0E))
+                else:
+                    newcmd.append(random.randint(0x03, 0x06))
+
         newcmd += [0x01]
         while len(newcmd) < 11:
             newcmd += [0x00]

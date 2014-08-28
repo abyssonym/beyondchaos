@@ -15,7 +15,7 @@ from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 
 
-VERSION = "1"
+VERSION = "2"
 VERBOSE = False
 
 
@@ -912,6 +912,24 @@ def manage_treasure(monsters):
     return chests
 
 
+def manage_blitz():
+    blitzspecptr = 0x47a40
+    f = open(outfile, 'r+b')
+    for i in xrange(0, 8):
+        current = blitzspecptr + (i * 12)
+        f.seek(current + 11)
+        length = ord(f.read(1)) / 2
+        newlength = random.randint(1, length) + random.randint(0, length)
+        newlength = min(newlength, 10)
+        newcmd = [random.randint(0x03, 0x0E) for _ in xrange(newlength)]
+        newcmd += [0x01]
+        while len(newcmd) < 11:
+            newcmd += [0x00]
+        newcmd += [(newlength+1) * 2]
+        f.seek(current)
+        f.write("".join(map(chr, newcmd)))
+
+
 def manage_shops():
     for i in xrange(0x80):
         pointer = 0x47AC0 + (9*i)
@@ -1038,6 +1056,9 @@ if __name__ == "__main__":
     if 'o' in flags:
         # do this after swapping beserk
         manage_natural_magic(characters)
+
+    if 'z' in flags:
+        manage_blitz()
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

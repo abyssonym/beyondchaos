@@ -92,6 +92,17 @@ class SpellBlock:
         self.no_split_damage = effect1 & 0x40
         self.abort_on_allies = effect1 & 0x80
 
+        f.seek(self.pointer+3)
+        self.dmgtype = ord(f.read(1))
+        self.outsidebattle = self.dmgtype & 0x01
+        self.unreflectable = self.dmgtype & 0x02
+        self.learnifcast = self.dmgtype & 0x04
+        self.enablerunic = self.dmgtype & 0x08
+        self.unknown = self.dmgtype & 0x10
+        self.retargetdead = self.dmgtype & 0x20
+        self.casterdies = self.dmgtype & 0x40
+        self.concernsmp = self.dmgtype & 0x80
+
         f.seek(self.pointer+4)
         effect2 = ord(f.read(1))
         self.healing = effect2 & 0x01
@@ -118,6 +129,13 @@ class SpellBlock:
         self.condemned = statuses[1] & 0x1
         self.statuses = statuses
         self.has_status = sum([bin(b).count("1") for b in statuses])
+        f.close()
+
+    def fix_reflect(self, filename):
+        self.dmgtype |= 0x02
+        f = open(filename, 'r+b')
+        f.seek(self.pointer+3)
+        f.write(chr(self.dmgtype))
         f.close()
 
     def rank(self):

@@ -503,6 +503,10 @@ def manage_commands(commands, characters):
             c.set_battle_command(2, command_id=0xFF)
         c.write_battle_commands(outfile)
 
+    magitek_skills = [SpellBlock(i, sourcefile) for i in xrange(0x83, 0x8B)]
+    for ms in magitek_skills:
+        ms.fix_reflect(outfile)
+
     return commands, characters
 
 

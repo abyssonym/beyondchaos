@@ -1,384 +1,384 @@
-Guard_____,f0000,f3000,f3d00,f4300,f4600
-Soldier___,f0020,f3004,f3d04,f4302,f4602
-Templar___,f0040,f3008,f3d08,f4304,f4604
-Ninja_____,f0060,f300c,f3d0c,f4306,f4606
-Samurai___,f0080,f3010,f3d10,f4308,f4608
-Orog______,f00a0,f3014,f3d14,f430a,f460a
-Mag Roader,f00c0,f3018,f3d18,f430c,f460c
-Retainer__,f00e0,f301c,f3d1c,f430e,f460e
-Hazer_____,f0100,f3020,f3d20,f4310,f4610
-Dahling___,f0120,f3024,f3d24,f4312,f4612
-Rain Man__,f0140,f3028,f3d28,f4314,f4614
-Brawler___,f0160,f302c,f3d2c,f4316,f4616
-Apokryphos,f0180,f3030,f3d30,f4318,f4618
-Dark Force,f01a0,f3034,f3d34,f431a,f461a
-Whisper___,f01c0,f3038,f3d38,f431c,f461c
-Over-Mind_,f01e0,f303c,f3d3c,f431e,f461e
-Osteosaur_,f0200,f3040,f3d40,f4320,f4620
-Commander_,f0220,f3044,f3d44,f4322,f4622
-Rhodox____,f0240,f3048,f3d48,f4324,f4624
-Were-Rat__,f0260,f304c,f3d4c,f4326,f4626
-Ursus_____,f0280,f3050,f3d50,f4328,f4628
-Rhinotaur_,f02a0,f3054,f3d54,f432a,f462a
-Steroidite,f02c0,f3058,f3d58,f432c,f462c
-Leafer____,f02e0,f305c,f3d5c,f432e,f462e
-Stray Cat_,f0300,f3060,f3d60,f4330,f4630
-Lobo______,f0320,f3064,f3d64,f4332,f4632
-Doberman__,f0340,f3068,f3d68,f4334,f4634
-Vomammoth_,f0360,f306c,f3d6c,f4336,f4636
-Fidor_____,f0380,f3070,f3d70,f4338,f4638
-Baskervor_,f03a0,f3074,f3d74,f433a,f463a
-Suriander_,f03c0,f3078,f3d78,f433c,f463c
-Chimera___,f03e0,f307c,f3d7c,f433e,f463e
-Behemoth__,f0400,f3080,f3d80,f4340,f4640
-Mesosaur__,f0420,f3084,f3d84,f4342,f4642
-Pterodon__,f0440,f3088,f3d88,f4344,f4644
-FossilFang,f0460,f308c,f3d8c,f4346,f4666
-White Drgn,f0480,f3090,f3d90,f4348,f4669
-Doom Drgn_,f04a0,f3094,f3d94,f434a,f466a
-Brachosaur,f04c0,f3098,f3d98,f434c,f466c
-Tyranosaur,f04e0,f309c,f3d9c,f434e,f466e
-Dark Wind_,f0500,f30a0,f3da0,f4350,f4650
-Beakor____,f0520,f30a4,f3da4,f4352,f4652
-Vulture___,f0540,f30a8,f3da8,f4354,f4654
-Harpy_____,f0560,f30ac,f3dac,f4356,f4656
-HermitCrab,f0580,f30b0,f3db0,f4358,f4658
-Trapper___,f05a0,f30b4,f3db4,f435a,f465a
-Hornet____,f05c0,f30b8,f3db8,f435c,f465c
-CrassHoppr,f05e0,f30bc,f3dbc,f435e,f465e
-Delta Bug_,f0600,f30c0,f3dc0,f4360,f4660
-Gilomantis,f0620,f30c4,f3dc4,f4362,f4662
-Trilium___,f0640,f30c8,f3dc8,f4364,f4664
-Nightshade,f0660,f30cc,f3dcc,f4366,f4666
-TumbleWeed,f0680,f30d0,f3dd0,f4368,f4668
-Bloompire_,f06a0,f30d4,f3dd4,f436a,f466a
-Trilobiter,f06c0,f30d8,f3dd8,f436c,f466c
-Siegfried_,f06e0,f30dc,f3ddc,f436e,f466e
-Nautiloid_,f0700,f30e0,f3de0,f4370,f4670
-Exocite___,f0720,f30e4,f3de4,f4372,f4672
-Anguiform_,f0740,f30e8,f3de8,f4374,f4674
-Reach Frog,f0760,f30ec,f3dec,f4376,f4676
-Lizard____,f0780,f30f0,f3df0,f4378,f4678
-ChickenLip,f07a0,f30f4,f3df4,f437a,f467a
-Hoover____,f07c0,f30f8,f3df8,f437c,f467c
-Rider_____,f07e0,f30fc,f3dfc,f437e,f467e
-Chupon____,f0800,f3100,f3e00,f4380,f4680
-Pipsqueak_,f0820,f3104,f3e04,f4382,f4682
-M-TekArmor,f0840,f3108,f3e08,f4384,f4684
-Sky Armor_,f0860,f310c,f3e0c,f4386,f4686
-Telstar___,f0880,f3110,f3e10,f4388,f4688
-Lethal Wpn,f08a0,f3114,f3e14,f438a,f468a
-Vaporite__,f08c0,f3118,f3e18,f438c,f468c
-Flan______,f08e0,f311c,f3e1c,f438e,f468e
-Ing_______,f0900,f3120,f3e20,f4390,f4690
-Humpty____,f0920,f3124,f3e24,f4392,f4692
-Brainpan__,f0940,f3128,f3e28,f4394,f4694
-Cruller___,f0960,f312c,f3e2c,f4396,f4696
-Cactrot___,f0980,f3130,f3e30,f4398,f4698
-Repo Man__,f09a0,f3134,f3e34,f439a,f469a
-Harvester_,f09c0,f3138,f3e38,f439c,f469c
-Bomb______,f09e0,f313c,f3e3c,f439e,f469e
-Still Life,f0a00,f3140,f3e40,f43a0,f46a0
-Boxed Set_,f0a20,f3144,f3e44,f43a2,f46a2
-SlamDancer,f0a40,f3148,f3e48,f43a4,f46a4
-HadesGigas,f0a60,f314c,f3e4c,f43a6,f46a6
-Pug_______,f0a80,f3150,f3e50,f43a8,f46a8
-Magic Urn_,f0aa0,f3154,f3e54,f43aa,f46aa
-Mover_____,f0ac0,f3158,f3e58,f43ac,f46ac
-Figaliz___,f0ae0,f315c,f3e5c,f43ae,f46ae
-Buffalax__,f0b00,f3160,f3e60,f43b0,f46b0
-Aspik_____,f0b20,f3164,f3e64,f43b2,f46b2
-Ghost_____,f0b40,f3168,f3e68,f43b4,f46b4
-Crawler___,f0b60,f316c,f3e6c,f43b6,f46b6
-Sand Ray__,f0b80,f3170,f3e70,f43b8,f46b8
-Areneid___,f0ba0,f3174,f3e74,f43ba,f46ba
-Actaneon__,f0bc0,f3178,f3e78,f43bc,f46bc
-Sand Horse,f0be0,f317c,f3e7c,f43be,f46be
-Dark Side_,f0c00,f3180,f3e80,f43c0,f46c0
-Mad Oscar_,f0c20,f3184,f3e84,f43c2,f46c2
-Crawly____,f0c40,f3188,f3e88,f4354,f46c4
-Bleary____,f0c60,f318c,f3e8c,f43c6,f46c6
-Marshal___,f0c80,f3190,f3e90,f43c8,f46c8
-Trooper___,f0ca0,f3194,f3e94,f43ca,f46ca
-General___,f0cc0,f3198,f3e98,f43cc,f46cc
-Covert____,f0ce0,f319c,f3e9c,f43ce,f46ce
-Ogor______,f0d00,f31a0,f3ea0,f43d0,f46d0
-Warlock___,f0d20,f31a4,f3ea4,f43d2,f46d2
-Madam_____,f0d40,f31a8,f3ea8,f43d4,f46d4
-Joker_____,f0d60,f31ac,f3eac,f43d6,f46d6
-Iron Fist_,f0d80,f31b0,f3eb0,f43d8,f46d8
-Goblin____,f0da0,f31b4,f3eb4,f43da,f46da
-Apparite__,f0dc0,f31b8,f3eb8,f43dc,f46dc
-PowerDemon,f0de0,f31bc,f3ebc,f43de,f46de
-Displayer_,f0e00,f31c0,f3ec0,f43e0,f46e0
-Vector Pup,f0e20,f31c4,f3ec4,f43e2,f46e2
-Peepers___,f0e40,f31c8,f3ec8,f43e4,f46e4
-Sewer Rat_,f0e60,f31cc,f3ecc,f43e6,f46e6
-Slatter___,f0e80,f31d0,f3ed0,f43e8,f46e8
-Rhinox____,f0ea0,f31d4,f3ed4,f43ea,f46ea
-Rhobite___,f0ec0,f31d8,f3ed8,f43ec,f46ec
-Wild Cat__,f0ee0,f31dc,f3edc,f43ee,f46ee
-Red Fang__,f0f00,f31e0,f3ee0,f43f0,f46f0
-Bounty Man,f0f20,f31e4,f3ee4,f43f2,f46f2
-Tusker____,f0f40,f31e8,f3ee8,f43f4,f46f4
-Ralph_____,f0f60,f31ec,f3eec,f43f6,f46f6
-Chitonid__,f0f80,f31f0,f3ef0,f43f8,f46f8
-Wart Puck_,f0fa0,f31f4,f3ef4,f43fa,f46fa
-Rhyos_____,f0fc0,f31f8,f3ef8,f43fc,f46fc
-SrBehemoth,f0fe0,f31fc,f3efc,f43fe,f46fe
-Vectaur___,f1000,f3200,f3f00,f4400,f4700
-Wyvern____,f1020,f3204,f3f04,f4402,f4702
-Zombone___,f1040,f3208,f3f08,f4404,f4704
-Dragon____,f1060,f320c,f3f0c,f4406,f4706
-Brontaur__,f1080,f3210,f3f10,f4408,f4708
-Allosaurus,f10a0,f3214,f3f14,f440a,f470a
-Cirpius___,f10c0,f3218,f3f18,f440c,f470c
-Sprinter__,f10e0,f321c,f3f1c,f440e,f470e
-Gobbler___,f1100,f3220,f3f20,f4410,f4710
-Harpiai___,f1120,f3224,f3f24,f4412,f4712
-GloomShell,f1140,f3228,f3f28,f4414,f4714
-Drop______,f1160,f322c,f3f2c,f4416,f4716
-Mind Candy,f1180,f3230,f3f30,f4418,f4718
-WeedFeeder,f11a0,f3234,f3f34,f441a,f471a
-Luridan___,f11c0,f3238,f3f38,f441c,f471c
-Toe Cutter,f11e0,f323c,f3f3c,f441e,f471e
-Over Grunk,f1200,f3240,f3f40,f4420,f4720
-Exoray____,f1220,f3244,f3f44,f4422,f4722
-Crusher___,f1240,f3248,f3f48,f4424,f4724
-Uroburos__,f1260,f324c,f3f4c,f4426,f4726
-Primordite,f1280,f3250,f3f50,f4428,f4728
-Sky Cap___,f12a0,f3254,f3f54,f442a,f472a
-Cephaler__,f12c0,f3258,f3f58,f442c,f472c
-Maliga____,f12e0,f325c,f3f5c,f442e,f472e
-Gigan Toad,f1300,f3260,f3f60,f4430,f4730
-Geckorex__,f1320,f3264,f3f64,f4432,f4732
-Cluck_____,f1340,f3268,f3f68,f4434,f4734
-Land Worm_,f1360,f326c,f3f6c,f4436,f4736
-Test Rider,f1380,f3270,f3f70,f4438,f4738
-PlutoArmor,f13a0,f3274,f3f74,f443a,f473a
-Tomb Thumb,f13c0,f3278,f3f78,f443c,f473c
-HeavyArmor,f13e0,f327c,f3f7c,f443e,f473e
-Chaser____,f1400,f3280,f3f80,f4440,f4740
-Scullion__,f1420,f3284,f3f84,f4442,f4742
-Poplium___,f1440,f3288,f3f88,f4444,f4744
-Intangir__,f1460,f328c,f3f8c,f4446,f4746
-Misfit____,f1480,f3290,f3f90,f4448,f4748
-Eland_____,f14a0,f3294,f3f94,f444a,f474a
-Enuo______,f14c0,f3298,f3f98,f444c,f474c
-Deep Eye__,f14e0,f329c,f3f9c,f444e,f474e
-GreaseMonk,f1500,f32a0,f3fa0,f4450,f4750
-NeckHunter,f1520,f32a4,f3fa4,f4452,f4752
-Grenade___,f1540,f32a8,f3fa8,f4454,f4754
-Critic____,f1560,f32ac,f3fac,f4456,f4756
-Pan Dora__,f1580,f32b0,f3fb0,f4458,f4758
-SoulDancer,f15a0,f32b4,f3fb4,f445a,f475a
-Gigantos__,f15c0,f32b8,f3fb8,f445c,f475c
-Mag Roader,f15e0,f32bc,f3fbc,f445e,f475e
-Spek Tor__,f1600,f32c0,f3fc0,f4460,f4760
-Parasite__,f1620,f32c4,f3fc4,f4462,f4762
-EarthGuard,f1640,f32c8,f3fc8,f4464,f4764
-Coelecite_,f1660,f32cc,f3fcc,f4466,f4766
-Anemone___,f1680,f32d0,f3fd0,f4468,f4768
-Hipocampus,f16a0,f32d4,f3fd4,f446a,f476a
-Spectre___,f16c0,f32d8,f3fd8,f446c,f476c
-Evil Oscar,f16e0,f32dc,f3fdc,f446e,f476e
-Slurm_____,f1700,f32e0,f3fe0,f4470,f4770
-Latimeria_,f1720,f32e4,f3fe4,f4472,f4772
-StillGoing,f1740,f32e8,f3fe8,f4474,f4774
-Allo Ver__,f1760,f32ec,f3fec,f4476,f4776
-Phase_____,f1780,f32f0,f3ff0,f4478,f4778
-Outsider__,f17a0,f32f4,f3ff4,f447a,f477a
-Barb-e____,f17c0,f32f8,f3ff8,f447c,f477c
-Parasoul__,f17e0,f32fc,f3ffc,f447e,f477e
-Pm Stalker,f1800,f3300,f4000,f4480,f4780
-Hemophyte_,f1820,f3304,f4004,f4482,f4782
-Sp Forces_,f1840,f3308,f4008,f4484,f4784
-Nohrabbit_,f1860,f330c,f400c,f4486,f4786
-Wizard____,f1880,f3310,f4010,f4488,f4788
-Scrapper__,f18a0,f3314,f4014,f448a,f478a
-Ceritops__,f18c0,f3318,f4018,f448c,f478c
-Commando__,f18e0,f331c,f401c,f448e,f478e
-Opinicus__,f1900,f3320,f4020,f4490,f4790
-Poppers___,f1920,f3324,f4024,f4492,f4792
-Lunaris___,f1940,f3328,f4028,f4494,f4794
-Garm______,f1960,f332c,f402c,f4496,f4796
-Vindr_____,f1980,f3330,f4030,f4498,f4798
-Kiwok_____,f19a0,f3334,f4034,f449a,f479a
-Nastidon__,f19c0,f3338,f4038,f449c,f479c
-Rinn______,f19e0,f333c,f403c,f449e,f479e
-Insecare__,f1a00,f3340,f4040,f44a0,f47a0
-Vermin____,f1a20,f3344,f4044,f44a2,f47a2
-Mantodea__,f1a40,f3348,f4048,f44a4,f47a4
-Bogy______,f1a60,f334c,f404c,f44a6,f47a6
-Prussian__,f1a80,f3350,f4050,f44a8,f47a8
-Black Drgn,f1aa0,f3354,f4054,f44aa,f47aa
-Adamanchyt,f1ac0,f3358,f4058,f44ac,f47ac
-Dante_____,f1ae0,f335c,f405c,f44ae,f47ae
-Wirey Drgn,f1b00,f3360,f4060,f44b0,f47b0
-Dueller___,f1b20,f3364,f4064,f44b2,f47b2
-Psychot___,f1b40,f3368,f4068,f44b4,f47b4
-Muus______,f1b60,f336c,f406c,f44b6,f47b6
-Karkass___,f1b80,f3370,f4070,f44b8,f47b8
-Punisher__,f1ba0,f3374,f4074,f44ba,f47ba
-Balloon___,f1bc0,f3378,f4078,f44bc,f47bc
-Gabbldegak,f1be0,f337c,f407c,f44be,f47be
-GtBehemoth,f1c00,f3380,f4080,f44c0,f47c0
-Scorpion__,f1c20,f3384,f4084,f44c2,f47c2
-Chaos Drgn,f1c40,f3388,f4088,f44c4,f47c4
-Spit Fire_,f1c60,f338c,f408c,f44c6,f47c6
-Vectagoyle,f1c80,f3390,f4090,f44c8,f47c8
-Lich______,f1ca0,f3394,f4094,f44ca,f47ca
-Osprey____,f1cc0,f3398,f4098,f44cc,f47cc
-Mag Roader,f1ce0,f339c,f409c,f44ce,f47ce
-Bug_______,f1d00,f33a0,f40a0,f44d0,f47d0
-Sea Flower,f1d20,f33a4,f40a4,f44d2,f47d2
-Fortis____,f1d40,f33a8,f40a8,f44d4,f47d4
-Abolisher_,f1d60,f33ac,f40ac,f44d6,f47d6
-Aquila____,f1d80,f33b0,f40b0,f44d8,f47d8
-Junk______,f1da0,f33b4,f40b4,f44da,f47da
-Mandrake__,f1dc0,f33b8,f40b8,f44dc,f47dc
-1st Class_,f1de0,f33bc,f40bc,f44de,f47de
-Tap Dancer,f1e00,f33c0,f40c0,f44e0,f47e0
-Necromancr,f1e20,f33c4,f40c4,f44e2,f47e2
-Borras____,f1e40,f33c8,f40c8,f44e4,f47e4
-Mag Roader,f1e60,f33cc,f40cc,f44e6,f47e6
-Wild Rat__,f1e80,f33d0,f40d0,f44e8,f47e8
-Gold Bear_,f1ea0,f33d4,f40d4,f44ea,f47ea
-Innoc_____,f1ec0,f33d8,f40d8,f44ec,f47ec
-Trixter___,f1ee0,f33dc,f40dc,f44ee,f47ee
-Red Wolf__,f1f00,f33e0,f40e0,f44f0,f47f0
-Didalos___,f1f20,f33e4,f40e4,f44f2,f47f2
-Woolly____,f1f40,f33e8,f40e8,f44f4,f47f4
-Veteran___,f1f60,f33ec,f40ec,f44f6,f47f6
-Sky Base__,f1f80,f33f0,f40f0,f44f8,f47f8
-IronHitman,f1fa0,f33f4,f40f4,f44fa,f47fa
-Io________,f1fc0,f33f8,f40f8,f44fc,f47fc
-Pugs______,f1fe0,f33fc,f40fc,f44fe,f47fe
-Whelk_____,f2000,f3400,f4100,f4500,f4800
-Presenter_,f2020,f3404,f4104,f4502,f4802
-Mega Armor,f2040,f3408,f4108,f4504,f4804
-Vargas____,f2060,f340c,f410c,f4506,f4806
-TunnelArmr,f2080,f3410,f4110,f4508,f4808
-Prometheus,f20a0,f3414,f4114,f450a,f480a
-GhostTrain,f20c0,f3418,f4118,f450c,f480c
-Dadaluma__,f20e0,f341c,f411c,f450e,f480e
-Shiva_____,f2100,f3420,f4120,f4510,f4810
-Ifrit_____,f2120,f3424,f4124,f4512,f4812
-Number 024,f2140,f3428,f4128,f4514,f4814
-Number 128,f2160,f342c,f412c,f4516,f4816
-Inferno___,f2180,f3430,f4130,f4518,f4818
-Crane_____,f21a0,f3434,f4134,f451a,f481a
-Crane_____,f21c0,f3438,f4138,f451c,f481c
-Umaro_____,f21e0,f343c,f413c,f451e,f481e
-Umaro_____,f2200,f3440,f4140,f4520,f4820
-Guardian__,f2220,f3444,f4144,f4522,f4822
-Guardian__,f2240,f3448,f4148,f4524,f4824
-Air Force_,f2260,f344c,f414c,f4526,f4826
-Tritoch___,f2280,f3450,f4150,f4528,f4828
-Tritoch___,f22a0,f3454,f4154,f452a,f482a
-FlameEater,f22c0,f3458,f4158,f452c,f482c
-AtmaWeapon,f22e0,f345c,f415c,f452e,f482e
-Nerapa____,f2300,f3460,f4160,f4530,f4830
-SrBehemoth,f2320,f3464,f4164,f4532,f4832
-Kefka_____,f2340,f3468,f4168,f4534,f4834
-Tentacle__,f2360,f346c,f416c,f4536,f4836
-Dullahan__,f2380,f3470,f4170,f4538,f4838
-Doom Gaze_,f23a0,f3474,f4174,f453a,f483a
-Chadarnook,f23c0,f3478,f4178,f453c,f483c
-Curley____,f23e0,f347c,f417c,f453e,f483e
-Larry_____,f2400,f3480,f4180,f4540,f4840
-Moe_______,f2420,f3484,f4184,f4542,f4842
-Wrexsoul__,f2440,f3488,f4188,f4544,f4844
-Hidon_____,f2460,f348c,f418c,f4546,f4846
-KatanaSoul,f2480,f3490,f4190,f4548,f4848
-L.30 Magic,f24a0,f3494,f4194,f454a,f484a
-Hidonite__,f24c0,f3498,f4198,f454c,f484c
-Doom______,f24e0,f349c,f419c,f454e,f484e
-Goddess___,f2500,f34a0,f41a0,f4550,f4850
-Poltrgeist,f2520,f34a4,f41a4,f4552,f4852
-Kefka_____,f2540,f34a8,f41a8,f4554,f4854
-L.40 Magic,f2560,f34ac,f41ac,f4556,f4856
-Ultros____,f2580,f34b0,f41b0,f4558,f4858
-Ultros____,f25a0,f34b4,f41b4,f455a,f485a
-Ultros____,f25c0,f34b8,f41b8,f455c,f485c
-Chupon____,f25e0,f34bc,f41bc,f455e,f485e
-L.20 Magic,f2600,f34c0,f41c0,f4560,f4860
-Siegfried_,f2620,f34c4,f41c4,f4562,f4862
-L.10 Magic,f2640,f34c8,f41c8,f4564,f4864
-L.50 Magic,f2660,f34cc,f41cc,f4566,f4866
-Head______,f2680,f34d0,f41d0,f4568,f4868
-Whelk Head,f26a0,f34d4,f41d4,f456a,f486a
-Colossus__,f26c0,f34d8,f41d8,f456c,f486c
-CzarDragon,f26e0,f34dc,f41dc,f456e,f486e
-Master Pug,f2700,f34e0,f41e0,f4570,f4870
-L.60 Magic,f2720,f34e4,f41e4,f4572,f4872
-Merchant__,f2740,f34e8,f41e8,f4574,f4874
-B.Day Suit,f2760,f34ec,f41ec,f4576,f4876
-Tentacle__,f2780,f34f0,f41f0,f4578,f4878
-Tentacle__,f27a0,f34f4,f41f4,f457a,f487a
-Tentacle__,f27c0,f34f8,f41f8,f457c,f487c
-RightBlade,f27e0,f34fc,f41fc,f457e,f487e
-Left Blade,f2800,f3500,f4200,f4580,f4880
-Rough_____,f2820,f3504,f4204,f4582,f4882
-Striker___,f2840,f3508,f4208,f4584,f4884
-L.70 Magic,f2860,f350c,f420c,f4586,f4886
-Tritoch___,f2880,f3510,f4210,f4588,f4888
-Laser Gun_,f28a0,f3514,f4214,f458a,f488a
-Speck_____,f28c0,f3518,f4218,f458c,f488c
-MissileBay,f28e0,f351c,f421c,f458e,f488e
-Chadarnook,f2900,f3520,f4220,f4590,f4890
-Ice Dragon,f2920,f3524,f4224,f4592,f4892
-Kefka_____,f2940,f3528,f4228,f4594,f4894
-Storm Drgn,f2960,f352c,f422c,f4596,f4896
-Dirt Drgn_,f2980,f3530,f4230,f4598,f4898
-Ipooh_____,f29a0,f3534,f4234,f459a,f489a
-Leader____,f29c0,f3538,f4238,f459c,f489c
-Grunt_____,f29e0,f353c,f423c,f459e,f489e
-Gold Drgn_,f2a00,f3540,f4240,f45a0,f48a0
-Skull Drgn,f2a20,f3544,f4244,f45a2,f48a2
-Blue Drgn_,f2a40,f3548,f4248,f45a4,f48a4
-Red Dragon,f2a60,f354c,f424c,f45a6,f48a6
-Piranha___,f2a80,f3550,f4250,f45a8,f48a8
-Rizopas___,f2aa0,f3554,f4254,f45aa,f48aa
-Specter___,f2ac0,f3558,f4258,f45ac,f48ac
-Short Arm_,f2ae0,f355c,f425c,f45ae,f48ae
-Long Arm__,f2b00,f3560,f4260,f45b0,f48b0
-Face______,f2b20,f3564,f4264,f45b2,f48b2
-Tiger_____,f2b40,f3568,f4268,f45b4,f48b4
-Tools_____,f2b60,f356c,f426c,f45b6,f48b6
-Magic_____,f2b80,f3570,f4270,f45b8,f48b8
-Hit_______,f2ba0,f3574,f4274,f45ba,f48ba
-Girl______,f2bc0,f3578,f4278,f45bc,f48bc
-Sleep_____,f2be0,f357c,f427c,f45be,f48be
-Hidonite__,f2c00,f3580,f4280,f45c0,f48c0
-Hidonite__,f2c20,f3584,f4284,f45c2,f48c2
-Hidonite__,f2c40,f3588,f4288,f45c4,f48c4
-L.80 Magic,f2c60,f358c,f428c,f45c6,f48c6
-L.90 Magic,f2c80,f3590,f4290,f45c8,f48c8
-ProtoArmor,f2ca0,f3594,f4294,f45ca,f48ca
-MagiMaster,f2cc0,f3598,f4298,f45cc,f48cc
-SoulSaver_,f2ce0,f359c,f429c,f45ce,f48ce
-Ultros____,f2d00,f35a0,f42a0,f45d0,f48d0
-Naughty___,f2d20,f35a4,f42a4,f45d2,f48d2
-Phunbaba__,f2d40,f35a8,f42a8,f45d4,f48d4
-Phunbaba__,f2d60,f35ac,f42ac,f45d6,f48d6
-Phunbaba__,f2d80,f35b0,f42b0,f45d8,f48d8
-Phunbaba__,f2da0,f35b4,f42b4,f45da,f48da
-__________,f2dc0,f35b8,f42b8,f45dc,f48dc
-__________,f2de0,f35bc,f42bc,f45de,f48de
-__________,f2e00,f35c0,f42c0,f45e0,f48e0
-Zone Eater,f2e20,f35c4,f42c4,f45e2,f48e2
-__________,f2e40,f35c8,f42c8,f45e4,f48e4
-__________,f2e60,f35cc,f42cc,f45e6,f48e6
-__________,f2e80,f35d0,f42d0,f45e8,f48e8
-Officer___,f2ea0,f35d4,f42d4,f45ea,f48ea
-Cadet_____,f2ec0,f35d8,f42d8,f45ec,f48ec
-__________,f2ee0,f35dc,f42dc,f45ee,f48ee
-__________,f2f00,f35e0,f42e0,f45f0,f48f0
-Soldier___,f2f20,f35e4,f42e4,f45f2,f48f2
-__________,f2f40,f35e8,f42e8,f45f4,f48f4
-__________,f2f60,f35ec,f42ec,f45f6,f48f6
-__________,f2f80,f35f0,f42f0,f45f8,f48f8
-Atma______,f2fa0,f35f4,f42f4,f45fa,f48fa
-__________,f2fc0,f35f8,f42f8,f45fc,f48fc
-__________,f2fe0,f35fc,f42fc,f45fe,f48fe
+Guard_____,f0000,f3000,f3d00,f4300,f4600,f8400
+Soldier___,f0020,f3004,f3d04,f4302,f4602,f8402
+Templar___,f0040,f3008,f3d08,f4304,f4604,f8404
+Ninja_____,f0060,f300c,f3d0c,f4306,f4606,f8406
+Samurai___,f0080,f3010,f3d10,f4308,f4608,f8408
+Orog______,f00a0,f3014,f3d14,f430a,f460a,f840a
+Mag Roader,f00c0,f3018,f3d18,f430c,f460c,f840c
+Retainer__,f00e0,f301c,f3d1c,f430e,f460e,f840e
+Hazer_____,f0100,f3020,f3d20,f4310,f4610,f8410
+Dahling___,f0120,f3024,f3d24,f4312,f4612,f8412
+Rain Man__,f0140,f3028,f3d28,f4314,f4614,f8414
+Brawler___,f0160,f302c,f3d2c,f4316,f4616,f8416
+Apokryphos,f0180,f3030,f3d30,f4318,f4618,f8418
+Dark Force,f01a0,f3034,f3d34,f431a,f461a,f841a
+Whisper___,f01c0,f3038,f3d38,f431c,f461c,f841c
+Over-Mind_,f01e0,f303c,f3d3c,f431e,f461e,f841e
+Osteosaur_,f0200,f3040,f3d40,f4320,f4620,f8420
+Commander_,f0220,f3044,f3d44,f4322,f4622,f8422
+Rhodox____,f0240,f3048,f3d48,f4324,f4624,f8424
+Were-Rat__,f0260,f304c,f3d4c,f4326,f4626,f8426
+Ursus_____,f0280,f3050,f3d50,f4328,f4628,f8428
+Rhinotaur_,f02a0,f3054,f3d54,f432a,f462a,f842a
+Steroidite,f02c0,f3058,f3d58,f432c,f462c,f842c
+Leafer____,f02e0,f305c,f3d5c,f432e,f462e,f842e
+Stray Cat_,f0300,f3060,f3d60,f4330,f4630,f8430
+Lobo______,f0320,f3064,f3d64,f4332,f4632,f8432
+Doberman__,f0340,f3068,f3d68,f4334,f4634,f8434
+Vomammoth_,f0360,f306c,f3d6c,f4336,f4636,f8436
+Fidor_____,f0380,f3070,f3d70,f4338,f4638,f8438
+Baskervor_,f03a0,f3074,f3d74,f433a,f463a,f843a
+Suriander_,f03c0,f3078,f3d78,f433c,f463c,f843c
+Chimera___,f03e0,f307c,f3d7c,f433e,f463e,f843e
+Behemoth__,f0400,f3080,f3d80,f4340,f4640,f8440
+Mesosaur__,f0420,f3084,f3d84,f4342,f4642,f8442
+Pterodon__,f0440,f3088,f3d88,f4344,f4644,f8444
+FossilFang,f0460,f308c,f3d8c,f4346,f4666,f8446
+White Drgn,f0480,f3090,f3d90,f4348,f4669,f8448
+Doom Drgn_,f04a0,f3094,f3d94,f434a,f466a,f844a
+Brachosaur,f04c0,f3098,f3d98,f434c,f466c,f844c
+Tyranosaur,f04e0,f309c,f3d9c,f434e,f466e,f844e
+Dark Wind_,f0500,f30a0,f3da0,f4350,f4650,f8450
+Beakor____,f0520,f30a4,f3da4,f4352,f4652,f8452
+Vulture___,f0540,f30a8,f3da8,f4354,f4654,f8454
+Harpy_____,f0560,f30ac,f3dac,f4356,f4656,f8456
+HermitCrab,f0580,f30b0,f3db0,f4358,f4658,f8458
+Trapper___,f05a0,f30b4,f3db4,f435a,f465a,f845a
+Hornet____,f05c0,f30b8,f3db8,f435c,f465c,f845c
+CrassHoppr,f05e0,f30bc,f3dbc,f435e,f465e,f845e
+Delta Bug_,f0600,f30c0,f3dc0,f4360,f4660,f8460
+Gilomantis,f0620,f30c4,f3dc4,f4362,f4662,f8462
+Trilium___,f0640,f30c8,f3dc8,f4364,f4664,f8464
+Nightshade,f0660,f30cc,f3dcc,f4366,f4666,f8466
+TumbleWeed,f0680,f30d0,f3dd0,f4368,f4668,f8468
+Bloompire_,f06a0,f30d4,f3dd4,f436a,f466a,f846a
+Trilobiter,f06c0,f30d8,f3dd8,f436c,f466c,f846c
+Siegfried_,f06e0,f30dc,f3ddc,f436e,f466e,f846e
+Nautiloid_,f0700,f30e0,f3de0,f4370,f4670,f8470
+Exocite___,f0720,f30e4,f3de4,f4372,f4672,f8472
+Anguiform_,f0740,f30e8,f3de8,f4374,f4674,f8474
+Reach Frog,f0760,f30ec,f3dec,f4376,f4676,f8476
+Lizard____,f0780,f30f0,f3df0,f4378,f4678,f8478
+ChickenLip,f07a0,f30f4,f3df4,f437a,f467a,f847a
+Hoover____,f07c0,f30f8,f3df8,f437c,f467c,f847c
+Rider_____,f07e0,f30fc,f3dfc,f437e,f467e,f847e
+Chupon____,f0800,f3100,f3e00,f4380,f4680,f8480
+Pipsqueak_,f0820,f3104,f3e04,f4382,f4682,f8482
+M-TekArmor,f0840,f3108,f3e08,f4384,f4684,f8484
+Sky Armor_,f0860,f310c,f3e0c,f4386,f4686,f8486
+Telstar___,f0880,f3110,f3e10,f4388,f4688,f8488
+Lethal Wpn,f08a0,f3114,f3e14,f438a,f468a,f848a
+Vaporite__,f08c0,f3118,f3e18,f438c,f468c,f848c
+Flan______,f08e0,f311c,f3e1c,f438e,f468e,f848e
+Ing_______,f0900,f3120,f3e20,f4390,f4690,f8490
+Humpty____,f0920,f3124,f3e24,f4392,f4692,f8492
+Brainpan__,f0940,f3128,f3e28,f4394,f4694,f8494
+Cruller___,f0960,f312c,f3e2c,f4396,f4696,f8496
+Cactrot___,f0980,f3130,f3e30,f4398,f4698,f8498
+Repo Man__,f09a0,f3134,f3e34,f439a,f469a,f849a
+Harvester_,f09c0,f3138,f3e38,f439c,f469c,f849c
+Bomb______,f09e0,f313c,f3e3c,f439e,f469e,f849e
+Still Life,f0a00,f3140,f3e40,f43a0,f46a0,f84a0
+Boxed Set_,f0a20,f3144,f3e44,f43a2,f46a2,f84a2
+SlamDancer,f0a40,f3148,f3e48,f43a4,f46a4,f84a4
+HadesGigas,f0a60,f314c,f3e4c,f43a6,f46a6,f84a6
+Pug_______,f0a80,f3150,f3e50,f43a8,f46a8,f84a8
+Magic Urn_,f0aa0,f3154,f3e54,f43aa,f46aa,f84aa
+Mover_____,f0ac0,f3158,f3e58,f43ac,f46ac,f84ac
+Figaliz___,f0ae0,f315c,f3e5c,f43ae,f46ae,f84ae
+Buffalax__,f0b00,f3160,f3e60,f43b0,f46b0,f84b0
+Aspik_____,f0b20,f3164,f3e64,f43b2,f46b2,f84b2
+Ghost_____,f0b40,f3168,f3e68,f43b4,f46b4,f84b4
+Crawler___,f0b60,f316c,f3e6c,f43b6,f46b6,f84b6
+Sand Ray__,f0b80,f3170,f3e70,f43b8,f46b8,f84b8
+Areneid___,f0ba0,f3174,f3e74,f43ba,f46ba,f84ba
+Actaneon__,f0bc0,f3178,f3e78,f43bc,f46bc,f84bc
+Sand Horse,f0be0,f317c,f3e7c,f43be,f46be,f84be
+Dark Side_,f0c00,f3180,f3e80,f43c0,f46c0,f84c0
+Mad Oscar_,f0c20,f3184,f3e84,f43c2,f46c2,f84c2
+Crawly____,f0c40,f3188,f3e88,f4354,f46c4,f84c4
+Bleary____,f0c60,f318c,f3e8c,f43c6,f46c6,f84c6
+Marshal___,f0c80,f3190,f3e90,f43c8,f46c8,f84c8
+Trooper___,f0ca0,f3194,f3e94,f43ca,f46ca,f84ca
+General___,f0cc0,f3198,f3e98,f43cc,f46cc,f84cc
+Covert____,f0ce0,f319c,f3e9c,f43ce,f46ce,f84ce
+Ogor______,f0d00,f31a0,f3ea0,f43d0,f46d0,f84d0
+Warlock___,f0d20,f31a4,f3ea4,f43d2,f46d2,f84d2
+Madam_____,f0d40,f31a8,f3ea8,f43d4,f46d4,f84d4
+Joker_____,f0d60,f31ac,f3eac,f43d6,f46d6,f84d6
+Iron Fist_,f0d80,f31b0,f3eb0,f43d8,f46d8,f84d8
+Goblin____,f0da0,f31b4,f3eb4,f43da,f46da,f84da
+Apparite__,f0dc0,f31b8,f3eb8,f43dc,f46dc,f84dc
+PowerDemon,f0de0,f31bc,f3ebc,f43de,f46de,f84de
+Displayer_,f0e00,f31c0,f3ec0,f43e0,f46e0,f84e0
+Vector Pup,f0e20,f31c4,f3ec4,f43e2,f46e2,f84e2
+Peepers___,f0e40,f31c8,f3ec8,f43e4,f46e4,f84e4
+Sewer Rat_,f0e60,f31cc,f3ecc,f43e6,f46e6,f84e6
+Slatter___,f0e80,f31d0,f3ed0,f43e8,f46e8,f84e8
+Rhinox____,f0ea0,f31d4,f3ed4,f43ea,f46ea,f84ea
+Rhobite___,f0ec0,f31d8,f3ed8,f43ec,f46ec,f84ec
+Wild Cat__,f0ee0,f31dc,f3edc,f43ee,f46ee,f84ee
+Red Fang__,f0f00,f31e0,f3ee0,f43f0,f46f0,f84f0
+Bounty Man,f0f20,f31e4,f3ee4,f43f2,f46f2,f84f2
+Tusker____,f0f40,f31e8,f3ee8,f43f4,f46f4,f84f4
+Ralph_____,f0f60,f31ec,f3eec,f43f6,f46f6,f84f6
+Chitonid__,f0f80,f31f0,f3ef0,f43f8,f46f8,f84f8
+Wart Puck_,f0fa0,f31f4,f3ef4,f43fa,f46fa,f84fa
+Rhyos_____,f0fc0,f31f8,f3ef8,f43fc,f46fc,f84fc
+SrBehemoth,f0fe0,f31fc,f3efc,f43fe,f46fe,f84fe
+Vectaur___,f1000,f3200,f3f00,f4400,f4700,f8500
+Wyvern____,f1020,f3204,f3f04,f4402,f4702,f8502
+Zombone___,f1040,f3208,f3f08,f4404,f4704,f8504
+Dragon____,f1060,f320c,f3f0c,f4406,f4706,f8506
+Brontaur__,f1080,f3210,f3f10,f4408,f4708,f8508
+Allosaurus,f10a0,f3214,f3f14,f440a,f470a,f850a
+Cirpius___,f10c0,f3218,f3f18,f440c,f470c,f850c
+Sprinter__,f10e0,f321c,f3f1c,f440e,f470e,f850e
+Gobbler___,f1100,f3220,f3f20,f4410,f4710,f8510
+Harpiai___,f1120,f3224,f3f24,f4412,f4712,f8512
+GloomShell,f1140,f3228,f3f28,f4414,f4714,f8514
+Drop______,f1160,f322c,f3f2c,f4416,f4716,f8516
+Mind Candy,f1180,f3230,f3f30,f4418,f4718,f8518
+WeedFeeder,f11a0,f3234,f3f34,f441a,f471a,f851a
+Luridan___,f11c0,f3238,f3f38,f441c,f471c,f851c
+Toe Cutter,f11e0,f323c,f3f3c,f441e,f471e,f851e
+Over Grunk,f1200,f3240,f3f40,f4420,f4720,f8520
+Exoray____,f1220,f3244,f3f44,f4422,f4722,f8522
+Crusher___,f1240,f3248,f3f48,f4424,f4724,f8524
+Uroburos__,f1260,f324c,f3f4c,f4426,f4726,f8526
+Primordite,f1280,f3250,f3f50,f4428,f4728,f8528
+Sky Cap___,f12a0,f3254,f3f54,f442a,f472a,f852a
+Cephaler__,f12c0,f3258,f3f58,f442c,f472c,f852c
+Maliga____,f12e0,f325c,f3f5c,f442e,f472e,f852e
+Gigan Toad,f1300,f3260,f3f60,f4430,f4730,f8530
+Geckorex__,f1320,f3264,f3f64,f4432,f4732,f8532
+Cluck_____,f1340,f3268,f3f68,f4434,f4734,f8534
+Land Worm_,f1360,f326c,f3f6c,f4436,f4736,f8536
+Test Rider,f1380,f3270,f3f70,f4438,f4738,f8538
+PlutoArmor,f13a0,f3274,f3f74,f443a,f473a,f853a
+Tomb Thumb,f13c0,f3278,f3f78,f443c,f473c,f853c
+HeavyArmor,f13e0,f327c,f3f7c,f443e,f473e,f853e
+Chaser____,f1400,f3280,f3f80,f4440,f4740,f8540
+Scullion__,f1420,f3284,f3f84,f4442,f4742,f8542
+Poplium___,f1440,f3288,f3f88,f4444,f4744,f8544
+Intangir__,f1460,f328c,f3f8c,f4446,f4746,f8546
+Misfit____,f1480,f3290,f3f90,f4448,f4748,f8548
+Eland_____,f14a0,f3294,f3f94,f444a,f474a,f854a
+Enuo______,f14c0,f3298,f3f98,f444c,f474c,f854c
+Deep Eye__,f14e0,f329c,f3f9c,f444e,f474e,f854e
+GreaseMonk,f1500,f32a0,f3fa0,f4450,f4750,f8550
+NeckHunter,f1520,f32a4,f3fa4,f4452,f4752,f8552
+Grenade___,f1540,f32a8,f3fa8,f4454,f4754,f8554
+Critic____,f1560,f32ac,f3fac,f4456,f4756,f8556
+Pan Dora__,f1580,f32b0,f3fb0,f4458,f4758,f8558
+SoulDancer,f15a0,f32b4,f3fb4,f445a,f475a,f855a
+Gigantos__,f15c0,f32b8,f3fb8,f445c,f475c,f855c
+Mag Roader,f15e0,f32bc,f3fbc,f445e,f475e,f855e
+Spek Tor__,f1600,f32c0,f3fc0,f4460,f4760,f8560
+Parasite__,f1620,f32c4,f3fc4,f4462,f4762,f8562
+EarthGuard,f1640,f32c8,f3fc8,f4464,f4764,f8564
+Coelecite_,f1660,f32cc,f3fcc,f4466,f4766,f8566
+Anemone___,f1680,f32d0,f3fd0,f4468,f4768,f8568
+Hipocampus,f16a0,f32d4,f3fd4,f446a,f476a,f856a
+Spectre___,f16c0,f32d8,f3fd8,f446c,f476c,f856c
+Evil Oscar,f16e0,f32dc,f3fdc,f446e,f476e,f856e
+Slurm_____,f1700,f32e0,f3fe0,f4470,f4770,f8570
+Latimeria_,f1720,f32e4,f3fe4,f4472,f4772,f8572
+StillGoing,f1740,f32e8,f3fe8,f4474,f4774,f8574
+Allo Ver__,f1760,f32ec,f3fec,f4476,f4776,f8576
+Phase_____,f1780,f32f0,f3ff0,f4478,f4778,f8578
+Outsider__,f17a0,f32f4,f3ff4,f447a,f477a,f857a
+Barb-e____,f17c0,f32f8,f3ff8,f447c,f477c,f857c
+Parasoul__,f17e0,f32fc,f3ffc,f447e,f477e,f857e
+Pm Stalker,f1800,f3300,f4000,f4480,f4780,f8580
+Hemophyte_,f1820,f3304,f4004,f4482,f4782,f8582
+Sp Forces_,f1840,f3308,f4008,f4484,f4784,f8584
+Nohrabbit_,f1860,f330c,f400c,f4486,f4786,f8586
+Wizard____,f1880,f3310,f4010,f4488,f4788,f8588
+Scrapper__,f18a0,f3314,f4014,f448a,f478a,f858a
+Ceritops__,f18c0,f3318,f4018,f448c,f478c,f858c
+Commando__,f18e0,f331c,f401c,f448e,f478e,f858e
+Opinicus__,f1900,f3320,f4020,f4490,f4790,f8590
+Poppers___,f1920,f3324,f4024,f4492,f4792,f8592
+Lunaris___,f1940,f3328,f4028,f4494,f4794,f8594
+Garm______,f1960,f332c,f402c,f4496,f4796,f8596
+Vindr_____,f1980,f3330,f4030,f4498,f4798,f8598
+Kiwok_____,f19a0,f3334,f4034,f449a,f479a,f859a
+Nastidon__,f19c0,f3338,f4038,f449c,f479c,f859c
+Rinn______,f19e0,f333c,f403c,f449e,f479e,f859e
+Insecare__,f1a00,f3340,f4040,f44a0,f47a0,f85a0
+Vermin____,f1a20,f3344,f4044,f44a2,f47a2,f85a2
+Mantodea__,f1a40,f3348,f4048,f44a4,f47a4,f85a4
+Bogy______,f1a60,f334c,f404c,f44a6,f47a6,f85a6
+Prussian__,f1a80,f3350,f4050,f44a8,f47a8,f85a8
+Black Drgn,f1aa0,f3354,f4054,f44aa,f47aa,f85aa
+Adamanchyt,f1ac0,f3358,f4058,f44ac,f47ac,f85ac
+Dante_____,f1ae0,f335c,f405c,f44ae,f47ae,f85ae
+Wirey Drgn,f1b00,f3360,f4060,f44b0,f47b0,f85b0
+Dueller___,f1b20,f3364,f4064,f44b2,f47b2,f85b2
+Psychot___,f1b40,f3368,f4068,f44b4,f47b4,f85b4
+Muus______,f1b60,f336c,f406c,f44b6,f47b6,f85b6
+Karkass___,f1b80,f3370,f4070,f44b8,f47b8,f85b8
+Punisher__,f1ba0,f3374,f4074,f44ba,f47ba,f85ba
+Balloon___,f1bc0,f3378,f4078,f44bc,f47bc,f85bc
+Gabbldegak,f1be0,f337c,f407c,f44be,f47be,f85be
+GtBehemoth,f1c00,f3380,f4080,f44c0,f47c0,f85c0
+Scorpion__,f1c20,f3384,f4084,f44c2,f47c2,f85c2
+Chaos Drgn,f1c40,f3388,f4088,f44c4,f47c4,f85c4
+Spit Fire_,f1c60,f338c,f408c,f44c6,f47c6,f85c6
+Vectagoyle,f1c80,f3390,f4090,f44c8,f47c8,f85c8
+Lich______,f1ca0,f3394,f4094,f44ca,f47ca,f85ca
+Osprey____,f1cc0,f3398,f4098,f44cc,f47cc,f85cc
+Mag Roader,f1ce0,f339c,f409c,f44ce,f47ce,f85ce
+Bug_______,f1d00,f33a0,f40a0,f44d0,f47d0,f85d0
+Sea Flower,f1d20,f33a4,f40a4,f44d2,f47d2,f85d2
+Fortis____,f1d40,f33a8,f40a8,f44d4,f47d4,f85d4
+Abolisher_,f1d60,f33ac,f40ac,f44d6,f47d6,f85d6
+Aquila____,f1d80,f33b0,f40b0,f44d8,f47d8,f85d8
+Junk______,f1da0,f33b4,f40b4,f44da,f47da,f85da
+Mandrake__,f1dc0,f33b8,f40b8,f44dc,f47dc,f85dc
+1st Class_,f1de0,f33bc,f40bc,f44de,f47de,f85de
+Tap Dancer,f1e00,f33c0,f40c0,f44e0,f47e0,f85e0
+Necromancr,f1e20,f33c4,f40c4,f44e2,f47e2,f85e2
+Borras____,f1e40,f33c8,f40c8,f44e4,f47e4,f85e4
+Mag Roader,f1e60,f33cc,f40cc,f44e6,f47e6,f85e6
+Wild Rat__,f1e80,f33d0,f40d0,f44e8,f47e8,f85e8
+Gold Bear_,f1ea0,f33d4,f40d4,f44ea,f47ea,f85ea
+Innoc_____,f1ec0,f33d8,f40d8,f44ec,f47ec,f85ec
+Trixter___,f1ee0,f33dc,f40dc,f44ee,f47ee,f85ee
+Red Wolf__,f1f00,f33e0,f40e0,f44f0,f47f0,f85f0
+Didalos___,f1f20,f33e4,f40e4,f44f2,f47f2,f85f2
+Woolly____,f1f40,f33e8,f40e8,f44f4,f47f4,f85f4
+Veteran___,f1f60,f33ec,f40ec,f44f6,f47f6,f85f6
+Sky Base__,f1f80,f33f0,f40f0,f44f8,f47f8,f85f8
+IronHitman,f1fa0,f33f4,f40f4,f44fa,f47fa,f85fa
+Io________,f1fc0,f33f8,f40f8,f44fc,f47fc,f85fc
+Pugs______,f1fe0,f33fc,f40fc,f44fe,f47fe,f85fe
+Whelk_____,f2000,f3400,f4100,f4500,f4800,f8600
+Presenter_,f2020,f3404,f4104,f4502,f4802,f8602
+Mega Armor,f2040,f3408,f4108,f4504,f4804,f8604
+Vargas____,f2060,f340c,f410c,f4506,f4806,f8606
+TunnelArmr,f2080,f3410,f4110,f4508,f4808,f8608
+Prometheus,f20a0,f3414,f4114,f450a,f480a,f860a
+GhostTrain,f20c0,f3418,f4118,f450c,f480c,f860c
+Dadaluma__,f20e0,f341c,f411c,f450e,f480e,f860e
+Shiva_____,f2100,f3420,f4120,f4510,f4810,f8610
+Ifrit_____,f2120,f3424,f4124,f4512,f4812,f8612
+Number 024,f2140,f3428,f4128,f4514,f4814,f8614
+Number 128,f2160,f342c,f412c,f4516,f4816,f8616
+Inferno___,f2180,f3430,f4130,f4518,f4818,f8618
+Crane_____,f21a0,f3434,f4134,f451a,f481a,f861a
+Crane_____,f21c0,f3438,f4138,f451c,f481c,f861c
+Umaro_____,f21e0,f343c,f413c,f451e,f481e,f861e
+Umaro_____,f2200,f3440,f4140,f4520,f4820,f8620
+Guardian__,f2220,f3444,f4144,f4522,f4822,f8622
+Guardian__,f2240,f3448,f4148,f4524,f4824,f8624
+Air Force_,f2260,f344c,f414c,f4526,f4826,f8626
+Tritoch___,f2280,f3450,f4150,f4528,f4828,f8628
+Tritoch___,f22a0,f3454,f4154,f452a,f482a,f862a
+FlameEater,f22c0,f3458,f4158,f452c,f482c,f862c
+AtmaWeapon,f22e0,f345c,f415c,f452e,f482e,f862e
+Nerapa____,f2300,f3460,f4160,f4530,f4830,f8630
+SrBehemoth,f2320,f3464,f4164,f4532,f4832,f8632
+Kefka_____,f2340,f3468,f4168,f4534,f4834,f8634
+Tentacle__,f2360,f346c,f416c,f4536,f4836,f8636
+Dullahan__,f2380,f3470,f4170,f4538,f4838,f8638
+Doom Gaze_,f23a0,f3474,f4174,f453a,f483a,f863a
+Chadarnook,f23c0,f3478,f4178,f453c,f483c,f863c
+Curley____,f23e0,f347c,f417c,f453e,f483e,f863e
+Larry_____,f2400,f3480,f4180,f4540,f4840,f8640
+Moe_______,f2420,f3484,f4184,f4542,f4842,f8642
+Wrexsoul__,f2440,f3488,f4188,f4544,f4844,f8644
+Hidon_____,f2460,f348c,f418c,f4546,f4846,f8646
+KatanaSoul,f2480,f3490,f4190,f4548,f4848,f8648
+L.30 Magic,f24a0,f3494,f4194,f454a,f484a,f864a
+Hidonite__,f24c0,f3498,f4198,f454c,f484c,f864c
+Doom______,f24e0,f349c,f419c,f454e,f484e,f864e
+Goddess___,f2500,f34a0,f41a0,f4550,f4850,f8650
+Poltrgeist,f2520,f34a4,f41a4,f4552,f4852,f8652
+Kefka_____,f2540,f34a8,f41a8,f4554,f4854,f8654
+L.40 Magic,f2560,f34ac,f41ac,f4556,f4856,f8656
+Ultros____,f2580,f34b0,f41b0,f4558,f4858,f8658
+Ultros____,f25a0,f34b4,f41b4,f455a,f485a,f865a
+Ultros____,f25c0,f34b8,f41b8,f455c,f485c,f865c
+Chupon____,f25e0,f34bc,f41bc,f455e,f485e,f865e
+L.20 Magic,f2600,f34c0,f41c0,f4560,f4860,f8660
+Siegfried_,f2620,f34c4,f41c4,f4562,f4862,f8662
+L.10 Magic,f2640,f34c8,f41c8,f4564,f4864,f8664
+L.50 Magic,f2660,f34cc,f41cc,f4566,f4866,f8666
+Head______,f2680,f34d0,f41d0,f4568,f4868,f8668
+Whelk Head,f26a0,f34d4,f41d4,f456a,f486a,f866a
+Colossus__,f26c0,f34d8,f41d8,f456c,f486c,f866c
+CzarDragon,f26e0,f34dc,f41dc,f456e,f486e,f866e
+Master Pug,f2700,f34e0,f41e0,f4570,f4870,f8670
+L.60 Magic,f2720,f34e4,f41e4,f4572,f4872,f8672
+Merchant__,f2740,f34e8,f41e8,f4574,f4874,f8674
+B.Day Suit,f2760,f34ec,f41ec,f4576,f4876,f8676
+Tentacle__,f2780,f34f0,f41f0,f4578,f4878,f8678
+Tentacle__,f27a0,f34f4,f41f4,f457a,f487a,f867a
+Tentacle__,f27c0,f34f8,f41f8,f457c,f487c,f867c
+RightBlade,f27e0,f34fc,f41fc,f457e,f487e,f867e
+Left Blade,f2800,f3500,f4200,f4580,f4880,f8680
+Rough_____,f2820,f3504,f4204,f4582,f4882,f8682
+Striker___,f2840,f3508,f4208,f4584,f4884,f8684
+L.70 Magic,f2860,f350c,f420c,f4586,f4886,f8686
+Tritoch___,f2880,f3510,f4210,f4588,f4888,f8688
+Laser Gun_,f28a0,f3514,f4214,f458a,f488a,f868a
+Speck_____,f28c0,f3518,f4218,f458c,f488c,f868c
+MissileBay,f28e0,f351c,f421c,f458e,f488e,f868e
+Chadarnook,f2900,f3520,f4220,f4590,f4890,f8690
+Ice Dragon,f2920,f3524,f4224,f4592,f4892,f8692
+Kefka_____,f2940,f3528,f4228,f4594,f4894,f8694
+Storm Drgn,f2960,f352c,f422c,f4596,f4896,f8696
+Dirt Drgn_,f2980,f3530,f4230,f4598,f4898,f8698
+Ipooh_____,f29a0,f3534,f4234,f459a,f489a,f869a
+Leader____,f29c0,f3538,f4238,f459c,f489c,f869c
+Grunt_____,f29e0,f353c,f423c,f459e,f489e,f869e
+Gold Drgn_,f2a00,f3540,f4240,f45a0,f48a0,f86a0
+Skull Drgn,f2a20,f3544,f4244,f45a2,f48a2,f86a2
+Blue Drgn_,f2a40,f3548,f4248,f45a4,f48a4,f86a4
+Red Dragon,f2a60,f354c,f424c,f45a6,f48a6,f86a6
+Piranha___,f2a80,f3550,f4250,f45a8,f48a8,f86a8
+Rizopas___,f2aa0,f3554,f4254,f45aa,f48aa,f86aa
+Specter___,f2ac0,f3558,f4258,f45ac,f48ac,f86ac
+Short Arm_,f2ae0,f355c,f425c,f45ae,f48ae,f86ae
+Long Arm__,f2b00,f3560,f4260,f45b0,f48b0,f86b0
+Face______,f2b20,f3564,f4264,f45b2,f48b2,f86b2
+Tiger_____,f2b40,f3568,f4268,f45b4,f48b4,f86b4
+Tools_____,f2b60,f356c,f426c,f45b6,f48b6,f86b6
+Magic_____,f2b80,f3570,f4270,f45b8,f48b8,f86b8
+Hit_______,f2ba0,f3574,f4274,f45ba,f48ba,f86ba
+Girl______,f2bc0,f3578,f4278,f45bc,f48bc,f86bc
+Sleep_____,f2be0,f357c,f427c,f45be,f48be,f86be
+Hidonite__,f2c00,f3580,f4280,f45c0,f48c0,f86c0
+Hidonite__,f2c20,f3584,f4284,f45c2,f48c2,f86c2
+Hidonite__,f2c40,f3588,f4288,f45c4,f48c4,f86c4
+L.80 Magic,f2c60,f358c,f428c,f45c6,f48c6,f86c6
+L.90 Magic,f2c80,f3590,f4290,f45c8,f48c8,f86c8
+ProtoArmor,f2ca0,f3594,f4294,f45ca,f48ca,f86ca
+MagiMaster,f2cc0,f3598,f4298,f45cc,f48cc,f86cc
+SoulSaver_,f2ce0,f359c,f429c,f45ce,f48ce,f86ce
+Ultros____,f2d00,f35a0,f42a0,f45d0,f48d0,f86d0
+Naughty___,f2d20,f35a4,f42a4,f45d2,f48d2,f86d2
+Phunbaba__,f2d40,f35a8,f42a8,f45d4,f48d4,f86d4
+Phunbaba__,f2d60,f35ac,f42ac,f45d6,f48d6,f86d6
+Phunbaba__,f2d80,f35b0,f42b0,f45d8,f48d8,f86d8
+Phunbaba__,f2da0,f35b4,f42b4,f45da,f48da,f86da
+__________,f2dc0,f35b8,f42b8,f45dc,f48dc,f86dc
+__________,f2de0,f35bc,f42bc,f45de,f48de,f86de
+__________,f2e00,f35c0,f42c0,f45e0,f48e0,f86e0
+Zone Eater,f2e20,f35c4,f42c4,f45e2,f48e2,f86e2
+__________,f2e40,f35c8,f42c8,f45e4,f48e4,f86e4
+__________,f2e60,f35cc,f42cc,f45e6,f48e6,f86e6
+__________,f2e80,f35d0,f42d0,f45e8,f48e8,f86e8
+Officer___,f2ea0,f35d4,f42d4,f45ea,f48ea,f86ea
+Cadet_____,f2ec0,f35d8,f42d8,f45ec,f48ec,f86ec
+__________,f2ee0,f35dc,f42dc,f45ee,f48ee,f86ee
+__________,f2f00,f35e0,f42e0,f45f0,f48f0,f86f0
+Soldier___,f2f20,f35e4,f42e4,f45f2,f48f2,f86f2
+__________,f2f40,f35e8,f42e8,f45f4,f48f4,f86f4
+__________,f2f60,f35ec,f42ec,f45f6,f48f6,f86f6
+__________,f2f80,f35f0,f42f0,f45f8,f48f8,f86f8
+Atma______,f2fa0,f35f4,f42f4,f45fa,f48fa,f86fa
+__________,f2fc0,f35f8,f42f8,f45fc,f48fc,f86fc
+__________,f2fe0,f35fc,f42fc,f45fe,f48fe,f86fe

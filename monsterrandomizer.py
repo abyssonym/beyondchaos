@@ -14,7 +14,8 @@ unrageable = [0x7E, 0x7F, 0x80, 0x81]
 
 
 class MonsterBlock:
-    def __init__(self, name, pointer, itemptr, controlptr, sketchptr, rageptr):
+    def __init__(self, name, pointer, itemptr, controlptr,
+                 sketchptr, rageptr, aiptr):
         self.name = name
         self.graphicname = self.name
         self.pointer = hex2int(pointer)
@@ -22,6 +23,7 @@ class MonsterBlock:
         self.controlptr = hex2int(controlptr)
         self.sketchptr = hex2int(sketchptr)
         self.rageptr = hex2int(rageptr)
+        self.aiptr = hex2int(aiptr)
         self.is_boss = self.pointer > 0xF1FC0
         self.stats = {}
         self.moulds = set([])
@@ -73,12 +75,12 @@ class MonsterBlock:
         self.graphicname, chosen.graphicname = b, a
 
         self.graphics.swap_data(chosen.graphics)
-        self.swap_humanoid(chosen)
+        self.swap_visible(chosen)
 
     def mutate_graphics_copy(self, candidates):
         chosen = self.choose_graphics(candidates, equal=False)
         self.graphics.copy_data(chosen.graphics)
-        self.copy_humanoid(chosen)
+        self.copy_visible(chosen)
 
     def read_stats(self, filename):
         global all_spells, valid_spells, items, itemids
@@ -97,8 +99,6 @@ class MonsterBlock:
         self.misc1 = ord(f.read(1))
         self.misc2 = ord(f.read(1))
 
-        self.humanoid = self.misc1 & 0x10
-
         f.seek(self.pointer + 20)
         self.immunities = map(ord, f.read(3))
         self.absorb = ord(f.read(1))
@@ -109,8 +109,6 @@ class MonsterBlock:
         self.statuses = map(ord, f.read(4))
         self.special = ord(f.read(1))
 
-        self.floating = self.statuses[2] & 0x1
-
         f.seek(self.itemptr)
         self.items = map(ord, f.read(4))
 
@@ -120,8 +118,14 @@ class MonsterBlock:
         f.seek(self.sketchptr)
         self.sketches = map(ord, f.read(2))
 
-        f.seek(self.rageptr)
-        self.rages = map(ord, f.read(2))
+        if not self.is_boss:
+            f.seek(self.rageptr)
+            self.rages = map(ord, f.read(2))
+        else:
+            self.rages = None
+
+        f.seek(self.aiptr)
+        self.ai = map(ord, f.read(2))
 
         if all_spells is None:
             all_spells = sorted([SpellBlock(i, filename) for i in xrange(0xFF)],
@@ -135,19 +139,31 @@ class MonsterBlock:
             items = get_ranked_items(filename)
             itemids = [i.itemid for i in items]
 
-    def swap_humanoid(self, other):
+    @property
+    def humanoid(self):
+        return self.misc1 & 0x10
+
+    @property
+    def undead(self):
+        return self.misc1 & 0x80
+
+    @property
+    def floating(self):
+        return self.statuses[2] & 0x1
+
+    def swap_visible(self, other):
         if self.humanoid != other.humanoid:
             self.misc1 ^= 0x10
             other.misc1 ^= 0x10
-            self.humanoid = self.misc1 & 0x10
-            other.humanoid = other.misc1 & 0x10
+        if self.undead != other.undead:
+            self.misc1 ^= 0x80
+            other.misc1 ^= 0x80
 
-    def copy_humanoid(self, other):
-        if other.humanoid:
-            self.misc1 |= 0x10
-        else:
-            self.misc1 ^= 0xEF
-        self.humanoid = self.misc1 & 0x10
+    def copy_visible(self, other):
+        if self.humanoid != other.humanoid:
+            self.misc1 ^= 0x10
+        if self.undead != other.undead:
+            self.misc1 ^= 0x80
 
     def write_stats(self, filename):
         f = open(filename, 'r+b')
@@ -185,8 +201,12 @@ class MonsterBlock:
         f.seek(self.sketchptr)
         f.write(''.join(map(chr, self.sketches)))
 
-        f.seek(self.rageptr)
-        f.write(''.join(map(chr, self.rages)))
+        if not self.is_boss:
+            f.seek(self.rageptr)
+            f.write(''.join(map(chr, self.rages)))
+
+        f.seek(self.aiptr)
+        f.write(''.join(map(chr, self.ai)))
 
         f.close()
 
@@ -201,7 +221,7 @@ class MonsterBlock:
             if random.randint(1, 200) == 100:
                 self.misc2 = self.misc2 ^ 0x08
         elif random.randint(1, 15) == 15:
-            self.misc2 = self.misc2 | 0x08
+            self.misc2 = self.misc2 ^ 0x08
 
         if random.randint(1, 10) == 10:
             self.misc2 = self.misc2 ^ 0x10  # invert scan bit
@@ -270,25 +290,80 @@ class MonsterBlock:
 
         new_immunities = [0x00] * 3
         new_statuses = [0x00] * 4
+        statusdict = {"zombie": (0, 0x02),
+                      "magitek": (0, 0x08),
+                      "clear": (0, 0x10),
+                      "petrify": (0, 0x40),
+                      "dead": (0, 0x80),
+                      "condemned": (1, 0x01),
+                      "mute": (1, 0x08),
+                      "berserk": (1, 0x10),
+                      "muddle": (1, 0x20),
+                      "seizure": (1, 0x40),
+                      "sleep": (1, 0x80),
+                      "dance": (2, 0x01),
+                      "stop": (2, 0x10),
+                      "rage": (3, 0x01),
+                      "frozen": (3, 0x02),
+                      "life3": (3, 0x04),
+                      "disappear": (3, 0x20)}
+        bitdict = dict((y, x) for (x, y) in statusdict.items())
+
         while stacount > 0:
             byte = random.randint(0, 3)
             bit = 1 << random.randint(0, 7)
-            if byte == 0 and bit in [0x02, 0x08, 0x40, 0x80]:
-                # zombie, magitek, petrify, dead
+            if (byte, bit) in bitdict:
+                status = bitdict[(byte, bit)]
+            else:
+                status = None
+
+            if status in ["zombie", "magitek", "petrify", "dead"]:
                 continue
+            if status in ["condemned", "mute", "berserk", "dance",
+                          "stop", "rage", "frozen", "disappear"]:
+                if self.is_boss and random.randint(1, 100) != 100:
+                    continue
+                elif random.choice([True, False]):
+                    continue
+            if status in ["muddle", "seizure", "sleep", "life3"]:
+                if random.choice([True, False]):
+                    continue
+            if status in ["clear"] and self.is_boss:
+                if self.stats["level"] < 22:
+                    continue
 
             if new_statuses[byte] & bit:
                 continue
 
             new_statuses[byte] = new_statuses[byte] ^ bit
-            if byte <= 2 and random.randint(1, 10) > 3:
-                new_immunities[byte] = new_immunities[byte] | bit
+            if byte <= 2:
+                if (self.is_boss and status in
+                        ["condemned", "mute", "berserk", "dance", "stop",
+                         "rage", "frozen", "disappear", "muddle", "seizure",
+                         "sleep", "life3"]):
+                    new_immunities[byte] = new_immunities[byte] & (0xFF ^ bit)
+                elif random.randint(1, 10) > 3:
+                    new_immunities[byte] = new_immunities[byte] | bit
+                else:
+                    new_immunities[byte] = new_immunities[byte] & (0xFF ^ bit)
+
             stacount += -1
 
         while immcount > 0:
             byte = random.randint(0, 2)
             bit = 1 << random.randint(0, 7)
-            new_immunities[byte] = new_immunities[byte] | bit
+            if (byte, bit) in bitdict:
+                status = bitdict[(byte, bit)]
+            else:
+                status = None
+
+            if (self.is_boss and status in
+                    ["condemned", "mute", "berserk", "dance", "stop", "rage",
+                     "frozen", "disappear", "muddle", "seizure", "sleep",
+                     "life3"]):
+                continue
+            else:
+                new_immunities[byte] = new_immunities[byte] | bit
             immcount += -1
 
         self.statuses = new_statuses
@@ -359,7 +434,10 @@ class MonsterBlock:
 
     def mutate_control(self):
         # shuffle skills between control, sketch, rage
-        candidates = set(self.controls + self.sketches + self.rages)
+        candidates = self.controls + self.sketches
+        if not self.is_boss:
+            candidates += self.rages
+        candidates = set(candidates)
         candidates.add(0xEE)
         candidates.add(0xEF)
         if 0xFF in candidates:
@@ -397,7 +475,7 @@ class MonsterBlock:
             special = random.choice(sorted(valid))
         if branch <= 9:
             # physical special
-            factor = int(self.stats['level'] * 16 / 99.0) + 2
+            factor = int(self.stats['level'] * 16 / 99.0) + 1
             power = random.randint(0, factor) + random.randint(0, factor)
             power = max(power, 0x00)
             power = min(power, 0x0F)
@@ -415,12 +493,27 @@ class MonsterBlock:
         self.mutate_stats()
         self.mutate_misc()
         self.mutate_control()
-        if random.randint(1, 10) > 8:
+        if random.randint(1, 10) > 7:
             self.mutate_statuses()
-        if random.randint(1, 10) > 8:
+        if random.randint(1, 10) > 6:
             self.mutate_affinities()
-        if random.randint(1, 10) > 8:
+        if random.randint(1, 10) > 5:
             self.mutate_special()
+
+    def swap_ai(self, other):
+        for attribute in ["ai", "controls", "sketches", "rages"]:
+            a, b = getattr(self, attribute), getattr(other, attribute)
+            setattr(self, attribute, b)
+            setattr(other, attribute, a)
+
+    def swap_stats(self, other):
+        attributes = ["stats", "misc2", "absorb", "null",
+                      "weakness", "special", "morph", "items"]
+        samplesize = random.randint(1, len(attributes))
+        for attribute in random.sample(attributes, samplesize):
+            a, b = getattr(self, attribute), getattr(other, attribute)
+            setattr(self, attribute, b)
+            setattr(other, attribute, a)
 
 
 def get_ranked_monsters(filename, bosses=True):
@@ -434,6 +527,38 @@ def get_ranked_monsters(filename, bosses=True):
     monsters = sorted(monsters, key=lambda i: i.stats['level'])
 
     return monsters
+
+
+def shuffle_monsters(monsters):
+    monsters = sorted(monsters, key=lambda i: i.stats['level'])
+    bosses = [m for m in monsters if m.is_boss]
+    nonbosses = [m for m in monsters if not m.is_boss]
+    for m in monsters:
+        if m.is_boss:
+            candidates = bosses
+        else:
+            candidates = nonbosses
+        index = candidates.index(m)
+
+        def get_swap_index(n):
+            to_swap = n + random.randint(-5, 5)
+            to_swap = max(0, min(to_swap, len(candidates)-1))
+            while random.randint(1, 3) == 1:
+                to_swap += random.randint(-3, 3)
+                to_swap = max(0, min(to_swap, len(candidates)-1))
+            return to_swap
+
+        if m.is_boss and random.randint(1, 100) != 100:
+            pass
+        else:
+            to_swap = get_swap_index(index)
+            m.swap_stats(candidates[to_swap])
+
+        if m.is_boss:
+            pass
+        else:
+            to_swap = get_swap_index(index)
+            m.swap_ai(candidates[to_swap])
 
 
 palette_pools = {}
@@ -456,7 +581,6 @@ class MonsterGraphicBlock:
         self.palette_pointer = 0x127820 + (self.palette_index * 16)
         f.seek(self.pointer+4)
         self.size_template = ord(f.read(1))
-        print self.name, "%x %x %x %x" % (self.palette, self.palette_index, self.palette_pointer, self.size_template)
 
         f.seek(self.palette_pointer)
         self.palette_data = []

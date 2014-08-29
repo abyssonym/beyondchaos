@@ -7,7 +7,8 @@ from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    utilrandom as random)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
-                               MetamorphBlock, get_ranked_monsters)
+                               MetamorphBlock, get_ranked_monsters,
+                               shuffle_monsters)
 from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
                             reset_special_relics, reset_rage_blizzard)
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
@@ -893,6 +894,9 @@ def manage_monsters():
         m.read_stats(sourcefile)
         m.screw_vargas()
         m.mutate()
+
+    shuffle_monsters(monsters)
+    for m in monsters:
         m.write_stats(outfile)
 
     return monsters

@@ -28,6 +28,7 @@ class MonsterBlock:
         self.stats = {}
         self.moulds = set([])
         self.width, self.height = None, None
+        self.miny, self.maxy = None, None
 
     def set_id(self, i):
         self.id = i
@@ -38,6 +39,12 @@ class MonsterBlock:
         else:
             self.width, self.height = min(self.width, width), min(self.height, height)
 
+    def update_pos(self, x, y):
+        if not self.miny or not self.maxy:
+            self.miny, self.maxy = y, y
+        self.miny = min(self.miny, y)
+        self.maxy = max(self.miny, y)
+
     def add_mould(self, mould):
         self.moulds.add(mould)
 
@@ -47,19 +54,25 @@ class MonsterBlock:
         elif pointer:
             self.graphics = MonsterGraphicBlock(pointer, self.name)
 
-    def choose_graphics(self, candidates, equal=True):
-        if self.floating:
-            candidates = [c for c in candidates if c.floating]
-        else:
-            candidates = [c for c in candidates if not c.floating]
+    def choose_graphics(self, candidates):
+        #candidates = [c for c in candidates if c.moulds & self.moulds]
+        candidates = [c for c in candidates if c.graphics.large == self.graphics.large]
+        candidates = [c for c in candidates if c.miny and c.maxy]
+        candidates = [c for c in candidates if
+                      c.width == self.width and c.height == self.height]
+        candidates = [c for c in candidates if c.graphics.graphics not in [0, 0x5376]]
+        candidates = [c for c in candidates if c.name != "_"*10]
 
-        candidates = [c for c in candidates if c.moulds & self.moulds]
-        if equal:
-            candidates = [c for c in candidates if
-                          c.width == self.width and c.height == self.height]
-        else:
-            candidates = [c for c in candidates if
-                          c.width <= self.width and c.height <= self.height]
+        if not self.graphics.large:
+            if self.miny <= 3:
+                candidates = [c for c in candidates if c.miny <= 4]
+            else:
+                candidates = [c for c in candidates if c.miny >= 3]
+
+            if self.maxy >= 13:
+                candidates = [c for c in candidates if c.maxy >= 13]
+            else:
+                candidates = [c for c in candidates if c.maxy <= 12]
 
         if not candidates:
             return self
@@ -68,7 +81,7 @@ class MonsterBlock:
         return chosen
 
     def mutate_graphics_swap(self, candidates):
-        chosen = self.choose_graphics(candidates, equal=True)
+        chosen = self.choose_graphics(candidates)
         #print "SWAP %s (%s) <-> %s (%s)" % (self.name, self.graphicname,
         #                                    chosen.name, chosen.graphicname)
         a, b = self.graphicname, chosen.graphicname
@@ -78,7 +91,9 @@ class MonsterBlock:
         self.swap_visible(chosen)
 
     def mutate_graphics_copy(self, candidates):
-        chosen = self.choose_graphics(candidates, equal=False)
+        chosen = self.choose_graphics(candidates)
+        #print "BOSSCOPY %s %s" % (self.name, chosen.name)
+        #print chosen.graphics.graphics
         self.graphics.copy_data(chosen.graphics)
         self.copy_visible(chosen)
 
@@ -211,7 +226,6 @@ class MonsterBlock:
         f.close()
 
     def screw_vargas(self):
-        #print self.stats['hp']
         if 'vargas' in self.name.lower():
             self.stats['hp'] = 1000 + random.randint(0, 400) + random.randint(0, 400)
 
@@ -612,7 +626,7 @@ class MonsterGraphicBlock:
             setattr(other, attribute, a)
 
     def copy_data(self, other):
-        for attribute in ["graphics", "size_template", "palette"]:
+        for attribute in ["graphics", "size_template", "palette_data"]:
             value = getattr(other, attribute)
             if isinstance(value, list):
                 value = list(value)

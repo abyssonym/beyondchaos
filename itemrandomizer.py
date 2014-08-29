@@ -258,9 +258,9 @@ class ItemBlock:
 
         try:
             learnrate = int(learnrate / rank) + 1
-            learnrate = min(learnrate, 20)
+            learnrate = min(learnrate, 5)
         except ZeroDivisionError:
-            learnrate = 20
+            learnrate = 5
 
         self.features['learnrate'] = learnrate
         self.features['learnspell'] = spell.spellid

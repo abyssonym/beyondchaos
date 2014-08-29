@@ -276,6 +276,9 @@ class Formation():
             if self.bosses & (1 << i):
                 eid += 0x100
             self.enemies.append(monsterdict[eid])
+            enemy_pos = self.enemy_pos[i]
+            x, y = enemy_pos >> 4, enemy_pos & 0xF
+            self.enemies[i].update_pos(x, y)
         for e in self.enemies:
             if not e:
                 continue
@@ -289,9 +292,11 @@ class Formation():
         pointer = read_multi(f, length=2) | 0x20000
         for i in xrange(6):
             f.seek(pointer + (i*4))
-            f.read(2)
+            a, b = tuple(map(ord, f.read(2)))
+            print "%x %x" % (a, b),
             width = ord(f.read(1))
             height = ord(f.read(1))
+            print "%x %x" % (width, height)
             enemy = self.enemies[i]
             if enemy:
                 enemy.update_size(width, height)
@@ -303,8 +308,8 @@ def get_formations(filename):
         f = Formation(i, baseptr + (i*15))
         f.read_data(filename)
         f.lookup_enemies()
+        print i, "%x" % f.mould, [(e.name if e else e) for e in f.enemies]
         f.read_mould(filename)
-        #print i, "%x" % f.mould, [e.name for e in f.enemies if e]
 
 
 def characters_from_table(tablefile):
@@ -1126,10 +1131,19 @@ if __name__ == "__main__":
             mgs.append(mg)
 
         nonbosses = [m for m in monsters if not m.is_boss]
-        bosses = [m for m in monsters if not m.is_boss]
+        bosses = [m for m in monsters if m.is_boss]
+        nonbossgraphics = [m.graphics.graphics for m in nonbosses]
+        bosses = [m for m in bosses if m.graphics.graphics not in nonbossgraphics]
 
         get_formations(sourcefile)
         for i, m in enumerate(nonbosses):
+            #print m.name, m.width, m.height, m.miny, m.maxy
+            if "Chupon" in m.name:
+                m.update_pos(6, 6)
+                m.update_size(8, 16)
+            if "Siegfried" in m.name:
+                m.update_pos(8, 8)
+                m.update_size(8, 8)
             if random.randint(1, 100) != 100:
                 candidates = nonbosses[i:]
                 m.mutate_graphics_swap(candidates)

@@ -10,6 +10,16 @@ CHEST_TABLE = path.join("tables", "chestcodes.txt")
 COMMAND_TABLE = path.join("tables", "commandcodes.txt")
 CHAR_TABLE = path.join("tables", "charcodes.txt")
 TEXT_TABLE = path.join("tables", "text.txt")
+ENEMY_NAMES_TABLE = path.join("tables", "enemynames.txt")
+
+
+texttable = {}
+f = open(TEXT_TABLE)
+for line in f:
+    line = line.strip()
+    char, value = tuple(line.split())
+    texttable[char] = value
+f.close()
 
 
 def hex2int(hexstr):

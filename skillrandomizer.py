@@ -1,13 +1,5 @@
-from utils import (hex2int, int2bytes, TEXT_TABLE, SPELL_TABLE,
-                   SPELLBANS_TABLE, utilrandom as random)
-
-texttable = {}
-f = open(TEXT_TABLE)
-for line in f:
-    line = line.strip()
-    char, value = tuple(line.split())
-    texttable[char] = value
-f.close()
+from utils import (hex2int, int2bytes, SPELL_TABLE,
+                   SPELLBANS_TABLE, texttable, utilrandom as random)
 
 spellnames = {}
 f = open(SPELL_TABLE)

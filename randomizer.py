@@ -4,7 +4,7 @@ from shutil import copyfile
 from hashlib import md5
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, read_multi, write_multi,
-                   utilrandom as random)
+                   texttable, utilrandom as random)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
                                MetamorphBlock, get_ranked_monsters,
@@ -14,6 +14,7 @@ from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
+from namerandomizer import generate_name
 
 
 VERSION = "2"
@@ -1032,6 +1033,18 @@ def manage_shops():
         s.write_data(outfile)
 
 
+def randomize_enemy_name(filename, enemy_id):
+    pointer = 0xFC050 + (enemy_id * 10)
+    f = open(filename, 'r+b')
+    f.seek(pointer)
+    name = generate_name()
+    name = map(lambda c: hex2int(texttable[c]), name)
+    while len(name) < 10:
+        name.append(0xFF)
+    f.write("".join(map(chr, name)))
+    f.close()
+
+
 if __name__ == "__main__":
     if len(argv) > 2:
         sourcefile = argv[1].strip()
@@ -1122,6 +1135,7 @@ if __name__ == "__main__":
                 m.mutate_graphics_swap(candidates)
             else:
                 m.mutate_graphics_copy(bosses)
+            randomize_enemy_name(outfile, m.id)
 
         mgs = sorted(mgs, key=lambda mg: mg.graphics)
         for mg in mgs:

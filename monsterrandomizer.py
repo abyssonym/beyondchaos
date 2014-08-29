@@ -51,11 +51,6 @@ class MonsterBlock:
         else:
             candidates = [c for c in candidates if not c.floating]
 
-        #if self.graphics.large:
-        #    candidates = [c for c in candidates if c.graphics.large]
-        #else:
-        #    candidates = [c for c in candidates if not c.graphics.large]
-
         candidates = [c for c in candidates if c.moulds & self.moulds]
         if equal:
             candidates = [c for c in candidates if
@@ -487,15 +482,13 @@ class MonsterGraphicBlock:
         palette_pools[self.graphics].add(self.palette_data)
 
     def swap_data(self, other):
-        for attribute in ["graphics", "palette", "size_template",
-                          "palette_data", "palette_values"]:
+        for attribute in ["graphics", "size_template", "palette"]:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
             setattr(other, attribute, a)
 
     def copy_data(self, other):
-        for attribute in ["graphics", "palette",
-                          "palette_data", "palette_values"]:
+        for attribute in ["graphics", "size_template", "palette"]:
             value = getattr(other, attribute)
             if isinstance(value, list):
                 value = list(value)
@@ -508,6 +501,8 @@ class MonsterGraphicBlock:
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         write_multi(f, self.graphics, length=2)
+        f.seek(self.pointer+2)
+        write_multi(f, self.palette, length=2, reverse=False)
         f.seek(self.pointer+4)
         f.write(chr(self.size_template))
         f.seek(self.palette_pointer)
@@ -520,9 +515,7 @@ class MonsterGraphicBlock:
         f.close()
 
     def mutate_palette(self, alternatives=None):
-        global palette_pools
         numcolors = len(self.palette_data)
-        self.palette_data = random.choice(sorted(palette_pools[self.graphics]))
         assert len(self.palette_data) == numcolors
         colorsets = {}
         palette_dict = dict(enumerate(self.palette_data))

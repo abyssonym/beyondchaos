@@ -16,6 +16,7 @@ unrageable = [0x7E, 0x7F, 0x80, 0x81]
 class MonsterBlock:
     def __init__(self, name, pointer, itemptr, controlptr, sketchptr, rageptr):
         self.name = name
+        self.graphicname = self.name
         self.pointer = hex2int(pointer)
         self.itemptr = hex2int(itemptr)
         self.controlptr = hex2int(controlptr)
@@ -23,9 +24,66 @@ class MonsterBlock:
         self.rageptr = hex2int(rageptr)
         self.is_boss = self.pointer > 0xF1FC0
         self.stats = {}
+        self.moulds = set([])
+        self.width, self.height = None, None
 
     def set_id(self, i):
         self.id = i
+
+    def update_size(self, width, height):
+        if not self.width or not self.height:
+            self.width, self.height = width, height
+        else:
+            self.width, self.height = min(self.width, width), min(self.height, height)
+
+    def add_mould(self, mould):
+        self.moulds.add(mould)
+
+    def set_graphics(self, pointer=None, graphics=None):
+        if graphics:
+            self.graphics = graphics
+        elif pointer:
+            self.graphics = MonsterGraphicBlock(pointer, self.name)
+
+    def choose_graphics(self, candidates, equal=True):
+        if self.floating:
+            candidates = [c for c in candidates if c.floating]
+        else:
+            candidates = [c for c in candidates if not c.floating]
+
+        #if self.graphics.large:
+        #    candidates = [c for c in candidates if c.graphics.large]
+        #else:
+        #    candidates = [c for c in candidates if not c.graphics.large]
+
+        candidates = [c for c in candidates if c.moulds & self.moulds]
+        if equal:
+            candidates = [c for c in candidates if
+                          c.width == self.width and c.height == self.height]
+        else:
+            candidates = [c for c in candidates if
+                          c.width <= self.width and c.height <= self.height]
+
+        if not candidates:
+            return self
+
+        chosen = random.choice(candidates)
+        return chosen
+
+    def mutate_graphics_swap(self, candidates):
+        chosen = self.choose_graphics(candidates, equal=True)
+        #print "SWAP %s (%s) <-> %s (%s)" % (self.name, self.graphicname,
+        #                                    chosen.name, chosen.graphicname)
+        a, b = self.graphicname, chosen.graphicname
+        self.graphicname, chosen.graphicname = b, a
+
+        self.graphics.swap_data(chosen.graphics)
+        self.swap_humanoid(chosen)
+
+    def mutate_graphics_copy(self, candidates):
+        chosen = self.choose_graphics(candidates, equal=False)
+        self.graphics.copy_data(chosen.graphics)
+        self.copy_humanoid(chosen)
 
     def read_stats(self, filename):
         global all_spells, valid_spells, items, itemids
@@ -44,6 +102,8 @@ class MonsterBlock:
         self.misc1 = ord(f.read(1))
         self.misc2 = ord(f.read(1))
 
+        self.humanoid = self.misc1 & 0x10
+
         f.seek(self.pointer + 20)
         self.immunities = map(ord, f.read(3))
         self.absorb = ord(f.read(1))
@@ -53,6 +113,8 @@ class MonsterBlock:
         f.seek(self.pointer + 27)
         self.statuses = map(ord, f.read(4))
         self.special = ord(f.read(1))
+
+        self.floating = self.statuses[2] & 0x1
 
         f.seek(self.itemptr)
         self.items = map(ord, f.read(4))
@@ -77,6 +139,20 @@ class MonsterBlock:
         if items is None:
             items = get_ranked_items(filename)
             itemids = [i.itemid for i in items]
+
+    def swap_humanoid(self, other):
+        if self.humanoid != other.humanoid:
+            self.misc1 ^= 0x10
+            other.misc1 ^= 0x10
+            self.humanoid = self.misc1 & 0x10
+            other.humanoid = other.misc1 & 0x10
+
+    def copy_humanoid(self, other):
+        if other.humanoid:
+            self.misc1 |= 0x10
+        else:
+            self.misc1 ^= 0xEF
+        self.humanoid = self.misc1 & 0x10
 
     def write_stats(self, filename):
         f = open(filename, 'r+b')
@@ -380,16 +456,24 @@ class MonsterGraphicBlock:
         self.graphics = read_multi(f, length=2)
         f.seek(self.pointer+2)
         self.palette = read_multi(f, length=2, reverse=False)
+        self.large = bool(self.palette & 0x8000)
         self.palette_index = self.palette & 0x3FF
         self.palette_pointer = 0x127820 + (self.palette_index * 16)
+        f.seek(self.pointer+4)
+        self.size_template = ord(f.read(1))
+        print self.name, "%x %x %x %x" % (self.palette, self.palette_index, self.palette_pointer, self.size_template)
+
         f.seek(self.palette_pointer)
         self.palette_data = []
         self.palette_values = []
-        for i in xrange(16):
+        numcolors = 16
+
+        for i in xrange(numcolors):
             color = read_multi(f, length=2)
             blue = (color & 0x7c00) >> 10
             green = (color & 0x03e0) >> 5
             red = color & 0x001f
+            self.negabit = color & 0x8000
             self.palette_data.append((red, green, blue))
             self.palette_values.append(int(round(sum([red, green, blue])/3.0)))
         self.palette_data = tuple(self.palette_data)
@@ -402,8 +486,30 @@ class MonsterGraphicBlock:
                 return
         palette_pools[self.graphics].add(self.palette_data)
 
+    def swap_data(self, other):
+        for attribute in ["graphics", "palette", "size_template",
+                          "palette_data", "palette_values"]:
+            a, b = getattr(self, attribute), getattr(other, attribute)
+            setattr(self, attribute, b)
+            setattr(other, attribute, a)
+
+    def copy_data(self, other):
+        for attribute in ["graphics", "palette",
+                          "palette_data", "palette_values"]:
+            value = getattr(other, attribute)
+            if isinstance(value, list):
+                value = list(value)
+            elif isinstance(value, tuple):
+                value = tuple(value)
+
+            setattr(self, attribute, value)
+
     def write_data(self, filename):
         f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        write_multi(f, self.graphics, length=2)
+        f.seek(self.pointer+4)
+        f.write(chr(self.size_template))
         f.seek(self.palette_pointer)
         for red, green, blue in self.palette_data:
             color = 0x00
@@ -415,7 +521,9 @@ class MonsterGraphicBlock:
 
     def mutate_palette(self, alternatives=None):
         global palette_pools
+        numcolors = len(self.palette_data)
         self.palette_data = random.choice(sorted(palette_pools[self.graphics]))
+        assert len(self.palette_data) == numcolors
         colorsets = {}
         palette_dict = dict(enumerate(self.palette_data))
         for n, (red, green, blue) in palette_dict.items():

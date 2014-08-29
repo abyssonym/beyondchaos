@@ -231,6 +231,9 @@ def commands_from_table(tablefile):
     return commands
 
 
+monsterdict = {}
+
+
 def monsters_from_table(tablefile):
     monsters = []
     for i, line in enumerate(open(tablefile)):
@@ -242,8 +245,64 @@ def monsters_from_table(tablefile):
             line = line.replace('  ', ' ')
         c = MonsterBlock(*line.split(','))
         c.set_id(i)
+        monsterdict[i] = c
         monsters.append(c)
     return monsters
+
+
+class Formation():
+    def __init__(self, formid, pointer):
+        self.formid = formid
+        self.pointer = pointer
+
+    def read_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        self.mould = ord(f.read(1)) >> 4
+        self.enemies_present = ord(f.read(1))
+        self.enemy_ids = map(ord, f.read(6))
+        self.enemy_pos = map(ord, f.read(6))
+        self.bosses = ord(f.read(1))
+        f.close()
+
+    def lookup_enemies(self):
+        self.enemies = []
+        for i, eid in enumerate(self.enemy_ids):
+            if eid == 0xFF and not self.enemies_present & (1 << i):
+                self.enemies.append(None)
+                continue
+            if self.bosses & (1 << i):
+                eid += 0x100
+            self.enemies.append(monsterdict[eid])
+        for e in self.enemies:
+            if not e:
+                continue
+            e.add_mould(self.mould)
+
+    def read_mould(self, filename):
+        mouldspecsptrs = 0x2D01A
+        f = open(filename, 'r+b')
+        pointer = mouldspecsptrs + (2*self.mould)
+        f.seek(pointer)
+        pointer = read_multi(f, length=2) | 0x20000
+        for i in xrange(6):
+            f.seek(pointer + (i*4))
+            f.read(2)
+            width = ord(f.read(1))
+            height = ord(f.read(1))
+            enemy = self.enemies[i]
+            if enemy:
+                enemy.update_size(width, height)
+
+
+def get_formations(filename):
+    baseptr = 0xf6200
+    for i in xrange(576):
+        f = Formation(i, baseptr + (i*15))
+        f.read_data(filename)
+        f.lookup_enemies()
+        f.read_mould(filename)
+        #print i, "%x" % f.mould, [e.name for e in f.enemies if e]
 
 
 def characters_from_table(tablefile):
@@ -1046,7 +1105,19 @@ if __name__ == "__main__":
         for j, m in enumerate(monsters):
             mg = MonsterGraphicBlock(pointer=0x127000 + (5*j), name=m.name)
             mg.read_data(sourcefile)
+            m.set_graphics(graphics=mg)
             mgs.append(mg)
+
+        nonbosses = [m for m in monsters if not m.is_boss]
+        bosses = [m for m in monsters if not m.is_boss]
+
+        get_formations(sourcefile)
+        for i, m in enumerate(nonbosses):
+            if random.randint(1, 100) != 100:
+                candidates = nonbosses[i:]
+                m.mutate_graphics_swap(candidates)
+            else:
+                m.mutate_graphics_copy(bosses)
 
         mgs = sorted(mgs, key=lambda mg: mg.graphics)
         for mg in mgs:

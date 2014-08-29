@@ -25,7 +25,7 @@ Randomizer Flags:
     b   Make the game more balanced by removing exploits such as Joker Doom,
             Vanish/Doom, and the Evade/Mblock bug.
     m   Randomize enemy stats.
-    c   Randomize enemy colors.
+    c   Randomize enemy appearance and names.
     i   Randomize the stats of equippable items.
     q   Randomize what equipment each character can wear.
     e   Randomize esper spells and levelup bonuses.

@@ -293,10 +293,10 @@ class Formation():
         for i in xrange(6):
             f.seek(pointer + (i*4))
             a, b = tuple(map(ord, f.read(2)))
-            print "%x %x" % (a, b),
+            #print "%x %x" % (a, b),
             width = ord(f.read(1))
             height = ord(f.read(1))
-            print "%x %x" % (width, height)
+            #print "%x %x" % (width, height)
             enemy = self.enemies[i]
             if enemy:
                 enemy.update_size(width, height)
@@ -308,7 +308,7 @@ def get_formations(filename):
         f = Formation(i, baseptr + (i*15))
         f.read_data(filename)
         f.lookup_enemies()
-        print i, "%x" % f.mould, [(e.name if e else e) for e in f.enemies]
+        #print i, "%x" % f.mould, [(e.name if e else e) for e in f.enemies]
         f.read_mould(filename)
 
 

@@ -234,7 +234,7 @@ class MonsterBlock:
         if self.is_boss:
             if random.randint(1, 200) == 100:
                 self.misc2 = self.misc2 ^ 0x08
-        elif random.randint(1, 15) == 15:
+        elif random.randint(1, 20) == 20:
             self.misc2 = self.misc2 ^ 0x08
 
         if random.randint(1, 10) == 10:
@@ -292,92 +292,102 @@ class MonsterBlock:
 
     def mutate_statuses(self):
         immcount = sum([bin(v).count('1') for v in self.immunities])
+        immcount += 1
         while random.randint(1, 5) == 5:
             immcount += random.choice([1, -1])
-        immcount = min(24, max(immcount, 0))
+        immcount = min(16, max(immcount, 0))
 
         stacount = sum([bin(v).count('1') for v in self.statuses])
         stacount += 1
         while random.randint(1, 5) == 5:
             stacount += random.choice([1, -1])
-        stacount = min(29, max(immcount, 0))
+        stacount = min(16, max(stacount, 0))
 
         new_immunities = [0x00] * 3
         new_statuses = [0x00] * 4
-        statusdict = {"zombie": (0, 0x02),
+        statusdict = {"blind": (0, 0x01),
+                      "zombie": (0, 0x02),
+                      "poison": (0, 0x04),
                       "magitek": (0, 0x08),
                       "clear": (0, 0x10),
+                      "imp": (0, 0x20),
                       "petrify": (0, 0x40),
                       "dead": (0, 0x80),
                       "condemned": (1, 0x01),
+                      "critical": (1, 0x02),
+                      "image": (1, 0x04),
                       "mute": (1, 0x08),
                       "berserk": (1, 0x10),
                       "muddle": (1, 0x20),
                       "seizure": (1, 0x40),
                       "sleep": (1, 0x80),
-                      "dance": (2, 0x01),
+                      "float": (2, 0x01),
+                      "regen": (2, 0x02),
+                      "slow": (2, 0x04),
+                      "haste": (2, 0x08),
                       "stop": (2, 0x10),
-                      "rage": (3, 0x01),
-                      "frozen": (3, 0x02),
+                      "shell": (2, 0x20),
+                      "protect": (2, 0x40),
+                      "reflect": (2, 0x80),
+                      "true knight": (3, 0x01),
+                      "runic": (3, 0x02),
                       "life3": (3, 0x04),
-                      "disappear": (3, 0x20)}
+                      "morph": (3, 0x08),
+                      "casting": (3, 0x10),
+                      "disappear": (3, 0x20),
+                      "interceptor": (3, 0x40),
+                      "float (rhizopas)": (3, 0x80)}
         bitdict = dict((y, x) for (x, y) in statusdict.items())
 
-        while stacount > 0:
+        for _ in xrange(1000):
+            if stacount <= 0:
+                break
+
             byte = random.randint(0, 3)
             bit = 1 << random.randint(0, 7)
-            if (byte, bit) in bitdict:
-                status = bitdict[(byte, bit)]
-            else:
-                status = None
-
-            if status in ["zombie", "magitek", "petrify", "dead"]:
-                continue
-            if status in ["condemned", "mute", "berserk", "dance",
-                          "stop", "rage", "frozen", "disappear"]:
-                if self.is_boss and random.randint(1, 100) != 100:
-                    continue
-                elif random.choice([True, False]):
-                    continue
-            if status in ["muddle", "seizure", "sleep", "life3"]:
-                if random.choice([True, False]):
-                    continue
-            if status in ["clear"] and self.is_boss:
-                if self.stats["level"] < 22:
-                    continue
-
             if new_statuses[byte] & bit:
                 continue
 
-            new_statuses[byte] = new_statuses[byte] ^ bit
-            if byte <= 2:
-                if (self.is_boss and status in
-                        ["condemned", "mute", "berserk", "dance", "stop",
-                         "rage", "frozen", "disappear", "muddle", "seizure",
-                         "sleep", "life3"]):
-                    new_immunities[byte] = new_immunities[byte] & (0xFF ^ bit)
-                elif random.randint(1, 10) > 3:
-                    new_immunities[byte] = new_immunities[byte] | bit
-                else:
-                    new_immunities[byte] = new_immunities[byte] & (0xFF ^ bit)
+            status = bitdict[(byte, bit)]
+            if status in ["zombie", "magitek", "petrify", "dead"]:
+                continue
+            if status in ["condemned", "mute", "berserk",
+                          "stop", "disappear", "muddle", "sleep"]:
+                if self.is_boss and random.randint(1, 100) != 100:
+                    continue
+                elif not self.is_boss and random.randint(1, 10) != 10:
+                    continue
+            if status in ["life3", "runic", "true knight"]:
+                if random.randint(1, 10) != 10:
+                    continue
+            if status in ["blind", "poison", "imp", "seizure", "slow"]:
+                if self.is_boss and random.randint(1, 10) != 10:
+                    continue
+                elif not self.is_boss and random.choice([True, False]):
+                    continue
+            if status in ["clear"]:
+                if self.stats["level"] < 22:
+                    continue
+                elif random.choice([True, False]):
+                    continue
 
+            new_statuses[byte] |= bit
             stacount += -1
 
-        while immcount > 0:
-            byte = random.randint(0, 2)
-            bit = 1 << random.randint(0, 7)
-            if (byte, bit) in bitdict:
-                status = bitdict[(byte, bit)]
-            else:
-                status = None
+        for _ in xrange(1000):
+            if immcount <= 0:
+                break
 
-            if (self.is_boss and status in
-                    ["condemned", "mute", "berserk", "dance", "stop", "rage",
-                     "frozen", "disappear", "muddle", "seizure", "sleep",
-                     "life3"]):
+            byte = random.choice([0, 1])
+            bit = 1 << random.randint(0, 7)
+
+            status = bitdict[(byte, bit)]
+            if new_immunities[byte] & bit:
                 continue
-            else:
-                new_immunities[byte] = new_immunities[byte] | bit
+            if new_statuses[byte] & bit:
+                continue
+
+            new_immunities[byte] |= bit
             immcount += -1
 
         self.statuses = new_statuses

@@ -17,7 +17,7 @@ from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
 
 
-VERSION = "4"
+VERSION = "5"
 VERBOSE = False
 
 
@@ -691,6 +691,9 @@ def manage_natural_magic(characters):
 
         while True:
             index = spellids.index(spell)
+            levdex = int((level / 99.0) * len(spellids))
+            a, b = min(index, levdex), max(index, levdex)
+            index = random.randint(a, b)
             index += random.randint(-3, 3)
             index = max(0, min(index, len(spells)-1))
             while random.choice([True, False]):
@@ -709,7 +712,7 @@ def manage_natural_magic(characters):
             break
 
         used.append(newspell)
-        f.seek(address + (2*i))
+        f.seek(pointer)
         f.write(chr(newspell))
         f.write(chr(level))
 
@@ -754,6 +757,8 @@ def manage_natural_magic(characters):
     f.seek(address)
     write_multi(f, new_known_lores, length=3)
     f.close()
+
+    return candidates
 
 
 def manage_umaro(characters):
@@ -1187,7 +1192,9 @@ if __name__ == "__main__":
 
     if 'o' in flags:
         # do this after swapping beserk
-        manage_natural_magic(characters)
+        natmag_candidates = manage_natural_magic(characters)
+    else:
+        natmag_candidates = None
 
     if 'l' in flags:
         manage_blitz()
@@ -1204,3 +1211,6 @@ if __name__ == "__main__":
                 if m:
                     print m[0].name.lower(),
             print
+        if natmag_candidates:
+            natmag_candidates = tuple(nc.name for nc in natmag_candidates)
+            print "Natural magic: %s %s" % natmag_candidates

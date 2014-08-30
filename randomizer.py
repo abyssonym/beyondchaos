@@ -913,6 +913,41 @@ def manage_monsters():
     return monsters
 
 
+def manage_monster_appearance(monsters):
+    mgs = []
+    for j, m in enumerate(monsters):
+        mg = MonsterGraphicBlock(pointer=0x127000 + (5*j), name=m.name)
+        mg.read_data(sourcefile)
+        m.set_graphics(graphics=mg)
+        mgs.append(mg)
+
+    nonbosses = [m for m in monsters if not m.is_boss]
+    bosses = [m for m in monsters if m.is_boss]
+    nonbossgraphics = [m.graphics.graphics for m in nonbosses]
+    bosses = [m for m in bosses if m.graphics.graphics not in nonbossgraphics]
+
+    get_formations(sourcefile)
+    for i, m in enumerate(nonbosses):
+        #print m.name, m.width, m.height, m.miny, m.maxy
+        if "Chupon" in m.name:
+            m.update_pos(6, 6)
+            m.update_size(8, 16)
+        if "Siegfried" in m.name:
+            m.update_pos(8, 8)
+            m.update_size(8, 8)
+        if random.randint(1, 100) != 100:
+            candidates = nonbosses[i:]
+            m.mutate_graphics_swap(candidates)
+        else:
+            m.mutate_graphics_copy(bosses)
+        randomize_enemy_name(outfile, m.id)
+
+    mgs = sorted(mgs, key=lambda mg: mg.graphics)
+    for mg in mgs:
+        mg.mutate_palette()
+        mg.write_data(outfile)
+
+
 def manage_items(items):
     for i in items:
         i.mutate()
@@ -1128,38 +1163,7 @@ if __name__ == "__main__":
             m.read_stats(sourcefile)
 
     if 'c' in flags:
-        mgs = []
-        for j, m in enumerate(monsters):
-            mg = MonsterGraphicBlock(pointer=0x127000 + (5*j), name=m.name)
-            mg.read_data(sourcefile)
-            m.set_graphics(graphics=mg)
-            mgs.append(mg)
-
-        nonbosses = [m for m in monsters if not m.is_boss]
-        bosses = [m for m in monsters if m.is_boss]
-        nonbossgraphics = [m.graphics.graphics for m in nonbosses]
-        bosses = [m for m in bosses if m.graphics.graphics not in nonbossgraphics]
-
-        get_formations(sourcefile)
-        for i, m in enumerate(nonbosses):
-            #print m.name, m.width, m.height, m.miny, m.maxy
-            if "Chupon" in m.name:
-                m.update_pos(6, 6)
-                m.update_size(8, 16)
-            if "Siegfried" in m.name:
-                m.update_pos(8, 8)
-                m.update_size(8, 8)
-            if random.randint(1, 100) != 100:
-                candidates = nonbosses[i:]
-                m.mutate_graphics_swap(candidates)
-            else:
-                m.mutate_graphics_copy(bosses)
-            randomize_enemy_name(outfile, m.id)
-
-        mgs = sorted(mgs, key=lambda mg: mg.graphics)
-        for mg in mgs:
-            mg.mutate_palette()
-            mg.write_data(outfile)
+        manage_monster_appearance(monsters)
 
     items = get_ranked_items(sourcefile)
     if 'i' in flags:

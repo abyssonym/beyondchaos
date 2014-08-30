@@ -125,8 +125,9 @@ class ItemBlock:
 
     @property
     def has_disabling_status(self):
-        #self.features['statusacquire2'] & 0xA0
-        if (self.features['statusacquire3'] & 0x10):
+        if (self.features['statusacquire2'] & 0xf9):
+            return True
+        if (self.features['statusacquire3'] & 0x14):
             return True
         return False
 

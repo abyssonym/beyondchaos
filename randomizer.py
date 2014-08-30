@@ -17,7 +17,7 @@ from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
 
 
-VERSION = "5"
+VERSION = "6"
 VERBOSE = False
 
 

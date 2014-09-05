@@ -357,7 +357,7 @@ class MonsterBlock:
                     continue
                 elif not self.is_boss and random.randint(1, 10) != 10:
                     continue
-            if status in ["life3", "runic", "true knight"]:
+            if status in ["life3", "runic", "true knight", "image"]:
                 if random.randint(1, 10) != 10:
                     continue
             if status in ["blind", "poison", "imp", "seizure", "slow"]:
@@ -365,7 +365,7 @@ class MonsterBlock:
                     continue
                 elif not self.is_boss and random.choice([True, False]):
                     continue
-            if status in ["clear"]:
+            if status in ["clear", "image"]:
                 if self.stats["level"] < 22:
                     continue
                 elif random.choice([True, False]):

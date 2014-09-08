@@ -256,15 +256,39 @@ class Formation():
     def __init__(self, formid, pointer):
         self.formid = formid
         self.pointer = pointer
+        self.auxpointer = self.pointer - 0x900
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
-        self.mould = ord(f.read(1)) >> 4
+        self.mouldbyte = ord(f.read(1))
+        self.mould = self.mouldbyte >> 4
         self.enemies_present = ord(f.read(1))
         self.enemy_ids = map(ord, f.read(6))
         self.enemy_pos = map(ord, f.read(6))
         self.bosses = ord(f.read(1))
+
+        f.seek(self.auxpointer)
+        self.misc1 = ord(f.read(1))
+        self.misc2 = ord(f.read(1))
+        self.eventscript = ord(f.read(1))
+        self.misc3 = ord(f.read(1))
+        f.close()
+
+    def write_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        f.write(chr(self.mouldbyte))
+        f.write(chr(self.enemies_present))
+        f.write("".join(map(chr, self.enemy_ids)))
+        f.write("".join(map(chr, self.enemy_pos)))
+        f.write(chr(self.bosses))
+
+        f.seek(self.auxpointer)
+        f.write(chr(self.misc1))
+        f.write(chr(self.misc2))
+        f.write(chr(self.eventscript))
+        f.write(chr(self.misc3))
         f.close()
 
     def lookup_enemies(self):
@@ -300,6 +324,12 @@ class Formation():
             enemy = self.enemies[i]
             if enemy:
                 enemy.update_size(width, height)
+
+
+class FormationSet():
+    def __init__(self, setid):
+        baseptr = 0xf4800
+        self.ptr = baseptr + (setid * 8)
 
 
 def get_formations(filename):
@@ -652,6 +682,16 @@ def manage_commands_new(commands, characters):
     gogo_enable_all_sub.set_location(0x35E58)
     gogo_enable_all_sub.write(outfile)
 
+    ai_command_allow = Substitution()
+    ai_command_allow.bytestring = [0xED, 0x3E, 0xDF, 0x3D]
+    ai_command_allow.set_location(0x204D0)
+    ai_command_allow.write(outfile)
+
+    cyan_ai_sub = Substitution()
+    cyan_ai_sub.bytestring = [0xF0, 0xEE, 0xEE, 0xEE, 0xFF]
+    cyan_ai_sub.set_location(0xFBE85)
+    cyan_ai_sub.write(outfile)
+
     return commands, characters
 
 
@@ -921,6 +961,12 @@ def manage_monster_appearance(monsters):
         m.set_graphics(graphics=mg)
         mgs.append(mg)
 
+    for m in monsters:
+        pp = m.graphics.palette_pointer
+        others = [i for i in monsters if i.graphics.palette_pointer == pp + 0x10]
+        if others:
+            m.graphics.palette_data = m.graphics.palette_data[:0x10]
+
     nonbosses = [m for m in monsters if not m.is_boss]
     bosses = [m for m in monsters if m.is_boss]
     nonbossgraphics = [m.graphics.graphics for m in nonbosses]
@@ -928,24 +974,29 @@ def manage_monster_appearance(monsters):
 
     get_formations(sourcefile)
     for i, m in enumerate(nonbosses):
-        #print m.name, m.width, m.height, m.miny, m.maxy
         if "Chupon" in m.name:
             m.update_pos(6, 6)
             m.update_size(8, 16)
         if "Siegfried" in m.name:
             m.update_pos(8, 8)
             m.update_size(8, 8)
-        if random.randint(1, 100) != 100:
+        if random.randint(1, 100) != 100 or True:
             candidates = nonbosses[i:]
             m.mutate_graphics_swap(candidates)
         else:
             m.mutate_graphics_copy(bosses)
         randomize_enemy_name(outfile, m.id)
 
-    mgs = sorted(mgs, key=lambda mg: mg.graphics)
-    for mg in mgs:
+    done = {}
+    freepointer = 0x127820
+    for m in monsters:
+        mg = m.graphics
+        idpair = (m.name, mg.palette_pointer)
+        if idpair not in done:
+            done[idpair] = freepointer
+            freepointer += len(mg.palette_data)
         mg.mutate_palette()
-        mg.write_data(outfile)
+        mg.write_data(outfile, palette_pointer=done[idpair])
 
 
 def manage_items(items):

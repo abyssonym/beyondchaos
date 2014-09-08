@@ -555,6 +555,7 @@ def get_ranked_monsters(filename, bosses=True):
 
 def shuffle_monsters(monsters):
     monsters = sorted(monsters, key=lambda i: i.stats['level'])
+    monsters = [m for m in monsters if m.name.strip('_')]
     bosses = [m for m in monsters if m.is_boss]
     nonbosses = [m for m in monsters if not m.is_boss]
     for m in monsters:
@@ -609,7 +610,7 @@ class MonsterGraphicBlock:
         f.seek(self.palette_pointer)
         self.palette_data = []
         self.palette_values = []
-        numcolors = 16
+        numcolors = 0x20
 
         for i in xrange(numcolors):
             color = read_multi(f, length=2)
@@ -630,7 +631,7 @@ class MonsterGraphicBlock:
         palette_pools[self.graphics].add(self.palette_data)
 
     def swap_data(self, other):
-        for attribute in ["graphics", "size_template", "palette"]:
+        for attribute in ["graphics", "size_template", "palette_data"]:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
             setattr(other, attribute, a)
@@ -645,15 +646,25 @@ class MonsterGraphicBlock:
 
             setattr(self, attribute, value)
 
-    def write_data(self, filename):
+    def write_data(self, filename, palette_pointer=None):
+        if palette_pointer is None:
+            palette_pointer = self.palette_pointer
+            palette = self.palette
+        else:
+            palette = (palette_pointer - 0x127820) / 0x10
+            palette |= (self.palette & 0x8000)
+
+        if palette_pointer > 0x12a800:
+            raise Exception("Palette pointer out of bounds.")
+
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         write_multi(f, self.graphics, length=2)
         f.seek(self.pointer+2)
-        write_multi(f, self.palette, length=2, reverse=False)
+        write_multi(f, palette, length=2, reverse=False)
         f.seek(self.pointer+4)
         f.write(chr(self.size_template))
-        f.seek(self.palette_pointer)
+        f.seek(palette_pointer)
         for red, green, blue in self.palette_data:
             color = 0x00
             color |= red

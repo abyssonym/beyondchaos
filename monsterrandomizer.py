@@ -24,11 +24,22 @@ class MonsterBlock:
         self.sketchptr = hex2int(sketchptr)
         self.rageptr = hex2int(rageptr)
         self.aiptr = hex2int(aiptr)
-        self.is_boss = self.pointer > 0xF1FC0
         self.stats = {}
         self.moulds = set([])
         self.width, self.height = None, None
         self.miny, self.maxy = None, None
+
+    @property
+    def is_boss(self):
+        return self.pointer > 0xF1FC0
+
+    @property
+    def boss_death(self):
+        return "".join(map(chr, [0xF5, 0x0C, 0x01, 0xFF])) in self.aiscript
+
+    @property
+    def battle_event(self):
+        return chr(0xF7) in self.aiscript
 
     def set_id(self, i):
         self.id = i
@@ -140,7 +151,7 @@ class MonsterBlock:
             self.rages = None
 
         f.seek(self.aiptr)
-        self.ai = map(ord, f.read(2))
+        self.ai = read_multi(f, length=2)
 
         if all_spells is None:
             all_spells = sorted([SpellBlock(i, filename) for i in xrange(0xFF)],
@@ -150,9 +161,34 @@ class MonsterBlock:
 
         f.close()
 
+        self.read_ai(filename)
+
         if items is None:
             items = get_ranked_items(filename)
             itemids = [i.itemid for i in items]
+
+    def read_ai(self, filename):
+        f = open(filename, 'r+b')
+        pointer = self.ai + 0xF8700
+        f.seek(pointer)
+        seen = False
+        script = ""
+        while True:
+            value = f.read(1)
+            script += value
+            if ord(value) == 0xFF:
+                if 0xFC in map(ord, script[-4:]):
+                    continue
+                if 0xF5 in map(ord, script[-4:]):
+                    continue
+                #if script[-4:] == "".join(map(chr, [0xF5, 0x0C, 0x01, 0xFF])):
+                #    continue
+                if seen:
+                    break
+                else:
+                    seen = True
+        self.aiscript = script
+        return script
 
     @property
     def humanoid(self):
@@ -221,7 +257,7 @@ class MonsterBlock:
             f.write(''.join(map(chr, self.rages)))
 
         f.seek(self.aiptr)
-        f.write(''.join(map(chr, self.ai)))
+        write_multi(f, self.ai, length=2)
 
         f.close()
 
@@ -232,9 +268,9 @@ class MonsterBlock:
     def mutate_misc(self):
         # invert "escapable" bit
         if self.is_boss:
-            if random.randint(1, 200) == 100:
+            if random.randint(1, 200) == 200:
                 self.misc2 = self.misc2 ^ 0x08
-        elif random.randint(1, 20) == 20:
+        elif random.randint(1, 30) == 30:
             self.misc2 = self.misc2 ^ 0x08
 
         if random.randint(1, 10) == 10:
@@ -444,8 +480,41 @@ class MonsterBlock:
                     continue
 
             index = itemids.index(i)
+            index += random.randint(-3, 3)
             while random.randint(1, 4) == 4:
-                index += random.randint(-3, 3)
+                index += random.randint(-2, 2)
+                index = max(0, min(index, len(itemids)-1))
+
+            new_items.append(itemids[index])
+
+        self.items = new_items
+
+    def treasure_boost(self):
+        def fuddle(value, limit=0xFEFE):
+            low = value / 2
+            value = low + random.randint(0, low) + random.randint(0, low)
+            while random.choice([True, False]):
+                value += random.randint(0, low)
+
+            if value & 0xFF == 0xFF:
+                value = value - 1
+
+            return min(value, limit)
+
+        self.stats['xp'] = fuddle(self.stats['xp'])
+        self.stats['gp'] = fuddle(self.stats['gp'])
+
+        new_items = []
+        for i in self.items:
+            if i == 0xFF:
+                i = random.choice(self.items + ([0xFF] * 4))
+                if i == 0xFF:
+                    continue
+
+            index = itemids.index(i)
+            index += random.randint(-1, 3)
+            while random.choice([True, False]):
+                index += random.randint(-1, 3)
                 index = max(0, min(index, len(itemids)-1))
 
             new_items.append(itemids[index])
@@ -538,6 +607,23 @@ class MonsterBlock:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
             setattr(other, attribute, a)
+
+    def copy_all(self, other, everything=True):
+        attributes = [
+            "ai", "controls", "sketches", "rages", "stats", "misc2", "absorb",
+            "null", "weakness", "special", "morph", "items", "misc1",
+            "immunities", "statuses"]
+        if not everything:
+            samplesize = random.randint(0, len(attributes))
+            attributes = random.sample(attributes, samplesize)
+            if "ai" in attributes:
+                attributes.remove("ai")
+
+        for attribute in attributes:
+            value = getattr(other, attribute)
+            if value is not None:
+                value = type(value)(value)
+            setattr(self, attribute, value)
 
 
 def get_ranked_monsters(filename, bosses=True):
@@ -637,7 +723,7 @@ class MonsterGraphicBlock:
             setattr(other, attribute, a)
 
     def copy_data(self, other):
-        for attribute in ["graphics", "size_template", "palette_data"]:
+        for attribute in ["graphics", "size_template", "palette_data", "large"]:
             value = getattr(other, attribute)
             if isinstance(value, list):
                 value = list(value)
@@ -651,8 +737,14 @@ class MonsterGraphicBlock:
             palette_pointer = self.palette_pointer
             palette = self.palette
         else:
+            self.palette_pointer = palette_pointer
             palette = (palette_pointer - 0x127820) / 0x10
-            palette |= (self.palette & 0x8000)
+            self.palette = palette
+
+        if self.large:
+            palette |= 0x8000
+        else:
+            palette &= 0x7FFF
 
         if palette_pointer > 0x12a800:
             raise Exception("Palette pointer out of bounds.")

@@ -15,6 +15,7 @@ from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
+from formationrandomizer import Formation, FormationSet
 
 
 VERSION = "6"
@@ -27,6 +28,11 @@ ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
 
 
 MD5HASH = "e986575b98300f721ce27c180264d890"
+
+# Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
+REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
+# fake Atma, Guardian x4
+REPLACE_FORMATIONS = [0x1ff, 0x20e]
 
 
 class Substitution(object):
@@ -93,6 +99,7 @@ class AutoRecruitGauSub(Substitution):
         gau_cant_appear_sub.bytestring = [0x80, 0x0C]
         gau_cant_appear_sub.set_location(0x22FB5)
         gau_cant_appear_sub.write(filename)
+        REPLACE_ENEMIES.append(0x172)
         super(AutoRecruitGauSub, self).write(filename)
 
 
@@ -252,94 +259,16 @@ def monsters_from_table(tablefile):
     return monsters
 
 
-class Formation():
-    def __init__(self, formid, pointer):
-        self.formid = formid
-        self.pointer = pointer
-        self.auxpointer = self.pointer - 0x900
-
-    def read_data(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        self.mouldbyte = ord(f.read(1))
-        self.mould = self.mouldbyte >> 4
-        self.enemies_present = ord(f.read(1))
-        self.enemy_ids = map(ord, f.read(6))
-        self.enemy_pos = map(ord, f.read(6))
-        self.bosses = ord(f.read(1))
-
-        f.seek(self.auxpointer)
-        self.misc1 = ord(f.read(1))
-        self.misc2 = ord(f.read(1))
-        self.eventscript = ord(f.read(1))
-        self.misc3 = ord(f.read(1))
-        f.close()
-
-    def write_data(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        f.write(chr(self.mouldbyte))
-        f.write(chr(self.enemies_present))
-        f.write("".join(map(chr, self.enemy_ids)))
-        f.write("".join(map(chr, self.enemy_pos)))
-        f.write(chr(self.bosses))
-
-        f.seek(self.auxpointer)
-        f.write(chr(self.misc1))
-        f.write(chr(self.misc2))
-        f.write(chr(self.eventscript))
-        f.write(chr(self.misc3))
-        f.close()
-
-    def lookup_enemies(self):
-        self.enemies = []
-        for i, eid in enumerate(self.enemy_ids):
-            if eid == 0xFF and not self.enemies_present & (1 << i):
-                self.enemies.append(None)
-                continue
-            if self.bosses & (1 << i):
-                eid += 0x100
-            self.enemies.append(monsterdict[eid])
-            enemy_pos = self.enemy_pos[i]
-            x, y = enemy_pos >> 4, enemy_pos & 0xF
-            self.enemies[i].update_pos(x, y)
-        for e in self.enemies:
-            if not e:
-                continue
-            e.add_mould(self.mould)
-
-    def read_mould(self, filename):
-        mouldspecsptrs = 0x2D01A
-        f = open(filename, 'r+b')
-        pointer = mouldspecsptrs + (2*self.mould)
-        f.seek(pointer)
-        pointer = read_multi(f, length=2) | 0x20000
-        for i in xrange(6):
-            f.seek(pointer + (i*4))
-            a, b = tuple(map(ord, f.read(2)))
-            #print "%x %x" % (a, b),
-            width = ord(f.read(1))
-            height = ord(f.read(1))
-            #print "%x %x" % (width, height)
-            enemy = self.enemies[i]
-            if enemy:
-                enemy.update_size(width, height)
-
-
-class FormationSet():
-    def __init__(self, setid):
-        baseptr = 0xf4800
-        self.ptr = baseptr + (setid * 8)
-
-
 def get_formations(filename):
     baseptr = 0xf6200
+    formations = []
     for i in xrange(576):
-        f = Formation(i, baseptr + (i*15))
+        f = Formation(i)
         f.read_data(filename)
-        f.lookup_enemies()
-        #print i, "%x" % f.mould, [(e.name if e else e) for e in f.enemies]
+        f.lookup_enemies(monsterdict)
         f.read_mould(filename)
+        formations.append(f)
+    return formations
 
 
 def characters_from_table(tablefile):
@@ -980,11 +909,8 @@ def manage_monster_appearance(monsters):
         if "Siegfried" in m.name:
             m.update_pos(8, 8)
             m.update_size(8, 8)
-        if random.randint(1, 100) != 100 or True:
-            candidates = nonbosses[i:]
-            m.mutate_graphics_swap(candidates)
-        else:
-            m.mutate_graphics_copy(bosses)
+        candidates = nonbosses[i:]
+        m.mutate_graphics_swap(candidates)
         randomize_enemy_name(outfile, m.id)
 
     done = {}
@@ -1119,6 +1045,85 @@ def manage_blitz():
         f.write("".join(map(chr, newcmd)))
 
 
+def manage_formations():
+    unused_enemies = [u for u in monsters if u.id in REPLACE_ENEMIES]
+    unused_formations = [u for u in formations if set(u.enemies) & set(unused_enemies)]
+    unused_formations += [u for u in formations if u.formid in REPLACE_FORMATIONS]
+    boss_formations = [fo for fo in formations if fo.formid not in unused_formations]
+    single_boss_formations = list(boss_formations)
+    single_boss_formations = [bf for bf in single_boss_formations if len(bf.present_enemies) == 1]
+    single_boss_formations = [bf for bf in single_boss_formations if bf.formid not in REPLACE_FORMATIONS]
+    single_boss_formations = [bf for bf in single_boss_formations if bf.present_enemies[0].graphics.large or bf.present_enemies[0].boss_death]
+    boss_formations = [fo for fo in boss_formations if any([m.boss_death for m in fo.present_enemies])]
+
+    safe_boss_formations = list(boss_formations)
+    safe_boss_formations = [fo for fo in safe_boss_formations if not any([m.battle_event for m in fo.present_enemies])]
+
+    bosses = sorted([m for m in monsters if m.boss_death], key=lambda m: m.stats['level'])
+    repurposed_formations = []
+    used_graphics = []
+    for ue, uf in zip(unused_enemies, unused_formations):
+        while True:
+            vbf = random.choice(single_boss_formations)
+            vboss = [e for e in vbf.enemies if e][0]
+            if vboss.graphics.graphics not in used_graphics:
+                used_graphics.append(vboss.graphics.graphics)
+                break
+        ue.graphics.copy_data(vboss.graphics)
+        uf.copy_data(vbf)
+        uf.lookup_enemies(monsterdict)
+        eids = []
+        for eid in uf.enemy_ids:
+            if eid & 0xFF == vboss.id & 0xFF:
+                eids.append(ue.id)
+            else:
+                eids.append(eid)
+        uf.set_big_enemy_ids(eids)
+        uf.lookup_enemies(monsterdict)
+
+        bf = random.choice(safe_boss_formations)
+        boss = random.choice([e for e in bf.present_enemies if e.boss_death])
+        ue.copy_all(boss, everything=True)
+        index = bosses.index(boss)
+        index += random.randint(-3, 3)
+        index = max(0, min(index, len(bosses)-1))
+        while random.choice([True, False]):
+            index += random.randint(-2, 2)
+            index = max(0, min(index, len(bosses)-1))
+        boss2 = bosses[index]
+        ue.copy_all(boss2, everything=False)
+        ue.stats['level'] = max(boss.stats['level'], boss2.stats['level'])
+        ue.read_ai(outfile)
+        assert ue.boss_death
+        ue.mutate()
+        ue.treasure_boost()
+        ue.graphics.mutate_palette()
+        randomize_enemy_name(outfile, ue.id)
+        ue.write_stats(outfile)
+
+        uf.set_music_appropriate()
+        appearances = range(1, 14)
+        if ue.stats['level'] > 50:
+            appearances += [15]
+        uf.set_appearing(random.choice(appearances))
+        ue.graphics.write_data(outfile)
+        uf.mouldbyte = 0x60
+        uf.write_data(outfile)
+        repurposed_formations.append(uf)
+
+    rare_candidates = repurposed_formations + safe_boss_formations
+    random.shuffle(fsets)
+    for fs in fsets:
+        chosen = fs.mutate_formations(rare_candidates, extreme=False, verbose=False)
+        if chosen:
+            if chosen.misc3 & 0b00111000 == 0:
+                chosen.set_music(1)
+                chosen.write_data(outfile)
+            chosen = chosen.present_enemies[0]
+            rare_candidates = [rc for rc in rare_candidates if rc.present_enemies[0].name != chosen.name]
+        fs.write_data(outfile)
+
+
 def manage_shops():
     for i in xrange(0x80):
         pointer = 0x47AC0 + (9*i)
@@ -1216,6 +1221,22 @@ if __name__ == "__main__":
     if 'c' in flags:
         manage_monster_appearance(monsters)
 
+    formations = get_formations(sourcefile)
+
+    fsets = []
+    for i in xrange(256):
+        fs = FormationSet(setid=i)
+        fs.read_data(sourcefile)
+        fs.set_formations(formations)
+        fs.shuffle_formations()
+        fsets.append(fs)
+
+    ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
+    for a, b in zip(ranked_fsets, ranked_fsets[1:]):
+        a.swap_formations(b)
+
+    for m in monsters:
+        m.read_ai(outfile)
     items = get_ranked_items(sourcefile)
     if 'i' in flags:
         manage_items(items)
@@ -1253,6 +1274,9 @@ if __name__ == "__main__":
 
     if 'l' in flags:
         manage_blitz()
+
+    if 'f' in flags:
+        manage_formations()
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

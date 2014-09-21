@@ -30,7 +30,9 @@ ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
 MD5HASH = "e986575b98300f721ce27c180264d890"
 
 # Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
+#REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
 REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
+REPLACE_ENEMIES = [0x10f, 0x136, 0x137]  # kefka enemy formation unstable
 # fake Atma, Guardian x4
 REPLACE_FORMATIONS = [0x1ff, 0x20e]
 
@@ -808,17 +810,24 @@ def manage_skips():
 
     leo_skip_sub = Substitution()
     leo_skip_sub.bytestring = (
-        [0x97, 0x5C] +
+        [0x97, 0x5C] +  # ???
+        # ???
         [0xDB, 0xF7, 0xD5, 0xF2, 0xD5, 0xF3, 0xD5, 0xF4, 0xD5, 0xF5, 0xD5, 0xF9, 0xD5, 0xFB, 0xD5, 0xF6] +
-        [0x77, 0x02, 0x77, 0x03, 0x77, 0x04, 0x77, 0x05, 0x77, 0x09, 0x77, 0x0B, 0x77, 0x06] +
+        [0x77, 0x02, 0x77, 0x03, 0x77, 0x04, 0x77, 0x05, 0x77, 0x09, 0x77, 0x0B, 0x77, 0x06] +  # ???
+        # add people to party
         [0xD4, 0xF2, 0xD4, 0xF4, 0xD4, 0xF5, 0xD4, 0xF9, 0xD4, 0xFB, 0xD4, 0xF6] +
-        [0xB2, 0x35, 0x09, 0x02] +
-        [0xD3, 0xCC, 0xD0, 0x9D, 0xD2, 0xBA, 0xDA, 0x5A, 0xDA, 0xD9, 0xDB, 0x20, 0xDA, 0x68] +
-        [0xD2, 0xB3, 0xD2, 0xB4] +
-        [0xD0, 0x7A] +
-        [0xD2, 0x76, 0xD2, 0x6F] +
-        [0x6B, 0x00, 0x04, 0xF9, 0x80, 0x00] +
-        [0xC7, 0xF9, 0x7F, 0xFF]
+        [0xB2, 0x35, 0x09, 0x02] +  # ???
+        # entering airship triggers cutscene
+        [0xD3, 0xCC] +  # ???
+        [0xD0, 0x9D] +  # activate floating continent cutscene
+        [0xD2, 0xBA] +  # ???
+        [0xDA, 0x5A, 0xDA, 0xD9, 0xDB, 0x20, 0xDA, 0x68] +  # ???
+        [0xD2, 0xB3, 0xD2, 0xB4] +  # ???
+        [0xD0, 0x7A] +  # ???
+        [0xD2, 0x76] +  # airship flyable
+        [0xD2, 0x6F] +  # ???
+        [0x6B, 0x00, 0x04, 0xF9, 0x80, 0x00] +  # load map, place party
+        [0xC7, 0xF9, 0x7F, 0xFF]  # place airship
         )
     leo_skip_sub.set_location(0xBF2B5)
     leo_skip_sub.write(outfile)
@@ -841,6 +850,64 @@ def manage_skips():
     narshe_skip_sub.bytestring = [0xB2, address & 0xFF, (address >> 8) & 0xFF, address >> 16]
     narshe_skip_sub.set_location(0xAADC4)
     narshe_skip_sub.write(outfile)
+
+
+def activate_airship_mode(freespace=0xCFE2A):
+    set_airship_sub = Substitution()
+    set_airship_sub.bytestring = (
+        [0x3A, 0xD2, 0xCC] +  # moving code
+        [0xD2, 0xBA] +  # enter airship from below decks
+        [0xD2, 0xB9] +  # airship appears on world map
+        [0xD0, 0x70] +  # party appears on airship
+        [0x6B, 0x00, 0x04, 0x54, 0x22, 0x00] +  # load map, place party
+        [0xC7, 0x54, 0x23] +  # place airship
+        [0xFF] +  # end map script
+        [0xFE]  # end subroutine
+        )
+    set_airship_sub.set_location(freespace)
+    set_airship_sub.write(outfile)
+
+    # point to airship-placing script
+    set_airship_sub.bytestring = (
+        [0xB2, freespace & 0xFF, (freespace >> 8) & 0xFF,
+         (freespace >> 16) - 0xA, 0xFE])
+    set_airship_sub.set_location(0xCB046)
+    set_airship_sub.write(outfile)
+
+    # always access floating continent
+    set_airship_sub.bytestring = [0xC0, 0x27, 0x01, 0x79, 0xF5, 0x00]
+    set_airship_sub.set_location(0xAF53A)  # need first branch for button press
+    set_airship_sub.write(outfile)
+
+    # always exit airship
+    set_airship_sub.bytestring = [0xFD] * 6
+    set_airship_sub.set_location(0xAF4B1)
+    set_airship_sub.write(outfile)
+    set_airship_sub.bytestring = [0xFD] * 8
+    set_airship_sub.set_location(0xAF4E3)
+    set_airship_sub.write(outfile)
+
+    # chocobo stables are airship stables now
+    set_airship_sub.bytestring = [0xB6, 0x8D, 0xF5, 0x00, 0xB3, 0x5E, 0x00]
+    set_airship_sub.set_location(0xA7A39)
+    set_airship_sub.write(outfile)
+    set_airship_sub.set_location(0xA8FB7)
+    set_airship_sub.write(outfile)
+    set_airship_sub.set_location(0xB44D0)
+    set_airship_sub.write(outfile)
+    set_airship_sub.set_location(0xC3335)
+    set_airship_sub.write(outfile)
+
+    # don't force Locke and Celes at party select
+    set_airship_sub.bytestring = [0x99, 0x01, 0x00, 0x00]
+    set_airship_sub.set_location(0xAAB67)
+    set_airship_sub.write(outfile)
+    set_airship_sub.set_location(0xAF60F)
+    set_airship_sub.write(outfile)
+    set_airship_sub.set_location(0xCC2F3)
+    set_airship_sub.write(outfile)
+
+    # a/f5a8
 
 
 def manage_balance():
@@ -890,11 +957,19 @@ def manage_monster_appearance(monsters):
         m.set_graphics(graphics=mg)
         mgs.append(mg)
 
-    for m in monsters:
-        pp = m.graphics.palette_pointer
-        others = [i for i in monsters if i.graphics.palette_pointer == pp + 0x10]
+    esperptr = 0x127000 + (5*384)
+    espers = []
+    for j in range(32):
+        mg = MonsterGraphicBlock(pointer=esperptr + (5*j), name="")
+        mg.read_data(sourcefile)
+        espers.append(mg)
+        mgs.append(mg)
+
+    for g in mgs:
+        pp = g.palette_pointer
+        others = [h for h in mgs if h.palette_pointer == pp + 0x10]
         if others:
-            m.graphics.palette_data = m.graphics.palette_data[:0x10]
+            g.palette_data = g.palette_data[:0x10]
 
     nonbosses = [m for m in monsters if not m.is_boss]
     bosses = [m for m in monsters if m.is_boss]
@@ -923,6 +998,13 @@ def manage_monster_appearance(monsters):
             freepointer += len(mg.palette_data)
         mg.mutate_palette()
         mg.write_data(outfile, palette_pointer=done[idpair])
+
+    for mg in espers:
+        mg.mutate_palette()
+        mg.write_data(outfile, palette_pointer=freepointer)
+        freepointer += len(mg.palette_data)
+
+    return mgs
 
 
 def manage_items(items):
@@ -1045,30 +1127,74 @@ def manage_blitz():
         f.write("".join(map(chr, newcmd)))
 
 
-def manage_formations():
+def manage_formations(esper_graphics=None):
     unused_enemies = [u for u in monsters if u.id in REPLACE_ENEMIES]
     unused_formations = [u for u in formations if set(u.enemies) & set(unused_enemies)]
     unused_formations += [u for u in formations if u.formid in REPLACE_FORMATIONS]
-    boss_formations = [fo for fo in formations if fo.formid not in unused_formations]
-    single_boss_formations = list(boss_formations)
-    single_boss_formations = [bf for bf in single_boss_formations if len(bf.present_enemies) == 1]
-    single_boss_formations = [bf for bf in single_boss_formations if bf.formid not in REPLACE_FORMATIONS]
-    single_boss_formations = [bf for bf in single_boss_formations if bf.present_enemies[0].graphics.large or bf.present_enemies[0].boss_death]
-    boss_formations = [fo for fo in boss_formations if any([m.boss_death for m in fo.present_enemies])]
 
-    safe_boss_formations = list(boss_formations)
-    safe_boss_formations = [fo for fo in safe_boss_formations if not any([m.battle_event for m in fo.present_enemies])]
+    boss_formations = [fo for fo in formations if fo.formid not in unused_formations]
+    single_enemy_formations = list(boss_formations)
+    single_enemy_formations = [bf for bf in single_enemy_formations if len(bf.present_enemies) == 1]
+    single_enemy_formations = [bf for bf in single_enemy_formations if bf.formid not in REPLACE_FORMATIONS]
+    single_boss_formations = [bf for bf in single_enemy_formations if bf.present_enemies[0].graphics.large or bf.present_enemies[0].boss_death]
 
     bosses = sorted([m for m in monsters if m.boss_death], key=lambda m: m.stats['level'])
+    boss_formations = [fo for fo in boss_formations if any(e for e in fo.present_enemies if e in bosses)]
+    safe_boss_formations = list(boss_formations)
+    safe_boss_formations = [fo for fo in safe_boss_formations if not any([m.battle_event for m in fo.present_enemies])]
+    safe_boss_formations = [fo for fo in safe_boss_formations if not any(["Phunbaba" in m.name for m in fo.present_enemies])]
+
     repurposed_formations = []
     used_graphics = []
+    esper_formation = [fo for fo in single_enemy_formations if fo.formid == 0x232][0]
+    #esper_formation = [fo for fo in single_enemy_formations if fo.formid == 0x1ff][0]
+    #esper_formation = [fo for fo in single_enemy_formations if fo.formid == 0xb1][0]
+    blacklisted = []
+    #blacklisted = [1, 16, 30, 31] + [27, 28, 29]
+    temp = []
+    for i, e in enumerate(esper_graphics):
+        if i in blacklisted:
+            continue
+        temp.append(e)
+    esper_graphics = temp
+
+    while len(unused_enemies) < len(unused_formations):
+        unused_enemies = unused_enemies * 2
+
     for ue, uf in zip(unused_enemies, unused_formations):
+        esper = False
         while True:
-            vbf = random.choice(single_boss_formations)
-            vboss = [e for e in vbf.enemies if e][0]
+            if esper:
+                gfx = random.choice(esper_graphics)
+                gfx = esper_graphics[14]
+                # very weird: 27, 28, 29
+                # needs fix: 10, 13, 14, 15, 25
+                matching_formations = []
+                for fo in single_enemy_formations:
+                    enemygfx = fo.present_enemies[0].graphics
+                    if enemygfx.large == gfx.large and enemygfx.size_template == gfx.size_template:
+                        matching_formations.append(fo)
+                #if matching_formations and False:
+                if matching_formations:
+                    vbf = random.choice(matching_formations)
+                else:
+                    vbf = esper_formation
+                vboss = [e for e in vbf.enemies if e][0]
+                vboss.graphics = gfx
+                print vboss.graphics.size_template
+                #vboss.graphics = random.choice(esper_graphics)
+            else:
+                vbf = random.choice(single_boss_formations)
+                vboss = [e for e in vbf.enemies if e][0]
+
+            if not vboss.graphics.graphics:
+                continue
+
+            #if vboss.graphics.graphics not in used_graphics or True:
             if vboss.graphics.graphics not in used_graphics:
                 used_graphics.append(vboss.graphics.graphics)
                 break
+
         ue.graphics.copy_data(vboss.graphics)
         uf.copy_data(vbf)
         uf.lookup_enemies(monsterdict)
@@ -1081,14 +1207,27 @@ def manage_formations():
         uf.set_big_enemy_ids(eids)
         uf.lookup_enemies(monsterdict)
 
-        bf = random.choice(safe_boss_formations)
-        boss = random.choice([e for e in bf.present_enemies if e.boss_death])
+        while True:
+            bf = random.choice(safe_boss_formations)
+            # TODO: sometimes this list is empty?
+            boss_choices = [e for e in bf.present_enemies if e.boss_death]
+            boss_choices = [e for e in boss_choices if e in bosses]
+            if boss_choices:
+                break
+            else:
+                print "ERROR: %s" % bf
+
+        boss = random.choice(boss_choices)
+        #print bf
+        #print boss.name, boss.id
+        #print ["%x" % ord(c) for c in boss.aiscript]
+        #print boss.boss_death
         ue.copy_all(boss, everything=True)
         index = bosses.index(boss)
-        index += random.randint(-3, 3)
+        index += random.randint(-2, 2)
         index = max(0, min(index, len(bosses)-1))
         while random.choice([True, False]):
-            index += random.randint(-2, 2)
+            index += random.randint(-1, 1)
             index = max(0, min(index, len(bosses)-1))
         boss2 = bosses[index]
         ue.copy_all(boss2, everything=False)
@@ -1106,16 +1245,21 @@ def manage_formations():
         if ue.stats['level'] > 50:
             appearances += [15]
         uf.set_appearing(random.choice(appearances))
-        ue.graphics.write_data(outfile)
         uf.mouldbyte = 0x60
+        ue.graphics.write_data(outfile)
         uf.write_data(outfile)
         repurposed_formations.append(uf)
 
-    rare_candidates = repurposed_formations + safe_boss_formations
+    rare_candidates = list(repurposed_formations + safe_boss_formations)
+    #rare_candidates = list(repurposed_formations)
+    #rare_candidates = list(safe_boss_formations)
     random.shuffle(fsets)
     for fs in fsets:
-        chosen = fs.mutate_formations(rare_candidates, extreme=False, verbose=False)
-        if chosen:
+        #rare_candidates = list(repurposed_formations)
+        #chosens = fs.mutate_formations(rare_candidates, test=True)
+        chosens = fs.mutate_formations(rare_candidates, test=False)
+
+        for chosen in chosens:
             if chosen.misc3 & 0b00111000 == 0:
                 chosen.set_music(1)
                 chosen.write_data(outfile)
@@ -1139,6 +1283,7 @@ def randomize_enemy_name(filename, enemy_id):
     f = open(filename, 'r+b')
     f.seek(pointer)
     name = generate_name()
+    #monsterdict[enemy_id].name = name
     name = map(lambda c: hex2int(texttable[c]), name)
     while len(name) < 10:
         name.append(0xFF)
@@ -1196,6 +1341,12 @@ if __name__ == "__main__":
 
     characters = characters_from_table(CHAR_TABLE)
 
+    if 'airship' in flags:
+        activate_airship_mode()
+        flags = flags.replace('airship', '')
+        if VERBOSE:
+            print "SECRET CODE: AIRSHIP MODE ACTIVATED"
+
     if 'o' in flags:
         manage_commands(commands, characters)
 
@@ -1219,7 +1370,7 @@ if __name__ == "__main__":
             m.read_stats(sourcefile)
 
     if 'c' in flags:
-        manage_monster_appearance(monsters)
+        mgs = manage_monster_appearance(monsters)
 
     formations = get_formations(sourcefile)
 
@@ -1237,6 +1388,7 @@ if __name__ == "__main__":
 
     for m in monsters:
         m.read_ai(outfile)
+
     items = get_ranked_items(sourcefile)
     if 'i' in flags:
         manage_items(items)
@@ -1276,7 +1428,7 @@ if __name__ == "__main__":
         manage_blitz()
 
     if 'f' in flags:
-        manage_formations()
+        manage_formations(esper_graphics=mgs[-32:])
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

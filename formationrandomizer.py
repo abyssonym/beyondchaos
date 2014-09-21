@@ -1,4 +1,5 @@
 from utils import read_multi, write_multi, utilrandom as random
+from math import log
 
 
 class Formation():
@@ -6,6 +7,23 @@ class Formation():
         self.formid = formid
         self.pointer = 0xf6200 + (formid*15)
         self.auxpointer = 0xf5900 + (formid*4)
+
+    def __repr__(self):
+        counter = {}
+        for e in self.present_enemies:
+            if e.name not in counter:
+                counter[e.name] = 0
+            counter[e.name] += 1
+        s = ""
+        for name, count in sorted(counter.items()):
+            s = ', '.join([s, "%s x%s" % (name, count)])
+        s = s[2:]
+        #return s
+        return "%s (%x)" % (s, self.formid)
+
+    @property
+    def pincer_prohibited(self):
+        return self.misc1 & 0x40
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -43,7 +61,6 @@ class Formation():
         self.misc1 |= 0x20 if not back else 0
         self.misc1 |= 0x40 if not pincer else 0
         self.misc1 |= 0x80 if not side else 0
-        print "%x" % self.misc1
 
     def set_music(self, value):
         # BATTLE THEMES
@@ -125,7 +142,7 @@ class Formation():
             if eid == 0xFF and not self.enemies_present & (1 << i):
                 self.enemies.append(None)
                 continue
-            if self.bosses & (1 << i):
+            if self.enemies_present & (1 << i) and self.bosses & (1 << i):
                 eid += 0x100
             self.big_enemy_ids.append(eid)
             self.enemies.append(monsterdict[eid])
@@ -172,15 +189,34 @@ class Formation():
             value = type(value)(value)
             setattr(self, attribute, value)
 
-    def rank(self):
-        levels = [e.stats['level'] for e in self.enemies if e]
-        return sum(levels) / float(len(levels))
+    def rank(self, levels=None):
+        if levels is None:
+            levels = [e.stats['level'] for e in self.present_enemies if e]
+        balance = sum(levels) / (log(len(levels))+1)
+        average = sum(levels) / len(levels)+1
+        score = (max(levels) + balance + average) / 3.0
+        return int(score)
+
+    def oldrank(self):
+        levels = [e.oldlevel for e in self.present_enemies if e]
+        return self.rank(levels)
 
 
 class FormationSet():
     def __init__(self, setid):
         baseptr = 0xf4800
+        self.setid = setid
         self.pointer = baseptr + (setid * 8)
+
+    def __repr__(self):
+        s = ""
+        s += "SET ID %x\n" % self.setid
+        for f in self.formations:
+            s += "%s " % f.formid
+            for i in range(8):
+                    s += '* ' if f.misc1 & (1 << i) else '  '
+            s += str([e.name for e in f.present_enemies]) + "\n"
+        return s
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -197,42 +233,47 @@ class FormationSet():
             write_multi(f, value, length=2)
         f.close()
 
-    def mutate_formations(self, candidates, extreme=False, verbose=False):
-        if self.formids[3] not in self.formids[:3]:
-            return
+    def mutate_formations(self, candidates, verbose=False, test=False):
+        if test:
+            for i in range(4):
+                chosen = random.choice(candidates)
+                self.formations[i] = chosen
+                self.formids[i] = chosen.formid
+            return self.formations
 
-        if random.randint(1, 4) != 4 and not extreme:
-            return
+        if random.randint(1, 4) != 4:
+            return []
 
-        low = max(fo.rank() for fo in self.formations)
+        low = max(fo.oldrank() for fo in self.formations)
         high = low * 1.25
         while random.randint(1, 3) == 3:
             high = high * 1.25
 
         candidates = filter(lambda c: low <= c.rank() <= high, candidates)
         candidates = sorted(candidates, key=lambda c: c.rank())
-
         if not candidates:
-            return
+            return []
 
-        halfway = max(0, len(candidates)/2)
-        index = random.randint(0, halfway) + random.randint(0, halfway)
-        index = min(index, len(candidates)-1)
-        chosen = candidates[index]
+        slots = [3]
+        chosens = []
+        for i in slots:
+            halfway = max(0, len(candidates)/2)
+            index = random.randint(0, halfway) + random.randint(0, halfway)
+            index = min(index, len(candidates)-1)
+            chosen = candidates[index]
+            candidates.remove(chosen)
+            self.formations[i] = chosen
+            self.formids[i] = chosen.formid
+            chosens.append(chosen)
+            if not candidates:
+                break
+
         if verbose:
             for fo in self.formations:
                 print [e.name for e in fo.present_enemies]
-            print [e.name for e in chosen.present_enemies]
             print
 
-        self.formations[3] = chosen
-        self.formids[3] = chosen.formid
-        if extreme:
-            for i in range(3):
-                self.formations[i] = chosen
-                self.formids[i] = chosen.formid
-
-        return chosen
+        return chosens
 
     def set_formations(self, formations):
         self.formations = []

@@ -120,6 +120,7 @@ class MonsterBlock:
         self.stats['xp'] = read_multi(f, length=2)
         self.stats['gp'] = read_multi(f, length=2)
         self.stats['level'] = ord(f.read(1))
+        self.oldlevel = self.stats['level']
 
         self.morph = ord(f.read(1))
         self.misc1 = ord(f.read(1))
@@ -481,6 +482,7 @@ class MonsterBlock:
 
             index = itemids.index(i)
             index += random.randint(-3, 3)
+            index = max(0, min(index, len(itemids)-1))
             while random.randint(1, 4) == 4:
                 index += random.randint(-2, 2)
                 index = max(0, min(index, len(itemids)-1))
@@ -513,6 +515,7 @@ class MonsterBlock:
 
             index = itemids.index(i)
             index += random.randint(-1, 3)
+            index = max(0, min(index, len(itemids)-1))
             while random.choice([True, False]):
                 index += random.randint(-1, 3)
                 index = max(0, min(index, len(itemids)-1))
@@ -594,6 +597,8 @@ class MonsterBlock:
             self.mutate_special()
 
     def swap_ai(self, other):
+        if self.boss_death != other.boss_death:
+            return
         for attribute in ["ai", "controls", "sketches", "rages"]:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
@@ -610,7 +615,7 @@ class MonsterBlock:
 
     def copy_all(self, other, everything=True):
         attributes = [
-            "ai", "controls", "sketches", "rages", "stats", "misc2", "absorb",
+            "ai", "controls", "sketches", "stats", "misc2", "absorb",
             "null", "weakness", "special", "morph", "items", "misc1",
             "immunities", "statuses"]
         if not everything:
@@ -624,6 +629,9 @@ class MonsterBlock:
             if value is not None:
                 value = type(value)(value)
             setattr(self, attribute, value)
+
+        if self.rages is not None and other.rages is not None and random.choice([True, False]):
+            self.rages = type(other.rages)(other.rages)
 
 
 def get_ranked_monsters(filename, bosses=True):

@@ -227,6 +227,41 @@ class CharacterBlock:
             self.beserk = True
 
 
+class NPCBlock():
+    def __init__(self, pointer):
+        #self.npcid = npcid
+        #self.pointer = 0x41D51 + (9 * self.npcid)
+        self.pointer = pointer
+
+    def read_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        self.event_addr = read_multi(f, length=3)
+        self.palette = (self.event_addr & 0x1C0000) >> 18
+        self.unknown = self.event_addr & 0xE00000
+        self.event_addr = self.event_addr & 0x3FFFF
+        self.misc0 = ord(f.read(1))
+        self.x = ord(f.read(1))
+        self.y = ord(f.read(1))
+        self.graphics = ord(f.read(1))
+        self.misc1 = ord(f.read(1))
+        self.misc2 = ord(f.read(1))
+        f.close()
+
+    def write_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        value = self.unknown | self.event_addr | (self.palette << 18)
+        write_multi(f, value, length=3)
+        f.write(chr(self.misc0))
+        f.write(chr(self.x))
+        f.write(chr(self.y))
+        f.write(chr(self.graphics))
+        f.write(chr(self.misc1))
+        f.write(chr(self.misc2))
+        f.close()
+
+
 def commands_from_table(tablefile):
     commands = []
     for i, line in enumerate(open(tablefile)):
@@ -1007,6 +1042,95 @@ def manage_monster_appearance(monsters):
     return mgs
 
 
+def manage_character_appearance(wild=True):
+    pointerspointer = 0x41d52
+    pointers = set([])
+    f = open(sourcefile, 'r+b')
+    f.seek(pointerspointer)
+    for i in xrange(0, 2193):
+        pointer = pointerspointer + (i*9)
+        pointers.add(pointer)
+    f.close()
+
+    palette_assignments = {}
+    npcs = [NPCBlock(pointer) for pointer in pointers]
+    from collections import defaultdict
+    for npc in npcs:
+        npc.read_data(sourcefile)
+        if npc.graphics not in palette_assignments:
+            palette_assignments[npc.graphics] = defaultdict(int)
+        palette_assignments[npc.graphics][npc.palette] += 1
+
+    if wild:
+        char_ids = range(0, 0x16)
+    else:
+        char_ids = range(0, 0x0E)
+
+    #char_ids.remove(10)
+    #char_ids.remove(11)
+    #char_ids.remove(12)
+    #char_ids.remove(13)
+    #char_ids.remove(14)
+    for key, value in palette_assignments.items():
+        temp = {}
+        #most = 0
+        for k2, v2 in value.items():
+            #if v2 > most:
+            #    temp = {k2: v2}
+            #    most = v2
+            if v2 >= 3:
+                temp[k2] = v2
+        if temp:
+            palette_assignments[key] = temp.keys()
+        else:
+            palette_assignments[key] = palette_assignments[key].keys()
+
+    temp = {}
+    for c in char_ids:
+        if c not in temp:
+            temp[c] = set([])
+        charpalettes = palette_assignments[c]
+        temp[c] = temp[c] | set(charpalettes)
+        for palettes in palette_assignments.values():
+            if set(charpalettes) & set(palettes):
+                temp[c] = temp[c] | set(palettes)
+        temp[c] = list(temp[c])
+        if 7 in temp[c]:
+            temp[c].remove(7)
+
+    for k, v in temp.items():
+        print k, v
+
+    for c in char_ids:
+        print ("%x" % c), palette_assignments[c]
+
+    change_to = list(char_ids)
+    random.shuffle(change_to)
+    change_to = dict(zip(char_ids, change_to))
+    char_palettes = [p for c in char_ids for p in palette_assignments[c]]
+    char_palettes.remove(0)
+    '''
+    palette_pools = ([0],
+                     [1, 2, 3, 4],
+                     [5, 6, 7])
+    '''
+
+    palette_change_to = {}
+    for npc in npcs:
+        if npc.graphics in change_to:
+            new_graphics = change_to[npc.graphics]
+            npc.graphics = new_graphics
+            if (npc.graphics, npc.palette) in palette_change_to:
+                new_palette = palette_change_to[(npc.graphics, npc.palette)]
+            else:
+                new_palette = random.choice(temp[npc.graphics])
+                palette_change_to[(npc.graphics, npc.palette)] = new_palette
+                print ("%x" % npc.graphics), new_palette
+            npc.palette = new_palette
+            npc.write_data(outfile)
+            #print ("%x" % npc.graphics), npc.palette
+
+
 def manage_items(items):
     for i in items:
         i.mutate()
@@ -1371,6 +1495,7 @@ if __name__ == "__main__":
 
     if 'c' in flags:
         mgs = manage_monster_appearance(monsters)
+        #manage_character_appearance()
 
     formations = get_formations(sourcefile)
 

@@ -1,3 +1,5 @@
+Run the randomizer using Python 2.x
+
 Usage:
     python randomizer.py
     python randomizer.py <ROMFILE> <VERSION>.<FLAGS>.<SEED VALUE>

@@ -18,7 +18,7 @@ from namerandomizer import generate_name
 from formationrandomizer import Formation, FormationSet
 
 
-VERSION = "6"
+VERSION = "7"
 VERBOSE = False
 
 

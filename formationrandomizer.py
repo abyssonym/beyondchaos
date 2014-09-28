@@ -201,6 +201,10 @@ class Formation():
         levels = [e.oldlevel for e in self.present_enemies if e]
         return self.rank(levels)
 
+    @property
+    def exp(self):
+        return sum(e.stats['xp'] for e in self.present_enemies)
+
 
 class FormationSet():
     def __init__(self, setid):

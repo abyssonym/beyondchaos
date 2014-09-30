@@ -210,12 +210,17 @@ class MonsterBlock:
         if self.undead != other.undead:
             self.misc1 ^= 0x80
             other.misc1 ^= 0x80
+        if self.floating != other.floating:
+            self.statuses[2] ^= 0x1
+            other.statuses[2] ^= 0x1
 
     def copy_visible(self, other):
         if self.humanoid != other.humanoid:
             self.misc1 ^= 0x10
         if self.undead != other.undead:
             self.misc1 ^= 0x80
+        if self.floating != other.floating:
+            self.statuses[2] ^= 0x1
 
     def write_stats(self, filename):
         f = open(filename, 'r+b')

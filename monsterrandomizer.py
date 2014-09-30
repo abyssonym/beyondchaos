@@ -381,7 +381,7 @@ class MonsterBlock:
                       "float (rhizopas)": (3, 0x80)}
         bitdict = dict((y, x) for (x, y) in statusdict.items())
 
-        for _ in xrange(1000):
+        for _ in xrange(100):
             if stacount <= 0:
                 break
 
@@ -391,10 +391,11 @@ class MonsterBlock:
                 continue
 
             status = bitdict[(byte, bit)]
-            if status in ["zombie", "magitek", "petrify", "dead"]:
-                continue
+            if status in ["zombie", "magitek", "petrify", "dead", "disappear"]:
+                if self.is_boss or random.randint(1, 1000) != 1000:
+                    continue
             if status in ["condemned", "mute", "berserk",
-                          "stop", "disappear", "muddle", "sleep"]:
+                          "stop", "muddle", "sleep"]:
                 if self.is_boss and random.randint(1, 100) != 100:
                     continue
                 elif not self.is_boss and random.randint(1, 10) != 10:
@@ -416,7 +417,7 @@ class MonsterBlock:
             new_statuses[byte] |= bit
             stacount += -1
 
-        for _ in xrange(1000):
+        for _ in xrange(100):
             if immcount <= 0:
                 break
 
@@ -568,11 +569,13 @@ class MonsterBlock:
         if branch <= 7:
             # regular special
             valid = set(range(0, 0x0F))
-            valid.remove(0x03)
-            valid.remove(0x0A)
-            valid.add(0x19)
-            valid.add(0x30)
-            valid.add(0x31)
+            if random.randint(1, 1000) != 1000:
+                valid.remove(0x03)  # Magitek
+            valid.remove(0x0A)  # image
+            valid.add(0x19)  # frozen
+            valid = valid | set([0x40 | v for v in list(valid)])  # no damage
+            valid.add(0x30)  # absorb HP
+            valid.add(0x31)  # absorb MP
             special = random.choice(sorted(valid))
         if branch <= 9:
             # physical special
@@ -584,9 +587,11 @@ class MonsterBlock:
         elif branch >= 10:
             # bonus special
             valid = set(range(10, 0x1F))
-            valid.remove(0x1E)
-            valid.remove(0x19)
-            valid.add(0x0A)
+            if not self.is_boss or random.randint(1, 1000) != 1000:
+                valid.remove(0x1D)  # disappear
+                valid.remove(0x1E)  # Interceptor
+            valid.remove(0x19)  # frozen
+            valid.add(0x0A)  # image
             special = random.choice(sorted(valid))
         self.special = special
 

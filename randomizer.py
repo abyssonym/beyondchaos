@@ -648,6 +648,39 @@ def manage_commands(commands, characters):
     return commands, characters
 
 
+def manage_tempchar_commands(characters):
+    chardict = dict([(c.id, c) for c in characters])
+    banonpool, ghostpool, leopool = set([]), set([]), set([])
+    for key in [0, 1, 4, 5]:
+        c = chardict[key]
+        banonpool |= set(c.battle_commands)
+    banonpool = banonpool - set([0x00, 0x01, 0x02, 0x17])
+    ghostpool = banonpool | set(chardict[3].battle_commands)
+    ghostpool = ghostpool - set([0x00, 0x01, 0x02, 0x17])
+    for key in chardict:
+        c = chardict[key]
+        leopool |= set(c.battle_commands)
+    leopool = leopool - set([0x00, 0x01, 0x02, 0x17])
+    banonpool, ghostpool, leopool = sorted(banonpool), sorted(ghostpool), sorted(leopool)
+
+    chardict[14].set_battle_command(1, command_id=random.choice(banonpool))
+    chardict[14].set_battle_command(2, command_id=random.choice(banonpool))
+    chardict[15].set_battle_command(1, command_id=random.choice(leopool))
+    chardict[15].set_battle_command(2, command_id=random.choice(leopool))
+    chardict[16].set_battle_command(1, command_id=random.choice(ghostpool))
+    chardict[16].set_battle_command(2, command_id=random.choice(ghostpool))
+    chardict[17].set_battle_command(1, command_id=random.choice(ghostpool))
+    chardict[17].set_battle_command(2, command_id=random.choice(ghostpool))
+
+    for i in range(14, 18):
+        c = chardict[i]
+        if c.battle_commands[1] == 0xFF and c.battle_commands[2] != 0xFF:
+            c.set_battle_command(1, command_id=c.battle_commands[2])
+        if c.battle_commands[1] == c.battle_commands[2]:
+            c.set_battle_command(2, command_id=0xFF)
+        c.write_battle_commands(outfile)
+
+
 def manage_commands_new(commands, characters):
     # note: x-magic targets random party member
     # replacing lore screws up enemy skills
@@ -1632,6 +1665,10 @@ if __name__ == "__main__":
     if 'u' in flags:
         umaro_risk = manage_umaro(characters)
         reset_rage_blizzard(items, umaro_risk, outfile)
+
+    if 'o' in flags:
+        # do this after swapping beserk
+        manage_tempchar_commands(characters)
 
     if 'q' in flags:
         # do this after swapping beserk

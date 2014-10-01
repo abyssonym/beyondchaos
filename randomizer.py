@@ -4,7 +4,8 @@ from shutil import copyfile
 from hashlib import md5
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, read_multi, write_multi,
-                   texttable, utilrandom as random)
+                   texttable, generate_swapfunc, shift_middle,
+                   utilrandom as random)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
                                MetamorphBlock, get_ranked_monsters,
@@ -18,7 +19,7 @@ from namerandomizer import generate_name
 from formationrandomizer import Formation, FormationSet
 
 
-VERSION = "7"
+VERSION = "8"
 VERBOSE = False
 
 
@@ -261,6 +262,75 @@ class NPCBlock():
         f.write(chr(self.misc1))
         f.write(chr(self.misc2))
         f.close()
+
+
+class WindowBlock():
+    def __init__(self, windowid):
+        self.pointer = 0x2d1c00 + (windowid * 0x20)
+
+    def read_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        self.palette = []
+        for i in xrange(0x8):
+            color = read_multi(f, length=2)
+            blue = (color & 0x7c00) >> 10
+            green = (color & 0x03e0) >> 5
+            red = color & 0x001f
+            self.negabit = color & 0x8000
+            self.palette.append((red, green, blue))
+        f.close()
+
+    def write_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        for (red, green, blue) in self.palette:
+            color = (blue << 10) | (green << 5) | red
+            write_multi(f, color, length=2)
+        f.close()
+
+    def mutate(self):
+        def cluster_colors(colors):
+            def distance(cluster, value):
+                average = sum([sum(c) for (i, c) in cluster]) / len(cluster)
+                return abs(sum(value) - average)
+
+            clusters = []
+            clusters.append(set([colors[0]]))
+            colors = colors[1:]
+
+            if random.randint(1, 3) != 3:
+                i = random.randint(1, len(colors)-3)
+                clusters.append(set([colors[i]]))
+                colors.remove(colors[i])
+
+            clusters.append(set([colors[-1]]))
+            colors = colors[:-1]
+
+            for i, c in colors:
+                ideal = min(clusters, key=lambda cl: distance(cl, c))
+                ideal.add((i, c))
+
+            return clusters
+
+        ordered_palette = zip(range(8), self.palette)
+        ordered_palette = sorted(ordered_palette, key=lambda (i, c): sum(c))
+        newpalette = [None] * 8
+        clusters = cluster_colors(ordered_palette)
+        prevdarken = random.uniform(0.3, 0.9)
+        for cluster in clusters:
+            degree = random.randint(-75, 75)
+            darken = random.uniform(prevdarken, min(prevdarken*1.1, 1.0))
+            darkener = lambda c: int(round(c * darken))
+            hueswap = generate_swapfunc()
+            for i, cs in sorted(cluster, key=lambda (i, c): sum(c)):
+                newcs = shift_middle(cs, degree, ungray=True)
+                newcs = map(darkener, newcs)
+                newcs = hueswap(newcs)
+                newpalette[i] = tuple(newcs)
+            prevdarken = darken
+
+        self.palette = newpalette
 
 
 def commands_from_table(tablefile):
@@ -1411,6 +1481,7 @@ def manage_formations(esper_graphics=None):
                 chosen.write_data(outfile)
             chosen = chosen.present_enemies[0]
             rare_candidates = [rc for rc in rare_candidates if rc.present_enemies[0].name != chosen.name]
+
         fs.write_data(outfile)
 
 
@@ -1576,6 +1647,13 @@ if __name__ == "__main__":
 
     if 'f' in flags:
         manage_formations(esper_graphics=mgs[-32:])
+
+    if 'n' in flags:
+        for i in range(8):
+            w = WindowBlock(i)
+            w.read_data(sourcefile)
+            w.mutate()
+            w.write_data(outfile)
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

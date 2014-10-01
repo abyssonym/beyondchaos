@@ -1,5 +1,5 @@
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
-                   mutate_index, utilrandom as random)
+                   mutate_palette_dict, mutate_index, utilrandom as random)
 from skillrandomizer import SpellBlock
 from itemrandomizer import get_ranked_items
 
@@ -778,7 +778,6 @@ class MonsterGraphicBlock:
             blue = (color & 0x7c00) >> 10
             green = (color & 0x03e0) >> 5
             red = color & 0x001f
-            self.negabit = color & 0x8000
             self.palette_data.append((red, green, blue))
             self.palette_values.append(int(round(sum([red, green, blue])/3.0)))
         self.palette_data = tuple(self.palette_data)
@@ -843,50 +842,8 @@ class MonsterGraphicBlock:
     def mutate_palette(self, alternatives=None):
         numcolors = len(self.palette_data)
         assert len(self.palette_data) == numcolors
-        colorsets = {}
         palette_dict = dict(enumerate(self.palette_data))
-        for n, (red, green, blue) in palette_dict.items():
-            key = (red >= green, red >= blue, green >= blue)
-            if key not in colorsets:
-                colorsets[key] = []
-            colorsets[key].append(n)
-
-        pastswap = []
-        for key in colorsets:
-            degree = random.randint(-75, 75)
-
-            while True:
-                swapcode = random.randint(0, 7)
-                if swapcode not in pastswap or random.randint(1, 10) == 10:
-                    break
-
-            pastswap.append(swapcode)
-            f = lambda w: w
-            g = lambda w: w
-            h = lambda w: w
-            if swapcode & 1:
-                f = lambda (x, y, z): (y, x, z)
-            if swapcode & 2:
-                g = lambda (x, y, z): (z, y, x)
-            if swapcode & 4:
-                h = lambda (x, y, z): (x, z, y)
-            swapfunc = lambda w: f(g(h(w)))
-
-            for n in colorsets[key]:
-                red, green, blue = palette_dict[n]
-                low, medium, high = tuple(sorted([red, green, blue]))
-                if degree < 0:
-                    value = low
-                else:
-                    value = high
-                degree = abs(degree)
-                a = (1 - (degree/90.0)) * medium
-                b = (degree/90.0) * value
-                medium = a + b
-                medium = int(round(medium))
-                assert low <= medium <= high
-                palette_dict[n] = swapfunc((low, medium, high))
-
+        palette_dict = mutate_palette_dict(palette_dict)
         self.palette_data = tuple([palette_dict[i] for i in range(len(palette_dict))])
 
 

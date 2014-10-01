@@ -85,3 +85,94 @@ def mutate_index(index, length, continuation=None,
         index = max(0, min(index, highest))
 
     return index
+
+
+def generate_swapfunc(swapcode=None):
+    if swapcode is None:
+        swapcode = utilrandom.randint(0, 7)
+
+    f = lambda w: w
+    g = lambda w: w
+    h = lambda w: w
+    if swapcode & 1:
+        f = lambda (x, y, z): (y, x, z)
+    if swapcode & 2:
+        g = lambda (x, y, z): (z, y, x)
+    if swapcode & 4:
+        h = lambda (x, y, z): (x, z, y)
+    swapfunc = lambda w: f(g(h(w)))
+
+    return swapfunc
+
+
+def shift_middle(triple, degree, ungray=False):
+    low, medium, high = tuple(sorted(triple))
+    triple = list(triple)
+    mediumdex = triple.index(medium)
+    if ungray:
+        lowdex, highdex = triple.index(low), triple.index(high)
+        while utilrandom.choice([True, False]):
+            low -= 1
+            high += 1
+
+        low = max(0, low)
+        high = min(31, high)
+
+        triple[lowdex] = low
+        triple[highdex] = high
+
+    if degree < 0:
+        value = low
+    else:
+        value = high
+    degree = abs(degree)
+    a = (1 - (degree/90.0)) * medium
+    b = (degree/90.0) * value
+    medium = a + b
+    medium = int(round(medium))
+    triple[mediumdex] = medium
+    return tuple(triple)
+
+
+def mutate_palette_dict(palette_dict):
+    colorsets = {}
+    for n, (red, green, blue) in palette_dict.items():
+        key = (red >= green, red >= blue, green >= blue)
+        if key not in colorsets:
+            colorsets[key] = []
+        colorsets[key].append(n)
+
+    pastswap = []
+    for key in colorsets:
+        degree = utilrandom.randint(-75, 75)
+
+        while True:
+            swapcode = utilrandom.randint(0, 7)
+            if swapcode not in pastswap or utilrandom.randint(1, 10) == 10:
+                break
+
+        pastswap.append(swapcode)
+        swapfunc = generate_swapfunc(swapcode)
+
+        for n in colorsets[key]:
+            red, green, blue = palette_dict[n]
+
+            '''
+            low, medium, high = tuple(sorted([red, green, blue]))
+            if degree < 0:
+                value = low
+            else:
+                value = high
+            degree = abs(degree)
+            a = (1 - (degree/90.0)) * medium
+            b = (degree/90.0) * value
+            medium = a + b
+            medium = int(round(medium))
+            '''
+            red, green, blue = shift_middle((red, green, blue), degree)
+            low, medium, high = tuple(sorted([red, green, blue]))
+
+            assert low <= medium <= high
+            palette_dict[n] = swapfunc((low, medium, high))
+
+    return palette_dict

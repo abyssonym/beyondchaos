@@ -35,6 +35,7 @@ Randomizer Flags:
     p   Randomize shops and shop prices.
     u   Umaro risk.
     l   Randomize blitz inputs.
+    n   Randomize window background colors.
 
 If no randomizer flags are provided, all of them will be activated.
 

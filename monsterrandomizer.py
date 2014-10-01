@@ -11,7 +11,7 @@ valid_spells = None
 items = None
 itemids = None
 unrageable = [0x7E, 0x7F, 0x80, 0x81]
-highest_level = 0
+HIGHEST_LEVEL = 77
 xps = []
 gps = []
 
@@ -21,7 +21,8 @@ def get_item_normal():
     index = random.randint(0, base) + random.randint(0, base)
     if len(items) > (base * 2) + 1:
         index += random.randint(0, 1)
-    item = items[index]
+    ranked_items = sorted(items, key=lambda i: i.rank())
+    item = ranked_items[index]
     return item
 
 
@@ -121,7 +122,7 @@ class MonsterBlock:
         self.copy_visible(chosen)
 
     def read_stats(self, filename):
-        global all_spells, valid_spells, items, itemids, highest_level
+        global all_spells, valid_spells, items, itemids, HIGHEST_LEVEL
 
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -137,7 +138,6 @@ class MonsterBlock:
             xps.append((self.oldlevel, self.stats['xp']))
         if self.stats['gp'] > 0:
             gps.append((self.oldlevel, self.stats['gp']))
-        highest_level = max(highest_level, self.oldlevel)
 
         self.morph = ord(f.read(1))
         self.misc1 = ord(f.read(1))
@@ -501,6 +501,7 @@ class MonsterBlock:
             if i == 0xFF:
                 i = random.choice(self.items + ([0xFF] * 4))
                 if i == 0xFF:
+                    new_items.append(0xFF)
                     continue
 
             index = itemids.index(i)
@@ -514,7 +515,7 @@ class MonsterBlock:
 
     def level_rank(self):
         level = self.stats['level']
-        rank = float(level) / highest_level
+        rank = float(level) / HIGHEST_LEVEL
         return rank
 
     def get_item_appropriate(self):
@@ -524,7 +525,10 @@ class MonsterBlock:
                              [False, True],
                              (-3, 3), (-2, 2))
 
-        return items[index]
+        ranked_items = sorted(items, key=lambda i: i.rank())
+        item = ranked_items[index]
+        #print "%s/%s" % (self.stats['level'], HIGHEST_LEVEL), item.name
+        return item
 
     def get_xp_appropriate(self):
         rank = self.level_rank()
@@ -569,6 +573,10 @@ class MonsterBlock:
         for i in self.items:
             if i == 0xFF:
                 i = self.get_item_appropriate().itemid
+                i = random.choice(sorted(set(self.items + new_items + [i, 0xFF])))
+                if i == 0xFF:
+                    new_items.append(0xFF)
+                    continue
 
             index = itemids.index(i)
             index = mutate_index(index, len(itemids),

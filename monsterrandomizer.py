@@ -130,13 +130,13 @@ class MonsterBlock:
         self.stats['hp'] = read_multi(f, length=2)
         self.stats['mp'] = read_multi(f, length=2)
         self.stats['xp'] = read_multi(f, length=2)
-        if self.stats['xp'] > 0:
-            xps.append(self.stats['xp'])
         self.stats['gp'] = read_multi(f, length=2)
-        if self.stats['gp'] > 0:
-            gps.append(self.stats['gp'])
         self.stats['level'] = ord(f.read(1))
         self.oldlevel = self.stats['level']
+        if self.stats['xp'] > 0:
+            xps.append((self.oldlevel, self.stats['xp']))
+        if self.stats['gp'] > 0:
+            gps.append((self.oldlevel, self.stats['gp']))
         highest_level = max(highest_level, self.oldlevel)
 
         self.morph = ord(f.read(1))
@@ -528,29 +528,31 @@ class MonsterBlock:
 
     def get_xp_appropriate(self):
         rank = self.level_rank()
-        index = int(len(xps) * rank)
-        index = mutate_index(index, len(xps),
+        temp = [b for (a, b) in xps if a >= self.stats['level'] and b > 0]
+        temp.sort()
+        index = int(len(temp) * rank)
+        index = mutate_index(index, len(temp),
                              [False, True],
                              (-2, 2), (-1, 1))
 
-        xps.sort()
-        return xps[index]
+        return temp[index]
 
     def get_gp_appropriate(self):
         rank = self.level_rank()
-        index = int(len(gps) * rank)
-        index = mutate_index(index, len(gps),
+        temp = [b for (a, b) in xps if a >= self.stats['level'] and b > 0]
+        temp.sort()
+        index = int(len(temp) * rank)
+        index = mutate_index(index, len(temp),
                              [False, True],
                              (-2, 2), (-1, 1))
 
-        gps.sort()
-        return gps[index]
+        return temp[index]
 
     def treasure_boost(self):
         def fuddle(value, limit=0xFEFE):
             low = value / 2
             value = low + random.randint(0, low) + random.randint(0, low)
-            while random.choice([True, False]):
+            while random.choice([True, True, False]):
                 value += random.randint(0, low)
 
             if value & 0xFF == 0xFF:

@@ -67,4 +67,21 @@ def write_multi(f, value, length=2, reverse=True):
 
     f.write(''.join(map(chr, vals)))
 
+
+def mutate_index(index, length, continuation=None,
+                 basic_range=None, extended_range=None):
+    highest = length - 1
+    continuation = continuation or [True, False]
+    basic_range = basic_range or (-3, 3)
+    extended_range = extended_range or (-1, 1)
+
+    index += random.randint(*basic_range)
+    index = max(0, min(index, highest))
+    while random.choice(continuation):
+        index += random.randint(*extended_range)
+        index = max(0, min(index, highest))
+
+    return index
+
+
 utilrandom = random.Random()

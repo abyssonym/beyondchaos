@@ -1,5 +1,5 @@
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
-                   utilrandom as random)
+                   mutate_index, utilrandom as random)
 from skillrandomizer import SpellBlock
 from itemrandomizer import get_ranked_items
 
@@ -11,6 +11,18 @@ valid_spells = None
 items = None
 itemids = None
 unrageable = [0x7E, 0x7F, 0x80, 0x81]
+highest_level = 0
+xps = []
+gps = []
+
+
+def get_item_normal():
+    base = ((len(items)-1) / 2)
+    index = random.randint(0, base) + random.randint(0, base)
+    if len(items) > (base * 2) + 1:
+        index += random.randint(0, 1)
+    item = items[index]
+    return item
 
 
 class MonsterBlock:
@@ -109,7 +121,7 @@ class MonsterBlock:
         self.copy_visible(chosen)
 
     def read_stats(self, filename):
-        global all_spells, valid_spells, items, itemids
+        global all_spells, valid_spells, items, itemids, highest_level
 
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -118,9 +130,14 @@ class MonsterBlock:
         self.stats['hp'] = read_multi(f, length=2)
         self.stats['mp'] = read_multi(f, length=2)
         self.stats['xp'] = read_multi(f, length=2)
+        if self.stats['xp'] > 0:
+            xps.append(self.stats['xp'])
         self.stats['gp'] = read_multi(f, length=2)
+        if self.stats['gp'] > 0:
+            gps.append(self.stats['gp'])
         self.stats['level'] = ord(f.read(1))
         self.oldlevel = self.stats['level']
+        highest_level = max(highest_level, self.oldlevel)
 
         self.morph = ord(f.read(1))
         self.misc1 = ord(f.read(1))
@@ -487,15 +504,47 @@ class MonsterBlock:
                     continue
 
             index = itemids.index(i)
-            index += random.randint(-3, 3)
-            index = max(0, min(index, len(itemids)-1))
-            while random.randint(1, 4) == 4:
-                index += random.randint(-2, 2)
-                index = max(0, min(index, len(itemids)-1))
+            index = mutate_index(index, len(itemids),
+                                 [False, False, False, True],
+                                 (-3, 3), (-2, 2))
 
             new_items.append(itemids[index])
 
         self.items = new_items
+
+    def level_rank(self):
+        level = self.stats['level']
+        rank = float(level) / highest_level
+        return rank
+
+    def get_item_appropriate(self):
+        rank = self.level_rank()
+        index = int(len(items) * rank)
+        index = mutate_index(index, len(items),
+                             [False, True],
+                             (-3, 3), (-2, 2))
+
+        return items[index]
+
+    def get_xp_appropriate(self):
+        rank = self.level_rank()
+        index = int(len(xps) * rank)
+        index = mutate_index(index, len(xps),
+                             [False, True],
+                             (-2, 2), (-1, 1))
+
+        xps.sort()
+        return xps[index]
+
+    def get_gp_appropriate(self):
+        rank = self.level_rank()
+        index = int(len(gps) * rank)
+        index = mutate_index(index, len(gps),
+                             [False, True],
+                             (-2, 2), (-1, 1))
+
+        gps.sort()
+        return gps[index]
 
     def treasure_boost(self):
         def fuddle(value, limit=0xFEFE):
@@ -509,22 +558,20 @@ class MonsterBlock:
 
             return min(value, limit)
 
+        self.stats['xp'] = self.stats['xp'] or self.get_xp_appropriate()
+        self.stats['gp'] = self.stats['gp'] or self.get_gp_appropriate()
         self.stats['xp'] = fuddle(self.stats['xp'])
         self.stats['gp'] = fuddle(self.stats['gp'])
 
         new_items = []
         for i in self.items:
             if i == 0xFF:
-                i = random.choice(self.items + ([0xFF] * 4))
-                if i == 0xFF:
-                    continue
+                i = self.get_item_appropriate().itemid
 
             index = itemids.index(i)
-            index += random.randint(-1, 3)
-            index = max(0, min(index, len(itemids)-1))
-            while random.choice([True, False]):
-                index += random.randint(-1, 3)
-                index = max(0, min(index, len(itemids)-1))
+            index = mutate_index(index, len(itemids),
+                                 [False, True],
+                                 (-1, 3), (-1, 2))
 
             new_items.append(itemids[index])
 
@@ -532,7 +579,9 @@ class MonsterBlock:
 
     def mutate_metamorph(self):
         # mutates both metamorph template and miss ratio
-        self.morph = random.randint(0, 0xFF)
+        self.morph = random.randint(0, 0xEF)
+        if self.immunities[0] & 0x80 and random.randint(1, 50) != 50:
+            self.morph |= 0xE0
 
     def mutate_control(self):
         # shuffle skills between control, sketch, rage
@@ -669,12 +718,10 @@ def shuffle_monsters(monsters):
             candidates = nonbosses
         index = candidates.index(m)
 
-        def get_swap_index(n):
-            to_swap = n + random.randint(-5, 5)
-            to_swap = max(0, min(to_swap, len(candidates)-1))
-            while random.randint(1, 3) == 1:
-                to_swap += random.randint(-3, 3)
-                to_swap = max(0, min(to_swap, len(candidates)-1))
+        def get_swap_index(to_swap):
+            to_swap = mutate_index(index, len(candidates),
+                                   [False, False, True],
+                                   (-5, 5), (-3, 3))
             return to_swap
 
         if m.is_boss and random.randint(1, 100) != 100:
@@ -854,8 +901,5 @@ class MetamorphBlock:
         f.close()
 
     def mutate_items(self):
-        base = ((len(items)-1) / 2)
         for i in xrange(4):
-            index = random.randint(0, base) + random.randint(0, base)
-            item = items[index]
-            self.items[i] = item.itemid
+            self.items[i] = get_item_normal().itemid

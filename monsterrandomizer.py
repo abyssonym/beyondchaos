@@ -284,9 +284,14 @@ class MonsterBlock:
 
         f.close()
 
-    def screw_vargas(self):
-        if 'vargas' in self.name.lower():
-            self.stats['hp'] = 1000 + random.randint(0, 400) + random.randint(0, 400)
+    def screw_tutorial_bosses(self):
+        name = self.name.lower().strip('_')
+        if name == 'vargas':
+            self.stats['hp'] = 900 + random.randint(0, 100) + random.randint(0, 100)
+        if name == 'tunnelarmr':
+            self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
+        if name == "leader":
+            self.stats['hp'] = 400 + random.randint(0, 50) + random.randint(0, 50)
 
     def mutate_misc(self):
         # invert "escapable" bit

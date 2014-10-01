@@ -1045,8 +1045,8 @@ def manage_monsters():
     monsters = monsters_from_table(ENEMY_TABLE)
     for m in monsters:
         m.read_stats(sourcefile)
-        m.screw_vargas()
         m.mutate()
+        m.screw_tutorial_bosses()
 
     shuffle_monsters(monsters)
     for m in monsters:

@@ -32,9 +32,10 @@ MD5HASH = "e986575b98300f721ce27c180264d890"
 # Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
 #REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
 REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
-REPLACE_ENEMIES = [0x10f, 0x136, 0x137]  # kefka enemy formation unstable
+#REPLACE_ENEMIES = [0x10f, 0x136, 0x137]  # kefka enemy formation unstable
 # fake Atma, Guardian x4
 REPLACE_FORMATIONS = [0x1ff, 0x20e]
+NOREPLACE_FORMATIONS = [0x232, 0x1c5]
 
 
 class Substitution(object):
@@ -529,7 +530,7 @@ def manage_commands(commands, characters):
 
     def populate_unused():
         unused_commands = set(commands.values())
-        unused_commands = list(unused_commands - invalid_commands)
+        unused_commands = sorted(unused_commands - invalid_commands)
         return sorted(unused_commands, key=lambda c: c.name)
 
     unused = populate_unused()
@@ -1094,7 +1095,7 @@ def manage_character_appearance(wild=True):
         for palettes in palette_assignments.values():
             if set(charpalettes) & set(palettes):
                 temp[c] = temp[c] | set(palettes)
-        temp[c] = list(temp[c])
+        temp[c] = sorted(temp[c])
         if 7 in temp[c]:
             temp[c].remove(7)
 
@@ -1252,8 +1253,12 @@ def manage_blitz():
 
 
 def manage_formations(esper_graphics=None):
+    for f in formations:
+        f.mutate()
+
     unused_enemies = [u for u in monsters if u.id in REPLACE_ENEMIES]
     unused_formations = [u for u in formations if set(u.enemies) & set(unused_enemies)]
+    unused_formations = [u for u in unused_formations if u not in NOREPLACE_FORMATIONS]
     unused_formations += [u for u in formations if u.formid in REPLACE_FORMATIONS]
 
     boss_formations = [fo for fo in formations if fo.formid not in unused_formations]
@@ -1350,18 +1355,23 @@ def manage_formations(esper_graphics=None):
         index = bosses.index(boss)
         index += random.randint(-2, 2)
         index = max(0, min(index, len(bosses)-1))
-        while random.choice([True, False]):
+        while random.choice([True, False]) or index == bosses.index(boss):
             index += random.randint(-1, 1)
             index = max(0, min(index, len(bosses)-1))
         boss2 = bosses[index]
         ue.copy_all(boss2, everything=False)
+        #print ue.name, boss.name
+        #print ue.name, boss2.name
         ue.stats['level'] = max(boss.stats['level'], boss2.stats['level'])
         ue.read_ai(outfile)
         assert ue.boss_death
         ue.mutate()
+        if random.choice([True, False]):
+            ue.mutate()
         ue.treasure_boost()
         ue.graphics.mutate_palette()
         randomize_enemy_name(outfile, ue.id)
+        ue.misc1 &= (0xFF ^ 0x4)  # always show name
         ue.write_stats(outfile)
 
         uf.set_music_appropriate()
@@ -1369,8 +1379,20 @@ def manage_formations(esper_graphics=None):
         if ue.stats['level'] > 50:
             appearances += [15]
         uf.set_appearing(random.choice(appearances))
+        uf.get_special_ap()
         uf.mouldbyte = 0x60
         ue.graphics.write_data(outfile)
+        '''
+        print uf.formid
+        print [(e.name, "%x" % e.id, e.graphics.graphics) for e in uf.present_enemies]
+        print uf.bosses
+        print vbf.formid
+        print vboss.name, "%x" % vboss.id, vboss.graphics.graphics
+        print vbf.bosses
+        print vbf.enemy_pos
+        assert uf.enemy_pos[0] == vbf.enemy_pos[0]
+        print
+        '''
         uf.write_data(outfile)
         repurposed_formations.append(uf)
 

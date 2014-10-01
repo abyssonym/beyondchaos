@@ -18,8 +18,9 @@ class Formation():
         for name, count in sorted(counter.items()):
             s = ', '.join([s, "%s x%s" % (name, count)])
         s = s[2:]
-        #return s
-        return "%s (%x)" % (s, self.formid)
+        s = "%s (%x)" % (s, self.formid)
+        s += " " + " ".join(["%x" % e.id for e in self.present_enemies])
+        return s
 
     @property
     def pincer_prohibited(self):
@@ -40,6 +41,14 @@ class Formation():
         self.misc2 = ord(f.read(1))
         self.eventscript = ord(f.read(1))
         self.misc3 = ord(f.read(1))
+
+        appointer = 0x1fb400 + self.formid
+        if appointer < 0x1fb600:
+            f.seek(0x1fb400 + self.formid)
+            self.ap = ord(f.read(1))
+        else:
+            self.ap = None
+
         f.close()
 
     @property
@@ -133,6 +142,11 @@ class Formation():
         f.write(chr(self.misc2))
         f.write(chr(self.eventscript))
         f.write(chr(self.misc3))
+
+        if self.ap is not None:
+            f.seek(0x1fb400 + self.formid)
+            f.write(chr(self.ap))
+
         f.close()
 
     def lookup_enemies(self, monsterdict):
@@ -204,6 +218,20 @@ class Formation():
     @property
     def exp(self):
         return sum(e.stats['xp'] for e in self.present_enemies)
+
+    def mutate(self):
+        if self.ap is not None:
+            while random.choice([True, False]):
+                self.ap += random.randint(-1, 1)
+                self.ap = min(100, max(self.ap, 0))
+
+    def get_special_ap(self):
+        levels = [e.stats['level'] for e in self.present_enemies if e]
+        ap = int(sum(levels) / len(levels))
+        low = ap / 2
+        ap = low + random.randint(0, low) + random.randint(0, low)
+        ap = random.randint(0, ap)
+        self.ap = min(100, max(ap, 0))
 
 
 class FormationSet():

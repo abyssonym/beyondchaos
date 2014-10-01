@@ -250,6 +250,13 @@ class FormationSet():
             s += str([e.name for e in f.present_enemies]) + "\n"
         return s
 
+    @property
+    def has_boss(self):
+        for f in self.formations:
+            if any([e.is_boss for e in f.present_enemies]):
+                return True
+        return False
+
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)

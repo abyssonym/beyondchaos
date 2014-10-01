@@ -1472,6 +1472,9 @@ def manage_formations(esper_graphics=None):
     random.shuffle(fsets)
     for fs in fsets:
         #rare_candidates = list(repurposed_formations)
+        if not rare_candidates:
+            break
+
         #chosens = fs.mutate_formations(rare_candidates, test=True)
         chosens = fs.mutate_formations(rare_candidates, test=False)
 
@@ -1601,6 +1604,7 @@ if __name__ == "__main__":
         fsets.append(fs)
 
     ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
+    ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
     for a, b in zip(ranked_fsets, ranked_fsets[1:]):
         a.swap_formations(b)
 

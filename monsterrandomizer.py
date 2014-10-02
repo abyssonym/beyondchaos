@@ -180,6 +180,12 @@ class MonsterBlock:
         f.close()
 
         self.read_ai(filename)
+        '''
+        hexify = lambda i: "%x" % ord(i)
+        print self.name
+        print map(hexify, self.aiscript)
+        import pdb; pdb.set_trace()
+        '''
 
         if items is None:
             items = get_ranked_items(filename)
@@ -544,7 +550,7 @@ class MonsterBlock:
                              [False, True],
                              (-2, 2), (-1, 1))
 
-        return temp[index]
+        return temp[index] if index is not None else 40000
 
     def get_gp_appropriate(self):
         rank = self.level_rank()
@@ -555,7 +561,7 @@ class MonsterBlock:
                              [False, True],
                              (-2, 2), (-1, 1))
 
-        return temp[index]
+        return temp[index] if index is not None else 50000
 
     def treasure_boost(self):
         def fuddle(value, limit=0xFEFE):

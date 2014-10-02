@@ -73,6 +73,9 @@ utilrandom = random.Random()
 
 def mutate_index(index, length, continuation=None,
                  basic_range=None, extended_range=None):
+    if length == 0:
+        return None
+
     highest = length - 1
     continuation = continuation or [True, False]
     basic_range = basic_range or (-3, 3)

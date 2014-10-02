@@ -1713,6 +1713,7 @@ if __name__ == "__main__":
 
     ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
     ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
+    ranked_fsets = [fset for fset in ranked_fsets if fset.setid not in [0x39, 0x3A]]
     for a, b in zip(ranked_fsets, ranked_fsets[1:]):
         a.swap_formations(b)
 

@@ -23,28 +23,6 @@ for line in f:
     spellbans[hex2int(spellid)] = int(modifier)
 f.close()
 
-restriction_enemy = lambda s: s.target_enemy_default and not s.target_group_default
-SELF_ALLOW = [0x2a, 0x2b, 0x4c, 0x63, 0x3f, 0x9a]
-SELF_RESTRICT = [0x30, 0x31, 0x27, 0x28, 0x45]
-# also, mute?
-restriction_self = (
-    lambda s: ((s.target_one and not s.target_group_default and not s.target_enemy_default)
-               #or (s.target_enemy_default and s.target_one_side_only)
-               or (s.target_everyone and not s.target_one_side_only)
-               or s.spellid in SELF_ALLOW) and s.spellid not in SELF_RESTRICT)
-ALLIES_ALLOW = [0xab]
-ALLIES_RESTRICT = [0x63]
-restriction_allies = (
-    lambda s: ((s.target_group and not s.target_enemy_default)
-               or s.spellid in ALLIES_ALLOW) and s.spellid not in ALLIES_RESTRICT and not restriction_self(s))
-restriction_enemies = (lambda s: s.target_group and s.target_enemy_default)
-restriction_random_ally = lambda s: False
-restrictions = {'self': restriction_self,
-                'allies': restriction_allies,
-                'enemies': restriction_enemies,
-                'enemy': restriction_enemy,
-                'randally': restriction_random_ally}
-
 
 class SpellBlock:
     def __init__(self, spellid, filename):
@@ -206,7 +184,6 @@ class CommandBlock:
         self.textptr = hex2int(textptr)
         self.name = name.lower()
         self.target = target.lower()
-        self.set_targeting_restriction(restrictions[self.target])
         self.id = None
 
     @property
@@ -215,25 +192,43 @@ class CommandBlock:
 
     def set_id(self, i):
         self.id = i
+        self.proppointer = 0xFFE00 + (i*2)
 
-    def set_targeting_restriction(self, restriction):
-        self.restriction = restriction
+    @property
+    def usable_as_imp(self):
+        return self.properties & 0x4
 
-    def set_retarget(self, spellblock, filename):
-        if self.target != "self":
-            return
+    @property
+    def can_be_mimicked(self):
+        return self.properties & 0x2
 
+    @property
+    def usable_by_gogo(self):
+        return self.properties & 0x1
+
+    def read_properties(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.proppointer)
+        self.properties = ord(f.read(1))
+        assert not self.properties & 0xF0
+        self.targeting = ord(f.read(1))
+        f.close()
+
+    def write_properties(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.proppointer)
+        f.write(chr(self.properties))
+        f.write(chr(self.targeting))
+        f.close()
+
+    def unset_retarget(self, filename):
         bit = self.id % 8
         byte = 1 << bit
-
         offset = self.id / 8
         f = open(filename, 'r+b')
         f.seek(0x24E46 + offset)
         old = ord(f.read(1))
-        if not spellblock.target_enemy_default and not spellblock.target_everyone:
-            byte = old & ~byte
-        else:
-            byte = old | byte
+        byte = old & ~byte
         f.seek(0x24E46 + offset)
         f.write(chr(byte))
 

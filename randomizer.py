@@ -699,12 +699,10 @@ def manage_commands_new(commands, characters):
             continue
 
         if c.name not in ALWAYS_REPLACE:
-            if random.randint(1, 100) > 75:
-                continue
-            if c.target == "self" and random.randint(1, 100) > 50:
+            if random.randint(1, 100) > 65:
                 continue
 
-        POWER_LEVEL = 100
+        POWER_LEVEL = 130
         while True:
             power = POWER_LEVEL / 2
             while True:
@@ -717,8 +715,6 @@ def manage_commands_new(commands, characters):
                     return False
                 if s.spellid in used:
                     return False
-                if not c.restriction(s):
-                    return False
                 return s.rank() <= power
 
             valid_spells = filter(spell_is_valid, all_spells)
@@ -727,7 +723,29 @@ def manage_commands_new(commands, characters):
 
             sb = random.choice(valid_spells)
             used.append(sb.spellid)
-            c.set_retarget(sb, outfile)
+            c.read_properties(sourcefile)
+
+            c.targeting = sb.targeting
+            c.targeting = c.targeting & (0xFF ^ 0x10)  # never autotarget
+            if not c.targeting & 0x20 and random.randint(1, 15) == 15:
+                c.targeting = 0xC0  # target random individual (both sides)
+            if not c.targeting & 0x20 and random.randint(1, 10) == 10:
+                c.targeting |= 0x28  # target random individual
+                c.targeting &= 0xFE
+            if c.targeting & 0x08 and not c.targeting & 0x02 and random.randint(1, 5) == 5:
+                c.targeting = 0x04  # target everyone
+            if not c.targeting & 0x64 and random.randint(1, 5) == 5:
+                c.targeting = 2  # only target self
+            if sb.spellid in [0xAB]:  # megazerk
+                c.targeting = random.choice([0x29, 0x6E, 0x6C, 0x27, 0x4])
+            if sb.spellid in [0x2B]:  # quick
+                c.targeting = random.choice([0x2, 0x2A, 0xC0, 0x1])
+
+            c.properties = 3
+            if random.randint(1, 5) == 5 or sb.spellid in [0x23, 0xA3]:
+                c.properties |= 0x4  # enable while imped
+            c.unset_retarget(outfile)
+            c.write_properties(outfile)
             s = SpellSub(spellid=sb.spellid)
             break
 

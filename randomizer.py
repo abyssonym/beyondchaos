@@ -19,7 +19,7 @@ from namerandomizer import generate_name
 from formationrandomizer import Formation, FormationSet
 
 
-VERSION = "8"
+VERSION = "9"
 VERBOSE = False
 
 
@@ -37,6 +37,12 @@ REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
 # fake Atma, Guardian x4
 REPLACE_FORMATIONS = [0x1ff, 0x20e]
 NOREPLACE_FORMATIONS = [0x232, 0x1c5]
+
+
+TEK_SKILLS = (range(0x86, 0x8B) +
+              [0x91, 0x9A, 0xA7, 0xB1] +
+              range(0xB4, 0xBA) +
+              [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3])
 
 
 class Substitution(object):
@@ -1092,6 +1098,57 @@ def manage_balance():
     randomize_slots(outfile, 0x24E4A)
 
 
+def manage_magitek(spells):
+    exploder = [s for s in spells if s.spellid == 0xA2][0]
+    battle = [s for s in spells if s.spellid == 0xEF][0]
+    tek_skills = [s for s in spells if s.spellid in TEK_SKILLS]
+    targets = sorted(set([s.targeting for s in spells]))
+    terra_used, others_used = [], []
+    terra_skills, other_skills = [], []
+    target_pointer = 0x19104
+    terra_pointer = 0x1910C
+    others_pointer = 0x19114
+    for i in reversed(range(3, 8)):
+        while True:
+            if i == 5:
+                targeting = 0x43
+            else:
+                targeting = random.choice(targets)
+            candidates = [s for s in tek_skills if s.targeting == targeting]
+            if not candidates:
+                continue
+
+            terra_cand = random.choice(candidates)
+            if i > 5:
+                others_cand = None
+            elif i == 5:
+                others_cand = exploder
+            else:
+                others_cand = random.choice(candidates)
+            if terra_cand not in terra_used:
+                if i >= 5 or others_cand not in others_used:
+                    break
+
+        terra_used.append(terra_cand)
+        others_used.append(others_cand)
+
+    terra_used.reverse()
+    others_used.reverse()
+    f = open(outfile, 'r+b')
+    f.seek(target_pointer+3)
+    for s in terra_used:
+        f.write(chr(s.targeting))
+    f.seek(terra_pointer+3)
+    for s in terra_used:
+        f.write(chr(s.spellid-0x83))
+    f.seek(others_pointer+3)
+    for s in others_used:
+        if s is None:
+            break
+        f.write(chr(s.spellid-0x83))
+    f.close()
+
+
 def manage_monsters():
     monsters = monsters_from_table(ENEMY_TABLE)
     for m in monsters:
@@ -1687,6 +1744,10 @@ if __name__ == "__main__":
     if 'o' in flags:
         # do this after swapping beserk
         manage_tempchar_commands(characters)
+
+    spells = get_ranked_spells(sourcefile)
+    if 'o' in flags or 'w' in flags or 'm' in flags:
+        manage_magitek(spells)
 
     if 'q' in flags:
         # do this after swapping beserk

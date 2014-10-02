@@ -15,7 +15,7 @@ from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
 from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
-from namerandomizer import generate_name, generate_attack
+from namerandomizer import generate_name
 from formationrandomizer import Formation, FormationSet
 
 
@@ -1151,7 +1151,7 @@ def manage_magitek(spells):
 
 def manage_monsters():
     monsters = monsters_from_table(ENEMY_TABLE)
-    for m in monsters:
+    for i, m in enumerate(monsters):
         m.read_stats(sourcefile)
         m.mutate()
         m.screw_tutorial_bosses()
@@ -1159,7 +1159,7 @@ def manage_monsters():
     shuffle_monsters(monsters)
     for m in monsters:
         m.write_stats(outfile)
-        randomize_enemy_attack(outfile, m.id)
+        m.randomize_special_effect(outfile)
 
     return monsters
 
@@ -1617,18 +1617,6 @@ def randomize_enemy_name(filename, enemy_id):
     while len(name) < 10:
         name.append(0xFF)
     f.write("".join(map(chr, name)))
-    f.close()
-
-
-def randomize_enemy_attack(filename, enemy_id):
-    attackpointer = 0xFD0D0 + (enemy_id * 10)
-    f = open(filename, 'r+b')
-    f.seek(attackpointer)
-    attack = generate_attack()
-    attack = map(lambda c: hex2int(texttable[c]), attack)
-    while len(attack) < 10:
-        attack.append(0xFF)
-    f.write("".join(map(chr, attack)))
     f.close()
 
 

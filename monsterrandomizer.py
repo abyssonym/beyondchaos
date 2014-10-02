@@ -1,7 +1,8 @@
-from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
+from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE, texttable,
                    mutate_palette_dict, mutate_index, utilrandom as random)
 from skillrandomizer import SpellBlock
 from itemrandomizer import get_ranked_items
+from namerandomizer import generate_attack
 
 
 stat_order = ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
@@ -56,6 +57,7 @@ class MonsterBlock:
 
     def set_id(self, i):
         self.id = i
+        self.specialeffectpointer = 0xF37C0 + self.id
 
     def update_size(self, width, height):
         if not self.width or not self.height:
@@ -103,6 +105,20 @@ class MonsterBlock:
 
         chosen = random.choice(candidates)
         return chosen
+
+    def randomize_special_effect(self, filename):
+        attackpointer = 0xFD0D0 + (self.id * 10)
+        f = open(filename, 'r+b')
+        f.seek(attackpointer)
+        attack = generate_attack()
+        attack = map(lambda c: hex2int(texttable[c]), attack)
+        while len(attack) < 10:
+            attack.append(0xFF)
+        f.write("".join(map(chr, attack)))
+
+        f.seek(self.specialeffectpointer)
+        f.write(chr(random.randint(0, 0x21)))
+        f.close()
 
     def mutate_graphics_swap(self, candidates):
         chosen = self.choose_graphics(candidates)

@@ -1,6 +1,10 @@
-from utils import ENEMY_NAMES_TABLE, utilrandom as random
+from utils import (ENEMY_NAMES_TABLE, MODIFIERS_TABLE, MOVES_TABLE,
+                   utilrandom as random)
 
+modifiers = [line.strip() for line in open(MODIFIERS_TABLE)]
+moves = [line.strip() for line in open(MOVES_TABLE)]
 enemynames = [line.strip() for line in open(ENEMY_NAMES_TABLE).readlines()]
+
 generator = {}
 lookback = None
 for line in open('tables/generator.txt'):
@@ -48,3 +52,25 @@ def generate_name(size=None):
 
         if len(name) >= size:
             return name
+
+
+def generate_attack():
+    if random.randint(1, 7) != 7:
+        while True:
+            modifier = random.choice(modifiers)
+            move = random.choice(moves)
+            if len(modifier) + len(move) <= 10:
+                break
+    else:
+        modifier = ""
+        if random.randint(1, 4) != 4:
+            candidates = list(moves)
+        else:
+            candidates = list(modifiers)
+        candidates = [c for c in candidates if len(c) >= 3]
+        move = random.choice(candidates)
+
+    if len(modifier) + len(move) < 10:
+        return ("%s %s" % (modifier, move)).strip()
+    else:
+        return modifier + move

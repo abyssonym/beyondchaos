@@ -740,7 +740,7 @@ def manage_commands_new(commands, characters):
                 c.targeting &= 0xFE
             if c.targeting & 0x08 and not c.targeting & 0x02 and random.randint(1, 5) == 5:
                 c.targeting = 0x04  # target everyone
-            if not c.targeting & 0x64 and random.randint(1, 5) == 5:
+            if not c.targeting & 0x64 and random.randint(1, 5) == 5 and sb.spellid not in [0x30, 0x31]:
                 c.targeting = 2  # only target self
             if sb.spellid in [0xAB]:  # megazerk
                 c.targeting = random.choice([0x29, 0x6E, 0x6C, 0x27, 0x4])

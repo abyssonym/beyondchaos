@@ -708,7 +708,7 @@ def manage_commands_new(commands, characters):
             if random.randint(1, 100) > 65:
                 continue
 
-        POWER_LEVEL = 130
+        POWER_LEVEL = 105
         while True:
             power = POWER_LEVEL / 2
             while True:
@@ -1028,6 +1028,20 @@ def activate_airship_mode(freespace=0xCFE2A):
         [0xFE]  # end subroutine
         )
     set_airship_sub.set_location(freespace)
+    set_airship_sub.write(outfile)
+
+    set_airship_sub.bytestring = [0xD2, 0xB9]  # airship appears in WoR
+    set_airship_sub.set_location(0xA532A)
+    set_airship_sub.write(outfile)
+
+    set_airship_sub.bytestring = (
+        [0x6B, 0x01, 0x04, 0x4A, 0x16, 0x01] +  # load WoR, place party
+        [0xDD] +  # hide minimap
+        [0xC5, 0x00, 0x7E, 0xC2, 0x1E, 0x00] +  # set height and direction
+        [0xC6, 0x96, 0x00, 0xE0, 0xFF] +  # propel vehicle, wait 255 units
+        [0xC7, 0x4E, 0xf0] +  # place airship
+        [0xD2, 0x8E, 0x25, 0x07, 0x07, 0x40])  # load beach with fish
+    set_airship_sub.set_location(0xA51E9)
     set_airship_sub.write(outfile)
 
     # point to airship-placing script
@@ -1638,7 +1652,8 @@ if __name__ == "__main__":
     else:
         fullseed = raw_input("Seed? ").strip()
         if '.' not in fullseed:
-            fullseed = "..%s" % fullseed
+            flags = raw_input("Flags? ").strip()
+            fullseed = ".%s.%s" % (flags, fullseed)
 
     version, flags, seed = tuple(fullseed.split('.'))
     seed = seed.strip()

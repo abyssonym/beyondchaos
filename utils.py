@@ -61,6 +61,8 @@ def write_multi(f, value, length=2, reverse=True):
     while value:
         vals.append(value & 0xFF)
         value = value >> 8
+    if len(vals) > length:
+        raise Exception("Value length mismatch.")
 
     while len(vals) < length:
         vals.append(0x00)

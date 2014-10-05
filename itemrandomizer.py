@@ -110,7 +110,8 @@ class ItemBlock:
 
         write_multi(f, self.equippable, length=2)
 
-        f.write("".join(map(chr, [self.features[key] for key in ITEM_STATS])))
+        s = "".join(map(chr, [self.features[key] for key in ITEM_STATS]))
+        f.write(s)
 
         write_multi(f, self.price, length=2)
         f.close()
@@ -207,6 +208,7 @@ class ItemBlock:
 
         self.features['breakeffect'] = spell.spellid
         if not self.is_weapon or random.randint(1, 2) == 2:
+            # always make armors usable in battle; weapons, only sometimes
             self.itemtype = self.itemtype | 0x20
 
         # flag to break when used as an item
@@ -216,7 +218,7 @@ class ItemBlock:
             self.features['breakeffect'] |= 0x80
 
         # flag to set chance to proc a spell
-        if random.randint(1, 2) == 2:
+        if self.is_weapon and (not self.itemtype & 0x20 or random.randint(1, 2) == 2):
             self.features['breakeffect'] |= 0x40
         else:
             self.features['breakeffect'] &= 0xBF
@@ -545,7 +547,7 @@ invalid_commands = [0x00, 0x04, 0x14, 0x15, 0x19, 0xFF]
 
 def reset_special_relics(items, characters, filename):
     f = open(filename, 'r+b')
-    characters = [c for c in characters if c.id != 13]
+    characters = [c for c in characters if c.id < 14]
     for item in items:
         if (item.is_consumable or item.is_tool or
                 not item.features['special1'] & 0x7C):

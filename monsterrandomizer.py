@@ -15,6 +15,11 @@ unrageable = [0x7E, 0x7F, 0x80, 0x81]
 HIGHEST_LEVEL = 77
 xps = []
 gps = []
+AICODES = {0xF0: 3, 0xF1: 1, 0xF2: 3, 0xF3: 2,
+           0xF4: 3, 0xF5: 3, 0xF6: 3, 0xF7: 1,
+           0xF8: 2, 0xF9: 3, 0xFA: 2, 0xFB: 2,
+           0xFC: 3, 0xFD: 0, 0xFE: 0, 0xFF: 0
+           }
 
 
 def get_item_normal():
@@ -53,7 +58,7 @@ class MonsterBlock:
 
     @property
     def battle_event(self):
-        return chr(0xF7) in self.aiscript
+        return chr(0xF7) in [s[0] for s in self.aiscript]
 
     def set_id(self, i):
         self.id = i
@@ -199,8 +204,9 @@ class MonsterBlock:
         '''
         hexify = lambda i: "%x" % ord(i)
         print self.name
-        print map(hexify, self.aiscript)
-        import pdb; pdb.set_trace()
+        for s in self.aiscript:
+            print map(hexify, s)
+        codes = [s[0] for s in self.aiscript]
         '''
 
         if items is None:
@@ -212,23 +218,23 @@ class MonsterBlock:
         pointer = self.ai + 0xF8700
         f.seek(pointer)
         seen = False
-        script = ""
+        script = []
         while True:
             value = f.read(1)
-            script += value
+            try:
+                numargs = AICODES[ord(value)]
+                args = f.read(numargs)
+            except KeyError:
+                args = ""
+            script.append(value + args)
             if ord(value) == 0xFF:
-                if 0xFC in map(ord, script[-4:]):
-                    continue
-                if 0xF5 in map(ord, script[-4:]):
-                    continue
-                #if script[-4:] == "".join(map(chr, [0xF5, 0x0C, 0x01, 0xFF])):
-                #    continue
                 if seen:
                     break
                 else:
                     seen = True
+
         self.aiscript = script
-        return script
+        return self.aiscript
 
     @property
     def humanoid(self):
@@ -314,6 +320,28 @@ class MonsterBlock:
             self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
         if name == "leader":
             self.stats['hp'] = 400 + random.randint(0, 50) + random.randint(0, 50)
+
+    @property
+    def has_blaze(self):
+        return self.ai == 0x356
+
+    def screw_blaze(self):
+        if self.has_blaze:
+            if "bomb" not in self.name.lower():
+                statdict = {'hp': 160,
+                            'mp': 50,
+                            'speed': 30,
+                            'attack': 10,
+                            'hit%': 100,
+                            'evade%': 0,
+                            'mblock%': 0,
+                            'def': 90,
+                            'mdef': 150,
+                            'mpow': 1,
+                            'xp': 35,
+                            'gp': 80}
+                for stat, value in statdict.items():
+                    self.stats[stat] = min(value, self.stats[stat])
 
     def mutate_misc(self):
         # invert "escapable" bit
@@ -651,6 +679,13 @@ class MonsterBlock:
             self.controls.append(0xFF)
 
     def mutate_special(self):
+        good = set(range(10, 0x1F))
+        good.remove(0x1D)  # disappear
+        good.remove(0x19)  # frozen
+        good.add(0x0A)  # image
+        if self.special in good:
+            return
+
         branch = random.randint(1, 10)
         if branch <= 7:
             # regular special
@@ -695,16 +730,17 @@ class MonsterBlock:
     def swap_ai(self, other):
         if self.boss_death != other.boss_death:
             return
-        for attribute in ["ai", "controls", "sketches", "rages"]:
+        for attribute in ["ai", "controls", "sketches", "rages", "special"]:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
             setattr(other, attribute, a)
 
     def swap_stats(self, other):
         attributes = ["stats", "misc2", "absorb", "null",
-                      "weakness", "special", "morph", "items"]
+                      "weakness", "morph", "items"]
         samplesize = random.randint(1, len(attributes))
-        for attribute in random.sample(attributes, samplesize):
+        sample = random.sample(attributes, samplesize)
+        for attribute in sample:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
             setattr(other, attribute, a)
@@ -729,6 +765,12 @@ class MonsterBlock:
         if self.rages is not None and other.rages is not None and random.choice([True, False]):
             self.rages = type(other.rages)(other.rages)
 
+    def rank(self):
+        if self.has_blaze:
+            return self.stats['level'] + 4
+        else:
+            return self.stats['level']
+
 
 def get_ranked_monsters(filename, bosses=True):
     from randomizer import monsters_from_table
@@ -738,13 +780,13 @@ def get_ranked_monsters(filename, bosses=True):
 
     if not bosses:
         monsters = filter(lambda m: m.id <= 0xFF, monsters)
-    monsters = sorted(monsters, key=lambda i: i.stats['level'])
+    monsters = sorted(monsters, key=lambda m: m.rank())
 
     return monsters
 
 
 def shuffle_monsters(monsters):
-    monsters = sorted(monsters, key=lambda i: i.stats['level'])
+    monsters = sorted(monsters, key=lambda m: m.rank())
     monsters = [m for m in monsters if m.name.strip('_')]
     bosses = [m for m in monsters if m.is_boss]
     nonbosses = [m for m in monsters if not m.is_boss]

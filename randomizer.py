@@ -1168,10 +1168,11 @@ def manage_monsters():
     for i, m in enumerate(monsters):
         m.read_stats(sourcefile)
         m.mutate()
-        m.screw_tutorial_bosses()
 
     shuffle_monsters(monsters)
     for m in monsters:
+        m.screw_tutorial_bosses()
+        m.screw_blaze()
         m.write_stats(outfile)
         m.randomize_special_effect(outfile)
 
@@ -1536,8 +1537,6 @@ def manage_formations(esper_graphics=None):
             boss_choices = [e for e in boss_choices if e in bosses]
             if boss_choices:
                 break
-            else:
-                print "ERROR: %s" % bf
 
         boss = random.choice(boss_choices)
         #print bf

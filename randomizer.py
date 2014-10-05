@@ -1597,7 +1597,7 @@ def manage_formations(esper_graphics=None):
         if not rare_candidates:
             break
 
-        chosens = fs.mutate_formations(rare_candidates, test=False, verbose=True)
+        chosens = fs.mutate_formations(rare_candidates, test=False, verbose=False)
         for chosen in chosens:
             if chosen.misc3 & 0b00111000 == 0:
                 chosen.set_music(1)
@@ -1669,10 +1669,6 @@ if __name__ == "__main__":
         VERBOSE = True
         flags = "".join([c for c in flags if c != 'v'])
 
-    flags = flags.lower()
-    if not flags.strip():
-        flags = 'abcdefghijklmnopqrstuvwxyz'
-
     outfile = sourcefile.rsplit('.', 1)
     outfile = '.'.join([outfile[0], str(seed), outfile[1]])
     copyfile(sourcefile, outfile)
@@ -1682,11 +1678,15 @@ if __name__ == "__main__":
 
     characters = characters_from_table(CHAR_TABLE)
 
+    flags = flags.lower()
     if 'airship' in flags:
         activate_airship_mode()
         flags = flags.replace('airship', '')
         if VERBOSE:
             print "SECRET CODE: AIRSHIP MODE ACTIVATED"
+
+    if not flags.strip():
+        flags = 'abcdefghijklmnopqrstuvwxyz'
 
     if 'o' in flags:
         manage_commands(commands, characters)

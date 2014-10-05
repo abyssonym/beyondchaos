@@ -23,8 +23,16 @@ class Formation():
         return s
 
     @property
+    def veldty(self):
+        return self.formid <= 0x1af
+
+    @property
     def pincer_prohibited(self):
         return self.misc1 & 0x40
+
+    @property
+    def battle_event(self):
+        return any([m.battle_event for m in self.present_enemies])
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -209,7 +217,7 @@ class Formation():
         balance = sum(levels) / (log(len(levels))+1)
         average = sum(levels) / len(levels)+1
         score = (max(levels) + balance + average) / 3.0
-        return int(score)
+        return score
 
     def oldrank(self):
         levels = [e.oldlevel for e in self.present_enemies if e]
@@ -257,6 +265,10 @@ class FormationSet():
                 return True
         return False
 
+    @property
+    def veldty(self):
+        return all([f.veldty for f in self.formations])
+
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -280,10 +292,7 @@ class FormationSet():
                 self.formids[i] = chosen.formid
             return self.formations
 
-        if random.randint(1, 4) != 4:
-            return []
-
-        low = max(fo.oldrank() for fo in self.formations)
+        low = max(fo.oldrank() for fo in self.formations) * 1.1
         high = low * 1.25
         while random.randint(1, 3) == 3:
             high = high * 1.25
@@ -308,6 +317,7 @@ class FormationSet():
                 break
 
         if verbose:
+            print "%x" % self.setid
             for fo in self.formations:
                 print [e.name for e in fo.present_enemies]
             print

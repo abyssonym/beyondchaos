@@ -1464,7 +1464,7 @@ def manage_formations(esper_graphics=None):
     bosses = sorted([m for m in monsters if m.boss_death], key=lambda m: m.stats['level'])
     boss_formations = [fo for fo in boss_formations if any(e for e in fo.present_enemies if e in bosses)]
     safe_boss_formations = list(boss_formations)
-    safe_boss_formations = [fo for fo in safe_boss_formations if not any([m.battle_event for m in fo.present_enemies])]
+    safe_boss_formations = [fo for fo in safe_boss_formations if not fo.battle_event]
     safe_boss_formations = [fo for fo in safe_boss_formations if not any(["Phunbaba" in m.name for m in fo.present_enemies])]
 
     repurposed_formations = []
@@ -1532,7 +1532,6 @@ def manage_formations(esper_graphics=None):
 
         while True:
             bf = random.choice(safe_boss_formations)
-            # TODO: sometimes this list is empty?
             boss_choices = [e for e in bf.present_enemies if e.boss_death]
             boss_choices = [e for e in boss_choices if e in bosses]
             if boss_choices:
@@ -1588,18 +1587,17 @@ def manage_formations(esper_graphics=None):
         uf.write_data(outfile)
         repurposed_formations.append(uf)
 
-    rare_candidates = list(repurposed_formations + safe_boss_formations)
-    #rare_candidates = list(repurposed_formations)
-    #rare_candidates = list(safe_boss_formations)
+    boss_candidates = list(safe_boss_formations)
+    boss_candidates = random.sample(boss_candidates,
+                                    random.randint(0, len(boss_candidates)/3))
+    rare_candidates = list(repurposed_formations + boss_candidates)
     random.shuffle(fsets)
     for fs in fsets:
         #rare_candidates = list(repurposed_formations)
         if not rare_candidates:
             break
 
-        #chosens = fs.mutate_formations(rare_candidates, test=True)
-        chosens = fs.mutate_formations(rare_candidates, test=False)
-
+        chosens = fs.mutate_formations(rare_candidates, test=False, verbose=True)
         for chosen in chosens:
             if chosen.misc3 & 0b00111000 == 0:
                 chosen.set_music(1)
@@ -1728,9 +1726,17 @@ if __name__ == "__main__":
 
     ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
     ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
-    ranked_fsets = [fset for fset in ranked_fsets if fset.setid not in [0x39, 0x3A]]
-    for a, b in zip(ranked_fsets, ranked_fsets[1:]):
+    valid_fsets = [fset for fset in ranked_fsets if fset.veldty]
+    # don't swap with Narshe Mines formations
+    valid_fsets = [fset for fset in valid_fsets if fset.setid not in [0x39, 0x3A]]
+    for a, b in zip(valid_fsets, valid_fsets[1:]):
         a.swap_formations(b)
+
+    # just shuffle the reset of the formations within an fset
+    valid_fsets = [fset for fset in ranked_fsets if fset not in valid_fsets]
+    for fset in valid_fsets:
+        random.shuffle(fset.formids)
+        fset.set_formations(formations)
 
     for m in monsters:
         m.read_ai(outfile)

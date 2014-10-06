@@ -101,6 +101,14 @@ class SpellBlock:
         self.has_status = sum([bin(b).count("1") for b in statuses])
         f.close()
 
+    @property
+    def is_blitz(self):
+        return self.spellid in xrange(0x5D, 0x65)
+
+    @property
+    def is_swdtech(self):
+        return self.spellid in xrange(0x55, 0x5D)
+
     def fix_reflect(self, filename):
         self.dmgtype |= 0x02
         f = open(filename, 'r+b')

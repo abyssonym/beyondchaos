@@ -47,6 +47,7 @@ class MonsterBlock:
         self.moulds = set([])
         self.width, self.height = None, None
         self.miny, self.maxy = None, None
+        self.aiscript = None
 
     @property
     def is_boss(self):
@@ -201,19 +202,146 @@ class MonsterBlock:
         f.close()
 
         self.read_ai(filename)
-        '''
-        hexify = lambda i: "%x" % ord(i)
-        print self.name
-        for s in self.aiscript:
-            print map(hexify, s)
-        codes = [s[0] for s in self.aiscript]
-        '''
 
         if items is None:
             items = get_ranked_items(filename)
             itemids = [i.itemid for i in items]
 
+    def get_skillset(self, ids_only=True):
+        skillset = set([])
+        skillset.add(0xEE)
+        skillset.add(0xEF)
+        skillset.add(0xFE)
+        for action in self.aiscript:
+            action = map(ord, action)
+            if action[0] & 0xF0 == 0xF0:
+                if action[0] == 0xF0:
+                    for s in action[1:]:
+                        skillset.add(s)
+            else:
+                skillset.add(action[0])
+
+        if not ids_only:
+            skillset = [s for s in all_spells if s.spellid in skillset]
+        return sorted(skillset)
+
+    def set_minimum_mp(self):
+        skillset = self.get_skillset(ids_only=False)
+        factor = random.uniform(1.0, 2.0)
+        self.stats['mp'] = int(
+            round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
+
+    def mutate_ai(self, change_skillset=True):
+        skillset = set(self.get_skillset())
+
+        def similar(s1, s2):
+            a = s1.target_enemy_default == s2.target_enemy_default
+            b = s1.target_everyone == s2.target_everyone
+            c = s1.target_dead == s2.target_dead
+            d = s1.healing == s2.healing
+            e = s1.unreflectable == s2.unreflectable
+            f = s1.abort_on_allies == s2.abort_on_allies
+            return (a and b and c and d and e and f)
+
+        oldskills = sorted([s for s in all_spells if s.spellid in skillset],
+                           key=lambda s: s.rank())
+        if change_skillset:
+            for skill in oldskills:
+                if skill.spellid in [0xEE, 0xEF, 0xFE]:
+                    continue
+                else:
+                    skillset.remove(skill.spellid)
+                    candidates = [s for s in all_spells if similar(s, skill)]
+                    candidates = [s for s in candidates if
+                                  not s.is_blitz and not s.is_swdtech]
+                    try:
+                        index = candidates.index(skill)
+                    except ValueError:
+                        continue
+                    index = mutate_index(index, len(candidates), [False, True],
+                                         (-2, 3), (-2, 2))
+                    skill = candidates[index]
+                    skillset.add(skill.spellid)
+        sortedskills = sorted([s for s in all_spells if s.spellid in skillset],
+                              key=lambda s: s.rank())
+
+        def mutate_action_skill(spellid):
+            skill = [s for s in oldskills if s.spellid == spellid]
+            if not skill:
+                return spellid
+            skill = skill[0]
+            if not skill.valid:
+                return spellid
+
+            a = [s for s in oldskills if similar(s, skill)]
+            b = [s for s in sortedskills if similar(s, skill)]
+            index = a.index(skill)
+            index = mutate_index(index, len(b), [False, True],
+                                 (-1, 2), (-1, 1))
+            newskill = b[index]
+            if not newskill.valid:
+                return spellid
+            return newskill.spellid
+
+        targeting = None
+        newscript = []
+        for action in self.aiscript:
+            action = map(ord, action)
+            if action[0] & 0xF0 == 0xF0:
+                if action[0] in [0xFC, 0xF1]:
+                    targeting = random.choice([True, None])
+                    if action[0] == 0xFC and random.randint(1, 3) != 3:
+                        if action[1] == 0x04:
+                            # hit by element
+                            nulled = self.absorb | self.null
+                            if action[2] & nulled:
+                                if self.weakness:
+                                    action[2] = self.weakness
+                                else:
+                                    action[2] = 0xFF ^ nulled
+                        if action[1] == 0x06:
+                            # hp below value
+                            value = action[3]
+                            step = int(value * 2 / 3.0)
+                            value = step + random.randint(0, step)
+                            value = min(0xFE, max(0, value))
+                            action[3] = value
+                        if action[1] in [0x0B, 0x16]:
+                            # battle timer greater than value
+                            # global timer greater than value
+                            value = action[2]
+                            step = value / 2
+                            value = (step + random.randint(0, step) +
+                                     random.randint(0, step/2))
+                            value = min(0xFE, max(0, value))
+                            action[2] = value
+                        if action[1] in [0x0C, 0x0D]:
+                            # variable lt/gte value
+                            value = action[3]
+                            if value >= 3:
+                                value += random.randint(-2, 1)
+                            action[3] = value
+                elif action[0] in [0xFD, 0xFE, 0xFF]:
+                    targeting = None
+                elif targeting:
+                    pass
+                elif action[0] == 0xF0:
+                    if len(set(action[1:])) != 1:
+                        for i in xrange(1, 4):
+                            if action[i] == 0xFE:
+                                action[i] = random.choice(action[1:])
+                            value = mutate_action_skill(action[i])
+                            action[i] = value
+                    action[1:] = sorted(action[1:])
+            newscript.append("".join(map(chr, action)))
+
+        assert len("".join(newscript)) == len("".join(self.aiscript))
+        self.aiscript = newscript
+
     def read_ai(self, filename):
+        if self.aiscript is not None:
+            return
+
         f = open(filename, 'r+b')
         pointer = self.ai + 0xF8700
         f.seek(pointer)
@@ -235,6 +363,13 @@ class MonsterBlock:
 
         self.aiscript = script
         return self.aiscript
+
+    def write_ai(self, filename):
+        f = open(filename, 'r+b')
+        pointer = self.ai + 0xF8700
+        f.seek(pointer)
+        f.write("".join(self.aiscript))
+        f.close()
 
     @property
     def humanoid(self):
@@ -268,6 +403,8 @@ class MonsterBlock:
             self.statuses[2] ^= 0x1
 
     def write_stats(self, filename):
+        self.set_minimum_mp()
+
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         for key in stat_order:
@@ -311,6 +448,7 @@ class MonsterBlock:
         write_multi(f, self.ai, length=2)
 
         f.close()
+        self.write_ai(filename)
 
     def screw_tutorial_bosses(self):
         name = self.name.lower().strip('_')
@@ -650,14 +788,14 @@ class MonsterBlock:
 
     def mutate_control(self):
         # shuffle skills between control, sketch, rage
-        candidates = self.controls + self.sketches
-        if not self.is_boss:
-            candidates += self.rages
+        candidates = self.get_skillset()
         candidates = set(candidates)
         candidates.add(0xEE)
         candidates.add(0xEF)
         if 0xFF in candidates:
             candidates.remove(0xFF)
+        if 0xFE in candidates:
+            candidates.remove(0xFE)
 
         if random.randint(1, 10) >= 9:
             index = None
@@ -669,21 +807,30 @@ class MonsterBlock:
             candidates.add(sb.spellid)
 
         candidates = sorted(candidates)
-        self.controls = sorted(random.sample(candidates,
-                                             min(4, len(candidates))))
-        self.sketches = random.sample(candidates, 2)
+        self.controls = random.sample(candidates, min(4, len(candidates)))
+        while len(self.controls) < 4:
+            self.controls += [random.choice(candidates)]
+        self.controls = sorted(self.controls)
+
+        self.sketches = sorted(random.sample(candidates, 2))
         if not self.is_boss:
-            self.rages = random.sample(candidates, 2)
+            candidates = [s.spellid for s in valid_spells if
+                          s.spellid in candidates]
+            self.rages = sorted(random.sample(candidates, 2))
 
         while len(self.controls) < 4:
             self.controls.append(0xFF)
 
-    def mutate_special(self):
+    @property
+    def goodspecial(self):
         good = set(range(10, 0x1F))
         good.remove(0x1D)  # disappear
         good.remove(0x19)  # frozen
         good.add(0x0A)  # image
-        if self.special in good:
+        return self.special in good
+
+    def mutate_special(self):
+        if self.goodspecial:
             return
 
         branch = random.randint(1, 10)
@@ -716,21 +863,26 @@ class MonsterBlock:
             special = random.choice(sorted(valid))
         self.special = special
 
-    def mutate(self):
+    def mutate(self, change_skillset=None):
+        if change_skillset is None:
+            change_skillset = not (self.is_boss or self.boss_death)
         self.mutate_stats()
         self.mutate_misc()
-        self.mutate_control()
         if random.randint(1, 10) > 7:
             self.mutate_statuses()
         if random.randint(1, 10) > 6:
             self.mutate_affinities()
         if random.randint(1, 10) > 5:
             self.mutate_special()
+        if random.randint(1, 10) > 2:
+            self.mutate_ai(change_skillset=change_skillset)
+        self.mutate_control()
 
     def swap_ai(self, other):
         if self.boss_death != other.boss_death:
             return
-        for attribute in ["ai", "controls", "sketches", "rages", "special"]:
+        for attribute in ["ai", "aiptr", "aiscript", "controls", "sketches",
+                          "rages", "special"]:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
             setattr(other, attribute, a)
@@ -747,14 +899,14 @@ class MonsterBlock:
 
     def copy_all(self, other, everything=True):
         attributes = [
-            "ai", "controls", "sketches", "stats", "misc2", "absorb",
-            "null", "weakness", "special", "morph", "items", "misc1",
-            "immunities", "statuses"]
+            "ai", "aiptr", "aiscript", "controls", "sketches", "stats",
+            "absorb", "null", "weakness", "special", "morph", "items",
+            "misc1", "misc2", "immunities", "statuses"]
         if not everything:
             samplesize = random.randint(0, len(attributes))
             attributes = random.sample(attributes, samplesize)
-            if "ai" in attributes:
-                attributes.remove("ai")
+            attributes = sorted(set(attributes) -
+                                set(["ai", "aiptr", "aiscript"]))
 
         for attribute in attributes:
             value = getattr(other, attribute)
@@ -788,10 +940,10 @@ def get_ranked_monsters(filename, bosses=True):
 def shuffle_monsters(monsters):
     monsters = sorted(monsters, key=lambda m: m.rank())
     monsters = [m for m in monsters if m.name.strip('_')]
-    bosses = [m for m in monsters if m.is_boss]
-    nonbosses = [m for m in monsters if not m.is_boss]
+    bosses = [m for m in monsters if m.is_boss or m.boss_death]
+    nonbosses = [m for m in monsters if m not in bosses]
     for m in monsters:
-        if m.is_boss:
+        if m.is_boss or m.boss_death:
             candidates = bosses
         else:
             candidates = nonbosses
@@ -809,7 +961,7 @@ def shuffle_monsters(monsters):
             to_swap = get_swap_index(index)
             m.swap_stats(candidates[to_swap])
 
-        if m.is_boss:
+        if m.is_boss or m.boss_death:
             pass
         else:
             to_swap = get_swap_index(index)

@@ -19,7 +19,7 @@ from namerandomizer import generate_name
 from formationrandomizer import Formation, FormationSet
 
 
-VERSION = "12"
+VERSION = "13"
 VERBOSE = False
 
 
@@ -1554,11 +1554,11 @@ def manage_formations(esper_graphics=None):
         #print ue.name, boss.name
         #print ue.name, boss2.name
         ue.stats['level'] = max(boss.stats['level'], boss2.stats['level'])
-        ue.read_ai(outfile)
         assert ue.boss_death
-        ue.mutate()
+        # TODO: write AI to a new location
+        ue.mutate(change_skillset=False)
         if random.choice([True, False]):
-            ue.mutate()
+            ue.mutate(change_skillset=False)
         ue.treasure_boost()
         ue.graphics.mutate_palette()
         randomize_enemy_name(outfile, ue.id)
@@ -1737,9 +1737,6 @@ if __name__ == "__main__":
     for fset in valid_fsets:
         random.shuffle(fset.formids)
         fset.set_formations(formations)
-
-    for m in monsters:
-        m.read_ai(outfile)
 
     items = get_ranked_items(sourcefile)
     if 'i' in flags:

@@ -61,6 +61,14 @@ class MonsterBlock:
     def battle_event(self):
         return chr(0xF7) in [s[0] for s in self.aiscript]
 
+    @property
+    def pretty_aiscript(self):
+        hexify = lambda c: "%x" % ord(c)
+        output = ""
+        for action in self.aiscript:
+            output += " ".join(map(hexify, action)) + "\n"
+        return output.strip()
+
     def set_id(self, i):
         self.id = i
         self.specialeffectpointer = 0xF37C0 + self.id
@@ -171,6 +179,9 @@ class MonsterBlock:
         self.null = ord(f.read(1))
         self.weakness = ord(f.read(1))
 
+        f.seek(self.pointer + 26)
+        self.attackanimation = ord(f.read(1))
+
         f.seek(self.pointer + 27)
         self.statuses = map(ord, f.read(4))
         self.special = ord(f.read(1))
@@ -252,8 +263,8 @@ class MonsterBlock:
                 else:
                     skillset.remove(skill.spellid)
                     candidates = [s for s in all_spells if similar(s, skill)]
-                    candidates = [s for s in candidates if
-                                  not s.is_blitz and not s.is_swdtech]
+                    candidates = [s for s in candidates if not
+                                  (s.is_blitz or s.is_swdtech or s.is_esper)]
                     try:
                         index = candidates.index(skill)
                     except ValueError:
@@ -339,9 +350,6 @@ class MonsterBlock:
         self.aiscript = newscript
 
     def read_ai(self, filename):
-        if self.aiscript is not None:
-            return
-
         f = open(filename, 'r+b')
         pointer = self.ai + 0xF8700
         f.seek(pointer)
@@ -363,6 +371,13 @@ class MonsterBlock:
 
         self.aiscript = script
         return self.aiscript
+
+    def set_relative_ai(self, pointer):
+        self.ai = pointer - 0xF8700
+
+    @property
+    def aiscriptsize(self):
+        return len("".join(self.aiscript))
 
     def write_ai(self, filename):
         f = open(filename, 'r+b')
@@ -425,6 +440,9 @@ class MonsterBlock:
         f.write(chr(self.absorb))
         f.write(chr(self.null))
         f.write(chr(self.weakness))
+
+        f.seek(self.pointer + 26)
+        f.write(chr(self.attackanimation))
 
         f.seek(self.pointer + 27)
         for s in self.statuses:
@@ -881,7 +899,7 @@ class MonsterBlock:
     def swap_ai(self, other):
         if self.boss_death != other.boss_death:
             return
-        for attribute in ["ai", "aiptr", "aiscript", "controls", "sketches",
+        for attribute in ["ai", "aiscript", "controls", "sketches",
                           "rages", "special"]:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
@@ -899,9 +917,11 @@ class MonsterBlock:
 
     def copy_all(self, other, everything=True):
         attributes = [
-            "ai", "aiptr", "aiscript", "controls", "sketches", "stats",
+            "ai", "aiscript", "controls", "sketches", "stats",
             "absorb", "null", "weakness", "special", "morph", "items",
-            "misc1", "misc2", "immunities", "statuses"]
+            "misc1", "misc2", "immunities", "statuses", "attackanimation"]
+        if "aiptr" in attributes:
+            attributes.remove("aiptr")  # don't copy this, yo
         if not everything:
             samplesize = random.randint(0, len(attributes))
             attributes = random.sample(attributes, samplesize)

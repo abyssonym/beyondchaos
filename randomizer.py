@@ -36,11 +36,13 @@ REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
 #REPLACE_ENEMIES = [0x10f, 0x136, 0x137]  # kefka enemy formation unstable
 # fake Atma, Guardian x4
 REPLACE_FORMATIONS = [0x1ff, 0x20e]
-NOREPLACE_FORMATIONS = [0x232, 0x1c5]
+#NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb]
+NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb, 0x230]
 
 
-TEK_SKILLS = (range(0x86, 0x8B) +
-              [0x91, 0x9A, 0xA7, 0xB1] +
+TEK_SKILLS = (# [0x18, 0x6E, 0x70, 0x7D, 0x7E] +
+              range(0x86, 0x8B) +
+              [0xA7, 0xB1] +
               range(0xB4, 0xBA) +
               [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3])
 
@@ -705,7 +707,7 @@ def manage_commands_new(commands, characters):
             continue
 
         if c.name not in ALWAYS_REPLACE:
-            if random.randint(1, 100) > 65:
+            if random.randint(1, 100) > 50:
                 continue
 
         POWER_LEVEL = 105
@@ -756,10 +758,12 @@ def manage_commands_new(commands, characters):
             break
 
         myfs = None
-        for fs in freespaces:
+        for fs in sorted(freespaces, key=lambda f: f.size):
             if fs.size > s.size:
                 myfs = fs
                 break
+        else:
+            raise Exception("Not enough free space.")
 
         freespaces.remove(myfs)
         s.set_location(myfs.start)
@@ -786,7 +790,7 @@ def manage_commands_new(commands, characters):
     cyan_ai_sub.set_location(0xFBE85)
     cyan_ai_sub.write(outfile)
 
-    return commands, characters
+    return commands, characters, freespaces
 
 
 def manage_natural_magic(characters):
@@ -1450,16 +1454,23 @@ def manage_formations(esper_graphics=None):
     for f in formations:
         f.mutate()
 
+    freespaces = []
+    freespaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
+    freespaces.append(FreeBlock(0xFFF47, 0xFFF47 + 87))
+    freespaces.append(FreeBlock(0xFFFBE, 0xFFFBE + 66))
+
     unused_enemies = [u for u in monsters if u.id in REPLACE_ENEMIES]
     unused_formations = [u for u in formations if set(u.enemies) & set(unused_enemies)]
-    unused_formations = [u for u in unused_formations if u not in NOREPLACE_FORMATIONS]
+    unused_formations = [u for u in unused_formations if u.formid not in NOREPLACE_FORMATIONS]
     unused_formations += [u for u in formations if u.formid in REPLACE_FORMATIONS]
 
     boss_formations = [fo for fo in formations if fo.formid not in unused_formations]
     single_enemy_formations = list(boss_formations)
     single_enemy_formations = [bf for bf in single_enemy_formations if len(bf.present_enemies) == 1]
     single_enemy_formations = [bf for bf in single_enemy_formations if bf.formid not in REPLACE_FORMATIONS]
+    single_enemy_formations = [bf for bf in single_enemy_formations if bf.formid not in NOREPLACE_FORMATIONS]
     single_boss_formations = [bf for bf in single_enemy_formations if bf.present_enemies[0].graphics.large or bf.present_enemies[0].boss_death]
+    single_boss_formations = [bf for bf in single_boss_formations if bf.formid != 0x1b5]
 
     bosses = sorted([m for m in monsters if m.boss_death], key=lambda m: m.stats['level'])
     boss_formations = [fo for fo in boss_formations if any(e for e in fo.present_enemies if e in bosses)]
@@ -1469,9 +1480,6 @@ def manage_formations(esper_graphics=None):
 
     repurposed_formations = []
     used_graphics = []
-    esper_formation = [fo for fo in single_enemy_formations if fo.formid == 0x232][0]
-    #esper_formation = [fo for fo in single_enemy_formations if fo.formid == 0x1ff][0]
-    #esper_formation = [fo for fo in single_enemy_formations if fo.formid == 0xb1][0]
     blacklisted = []
     #blacklisted = [1, 16, 30, 31] + [27, 28, 29]
     temp = []
@@ -1484,12 +1492,13 @@ def manage_formations(esper_graphics=None):
     while len(unused_enemies) < len(unused_formations):
         unused_enemies = unused_enemies * 2
 
+    mutated_ues = []
     for ue, uf in zip(unused_enemies, unused_formations):
         esper = False
         while True:
             if esper:
                 gfx = random.choice(esper_graphics)
-                gfx = esper_graphics[14]
+                #gfx = esper_graphics[14]
                 # very weird: 27, 28, 29
                 # needs fix: 10, 13, 14, 15, 25
                 matching_formations = []
@@ -1497,15 +1506,13 @@ def manage_formations(esper_graphics=None):
                     enemygfx = fo.present_enemies[0].graphics
                     if enemygfx.large == gfx.large and enemygfx.size_template == gfx.size_template:
                         matching_formations.append(fo)
-                #if matching_formations and False:
                 if matching_formations:
                     vbf = random.choice(matching_formations)
                 else:
-                    vbf = esper_formation
+                    #vbf = esper_formation
+                    vbf = None
                 vboss = [e for e in vbf.enemies if e][0]
                 vboss.graphics = gfx
-                print vboss.graphics.size_template
-                #vboss.graphics = random.choice(esper_graphics)
             else:
                 vbf = random.choice(single_boss_formations)
                 vboss = [e for e in vbf.enemies if e][0]
@@ -1513,7 +1520,6 @@ def manage_formations(esper_graphics=None):
             if not vboss.graphics.graphics:
                 continue
 
-            #if vboss.graphics.graphics not in used_graphics or True:
             if vboss.graphics.graphics not in used_graphics:
                 used_graphics.append(vboss.graphics.graphics)
                 break
@@ -1538,10 +1544,6 @@ def manage_formations(esper_graphics=None):
                 break
 
         boss = random.choice(boss_choices)
-        #print bf
-        #print boss.name, boss.id
-        #print ["%x" % ord(c) for c in boss.aiscript]
-        #print boss.boss_death
         ue.copy_all(boss, everything=True)
         index = bosses.index(boss)
         index += random.randint(-2, 2)
@@ -1551,19 +1553,39 @@ def manage_formations(esper_graphics=None):
             index = max(0, min(index, len(bosses)-1))
         boss2 = bosses[index]
         ue.copy_all(boss2, everything=False)
-        #print ue.name, boss.name
-        #print ue.name, boss2.name
         ue.stats['level'] = max(boss.stats['level'], boss2.stats['level'])
         assert ue.boss_death
-        # TODO: write AI to a new location
-        ue.mutate(change_skillset=False)
-        if random.choice([True, False]):
-            ue.mutate(change_skillset=False)
-        ue.treasure_boost()
-        ue.graphics.mutate_palette()
-        randomize_enemy_name(outfile, ue.id)
-        ue.misc1 &= (0xFF ^ 0x4)  # always show name
-        ue.write_stats(outfile)
+
+        if ue.id not in mutated_ues:
+            for fs in sorted(freespaces, key=lambda fs: fs.size):
+                if fs.size > ue.aiscriptsize:
+                    myfs = fs
+                    break
+            else:
+                # not enough free space
+                continue
+
+            freespaces.remove(myfs)
+            pointer = myfs.start
+            ue.set_relative_ai(pointer)
+            fss = myfs.unfree(pointer, ue.aiscriptsize)
+            freespaces.extend(fss)
+
+            ue.mutate_ai(change_skillset=True)
+            ue.mutate_ai(change_skillset=True)
+            ue.mutate(change_skillset=True)
+            if random.choice([True, False]):
+                ue.mutate(change_skillset=True)
+            ue.treasure_boost()
+            ue.graphics.mutate_palette()
+            name = randomize_enemy_name(outfile, ue.id)
+            ue.misc1 &= (0xFF ^ 0x4)  # always show name
+            ue.write_stats(outfile)
+            ue.read_ai(outfile)
+            mutated_ues.append(ue.id)
+            for m in monsters:
+                if m.id != ue.id:
+                    assert m.aiptr != ue.aiptr
 
         uf.set_music_appropriate()
         appearances = range(1, 14)
@@ -1573,17 +1595,7 @@ def manage_formations(esper_graphics=None):
         uf.get_special_ap()
         uf.mouldbyte = 0x60
         ue.graphics.write_data(outfile)
-        '''
-        print uf.formid
-        print [(e.name, "%x" % e.id, e.graphics.graphics) for e in uf.present_enemies]
-        print uf.bosses
-        print vbf.formid
-        print vboss.name, "%x" % vboss.id, vboss.graphics.graphics
-        print vbf.bosses
-        print vbf.enemy_pos
-        assert uf.enemy_pos[0] == vbf.enemy_pos[0]
-        print
-        '''
+        uf.misc1 &= 0xCF
         uf.write_data(outfile)
         repurposed_formations.append(uf)
 
@@ -1593,11 +1605,10 @@ def manage_formations(esper_graphics=None):
     rare_candidates = list(repurposed_formations + boss_candidates)
     random.shuffle(fsets)
     for fs in fsets:
-        #rare_candidates = list(repurposed_formations)
         if not rare_candidates:
             break
 
-        chosens = fs.mutate_formations(rare_candidates, test=False, verbose=False)
+        chosens = fs.mutate_formations(rare_candidates)
         for chosen in chosens:
             if chosen.misc3 & 0b00111000 == 0:
                 chosen.set_music(1)
@@ -1623,12 +1634,14 @@ def randomize_enemy_name(filename, enemy_id):
     f = open(filename, 'r+b')
     f.seek(pointer)
     name = generate_name()
+    readable = name
     #monsterdict[enemy_id].name = name
     name = map(lambda c: hex2int(texttable[c]), name)
     while len(name) < 10:
         name.append(0xFF)
     f.write("".join(map(chr, name)))
     f.close()
+    return readable
 
 
 if __name__ == "__main__":
@@ -1692,7 +1705,7 @@ if __name__ == "__main__":
         manage_commands(commands, characters)
 
     if 'w' in flags:
-        manage_commands_new(commands, characters)
+        _, _, freespaces = manage_commands_new(commands, characters)
 
     if 'z' in flags:
         manage_sprint()

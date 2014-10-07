@@ -109,6 +109,10 @@ class SpellBlock:
     def is_swdtech(self):
         return self.spellid in xrange(0x55, 0x5D)
 
+    @property
+    def is_esper(self):
+        return self.spellid in xrange(0x36, 0x51)
+
     def fix_reflect(self, filename):
         self.dmgtype |= 0x02
         f = open(filename, 'r+b')

@@ -1450,7 +1450,52 @@ def manage_blitz():
         f.write("".join(map(chr, newcmd)))
 
 
-def manage_formations(esper_graphics=None):
+def manage_formations(formations, fsets):
+    ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
+    ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
+    valid_fsets = [fset for fset in ranked_fsets if fset.veldty]
+
+    outdoors = range(0, 0x39) + [0x57, 0x58, 0x6e, 0x78, 0x7c]
+
+    # don't swap with Narshe Mines formations
+    valid_fsets = [fset for fset in valid_fsets if
+                   fset.setid not in [0x39, 0x3A] and
+                   set([fo.formid for fo in fset.formations]) != set([0])]
+
+    outdoor_fsets = [fset for fset in valid_fsets if
+                     fset.setid in outdoors]
+    indoor_fsets = [fset for fset in valid_fsets if
+                    fset.setid not in outdoors]
+    for a, b in zip(outdoor_fsets, outdoor_fsets[1:]):
+        a.swap_formations(b)
+    for a, b in zip(indoor_fsets, indoor_fsets[1:]):
+        a.swap_formations(b)
+
+    # just shuffle the reset of the formations within an fset
+    valid_fsets = [fset for fset in ranked_fsets if fset not in valid_fsets]
+    for fset in valid_fsets:
+        fs.shuffle_formations()
+
+    indoor_formations = set([fo for fset in indoor_fsets for fo in
+                             fset.formations])
+    # include floating continent formations, which are weird
+    indoor_formations |= set([fo for fo in formations
+                              if 0xB1 <= fo.formid <= 0xBC])
+    # fanatics tower too
+    indoor_formations |= set([fo for fo in formations if fo.formid in
+                              [0xAB, 0xAC, 0xAD,
+                               0x16A, 0x16B, 0x16C, 0x16D,
+                               0x18A, 0x1D2, 0x1D8, 0x1DE,
+                               0x1E0, 0x1E6, 0x1FA]])
+    for formation in sorted(indoor_formations, key=lambda fo: fo.formid):
+        formation.set_music(6)
+        formation.set_continuous_music()
+        formation.write_data(outfile)
+
+    return formations
+
+
+def manage_formations_hidden(formations, fsets, esper_graphics=None):
     for f in formations:
         f.mutate()
 
@@ -1751,30 +1796,6 @@ if __name__ == "__main__":
         mgs = manage_monster_appearance(monsters)
         #manage_character_appearance()
 
-    formations = get_formations(sourcefile)
-
-    fsets = []
-    for i in xrange(256):
-        fs = FormationSet(setid=i)
-        fs.read_data(sourcefile)
-        fs.set_formations(formations)
-        fs.shuffle_formations()
-        fsets.append(fs)
-
-    ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
-    ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
-    valid_fsets = [fset for fset in ranked_fsets if fset.veldty]
-    # don't swap with Narshe Mines formations
-    valid_fsets = [fset for fset in valid_fsets if fset.setid not in [0x39, 0x3A]]
-    for a, b in zip(valid_fsets, valid_fsets[1:]):
-        a.swap_formations(b)
-
-    # just shuffle the reset of the formations within an fset
-    valid_fsets = [fset for fset in ranked_fsets if fset not in valid_fsets]
-    for fset in valid_fsets:
-        random.shuffle(fset.formids)
-        fset.set_formations(formations)
-
     items = get_ranked_items(sourcefile)
     if 'i' in flags:
         manage_items(items)
@@ -1822,7 +1843,16 @@ if __name__ == "__main__":
         manage_blitz()
 
     if 'f' in flags:
-        manage_formations(esper_graphics=mgs[-32:])
+        formations = get_formations(sourcefile)
+        fsets = []
+        for i in xrange(0x100):
+            fs = FormationSet(setid=i)
+            fs.read_data(sourcefile)
+            fs.set_formations(formations)
+            fsets.append(fs)
+
+        manage_formations(formations, fsets)
+        manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
 
     if 'n' in flags:
         for i in range(8):

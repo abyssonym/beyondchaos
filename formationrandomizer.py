@@ -91,8 +91,12 @@ class Formation():
         self.misc3 &= 0b11000111
         self.misc3 |= (value << 3)
 
+    def set_continuous_music(self):
+        self.misc3 |= 0x80
+        self.misc2 |= 0x02
+
     def set_music_appropriate(self):
-        music = random.randint(1, 6) if self.rank() > 35 else random.choice([1, 3, 4, 6])
+        music = random.randint(1, 5) if self.rank() > 35 else random.choice([1, 3, 4])
         self.set_music(music)
 
     def set_fanfare(self, value=False):

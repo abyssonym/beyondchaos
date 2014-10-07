@@ -243,6 +243,9 @@ class MonsterBlock:
             round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
 
     def mutate_ai(self, change_skillset=True):
+        if self.name[:2] == "L.":
+            return
+
         skillset = set(self.get_skillset())
 
         def similar(s1, s2):

@@ -4,7 +4,7 @@ from shutil import copyfile
 from hashlib import md5
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, read_multi, write_multi,
-                   texttable, generate_swapfunc, shift_middle,
+                   texttable, generate_swapfunc, shift_middle, mutate_index,
                    utilrandom as random)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
@@ -1460,26 +1460,53 @@ def manage_formations(esper_graphics=None):
     freespaces.append(FreeBlock(0xFFFBE, 0xFFFBE + 66))
 
     unused_enemies = [u for u in monsters if u.id in REPLACE_ENEMIES]
-    unused_formations = [u for u in formations if set(u.enemies) & set(unused_enemies)]
-    unused_formations = [u for u in unused_formations if u.formid not in NOREPLACE_FORMATIONS]
-    unused_formations += [u for u in formations if u.formid in REPLACE_FORMATIONS]
 
-    boss_formations = [fo for fo in formations if fo.formid not in unused_formations]
-    single_enemy_formations = list(boss_formations)
-    single_enemy_formations = [bf for bf in single_enemy_formations if len(bf.present_enemies) == 1]
-    single_enemy_formations = [bf for bf in single_enemy_formations if bf.formid not in REPLACE_FORMATIONS]
-    single_enemy_formations = [bf for bf in single_enemy_formations if bf.formid not in NOREPLACE_FORMATIONS]
-    single_boss_formations = [bf for bf in single_enemy_formations if bf.present_enemies[0].graphics.large or bf.present_enemies[0].boss_death]
-    single_boss_formations = [bf for bf in single_boss_formations if bf.formid != 0x1b5]
+    def unused_validator(formation):
+        if formation.formid in NOREPLACE_FORMATIONS:
+            return False
+        if formation.formid in REPLACE_FORMATIONS:
+            return True
+        if not set(formation.present_enemies) & set(unused_enemies):
+            return False
+        return True
+    unused_formations = filter(unused_validator, formations)
+    while len(unused_enemies) < len(unused_formations):
+        unused_enemies = unused_enemies * 2
 
-    bosses = sorted([m for m in monsters if m.boss_death], key=lambda m: m.stats['level'])
-    boss_formations = [fo for fo in boss_formations if any(e for e in fo.present_enemies if e in bosses)]
-    safe_boss_formations = list(boss_formations)
-    safe_boss_formations = [fo for fo in safe_boss_formations if not fo.battle_event]
-    safe_boss_formations = [fo for fo in safe_boss_formations if not any(["Phunbaba" in m.name for m in fo.present_enemies])]
+    def single_enemy_validator(formation):
+        if formation in unused_formations:
+            return False
+        if len(formation.present_enemies) != 1:
+            return False
+        if formation.formid in REPLACE_FORMATIONS + NOREPLACE_FORMATIONS:
+            return False
+        return True
+    single_enemy_formations = filter(single_enemy_validator, formations)
 
-    repurposed_formations = []
-    used_graphics = []
+    def single_boss_validator(formation):
+        if formation.formid == 0x1b5:
+            # disallow GhostTrain
+            return False
+        if not (any([m.boss_death for m in formation.present_enemies])
+                or formation.mould in xrange(2, 8)):
+            return False
+        return True
+    single_boss_formations = filter(single_boss_validator,
+                                    single_enemy_formations)
+
+    def safe_boss_validator(formation):
+        if not any([m.boss_death for m in formation.present_enemies]):
+            return False
+        if formation.battle_event:
+            return False
+        if any("Phunbaba" in m.name for m in formation.present_enemies):
+            return False
+        return True
+    safe_boss_formations = filter(safe_boss_validator, single_enemy_formations)
+    sorted_bosses = sorted([m for m in monsters if m.boss_death],
+                    key=lambda m: m.stats['level'])
+
+    '''
     blacklisted = []
     #blacklisted = [1, 16, 30, 31] + [27, 28, 29]
     temp = []
@@ -1488,14 +1515,14 @@ def manage_formations(esper_graphics=None):
             continue
         temp.append(e)
     esper_graphics = temp
+    '''
 
-    while len(unused_enemies) < len(unused_formations):
-        unused_enemies = unused_enemies * 2
-
+    repurposed_formations = []
+    used_graphics = []
     mutated_ues = []
     for ue, uf in zip(unused_enemies, unused_formations):
-        esper = False
         while True:
+            '''
             if esper:
                 gfx = random.choice(esper_graphics)
                 #gfx = esper_graphics[14]
@@ -1514,8 +1541,9 @@ def manage_formations(esper_graphics=None):
                 vboss = [e for e in vbf.enemies if e][0]
                 vboss.graphics = gfx
             else:
-                vbf = random.choice(single_boss_formations)
-                vboss = [e for e in vbf.enemies if e][0]
+            '''
+            vbf = random.choice(single_boss_formations)
+            vboss = [e for e in vbf.enemies if e][0]
 
             if not vboss.graphics.graphics:
                 continue
@@ -1539,22 +1567,18 @@ def manage_formations(esper_graphics=None):
         while True:
             bf = random.choice(safe_boss_formations)
             boss_choices = [e for e in bf.present_enemies if e.boss_death]
-            boss_choices = [e for e in boss_choices if e in bosses]
+            boss_choices = [e for e in boss_choices if e in sorted_bosses]
             if boss_choices:
                 break
 
         boss = random.choice(boss_choices)
         ue.copy_all(boss, everything=True)
-        index = bosses.index(boss)
-        index += random.randint(-2, 2)
-        index = max(0, min(index, len(bosses)-1))
-        while random.choice([True, False]) or index == bosses.index(boss):
-            index += random.randint(-1, 1)
-            index = max(0, min(index, len(bosses)-1))
-        boss2 = bosses[index]
+        index = sorted_bosses.index(boss)
+        index = mutate_index(index, len(sorted_bosses), [False, True],
+                             (-2, 2), (-1, 1))
+        boss2 = sorted_bosses[index]
         ue.copy_all(boss2, everything=False)
-        ue.stats['level'] = max(boss.stats['level'], boss2.stats['level'])
-        assert ue.boss_death
+        ue.stats['level'] = (boss.stats['level'] + boss2.stats['level']) / 2
 
         if ue.id not in mutated_ues:
             for fs in sorted(freespaces, key=lambda fs: fs.size):
@@ -1595,7 +1619,7 @@ def manage_formations(esper_graphics=None):
         uf.get_special_ap()
         uf.mouldbyte = 0x60
         ue.graphics.write_data(outfile)
-        uf.misc1 &= 0xCF
+        uf.misc1 &= 0xCF  # allow front and back attacks
         uf.write_data(outfile)
         repurposed_formations.append(uf)
 

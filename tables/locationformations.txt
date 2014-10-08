@@ -1,0 +1,36 @@
+narshe wob,39,3a,79
+south figaro cave 1,3b,3c
+mt koltz,3f
+mt koltz outdoors,3d,3e,40
+south figaro,41
+phantom forest,43,44,45
+phantom train,46,47,48,4a,4b
+phantom train outdoors,4c
+zozo,4e
+zozo indoors,4d
+magitek facility,50,51,68,69,6a,6b
+magitek facility outdoors,6c
+sealed gate,49,5c,5d,5e,5f
+esper caves,5a,5b,60,61,62
+esper caves outdoors,59
+floating continent,70,71,72,73,74,7b
+south figaro cave 2,7a
+collapsing house,80
+veldt cave,84
+south figaro cave 3,89,8a
+figaro castle basement,8b,8c
+ancient castle,8f,90,91
+daryl's tomb,95,96,97
+fanatics tower,98,99,9a,9b
+fanatics tower indoors,9c,9f
+owzer's mansion,9d,9e
+mt zozo,a0
+mt zozo outdoors,a1,a2
+yeti's cave,a6,a7,a8
+gogo's domain,aa,ab,ac
+phoenix cave,ae,af,b0,b1
+cyan's dream,b5,b6,b7,b8
+narshe wor,bd,be,bf
+ebot's rock,c1,c2,c3
+kefka's tower,c5,c6,c7,c8,c9,ca,cb,cd,ce,cf,d0,d1,d5,d6,d9,de,e1
+kefka's tower indoors,d2,d3,d4,d7,d8,da,db,dc,dd,df,e0,e2,e3

@@ -66,7 +66,7 @@ class ChestBlock:
             pass
 
 
-def shuffle_locations(chests):
+def shuffle_treasure_locations(chests):
     locdict = {}
     for c in chests:
         if c.location not in locdict:

@@ -13,6 +13,7 @@ TEXT_TABLE = path.join("tables", "text.txt")
 ENEMY_NAMES_TABLE = path.join("tables", "enemynames.txt")
 MODIFIERS_TABLE = path.join("tables", "moves.txt")
 MOVES_TABLE = path.join("tables", "moves.txt")
+LOCATION_TABLE = path.join("tables", "locationformations.txt")
 
 
 texttable = {}
@@ -48,7 +49,7 @@ def int2bytes(value, length=2, reverse=True):
 def read_multi(f, length=2, reverse=True):
     vals = map(ord, f.read(length))
     if reverse:
-        vals = reversed(vals)
+        vals = list(reversed(vals))
     value = 0
     for val in vals:
         value = value << 8
@@ -142,6 +143,24 @@ def shift_middle(triple, degree, ungray=False):
     return tuple(triple)
 
 
+def get_palette_transformer():
+    swapfuncs = [generate_swapfunc(swapcode=None) for _ in range(8)]
+    degree = utilrandom.randint(-75, 75)
+
+    def palette_transformer(color):
+        red, green, blue = color
+        a = red >= green
+        b = red >= blue
+        c = green >= blue
+        index = (a << 2) | (b << 1) | c
+        swapfunc = swapfuncs[index]
+        red, green, blue = swapfunc((red, green, blue))
+        red, green, blue = shift_middle((red, green, blue), degree)
+        return (red, green, blue)
+
+    return palette_transformer
+
+
 def mutate_palette_dict(palette_dict):
     colorsets = {}
     for n, (red, green, blue) in palette_dict.items():
@@ -164,19 +183,6 @@ def mutate_palette_dict(palette_dict):
 
         for n in colorsets[key]:
             red, green, blue = palette_dict[n]
-
-            '''
-            low, medium, high = tuple(sorted([red, green, blue]))
-            if degree < 0:
-                value = low
-            else:
-                value = high
-            degree = abs(degree)
-            a = (1 - (degree/90.0)) * medium
-            b = (degree/90.0) * value
-            medium = a + b
-            medium = int(round(medium))
-            '''
             red, green, blue = shift_middle((red, green, blue), degree)
             low, medium, high = tuple(sorted([red, green, blue]))
 

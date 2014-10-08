@@ -3,20 +3,22 @@ from sys import argv
 from shutil import copyfile
 from hashlib import md5
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
-                   CHAR_TABLE, COMMAND_TABLE, read_multi, write_multi,
-                   texttable, generate_swapfunc, shift_middle, mutate_index,
-                   utilrandom as random)
+                   CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE, read_multi,
+                   write_multi, texttable, generate_swapfunc, shift_middle,
+                   mutate_index, utilrandom as random)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
                                MetamorphBlock, get_ranked_monsters,
                                shuffle_monsters)
 from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
                             reset_special_relics, reset_rage_blizzard)
-from chestrandomizer import ChestBlock, shuffle_locations, shuffle_monster_boxes
+from chestrandomizer import (ChestBlock, shuffle_treasure_locations,
+                             shuffle_monster_boxes)
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
 from formationrandomizer import Formation, FormationSet
+from locationrandomizer import Location, Zone
 
 
 VERSION = "13"
@@ -1385,7 +1387,7 @@ def manage_treasure(monsters):
         c.read_data(sourcefile)
         c.mutate_contents()
 
-    shuffle_locations(chests)
+    shuffle_treasure_locations(chests)
     shuffle_monster_boxes(chests)
 
     for c in chests:
@@ -1455,7 +1457,7 @@ def manage_formations(formations, fsets):
     ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
     valid_fsets = [fset for fset in ranked_fsets if fset.veldty]
 
-    outdoors = range(0, 0x39) + [0x57, 0x58, 0x6e, 0x78, 0x7c]
+    outdoors = range(0, 0x39) + [0x57, 0x58, 0x6e, 0x6f, 0x78, 0x7c]
 
     # don't swap with Narshe Mines formations
     valid_fsets = [fset for fset in valid_fsets if
@@ -1698,6 +1700,117 @@ def manage_shops():
         s.write_data(outfile)
 
 
+def manage_locations():
+    locdict = {}
+    for line in open(LOCATION_TABLE):
+        line = line.strip().split(',')
+        name, encounters = line[0], line[1:]
+        encounters = map(hex2int, encounters)
+        locdict[name] = encounters
+        for encounter in encounters:
+            assert encounter not in locdict
+            locdict[encounter] = name
+
+    encrates = {}
+    for name in locdict:
+        if name == "fanatics tower":
+            encrates[name] = random.randint(2, 3)
+        elif name in ["floating continent", "veldt cave", "ancient castle",
+                      "mt zozo", "yeti's cave", "gogo's domain",
+                      "phoenix cave", "cyan's dream", "ebot's rock",
+                      "kefka's tower"]:
+            if random.randint(1, 3) == 3:
+                encrates[name] = random.randint(1, 3)
+
+    locations = [Location(i) for i in range(415)]
+    paldict = {}
+    for l in locations:
+        l.read_data(sourcefile)
+        if l.formation in locdict:
+            name = locdict[l.formation]
+            if l.name and name != l.name:
+                raise Exception("Location name mismatch.")
+            elif l.name is None:
+                l.name = locdict[l.formation]
+        if l.field_palette not in paldict:
+            paldict[l.field_palette] = set([])
+        if l.formation > 0 and l.battlebg > 0:
+            formation = [f for f in fsets if f.setid == l.formation][0]
+            if set(formation.formids) != set([0]):
+                paldict[l.field_palette].add(l)
+        l.write_data(outfile)
+
+    '''
+    for key, value in paldict.items():
+        print "%x" % key, sorted(set([l.name for l in value])),
+        print map(lambda x: "%x" % x, sorted(set([l.battlebg for l in value]))),
+        print map(lambda x: "%x" % x, sorted(set([l.formation for l in value])))
+    '''
+
+    zones = [Zone(i) for i in range(0x100)]
+    for z in zones:
+        z.read_data(sourcefile)
+        if z.zoneid >= 0x80:
+            for setid in z.setids:
+                if setid in locdict:
+                    name = locdict[setid]
+                    z.names[setid] = name
+                    if name not in z.names:
+                        z.names[name] = set([])
+                    z.names[name].add(setid)
+            z.rates = 0
+            for i, s in enumerate(z.setids):
+                if s in z.names and z.names[s] in encrates:
+                    rate = encrates[z.names[s]]
+                    z.set_formation_rate(s, rate)
+        z.write_data(outfile)
+
+    def rates_cleaner(rates):
+        rates = [max(int(round(o)), 1) for o in rates]
+        rates = [int2bytes(o, length=2) for o in rates]
+        rates = [i for sublist in rates for i in sublist]
+        return rates
+
+    base4 = map(lambda (b, t): b*t, zip([0xC0]*4, [1, 0.5, 2, 1]))
+    bangle = 0.5
+    moogle = 0.01
+    overworld_rates = (
+        base4 +
+        [b * bangle for b in base4] +
+        [b * moogle for b in base4] +
+        [b * bangle * moogle for b in base4]
+        )
+    overworld_rates = rates_cleaner(overworld_rates)
+    encrate_sub = Substitution()
+    encrate_sub.set_location(0xC29F)
+    encrate_sub.bytestring = overworld_rates
+    encrate_sub.write(outfile)
+
+    # dungeon encounters: normal, strongly affected by charms,
+    # weakly affected by charms, and unaffected by charms
+    base = 0x70
+    bangle = 0.5
+    moogle = 0.01
+    normal = [base, base*bangle, base*moogle, base*bangle*moogle]
+    unaffected = [base, base, base, base]
+
+    sbase = base*3
+    strong = [sbase, sbase*bangle/2, sbase*moogle/2, sbase*bangle*moogle/4]
+
+    wbase = base*1.5
+    half = wbase/2
+    weak = [wbase, half+(half*bangle), half+(half*moogle),
+            half+(half*bangle*moogle)]
+
+    dungeon_rates = zip(normal, strong, weak, unaffected)
+    dungeon_rates = [i for sublist in dungeon_rates for i in sublist]
+    dungeon_rates = rates_cleaner(dungeon_rates)
+    encrate_sub = Substitution()
+    encrate_sub.set_location(0xC2BF)
+    encrate_sub.bytestring = dungeon_rates
+    encrate_sub.write(outfile)
+
+
 def randomize_enemy_name(filename, enemy_id):
     pointer = 0xFC050 + (enemy_id * 10)
     f = open(filename, 'r+b')
@@ -1725,6 +1838,7 @@ if __name__ == "__main__":
         print ("WARNING! The md5 hash of this file does not match the known "
                "hash of the english FF6 1.0 rom!")
     f.close()
+    del(f)
 
     if len(argv) > 2:
         fullseed = argv[2].strip()
@@ -1842,6 +1956,13 @@ if __name__ == "__main__":
     if 'l' in flags:
         manage_blitz()
 
+    if 'n' in flags:
+        for i in range(8):
+            w = WindowBlock(i)
+            w.read_data(sourcefile)
+            w.mutate()
+            w.write_data(outfile)
+
     if 'f' in flags:
         formations = get_formations(sourcefile)
         fsets = []
@@ -1854,12 +1975,7 @@ if __name__ == "__main__":
         manage_formations(formations, fsets)
         manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
 
-    if 'n' in flags:
-        for i in range(8):
-            w = WindowBlock(i)
-            w.read_data(sourcefile)
-            w.mutate()
-            w.write_data(outfile)
+    manage_locations()
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

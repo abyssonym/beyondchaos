@@ -19,7 +19,7 @@ class Formation():
             s = ', '.join([s, "%s x%s" % (name, count)])
         s = s[2:]
         s = "%s (%x)" % (s, self.formid)
-        s += " " + " ".join(["%x" % e.id for e in self.present_enemies])
+        #s += " " + " ".join(["%x" % e.id for e in self.present_enemies])
         return s
 
     @property
@@ -260,7 +260,7 @@ class FormationSet():
             for i in range(8):
                     s += '* ' if f.misc1 & (1 << i) else '  '
             s += str([e.name for e in f.present_enemies]) + "\n"
-        return s
+        return s.strip()
 
     @property
     def has_boss(self):
@@ -355,3 +355,24 @@ class FormationSet():
 
     def rank(self):
         return sum(f.rank() for f in self.formations) / 4.0
+
+if __name__ == "__main__":
+    from sys import argv
+    from randomizer import monsters_from_table, get_formations
+    from utils import ENEMY_TABLE
+    filename = argv[1]
+    monsters = monsters_from_table(ENEMY_TABLE)
+    for m in monsters:
+        m.read_stats(filename)
+    formations = get_formations(filename)
+    #for f in formations:
+    #    print f
+    fsets = []
+    for i in xrange(0x100):
+        fs = FormationSet(setid=i)
+        fs.read_data(filename)
+        fs.set_formations(formations)
+        fsets.append(fs)
+    for fset in fsets:
+        print fset
+        print

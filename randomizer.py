@@ -1881,6 +1881,12 @@ if __name__ == "__main__":
         if VERBOSE:
             print "SECRET CODE: AIRSHIP MODE ACTIVATED"
 
+    if 'cutscenes' in flags:
+        manage_skips()
+        flags = flags.replace('cutscenes', '')
+        if VERBOSE:
+            print "SECRET CODE: CUTSCENE SKIPS ACTIVATED"
+
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -1892,9 +1898,6 @@ if __name__ == "__main__":
 
     if 'z' in flags:
         manage_sprint()
-
-    if 's' in flags:
-        manage_skips()
 
     if 'b' in flags:
         manage_balance()

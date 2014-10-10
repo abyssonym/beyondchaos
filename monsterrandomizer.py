@@ -208,7 +208,7 @@ class MonsterBlock:
             all_spells = sorted([SpellBlock(i, filename) for i in xrange(0xFF)],
                                 key=lambda s: s.rank())
         valid_spells = filter(lambda sb: sb.spellid not in unrageable and
-                              not sb.abort_on_allies, all_spells)
+                              not sb.abort_on_allies and sb.valid, all_spells)
 
         f.close()
 
@@ -837,6 +837,7 @@ class MonsterBlock:
         if not self.is_boss:
             candidates = [s.spellid for s in valid_spells if
                           s.spellid in candidates]
+            print [s.name for s in all_spells if s.spellid in candidates]
             self.rages = sorted(random.sample(candidates, 2))
 
         while len(self.controls) < 4:

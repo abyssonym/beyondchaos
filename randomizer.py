@@ -3,8 +3,10 @@ from sys import argv
 from shutil import copyfile
 from hashlib import md5
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
-                   CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE, read_multi,
-                   write_multi, texttable, generate_swapfunc, shift_middle,
+                   CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE,
+                   LOCATION_PALETTE_TABLE, read_multi, write_multi, texttable,
+                   generate_swapfunc, shift_middle, get_palette_transformer,
+                   battlebg_palettes,
                    mutate_index, utilrandom as random)
 from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
@@ -1700,6 +1702,100 @@ def manage_shops():
         s.write_data(outfile)
 
 
+def colorize_dungeons(locations, freespaces=None):
+    from itertools import product
+    if freespaces is None:
+        freespaces = [FreeBlock(0x271530, 0x271650)]
+
+    done = []
+    for line in open(LOCATION_PALETTE_TABLE):
+        line = line.strip()
+        if line[0] == '#':
+            continue
+        line = line.split(':')
+        if len(line) == 2:
+            names, palettes = tuple(line)
+            names = names.split(',')
+            palettes = palettes.split(',')
+            backgrounds = []
+        elif len(line) == 3:
+            names, palettes, backgrounds = tuple(line)
+            names = names.split(',')
+            palettes = palettes.split(',')
+            backgrounds = backgrounds.split(',')
+        elif len(line) == 1:
+            names, palettes = [], []
+            backgrounds = line[0].split(',')
+        else:
+            raise Exception("Bad formatting for location palette data.")
+
+        palettes = [int(s, 0x10) for s in palettes]
+        create_new_bgs = []
+        for i, b in enumerate(backgrounds):
+            if b.endswith('!'):
+                b = b.strip('!')
+                create_new_bgs.append(b)
+                backgrounds[i] = b
+        backgrounds = [int(s, 0x10) for s in backgrounds]
+        candidates = set([])
+        for name, palette in product(names, palettes):
+            if name.endswith('*'):
+                name = name.strip('*')
+                break
+            candidates |= set([l for l in locations if l.name == name and
+                               l.field_palette == palette and l.attacks])
+
+        if not candidates:
+            continue
+
+        transformer = get_palette_transformer()
+        f = open(outfile, 'r+b')
+        battlebgs = set([l.battlebg for l in candidates if l.attacks])
+        battlebgs |= set(backgrounds)
+        '''
+        print names,
+        print ["%x" % bg for bg in sorted(battlebgs)]
+        '''
+        for bg in sorted(battlebgs):
+            if bg in create_new_bgs:
+                continue
+            if bg in done:
+                raise Exception("Already recolored palette %x" % bg)
+            pointer = 0x270150 + (battlebg_palettes[bg] * 0x60)
+            f.seek(pointer)
+            raw_palette = [read_multi(f, length=2) for i in xrange(0x30)]
+            new_palette = transformer(raw_palette)
+            f.seek(pointer)
+            [write_multi(f, c, length=2) for c in new_palette]
+            done.append(bg)
+
+        for p in palettes:
+            if p in done:
+                raise Exception("Already recolored palette %x" % p)
+            f.seek(p)
+            raw_palette = [read_multi(f, length=2) for i in xrange(0x80)]
+            new_palette = transformer(raw_palette)
+            f.seek(p)
+            [write_multi(f, c, length=2) for c in new_palette]
+            done.append(p)
+
+        for old in create_new_bgs:
+            break
+            myfs = freespaces.pop()
+            pointer = myfs.start
+            new = (pointer - 0x270150) / 0x20
+            assert new <= 0x7F
+            assert 0x270150 + (0x20 * new) == pointer  # test even division
+            fss = myfs.unfree(pointer, 0x20)
+            freespaces.extend(fss)
+            for c in candidates:
+                if c.battlebg == old:
+                    c.battlebg = new
+                    c.write_data(outfile)
+
+        f.close()
+
+
 def manage_locations():
     locdict = {}
     for line in open(LOCATION_TABLE):
@@ -1712,15 +1808,17 @@ def manage_locations():
             locdict[encounter] = name
 
     encrates = {}
+    change_dungeons = ["floating continent", "veldt cave", "ancient castle",
+                       "mt zozo", "yeti's cave", "gogo's domain",
+                       "phoenix cave", "cyan's dream", "ebot's rock",
+                       "kefka's tower"]
+
     for name in locdict:
         if name == "fanatics tower":
             encrates[name] = random.randint(2, 3)
-        elif name in ["floating continent", "veldt cave", "ancient castle",
-                      "mt zozo", "yeti's cave", "gogo's domain",
-                      "phoenix cave", "cyan's dream", "ebot's rock",
-                      "kefka's tower"]:
-            if random.randint(1, 3) == 3:
-                encrates[name] = random.randint(1, 3)
+            for n in change_dungeons:
+                if n in name and random.randint(1, 3) == 3:
+                    encrates[name] = random.randint(1, 3)
 
     locations = [Location(i) for i in range(415)]
     paldict = {}
@@ -1734,18 +1832,13 @@ def manage_locations():
                 l.name = locdict[l.formation]
         if l.field_palette not in paldict:
             paldict[l.field_palette] = set([])
-        if l.formation > 0 and l.battlebg > 0:
+        if l.attacks:
             formation = [f for f in fsets if f.setid == l.formation][0]
             if set(formation.formids) != set([0]):
                 paldict[l.field_palette].add(l)
         l.write_data(outfile)
 
-    '''
-    for key, value in paldict.items():
-        print "%x" % key, sorted(set([l.name for l in value])),
-        print map(lambda x: "%x" % x, sorted(set([l.battlebg for l in value]))),
-        print map(lambda x: "%x" % x, sorted(set([l.formation for l in value])))
-    '''
+    colorize_dungeons(locations)
 
     zones = [Zone(i) for i in range(0x100)]
     for z in zones:

@@ -1,4 +1,5 @@
-from utils import read_multi, write_multi, utilrandom as random
+from utils import (read_multi, write_multi, battlebg_palettes,
+                   utilrandom as random)
 
 
 #256 zones
@@ -56,7 +57,12 @@ class Location():
 
     @property
     def battle_palette(self):
-        return 0x270150 + (0x20 * self.battlebg)
+        index = battlebg_palettes[self.battlebg]
+        return 0x270150 + (index * 0x60)
+
+        if self.palette_index == 0x2a:
+            # starts at 0x270150
+            return 0x270510  # to 0x270570
 
     @property
     def field_palette(self):
@@ -107,4 +113,4 @@ if __name__ == "__main__":
         print "%x" % i,
         l = Location(i)
         l.read_data("program.rom")
-        print "%x %x" % (l.battlebg, l.field_palette)
+        print "%x %x %x" % (l.pointer, l.battlebg, l.field_palette)

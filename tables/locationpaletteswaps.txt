@@ -1,0 +1,14 @@
+magitek facility,kefka's tower indoors:2ddc80,2de180,2de380
+kefka's tower:2de680
+phoenix cave,sealed gate:2de480
+fanatics tower:2dee80
+zozo:2dd480
+fanatics tower indoors:2dd880
+zozo indoors*:2dd880,2dce80
+floating continent:2dd780
+daryl's tomb:2dec80
+phantom forest,phantom train outdoors:2de080,2dd280:21,3!
+phantom train:2dd380
+cyan's dream:2ddf80
+33,34,35,36
+1c

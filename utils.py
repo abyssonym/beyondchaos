@@ -14,6 +14,8 @@ ENEMY_NAMES_TABLE = path.join("tables", "enemynames.txt")
 MODIFIERS_TABLE = path.join("tables", "moves.txt")
 MOVES_TABLE = path.join("tables", "moves.txt")
 LOCATION_TABLE = path.join("tables", "locationformations.txt")
+LOCATION_PALETTE_TABLE = path.join("tables", "locationpaletteswaps.txt")
+BATTLE_BG_PALETTE_TABLE = path.join("tables", "battlebgpalettes.txt")
 
 
 texttable = {}
@@ -28,6 +30,16 @@ f.close()
 
 def hex2int(hexstr):
     return int(hexstr, 16)
+
+
+battlebg_palettes = {}
+f = open(BATTLE_BG_PALETTE_TABLE)
+for line in f:
+    line = line.strip()
+    bg, palette = tuple(line.split())
+    bg, palette = hex2int(bg), hex2int(palette)
+    battlebg_palettes[bg] = palette
+f.close()
 
 
 def int2bytes(value, length=2, reverse=True):
@@ -75,6 +87,8 @@ def write_multi(f, value, length=2, reverse=True):
 
 
 utilrandom = random.Random()
+utran = utilrandom
+random = utilrandom
 
 
 def mutate_index(index, length, continuation=None,
@@ -87,10 +101,10 @@ def mutate_index(index, length, continuation=None,
     basic_range = basic_range or (-3, 3)
     extended_range = extended_range or (-1, 1)
 
-    index += utilrandom.randint(*basic_range)
+    index += utran.randint(*basic_range)
     index = max(0, min(index, highest))
-    while utilrandom.choice(continuation):
-        index += utilrandom.randint(*extended_range)
+    while utran.choice(continuation):
+        index += utran.randint(*extended_range)
         index = max(0, min(index, highest))
 
     return index
@@ -98,7 +112,7 @@ def mutate_index(index, length, continuation=None,
 
 def generate_swapfunc(swapcode=None):
     if swapcode is None:
-        swapcode = utilrandom.randint(0, 7)
+        swapcode = utran.randint(0, 7)
 
     f = lambda w: w
     g = lambda w: w
@@ -120,7 +134,7 @@ def shift_middle(triple, degree, ungray=False):
     mediumdex = triple.index(medium)
     if ungray:
         lowdex, highdex = triple.index(low), triple.index(high)
-        while utilrandom.choice([True, False]):
+        while utran.choice([True, False]):
             low -= 1
             high += 1
 
@@ -144,19 +158,61 @@ def shift_middle(triple, degree, ungray=False):
 
 
 def get_palette_transformer():
-    swapfuncs = [generate_swapfunc(swapcode=None) for _ in range(8)]
-    degree = utilrandom.randint(-75, 75)
+    degree = utran.randint(-75, 75)
+    lumas = 32
+    swapfuncs, flag = [], 6
+    thirds = random.choice([True, False])
+    while True:
+        indexes = [0, 31]
+        if not thirds:
+            half = lumas / 2
+            midpoint = utran.randint(0, half) + utran.randint(0, half)
+            indexes.append(midpoint)
+        else:
+            third = lumas / 3
+            thirdpoint = utran.randint(0, third) + utran.randint(0, third)
+            indexes.append(thirdpoint)
+            thirdpoint = thirdpoint + utran.randint(0, third) + utran.randint(0, third)
+            indexes.append(thirdpoint)
+        indexes = sorted(indexes)
+        for (a, b) in zip(indexes, indexes[1:]):
+            if b - a < 6 or b > 31:
+                break
+        else:
+            break
 
-    def palette_transformer(color):
-        red, green, blue = color
+    swapfuncs = []
+    for i in xrange(32):
+        if i in indexes:
+            swapfunc = generate_swapfunc(swapcode=None)
+        swapfuncs.append(swapfunc)
+    assert len(swapfuncs) == 32
+
+    def color_transformer(red, green, blue, randomize=True):
         a = red >= green
         b = red >= blue
         c = green >= blue
         index = (a << 2) | (b << 1) | c
+        luma = (red + green + blue) / 3
+        index = luma
         swapfunc = swapfuncs[index]
         red, green, blue = swapfunc((red, green, blue))
         red, green, blue = shift_middle((red, green, blue), degree)
         return (red, green, blue)
+
+    def palette_transformer(raw_palette):
+        transformed = []
+        for color in raw_palette:
+            blue = (color & 0x7c00) >> 10
+            green = (color & 0x03e0) >> 5
+            red = color & 0x001f
+            red, green, blue = color_transformer(red, green, blue)
+            assert min(red, green, blue) >= 0x00
+            assert max(red, green, blue) <= 0x1F
+            color = 0 | red | (green << 5) | (blue << 10)
+            assert color <= 0x7FFF
+            transformed.append(color)
+        return transformed
 
     return palette_transformer
 
@@ -171,11 +227,11 @@ def mutate_palette_dict(palette_dict):
 
     pastswap = []
     for key in colorsets:
-        degree = utilrandom.randint(-75, 75)
+        degree = utran.randint(-75, 75)
 
         while True:
-            swapcode = utilrandom.randint(0, 7)
-            if swapcode not in pastswap or utilrandom.randint(1, 10) == 10:
+            swapcode = utran.randint(0, 7)
+            if swapcode not in pastswap or utran.randint(1, 10) == 10:
                 break
 
         pastswap.append(swapcode)

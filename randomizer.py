@@ -1746,7 +1746,7 @@ def colorize_dungeons(locations, freespaces=None):
                                l.field_palette == palette and l.attacks])
 
         if not candidates:
-            continue
+            palettes, battlebgs = [], []
 
         transformer = get_palette_transformer()
         f = open(outfile, 'r+b')

@@ -1,6 +1,6 @@
-00,1,Fire,ban
-01,1,Ice,ban
-02,1,Bolt,ban
+00,5,Fire,ban
+01,5,Ice,ban
+02,5,Bolt,ban
 12,100,X-Zone,noban
 1F,20,Haste,noban
 24,20,Rflect,noban
@@ -9,10 +9,10 @@
 28,35,Slow 2,noban
 2A,10,Warp,noban
 2B,200,Quick,noban
-2D,1,Cure,ban
+2D,3,Cure,ban
 30,25,Life,noban
 31,100,Life 2,noban
-32,1,Antdot,noban
+32,2,Antdot,noban
 33,20,Remedy,noban
 35,100,Life 3,noban
 3F,300,Palador,noban
@@ -20,9 +20,9 @@
 42,200,Raiden,noban
 46,100,Ragnarok,noban
 5C,150,Cleave,noban
-8C,1,Roulette,noban
+8C,10,Roulette,noban
 9A,100,ForceField,noban
-9D,1,Pep Up,noban
+9D,1,Pep Up,ban
 A4,1,Clear,ban
 A6,1,ChokeSmoke,ban
 AF,100,Delta Hit,noban
@@ -33,7 +33,7 @@ C3,1,50 Gs,ban
 C5,500,N. Cross,ban
 C7,50,Love Token,noban
 C8,1,Seize,ban
-C9,1,R.Polarity,noban
+C9,40,R.Polarity,noban
 CA,1,Targetting,ban
 CB,1,Sneeze,ban
 CE,500,Charm,ban
@@ -45,8 +45,8 @@ DB,1,Discard,ban
 DC,50,Overcast,noban
 E5,100,Soul Out,noban
 EA,5000,BabaBreath,ban
-EE,1,Battle,ban
-EF,2,Special,ban
+EE,3,Battle,ban
+EF,5,Special,ban
 F7,100,Sabre Soul,noban
 F8,100,Star Prism,noban
 FC,150,Takedown,noban

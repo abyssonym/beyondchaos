@@ -28,26 +28,27 @@ A6,1,ChokeSmoke,ban
 AF,100,Delta Hit,noban
 C0,500,Fallen One,ban
 C1,100,WallChange,noban
-C2,500,Escape,ban
+C2,1,Escape,ban
 C3,1,50 Gs,ban
 C5,500,N. Cross,ban
 C7,50,Love Token,noban
 C8,1,Seize,ban
 C9,1,R.Polarity,noban
 CA,1,Targetting,ban
-CB,500,Sneeze,ban
+CB,1,Sneeze,ban
 CE,500,Charm,ban
 CF,500,Cold Dust,ban
-D5,500,Engulf,ban
+D5,5000,Engulf,ban
 D8,1,Bomblet,ban
 DA,1,Zinger,ban
 DB,1,Discard,ban
-DC,100,Overcast,noban
+DC,50,Overcast,noban
 E5,100,Soul Out,noban
-EA,500,BabaBreath,ban
+EA,5000,BabaBreath,ban
 EE,1,Battle,ban
 EF,2,Special,ban
 F7,100,Sabre Soul,noban
 F8,100,Star Prism,noban
 FC,150,Takedown,noban
 FD,150,Wild Fang,noban
+FE,1,Lagomorph,ban

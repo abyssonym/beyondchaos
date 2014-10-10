@@ -268,14 +268,16 @@ class MonsterBlock:
                     candidates = [s for s in all_spells if similar(s, skill)]
                     candidates = [s for s in candidates if not
                                   (s.is_blitz or s.is_swdtech or s.is_esper)]
-                    try:
-                        index = candidates.index(skill)
-                    except ValueError:
-                        continue
+                    if skill not in candidates:
+                        candidates.add(skill)
+                    candidates = sorted(candidates, key=lambda s: s.rank())
+
+                    index = candidates.index(skill)
                     index = mutate_index(index, len(candidates), [False, True],
                                          (-2, 3), (-2, 2))
                     skill = candidates[index]
                     skillset.add(skill.spellid)
+
         sortedskills = sorted([s for s in all_spells if s.spellid in skillset],
                               key=lambda s: s.rank())
 
@@ -335,6 +337,24 @@ class MonsterBlock:
                             if value >= 3:
                                 value += random.randint(-2, 1)
                             action[3] = value
+                elif action[0] == 0xF6:
+                    if action[1] == 0x00:
+                        candidates = [i for i in items if i.itemtype & 0x20 and not i.features['targeting'] & 0x40]
+                        candidates = sorted(candidates, key=lambda c: c.rank())
+                    else:
+                        candidates = [i for i in items if i.itemtype & 0x10 and i.is_weapon]
+                        candidates = sorted(candidates, key=lambda c: c.features['power'])
+
+                    first, second = action[2], action[3]
+                    first = [i for i in candidates if i.itemid == first][0]
+                    second = [i for i in candidates if i.itemid == second][0]
+                    for i, a in enumerate([first, second]):
+                        index = candidates.index(a)
+                        index = mutate_index(index, len(candidates),
+                                             [False, True, True],
+                                             (-1, 4), (-1, 4))
+                        action[i+2] = candidates[index].itemid
+
                 elif action[0] in [0xFD, 0xFE, 0xFF]:
                     targeting = None
                 elif targeting:
@@ -837,7 +857,7 @@ class MonsterBlock:
         if not self.is_boss:
             candidates = [s.spellid for s in valid_spells if
                           s.spellid in candidates]
-            print [s.name for s in all_spells if s.spellid in candidates]
+            candidates = sorted(set(candidates) | set([0xEE, 0xEF]))
             self.rages = sorted(random.sample(candidates, 2))
 
         while len(self.controls) < 4:

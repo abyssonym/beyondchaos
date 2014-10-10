@@ -1752,10 +1752,6 @@ def colorize_dungeons(locations, freespaces=None):
         f = open(outfile, 'r+b')
         battlebgs = set([l.battlebg for l in candidates if l.attacks])
         battlebgs |= set(backgrounds)
-        '''
-        print names,
-        print ["%x" % bg for bg in sorted(battlebgs)]
-        '''
         for bg in sorted(battlebgs):
             if bg in create_new_bgs:
                 continue

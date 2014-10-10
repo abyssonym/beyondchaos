@@ -33,7 +33,7 @@ C3,1,50 Gs,ban
 C5,500,N. Cross,ban
 C7,50,Love Token,noban
 C8,1,Seize,ban
-C9,1,R.Polarity,ban
+C9,1,R.Polarity,noban
 CA,1,Targetting,ban
 CB,500,Sneeze,ban
 CE,500,Charm,ban
@@ -42,7 +42,7 @@ D5,500,Engulf,ban
 D8,1,Bomblet,ban
 DA,1,Zinger,ban
 DB,1,Discard,ban
-DC,1,Overcast,ban
+DC,100,Overcast,noban
 E5,100,Soul Out,noban
 EA,500,BabaBreath,ban
 EE,1,Battle,ban

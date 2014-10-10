@@ -1792,7 +1792,7 @@ def colorize_dungeons(locations, freespaces=None):
         f.close()
 
 
-def manage_locations():
+def manage_locations(colorize=True):
     locdict = {}
     for line in open(LOCATION_TABLE):
         line = line.strip().split(',')
@@ -1834,7 +1834,8 @@ def manage_locations():
                 paldict[l.field_palette].add(l)
         l.write_data(outfile)
 
-    colorize_dungeons(locations)
+    if colorize:
+        colorize_dungeons(locations)
 
     zones = [Zone(i) for i in range(0x100)]
     for z in zones:
@@ -2067,7 +2068,8 @@ if __name__ == "__main__":
         manage_formations(formations, fsets)
         manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
 
-    manage_locations()
+    if 'f' in flags:
+        manage_locations(colorize='c' in flags)
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

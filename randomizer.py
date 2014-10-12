@@ -1279,7 +1279,8 @@ def recolor_character_palette(pointer, palette=None, flesh=False):
     return palette
 
 
-def manage_character_appearance(wild=True, preserve_graphics=False):
+def manage_character_appearance(wild=True, preserve_graphics=False,
+                                tina_mode=False):
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -1302,12 +1303,14 @@ def manage_character_appearance(wild=True, preserve_graphics=False):
     for npc in npcs:
         npc.read_data(sourcefile)
 
-    if wild:
+    if wild or tina_mode:
         char_ids = range(0, 0x16)
     else:
         char_ids = range(0, 0x0E)
 
-    if preserve_graphics:
+    if tina_mode:
+        change_to = dict(zip(char_ids, [0x12] * 100))
+    elif preserve_graphics:
         change_to = dict(zip(char_ids, char_ids))
     elif wild:
         change_to = list(char_ids)
@@ -1341,6 +1344,11 @@ def manage_character_appearance(wild=True, preserve_graphics=False):
         f.seek(spointers[c])
         sprite = f.read(ssizes[c])
         sprites[c] = sprite
+
+    if tina_mode:
+        char_portraits[0x12] = char_portraits[0]
+        char_portrait_palettes[0x12] = char_portrait_palettes[0]
+
     for c in char_ids:
         new = change_to[c]
         portrait = char_portraits[new]
@@ -2063,13 +2071,19 @@ if __name__ == "__main__":
         if VERBOSE:
             print "SECRET CODE: CUTSCENE SKIPS ACTIVATED"
 
+    CRAZY_MODE = False
     if 'partyparty' in flags:
         CRAZY_MODE = True
         flags = flags.replace('partyparty', '')
         if VERBOSE:
             print "SECRET CODE: CRAZY PARTY MODE ACTIVATED"
-    else:
-        CRAZY_MODE = False
+
+    TINA_MODE = False
+    if 'tinaparty' in flags:
+        TINA_MODE = True
+        flags = flags.replace('tinaparty', '')
+        if VERBOSE:
+            print "SECRET CODE: TINA PARTY MODE ACTIVATED"
 
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
@@ -2096,10 +2110,10 @@ if __name__ == "__main__":
     if 'c' in flags:
         mgs = manage_monster_appearance(monsters)
 
-    if 'c' in flags or 's' in flags or CRAZY_MODE:
+    if 'c' in flags or 's' in flags or CRAZY_MODE or TINA_MODE:
         preserve_graphics = 's' not in flags and not CRAZY_MODE
         manage_character_appearance(preserve_graphics=preserve_graphics,
-                                    wild=CRAZY_MODE)
+                                    wild=CRAZY_MODE, tina_mode=TINA_MODE)
 
     items = get_ranked_items(sourcefile)
     if 'i' in flags:

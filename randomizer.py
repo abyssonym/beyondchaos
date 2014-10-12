@@ -799,6 +799,42 @@ def manage_commands_new(commands, characters):
     return commands, characters, freespaces
 
 
+def manage_suplex(commands, characters, monsters):
+    freespaces = []
+    freespaces.append(FreeBlock(0x2A65A, 0x2A800))
+    freespaces.append(FreeBlock(0x2FAAC, 0x2FC6D))
+    c = [d for d in commands.values() if d.id == 5][0]
+    myfs = freespaces.pop()
+    s = SpellSub(spellid=0x5F)
+    sb = SpellBlock(0x5F, sourcefile)
+    s.set_location(myfs.start)
+    s.write(outfile)
+    c.targeting = sb.targeting
+    c.setpointer(s.location, outfile)
+    c.newname(sb.name, outfile)
+    c.unsetmenu(outfile)
+    fss = myfs.unfree(s.location, s.size)
+    freespaces.extend(fss)
+    for c in characters:
+        c.set_battle_command(0, command_id=0)
+        c.set_battle_command(1, command_id=5)
+        c.set_battle_command(2, command_id=0xA)
+        c.set_battle_command(3, command_id=1)
+        c.write_battle_commands(outfile)
+
+    for m in monsters:
+        m.misc2 &= 0xFB
+        m.write_stats(outfile)
+
+    learn_blitz_sub = Substitution()
+    learn_blitz_sub.bytestring = [0xEA] * 2
+    learn_blitz_sub.set_location(0x261E5)
+    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.bytestring = [0xEA] * 4
+    learn_blitz_sub.set_location(0xA18E)
+    learn_blitz_sub.write(outfile)
+
+
 def manage_natural_magic(characters):
     candidates = [c for c in characters if 0x02 in c.battle_commands or
                   0x17 in c.battle_commands]
@@ -1280,7 +1316,7 @@ def recolor_character_palette(pointer, palette=None, flesh=False):
 
 
 def manage_character_appearance(wild=True, preserve_graphics=False,
-                                tina_mode=False):
+                                tina_mode=False, sabin_mode=False):
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -1303,13 +1339,15 @@ def manage_character_appearance(wild=True, preserve_graphics=False,
     for npc in npcs:
         npc.read_data(sourcefile)
 
-    if wild or tina_mode:
+    if wild or tina_mode or sabin_mode:
         char_ids = range(0, 0x16)
     else:
         char_ids = range(0, 0x0E)
 
     if tina_mode:
         change_to = dict(zip(char_ids, [0x12] * 100))
+    elif sabin_mode:
+        change_to = dict(zip(char_ids, [0x05] * 100))
     elif preserve_graphics:
         change_to = dict(zip(char_ids, char_ids))
     elif wild:
@@ -1380,6 +1418,9 @@ def manage_character_appearance(wild=True, preserve_graphics=False,
             else:
                 while True:
                     new_palette = random.choice(charpal_options[new_graphics])
+                    if sabin_mode or tina_mode:
+                        new_palette = random.randint(0, 5)
+
                     if (new_palette == 5 and new_graphics not in
                             [3, 0xA, 0xC, 0xD, 0xE, 0xF, 0x12, 0x14] and
                             random.randint(1, 10) != 10):
@@ -2085,13 +2126,20 @@ if __name__ == "__main__":
         if VERBOSE:
             print "SECRET CODE: TINA PARTY MODE ACTIVATED"
 
+    SUPLEX_MODE = False
+    if 'suplexwrecks' in flags:
+        SUPLEX_MODE = True
+        flags = flags.replace('suplexwrecks', '')
+        if VERBOSE:
+            print "SECRET CODE: SUPLEX MODE ACTIVATED"
+
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
 
-    if 'o' in flags:
+    if 'o' in flags and not SUPLEX_MODE:
         manage_commands(commands, characters)
 
-    if 'w' in flags:
+    if 'w' in flags and not SUPLEX_MODE:
         _, _, freespaces = manage_commands_new(commands, characters)
 
     if 'z' in flags:
@@ -2110,10 +2158,11 @@ if __name__ == "__main__":
     if 'c' in flags:
         mgs = manage_monster_appearance(monsters)
 
-    if 'c' in flags or 's' in flags or CRAZY_MODE or TINA_MODE:
+    if 'c' in flags or 's' in flags or CRAZY_MODE or TINA_MODE or SUPLEX_MODE:
         preserve_graphics = 's' not in flags and not CRAZY_MODE
         manage_character_appearance(preserve_graphics=preserve_graphics,
-                                    wild=CRAZY_MODE, tina_mode=TINA_MODE)
+                                    wild=CRAZY_MODE, tina_mode=TINA_MODE,
+                                    sabin_mode=SUPLEX_MODE)
 
     items = get_ranked_items(sourcefile)
     if 'i' in flags:
@@ -2137,7 +2186,7 @@ if __name__ == "__main__":
         umaro_risk = manage_umaro(characters)
         reset_rage_blizzard(items, umaro_risk, outfile)
 
-    if 'o' in flags:
+    if 'o' in flags and not SUPLEX_MODE:
         # do this after swapping beserk
         manage_tempchar_commands(characters)
 
@@ -2152,7 +2201,7 @@ if __name__ == "__main__":
         for c in characters:
             c.mutate_stats(outfile)
 
-    if 'o' in flags:
+    if 'o' in flags and not SUPLEX_MODE:
         # do this after swapping beserk
         natmag_candidates = manage_natural_magic(characters)
     else:
@@ -2182,6 +2231,9 @@ if __name__ == "__main__":
 
     if 'f' in flags:
         manage_locations(colorize='c' in flags)
+
+    if SUPLEX_MODE:
+        manage_suplex(commands, characters, monsters)
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

@@ -1137,7 +1137,16 @@ def activate_airship_mode(freespace=0xCFE2A):
     # a/f5a8
 
 
-def manage_balance():
+def manage_rng():
+    f = open(outfile, 'r+b')
+    f.seek(0xFD00)
+    numbers = range(0x100)
+    random.shuffle(numbers)
+    f.write("".join(map(chr, numbers)))
+    f.close()
+
+
+def manage_balance(newslots=True):
     vanish_doom_sub = Substitution()
     vanish_doom_sub.bytestring = [
         0xAD, 0xA2, 0x11, 0x89, 0x02, 0xF0, 0x07, 0xB9, 0xA1, 0x3A, 0x89, 0x04,
@@ -1159,12 +1168,13 @@ def manage_balance():
     evade_mblock_sub.set_location(0x2232C)
     evade_mblock_sub.write(outfile)
 
-    randomize_slots(outfile, 0x24E4A)
+    manage_rng()
+    if newslots:
+        randomize_slots(outfile, 0x24E4A)
 
 
 def manage_magitek(spells):
     exploder = [s for s in spells if s.spellid == 0xA2][0]
-    battle = [s for s in spells if s.spellid == 0xEF][0]
     tek_skills = [s for s in spells if s.spellid in TEK_SKILLS]
     targets = sorted(set([s.targeting for s in spells]))
     terra_used, others_used = [], []
@@ -1299,7 +1309,7 @@ def recolor_character_palette(pointer, palette=None, flesh=False):
         if not flesh:
             for piece in (outline, eyes, hair, skintone, outfit1, outfit2, NPC):
                 transformer = get_palette_transformer(
-                    changing=False, always=False, middle=True)
+                    changing=False, always=False, middle=False)
                 piece = list(piece)
                 piece = transformer(piece)
                 new_palette += piece
@@ -2150,7 +2160,7 @@ if __name__ == "__main__":
         manage_sprint()
 
     if 'b' in flags:
-        manage_balance()
+        manage_balance(newslots='w' in flags)
 
     if 'm' in flags:
         monsters = manage_monsters()

@@ -1,4 +1,4 @@
-from utils import (hex2int, int2bytes, SPELL_TABLE,
+from utils import (hex2int, int2bytes, Substitution, SPELL_TABLE,
                    SPELLBANS_TABLE, texttable, utilrandom as random)
 
 spellnames = {}
@@ -48,8 +48,8 @@ class SpellBlock:
         self.target_one = targeting & 0x01
 
         f.seek(self.pointer+1)
-        elements = ord(f.read(1))
-        self.elemental = elements > 0
+        self.elements = ord(f.read(1))
+        self.elemental = self.elements > 0
 
         f.seek(self.pointer+2)
         effect1 = ord(f.read(1))
@@ -240,7 +240,18 @@ class CommandBlock:
         f = open(filename, 'r+b')
         f.seek(0x24E46 + offset)
         old = ord(f.read(1))
-        byte = old & ~byte
+        byte = old & (0xFF ^ byte)
+        f.seek(0x24E46 + offset)
+        f.write(chr(byte))
+
+    def set_retarget(self, filename):
+        bit = self.id % 8
+        byte = 1 << bit
+        offset = self.id / 8
+        f = open(filename, 'r+b')
+        f.seek(0x24E46 + offset)
+        old = ord(f.read(1))
+        byte = old | byte
         f.seek(0x24E46 + offset)
         f.write(chr(byte))
 
@@ -283,3 +294,115 @@ def get_ranked_spells(filename, magic_only=False):
         spells = [SpellBlock(i, filename) for i in xrange(0xFF)]
     spells = sorted(spells, key=lambda i: i.rank())
     return spells
+
+
+class SpellSub(Substitution):
+    def __init__(self, spellid):
+        self.spellid = spellid
+        self.bytestring = [0xA9, self.spellid, 0x85, 0xB6, 0xA9,
+                           0x02, 0x85, 0xB5, 0x4C, 0x5F, 0x17]
+
+
+def get_spellsets(spells=None):
+    all_spells = spells
+    spellsets = {}
+    spellsets['Wild'] = sorted(all_spells)
+    spellsets['Magic'] = range(0, 0x36)
+    spellsets['Black'] = range(0, 0x18)
+    spellsets['White'] = range(0x2D, 0x36)
+    spellsets['Gray'] = range(0x18, 0x2D)
+    spellsets['Esper'] = range(0x36, 0x51)
+    spellsets['Sword'] = range(0x55, 0x5D)
+    spellsets['Blitz'] = range(0x5D, 0x65)
+    spellsets['Geo'] = range(0x65, 0x75)
+    spellsets['Beast'] = range(0x75, 0x7D)
+    spellsets['Lore'] = range(0x8B, 0xA3)
+    spellsets['Rare'] = range(0x7D, 0x83) + range(0xA3, 0xEE)
+    elementals = [s for s in all_spells if bin(s.elements).count('1') == 1]
+    spellsets['Elem'] = elementals
+    spellsets['Fire'] = [s for s in elementals if s.elements & 1]
+    spellsets['Ice'] = [s for s in elementals if s.elements & 2]
+    spellsets['Bolt'] = [s for s in elementals if s.elements & 4]
+    spellsets['Bio'] = [s for s in elementals if s.elements & 8]
+    spellsets['Wind'] = [s for s in elementals if s.elements & 0x10]
+    spellsets['Pearl'] = [s for s in elementals if s.elements & 0x20]
+    spellsets['Earth'] = [s for s in elementals if s.elements & 0x40]
+    spellsets['Water'] = [s for s in elementals if s.elements & 0x80]
+    spellsets['Power'] = [s for s in all_spells if s.power and not any(
+        [s.elements, s.percentage, s.physical, s.healing])]
+    spellsets['Heal'] = [s for s in all_spells if s.healing]
+    spellsets['Phys'] = [s for s in all_spells if s.physical]
+    spellsets['Curse'] = [s for s in all_spells if all(
+        [s.target_enemy_default, not s.miss_if_death_prot, not s.power])]
+    spellsets['Bless'] = [s for s in all_spells if not any(
+        [s.target_enemy_default, s.power, s.spellid == 0xA4])]
+    spellsets['Drain'] = [s for s in all_spells if s.draining]
+    spellsets['Mana'] = [s for s in all_spells if s.concernsmp]
+    spellsets['Death'] = [s for s in all_spells if s.miss_if_death_prot]
+    spellsets['Multi'] = [s for s in all_spells if
+                          bin(s.elements).count('1') > 1]
+    spellsets['All'] = [s for s in all_spells if s.target_everyone and
+                        not s.target_one_side_only]
+    spellsets['Party'] = [s for s in all_spells if s.target_group_default and
+                          not s.target_enemy_default]
+    spellsets['Group'] = [s for s in all_spells if s.target_group_default and
+                          s.target_enemy_default]
+    spellsets['Tek'] = ([0x18, 0x6E, 0x70, 0x7D, 0x7E] + range(0x86, 0x8B) +
+                        [0xA7, 0xB1] + range(0xB4, 0xBA) + [0x91, 0x9A] +
+                        [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3])
+    spellsets['Time'] = [0x10, 0x11, 0x12, 0x13, 0x19, 0x1B, 0x1F, 0x20, 0x22,
+                         0x26, 0x27, 0x28, 0x2A, 0x2B, 0x34, 0x89, 0x9B, 0xC9,
+                         0xDF]
+
+    for key, value in spellsets.items():
+        if type(value[0]) is int:
+            spellsets[key] = [s for s in all_spells if s.spellid in value]
+        spellsets[key] = sorted(spellsets[key])
+
+    return spellsets
+
+
+class RandomSpellSub(Substitution):
+    def generate_bytestring(self):
+        self.bytestring = [0x20, 0x5A, 0x4B,        # get random number
+                           0x29, 0x7,               # AND 7
+                           0xAA,                    # TAX
+                           0xBF, None, None, None,  # load byte from $123456 + X
+                           0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
+                           #0x20, 0xC1, 0x19,  # JSR $19C1
+                           #0x20, 0x51, 0x29,  # JSR $2951
+                           0x64, 0xB8, 0x64, 0xB9,  # clear targets
+                           0x4C, 0x5F, 0x17,
+                           ]
+
+    def write(self, filename):
+        pointer = self.location + len(self.bytestring)
+        a, b, c = pointer >> 16, (pointer >> 8) & 0xFF, pointer & 0xFF
+        self.bytestring[7:10] = [c, b, a]
+        if None in self.bytestring:
+            raise Exception("Bad pointer calculation.")
+        self.bytestring += [s.spellid for s in self.spells]
+        super(RandomSpellSub, self).write(filename)
+
+    def set_spells(self, valid_spells, spellsets=None, spellclass=None):
+        spellsets = spellsets or get_spellsets(spells=valid_spells)
+        spellclass = spellclass or random.choice(spellsets.keys())
+        spellset = spellsets[spellclass]
+        spellset = [s for s in spellset if s in valid_spells]
+        if len(spellset) < 3:
+            raise ValueError("Spellset %s not big enough." % spellclass)
+
+        if len(spellset) <= 8:
+            spells = sorted(spellset)
+            assert len(set(spells)) == len(spellset)
+            while len(spells) < 8:
+                spells.append(random.choice(spellset))
+        else:
+            spells = random.sample(sorted(spellset), 8)
+            assert len(set(spells)) == 8
+
+        self.spells = sorted(spells)
+        self.name = spellclass
+        print self.name, [s.name for s in self.spells]
+        assert len(self.spells) == 8
+        return self.spells

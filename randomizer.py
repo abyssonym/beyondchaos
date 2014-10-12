@@ -2,15 +2,16 @@ from time import time
 from sys import argv
 from shutil import copyfile
 from hashlib import md5
-from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
+from utils import (ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
-                   EVENT_PALETTE_TABLE,
-                   read_multi, write_multi, texttable,
+                   EVENT_PALETTE_TABLE, Substitution,
+                   hex2int, int2bytes, read_multi, write_multi, texttable,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes,
                    mutate_index, utilrandom as random)
-from skillrandomizer import SpellBlock, CommandBlock, get_ranked_spells
+from skillrandomizer import (SpellBlock, CommandBlock, SpellSub,
+                             RandomSpellSub, get_ranked_spells)
 from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
                                MetamorphBlock, get_ranked_monsters,
                                shuffle_monsters)
@@ -51,24 +52,6 @@ TEK_SKILLS = (# [0x18, 0x6E, 0x70, 0x7D, 0x7E] +
               [0xA7, 0xB1] +
               range(0xB4, 0xBA) +
               [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3])
-
-
-class Substitution(object):
-    location = None
-
-    @property
-    def size(self):
-        return len(self.bytestring)
-
-    def set_location(self, location):
-        self.location = location
-
-    def write(self, filename):
-        f = open(filename, 'r+b')
-        bs = "".join(map(chr, self.bytestring))
-        f.seek(self.location)
-        f.write(bs)
-        f.close()
 
 
 class AutoLearnRageSub(Substitution):
@@ -119,13 +102,6 @@ class AutoRecruitGauSub(Substitution):
         gau_cant_appear_sub.write(filename)
         REPLACE_ENEMIES.append(0x172)
         super(AutoRecruitGauSub, self).write(filename)
-
-
-class SpellSub(Substitution):
-    def __init__(self, spellid):
-        self.spellid = spellid
-        self.bytestring = [0xA9, self.spellid, 0x85, 0xB6, 0xA9,
-                           0x02, 0x85, 0xB5, 0x4C, 0x5F, 0x17]
 
 
 class EnableEsperMagicSub(Substitution):
@@ -716,13 +692,19 @@ def manage_commands_new(commands, characters):
             if random.randint(1, 100) > 50:
                 continue
 
+        random_skill = random.choice([True, False])
+        randomskill_names = set([])
         POWER_LEVEL = 105
         while True:
-            power = POWER_LEVEL / 2
-            while True:
-                power += random.randint(0, POWER_LEVEL)
-                if random.choice([True, False]):
-                    break
+            if random_skill:
+                power = 10000
+            else:
+                power = POWER_LEVEL / 2
+                power += random.randint(0, power)
+                while True:
+                    power += random.randint(0, power)
+                    if random.choice([True, False]):
+                        break
 
             def spell_is_valid(s):
                 if not s.valid:
@@ -732,35 +714,57 @@ def manage_commands_new(commands, characters):
                 return s.rank() <= power
 
             valid_spells = filter(spell_is_valid, all_spells)
-            if not valid_spells:
-                continue
-
-            sb = random.choice(valid_spells)
-            used.append(sb.spellid)
             c.read_properties(sourcefile)
+            if not random_skill:
+                if not valid_spells:
+                    continue
 
-            c.targeting = sb.targeting
-            c.targeting = c.targeting & (0xFF ^ 0x10)  # never autotarget
-            if not c.targeting & 0x20 and random.randint(1, 15) == 15:
-                c.targeting = 0xC0  # target random individual (both sides)
-            if not c.targeting & 0x20 and random.randint(1, 10) == 10:
-                c.targeting |= 0x28  # target random individual
-                c.targeting &= 0xFE
-            if c.targeting & 0x08 and not c.targeting & 0x02 and random.randint(1, 5) == 5:
-                c.targeting = 0x04  # target everyone
-            if not c.targeting & 0x64 and random.randint(1, 5) == 5 and sb.spellid not in [0x30, 0x31]:
-                c.targeting = 2  # only target self
-            if sb.spellid in [0xAB]:  # megazerk
-                c.targeting = random.choice([0x29, 0x6E, 0x6C, 0x27, 0x4])
-            if sb.spellid in [0x2B]:  # quick
-                c.targeting = random.choice([0x2, 0x2A, 0xC0, 0x1])
+                sb = random.choice(valid_spells)
+                used.append(sb.spellid)
+                c.targeting = sb.targeting
+                c.targeting = c.targeting & (0xFF ^ 0x10)  # never autotarget
+                if not c.targeting & 0x20 and random.randint(1, 15) == 15:
+                    c.targeting = 0xC0  # target random individual (both sides)
+                if not c.targeting & 0x20 and random.randint(1, 10) == 10:
+                    c.targeting |= 0x28  # target random individual
+                    c.targeting &= 0xFE
+                if (c.targeting & 0x08 and not c.targeting & 0x02
+                        and random.randint(1, 5) == 5):
+                    c.targeting = 0x04  # target everyone
+                if (not c.targeting & 0x64 and
+                        sb.spellid not in [0x30, 0x31] and
+                        random.randint(1, 5) == 5):
+                    c.targeting = 2  # only target self
+                if sb.spellid in [0xAB]:  # megazerk
+                    c.targeting = random.choice([0x29, 0x6E, 0x6C, 0x27, 0x4])
+                if sb.spellid in [0x2B]:  # quick
+                    c.targeting = random.choice([0x2, 0x2A, 0xC0, 0x1])
 
-            c.properties = 3
-            if random.randint(1, 5) == 5 or sb.spellid in [0x23, 0xA3]:
-                c.properties |= 0x4  # enable while imped
-            c.unset_retarget(outfile)
-            c.write_properties(outfile)
-            s = SpellSub(spellid=sb.spellid)
+                c.properties = 3
+                if random.randint(1, 5) == 5 or sb.spellid in [0x23, 0xA3]:
+                    c.properties |= 0x4  # enable while imped
+                c.unset_retarget(outfile)
+                c.write_properties(outfile)
+                s = SpellSub(spellid=sb.spellid)
+                newname = sb.name
+            elif random_skill:
+                c.targeting = 0x2
+                c.properties = 3
+                c.set_retarget(outfile)
+                c.write_properties(outfile)
+                valid_spells = [v for v in valid_spells if v.spellid <= 0xED]
+                s = RandomSpellSub()
+                try:
+                    s.set_spells(valid_spells)
+                except ValueError:
+                    continue
+                if s.name in randomskill_names:
+                    continue
+                randomskill_names.add(s.name)
+                s.generate_bytestring()
+                newname = "R. %s" % s.name
+                if len(newname) > 7:
+                    newname = newname.replace(' ', '')
             break
 
         myfs = None
@@ -778,7 +782,7 @@ def manage_commands_new(commands, characters):
         fss = myfs.unfree(s.location, s.size)
         freespaces.extend(fss)
 
-        c.newname(sb.name, outfile)
+        c.newname(newname, outfile)
         c.unsetmenu(outfile)
 
     gogo_enable_all_sub = Substitution()

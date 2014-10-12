@@ -20,6 +20,24 @@ CHARACTER_PALETTE_TABLE = path.join("tables", "charpaloptions.txt")
 EVENT_PALETTE_TABLE = path.join("tables", "eventpalettes.txt")
 
 
+class Substitution(object):
+    location = None
+
+    @property
+    def size(self):
+        return len(self.bytestring)
+
+    def set_location(self, location):
+        self.location = location
+
+    def write(self, filename):
+        f = open(filename, 'r+b')
+        bs = "".join(map(chr, self.bytestring))
+        f.seek(self.location)
+        f.write(bs)
+        f.close()
+
+
 texttable = {}
 f = open(TEXT_TABLE)
 for line in f:

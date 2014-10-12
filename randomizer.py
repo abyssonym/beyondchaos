@@ -1941,7 +1941,7 @@ def colorize_dungeons(locations, freespaces=None):
         f.close()
 
 
-def manage_locations(colorize=True):
+def manage_locations(colorize=True, encounters=True):
     locdict = {}
     for line in open(LOCATION_TABLE):
         line = line.strip().split(',')
@@ -1952,18 +1952,19 @@ def manage_locations(colorize=True):
             assert encounter not in locdict
             locdict[encounter] = name
 
-    encrates = {}
-    change_dungeons = ["floating continent", "veldt cave", "ancient castle",
-                       "mt zozo", "yeti's cave", "gogo's domain",
-                       "phoenix cave", "cyan's dream", "ebot's rock",
-                       "kefka's tower"]
+    if encounters:
+        encrates = {}
+        change_dungeons = ["floating continent", "veldt cave",
+                           "ancient castle", "mt zozo", "yeti's cave",
+                           "gogo's domain", "phoenix cave", "cyan's dream",
+                           "ebot's rock", "kefka's tower"]
 
-    for name in locdict:
-        if name == "fanatics tower":
-            encrates[name] = random.randint(2, 3)
-            for n in change_dungeons:
-                if n in name and random.randint(1, 3) == 3:
-                    encrates[name] = random.randint(1, 3)
+        for name in locdict:
+            if name == "fanatics tower":
+                encrates[name] = random.randint(2, 3)
+                for n in change_dungeons:
+                    if n in name and random.randint(1, 3) == 3:
+                        encrates[name] = random.randint(1, 3)
 
     locations = [Location(i) for i in range(415)]
     paldict = {}
@@ -1986,68 +1987,69 @@ def manage_locations(colorize=True):
     if colorize:
         colorize_dungeons(locations)
 
-    zones = [Zone(i) for i in range(0x100)]
-    for z in zones:
-        z.read_data(sourcefile)
-        if z.zoneid >= 0x80:
-            for setid in z.setids:
-                if setid in locdict:
-                    name = locdict[setid]
-                    z.names[setid] = name
-                    if name not in z.names:
-                        z.names[name] = set([])
-                    z.names[name].add(setid)
-            z.rates = 0
-            for i, s in enumerate(z.setids):
-                if s in z.names and z.names[s] in encrates:
-                    rate = encrates[z.names[s]]
-                    z.set_formation_rate(s, rate)
-        z.write_data(outfile)
+    if encounters:
+        zones = [Zone(i) for i in range(0x100)]
+        for z in zones:
+            z.read_data(sourcefile)
+            if z.zoneid >= 0x80:
+                for setid in z.setids:
+                    if setid in locdict:
+                        name = locdict[setid]
+                        z.names[setid] = name
+                        if name not in z.names:
+                            z.names[name] = set([])
+                        z.names[name].add(setid)
+                z.rates = 0
+                for i, s in enumerate(z.setids):
+                    if s in z.names and z.names[s] in encrates:
+                        rate = encrates[z.names[s]]
+                        z.set_formation_rate(s, rate)
+            z.write_data(outfile)
 
-    def rates_cleaner(rates):
-        rates = [max(int(round(o)), 1) for o in rates]
-        rates = [int2bytes(o, length=2) for o in rates]
-        rates = [i for sublist in rates for i in sublist]
-        return rates
+        def rates_cleaner(rates):
+            rates = [max(int(round(o)), 1) for o in rates]
+            rates = [int2bytes(o, length=2) for o in rates]
+            rates = [i for sublist in rates for i in sublist]
+            return rates
 
-    base4 = map(lambda (b, t): b*t, zip([0xC0]*4, [1, 0.5, 2, 1]))
-    bangle = 0.5
-    moogle = 0.01
-    overworld_rates = (
-        base4 +
-        [b * bangle for b in base4] +
-        [b * moogle for b in base4] +
-        [b * bangle * moogle for b in base4]
-        )
-    overworld_rates = rates_cleaner(overworld_rates)
-    encrate_sub = Substitution()
-    encrate_sub.set_location(0xC29F)
-    encrate_sub.bytestring = overworld_rates
-    encrate_sub.write(outfile)
+        base4 = map(lambda (b, t): b*t, zip([0xC0]*4, [1, 0.5, 2, 1]))
+        bangle = 0.5
+        moogle = 0.01
+        overworld_rates = (
+            base4 +
+            [b * bangle for b in base4] +
+            [b * moogle for b in base4] +
+            [b * bangle * moogle for b in base4]
+            )
+        overworld_rates = rates_cleaner(overworld_rates)
+        encrate_sub = Substitution()
+        encrate_sub.set_location(0xC29F)
+        encrate_sub.bytestring = overworld_rates
+        encrate_sub.write(outfile)
 
-    # dungeon encounters: normal, strongly affected by charms,
-    # weakly affected by charms, and unaffected by charms
-    base = 0x70
-    bangle = 0.5
-    moogle = 0.01
-    normal = [base, base*bangle, base*moogle, base*bangle*moogle]
-    unaffected = [base, base, base, base]
+        # dungeon encounters: normal, strongly affected by charms,
+        # weakly affected by charms, and unaffected by charms
+        base = 0x70
+        bangle = 0.5
+        moogle = 0.01
+        normal = [base, base*bangle, base*moogle, base*bangle*moogle]
+        unaffected = [base, base, base, base]
 
-    sbase = base*3
-    strong = [sbase, sbase*bangle/2, sbase*moogle/2, sbase*bangle*moogle/4]
+        sbase = base*3
+        strong = [sbase, sbase*bangle/2, sbase*moogle/2, sbase*bangle*moogle/4]
 
-    wbase = base*1.5
-    half = wbase/2
-    weak = [wbase, half+(half*bangle), half+(half*moogle),
-            half+(half*bangle*moogle)]
+        wbase = base*1.5
+        half = wbase/2
+        weak = [wbase, half+(half*bangle), half+(half*moogle),
+                half+(half*bangle*moogle)]
 
-    dungeon_rates = zip(normal, strong, weak, unaffected)
-    dungeon_rates = [i for sublist in dungeon_rates for i in sublist]
-    dungeon_rates = rates_cleaner(dungeon_rates)
-    encrate_sub = Substitution()
-    encrate_sub.set_location(0xC2BF)
-    encrate_sub.bytestring = dungeon_rates
-    encrate_sub.write(outfile)
+        dungeon_rates = zip(normal, strong, weak, unaffected)
+        dungeon_rates = [i for sublist in dungeon_rates for i in sublist]
+        dungeon_rates = rates_cleaner(dungeon_rates)
+        encrate_sub = Substitution()
+        encrate_sub.set_location(0xC2BF)
+        encrate_sub.bytestring = dungeon_rates
+        encrate_sub.write(outfile)
 
 
 def randomize_enemy_name(filename, enemy_id):
@@ -2244,7 +2246,7 @@ if __name__ == "__main__":
         manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
 
     if 'f' in flags:
-        manage_locations(colorize='c' in flags)
+        manage_locations(colorize='c' in flags, encounters='b' in flags)
 
     if SUPLEX_MODE:
         manage_suplex(commands, characters, monsters)

@@ -16,6 +16,8 @@ MOVES_TABLE = path.join("tables", "moves.txt")
 LOCATION_TABLE = path.join("tables", "locationformations.txt")
 LOCATION_PALETTE_TABLE = path.join("tables", "locationpaletteswaps.txt")
 BATTLE_BG_PALETTE_TABLE = path.join("tables", "battlebgpalettes.txt")
+CHARACTER_PALETTE_TABLE = path.join("tables", "charpaloptions.txt")
+EVENT_PALETTE_TABLE = path.join("tables", "eventpalettes.txt")
 
 
 texttable = {}
@@ -157,38 +159,47 @@ def shift_middle(triple, degree, ungray=False):
     return tuple(triple)
 
 
-def get_palette_transformer():
+def get_palette_transformer(changing=True, always=False, middle=True):
     degree = utran.randint(-75, 75)
-    lumas = 32
-    swapfuncs, flag = [], 6
-    thirds = random.choice([True, False])
-    while True:
-        indexes = [0, 31]
-        if not thirds:
-            half = lumas / 2
-            midpoint = utran.randint(0, half) + utran.randint(0, half)
-            indexes.append(midpoint)
-        else:
-            third = lumas / 3
-            thirdpoint = utran.randint(0, third) + utran.randint(0, third)
-            indexes.append(thirdpoint)
-            thirdpoint = thirdpoint + utran.randint(0, third) + utran.randint(0, third)
-            indexes.append(thirdpoint)
-        indexes = sorted(indexes)
-        for (a, b) in zip(indexes, indexes[1:]):
-            if b - a < 6 or b > 31:
-                break
-        else:
-            break
 
-    swapfuncs = []
-    for i in xrange(32):
-        if i in indexes:
-            swapfunc = generate_swapfunc(swapcode=None)
-        swapfuncs.append(swapfunc)
+    if changing:
+        lumas = 32
+        swapfuncs, flag = [], 6
+        thirds = random.choice([True, False])
+        while True:
+            indexes = [0, 31]
+            if not thirds:
+                half = lumas / 2
+                midpoint = utran.randint(0, half) + utran.randint(0, half)
+                indexes.append(midpoint)
+            else:
+                third = lumas / 3
+                thirdpoint = utran.randint(0, third) + utran.randint(0, third)
+                indexes.append(thirdpoint)
+                thirdpoint = (thirdpoint + utran.randint(0, third) +
+                              utran.randint(0, third))
+                indexes.append(thirdpoint)
+            indexes = sorted(indexes)
+            for (a, b) in zip(indexes, indexes[1:]):
+                if b - a < 6 or b > 31:
+                    break
+            else:
+                break
+
+        swapfuncs = []
+        for i in xrange(32):
+            if i in indexes:
+                swapcode = random.randint(1, 7) if always is True else None
+                swapfunc = generate_swapfunc(swapcode=swapcode)
+            swapfuncs.append(swapfunc)
+    else:
+        swapcode = random.randint(1, 7) if always is True else None
+        swapfunc = generate_swapfunc(swapcode=swapcode)
+        swapfuncs = [swapfunc for _ in xrange(32)]
+
     assert len(swapfuncs) == 32
 
-    def color_transformer(red, green, blue, randomize=True):
+    def color_transformer(red, green, blue):
         a = red >= green
         b = red >= blue
         c = green >= blue
@@ -197,7 +208,8 @@ def get_palette_transformer():
         index = luma
         swapfunc = swapfuncs[index]
         red, green, blue = swapfunc((red, green, blue))
-        red, green, blue = shift_middle((red, green, blue), degree)
+        if middle:
+            red, green, blue = shift_middle((red, green, blue), degree)
         return (red, green, blue)
 
     def palette_transformer(raw_palette):

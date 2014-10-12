@@ -4,7 +4,9 @@ from shutil import copyfile
 from hashlib import md5
 from utils import (hex2int, int2bytes, ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE,
-                   LOCATION_PALETTE_TABLE, read_multi, write_multi, texttable,
+                   LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
+                   EVENT_PALETTE_TABLE,
+                   read_multi, write_multi, texttable,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes,
                    mutate_index, utilrandom as random)
@@ -23,7 +25,7 @@ from formationrandomizer import Formation, FormationSet
 from locationrandomizer import Location, Zone
 
 
-VERSION = "14"
+VERSION = "15"
 VERBOSE = False
 
 
@@ -1245,7 +1247,48 @@ def manage_monster_appearance(monsters):
     return mgs
 
 
-def manage_character_appearance(wild=True):
+def recolor_character_palette(pointer, palette=None, flesh=False):
+    f = open(outfile, 'r+b')
+    f.seek(pointer)
+    if palette is None:
+        palette = [read_multi(f, length=2) for _ in xrange(16)]
+        outline, eyes, hair, skintone, outfit1, outfit2, NPC = (
+            palette[:2], palette[2:4], palette[4:6], palette[6:8],
+            palette[8:10], palette[10:12], palette[12:])
+        new_palette = []
+        if not flesh:
+            for piece in (outline, eyes, hair, skintone, outfit1, outfit2, NPC):
+                transformer = get_palette_transformer(
+                    changing=False, always=False, middle=True)
+                piece = list(piece)
+                piece = transformer(piece)
+                new_palette += piece
+            if not flesh:
+                new_palette[6:8] = skintone
+        else:
+            transformer = get_palette_transformer(
+                changing=False, always=False, middle=True)
+            new_palette = transformer(palette)
+
+        palette = new_palette
+
+    f.seek(pointer)
+    for p in palette:
+        write_multi(f, p, length=2)
+    f.close()
+    return palette
+
+
+def manage_character_appearance(wild=True, preserve_graphics=False):
+    charpal_options = {}
+    for line in open(CHARACTER_PALETTE_TABLE):
+        if line[0] == '#':
+            continue
+        charid, palettes = tuple(line.strip().split(':'))
+        palettes = map(hex2int, palettes.split(','))
+        charid = hex2int(charid)
+        charpal_options[charid] = palettes
+
     pointerspointer = 0x41d52
     pointers = set([])
     f = open(sourcefile, 'r+b')
@@ -1255,83 +1298,125 @@ def manage_character_appearance(wild=True):
         pointers.add(pointer)
     f.close()
 
-    palette_assignments = {}
     npcs = [NPCBlock(pointer) for pointer in pointers]
-    from collections import defaultdict
     for npc in npcs:
         npc.read_data(sourcefile)
-        if npc.graphics not in palette_assignments:
-            palette_assignments[npc.graphics] = defaultdict(int)
-        palette_assignments[npc.graphics][npc.palette] += 1
 
     if wild:
         char_ids = range(0, 0x16)
     else:
         char_ids = range(0, 0x0E)
 
-    #char_ids.remove(10)
-    #char_ids.remove(11)
-    #char_ids.remove(12)
-    #char_ids.remove(13)
-    #char_ids.remove(14)
-    for key, value in palette_assignments.items():
-        temp = {}
-        #most = 0
-        for k2, v2 in value.items():
-            #if v2 > most:
-            #    temp = {k2: v2}
-            #    most = v2
-            if v2 >= 3:
-                temp[k2] = v2
-        if temp:
-            palette_assignments[key] = temp.keys()
-        else:
-            palette_assignments[key] = palette_assignments[key].keys()
+    if preserve_graphics:
+        change_to = dict(zip(char_ids, char_ids))
+    elif wild:
+        change_to = list(char_ids)
+        random.shuffle(change_to)
+        change_to = dict(zip(char_ids, change_to))
+    else:
+        female = [0, 0x06, 0x08] + [c for c in [0x0A, 0x0C, 0x0D] if
+                                    random.choice([True, False])]
+        male = [c for c in char_ids if c not in female and c != 0x06]
+        random.shuffle(female)
+        random.shuffle(male)
+        female = zip(sorted(female), female)
+        male = zip(sorted(male), male)
+        change_to = dict(male + female)
 
-    temp = {}
+    ssizes = ([0x16A0] * 0x10) + ([0x1560] * 6)
+    spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in char_ids])
+    ssizes = dict(zip(char_ids, ssizes))
+
+    char_portraits = {}
+    char_portrait_palettes = {}
+    sprites = {}
+    f = open(outfile, 'r+b')
     for c in char_ids:
-        if c not in temp:
-            temp[c] = set([])
-        charpalettes = palette_assignments[c]
-        temp[c] = temp[c] | set(charpalettes)
-        for palettes in palette_assignments.values():
-            if set(charpalettes) & set(palettes):
-                temp[c] = temp[c] | set(palettes)
-        temp[c] = sorted(temp[c])
-        if 7 in temp[c]:
-            temp[c].remove(7)
-
-    for k, v in temp.items():
-        print k, v
-
+        f.seek(0x36F1B + (2*c))
+        portrait = read_multi(f, length=2)
+        char_portraits[c] = portrait
+        f.seek(0x36F00 + c)
+        portrait_palette = f.read(1)
+        char_portrait_palettes[c] = portrait_palette
+        f.seek(spointers[c])
+        sprite = f.read(ssizes[c])
+        sprites[c] = sprite
     for c in char_ids:
-        print ("%x" % c), palette_assignments[c]
-
-    change_to = list(char_ids)
-    random.shuffle(change_to)
-    change_to = dict(zip(char_ids, change_to))
-    char_palettes = [p for c in char_ids for p in palette_assignments[c]]
-    char_palettes.remove(0)
-    '''
-    palette_pools = ([0],
-                     [1, 2, 3, 4],
-                     [5, 6, 7])
-    '''
+        new = change_to[c]
+        portrait = char_portraits[new]
+        portrait_palette = char_portrait_palettes[new]
+        if wild and portrait == 0 and change_to[c] != 0:
+            portrait = char_portraits[0xE]
+            portrait_palette = char_portrait_palettes[0xE]
+        f.seek(0x36F1B + (2*c))
+        write_multi(f, portrait, length=2)
+        f.seek(0x36F00 + c)
+        f.write(portrait_palette)
+        if wild:
+            f.seek(spointers[c])
+            f.write(sprites[0xE][:ssizes[c]])
+        f.seek(spointers[c])
+        newsprite = sprites[change_to[c]]
+        newsprite = newsprite[:ssizes[c]]
+        f.write(newsprite)
+    f.close()
 
     palette_change_to = {}
     for npc in npcs:
+        if npc.graphics not in charpal_options:
+            continue
         if npc.graphics in change_to:
             new_graphics = change_to[npc.graphics]
-            npc.graphics = new_graphics
             if (npc.graphics, npc.palette) in palette_change_to:
                 new_palette = palette_change_to[(npc.graphics, npc.palette)]
             else:
-                new_palette = random.choice(temp[npc.graphics])
+                while True:
+                    new_palette = random.choice(charpal_options[new_graphics])
+                    if (new_palette == 5 and new_graphics not in
+                            [3, 0xA, 0xC, 0xD, 0xE, 0xF, 0x12, 0x14] and
+                            random.randint(1, 10) != 10):
+                        continue
+                    break
                 palette_change_to[(npc.graphics, npc.palette)] = new_palette
-                print ("%x" % npc.graphics), new_palette
+                npc.palette = new_palette
             npc.palette = new_palette
             npc.write_data(outfile)
-            #print ("%x" % npc.graphics), npc.palette
+
+    f = open(outfile, 'r+b')
+    for c in char_ids:
+        f.seek(0x2CE2B + c)
+        before = ord(f.read(1))
+        new_graphics = change_to[c]
+        new_palette = palette_change_to[(c, before)]
+        f.seek(0x2CE2B + c)
+        f.write(chr(new_palette))
+    f.close()
+
+    for i in xrange(6):
+        pointer = 0x268000 + (i*0x20)
+        palette = recolor_character_palette(pointer, palette=None,
+                                            flesh=(i == 5))
+        pointer = 0x2D6300 + (i*0x20)
+        recolor_character_palette(pointer, palette=palette)
+
+    f = open(outfile, 'r+b')
+    for line in open(EVENT_PALETTE_TABLE):
+        if line[0] == '#':
+            continue
+        pointer = hex2int(line.strip())
+        f.seek(pointer)
+        data = map(ord, f.read(5))
+        char_id, palette = data[1], data[4]
+        if char_id not in char_ids:
+            continue
+        try:
+            data[4] = palette_change_to[(char_id, palette)]
+        except KeyError:
+            continue
+
+        f.seek(pointer)
+        f.write("".join(map(chr, data)))
+    f.close()
 
 
 def manage_items(items):
@@ -1452,6 +1537,7 @@ def manage_blitz():
         newcmd += [(newlength+1) * 2]
         f.seek(current)
         f.write("".join(map(chr, newcmd)))
+    f.close()
 
 
 def manage_formations(formations, fsets):
@@ -1977,6 +2063,14 @@ if __name__ == "__main__":
         if VERBOSE:
             print "SECRET CODE: CUTSCENE SKIPS ACTIVATED"
 
+    if 'partyparty' in flags:
+        CRAZY_MODE = True
+        flags = flags.replace('partyparty', '')
+        if VERBOSE:
+            print "SECRET CODE: CRAZY PARTY MODE ACTIVATED"
+    else:
+        CRAZY_MODE = False
+
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -2001,7 +2095,11 @@ if __name__ == "__main__":
 
     if 'c' in flags:
         mgs = manage_monster_appearance(monsters)
-        #manage_character_appearance()
+
+    if 'c' in flags or 's' in flags or CRAZY_MODE:
+        preserve_graphics = 's' not in flags and not CRAZY_MODE
+        manage_character_appearance(preserve_graphics=preserve_graphics,
+                                    wild=CRAZY_MODE)
 
     items = get_ranked_items(sourcefile)
     if 'i' in flags:

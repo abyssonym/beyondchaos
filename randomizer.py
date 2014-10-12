@@ -684,6 +684,7 @@ def manage_commands_new(commands, characters):
     valid = sorted(valid - set(["row", "def"]))
     used = []
     all_spells = [SpellBlock(i, sourcefile) for i in xrange(0xFF)]
+    randomskill_names = set([])
     for c in commands.values():
         if c.name in NEVER_REPLACE:
             continue
@@ -693,7 +694,6 @@ def manage_commands_new(commands, characters):
                 continue
 
         random_skill = random.choice([True, False])
-        randomskill_names = set([])
         POWER_LEVEL = 105
         while True:
             if random_skill:

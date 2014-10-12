@@ -403,6 +403,5 @@ class RandomSpellSub(Substitution):
 
         self.spells = sorted(spells)
         self.name = spellclass
-        print self.name, [s.name for s in self.spells]
         assert len(self.spells) == 8
         return self.spells

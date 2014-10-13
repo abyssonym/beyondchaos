@@ -1232,6 +1232,9 @@ def manage_monsters():
 
     shuffle_monsters(monsters)
     for m in monsters:
+        if m.id in range(0x157, 0x160) + [0x12a]:
+            # boost final bosses a second time
+            m.mutate()
         m.screw_tutorial_bosses()
         m.screw_blaze()
         m.write_stats(outfile)

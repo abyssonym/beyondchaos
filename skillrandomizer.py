@@ -351,8 +351,8 @@ def get_spellsets(spells=None):
                         [0xA7, 0xB1] + range(0xB4, 0xBA) + [0x91, 0x9A] +
                         [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3])
     spellsets['Time'] = [0x10, 0x11, 0x12, 0x13, 0x19, 0x1B, 0x1F, 0x20, 0x22,
-                         0x26, 0x27, 0x28, 0x2A, 0x2B, 0x34, 0x89, 0x9B, 0xC9,
-                         0xDF]
+                         0x26, 0x27, 0x28, 0x2A, 0x2B, 0x34, 0x89, 0x9B, 0xA0,
+                         0xC9, 0xDF]
 
     for key, value in spellsets.items():
         if type(value[0]) is int:
@@ -365,9 +365,9 @@ def get_spellsets(spells=None):
 class RandomSpellSub(Substitution):
     def generate_bytestring(self):
         self.bytestring = [0x20, 0x5A, 0x4B,        # get random number
-                           0x29, 0x7,               # AND 7
+                           0x29, None,              # AND the result
                            0xAA,                    # TAX
-                           0xBF, None, None, None,  # load byte from $123456 + X
+                           0xBF, None, None, None,  # load byte from $addr + X
                            0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
                            #0x20, 0xC1, 0x19,  # JSR $19C1
                            #0x20, 0x51, 0x29,  # JSR $2951
@@ -377,11 +377,14 @@ class RandomSpellSub(Substitution):
 
     def write(self, filename):
         pointer = self.location + len(self.bytestring)
+        self.bytestring[4] = len(self.spells) - 1
+        assert self.bytestring[4] in [(2**i)-1 for i in range(1, 8)]
         a, b, c = pointer >> 16, (pointer >> 8) & 0xFF, pointer & 0xFF
+        print "%x" % pointer
         self.bytestring[7:10] = [c, b, a]
         if None in self.bytestring:
             raise Exception("Bad pointer calculation.")
-        self.bytestring += [s.spellid for s in self.spells]
+        self.bytestring += sorted([s.spellid for s in self.spells])
         super(RandomSpellSub, self).write(filename)
 
     def set_spells(self, valid_spells, spellsets=None, spellclass=None):
@@ -394,14 +397,14 @@ class RandomSpellSub(Substitution):
 
         if len(spellset) <= 8:
             spells = sorted(spellset)
-            assert len(set(spells)) == len(spellset)
             while len(spells) < 8:
                 spells.append(random.choice(spellset))
         else:
-            spells = random.sample(sorted(spellset), 8)
-            assert len(set(spells)) == 8
+            spells = random.sample(sorted(spellset), min(16, len(spellset)))
+            while len(spells) < 16:
+                spells.append(random.choice(spellset))
+            assert len(set(spells)) > 8
 
         self.spells = sorted(spells)
         self.name = spellclass
-        assert len(self.spells) == 8
         return self.spells

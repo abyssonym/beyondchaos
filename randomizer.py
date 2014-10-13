@@ -5,7 +5,8 @@ from hashlib import md5
 from utils import (ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
-                   EVENT_PALETTE_TABLE, Substitution,
+                   EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
+                   Substitution,
                    hex2int, int2bytes, read_multi, write_multi, texttable,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes,
@@ -1362,21 +1363,57 @@ def manage_character_appearance(wild=True, preserve_graphics=False,
         change_to = dict(zip(char_ids, [0x12] * 100))
     elif sabin_mode:
         change_to = dict(zip(char_ids, [0x05] * 100))
-    elif preserve_graphics:
-        change_to = dict(zip(char_ids, char_ids))
-    elif wild:
-        change_to = list(char_ids)
-        random.shuffle(change_to)
-        change_to = dict(zip(char_ids, change_to))
     else:
-        female = [0, 0x06, 0x08] + [c for c in [0x0A, 0x0C, 0x0D] if
-                                    random.choice([True, False])]
-        male = [c for c in char_ids if c not in female and c != 0x06]
-        random.shuffle(female)
-        random.shuffle(male)
-        female = zip(sorted(female), female)
-        male = zip(sorted(male), male)
-        change_to = dict(male + female)
+        female = [0, 0x06, 0x08]
+        female += [c for c in [0x0A, 0x0C, 0x0D, 0x0E, 0x0F, 0x14] if
+                   random.choice([True, False])]
+        female = [c for c in char_ids if c in female]
+        male = [c for c in char_ids if c not in female]
+        if preserve_graphics:
+            change_to = dict(zip(char_ids, char_ids))
+        elif wild:
+            change_to = list(char_ids)
+            random.shuffle(change_to)
+            change_to = dict(zip(char_ids, change_to))
+        else:
+            random.shuffle(female)
+            random.shuffle(male)
+            change_to = dict(zip(sorted(male), male) +
+                             zip(sorted(female), female))
+
+    names = []
+    if not tina_mode and not sabin_mode:
+        f = open(MALE_NAMES_TABLE)
+        malenames = sorted(set([line.strip() for line in f.readlines()]))
+        f.close()
+        f = open(FEMALE_NAMES_TABLE)
+        femalenames = sorted(set([line.strip() for line in f.readlines()]))
+        f.close()
+        for c in range(14):
+            if change_to[c] in male:
+                name = random.choice(malenames)
+                malenames.remove(name)
+            else:
+                name = random.choice(femalenames)
+                femalenames.remove(name)
+            name = name.upper()
+            names.append(name)
+    elif tina_mode:
+        names = ["TINA"] * 14
+    elif sabin_mode:
+        names = ["TEABIN", "LOABIN", "CYABIN", "SHABIN", "EDABIN", "SABIN",
+                 "CEABIN", "STABIN", "REABIN", "SEABIN", "MOABIN", "GAUBIN",
+                 "GOABIN", "UMABIN"]
+
+    f = open(outfile, 'r+b')
+    for c, name in enumerate(names):
+        name = map(lambda c: hex2int(texttable[c]), name)
+        while len(name) < 6:
+            name.append(0xFF)
+        assert len(name) == 6
+        f.seek(0x478C0 + (6*c))
+        f.write("".join(map(chr, name)))
+    f.close()
 
     ssizes = ([0x16A0] * 0x10) + ([0x1560] * 6)
     spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in char_ids])

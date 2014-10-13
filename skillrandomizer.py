@@ -380,7 +380,6 @@ class RandomSpellSub(Substitution):
         self.bytestring[4] = len(self.spells) - 1
         assert self.bytestring[4] in [(2**i)-1 for i in range(1, 8)]
         a, b, c = pointer >> 16, (pointer >> 8) & 0xFF, pointer & 0xFF
-        print "%x" % pointer
         self.bytestring[7:10] = [c, b, a]
         if None in self.bytestring:
             raise Exception("Bad pointer calculation.")

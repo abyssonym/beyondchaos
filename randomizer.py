@@ -1578,6 +1578,124 @@ def manage_equipment(items, characters):
     return items, characters
 
 
+def manage_esper_boosts():
+    esper_boost_sub = Substitution()
+    pointer1 = 0x26469
+    esper_boost_sub.set_location(pointer1)
+    # experience: $1611,X - $1613,X
+    # experience from battle: $0011,X - $0013,X
+    # experience needed for levelup: $ED8220,X
+    # available registers: FC, FD, X
+    # Y contains offset to char block and should not be changed
+    esper_boost_sub.bytestring = [
+        0xE2, 0x20,        # SEP #$20
+        0xB9, 0x08, 0x16,  # LDA $1608,Y (load level)
+        0xC9, 0x63,        # Are we level 99?
+        0xD0, 0x01,        # Branch if not.
+        0x60,              # RTS
+        0x0A, 0xAA,        # ASL, TAX
+        0xC2, 0x20,        # REP #$20 IMPORTANT
+        0xBF, 0x1E, 0x82, 0xED,  # LDA $ED821E,X (load needed exp)
+        0x0A, 0x0A,        # ASL, ASL
+        0x79, 0x11, 0x16,  # ADC $1611,Y (low bytes exp)
+        0x99, 0x11, 0x16,  # STA $1611,Y
+        0xE2, 0x20,        # SEP #$20
+        0x90, 0x07,        # BCC +7 (skip seven bytes)
+        0xB9, 0x13, 0x16,  # LDA $1613,Y
+        0x1A,              # INC
+        0x99, 0x13, 0x16,  # STA $1613,Y
+        0x60,              # RTS
+        ]
+    esper_boost_sub.write(outfile)
+
+    pointer2 = pointer1 + len(esper_boost_sub.bytestring)
+    esper_boost_sub.set_location(pointer2)
+    # TODO: Handle overflow
+    esper_boost_sub.bytestring = [
+        0xE2, 0x20,        # SEP #$20
+        0xB9, 0x08, 0x16,  # LDA $1608,Y (load level)
+        0xC9, 0x01,        # Are we level 1?
+        0xD0, 0x01,        # Branch if not.
+        0x60,              # RTS
+        0x3A, 0x3A,        # DEC, DEC
+        0x99, 0x08, 0x16,  # STA $1608,Y
+        0xC2, 0x20,        # REP #$20
+        0xA9, 0x00, 0x00,  # LDA #$0000
+        0xA2, 0x00, 0x00,  # LDX #$0000
+        0x99, 0x11, 0x16,  # STA $1611,Y
+        0xE8, 0xE8,        # INX, INX
+        0xB9, 0x11, 0x16,  # LDA $1611,Y
+        0x7F, 0x1C, 0x82, 0xED,  # ADC $ED821E,X (add needed exp)
+        #0x90, 0x01,        # BCC +7 (skip seven bytes)
+        #0xDB,
+        0x99, 0x11, 0x16,  # STA $1611,Y
+        0x8A,              # TXA
+        0x4A,              # LSR
+        0xE2, 0x20,        # SEP #$20
+        0xD9, 0x08, 0x16,  # CMP $1608,Y
+        0xC2, 0x20,        # REP #$20
+        0xD0, 0xE9,        # BNE ??? bytes backwards
+        0xB9, 0x11, 0x16,  # LDA $1611,Y
+        0x3A,              # DEC
+        0x0A, 0x0A, 0x0A,  # ASL, ASL, ASL
+        0x99, 0x11, 0x16,  # STA $1611,Y
+        0x60,              # RTS
+        ]
+    '''
+        0xA9, 0x00, 0x00,  # LDA #$0000
+        0x99, 0x12, 0x16,  # STA $1612,Y (zeroes $1613)
+        0x99, 0x11, 0x16,  # STA $1611,Y
+        0xA2, 0x00, 0x00,  # LDX #$0000
+        0xC2, 0x20,        # REP #$20
+        0x7F, 0x1E, 0x82, 0xED,  # ADC $ED821E,X (add needed exp)
+        0xE2, 0x20,        # SEP #$20
+        0x90, 0x03,        # BCC (skip 3 bytes)
+        0xEE, 0x13, 0x16,  # INC $1613
+        0xE8, 0xE8,        # INX, INX
+        0x48, 0x8A,        # PHA, TXA
+        0x4A,              # LSR
+        0xD9, 0x08, 0x16,  # CMP $1608,Y
+        #0xC9, 0x63, 0x00,  # CMP $#63
+        0x68,              # PLA
+        0xD0, 0xE8,        # BNE ??? bytes backwards
+        #0x90, 0xEC,        # BLT ??? bytes backwards
+        0xC2, 0x20,        # REP #$20
+        0xB9, 0x12, 0x16,  # LDA $1612,Y
+        0x0A, 0x0A, 0x0A,  # ASL, ASL, ASL
+        #0xE2, 0x20,        # SEP #$20
+        #0x8A,              # TXA
+        0x99, 0x11, 0x16,  # STA $1611,Y
+        #0x99, 0x12, 0x16,  # STA $1612,Y
+        #0xDB,              # STOP PROCESSOR
+        0x60,              # RTS
+        0xE2, 0x20,        # SEP #$20
+        0xB9, 0x11, 0x16,  # LDA $1611,Y
+        0x2A, 0x2A, 0x2A,  # ROL, ROL, ROL
+        0x99, 0x11, 0x16,  # STA $1611,Y
+        0x29, 0x07,        # AND #$07
+        0x19, 0x12, 0x16,  # ORA $1612,Y
+        0x99, 0x12, 0x16,  # STA $1612,Y
+        0x60,        # PLY, RTS
+        ]
+    '''
+    esper_boost_sub.write(outfile)
+
+    esper_boost_sub.set_location(0x2615C)
+    esper_boost_sub.bytestring = [pointer2 & 0xFF, (pointer2 >> 8) & 0xFF,
+                                  pointer1 & 0xFF, (pointer1 >> 8) & 0xFF,
+                                  ]
+    esper_boost_sub.write(outfile)
+
+    esper_boost_sub.set_location(0xFFEED)
+    desc = map(lambda c: hex2int(shorttexttable[c]), "LV - 1   ")
+    esper_boost_sub.bytestring = desc
+    esper_boost_sub.write(outfile)
+    esper_boost_sub.set_location(0xFFEF6)
+    desc = map(lambda c: hex2int(shorttexttable[c]), "LV + 50% ")
+    esper_boost_sub.bytestring = desc
+    esper_boost_sub.write(outfile)
+
+
 def manage_espers():
     espers = espers_from_table(ESPER_TABLE)
     random.shuffle(espers)
@@ -1587,6 +1705,7 @@ def manage_espers():
         e.generate_bonus()
         e.write_data(outfile)
 
+    manage_esper_boosts()
     return espers
 
 

@@ -1,6 +1,6 @@
-00,5,Fire,ban
-01,5,Ice,ban
-02,5,Bolt,ban
+00,5,Fire,noban
+01,5,Ice,noban
+02,5,Bolt,noban
 12,100,X-Zone,noban
 1F,20,Haste,noban
 24,20,Rflect,noban
@@ -9,7 +9,7 @@
 28,35,Slow 2,noban
 2A,10,Warp,noban
 2B,200,Quick,noban
-2D,3,Cure,ban
+2D,3,Cure,noban
 30,25,Life,noban
 31,100,Life 2,noban
 32,2,Antdot,noban

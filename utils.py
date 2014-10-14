@@ -10,6 +10,7 @@ CHEST_TABLE = path.join("tables", "chestcodes.txt")
 COMMAND_TABLE = path.join("tables", "commandcodes.txt")
 CHAR_TABLE = path.join("tables", "charcodes.txt")
 TEXT_TABLE = path.join("tables", "text.txt")
+SHORT_TEXT_TABLE = path.join("tables", "shorttext.txt")
 ENEMY_NAMES_TABLE = path.join("tables", "enemynames.txt")
 MODIFIERS_TABLE = path.join("tables", "moves.txt")
 MOVES_TABLE = path.join("tables", "moves.txt")
@@ -47,6 +48,16 @@ for line in f:
     char, value = tuple(line.split())
     texttable[char] = value
 texttable[' '] = 'FE'
+f.close()
+
+
+shorttexttable = {}
+f = open(SHORT_TEXT_TABLE)
+for line in f:
+    line = line.strip()
+    char, value = tuple(line.split())
+    shorttexttable[char] = value
+shorttexttable[' '] = 'FF'
 f.close()
 
 

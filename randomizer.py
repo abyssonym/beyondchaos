@@ -6,8 +6,8 @@ from utils import (ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
-                   Substitution,
-                   hex2int, int2bytes, read_multi, write_multi, texttable,
+                   Substitution, texttable, shorttexttable,
+                   hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes,
                    mutate_index, utilrandom as random)
@@ -749,10 +749,8 @@ def manage_commands_new(commands, characters):
                 s = SpellSub(spellid=sb.spellid)
                 newname = sb.name
             elif random_skill:
-                c.targeting = 0x2
                 c.properties = 3
                 c.set_retarget(outfile)
-                c.write_properties(outfile)
                 valid_spells = [v for v in valid_spells if v.spellid <= 0xED]
                 s = RandomSpellSub()
                 try:
@@ -762,6 +760,23 @@ def manage_commands_new(commands, characters):
                 if s.name in randomskill_names:
                     continue
                 randomskill_names.add(s.name)
+                c.targeting = 0x2
+                if len(set([spell.targeting for spell in s.spells])) == 1:
+                    c.targeting = s.spells[0].targeting
+                elif any([spell.target_everyone and
+                          not spell.target_one_side_only
+                          for spell in s.spells]):
+                    pass
+                else:
+                    if not any([spell.target_enemy_default or
+                                (spell.target_everyone and
+                                 not spell.target_one_side_only)
+                               for spell in s.spells]):
+                        c.targeting |= 0x08
+                    if all([spell.target_enemy_default for spell in s.spells]):
+                        c.targeting |= 0x48
+
+                c.write_properties(outfile)
                 s.generate_bytestring()
                 newname = "R. %s" % s.name
                 if len(newname) > 7:
@@ -1396,9 +1411,13 @@ def manage_character_appearance(wild=True, preserve_graphics=False,
             if change_to[c] in male:
                 name = random.choice(malenames)
                 malenames.remove(name)
+                if name in femalenames:
+                    femalenames.remove(name)
             else:
                 name = random.choice(femalenames)
                 femalenames.remove(name)
+                if name in malenames:
+                    malenames.remove(name)
             name = name.upper()
             names.append(name)
     elif tina_mode:

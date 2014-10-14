@@ -319,7 +319,6 @@ def get_spellsets(spells=None):
     spellsets['Lore'] = range(0x8B, 0xA3)
     spellsets['Rare'] = range(0x7D, 0x83) + range(0xA3, 0xEE)
     elementals = [s for s in all_spells if bin(s.elements).count('1') == 1]
-    spellsets['Elem'] = elementals
     spellsets['Fire'] = [s for s in elementals if s.elements & 1]
     spellsets['Ice'] = [s for s in elementals if s.elements & 2]
     spellsets['Bolt'] = [s for s in elementals if s.elements & 4]
@@ -328,6 +327,9 @@ def get_spellsets(spells=None):
     spellsets['Pearl'] = [s for s in elementals if s.elements & 0x20]
     spellsets['Earth'] = [s for s in elementals if s.elements & 0x40]
     spellsets['Water'] = [s for s in elementals if s.elements & 0x80]
+    spellsets['Multi'] = [s for s in all_spells if
+                          bin(s.elements).count('1') > 1]
+    spellsets['Elem'] = elementals + spellsets['Multi']
     spellsets['Power'] = [s for s in all_spells if s.power and not any(
         [s.elements, s.percentage, s.physical, s.healing])]
     spellsets['Heal'] = [s for s in all_spells if s.healing]
@@ -338,9 +340,11 @@ def get_spellsets(spells=None):
         [s.target_enemy_default, s.power, s.spellid == 0xA4])]
     spellsets['Drain'] = [s for s in all_spells if s.draining]
     spellsets['Mana'] = [s for s in all_spells if s.concernsmp]
-    spellsets['Death'] = [s for s in all_spells if s.miss_if_death_prot]
-    spellsets['Multi'] = [s for s in all_spells if
-                          bin(s.elements).count('1') > 1]
+    spellsets['Death'] = [s for s in all_spells if s.miss_if_death_prot and
+                          not s.percentage and s.has_status]
+    spellsets['Heavy'] = [s for s in all_spells if s.miss_if_death_prot and
+                          s.percentage]
+    spellsets['Grim'] = [s for s in all_spells if s.miss_if_death_prot]
     spellsets['All'] = [s for s in all_spells if s.target_everyone and
                         not s.target_one_side_only]
     spellsets['Party'] = [s for s in all_spells if s.target_group_default and
@@ -357,7 +361,7 @@ def get_spellsets(spells=None):
     for key, value in spellsets.items():
         if type(value[0]) is int:
             spellsets[key] = [s for s in all_spells if s.spellid in value]
-        spellsets[key] = sorted(spellsets[key])
+        spellsets[key] = sorted(set(spellsets[key]))
 
     return spellsets
 
@@ -406,4 +410,5 @@ class RandomSpellSub(Substitution):
 
         self.spells = sorted(spells)
         self.name = spellclass
+
         return self.spells

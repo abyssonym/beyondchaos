@@ -13,7 +13,7 @@ bonus_ranks = {0: [0xFF, 0x0, 0x3, 0xD],
                1: [0x9, 0xB, 0xF],
                2: [0x1, 0x4, 0xA, 0xC, 0xE],
                3: [0x2, 0x5, 0x8, 0x10],
-               4: [0x6, 0x7]}
+               4: [0x6]}  # Lv -1 bonus decided elsewhere
 
 spells = None
 used = set([])
@@ -47,6 +47,9 @@ class EsperBlock:
         self.pointer = hex2int(pointer)
         self.name = name
         self.rank = int(rank)
+
+    def set_id(self, esperid):
+        self.id = esperid
 
     def read_data(self, filename):
         global spells

@@ -423,6 +423,7 @@ def espers_from_table(tablefile):
         while '  ' in line:
             line = line.replace('  ', ' ')
         c = EsperBlock(*line.split(','))
+        c.set_id(i)
         espers.append(c)
     return espers
 
@@ -1714,6 +1715,10 @@ def manage_espers():
         e.read_data(sourcefile)
         e.generate_spells()
         e.generate_bonus()
+
+    bonus_esper = random.choice([e for e in espers if e.id in [15, 16]])
+    bonus_esper.bonus = 7
+    for e in espers:
         e.write_data(outfile)
 
     manage_esper_boosts()

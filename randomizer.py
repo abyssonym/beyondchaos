@@ -1613,10 +1613,10 @@ def manage_esper_boosts():
     esper_boost_sub.bytestring = [
         0xE2, 0x20,        # SEP #$20
         0xB9, 0x08, 0x16,  # LDA $1608,Y (load level)
-        0xC9, 0x01,        # Are we level 1?
-        0xD0, 0x01,        # Branch if not.
+        0xC9, 0x02,        # CMP Are we level 2?
+        0xD0, 0x01,        # BNE Branch if not.
         0x60,              # RTS
-        0x3A, 0x3A,        # DEC, DEC
+        0x3A, 0x3A,        # DEC, DEC (decrease two levels)
         0x99, 0x08, 0x16,  # STA $1608,Y
         0xC2, 0x20,        # REP #$20
         0xA9, 0x00, 0x00,  # LDA #$0000
@@ -1658,8 +1658,37 @@ def manage_esper_boosts():
         0xB9, 0x11, 0x16,  # LDA $1611,Y
         0x0A, 0x0A, 0x0A,  # ASL, ASL, ASL
         0x99, 0x11, 0x16,  # STA $1611,Y
+        0x20, None, None,  # JSR to below subroutine
+        0x20, None, None,  # JSR
+        0x60,              # RTS
+
+        # RANDOMLY LOWER ONE STAT
+        0xBB,              # TYX
+        0x20, 0x5A, 0x4B,  # JSR get random number
+        0x29, 0x03,        # AND limit to 0-3
+        0xC9, 0x00,        # CMP is it zero?
+        0xF0, 0x04,        # BEQ skip 4 bytes
+        0xE8, 0x3A,        # INX, DEC
+        0x80, 0xF8,        # BRA to beginning of loop
+        0xBD, 0x1A, 0x16,  # LDA $161A,X (random stat)
+        0x3A,              # DEC decrease stat by 1
+        0xC9, 0x00,        # CMP is it zero?
+        0xD0, 0x01,        # BNE skip 1 byte
+        0x1A,              # INC stat
+        0x9D, 0x1A, 0x16,  # STA $161A,X
         0x60,              # RTS
         ]
+    assert esper_boost_sub.bytestring.count(0x60) == 3
+    indices = [i for (i, x) in enumerate(esper_boost_sub.bytestring)
+               if x == 0x60]
+    subpointer = indices[1] + 1
+    subpointer = pointer2 + subpointer
+    a, b = subpointer & 0xFF, (subpointer >> 8) & 0xFF
+    while None in esper_boost_sub.bytestring:
+        index = esper_boost_sub.bytestring.index(None)
+        esper_boost_sub.bytestring[index:index+2] = [a, b]
+    assert None not in esper_boost_sub.bytestring
+
     esper_boost_sub.write(outfile)
 
     esper_boost_sub.set_location(0x2615C)

@@ -27,7 +27,7 @@ from formationrandomizer import Formation, FormationSet
 from locationrandomizer import Location, Zone
 
 
-VERSION = "16"
+VERSION = "17"
 VERBOSE = False
 
 

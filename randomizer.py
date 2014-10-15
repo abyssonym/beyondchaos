@@ -1384,7 +1384,7 @@ def manage_character_appearance(wild=True, preserve_graphics=False,
         change_to = dict(zip(char_ids, [0x05] * 100))
     else:
         female = [0, 0x06, 0x08]
-        female += [c for c in [0x0A, 0x0C, 0x0D, 0x0E, 0x0F, 0x14] if
+        female += [c for c in [0x03, 0x0A, 0x0C, 0x0D, 0x0E, 0x0F, 0x14] if
                    random.choice([True, False])]
         female = [c for c in char_ids if c in female]
         male = [c for c in char_ids if c not in female]
@@ -1716,10 +1716,39 @@ def manage_espers():
         e.generate_spells()
         e.generate_bonus()
 
-    bonus_esper = random.choice([e for e in espers if e.id in [15, 16]])
-    bonus_esper.bonus = 7
-    for e in espers:
+    bonus_espers = [e for e in espers if e.id in [15, 16]]
+    random.shuffle(bonus_espers)
+    bonus_espers[0].bonus = 7
+    bonus_espers[1].add_spell(0x14, 1)
+    for e in sorted(espers, key=lambda e: e.name):
         e.write_data(outfile)
+
+    ragnarok_sub = Substitution()
+    ragnarok_sub.set_location(0xC0B37)
+    ragnarok_sub.bytestring = [0xB2, 0x58, 0x0B, 0x02, 0xFE]
+    ragnarok_sub.write(outfile)
+    pointer = ragnarok_sub.location + len(ragnarok_sub.bytestring) + 1
+    a, b = pointer & 0xFF, (pointer >> 8) & 0xFF
+    c = 2
+    ragnarok_sub.set_location(0xC557B)
+    ragnarok_sub.bytestring = [0xD4, 0xDB,
+                               0xDD, 0x99,
+                               0x6B, 0x6C, 0x21, 0x08, 0x08, 0x80,
+                               0xB2, a, b, c]
+    ragnarok_sub.write(outfile)
+    ragnarok_sub.set_location(pointer)
+    # CA5EA9
+    ragnarok_sub.bytestring = [0xB2, 0xA9, 0x5E, 0x00,  # event stuff
+                               0x5C,
+                               0xF4, 0x67,  # SFX
+                               0xB2, 0xD5, 0x9A, 0x02,  # GFX
+                               0x4B, 0x3B, 0x84,
+                               0xB2, 0xD5, 0x9A, 0x02,  # GFX
+                               0xF4, 0x8D,  # SFX
+                               0x86, 0x46,  # receive esper
+                               0xFE,
+                               ]
+    ragnarok_sub.write(outfile)
 
     manage_esper_boosts()
     return espers

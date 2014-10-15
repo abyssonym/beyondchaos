@@ -71,6 +71,14 @@ class EsperBlock:
         f.write(chr(self.bonus))
         f.close()
 
+    def get_candidates(self, rank, set_lower=True):
+        candidates = get_candidates(rank, set_lower=set_lower)
+        ultima = [s for s in candidates if s.name == "Ultima"]
+        if ultima:
+            ultima = ultima[0]
+            candidates.remove(ultima)
+        return candidates
+
     def generate_spells(self):
         global used
 
@@ -81,19 +89,21 @@ class EsperBlock:
         rank = min(rank, max(rankbounds.keys()))
 
         if random.randint(1, 10) != 10:
-            candidates = get_candidates(rank)
-            s = random.choice(candidates)
-            self.spells.append(s)
-            used.add(s)
+            candidates = self.get_candidates(rank)
+            if candidates:
+                s = random.choice(candidates)
+                self.spells.append(s)
+                used.add(s)
 
         rank = self.rank
         for _ in xrange(random.randint(0, 2) + random.randint(0, 2)):
-            candidates = get_candidates(rank, set_lower=False)
-            s = random.choice(candidates)
-            if s in self.spells:
-                continue
-            self.spells.append(s)
-            used.add(s)
+            candidates = self.get_candidates(rank, set_lower=False)
+            if candidates:
+                s = random.choice(candidates)
+                if s in self.spells:
+                    continue
+                self.spells.append(s)
+                used.add(s)
 
         self.spells = sorted(self.spells, key=lambda s: s.spellid)
         self.learnrates = []
@@ -120,4 +130,15 @@ class EsperBlock:
         candidates = []
         for i in range(rank+1):
             candidates.extend(bonus_ranks[i])
-        self.bonus = random.choice(candidates)
+        if candidates:
+            self.bonus = random.choice(candidates)
+
+    def add_spell(self, spellid, learnrate):
+        spell = [s for s in spells if s.spellid == spellid][0]
+        spellrates = zip(self.spells, self.learnrates)
+        spellrates.append((spell, learnrate))
+        if len(spellrates) > 5:
+            spellrates = sorted(spellrates, key=lambda (s, l): s.rank())
+            spellrates = spellrates[1:]
+        spellrates = sorted(spellrates, key=lambda (s, l): s.spellid)
+        self.spells, self.learnrates = zip(*spellrates)

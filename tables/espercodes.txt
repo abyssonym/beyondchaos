@@ -23,5 +23,5 @@
 186ef2,Golem,2
 186efd,Unicorn,1
 186f08,Fenrir,2
-186f13,Starlet,2
-186f1e,Phoenix,3
+186f13,Starlet,3
+186f1e,Phoenix,4

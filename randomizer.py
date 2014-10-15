@@ -2183,8 +2183,9 @@ def manage_locations(colorize=True, encounters=True):
                            "ebot's rock", "kefka's tower"]
 
         for name in locdict:
-            if name == "fanatics tower":
+            if "fanatics tower" in name:
                 encrates[name] = random.randint(2, 3)
+            else:
                 for n in change_dungeons:
                     if n in name and random.randint(1, 3) == 3:
                         encrates[name] = random.randint(1, 3)

@@ -31,6 +31,10 @@ class Formation():
         return self.misc1 & 0x40
 
     @property
+    def back_prohibited(self):
+        return self.misc1 & 0x20
+
+    @property
     def battle_event(self):
         return any([m.battle_event for m in self.present_enemies])
 
@@ -70,6 +74,10 @@ class Formation():
     @property
     def present_enemies(self):
         return [e for e in self.enemies if e]
+
+    @property
+    def ambusher(self):
+        return any([e.ambusher for e in self.present_enemies])
 
     def set_attack_type(self, normal=True, back=False,
                         pincer=False, side=False):
@@ -231,11 +239,14 @@ class Formation():
     def exp(self):
         return sum(e.stats['xp'] for e in self.present_enemies)
 
-    def mutate(self):
-        if self.ap is not None:
+    def mutate(self, ap=False):
+        if ap and self.ap is not None:
             while random.choice([True, False]):
                 self.ap += random.randint(-1, 1)
                 self.ap = min(100, max(self.ap, 0))
+        if self.ambusher:
+            if not (self.pincer_prohibited and self.back_prohibited):
+                self.misc1 |= 0x90
 
     def get_special_ap(self):
         levels = [e.stats['level'] for e in self.present_enemies if e]

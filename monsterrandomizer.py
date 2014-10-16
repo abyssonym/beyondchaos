@@ -48,6 +48,7 @@ class MonsterBlock:
         self.width, self.height = None, None
         self.miny, self.maxy = None, None
         self.aiscript = None
+        self.ambusher = False
 
     @property
     def is_boss(self):
@@ -527,8 +528,12 @@ class MonsterBlock:
         if self.is_boss:
             if random.randint(1, 200) == 200:
                 self.misc2 = self.misc2 ^ 0x08
-        elif random.randint(1, 30) == 30:
-            self.misc2 = self.misc2 ^ 0x08
+        elif random.randint(1, 20) == 20:
+            if random.choice([True, False]):
+                self.misc2 = self.misc2 ^ 0x08
+            else:
+                self.ambusher = True
+                self.misc2 |= 0x01
 
         if random.randint(1, 10) == 10:
             self.misc2 = self.misc2 ^ 0x10  # invert scan bit

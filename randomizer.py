@@ -1878,6 +1878,9 @@ def manage_formations(formations, fsets):
     for formation in sorted(indoor_formations, key=lambda fo: fo.formid):
         formation.set_music(6)
         formation.set_continuous_music()
+
+    for formation in formations:
+        formation.mutate(ap=False)
         formation.write_data(outfile)
 
     return formations
@@ -1885,7 +1888,7 @@ def manage_formations(formations, fsets):
 
 def manage_formations_hidden(formations, fsets, esper_graphics=None):
     for f in formations:
-        f.mutate()
+        f.mutate(ap=True)
 
     freespaces = []
     freespaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))

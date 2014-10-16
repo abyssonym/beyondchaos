@@ -27,7 +27,7 @@ from formationrandomizer import Formation, FormationSet
 from locationrandomizer import Location, Zone
 
 
-VERSION = "17"
+VERSION = "18"
 VERBOSE = False
 
 
@@ -1151,7 +1151,10 @@ def activate_airship_mode(freespace=0xCFE2A):
     set_airship_sub.set_location(0xCC2F3)
     set_airship_sub.write(outfile)
 
-    # a/f5a8
+    # Daryl is not such an airship hog
+    set_airship_sub.bytestring = [0x32, 0xF5]
+    set_airship_sub.set_location(0x41F41)
+    set_airship_sub.write(outfile)
 
 
 def manage_rng():
@@ -1565,7 +1568,6 @@ def manage_equipment(items, characters):
                     if equipped.has_disabling_status:
                         f.seek(c.address + equip_offsets[equiptype])
                         f.write(chr(0xFF))
-                        print c.name
             f.close()
             continue
 

@@ -182,11 +182,12 @@ class ItemBlock:
         spell = spells[index]
         return spell, index / float(len(spells))
 
-    def mutate_feature(self):
+    def mutate_feature(self, feature=None):
         if self.is_consumable or self.is_tool:
             return
 
-        feature = random.choice(STATPROTECT.keys())
+        if feature is None:
+            feature = random.choice(STATPROTECT.keys())
         self.features[feature] = bit_mutate(self.features[feature], op="on",
                                             nochange=STATPROTECT[feature])
 

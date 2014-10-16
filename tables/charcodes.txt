@@ -26,5 +26,5 @@
 2D7EC6,Kurin
 2D7EDC,Kuru
 2D7EF2,Kamog
-#2D7F60,Wedge
-#2D7F76,Vicks
+2D7F60,Wedge
+2D7F76,Vicks

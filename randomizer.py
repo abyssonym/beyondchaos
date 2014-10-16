@@ -1555,6 +1555,18 @@ def manage_equipment(items, characters):
     reset_equippable(items)
     for c in characters:
         if c.id > 13:
+            f = open(outfile, 'r+b')
+            for equiptype in ['weapon', 'shield', 'helm', 'armor',
+                              'relic1', 'relic2']:
+                f.seek(c.address + equip_offsets[equiptype])
+                equipid = ord(f.read(1))
+                if equipid != 0xFF:
+                    equipped = [i for i in items if i.itemid == equipid][0]
+                    if equipped.has_disabling_status:
+                        f.seek(c.address + equip_offsets[equiptype])
+                        f.write(chr(0xFF))
+                        print c.name
+            f.close()
             continue
 
         equippable_items = filter(lambda i: i.equippable & (1 << c.id), items)
@@ -2183,6 +2195,9 @@ def manage_locations(colorize=True, encounters=True):
                            "ebot's rock", "kefka's tower"]
 
         for name in locdict:
+            if type(name) is not str:
+                continue
+
             if "fanatics tower" in name:
                 encrates[name] = random.randint(2, 3)
             else:

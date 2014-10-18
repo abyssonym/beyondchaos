@@ -1,0 +1,264 @@
+000:World of Balance
+001:World of Ruin
+002:Serpent Trench
+006:Setzer's Airship (black background)
+007:Setzer's Airship--Rooms
+009:Scenario Selection Screen
+00A:Setzer's Airship, flying through the sky
+00B:Darryl's Airship, with Darryl at the helm
+00C:Setzer's Airship--Casino Room (no exits)
+00D:Setzer's Airship, party standing on deck
+00E:Chocobo Stable (World of Balance)
+00F:Houses in South Figaro
+010:Chocobo Stable (World of Ruin)
+011:Airship (World of Ruin, Bahamut magicite received)
+012:Narshe (WoB)-Mountaintop cliff (from intro)
+013:Narshe (WoB) (from intro--some places are inaccessible)
+014:Narshe (WoB) (normal)
+015:Narshe-Mountains between Narshe and the caves above Narshe
+016:Narshe-Mountaintop maze above Narshe
+017:Narshe-Mountaintop cliff (normal)
+018:Narshe-Weapon Shop
+019:Narshe-Armor Shop
+01A:Narshe-Item Shop
+01B:Narshe-Relic Shop
+01C:Narshe-Inn
+01D:Narshe-Cafe
+01E:Narshe-Elder's House
+01F:Chocobo Stable
+020:Narshe (WoR)
+021:Narshe (WoR)-Mountains between Narshe and the caves above Narshe
+022:Narshe (WoR)-Mountaintop maze above Narshe (Ice Dragon)
+023:Narshe (WoR)-Mountaintop cliff
+024:Narshe Caves (Mag Roader?)
+025:Underneath Narshe
+026:Moogle's Cave
+027:Narshe-Mountain Path to Maze
+028:Narshe Caves (no enemies)
+029:Narhse Caves (beginning)
+02C:Underneath Narshe (doesn't work)
+02F:South Figaro (doesn't work)
+032:Underneath Narshe
+037:Figaro Castle
+039:Figaro Castle-various rooms
+03B:Figaro Castle-various rooms
+03D:Figaro Castle-various basement rooms
+044:Cave to South Figaro (World of Ruin)
+045:Cave to South Figaro (World of Balance)
+04A:South Figaro (World of Ruin)
+04B:South Figaro (World of Balance)
+051:South Figaro-Large House
+053:South Figaro-Large House, basement
+054:South Figaro-Duncan's House, basement
+056:South Figaro-Duncan's House
+058:South Figaro-Inn
+05E:Nikeah (?)-Some rooms (as well as Cid's house on the Solitary Island)
+060:Mt. Kolts
+061:Mt. Kolts with Fog
+062:Mt. Kolts-last area (where Vargas is)
+064:Mt. Kolts-Inner caves
+069:Classroom-Advanced Battle Tactics
+06A:Classroom-Battle Tactics
+06B:Classroom-Environmental Science
+06D:Returners' Hideout
+06F:Returners' Hideout-Inn
+071:Lete River
+072:Lete River-Inner Caves
+073:Crazy Old Man's House
+074:Albrook-Shops
+075:Imperial Camp
+078:Doma Castle-from poison scene?
+079:Doma Castle-World of Balance
+07B:Doma Castle-inner rooms
+07D:Doma Castle-dimmed with enemies (from Cyan's dream)
+07E:Doma Castle-dimmed rooms with enemies (from Cyan's dream)
+07F:Duncan's House--World of Ruin
+083:Crazy Old Man's House--World of Ruin
+084:Phantom Forest--Entrance
+085:Phantom Forest--Recovery Spring
+086:Phantom Forest--Exit
+087:Phantom Forest--to train platform
+089:Phantom Train Platform--Train left, Cyan sad
+08E:Phantom Train
+090:Phantom Train--Switch car, from Cyan's dream
+091:Phantom Train--Seating car
+092:Phantom Train--Engine room
+093:Phantom Train--Dining car
+095:Phantom Train--Seating car 2
+097:Phantom Train--Rroom car 1
+098:Phantom Train--Car with ghost
+099:Phantom Train--Save point
+09B:Baren Falls--Cave
+09C:Baren Falls--Cliff
+09D:Mobliz--World of Balance
+09E:Mobliz--World of Ruin
+09F:Riverbank where Gau finds the party
+0A0:Mobliz--Inn
+0A1:Mobliz--Arsenal
+0A2:Mobliz--Relics
+0A3:Mobliz--Armor Shop
+0A4:Mobliz--Item Shop
+0A5:Mobliz--Wounded Soldier's House
+0A6:Baren Falls--Entrance
+0A7:Mt. Crescent
+0A8:River leading to Serpent Trench
+0A9:Nikeah--World of Balance
+0AA:Riverbank with Clyde and Baram
+0AF:Serpent Trench--Caves
+0B0:Mt. Zozo--Outside
+0B1:Mt. Zozo--Outside, cliff with treasure chest
+0B2:Mt. Zozo--Outside, cliff connecting dragon room to Cyan's room
+0B3:Mt. Zozo--First inner chamber
+0B5:Mt. Zozo--Cliff outside Cyan's room
+0B9:Colloseum Builder's House--World of Balance
+0BB:Nikeah--Port
+0BC:Kohlingen--World of Balance
+0BD:Kohlingen--World of Ruin
+0BF:Kohlingen--Inn
+0C0:Kohlingen--?
+0C1:Kohlingen--Arsenal
+0C2:Kohlingen--General Store
+0C6:Jidoor--World of Balance
+0C8:Jidoor--Auction House
+0C9:Jidoor--Item Shop
+0CA:Jidoor--Relics
+0CB:Jidoor--Armor Shop
+0CC:Jidoor--Weapon Shop
+0CE:Jidoor--Inn
+0CF:Jidoor--Owzer's House (dimmed, enemies)
+0D0:Jidoor--Owzer's House (dimmed, no enemies)
+0D1:Jidoor--Owzer's House
+0D7:Airship flying scene
+0D8:Gestahl, Madonna, and Maduin outside Esperville
+0D9:Esperville
+0DA:Esper Cave
+0DB:Esperville Houses
+0DD:Zozo
+0E1:Zozo--Buildings
+0E2:Zozo--Buildings
+0E7:Opera House--Stage, dancing
+0E9:Opera House--Stage, fighting
+0EB:Opera House--Rafters
+0EC:Opera House--Castle Scene
+0EF:Opera House--Rafters (alone)
+0F2:Vector
+0F3:Vector--Imperial Castle
+0F4:Vector--Imperial Castle, roof
+0F5:Vector--Inn
+0F6:Vector--Weapon Shop
+0F7:Vector--Cafe
+0F8:Vector--Armor Shop
+0F9:Vector--?
+0FA:Vector--Imperial Castle, inside
+0FD:Vector--on fire
+106:Magitek Factory--Inside
+107:Magitek Factory--Inside, 2nd
+108:Magitek Factory--Chamber where Shiva and Ifrit are found
+10A:Magitek Factory--Elevator with Cid
+112:Magitek Research Facility--Tube Room
+114:The place Zone Eater sucks you into
+116:Gogo's Room
+119:Umaro's Lair
+11C:Maranda--World of Balance
+11D:Doma (after liberation?)
+11F:Kefka's Domain
+120:(?)--Inn
+121:(?)--Weapon Shop
+122:(?)--Armor Shop
+125:Kefka's Domain
+126:Kefka's Domain
+127:Kefka's Domain
+128:Kefka's Domain
+129:Daryll's Tomb
+12A:Daryll's Tomb--Basement 1
+12B:Daryll's Tomb--Basement 2
+12C:Daryll's Tomb--Basement 3
+12D:Daryll's Tomb--Long Staircase
+12F:Kefka's Domain
+131:Tzen--World of Ruin, predestruction
+132:Tzen--World of Ruin, postdestruction
+133:Jidoor (WoR)--Item Shop
+134:Jidoor (WoR)--Inn
+135:Jidoor (WoR)--Weapon Shop
+136:Jidoor (WoR)--Armor Shop
+138:Jidoor (WoR)--Relics
+139:Phoenix Cave--Small Lava Room
+13A:Phoenix Cave--Foggy Lava Room
+13B:Phoenix Cave--Top Level
+13E:Phoenix Cave--Entrance
+13F:Mountain Cliff from Cyan's dream
+140:Mines from Cyan's dream
+141:Switch car from Cyan's dream
+142:Seating car from Cyan's dream
+143:Albrook--World of Balance
+144:Albrook--World of Ruin
+145:Albrook--Inn
+146:Albrook--Weapon Shop
+147:Albrook--Armor Shop
+148:Albrook--Item Shop
+14A:Albrook--Cafe
+14C:Albrook--Docks
+14E:Kefka's Domain--Main Area
+150:Final Room--Confrontation with Kefka
+151:Kefka's Domain--Room with Weights and Switches
+154:Thamasa--World of Balance
+155:Thamasa--World of Balance (people lying on ground)
+157:Thamasa--World of Balance
+158:Thamasa--World of Ruin
+159:Thamasa--Arsenal
+15A:Thamasa--Inn
+15B:Thamasa--Item Shop
+15C:Thamasa--Elder's House
+15F:Thamasa--Burning House
+160:Magitek Research Facility
+161:Cave in the Veldt
+162:Kefka's Domain--Goddess room, etc.
+164:Final Room--Confrontation with Kefka
+165:Final Room--Confrontation with Kefka
+166:Floating Island--Save Point
+167:Fanatics Tower
+168:Fanatics Tower
+169:Fanatics Tower
+16A:Fanatics Tower--Entrance
+16B:Fanatics Tower
+16C:Fanatics Tower--Roof
+16D:Fanatics Tower--Treasure Room
+16E:Fanatics Tower--Treasure Room, on roof
+16F:Fanatics Tower--Treasure Room
+170:Fanatics Tower--Treasure Room, White Dragon
+171:Fanatics Tower--Treasure Room
+172:Fanatics Tower--Treasure Room
+173:Cave near Thamasa, with the Three Statues
+175:Cave near Thamasa, outside cliffs, left
+176:Cave near Thamasa, outside cliffs, right
+177:Cave near Thamasa, Esper room
+179:Imperial Base
+17A:Rooms in Vector and Imperial Base
+17B:Rooms in Vector and Imperial Base
+17C:Large Overworld Map (from Floating Island)
+17E:Cave to the Sealed Gate
+17F:Cave to the Sealed Gate--Basement 1
+180:Cave to the Sealed Gate--Basement 1 (Lava colored)
+181:Cave to the Sealed Gate--Small Lava Room with moving bridges
+182:Cave to the Sealed Gate--Basement 4
+183:Cave to the Sealed Gate--Basement 4
+186:Land that rises and breaks for the World of Ruin
+187:Sealed Gate
+188:Jidoor--Floating Island casting shadow
+189:Floating Island--being destroyed, Naughtys attack
+18A:Floating Island
+18B:Piece of land that gets torn apart
+18C:Cid's House on Solitary Island--Outside
+18E:Solitary Island--Beach
+18F:Solitary Island--Cliff
+190:Solitary Island--Beach
+191:Caves to the Ancient Castle
+192:Caves to the Ancient Castle
+194:Hidon's Cave
+195:Hidon's Cave
+196:Ancient Castle--Basement 1
+197:Ancient Castle--Entrance
+198:Ancient Castle--Basement 1
+199:Kefka's Domain--Pipe Room
+19A:Kefka's Domain
+19D:Colloseum--Rooms

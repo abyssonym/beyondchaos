@@ -21,6 +21,7 @@ CHARACTER_PALETTE_TABLE = path.join("tables", "charpaloptions.txt")
 EVENT_PALETTE_TABLE = path.join("tables", "eventpalettes.txt")
 MALE_NAMES_TABLE = path.join("tables", "malenames.txt")
 FEMALE_NAMES_TABLE = path.join("tables", "femalenames.txt")
+MAP_NAMES_TABLE = path.join("tables", "mapnames.txt")
 
 
 class Substitution(object):

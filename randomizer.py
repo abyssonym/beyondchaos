@@ -24,7 +24,7 @@ from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
 from formationrandomizer import Formation, FormationSet
-from locationrandomizer import Location, Zone
+from locationrandomizer import Location, Zone, EntranceSet, get_locations
 
 
 VERSION = "18"
@@ -2210,7 +2210,7 @@ def manage_locations(colorize=True, encounters=True):
                     if n in name and random.randint(1, 3) == 3:
                         encrates[name] = random.randint(1, 3)
 
-    locations = [Location(i) for i in range(415)]
+    locations = get_locations()
     paldict = {}
     for l in locations:
         l.read_data(sourcefile)
@@ -2294,6 +2294,41 @@ def manage_locations(colorize=True, encounters=True):
         encrate_sub.set_location(0xC2BF)
         encrate_sub.bytestring = dungeon_rates
         encrate_sub.write(outfile)
+
+
+def create_dimensional_vortex():
+    entrancesets = []
+    entrances = []
+    for i in xrange(512):
+        e = EntranceSet(i)
+        e.read_data(sourcefile)
+        entrancesets.append(e)
+        entrances.extend(e.entrances)
+
+    entrances = sorted(set(entrances))
+
+    entrances2 = list(entrances)
+    random.shuffle(entrances2)
+    for a, b in zip(entrances, entrances2):
+        s = ""
+        for z in entrances:
+            if z == b or (z.location.locid & 0x1FF) != (b.dest & 0x1FF):
+                continue
+            value = abs(z.x - b.destx) + abs(z.y - b.desty)
+            if value <= 3:
+                break
+            else:
+                s += "%s " % value
+        else:
+            continue
+        if (b.dest & 0x1FF) == (a.location.locid & 0x1FF):
+            continue
+        a.dest, a.destx, a.desty = b.dest, b.destx, b.desty
+
+    entrancesets = entrancesets[:0x19F]
+    nextpointer = 0x1FBB00 + (len(entrancesets) * 2)
+    for e in entrancesets:
+        nextpointer = e.write_data(outfile, nextpointer)
 
 
 def randomize_enemy_name(filename, enemy_id):
@@ -2392,6 +2427,13 @@ if __name__ == "__main__":
         flags = flags.replace('suplexwrecks', '')
         if VERBOSE:
             print "SECRET CODE: SUPLEX MODE ACTIVATED"
+
+    BIZARRE_MODE = False
+    if 'strangejourney' in flags:
+        BIZARRE_MODE = True
+        flags = flags.replace('strangejourney', '')
+        if VERBOSE:
+            print "SECRET CODE: BIZARRE ADVENTURE ACTIVATED"
 
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
@@ -2494,6 +2536,9 @@ if __name__ == "__main__":
 
     if SUPLEX_MODE:
         manage_suplex(commands, characters, monsters)
+
+    if BIZARRE_MODE:
+        create_dimensional_vortex()
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):

@@ -24,10 +24,10 @@ from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
 from formationrandomizer import Formation, FormationSet
-from locationrandomizer import Location, Zone, EntranceSet, get_locations
+from locationrandomizer import Zone, EntranceSet, get_locations
 
 
-VERSION = "18"
+VERSION = "19"
 VERBOSE = False
 
 

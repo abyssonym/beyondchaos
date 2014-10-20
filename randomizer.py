@@ -2210,10 +2210,9 @@ def manage_locations(colorize=True, encounters=True):
                     if n in name and random.randint(1, 3) == 3:
                         encrates[name] = random.randint(1, 3)
 
-    locations = get_locations()
+    locations = get_locations(sourcefile)
     paldict = {}
     for l in locations:
-        l.read_data(sourcefile)
         if l.formation in locdict:
             name = locdict[l.formation]
             if l.name and name != l.name:

@@ -1,5 +1,5 @@
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
-                   utilrandom as random)
+                   decompress, line_wrap, utilrandom as random)
 
 
 locations = None
@@ -69,6 +69,28 @@ class Location():
         else:
             return self.altname
 
+    def set_entrance_set(self, eset):
+        self.entrance_set = eset
+
+    def get_reachable_entrances(self, x, y):
+        entrances = self.entrance_set.entrances
+        walkable = self.walkable
+        walked = set([])
+        unchecked = set([(x, y)])
+        while True:
+            termval = len(walked)
+            for x, y in list(unchecked):
+                walked.add((x, y))
+                for a, b in [(x, y+1), (x, y-1), (x+1, y), (x-1, y)]:
+                    value = walkable[b][a]
+                    if value == 0 and (a, b) not in walked:
+                        unchecked.add((a, b))
+            if termval == len(walked):
+                break
+        for (x, y) in list(walked):
+            walked |= set([(x, y+1), (x, y-1), (x+1, y), (x-1, y)])
+        return [e for e in entrances if (e.x, e.y) in walked]
+
     @property
     def battlebg(self):
         return self._battlebg & 0x7F
@@ -88,6 +110,45 @@ class Location():
         #if self.palette_index == 0x2a:
         #    return 0x2dee80  # to 0x2def60
 
+    @property
+    def walkable(self):
+        indexes = map(ord, self.map1bytes)
+        walkables = []
+        for i in indexes:
+            #i = i * 2
+            properties1 = (ord(self.tilebytes[i+1]) << 8) | ord(self.tilebytes[i])
+            if properties1 & 0b100:
+                walkables.append(1)
+            else:
+                walkables.append(0)
+        return line_wrap(walkables, width=self.layer1width)
+
+    @property
+    def pretty_walkable(self):
+        walkable = self.walkable
+        s = ""
+        for line in walkable:
+            s += "".join([' ' if i == 0 else '*' for i in line])
+            s += "\n"
+        return s.strip()
+
+    @property
+    def layer1ptr(self):
+        return self.mapdata & 0x3FF
+
+    @property
+    def layer1width(self):
+        width = (self.layer12dimensions & 0xC0) >> 6
+        return [16, 32, 64, 128][width]
+
+    @property
+    def layer2ptr(self):
+        return (self.mapdata >> 10) & 0x3FF
+
+    @property
+    def layer3ptr(self):
+        return (self.mapdata >> 20) & 0x3FF
+
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer + 0x2)
@@ -95,19 +156,48 @@ class Location():
         f.seek(self.pointer + 0x5)
         self.attacks = ord(f.read(1))
         f.seek(self.pointer + 0x4)
-        self.tileproperties = ord(f.read(1))
+        self.tileproperties = ord(f.read(1))  # mult by 2
         f.seek(self.pointer + 0xB)
         self.tileformations = read_multi(f, length=2, reverse=True)
         f.seek(self.pointer + 0xD)
         self.mapdata = read_multi(f, length=4)
         f.seek(self.pointer + 0x12)
         self.bgshift = map(ord, f.read(4))
+        f.seek(self.pointer + 0x17)
+        self.layer12dimensions = ord(f.read(1))
         f.seek(self.pointer + 0x19)
         self.palette_index = read_multi(f, length=3)
         f.seek(self.pointer + 0x1C)
         self.music = ord(f.read(1))
+        f.seek(self.pointer + 0x1D)
+        self.mystery = ord(f.read(1))
+        self.width = ord(f.read(1))
+        self.height = ord(f.read(1))
+        self.layerpriorities = ord(f.read(1))
         f.seek(self.formationpointer)
         self.formation = ord(f.read(1))
+
+        f.seek(0x19CD90 + (3*self.layer1ptr))
+        mapdataptr = 0x19D1B0 + read_multi(f, length=3)
+        f.seek(mapdataptr)
+        mapsize = read_multi(f, length=2) - 2
+        mapdata = f.read(mapsize)
+        self.map1bytes = decompress(mapdata, complicated=True)
+        f.seek(0x19CD90 + (3*self.layer2ptr))
+
+        mapdataptr = 0x19D1B0 + read_multi(f, length=3)
+        f.seek(mapdataptr)
+        mapsize = read_multi(f, length=2) - 2
+        mapdata = f.read(mapsize)
+        self.map2bytes = decompress(mapdata, complicated=True)
+
+        f.seek(0x19CD10 + (2*self.tileproperties))
+        tilepropptr = read_multi(f, length=2)
+        f.seek(0x19a800 + tilepropptr)
+        tilesize = read_multi(f, length=2) - 2
+        tiledata = f.read(tilesize)
+        self.tilebytes = decompress(tiledata, complicated=True)
+        assert len(self.tilebytes) == 512
         f.close()
 
     def write_data(self, filename):
@@ -122,12 +212,13 @@ class Location():
         write_multi(f, self.palette_index, length=3)
         f.seek(self.pointer + 0x1C)
         f.write(chr(self.music))
+        f.seek(self.pointer + 0x1E)
+        f.write(chr(self.width))
+        f.write(chr(self.height))
+        f.write(chr(self.layerpriorities))
         f.seek(self.formationpointer)
         f.write(chr(self.formation))
         f.close()
-
-
-entrance_pool = {}
 
 
 class Entrance():
@@ -146,6 +237,9 @@ class Entrance():
         self.desty = ord(f.read(1))
         f.close()
 
+    def set_id(self, entid):
+        self.entid = entid
+
     def set_location(self, location):
         self.location = location
 
@@ -162,6 +256,14 @@ class Entrance():
             return loc
         except IndexError:
             return None
+
+    @property
+    def reachable_entrances(self):
+        if hasattr(self, "_entrances"):
+            return self._entrances
+        entrances = self.location.get_reachable_entrances(self.x, self.y)
+        self._entrances = entrances
+        return entrances
 
     def write_data(self, filename, nextpointer):
         f = open(filename, 'r+b')
@@ -186,6 +288,7 @@ class EntranceSet():
         self.location = [l for l in locations if l.locid == self.entid]
         if self.location:
             self.location = self.location[0]
+            self.location.set_entrance_set(self)
         else:
             self.location = None
 
@@ -203,7 +306,9 @@ class EntranceSet():
         assert self.end == self.start + (6*n)
         self.entrances = []
         for i in xrange(n):
-            self.entrances.append(Entrance(0x1fbb00 + self.start + (i*6)))
+            e = Entrance(0x1fbb00 + self.start + (i*6))
+            e.set_id(i)
+            self.entrances.append(e)
         for e in self.entrances:
             e.read_data(filename)
             e.set_location(self.location)
@@ -221,16 +326,22 @@ class EntranceSet():
         return nextpointer
 
 
-def get_locations():
+def get_locations(filename=None):
     global locations
     if locations is None:
         locations = [Location(i) for i in range(415)]
+        if filename is not None:
+            print "Decompressing location data, please wait."
+            for l in locations:
+                l.read_data(filename)
+            print "Decompression complete."
     return locations
 
 
 if __name__ == "__main__":
-    for i in xrange(415):
-        print "%x" % i,
-        l = Location(i)
-        l.read_data("program.rom")
-        print "%x %x %x" % (l.pointer, l.battlebg, l.mapdata)
+    locations = get_locations("program.rom")
+    entrancesets = []
+    for i in xrange(512):
+        e = EntranceSet(i)
+        e.read_data("program.rom")
+        entrancesets.append(e)

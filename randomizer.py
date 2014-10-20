@@ -1933,6 +1933,10 @@ def manage_formations_hidden(formations, fsets, esper_graphics=None):
                                     single_enemy_formations)
 
     def safe_boss_validator(formation):
+        if formation in unused_formations:
+            return False
+        if formation.formid in REPLACE_FORMATIONS + NOREPLACE_FORMATIONS:
+            return False
         if not any([m.boss_death for m in formation.present_enemies]):
             return False
         if formation.battle_event:
@@ -1940,9 +1944,9 @@ def manage_formations_hidden(formations, fsets, esper_graphics=None):
         if any("Phunbaba" in m.name for m in formation.present_enemies):
             return False
         return True
-    safe_boss_formations = filter(safe_boss_validator, single_enemy_formations)
+    safe_boss_formations = filter(safe_boss_validator, formations)
     sorted_bosses = sorted([m for m in monsters if m.boss_death],
-                    key=lambda m: m.stats['level'])
+                           key=lambda m: m.stats['level'])
 
     '''
     blacklisted = []
@@ -2063,7 +2067,7 @@ def manage_formations_hidden(formations, fsets, esper_graphics=None):
 
     boss_candidates = list(safe_boss_formations)
     boss_candidates = random.sample(boss_candidates,
-                                    random.randint(0, len(boss_candidates)/3))
+                                    random.randint(0, len(boss_candidates)/2))
     rare_candidates = list(repurposed_formations + boss_candidates)
     random.shuffle(fsets)
     for fs in fsets:

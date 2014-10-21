@@ -27,7 +27,7 @@ from formationrandomizer import Formation, FormationSet
 from locationrandomizer import Zone, EntranceSet, get_locations
 
 
-VERSION = "19"
+VERSION = "20"
 VERBOSE = False
 
 

@@ -90,6 +90,7 @@ class ItemBlock:
         #usable_field = self.itemtype & 0x40
 
         self.equippable = read_multi(f, length=2)
+        self.heavy = bool(self.equippable & 0x8000)
 
         stats = map(ord, f.read(len(ITEM_STATS)))
         self.features = dict(zip(ITEM_STATS, stats))
@@ -108,6 +109,7 @@ class ItemBlock:
         f.seek(self.pointer)
         f.write(chr(self.itemtype))
 
+        self.confirm_heavy()
         write_multi(f, self.equippable, length=2)
 
         s = "".join(map(chr, [self.features[key] for key in ITEM_STATS]))
@@ -115,6 +117,12 @@ class ItemBlock:
 
         write_multi(f, self.price, length=2)
         f.close()
+
+    def confirm_heavy(self):
+        if self.heavy and self.equippable:
+            self.equippable |= 0x8000
+        else:
+            self.equippable &= 0x7FFF
 
     def equippable_by(self, charid):
         return self.equippable & (1 << charid)
@@ -387,6 +395,8 @@ class ItemBlock:
                 self.mutate_elements()
             else:
                 self.mutate_feature()
+        if not self.heavy and random.randint(1, 20) == 20:
+            self.heavy = True
 
     def rank(self):
         if self.price > 2:

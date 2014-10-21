@@ -154,7 +154,7 @@ class CharacterBlock:
     def __init__(self, address, name):
         self.address = hex2int(address)
         self.name = name.lower()
-        self.battle_commands = [None, None, None, None]
+        self.battle_commands = [0x00, None, None, None]
         self.id = None
         self.beserk = False
 

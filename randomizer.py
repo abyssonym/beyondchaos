@@ -39,12 +39,9 @@ ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
 MD5HASH = "e986575b98300f721ce27c180264d890"
 
 # Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
-#REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
 REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
-#REPLACE_ENEMIES = [0x10f, 0x136, 0x137]  # kefka enemy formation unstable
 # fake Atma, Guardian x4
 REPLACE_FORMATIONS = [0x1ff, 0x20e]
-#NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb]
 NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb, 0x230]
 
 
@@ -53,6 +50,10 @@ TEK_SKILLS = (# [0x18, 0x6E, 0x70, 0x7D, 0x7E] +
               [0xA7, 0xB1] +
               range(0xB4, 0xBA) +
               [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3])
+
+
+secret_codes = {}
+activated_codes = set([])
 
 
 class AutoLearnRageSub(Substitution):
@@ -1352,8 +1353,10 @@ def recolor_character_palette(pointer, palette=None, flesh=False):
     return palette
 
 
-def manage_character_appearance(wild=True, preserve_graphics=False,
-                                tina_mode=False, sabin_mode=False):
+def manage_character_appearance(preserve_graphics=False):
+    wild = 'partyparty' in activated_codes
+    sabin_mode = 'suplexwrecks' in activated_codes
+    tina_mode = 'tinaparty' in activated_codes
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -2398,53 +2401,33 @@ if __name__ == "__main__":
     characters = characters_from_table(CHAR_TABLE)
 
     flags = flags.lower()
-    if 'airship' in flags:
-        activate_airship_mode()
-        flags = flags.replace('airship', '')
-        if VERBOSE:
-            print "SECRET CODE: AIRSHIP MODE ACTIVATED"
 
-    if 'cutscenes' in flags:
+    secret_codes['airship'] = "AIRSHIP MODE"
+    secret_codes['cutscenes'] = "CUTSCENE SKIPS"
+    secret_codes['partyparty'] = "CRAZY PARTY MODE"
+    secret_codes['tinaparty'] = "TINA PARTY MODE"
+    secret_codes['suplexwrecks'] = "SUPLEX MODE"
+    secret_codes['strangejourney'] = "BIZARRE ADVENTURE"
+    for code, text in secret_codes.items():
+        if code in flags:
+            flags = flags.replace(code, '')
+            if VERBOSE:
+                print "SECRET CODE: %s ACTIVATED" % text
+            activated_codes.add(code)
+
+    if 'cutscenes' in activated_codes:
         manage_skips()
-        flags = flags.replace('cutscenes', '')
-        if VERBOSE:
-            print "SECRET CODE: CUTSCENE SKIPS ACTIVATED"
 
-    CRAZY_MODE = False
-    if 'partyparty' in flags:
-        CRAZY_MODE = True
-        flags = flags.replace('partyparty', '')
-        if VERBOSE:
-            print "SECRET CODE: CRAZY PARTY MODE ACTIVATED"
-
-    TINA_MODE = False
-    if 'tinaparty' in flags:
-        TINA_MODE = True
-        flags = flags.replace('tinaparty', '')
-        if VERBOSE:
-            print "SECRET CODE: TINA PARTY MODE ACTIVATED"
-
-    SUPLEX_MODE = False
-    if 'suplexwrecks' in flags:
-        SUPLEX_MODE = True
-        flags = flags.replace('suplexwrecks', '')
-        if VERBOSE:
-            print "SECRET CODE: SUPLEX MODE ACTIVATED"
-
-    BIZARRE_MODE = False
-    if 'strangejourney' in flags:
-        BIZARRE_MODE = True
-        flags = flags.replace('strangejourney', '')
-        if VERBOSE:
-            print "SECRET CODE: BIZARRE ADVENTURE ACTIVATED"
+    if 'airship' in activated_codes:
+        activate_airship_mode()
 
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
 
-    if 'o' in flags and not SUPLEX_MODE:
+    if 'o' in flags and 'suplexwrecks' not in activated_codes:
         manage_commands(commands, characters)
 
-    if 'w' in flags and not SUPLEX_MODE:
+    if 'w' in flags and 'suplexwrecks' not in activated_codes:
         _, _, freespaces = manage_commands_new(commands, characters)
 
     if 'z' in flags:
@@ -2463,11 +2446,11 @@ if __name__ == "__main__":
     if 'c' in flags:
         mgs = manage_monster_appearance(monsters)
 
-    if 'c' in flags or 's' in flags or CRAZY_MODE or TINA_MODE or SUPLEX_MODE:
-        preserve_graphics = 's' not in flags and not CRAZY_MODE
-        manage_character_appearance(preserve_graphics=preserve_graphics,
-                                    wild=CRAZY_MODE, tina_mode=TINA_MODE,
-                                    sabin_mode=SUPLEX_MODE)
+    if 'c' in flags or 's' in flags or (
+            set(['partyparty', 'tinaparty', 'suplexwrecks']) & activated_codes):
+        preserve_graphics = ('s' not in flags and
+                             'partyparty' not in activated_codes)
+        manage_character_appearance(preserve_graphics=preserve_graphics)
 
     items = get_ranked_items(sourcefile)
     if 'i' in flags:
@@ -2491,7 +2474,7 @@ if __name__ == "__main__":
         umaro_risk = manage_umaro(characters)
         reset_rage_blizzard(items, umaro_risk, outfile)
 
-    if 'o' in flags and not SUPLEX_MODE:
+    if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
         manage_tempchar_commands(characters)
 
@@ -2506,7 +2489,7 @@ if __name__ == "__main__":
         for c in characters:
             c.mutate_stats(outfile)
 
-    if 'o' in flags and not SUPLEX_MODE:
+    if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
         natmag_candidates = manage_natural_magic(characters)
     else:
@@ -2537,10 +2520,10 @@ if __name__ == "__main__":
     if 'f' in flags:
         manage_locations(colorize='c' in flags, encounters='b' in flags)
 
-    if SUPLEX_MODE:
+    if 'suplexwrecks' in activated_codes:
         manage_suplex(commands, characters, monsters)
 
-    if BIZARRE_MODE:
+    if 'strangejourney' in activated_codes:
         create_dimensional_vortex()
 
     if VERBOSE:

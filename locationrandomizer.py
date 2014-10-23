@@ -87,6 +87,9 @@ class Location():
             for x, y in list(unchecked):
                 walked.add((x, y))
                 for a, b in [(x, y+1), (x, y-1), (x+1, y), (x-1, y)]:
+                    if (b >= len(walkable) or a >= len(walkable[0])
+                            or b < 0 or a < 0):
+                        continue
                     value = walkable[b][a]
                     if value == 0 and (a, b) not in walked:
                         unchecked.add((a, b))
@@ -323,8 +326,9 @@ class Entrance():
         f.close()
 
     def __repr__(self):
-        return "%x %x %x %x %x %x" % (self.pointer, self.x, self.y,
-                                      self.dest & 0x1FF, self.destx, self.desty)
+        return "<%x %s %s>" % (self.location.locid, self.x, self.y)
+        #return "%x %x %x %x %x %x" % (self.pointer, self.x, self.y,
+        #                              self.dest & 0x1FF, self.destx, self.desty)
 
 
 class EntranceSet():
@@ -421,6 +425,9 @@ if __name__ == "__main__":
         e.read_data("program.rom")
         entrancesets.append(e)
 
-    unused_locations = get_unused_locations("program.rom")
-    for l in unused_locations:
-        print l.locid, l, len(l.entrances)
+    #unused_locations = get_unused_locations("program.rom")
+    for l in locations:
+        print l.locid, l, len(l.entrances), ':',
+        for e in l.entrances:
+            print len(e.reachable_entrances),
+        print

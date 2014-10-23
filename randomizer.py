@@ -698,15 +698,15 @@ def manage_commands_new(commands, characters):
                 continue
 
         random_skill = random.choice([True, False])
-        POWER_LEVEL = 105
+        POWER_LEVEL = 130
         while True:
             if random_skill:
                 power = 10000
             else:
-                power = POWER_LEVEL / 2
-                power += random.randint(0, power)
+                basepower = POWER_LEVEL / 2
+                power = basepower + random.randint(0, basepower)
                 while True:
-                    power += random.randint(0, power)
+                    power += random.randint(0, basepower)
                     if random.choice([True, False]):
                         break
 

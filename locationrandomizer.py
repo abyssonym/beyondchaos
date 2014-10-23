@@ -238,6 +238,17 @@ class Location():
         assert f.tell() == self.pointer + 0x21
         f.close()
 
+    def copy(self, location):
+        attributes = [
+            "name_id", "layers_to_animate", "_battlebg", "unknown0",
+            "tileproperties", "attacks", "unknown1", "graphic_sets",
+            "tileformations", "mapdata", "unknown2", "bgshift", "unknown3",
+            "layer12dimensions", "unknown4", "palette_index", "music",
+            "unknown5", "width", "height", "layerpriorities"
+            ]
+        for attribute in attributes:
+            setattr(self, attribute, getattr(location, attribute))
+
 
 class Entrance():
     def __init__(self, pointer):

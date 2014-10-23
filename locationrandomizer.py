@@ -1,5 +1,6 @@
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
-                   decompress, line_wrap, utilrandom as random)
+                   decompress, line_wrap, USED_LOCATIONS_TABLE,
+                   utilrandom as random)
 
 
 locations = None
@@ -68,6 +69,10 @@ class Location():
             return "%x %s" % (self.locid, self.name)
         else:
             return self.altname
+
+    @property
+    def entrances(self):
+        return self.entrance_set.entrances
 
     def set_entrance_set(self, eset):
         self.entrance_set = eset
@@ -151,29 +156,31 @@ class Location():
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
-        f.seek(self.pointer + 0x2)
+        f.seek(self.pointer)
+
+        self.name_id = ord(f.read(1))
+        self.layers_to_animate = ord(f.read(1))
         self._battlebg = ord(f.read(1))
-        f.seek(self.pointer + 0x5)
-        self.attacks = ord(f.read(1))
-        f.seek(self.pointer + 0x4)
+        self.unknown0 = ord(f.read(1))
         self.tileproperties = ord(f.read(1))  # mult by 2
-        f.seek(self.pointer + 0xB)
+        self.attacks = ord(f.read(1))
+        self.unknown1 = ord(f.read(1))
+        self.graphic_sets = map(ord, f.read(4))
         self.tileformations = read_multi(f, length=2, reverse=True)
-        f.seek(self.pointer + 0xD)
         self.mapdata = read_multi(f, length=4)
-        f.seek(self.pointer + 0x12)
+        self.unknown2 = ord(f.read(1))
         self.bgshift = map(ord, f.read(4))
-        f.seek(self.pointer + 0x17)
+        self.unknown3 = ord(f.read(1))
         self.layer12dimensions = ord(f.read(1))
-        f.seek(self.pointer + 0x19)
+        self.unknown4 = ord(f.read(1))
         self.palette_index = read_multi(f, length=3)
-        f.seek(self.pointer + 0x1C)
         self.music = ord(f.read(1))
-        f.seek(self.pointer + 0x1D)
-        self.mystery = ord(f.read(1))
+        self.unknown5 = ord(f.read(1))
         self.width = ord(f.read(1))
         self.height = ord(f.read(1))
         self.layerpriorities = ord(f.read(1))
+        assert f.tell() == self.pointer + 0x21
+
         f.seek(self.formationpointer)
         self.formation = ord(f.read(1))
 
@@ -202,22 +209,33 @@ class Location():
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
-        f.seek(self.pointer + 0x5)
-        f.write(chr(self.attacks))
-        f.seek(self.pointer + 0xB)
+        f.seek(self.pointer)
+
+        def write_attributes(*args):
+            for attribute in args:
+                attribute = getattr(self, attribute)
+                try:
+                    attribute = "".join(map(chr, attribute))
+                except TypeError:
+                    attribute = chr(attribute)
+                f.write(attribute)
+
+        write_attributes("name_id", "layers_to_animate", "_battlebg",
+                         "unknown0", "tileproperties", "attacks",
+                         "unknown1", "graphic_sets")
+
         write_multi(f, self.tileformations, length=2, reverse=True)
-        f.seek(self.pointer + 0x12)
-        f.write("".join(map(chr, self.bgshift)))
-        f.seek(self.pointer + 0x19)
+        write_multi(f, self.mapdata, length=4, reverse=True)
+
+        write_attributes(
+            "unknown2", "bgshift", "unknown3", "layer12dimensions",
+            "unknown4")
+
         write_multi(f, self.palette_index, length=3)
-        f.seek(self.pointer + 0x1C)
-        f.write(chr(self.music))
-        f.seek(self.pointer + 0x1E)
-        f.write(chr(self.width))
-        f.write(chr(self.height))
-        f.write(chr(self.layerpriorities))
-        f.seek(self.formationpointer)
-        f.write(chr(self.formation))
+
+        write_attributes("music", "unknown5", "width", "height",
+                         "layerpriorities")
+        assert f.tell() == self.pointer + 0x21
         f.close()
 
 
@@ -244,6 +262,19 @@ class Entrance():
         self.location = location
 
     @property
+    def mirror(self):
+        loc = self.destination
+        if loc is None:
+            return None
+
+        evaluator = lambda e: abs(e.x-self.destx) + abs(e.y-self.desty)
+        entrance = min(loc.entrances, key=evaluator)
+        if evaluator(entrance) <= 3:
+            return entrance
+        else:
+            return None
+
+    @property
     def signature(self):
         return (self.x, self.y, self.dest, self.destx, self.desty)
 
@@ -259,13 +290,18 @@ class Entrance():
 
     @property
     def reachable_entrances(self):
-        if hasattr(self, "_entrances"):
+        if hasattr(self, "_entrances") and self._entrances is not None:
             return self._entrances
         entrances = self.location.get_reachable_entrances(self.x, self.y)
         self._entrances = entrances
         return entrances
 
+    def reset_reachable_entrances(self):
+        self._entrances = None
+
     def write_data(self, filename, nextpointer):
+        if nextpointer >= 0x1FDA00:
+            raise Exception("Not enough room for entrances.")
         f = open(filename, 'r+b')
         f.seek(nextpointer)
         f.write(chr(self.x))
@@ -338,6 +374,34 @@ def get_locations(filename=None):
     return locations
 
 
+def get_unused_locations(filename=None):
+    locations = get_locations(filename)
+    used_locids = set([])
+    for line in open(USED_LOCATIONS_TABLE):
+        locid = int(line.strip(), 0x10)
+        used_locids.add(locid)
+
+    unused_locations = set([])
+
+    def validate_location(l):
+        if l.locid in used_locids:
+            return False
+
+        for l2 in locations:
+            if l != l2:
+                for entrance in l2.entrances:
+                    if (l.locid & 0x1FF) == (entrance.dest & 0x1FF):
+                        return False
+
+        return True
+
+    for l in locations:
+        if validate_location(l):
+            unused_locations.add(l)
+
+    return sorted(unused_locations)
+
+
 if __name__ == "__main__":
     locations = get_locations("program.rom")
     entrancesets = []
@@ -345,3 +409,7 @@ if __name__ == "__main__":
         e = EntranceSet(i)
         e.read_data("program.rom")
         entrancesets.append(e)
+
+    unused_locations = get_unused_locations("program.rom")
+    for l in unused_locations:
+        print l.locid, l, len(l.entrances)

@@ -22,6 +22,8 @@ EVENT_PALETTE_TABLE = path.join("tables", "eventpalettes.txt")
 MALE_NAMES_TABLE = path.join("tables", "malenames.txt")
 FEMALE_NAMES_TABLE = path.join("tables", "femalenames.txt")
 MAP_NAMES_TABLE = path.join("tables", "mapnames.txt")
+USED_LOCATIONS_TABLE = path.join("tables", "usedlocs.txt")
+TOWER_CHECKPOINTS_TABLE = path.join("tables", "finaldungeoncheckpoints.txt")
 
 
 class Substitution(object):

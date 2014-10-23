@@ -23,6 +23,8 @@ MALE_NAMES_TABLE = path.join("tables", "malenames.txt")
 FEMALE_NAMES_TABLE = path.join("tables", "femalenames.txt")
 MAP_NAMES_TABLE = path.join("tables", "mapnames.txt")
 USED_LOCATIONS_TABLE = path.join("tables", "usedlocs.txt")
+UNUSED_LOCATIONS_TABLE = path.join("tables", "unusedlocs.txt")
+TOWER_LOCATIONS_TABLE = path.join("tables", "finaldungeonmaps.txt")
 TOWER_CHECKPOINTS_TABLE = path.join("tables", "finaldungeoncheckpoints.txt")
 
 
@@ -354,3 +356,28 @@ def line_wrap(things, width=16):
         newthings.append(things[:width])
         things = things[width:]
     return newthings
+
+
+def get_matrix_reachability(M):
+    M2 = zip(*M)
+    new = [0]*len(M)
+    new = [list(new) for _ in range(len(M))]
+    for i, row in enumerate(M):
+        for j, row2 in enumerate(M2):
+            for a, b in zip(row, row2):
+                if a & b:
+                    new[i][j] = a & b
+                    break
+            else:
+                new[i][j] = 0 | M[i][j]
+    return new
+
+
+if __name__ == "__main__":
+    M = [[1,0,0,1],
+         [0,1,0,0],
+         [0,0,1,1],
+         [1,0,0,1]]
+    M = get_matrix_reachability(M)
+    for row in M:
+        print row

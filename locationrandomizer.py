@@ -1,5 +1,6 @@
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,
+                   UNUSED_LOCATIONS_TABLE,
                    utilrandom as random)
 
 
@@ -125,7 +126,7 @@ class Location():
         for i in indexes:
             #i = i * 2
             properties1 = (ord(self.tilebytes[i+1]) << 8) | ord(self.tilebytes[i])
-            if properties1 & 0b100:
+            if i == 0 or properties1 & 0b100:
                 walkables.append(1)
             else:
                 walkables.append(0)
@@ -252,6 +253,10 @@ class Location():
         for attribute in attributes:
             setattr(self, attribute, getattr(location, attribute))
 
+        eset = EntranceSet(entid=self.locid)
+        self.set_entrance_set(eset)
+        eset.copy(location.entrance_set)
+
 
 class Entrance():
     def __init__(self, pointer):
@@ -326,9 +331,13 @@ class Entrance():
         f.close()
 
     def __repr__(self):
-        return "<%x %s %s>" % (self.location.locid, self.x, self.y)
+        return "<%x %s: %s %s>" % (self.location.locid, self.entid, self.x, self.y)
         #return "%x %x %x %x %x %x" % (self.pointer, self.x, self.y,
         #                              self.dest & 0x1FF, self.destx, self.desty)
+
+    def copy(self, entrance):
+        for attribute in ["x", "y", "dest", "destx", "desty"]:
+            setattr(self, attribute, getattr(entrance, attribute))
 
 
 class EntranceSet():
@@ -342,6 +351,7 @@ class EntranceSet():
             self.location.set_entrance_set(self)
         else:
             self.location = None
+        self.entrances = []
 
     @property
     def destinations(self):
@@ -350,14 +360,14 @@ class EntranceSet():
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
-        self.start = read_multi(f, length=2)
-        self.end = read_multi(f, length=2)
+        start = read_multi(f, length=2)
+        end = read_multi(f, length=2)
         f.close()
-        n = (self.end - self.start) / 6
-        assert self.end == self.start + (6*n)
+        n = (end - start) / 6
+        assert end == start + (6*n)
         self.entrances = []
         for i in xrange(n):
-            e = Entrance(0x1fbb00 + self.start + (i*6))
+            e = Entrance(0x1fbb00 + start + (i*6))
             e.set_id(i)
             self.entrances.append(e)
         for e in self.entrances:
@@ -376,6 +386,15 @@ class EntranceSet():
             nextpointer += 6
         return nextpointer
 
+    def copy(self, eset):
+        self.entrances = []
+        for e in sorted(eset.entrances, key=lambda x: x.entid):
+            e2 = Entrance(e.entid)
+            e2.copy(e)
+            e2.set_id(e.entid)
+            e2.set_location(self.location)
+            self.entrances.append(e2)
+
 
 def get_locations(filename=None):
     global locations
@@ -385,36 +404,18 @@ def get_locations(filename=None):
             print "Decompressing location data, please wait."
             for l in locations:
                 l.read_data(filename)
-            print "Decompression complete."
     return locations
 
 
 def get_unused_locations(filename=None):
     locations = get_locations(filename)
-    used_locids = set([])
-    for line in open(USED_LOCATIONS_TABLE):
+    unused_locs = set([])
+    for line in open(UNUSED_LOCATIONS_TABLE):
         locid = int(line.strip(), 0x10)
-        used_locids.add(locid)
+        loc = [l for l in locations if l.locid == locid][0]
+        unused_locs.add(loc)
 
-    unused_locations = set([])
-
-    def validate_location(l):
-        if l.locid in used_locids:
-            return False
-
-        for l2 in locations:
-            if l != l2:
-                for entrance in l2.entrances:
-                    if (l.locid & 0x1FF) == (entrance.dest & 0x1FF):
-                        return False
-
-        return True
-
-    for l in locations:
-        if validate_location(l):
-            unused_locations.add(l)
-
-    return sorted(unused_locations)
+    return sorted(unused_locs, key=lambda l: l.locid)
 
 
 if __name__ == "__main__":
@@ -424,6 +425,24 @@ if __name__ == "__main__":
         e = EntranceSet(i)
         e.read_data("program.rom")
         entrancesets.append(e)
+
+    locdict = dict([(l.locid, l) for l in locations])
+    '''
+    kt = set([locdict[334]])
+    while True:
+        termval = len(kt)
+        for l in sorted(kt):
+            for e in l.entrances:
+                dest = e.destination
+                if dest is not None:
+                    kt.add(dest)
+        if termval == len(kt):
+            break
+    for l in sorted(kt, key=lambda loc:loc.locid):
+        print l.locid, l
+    '''
+    print locdict[0x15f].pretty_walkable
+    exit()
 
     #unused_locations = get_unused_locations("program.rom")
     for l in locations:

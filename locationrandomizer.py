@@ -6,6 +6,7 @@ from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
 
 locations = None
 mapnames = {}
+locdict = {}
 for line in open(MAP_NAMES_TABLE):
     key, value = tuple(line.strip().split(':'))
     key = int(key, 0x10)
@@ -287,6 +288,8 @@ class Entrance():
         self.entid = entid
 
     def set_location(self, location):
+        if type(location) is int:
+            location = get_location(location)
         self.location = location
 
     @property
@@ -307,7 +310,8 @@ class Entrance():
 
     @property
     def signature(self):
-        return (self.x, self.y, self.dest, self.destx, self.desty)
+        return (self.location.locid, self.x, self.y,
+                self.dest, self.destx, self.desty)
 
     @property
     def destination(self):
@@ -411,6 +415,15 @@ def get_locations(filename=None):
         for l in locations:
             l.read_data(filename)
     return locations
+
+
+def get_location(locid):
+    global locdict
+    if locid not in locdict:
+        locations = get_locations()
+        for l in locations:
+            locdict[l.locid] = l
+    return locdict[locid]
 
 
 def get_unused_locations(filename=None):

@@ -2327,9 +2327,6 @@ def manage_encounter_rate():
 
 def manage_tower():
     locations = get_locations(filename=sourcefile)
-    for l in locations:
-        print l, len(l.entrances)
-
     randomize_tower(filename=sourcefile)
     for l in locations:
         if l.locid in [0x155] + range(104, 108):
@@ -2342,9 +2339,7 @@ def manage_tower():
     entrancesets = entrancesets[:0x19E]
     nextpointer = 0x1FBB00 + (len(entrancesets) * 2)
     for e in entrancesets:
-        print e.entid, len(e.entrances), nextpointer,
         nextpointer = e.write_data(outfile, nextpointer)
-        print nextpointer
 
 
 def create_dimensional_vortex():

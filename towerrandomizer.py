@@ -1,10 +1,11 @@
 from copy import deepcopy, copy
 from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
                    utilrandom as random)
-from locationrandomizer import get_locations, get_unused_locations
+from locationrandomizer import get_locations, get_unused_locations, Entrance
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 25  # maybe?
+MAX_NEW_EXITS = 42  # def. not
 MAX_NEW_MAPS = 26  # 6 more for fanatics tower
 
 locdict = {}
@@ -52,61 +53,26 @@ locexchange = {}
 
 def get_appropriate_location(loc):
     unused_locations = get_unused_locations()
-    if loc.locid in towerlocids:
-        return loc
-    elif loc in locexchange:
+    if loc in locexchange:
         return locexchange[loc]
+    elif loc.locid in towerlocids:
+        loc.entrance_set.entrances = []
+        locexchange[loc] = loc
+        return loc
     else:
         for u in unused_locations:
             if u not in locexchange.values():
                 u.copy(loc)
+                u.entrance_set.entrances = []
                 locexchange[loc] = u
                 return u
     raise Exception("No appropriate location available.")
 
 
-# TODO: delete unused entrances
-def establish_entrance_pair(e, e2):
-    loca = get_appropriate_location(e.location)
-    locb = get_appropriate_location(e2.location)
-    e = [x for x in loca.entrances if x.entid == e.entid][0]
-    e2 = [x for x in locb.entrances if x.entid == e2.entid][0]
-    if locb.locid == 0x10b:
-        altloc = locdict[0x10d]
-        x2 = [x for x in altloc.entrances if x.entid == e2.entid][0]
-    else:
-        x2 = e2
-    mirrb = x2.mirror
-    if mirrb is not None and mirrb.mirror is not None and False:
-        mirrb = mirrb.mirror
-        e.dest, e.destx, e.desty = mirrb.dest, mirrb.destx, mirrb.desty
-    else:
-        e.dest, e.destx, e.desty = e.dest, e2.x, e2.y
-    e.dest = (e.dest & 0xFE00) | locb.locid
-    assert e in loca.entrances
-    assert e2 in locb.entrances
-    return e, e2
-
-
-def connect_segments(sega, segb):
-    if hasattr(sega, "exits"):
-        a = sega.exits[-1]
-    else:
-        assert len(sega.entrances) == 1
-        a = sega.entrances.values()[0][-1]
-
-    if hasattr(segb, "exits"):
-        b = segb.exits[0]
-    else:
-        assert len(segb.entrances) == 1
-        b = segb.entrances.values()[0][0]
-
-    establish_entrance_pair(a, b)
-
-
 class CheckRoomSet:
     def __init__(self):
         self.entrances = {}
+        self.links = {}
         self.addable = True
         self.ruletype = None
 
@@ -119,87 +85,37 @@ class CheckRoomSet:
     def load_backup(self):
         self.entrances = copy(self.backup_entrances)
 
-    def establish_entrances(self, exit_points=2):
-        from itertools import product
-        entrances = self.sorted_entrances
-        edict = dict(zip(entrances, range(len(entrances))))
-        done = set([])
-        result = set([])
-        for e, e2 in product(entrances, entrances):
-            if e.location.locid == e2.location.locid:
-                continue
-            if e in done or e2 in done:
-                continue
-            a, b = edict[e], edict[e2]
-            if self.reachability[a][b]:
-                x, y = establish_entrance_pair(e, e2)
-                x2, y2 = establish_entrance_pair(e2, e)
-                assert x == y2
-                assert y == x2
-                done |= set([e, e2])
-                result |= set([x, x2, y, y2])
-
-        self.exits = []
-        for i in xrange(exit_points):
-            candidates = [e for e in entrances if e not in done]
-            for e in self.exits:
-                candidates = [c for c in candidates if
-                              c.location.locid != e.location.locid]
-            if not candidates:
-                candidates = [e for e in entrances if e not in done]
-            e = random.choice(candidates)
-            done.add(e)
-            self.exits.append(e)
-        assert len(self.exits) == exit_points
-
-        self.specialexits = []
-        for e in entrances:
-            if e in done:
-                continue
-            candidates = [x for x in entrances if x not in done and
-                          x.location.locid != e.location.locid]
-            if not candidates:
-                if random.randint(1, 5) != 5:
-                    self.specialexits.append(e)
+    def establish_entrances(self):
+        for mapid in self.entrances:
+            for e in self.entrances[mapid]:
+                loc = get_appropriate_location(e.location)
+                sig = e.signature
+                _, x, y, _, _, _ = sig
+                if sig not in self.links:
+                    print "WARNING: %s not in links." % str(sig)
                     continue
-                candidates = [x for x in entrances if x not in done and x != e]
-
-            if len(candidates) > 0:
-                e2 = random.choice(candidates)
-                x, y = establish_entrance_pair(e, e2)
-                x2, y2 = establish_entrance_pair(e2, e)
-                assert x == y2
-                assert y == x2
-                done |= set([e, e2])
-                result |= set([x, x2, y, y2])
-            else:
-                self.specialexits.append(e)
-
-        self.done = done
-        return result
-
-    def remove_unused_entrances(self):
-        for entrances in self.entrances.values():
-            for e in entrances:
-                if (e.location.locid, e.entid) in si.nochanges:
+                sig2 = self.links[sig]
+                loc2id, destx, desty, _, _, _ = sig2
+                loc2 = get_appropriate_location(locdict[loc2id])
+                entrance = Entrance(None)
+                entrance.set_location(loc.locid)
+                entrance.x = x
+                entrance.y = y
+                entrance.destx = destx
+                entrance.desty = desty
+                entrance.dest = loc2.locid & 0x1FF
+                signatures = [e3.signature for e3 in loc.entrances]
+                if entrance.signature in signatures:
                     continue
-                location = get_appropriate_location(e.location)
-                locid, entid = location.locid, e.entid
-                if e not in self.done:
-                    to_remove = [x for x in location.entrances if x.entid == entid][0]
-                    location.entrance_set.entrances.remove(to_remove)
-        for entrances in self.entrances.values():
-            for e in entrances:
-                location = get_appropriate_location(e.location)
-                location.collapse_entids()
+                loc.entrance_set.entrances.append(entrance)
 
     @property
     def reachability_factor(self):
         num_entrances = sum([len(self.entrances[k]) for k in self.entrances.keys()])
         num_maps = len(self.entrances.keys())
-        if num_entrances - num_maps < 2:
+        if num_entrances - self.numexits < 0:
             return 1000000
-        return float(len(self.entrances.keys())) / num_entrances
+        return float(len(num_maps)) / num_entrances
 
     @property
     def maps(self):
@@ -214,7 +130,7 @@ class CheckRoomSet:
                            key=lambda e: (e.location.locid, e.entid))
         return entrances
 
-    def generate_reachability_matrix(self, exit_points=2):
+    def generate_reachability_matrix(self):
         from utils import get_matrix_reachability
         entrances = self.sorted_entrances
         edict = dict(zip(entrances, range(len(entrances))))
@@ -231,7 +147,7 @@ class CheckRoomSet:
 
         zeroes = sum([row.count(0) for row in basematrix])
         if zeroes == 0:
-            if len(basematrix) < exit_points:
+            if len(basematrix) < self.numexits:
                 return None
             self.reachability = basematrix
             return basematrix
@@ -242,6 +158,7 @@ class CheckRoomSet:
             candidates = list(entrances)
             random.shuffle(locids)
             done = []
+            links = {}
             try:
                 for l in locids:
                     if l in done:
@@ -256,10 +173,12 @@ class CheckRoomSet:
                     a, b = edict[c1], edict[c2]
                     matrix[a][b] = 1
                     matrix[b][a] = 1
+                    links[c1.signature] = c2.signature
+                    links[c2.signature] = c1.signature
             except IndexError:
                 continue
 
-            if len(candidates) < exit_points:
+            if len(candidates) < self.numexits:
                 continue
 
             prevones = 0
@@ -278,6 +197,7 @@ class CheckRoomSet:
             return None
 
         self.reachability = matrix
+        self.links = links
         return matrix
 
     def add_rule(self, ruletype, mapid, parameters):
@@ -386,6 +306,7 @@ class RouteRouter:
     def construct_check_routes(self):
         random.shuffle(self.checkpoints)
         routes = dict([(i, []) for i in range(3)])
+
         for rule in [self.starting] + self.checkpoints + [self.ending]:
             parties = range(3)
             random.shuffle(parties)
@@ -402,7 +323,15 @@ class RouteRouter:
                             precrs.add_rule(SIMPLE, c, [d])
                 if (routes[party] and not routes[party][-1].addable and
                         not crs.addable):
-                    routes[party].append(CheckRoomSet())
+                    crs2 = CheckRoomSet()
+                    routes[party].append(crs2)
+                    crs2.numexits = 2
+
+                if rule in [self.starting, self.ending]:
+                    crs.numexits = 1
+                else:
+                    crs.numexits = 2
+
                 routes[party].append(crs)
 
         for route in routes.values():
@@ -582,15 +511,13 @@ def randomize_tower(filename):
         locdict[l.locid] = l
 
     def make_matrices():
+        assert len(rrs) == 2
         for rr in rrs:
+            assert len(rr.routes) == 3
             for route in rr.routes.values():
                 for segment in route:
                     if segment.addable:
-                        if segment == route[0] or segment == route[-1]:
-                            x = 1
-                        else:
-                            x = 2
-                        m = segment.generate_reachability_matrix(exit_points=x)
+                        m = segment.generate_reachability_matrix()
                         if m is None:
                             return False
         return True
@@ -599,6 +526,7 @@ def randomize_tower(filename):
     new_entrances = get_new_entrances(filename=filename)
     print ("Assigning maps, please wait. Because this is random, "
            "it could take a few minutes.")
+    counter = 0
     while True:
         rrs = parse_checkpoints()
         for rr in rrs:
@@ -609,25 +537,25 @@ def randomize_tower(filename):
         done = make_matrices()
         if done:
             break
+        counter += 1
+        if not counter % 10:
+            print random.choice(["Engaging", "Calibrating", "Still Calibrating"])
 
+    usedlinks = set([])
     for rr in rrs:
         for route in rr.routes.values():
             for segment in route:
+                links = set(segment.links)
+                if usedlinks & links:
+                    raise Exception("Duplicate entrance detected.")
+                usedlinks |= links
                 print segment
+                #segment.establish_entrances()
                 if segment.addable:
-                    if segment in [route[0], route[-1]]:
-                        exit_points = 1
-                    else:
-                        exit_points = 2
-                    segment.establish_entrances(exit_points=exit_points)
+                    segment.establish_entrances()
                     for row in segment.reachability:
                         print row
             print
-            for sega, segb in zip(route, route[1:]):
-                connect_segments(sega, segb)
-            for segment in route:
-                if segment.addable:
-                    segment.remove_unused_entrances()
 
 
 if __name__ == "__main__":

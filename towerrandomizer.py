@@ -1,10 +1,10 @@
 from copy import deepcopy, copy
 from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
                    utilrandom as random)
-from locationrandomizer import get_locations, get_unused_locations, EntranceSet
+from locationrandomizer import get_locations, get_unused_locations
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
-MAX_NEW_EXITS = 45  # probably more like 42, will throw error if wrong
+MAX_NEW_EXITS = 25  # maybe?
 MAX_NEW_MAPS = 26  # 6 more for fanatics tower
 
 locdict = {}
@@ -48,11 +48,10 @@ class SpecialInstructions:
 
 si = SpecialInstructions()
 locexchange = {}
-get_locations("program.rom")
-unused_locations = get_unused_locations()
 
 
 def get_appropriate_location(loc):
+    unused_locations = get_unused_locations()
     if loc.locid in towerlocids:
         return loc
     elif loc in locexchange:
@@ -64,6 +63,45 @@ def get_appropriate_location(loc):
                 locexchange[loc] = u
                 return u
     raise Exception("No appropriate location available.")
+
+
+# TODO: delete unused entrances
+def establish_entrance_pair(e, e2):
+    loca = get_appropriate_location(e.location)
+    locb = get_appropriate_location(e2.location)
+    e = [x for x in loca.entrances if x.entid == e.entid][0]
+    e2 = [x for x in locb.entrances if x.entid == e2.entid][0]
+    if locb.locid == 0x10b:
+        altloc = locdict[0x10d]
+        x2 = [x for x in altloc.entrances if x.entid == e2.entid][0]
+    else:
+        x2 = e2
+    mirrb = x2.mirror
+    if mirrb is not None and mirrb.mirror is not None and False:
+        mirrb = mirrb.mirror
+        e.dest, e.destx, e.desty = mirrb.dest, mirrb.destx, mirrb.desty
+    else:
+        e.dest, e.destx, e.desty = e.dest, e2.x, e2.y
+    e.dest = (e.dest & 0xFE00) | locb.locid
+    assert e in loca.entrances
+    assert e2 in locb.entrances
+    return e, e2
+
+
+def connect_segments(sega, segb):
+    if hasattr(sega, "exits"):
+        a = sega.exits[-1]
+    else:
+        assert len(sega.entrances) == 1
+        a = sega.entrances.values()[0][-1]
+
+    if hasattr(segb, "exits"):
+        b = segb.exits[0]
+    else:
+        assert len(segb.entrances) == 1
+        b = segb.entrances.values()[0][0]
+
+    establish_entrance_pair(a, b)
 
 
 class CheckRoomSet:
@@ -81,29 +119,79 @@ class CheckRoomSet:
     def load_backup(self):
         self.entrances = copy(self.backup_entrances)
 
-    def establish_primary_entrances(self):
+    def establish_entrances(self, exit_points=2):
         from itertools import product
         entrances = self.sorted_entrances
         edict = dict(zip(entrances, range(len(entrances))))
-        done = []
+        done = set([])
+        result = set([])
         for e, e2 in product(entrances, entrances):
+            if e.location.locid == e2.location.locid:
+                continue
             if e in done or e2 in done:
                 continue
             a, b = edict[e], edict[e2]
             if self.reachability[a][b]:
-                loca = get_appropriate_location(e.location)
-                locb = get_appropriate_location(e2.location)
-                mirra = e.mirror.mirror
-                mirrb = e2.mirror.mirror
-                e.dest, e.destx, e.desty = mirrb.dest, mirrb.destx, mirrb.desty
-                e2.dest, e2.destx, e2.desty = mirra.dest, mirra.destx, mirra.desty
-                e.dest = (e.dest & 0xFE00) | locb.locid
-                e2.dest = (e2.dest & 0xFE00) | loca.locid
-                assert e in loca.entrances
-                assert e2 in locb.entrances
-                done.append(e)
-                done.append(e2)
-        return done
+                x, y = establish_entrance_pair(e, e2)
+                x2, y2 = establish_entrance_pair(e2, e)
+                assert x == y2
+                assert y == x2
+                done |= set([e, e2])
+                result |= set([x, x2, y, y2])
+
+        self.exits = []
+        for i in xrange(exit_points):
+            candidates = [e for e in entrances if e not in done]
+            for e in self.exits:
+                candidates = [c for c in candidates if
+                              c.location.locid != e.location.locid]
+            if not candidates:
+                candidates = [e for e in entrances if e not in done]
+            e = random.choice(candidates)
+            done.add(e)
+            self.exits.append(e)
+        assert len(self.exits) == exit_points
+
+        self.specialexits = []
+        for e in entrances:
+            if e in done:
+                continue
+            candidates = [x for x in entrances if x not in done and
+                          x.location.locid != e.location.locid]
+            if not candidates:
+                if random.randint(1, 5) != 5:
+                    self.specialexits.append(e)
+                    continue
+                candidates = [x for x in entrances if x not in done and x != e]
+
+            if len(candidates) > 0:
+                e2 = random.choice(candidates)
+                x, y = establish_entrance_pair(e, e2)
+                x2, y2 = establish_entrance_pair(e2, e)
+                assert x == y2
+                assert y == x2
+                done |= set([e, e2])
+                result |= set([x, x2, y, y2])
+            else:
+                self.specialexits.append(e)
+
+        self.done = done
+        return result
+
+    def remove_unused_entrances(self):
+        for entrances in self.entrances.values():
+            for e in entrances:
+                if (e.location.locid, e.entid) in si.nochanges:
+                    continue
+                location = get_appropriate_location(e.location)
+                locid, entid = location.locid, e.entid
+                if e not in self.done:
+                    to_remove = [x for x in location.entrances if x.entid == entid][0]
+                    location.entrance_set.entrances.remove(to_remove)
+        for entrances in self.entrances.values():
+            for e in entrances:
+                location = get_appropriate_location(e.location)
+                location.collapse_entids()
 
     @property
     def reachability_factor(self):
@@ -489,13 +577,9 @@ def get_new_entrances(filename):
     return chosen
 
 
-if __name__ == "__main__":
-    locdict = dict([(l.locid, l) for l in get_locations(filename="program.rom")])
-    entrancesets = []
-    for i in xrange(512):
-        e = EntranceSet(i)
-        e.read_data("program.rom")
-        entrancesets.append(e)
+def randomize_tower(filename):
+    for l in get_locations(filename=filename):
+        locdict[l.locid] = l
 
     def make_matrices():
         for rr in rrs:
@@ -511,11 +595,8 @@ if __name__ == "__main__":
                             return False
         return True
 
-    #for rr in rrs:
-    #    rr.backup()
-
     print "Selecting maps, please wait."
-    new_entrances = get_new_entrances(filename="program.rom")
+    new_entrances = get_new_entrances(filename=filename)
     print ("Assigning maps, please wait. Because this is random, "
            "it could take a few minutes.")
     while True:
@@ -523,7 +604,7 @@ if __name__ == "__main__":
         for rr in rrs:
             rr.construct_check_routes()
 
-        new_entrances = get_new_entrances(filename="program.rom")
+        new_entrances = get_new_entrances(filename=filename)
         assign_maps(rrs, new_entrances=new_entrances)
         done = make_matrices()
         if done:
@@ -534,7 +615,20 @@ if __name__ == "__main__":
             for segment in route:
                 print segment
                 if segment.addable:
-                    #segment.establish_primary_entrances()
+                    if segment in [route[0], route[-1]]:
+                        exit_points = 1
+                    else:
+                        exit_points = 2
+                    segment.establish_entrances(exit_points=exit_points)
                     for row in segment.reachability:
                         print row
             print
+            for sega, segb in zip(route, route[1:]):
+                connect_segments(sega, segb)
+            for segment in route:
+                if segment.addable:
+                    segment.remove_unused_entrances()
+
+
+if __name__ == "__main__":
+    randomize_tower(filename="program.rom")

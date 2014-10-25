@@ -64,6 +64,8 @@ class Location():
             self.altname = "%x %s" % (self.locid, mapnames[self.locid])
         else:
             self.altname = "%x" % self.locid
+        self.entrance_set = EntranceSet(self.locid)
+        self.entrance_set.location = self
 
     def __repr__(self):
         if self.name:
@@ -71,12 +73,18 @@ class Location():
         else:
             return self.altname
 
+    def collapse_entids(self):
+        entrances = self.entrances
+        for i, e in enumerate(sorted(entrances, key=lambda x: x.entid)):
+            e.entid = i
+
     @property
     def entrances(self):
         return self.entrance_set.entrances
 
     def set_entrance_set(self, eset):
         self.entrance_set = eset
+        eset.location = self
 
     def get_reachable_entrances(self, x, y):
         entrances = self.entrance_set.entrances
@@ -210,6 +218,7 @@ class Location():
         self.tilebytes = decompress(tiledata, complicated=True)
         assert len(self.tilebytes) == 512
         f.close()
+        self.entrance_set.read_data(filename)
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
@@ -286,6 +295,9 @@ class Entrance():
         if loc is None:
             return None
 
+        if len(loc.entrances) == 0:
+            return None
+
         evaluator = lambda e: abs(e.x-self.destx) + abs(e.y-self.desty)
         entrance = min(loc.entrances, key=evaluator)
         if evaluator(entrance) <= 3:
@@ -344,13 +356,6 @@ class EntranceSet():
     def __init__(self, entid):
         self.entid = entid
         self.pointer = 0x1fbb00 + (2*entid)
-        locations = get_locations()
-        self.location = [l for l in locations if l.locid == self.entid]
-        if self.location:
-            self.location = self.location[0]
-            self.location.set_entrance_set(self)
-        else:
-            self.location = None
         self.entrances = []
 
     @property
@@ -400,10 +405,11 @@ def get_locations(filename=None):
     global locations
     if locations is None:
         locations = [Location(i) for i in range(415)]
-        if filename is not None:
-            print "Decompressing location data, please wait."
-            for l in locations:
-                l.read_data(filename)
+        if filename is None:
+            raise Exception("Please supply a filename for new locations.")
+        print "Decompressing location data, please wait."
+        for l in locations:
+            l.read_data(filename)
     return locations
 
 
@@ -420,12 +426,6 @@ def get_unused_locations(filename=None):
 
 if __name__ == "__main__":
     locations = get_locations("program.rom")
-    entrancesets = []
-    for i in xrange(512):
-        e = EntranceSet(i)
-        e.read_data("program.rom")
-        entrancesets.append(e)
-
     locdict = dict([(l.locid, l) for l in locations])
     '''
     kt = set([locdict[334]])

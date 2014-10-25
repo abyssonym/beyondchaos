@@ -51,6 +51,25 @@ si = SpecialInstructions()
 locexchange = {}
 
 
+def connect_segments(sega, segb):
+    exits = {}
+    for seg in [sega, segb]:
+        entrances = seg.sorted_entrances
+        random.shuffle(entrances)
+        for e in entrances:
+            sig = e.signature
+            if sig not in seg.links:
+                exits[seg] = sig
+                print sig,
+                break
+        else:
+            raise Exception("No exits available.")
+
+    sega.links[exits[sega]] = exits[segb]
+    segb.links[exits[segb]] = exits[sega]
+    print
+
+
 def get_appropriate_location(loc):
     unused_locations = get_unused_locations()
     if loc in locexchange:
@@ -544,15 +563,19 @@ def randomize_tower(filename):
     usedlinks = set([])
     for rr in rrs:
         for route in rr.routes.values():
+            for sega, segb in zip(route, route[1:]):
+                connect_segments(sega, segb)
+
             for segment in route:
                 links = set(segment.links)
                 if usedlinks & links:
+                    import pdb; pdb.set_trace()
                     raise Exception("Duplicate entrance detected.")
                 usedlinks |= links
                 print segment
-                #segment.establish_entrances()
+                segment.establish_entrances()
                 if segment.addable:
-                    segment.establish_entrances()
+                    #segment.establish_entrances()
                     for row in segment.reachability:
                         print row
             print

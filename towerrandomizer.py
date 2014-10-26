@@ -2,10 +2,11 @@ from copy import deepcopy, copy
 from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
                    utilrandom as random)
 from locationrandomizer import get_locations, get_unused_locations, Entrance
+from itertools import product
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 25  # maybe?
-MAX_NEW_EXITS = 42  # def. not
+MAX_NEW_EXITS = 42  # prob. not
 MAX_NEW_MAPS = 26  # 6 more for fanatics tower
 
 locdict = {}
@@ -57,17 +58,29 @@ def connect_segments(sega, segb):
         entrances = seg.sorted_entrances
         random.shuffle(entrances)
         for e in entrances:
-            sig = e.signature
-            if sig not in seg.links:
-                exits[seg] = sig
-                print sig,
+            shortsig = e.shortsig
+            if shortsig not in seg.links:
+                exits[seg] = e
+                print shortsig,
                 break
         else:
             raise Exception("No exits available.")
 
-    sega.links[exits[sega]] = exits[segb]
-    segb.links[exits[segb]] = exits[sega]
+    sega.links[exits[sega].shortsig] = exits[segb].signature
+    segb.links[exits[segb].shortsig] = exits[sega].signature
     print
+
+
+def clear_entrances(location):
+    nochanges = [b for (a, b) in si.nochanges if a == location.locid]
+    location.entrance_set.entrances = [e for e in location.entrances if
+                                       e.entid in nochanges]
+
+
+def clear_unused_locations():
+    unused_locations = get_unused_locations()
+    for u in unused_locations:
+        clear_entrances(u)
 
 
 def get_appropriate_location(loc):
@@ -75,17 +88,29 @@ def get_appropriate_location(loc):
     if loc in locexchange:
         return locexchange[loc]
     elif loc.locid in towerlocids:
-        loc.entrance_set.entrances = []
+        clear_entrances(loc)
         locexchange[loc] = loc
         return loc
     else:
         for u in unused_locations:
             if u not in locexchange.values():
                 u.copy(loc)
-                u.entrance_set.entrances = []
+                clear_entrances(u)
+                try:
+                    assert not u.entrances
+                except:
+                    import pdb; pdb.set_trace()
                 locexchange[loc] = u
                 return u
     raise Exception("No appropriate location available.")
+
+
+def get_inappropriate_location(location):
+    reverselocex = dict([(b, a) for (a, b) in locexchange.items()])
+    if location in reverselocex:
+        return reverselocex[location]
+    else:
+        return location
 
 
 class CheckRoomSet:
@@ -106,27 +131,43 @@ class CheckRoomSet:
 
     def establish_entrances(self):
         for mapid in self.entrances:
+            print mapid,
             for e in self.entrances[mapid]:
+                print e.shortsig,
                 loc = get_appropriate_location(e.location)
                 sig = e.signature
                 _, x, y, _, _, _ = sig
-                if sig not in self.links:
+                if e.shortsig not in self.links:
                     print "WARNING: %s not in links." % str(sig)
                     continue
-                sig2 = self.links[sig]
+                sig2 = self.links[e.shortsig]
                 loc2id, destx, desty, _, _, _ = sig2
-                loc2 = get_appropriate_location(locdict[loc2id])
+                temploc = locdict[loc2id]
+                loc2 = get_appropriate_location(temploc)
+
+                # getting correct x/y values for destination
+                tempent = temploc.get_nearest_entrance(destx, desty)
+                assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
+                mirror = tempent.mirror
+                destx, desty = mirror.destx, mirror.desty
+                dest = mirror.dest & 0xFE00
+
                 entrance = Entrance(None)
                 entrance.set_location(loc.locid)
                 entrance.x = x
                 entrance.y = y
                 entrance.destx = destx
                 entrance.desty = desty
-                entrance.dest = loc2.locid & 0x1FF
-                signatures = [e3.signature for e3 in loc.entrances]
-                if entrance.signature in signatures:
+                entrance.dest = loc2.locid | dest
+                effectsigs = [e3.effectsig for e3 in loc.entrances]
+                if entrance.effectsig in effectsigs:
                     continue
                 loc.entrance_set.entrances.append(entrance)
+                try:
+                    loc.validate_entrances()
+                except:
+                    import pdb; pdb.set_trace()
+            print
 
     @property
     def reachability_factor(self):
@@ -192,8 +233,8 @@ class CheckRoomSet:
                     a, b = edict[c1], edict[c2]
                     matrix[a][b] = 1
                     matrix[b][a] = 1
-                    links[c1.signature] = c2.signature
-                    links[c2.signature] = c1.signature
+                    links[c1.shortsig] = c2.signature
+                    links[c2.shortsig] = c1.signature
             except IndexError:
                 continue
 
@@ -493,6 +534,7 @@ def get_new_entrances(filename):
     candidates = [e for l in get_locations() for e in l.entrances]
 
     def validate(e):
+        # TODO: remove maps with adjacent entrances
         if e.location.locid <= 2:
             return False
         if e.location.locid in towerlocids:
@@ -501,8 +543,13 @@ def get_new_entrances(filename):
             return False
         if e.location.locid in map_bans:
             return False
-        if len(e.reachable_entrances) < 2 + random.randint(0, 1):
+        reachable = e.reachable_entrances
+        if len(reachable) < 2 + random.randint(0, 1):
             return False
+        for e2, e3 in product(reachable, reachable):
+            value = abs(e2.x - e3.x) + abs(e2.y - e3.y)
+            if value == 1:
+                return False
         return True
 
     random.shuffle(candidates)
@@ -547,6 +594,7 @@ def randomize_tower(filename):
            "it could take a few minutes.")
     counter = 0
     while True:
+        clear_unused_locations()
         rrs = parse_checkpoints()
         for rr in rrs:
             rr.construct_check_routes()
@@ -567,17 +615,13 @@ def randomize_tower(filename):
                 connect_segments(sega, segb)
 
             for segment in route:
+                print segment
                 links = set(segment.links)
                 if usedlinks & links:
                     import pdb; pdb.set_trace()
                     raise Exception("Duplicate entrance detected.")
                 usedlinks |= links
-                print segment
                 segment.establish_entrances()
-                if segment.addable:
-                    #segment.establish_entrances()
-                    for row in segment.reachability:
-                        print row
             print
 
 

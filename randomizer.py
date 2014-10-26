@@ -2329,17 +2329,23 @@ def manage_tower():
     locations = get_locations(filename=sourcefile)
     randomize_tower(filename=sourcefile)
     for l in locations:
-        if l.locid in [0x155] + range(104, 108):
+        if l.locid in [0x154, 0x155] + range(104, 108):
             # leo's thamasa, etc
             # TODO: remove entrance into Narshe school
+            # TODO: figure out consequences of 0x154
             l.entrance_set.entrances = []
         l.write_data(outfile)
 
     entrancesets = [l.entrance_set for l in locations]
     entrancesets = entrancesets[:0x19E]
     nextpointer = 0x1FBB00 + (len(entrancesets) * 2)
+    total = 0
     for e in entrancesets:
+        total += len(e.entrances)
+        print e.entid, total,
+        prev = nextpointer
         nextpointer = e.write_data(outfile, nextpointer)
+        print nextpointer - prev
 
 
 def create_dimensional_vortex():

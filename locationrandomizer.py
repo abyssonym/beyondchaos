@@ -74,6 +74,11 @@ class Location():
         else:
             return self.altname
 
+    def validate_entrances(self):
+        pairs = [(e.x, e.y) for e in self.entrances]
+        if len(pairs) != len(set(pairs)):
+            raise Exception("Duplicate entrances found on map.")
+
     def collapse_entids(self):
         entrances = self.entrances
         for i, e in enumerate(sorted(entrances, key=lambda x: x.entid)):
@@ -86,6 +91,21 @@ class Location():
     def set_entrance_set(self, eset):
         self.entrance_set = eset
         eset.location = self
+
+    def backup_entrances(self):
+        self.entrancebackups = list(self.entrances)
+
+    def get_nearest_entrance(self, x, y):
+        candidates = []
+        for e in self.entrancebackups:
+            if e.x != x and e.y != y:
+                continue
+            value = max(abs(e.x - x), abs(e.y-y))
+            candidates.append((value, e))
+        if not candidates:
+            return None
+        _, entrance = min(candidates)
+        return entrance
 
     def get_reachable_entrances(self, x, y):
         entrances = self.entrance_set.entrances
@@ -140,6 +160,54 @@ class Location():
             else:
                 walkables.append(0)
         return line_wrap(walkables, width=self.layer1width)
+
+    def find_best_entry(self, x, y):
+        walkable = self.walkable
+        west, north, south, east = 1, 2, 2, 1
+
+        def check_coordinate(x, y):
+            try:
+                value = walkable[y][x]
+            except IndexError:
+                return False
+            if value == 0:
+                return True
+            else:
+                return False
+
+        while True:
+            termcond = sum([north, south, east, west])
+            if check_coordinate(x-west, y):
+                west += 1
+            if check_coordinate(x+east, y):
+                east += 1
+            if check_coordinate(x, y-north):
+                north += 1
+            if check_coordinate(x, y+south):
+                south += 1
+            if termcond == sum([north, south, east, west]):
+                break
+
+        if east > 2 or west > 2 or max(east, west) >= max(north, south):
+            if east > west:
+                return x+1, y
+            elif west > east:
+                return x-1, y
+            else:
+                return x, y
+        else:
+            if north > south:
+                if north > 2:
+                    return x, y-2
+                else:
+                    return x, y-1
+            elif south > north:
+                if south > 2:
+                    return x, y+2
+                else:
+                    return x, y+1
+            else:
+                return x, y
 
     @property
     def pretty_walkable(self):
@@ -220,6 +288,7 @@ class Location():
         assert len(self.tilebytes) == 512
         f.close()
         self.entrance_set.read_data(filename)
+        self.backup_entrances()
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
@@ -271,6 +340,7 @@ class Location():
 class Entrance():
     def __init__(self, pointer):
         self.pointer = pointer
+        self.entid = None
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -298,20 +368,24 @@ class Entrance():
         if loc is None:
             return None
 
-        if len(loc.entrances) == 0:
+        if len(loc.entrancebackups) == 0:
             return None
 
-        evaluator = lambda e: abs(e.x-self.destx) + abs(e.y-self.desty)
-        entrance = min(loc.entrances, key=evaluator)
-        if evaluator(entrance) <= 3:
-            return entrance
-        else:
-            return None
+        entrance = loc.get_nearest_entrance(self.destx, self.desty)
+        return entrance
 
     @property
     def signature(self):
-        return (self.location.locid, self.x, self.y,
-                self.dest, self.destx, self.desty)
+        return (self.location.locid & 0x1ff, self.x, self.y,
+                self.dest & 0x1ff, self.destx, self.desty)
+
+    @property
+    def shortsig(self):
+        return (self.location.locid, self.x, self.y)
+
+    @property
+    def effectsig(self):
+        return (self.x, self.y, self.dest & 0x1ff, self.destx, self.desty)
 
     @property
     def destination(self):
@@ -347,7 +421,11 @@ class Entrance():
         f.close()
 
     def __repr__(self):
-        return "<%x %s: %s %s>" % (self.location.locid, self.entid, self.x, self.y)
+        if hasattr(self, "entid"):
+            entid = self.entid
+        else:
+            entid = None
+        return "<%x %s: %s %s>" % (self.location.locid, entid, self.x, self.y)
         #return "%x %x %x %x %x %x" % (self.pointer, self.x, self.y,
         #                              self.dest & 0x1FF, self.destx, self.desty)
 

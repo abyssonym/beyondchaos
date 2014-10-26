@@ -104,6 +104,7 @@ def get_appropriate_location(loc):
         for u in unused_locations:
             if u not in locexchange.values():
                 u.copy(loc)
+                u.make_tower_flair()
                 clear_entrances(u)
                 try:
                     assert not u.entrances
@@ -156,12 +157,12 @@ class CheckRoomSet:
                 tempent = temploc.get_nearest_entrance(destx, desty)
                 assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
                 mirror = tempent.mirror
-                if mirror is None:
-                    destx, desty, dest = destx, desty, 0
-                else:
+                dest = 0
+                if mirror:
                     destx, desty = mirror.destx, mirror.desty
                     dest = mirror.dest & 0xFE00
-                if ((mirror.mirror.location.locid != tempent.location.locid) or
+                if ((mirror is None or
+                        mirror.mirror.location.locid != tempent.location.locid) or
                         abs(tempent.x - destx) + abs(tempent.y - desty) > 4):
                     destx, desty = tempent.x, tempent.y
                 assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4

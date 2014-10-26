@@ -290,6 +290,28 @@ class Location():
         self.entrance_set.read_data(filename)
         self.backup_entrances()
 
+    def make_tower_flair(self):
+        towerloc = get_location(334)
+        searchlight = towerloc.unknown1 & 0x3
+        layer3index = (((towerloc.graphic_sets[3] & 0xF0) >> 4) |
+                       ((towerloc.tileformations & 0x3) << 4))
+        layer3map = (towerloc.unknown2 & 0x3F) << 4
+        layer3map |= (towerloc.mapdata >> 20)
+        layer3dims = towerloc.unknown4 & 0xF0
+
+        self._battlebg = towerloc._battlebg  # show lights indoors
+        self.layers_to_animate = towerloc.layers_to_animate
+        self.unknown0 = towerloc.unknown0
+        self.unknown1 = (self.unknown1 & 0xFC) | searchlight
+        self.graphic_sets[3] = (self.graphic_sets[3] & 0x0F) | (towerloc.graphic_sets[3] & 0xF0)
+        self.tileformations = (self.tileformations & 0xFFFC) | (towerloc.tileformations & 0x3)
+        self.mapdata = (self.mapdata & 0xFFFFF) | (towerloc.mapdata & 0x3FF00000)
+        self.unknown2 = (self.unknown2 & 0xC0) | (towerloc.unknown2 & 0x3F)
+        self.unknown3 = towerloc.unknown3
+        self.unknown4 = towerloc.unknown4  # layer 3 bgshift
+        self.unknown5 = towerloc.unknown5  # layer 3 priorities?
+        self.layerpriorities = towerloc.layerpriorities
+
     def write_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -518,26 +540,5 @@ def get_unused_locations(filename=None):
 if __name__ == "__main__":
     locations = get_locations("program.rom")
     locdict = dict([(l.locid, l) for l in locations])
-    '''
-    kt = set([locdict[334]])
-    while True:
-        termval = len(kt)
-        for l in sorted(kt):
-            for e in l.entrances:
-                dest = e.destination
-                if dest is not None:
-                    kt.add(dest)
-        if termval == len(kt):
-            break
-    for l in sorted(kt, key=lambda loc:loc.locid):
-        print l.locid, l
-    '''
-    print locdict[0x15f].pretty_walkable
+    import pdb; pdb.set_trace()
     exit()
-
-    #unused_locations = get_unused_locations("program.rom")
-    for l in locations:
-        print l.locid, l, len(l.entrances), ':',
-        for e in l.entrances:
-            print len(e.reachable_entrances),
-        print

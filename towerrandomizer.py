@@ -13,7 +13,7 @@ locdict = {}
 # dealing with one-ways: when identifying the "from" entrance in a route,
 # retroactively add the "to" entrance to earlier in the route?
 towerlocids = [int(line.strip(), 0x10) for line in open(TOWER_LOCATIONS_TABLE)]
-map_bans = [353, 143]
+map_bans = [353, 143, 319, 179]
 
 
 class SpecialInstructions:
@@ -62,8 +62,12 @@ locexchange = {}
 def connect_segments(sega, segb):
     exits = {}
     for seg in [sega, segb]:
-        entrances = seg.sorted_entrances
-        random.shuffle(entrances)
+        if seg.addable or seg.ruletype == OPTIONAL:
+            entrances = seg.sorted_entrances
+            random.shuffle(entrances)
+        elif seg.ruletype == DIRECTIONAL:
+            entrances = seg.entrances.values()[0]
+
         for e in entrances:
             shortsig = e.shortsig
             if shortsig not in seg.links:
@@ -157,6 +161,10 @@ class CheckRoomSet:
                 else:
                     destx, desty = mirror.destx, mirror.desty
                     dest = mirror.dest & 0xFE00
+                if ((mirror.mirror.location.locid != tempent.location.locid) or
+                        abs(tempent.x - destx) + abs(tempent.y - desty) > 4):
+                    destx, desty = tempent.x, tempent.y
+                assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
 
                 entrance = Entrance(None)
                 entrance.set_location(loc.locid)
@@ -495,6 +503,7 @@ def assign_maps(rrs, maps=None, new_entrances=None):
             location_entrances.append(e.reachable_entrances)
 
     for base_entrances in reversed(location_entrances):
+        assert len(set([e.location.locid for e in base_entrances])) == 1
         while True:
             entrances = copy(base_entrances)
 
@@ -520,17 +529,29 @@ def assign_maps(rrs, maps=None, new_entrances=None):
                 if segment is not None:
                     break
 
+            entrances = sorted(entrances,
+                               key=lambda e: (e.location.locid, e.entid))
             if segment is None:
-                rr = random.choice(rrs)
-                route = random.choice(rr.routes)
-                candidates = filter(lambda c: c.addable, route)
-                segment = random.choice(candidates)
+                while True:
+                    rr = random.choice(rrs)
+                    route = random.choice(rr.routes)
 
-            if m in segment.maps:
-                continue
+                    def validate(c):
+                        if not c.addable:
+                            return False
+                        locid = entrances[0].location.locid
+                        if locid in c.entrances:
+                            return False
+                        return True
 
-            e = random.choice(sorted(entrances,
-                                     key=lambda e: (e.location.locid, e.entid)))
+                    candidates = filter(validate, route)
+                    if not candidates:
+                        continue
+                    else:
+                        segment = random.choice(candidates)
+                        break
+
+            e = random.choice(entrances)
             segment.add_entrance(e.location.locid, e.entid)
 
 
@@ -598,6 +619,7 @@ def randomize_tower(filename):
     print ("Assigning maps, please wait. Because this is random, "
            "it could take a few minutes.")
     counter = 0
+
     while True:
         clear_unused_locations()
         rrs = parse_checkpoints()

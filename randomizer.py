@@ -2342,10 +2342,10 @@ def manage_tower():
     total = 0
     for e in entrancesets:
         total += len(e.entrances)
-        print e.entid, total,
+        #print e.entid, total,
         prev = nextpointer
         nextpointer = e.write_data(outfile, nextpointer)
-        print nextpointer - prev
+        #print nextpointer - prev
 
 
 def create_dimensional_vortex():

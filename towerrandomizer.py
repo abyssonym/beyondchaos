@@ -13,7 +13,7 @@ locdict = {}
 # dealing with one-ways: when identifying the "from" entrance in a route,
 # retroactively add the "to" entrance to earlier in the route?
 towerlocids = [int(line.strip(), 0x10) for line in open(TOWER_LOCATIONS_TABLE)]
-map_bans = [353]
+map_bans = [353, 143]
 
 
 class SpecialInstructions:
@@ -47,6 +47,13 @@ class SpecialInstructions:
     def add_deadend(self, item):
         self.add_item(item, 'deadends')
 
+    def remove_removes(self):
+        for mapid, entid in self.removes:
+            location = locdict[mapid]
+            ents = [e for e in location.entrances if e.entid == entid]
+            for ent in ents:
+                location.entrance_set.entrances.remove(ent)
+
 
 si = SpecialInstructions()
 locexchange = {}
@@ -61,14 +68,12 @@ def connect_segments(sega, segb):
             shortsig = e.shortsig
             if shortsig not in seg.links:
                 exits[seg] = e
-                print shortsig,
                 break
         else:
             raise Exception("No exits available.")
 
     sega.links[exits[sega].shortsig] = exits[segb].signature
     segb.links[exits[segb].shortsig] = exits[sega].signature
-    print
 
 
 def clear_entrances(location):
@@ -131,14 +136,12 @@ class CheckRoomSet:
 
     def establish_entrances(self):
         for mapid in self.entrances:
-            print mapid,
             for e in self.entrances[mapid]:
-                print e.shortsig,
                 loc = get_appropriate_location(e.location)
                 sig = e.signature
                 _, x, y, _, _, _ = sig
                 if e.shortsig not in self.links:
-                    print "WARNING: %s not in links." % str(sig)
+                    #print "WARNING: %s not in links." % str(sig)
                     continue
                 sig2 = self.links[e.shortsig]
                 loc2id, destx, desty, _, _, _ = sig2
@@ -149,8 +152,11 @@ class CheckRoomSet:
                 tempent = temploc.get_nearest_entrance(destx, desty)
                 assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
                 mirror = tempent.mirror
-                destx, desty = mirror.destx, mirror.desty
-                dest = mirror.dest & 0xFE00
+                if mirror is None:
+                    destx, desty, dest = destx, desty, 0
+                else:
+                    destx, desty = mirror.destx, mirror.desty
+                    dest = mirror.dest & 0xFE00
 
                 entrance = Entrance(None)
                 entrance.set_location(loc.locid)
@@ -163,11 +169,7 @@ class CheckRoomSet:
                 if entrance.effectsig in effectsigs:
                     continue
                 loc.entrance_set.entrances.append(entrance)
-                try:
-                    loc.validate_entrances()
-                except:
-                    import pdb; pdb.set_trace()
-            print
+                loc.validate_entrances()
 
     @property
     def reachability_factor(self):
@@ -283,7 +285,10 @@ class CheckRoomSet:
         # adding unreachable entrance = asserting it is reachable
         if mapid not in self.entrances:
             self.entrances[mapid] = []
-        entrance = locdict[mapid].entrances[entid]
+        try:
+            entrance = [e for e in locdict[mapid].entrances if e.entid == entid][0]
+        except IndexError:
+            import pdb; pdb.set_trace()
         if entrance not in self.entrances[mapid]:
             self.entrances[mapid].append(entrance)
         for e in entrance.reachable_entrances:
@@ -596,6 +601,7 @@ def randomize_tower(filename):
     while True:
         clear_unused_locations()
         rrs = parse_checkpoints()
+        si.remove_removes()
         for rr in rrs:
             rr.construct_check_routes()
 

@@ -13,7 +13,9 @@ locdict = {}
 # dealing with one-ways: when identifying the "from" entrance in a route,
 # retroactively add the "to" entrance to earlier in the route?
 towerlocids = [int(line.strip(), 0x10) for line in open(TOWER_LOCATIONS_TABLE)]
-map_bans = [353, 143, 319, 179]
+# TODO: take into account passable directions
+map_bans = [353, 143, 319, 179, 313, 314, 221, 19, 20, 32]
+map_bans.extend([225])  # dunno why this failed
 
 
 class SpecialInstructions:
@@ -105,6 +107,7 @@ def get_appropriate_location(loc):
             if u not in locexchange.values():
                 u.copy(loc)
                 u.make_tower_flair()
+                u.fill_battle_bg(loc.locid)
                 clear_entrances(u)
                 try:
                     assert not u.entrances

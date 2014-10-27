@@ -26,6 +26,7 @@ USED_LOCATIONS_TABLE = path.join("tables", "usedlocs.txt")
 UNUSED_LOCATIONS_TABLE = path.join("tables", "unusedlocs.txt")
 TOWER_LOCATIONS_TABLE = path.join("tables", "finaldungeonmaps.txt")
 TOWER_CHECKPOINTS_TABLE = path.join("tables", "finaldungeoncheckpoints.txt")
+MAP_BATTLE_BG_TABLE = path.join("tables", "mapbattlebgs.txt")
 
 
 class Substitution(object):

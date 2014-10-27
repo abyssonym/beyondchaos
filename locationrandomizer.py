@@ -1,6 +1,6 @@
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,
-                   UNUSED_LOCATIONS_TABLE,
+                   UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
                    utilrandom as random)
 
 
@@ -11,6 +11,12 @@ for line in open(MAP_NAMES_TABLE):
     key, value = tuple(line.strip().split(':'))
     key = int(key, 0x10)
     mapnames[key] = value
+
+
+mapbattlebgs = {}
+for line in open(MAP_BATTLE_BG_TABLE):
+    a, b = tuple(line.strip().split())
+    mapbattlebgs[int(a)] = int(b, 0x10)
 
 
 #256 zones
@@ -299,9 +305,10 @@ class Location():
         layer3map |= (towerloc.mapdata >> 20)
         layer3dims = towerloc.unknown4 & 0xF0
 
-        self._battlebg = towerloc._battlebg  # show lights indoors
+        self._battlebg = (towerloc._battlebg & 0xC0) | self._battlebg
         self.layers_to_animate = towerloc.layers_to_animate
         self.unknown0 = towerloc.unknown0
+        self.attacks = towerloc.attacks
         self.unknown1 = (self.unknown1 & 0xFC) | searchlight
         self.graphic_sets[3] = (self.graphic_sets[3] & 0x0F) | (towerloc.graphic_sets[3] & 0xF0)
         self.tileformations = (self.tileformations & 0xFFFC) | (towerloc.tileformations & 0x3)
@@ -311,6 +318,13 @@ class Location():
         self.unknown4 = towerloc.unknown4  # layer 3 bgshift
         self.unknown5 = towerloc.unknown5  # layer 3 priorities?
         self.layerpriorities = towerloc.layerpriorities
+
+    def fill_battle_bg(self, locid):
+        if self.battlebg in [0, 5] and locid in mapbattlebgs:
+            print locid, self._battlebg,
+            if locid in mapbattlebgs:
+                battlebg = mapbattlebgs[locid]
+            print battlebg
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
@@ -540,5 +554,36 @@ def get_unused_locations(filename=None):
 if __name__ == "__main__":
     locations = get_locations("program.rom")
     locdict = dict([(l.locid, l) for l in locations])
+    needdict, noneeddict, bgdict = {}, {}, {}
+    for location in locations:
+        #print "%x" % location.battlebg, "%x" % location.tileformations, location
+        a = location.graphic_sets[0]
+        b = location.palette_index & 0xFF
+        print location.locid, "%x" % location.battlebg, location
+        if (a, b) not in needdict:
+            needdict[(a, b)] = []
+        if (a, b) not in noneeddict:
+            noneeddict[(a, b)] = []
+        if location.battlebg in [0, 5]:
+            needdict[(a, b)].append(location)
+            #new = raw_input("Value? ")
+            #new = int(new, 0x10)
+            #bgdict[location.locid] = new
+        else:
+            noneeddict[(a, b)].append(location)
+
+    for key, value in needdict.items():
+        if not value:
+            continue
+        print key
+        for v in value:
+            print v.locid, v
+        bg = raw_input("BG? ")
+        for v in value:
+            bgdict[v.locid] = int(bg, 0x10)
+
+    for key, value in sorted(bgdict.items()):
+        print key, "%x" % value
+
     import pdb; pdb.set_trace()
     exit()

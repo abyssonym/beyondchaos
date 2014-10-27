@@ -6,6 +6,8 @@
 410:0|9
 &410:1,4,5,8
 -410:2,3,6,7
+# Dragons
+354:5,335:0
 # Atma
 # there's only 1 entrance on 331, but there's a one-way event to 329
 331:0

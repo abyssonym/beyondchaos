@@ -2454,6 +2454,7 @@ if __name__ == "__main__":
     secret_codes['suplexwrecks'] = "SUPLEX MODE"
     secret_codes['strangejourney'] = "BIZARRE ADVENTURE"
     secret_codes['dearestmolulu'] = "ENCOUNTERLESS MODE"
+    secret_codes['towerofpower'] = "TOWER RANDOMIZATION (EXPERIMENTAL FEATURE)"
     for code, text in secret_codes.items():
         if code in flags:
             flags = flags.replace(code, '')
@@ -2591,4 +2592,5 @@ if __name__ == "__main__":
             natmag_candidates = tuple(nc.name for nc in natmag_candidates)
             print "Natural magic: %s %s" % natmag_candidates
 
-    manage_tower()
+    if 'towerofpower' in activated_codes:
+        manage_tower()

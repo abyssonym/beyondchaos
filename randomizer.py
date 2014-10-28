@@ -436,11 +436,9 @@ def randomize_colosseum(filename, pointer):
     monster_objs = get_ranked_monsters(filename, bosses=False)
     items = [i.itemid for i in item_objs]
     monsters = [m.id for m in monster_objs]
+    results = []
     f = open(filename, 'r+b')
     for i in range(0xFF):
-        #if i == 0x29:
-        #    continue  # striker
-
         index = items.index(i)
         trade = index
         while index == trade:
@@ -459,6 +457,7 @@ def randomize_colosseum(filename, pointer):
         wager_obj = [j for j in item_objs if j.itemid == i][0]
         opponent_obj = [m for m in monster_objs if m.id == opponent][0]
         win_obj = [j for j in item_objs if j.itemid == trade][0]
+        results.append((wager_obj, opponent_obj, win_obj))
         f.seek(pointer + (i*4))
         f.write(chr(opponent))
         f.seek(pointer + (i*4) + 2)
@@ -470,6 +469,7 @@ def randomize_colosseum(filename, pointer):
             f.write(chr(0x00))
 
     f.close()
+    return results
 
 
 def randomize_slots(filename, pointer):
@@ -1776,7 +1776,7 @@ def manage_espers():
     return espers
 
 
-def manage_treasure(monsters):
+def manage_treasure(monsters, shops=True):
     chests = chests_from_table(CHEST_TABLE)
     for c in chests:
         c.read_data(sourcefile)
@@ -1787,8 +1787,6 @@ def manage_treasure(monsters):
 
     for c in chests:
         c.write_data(outfile)
-
-    randomize_colosseum(outfile, 0x1fb600)
 
     for i in range(26):
         address = 0x47f40 + (i*4)
@@ -1802,6 +1800,35 @@ def manage_treasure(monsters):
         m.mutate_metamorph()
         m.write_stats(outfile)
 
+    if shops:
+        buyables = manage_shops()
+
+    pointer = 0x1fb600
+    wagers = randomize_colosseum(outfile, pointer)
+    wagers = dict([(a.itemid, c) for (a, b, c) in wagers])
+
+    def ensure_striker():
+        candidates = []
+        for b in buyables:
+            if b == 0xFF:
+                continue
+            intermediate = wagers[b]
+            if intermediate.itemid == 0x29:
+                return
+            if intermediate in candidates:
+                continue
+            if intermediate.itemid not in buyables:
+                candidates.append(intermediate)
+
+        candidates = sorted(candidates, key=lambda c: c.rank())
+        candidates = candidates[len(candidates)/2:]
+        wager = random.choice(candidates)
+        f = open(outfile, 'r+b')
+        f.seek(pointer + (wager.itemid*4) + 2)
+        f.write(chr(0x29))
+        f.close()
+
+    ensure_striker()
     return chests
 
 
@@ -2094,6 +2121,7 @@ def manage_formations_hidden(formations, fsets, esper_graphics=None):
 
 
 def manage_shops():
+    buyables = set([])
     for i in xrange(0x80):
         pointer = 0x47AC0 + (9*i)
         s = ShopBlock(pointer)
@@ -2101,6 +2129,8 @@ def manage_shops():
         s.mutate_misc()
         s.mutate_items(outfile)
         s.write_data(outfile)
+        buyables |= set(s.items)
+    return buyables
 
 
 def populate_locdict():
@@ -2514,11 +2544,7 @@ if __name__ == "__main__":
         manage_espers()
 
     if 't' in flags:
-        manage_treasure(monsters)
-
-    if 'p' in flags:
-        # do this after items
-        manage_shops()
+        manage_treasure(monsters, shops=True)
 
     if 'u' in flags:
         umaro_risk = manage_umaro(characters)

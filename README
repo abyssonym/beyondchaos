@@ -1,4 +1,4 @@
-Run the randomizer using Python 2.x
+Run the randomizer using Python 2.6 or 2.7
 
 Usage:
     python randomizer.py
@@ -30,8 +30,7 @@ Randomizer Flags:
     i   Randomize the stats of equippable items.
     q   Randomize what equipment each character can wear.
     e   Randomize esper spells and levelup bonuses.
-    t   Randomize treasure, including chests, colosseum, and enemy drops.
-    p   Randomize shops and shop prices.
+    t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
     u   Umaro risk.
     l   Randomize blitz inputs.
     n   Randomize window background colors.

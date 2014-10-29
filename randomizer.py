@@ -2593,7 +2593,7 @@ if __name__ == "__main__":
         manage_formations(formations, fsets)
         manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
 
-    if 'f' in flags and 'b' in flags:
+    if 'dearestmolulu' in activated_codes or ('f' in flags and 'b' in flags):
         manage_encounter_rate()
 
     if 'c' in flags:

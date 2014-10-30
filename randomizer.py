@@ -18,8 +18,6 @@ from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
                                shuffle_monsters)
 from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
                             reset_special_relics, reset_rage_blizzard)
-from chestrandomizer import (ChestBlock, shuffle_treasure_locations,
-                             shuffle_monster_boxes)
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
@@ -398,20 +396,6 @@ def items_from_table(tablefile):
         while '  ' in line:
             line = line.replace('  ', ' ')
         c = ItemBlock(*line.split(','))
-        items.append(c)
-    return items
-
-
-def chests_from_table(tablefile):
-    items = []
-    for i, line in enumerate(open(tablefile)):
-        line = line.strip()
-        if line[0] == '#':
-            continue
-
-        while '  ' in line:
-            line = line.replace('  ', ' ')
-        c = ChestBlock(*line.split(','))
         items.append(c)
     return items
 
@@ -1777,17 +1761,6 @@ def manage_espers():
 
 
 def manage_treasure(monsters, shops=True):
-    chests = chests_from_table(CHEST_TABLE)
-    for c in chests:
-        c.read_data(sourcefile)
-        c.mutate_contents()
-
-    shuffle_treasure_locations(chests)
-    shuffle_monster_boxes(chests)
-
-    for c in chests:
-        c.write_data(outfile)
-
     for i in range(26):
         address = 0x47f40 + (i*4)
         mm = MetamorphBlock(pointer=address)
@@ -1829,7 +1802,6 @@ def manage_treasure(monsters, shops=True):
         f.close()
 
     ensure_striker()
-    return chests
 
 
 def manage_blitz():

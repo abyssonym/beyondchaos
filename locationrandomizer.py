@@ -80,6 +80,10 @@ class Location():
         else:
             return self.altname
 
+    @property
+    def chestpointer(self):
+        return 0x2D82F4 + (self.locid * 2)
+
     def validate_entrances(self):
         pairs = [(e.x, e.y) for e in self.entrances]
         if len(pairs) != len(set(pairs)):
@@ -295,6 +299,7 @@ class Location():
         f.close()
         self.entrance_set.read_data(filename)
         self.backup_entrances()
+        self.read_chests(filename)
 
     def make_tower_flair(self):
         towerloc = get_location(334)
@@ -370,6 +375,42 @@ class Location():
         eset = EntranceSet(entid=self.locid)
         self.set_entrance_set(eset)
         eset.copy(location.entrance_set)
+        self.copy_chests(location)
+
+    def read_chests(self, filename):
+        from chestrandomizer import ChestBlock
+        f = open(filename, 'r+b')
+        f.seek(self.chestpointer)
+        begin = read_multi(f, length=2)
+        end = read_multi(f, length=2)
+        numchests = (end - begin) / 5
+        self.chests = []
+        for i in xrange(numchests):
+            pointer = begin + (i*5)
+            c = ChestBlock(pointer, self.locid)
+            c.read_data(filename)
+            self.chests.append(c)
+
+    def copy_chests(self, location):
+        from chestrandomizer import ChestBlock
+        self.chests = []
+        for chest in location.chests:
+            c = ChestBlock(pointer=None, location=self.locid)
+            c.copy(chest)
+            self.chests.append(c)
+
+    def write_chests(self, filename, nextpointer):
+        f = open(filename, 'r+b')
+        f.seek(self.chestpointer)
+        write_multi(f, (nextpointer - 0x2d8634), length=2)
+        f.close()
+        for c in self.chests:
+            if nextpointer + 5 > 0x2d8e5a:
+                raise Exception("Too many entrance triggers.")
+            c.write_data(filename, nextpointer)
+            nextpointer += 5
+
+        return nextpointer
 
 
 class Entrance():
@@ -552,37 +593,5 @@ def get_unused_locations(filename=None):
 
 if __name__ == "__main__":
     locations = get_locations("program.rom")
-    locdict = dict([(l.locid, l) for l in locations])
-    needdict, noneeddict, bgdict = {}, {}, {}
-    for location in locations:
-        #print "%x" % location.battlebg, "%x" % location.tileformations, location
-        a = location.graphic_sets[0]
-        b = location.palette_index & 0xFF
-        print location.locid, "%x" % location.battlebg, location
-        if (a, b) not in needdict:
-            needdict[(a, b)] = []
-        if (a, b) not in noneeddict:
-            noneeddict[(a, b)] = []
-        if location.battlebg in [0, 5]:
-            needdict[(a, b)].append(location)
-            #new = raw_input("Value? ")
-            #new = int(new, 0x10)
-            #bgdict[location.locid] = new
-        else:
-            noneeddict[(a, b)].append(location)
-
-    for key, value in needdict.items():
-        if not value:
-            continue
-        print key
-        for v in value:
-            print v.locid, v
-        bg = raw_input("BG? ")
-        for v in value:
-            bgdict[v.locid] = int(bg, 0x10)
-
-    for key, value in sorted(bgdict.items()):
-        print key, "%x" % value
-
     import pdb; pdb.set_trace()
     exit()

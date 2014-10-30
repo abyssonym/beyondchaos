@@ -1,20 +1,20 @@
-from utils import hex2int, utilrandom as random
+from utils import read_multi, write_multi, utilrandom as random
 from itemrandomizer import get_ranked_items
 
 items = None
 
 
 class ChestBlock:
-    def __init__(self, pointer, location, world):
-        self.pointer = hex2int(pointer)
-        self.location = hex2int(location)
-        self.world = world
+    def __init__(self, pointer, location):
+        self.pointer = pointer
+        self.location = location
 
     def read_data(self, filename):
         global items
 
         f = open(filename, 'r+b')
-        f.seek(self.pointer+2)
+        f.seek(self.pointer)
+        self.unknown = read_multi(f, length=2)
         self.misc = ord(f.read(1))
         self.contenttype = ord(f.read(1))
         self.contents = ord(f.read(1))
@@ -23,6 +23,12 @@ class ChestBlock:
         if items is None:
             items = get_ranked_items(filename)
             items = [i.itemid for i in items]
+
+    def copy(self, other):
+        self.unknown = other.unknown
+        self.misc = other.misc
+        self.contenttype = other.contenttype
+        self.contents = other.contents
 
     @property
     def empty(self):
@@ -40,9 +46,10 @@ class ChestBlock:
     def monster(self):
         return self.contenttype == 0x20
 
-    def write_data(self, filename):
+    def write_data(self, filename, nextpointer):
         f = open(filename, 'r+b')
-        f.seek(self.pointer+2)
+        f.seek(nextpointer)
+        write_multi(f, self.unknown, length=2)
         f.write(chr(self.misc))
         f.write(chr(self.contenttype))
         f.write(chr(self.contents))
@@ -64,27 +71,3 @@ class ChestBlock:
             self.contents = min(0xFF, max(0, self.contents))
         elif self.empty:
             pass
-
-
-def shuffle_treasure_locations(chests):
-    locdict = {}
-    for c in chests:
-        if c.location not in locdict:
-            locdict[c.location] = []
-        locdict[c.location].append(c)
-    for location, locchests in locdict.items():
-        for i in range(len(locchests)):
-            candidates = locchests[i:]
-            basechest = locchests[i]
-            swapchest = random.choice(candidates)
-            basechest.contenttype, swapchest.contenttype = swapchest.contenttype, basechest.contenttype
-            basechest.contents, swapchest.contents = swapchest.contents, basechest.contents
-
-
-def shuffle_monster_boxes(chests):
-    monster_boxes = [c for c in chests if c.monster]
-    for m in monster_boxes:
-        valid_chests = [c for c in chests if c.world == m.world]
-        swapchest = random.choice(valid_chests)
-        m.contenttype, swapchest.contenttype = swapchest.contenttype, m.contenttype
-        m.contents, swapchest.contents = swapchest.contents, m.contents

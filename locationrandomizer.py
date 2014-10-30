@@ -137,7 +137,7 @@ class Location():
 
     @property
     def battlebg(self):
-        return self._battlebg & 0x7F
+        return self._battlebg & 0x3F
 
     @property
     def battle_palette(self):
@@ -321,10 +321,9 @@ class Location():
 
     def fill_battle_bg(self, locid):
         if self.battlebg in [0, 5] and locid in mapbattlebgs:
-            print locid, self._battlebg,
             if locid in mapbattlebgs:
                 battlebg = mapbattlebgs[locid]
-            print battlebg
+                self._battlebg = (self._battlebg & 0xC0) | battlebg
 
     def write_data(self, filename):
         f = open(filename, 'r+b')

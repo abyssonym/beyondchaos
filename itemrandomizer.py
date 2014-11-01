@@ -422,14 +422,18 @@ class ItemBlock:
                 bl += power
 
                 if self.evade in range(1, 6):
-                    bl += self.evade * 50
+                    bl += self.evade * 75
 
                 if self.mblock in range(1, 6):
-                    bl += self.mblock * 50
+                    bl += self.mblock * 75
 
                 if (self.is_armor and (self.features['elemabsorbs'] or
-                                       self.features['elemnulls'])):
-                    bl += 100
+                                       self.features['elemnulls'] or
+                                       self.features['elements'])):
+                    void = (self.features['elemabsorbs'] |
+                            self.features['elemnulls'])
+                    bl += (100 * bin(void).count('1'))
+                    bl += (25 * bin(self.features['elements']).count('1'))
 
             if self.features['statboost1'] & 0x4b:
                 bl += 25
@@ -437,14 +441,20 @@ class ItemBlock:
             if self.features['statboost2'] & 0x40:
                 bl += 400
 
-            if self.features['special1'] & 0x88:
+            if self.features['special1'] & 0x80:
                 bl += 100
 
             if self.features['special1'] & 0x08:
-                bl += 400
+                bl += 500
 
-            if self.features['special2'] & 0x31:
-                bl += 200
+            if self.features['special2'] & 0x30:
+                bl += 100
+
+            if self.features['special2'] & 0x01:
+                bl += 100
+
+            if self.itemid == 0xDA:
+                bl += 777
 
             if self.features['special3'] & 0x08:
                 bl += 300
@@ -453,10 +463,17 @@ class ItemBlock:
                 bl += 300
 
             if self.features['statusacquire3'] & 0xeb:
-                bl += 50 * bin(self.features['statusacquire3']).count('1')
+                bl += 100 * bin(self.features['statusacquire3']).count('1')
 
             if self.features['statusacquire2'] & 0xf9:
                 bl += -50 * bin(self.features['statusacquire2']).count('1')
+
+            if self.itemid == 0x66:
+                # cursed shield
+                bl += 666
+
+            if self.itemid == 0x52:
+                bl += 277
 
         baseline += (bl * 100)
 

@@ -888,10 +888,11 @@ class MonsterBlock:
                 valid.remove(0x03)  # Magitek
             valid.remove(0x0A)  # image
             valid.add(0x19)  # frozen
-            valid = valid | set([0x40 | v for v in list(valid)])  # no damage
             valid.add(0x30)  # absorb HP
             valid.add(0x31)  # absorb MP
             special = random.choice(sorted(valid))
+            if special not in [0x30, 0x31] and random.choice([True, False]):
+                special |= 0x40  # no HP damage
         if branch <= 9:
             # physical special
             factor = int(self.stats['level'] * 16 / 99.0) + 1
@@ -908,6 +909,9 @@ class MonsterBlock:
             valid.remove(0x19)  # frozen
             valid.add(0x0A)  # image
             special = random.choice(sorted(valid))
+
+        if random.randint(1, 4) == 4:
+            special |= 0x80  # unblockable
         self.special = special
 
     def mutate(self, change_skillset=None):

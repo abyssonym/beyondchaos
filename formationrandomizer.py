@@ -261,7 +261,11 @@ class FormationSet():
     def __init__(self, setid):
         baseptr = 0xf4800
         self.setid = setid
-        self.pointer = baseptr + (setid * 8)
+        if self.setid <= 0xFF:
+            self.pointer = baseptr + (setid * 8)
+        else:
+            self.pointer = baseptr + (0x100 * 8) + ((setid - 0x100) * 4)
+        self.floatingcontinent = False
 
     def __repr__(self):
         s = ""
@@ -288,7 +292,11 @@ class FormationSet():
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.formids = []
-        for i in xrange(4):
+        if self.setid <= 0xFF:
+            num_encounters = 4
+        else:
+            num_encounters = 2
+        for i in xrange(num_encounters):
             self.formids.append(read_multi(f, length=2))
         f.close()
 
@@ -345,6 +353,7 @@ class FormationSet():
         for i in self.formids:
             if i & 0x8000:
                 i &= 0x7FFF
+                self.floatingcontinent = True
             f = [j for j in formations if j.formid == i]
             f = f[0]
             self.formations.append(f)

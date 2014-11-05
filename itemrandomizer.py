@@ -403,17 +403,23 @@ class ItemBlock:
             return self.price
 
         bl = 0
-        baseline = 25000
-
         if self.is_consumable:
-            baseline = 0
-
-        if self.features['specialaction']:
-            bl += 50
-
-        if not self.is_consumable:
+            baseline = 5000
+            if self.features['otherproperties'] & 0x08:
+                bl += 25
+            if self.features['otherproperties'] & 0x10:
+                bl += 75
+            if self.features['otherproperties'] & 0x80:
+                bl *= (self.features['power'] / 16.0) * 2
+            if self.features['targeting'] & 0x20:
+                bl *= 2
+            if bl == 0 and self.features['specialaction']:
+                bl += 50
+        else:
             if self.imp_only:
                 baseline = 0
+            else:
+                baseline = 25000
 
             if not self.is_tool and not self.is_relic:
                 power = self.features['power']
@@ -422,10 +428,10 @@ class ItemBlock:
                 bl += power
 
                 if self.evade in range(1, 6):
-                    bl += self.evade * 75
+                    bl += (self.evade * self.evade) * 25
 
                 if self.mblock in range(1, 6):
-                    bl += self.mblock * 75
+                    bl += (self.mblock * self.mblock) * 25
 
                 if (self.is_armor and (self.features['elemabsorbs'] or
                                        self.features['elemnulls'] or
@@ -436,7 +442,7 @@ class ItemBlock:
                     bl += (25 * bin(self.features['elements']).count('1'))
 
             if self.features['statboost1'] & 0x4b:
-                bl += 25
+                bl += 50
 
             if self.features['statboost2'] & 0x40:
                 bl += 400
@@ -447,14 +453,11 @@ class ItemBlock:
             if self.features['special1'] & 0x08:
                 bl += 500
 
-            if self.features['special2'] & 0x30:
+            if self.features['special2'] & 0x10:
                 bl += 100
 
-            if self.features['special2'] & 0x01:
-                bl += 100
-
-            if self.itemid == 0xDA:
-                bl += 777
+            if self.features['special2'] & 0x21:
+                bl += 500
 
             if self.features['special3'] & 0x08:
                 bl += 300

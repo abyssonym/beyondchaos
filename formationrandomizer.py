@@ -278,6 +278,10 @@ class FormationSet():
         return s.strip()
 
     @property
+    def unused(self):
+        return all([f.formid == 0 for f in self.formations])
+
+    @property
     def has_boss(self):
         for f in self.formations:
             if any([e.is_boss for e in f.present_enemies]):
@@ -389,11 +393,12 @@ if __name__ == "__main__":
     #for f in formations:
     #    print f
     fsets = []
-    for i in xrange(0x100):
+    for i in xrange(512):
         fs = FormationSet(setid=i)
         fs.read_data(filename)
         fs.set_formations(formations)
         fsets.append(fs)
     for fset in fsets:
+        print fset.unused
         print fset
         print

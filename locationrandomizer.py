@@ -386,7 +386,7 @@ class Location():
         numchests = (end - begin) / 5
         self.chests = []
         for i in xrange(numchests):
-            pointer = begin + (i*5)
+            pointer = begin + (i*5) + 0x2d8634
             c = ChestBlock(pointer, self.locid)
             c.read_data(filename)
             self.chests.append(c)
@@ -399,6 +399,10 @@ class Location():
             c.copy(chest)
             self.chests.append(c)
 
+    def mutate_chests(self, guideline=None):
+        for c in self.chests:
+            c.mutate_contents(guideline=guideline)
+
     def write_chests(self, filename, nextpointer):
         f = open(filename, 'r+b')
         f.seek(self.chestpointer)
@@ -406,7 +410,7 @@ class Location():
         f.close()
         for c in self.chests:
             if nextpointer + 5 > 0x2d8e5a:
-                raise Exception("Too many entrance triggers.")
+                raise Exception("Not enough space for treasure chests.")
             c.write_data(filename, nextpointer)
             nextpointer += 5
 

@@ -1804,6 +1804,16 @@ def manage_treasure(monsters, shops=True):
     ensure_striker()
 
 
+def manage_chests():
+    locations = get_locations(sourcefile)
+    for l in locations:
+        l.mutate_chests(guideline=100)
+
+    nextpointer = 0x2d8634
+    for l in locations:
+        nextpointer = l.write_chests(outfile, nextpointer=nextpointer)
+
+
 def manage_blitz():
     blitzspecptr = 0x47a40
     adjacency = {0x7: [0xE, 0x8],
@@ -2515,8 +2525,13 @@ if __name__ == "__main__":
     if 'e' in flags:
         manage_espers()
 
+    if 'towerofpower' in activated_codes:
+        # do this before treasure
+        manage_tower()
+
     if 't' in flags:
         manage_treasure(monsters, shops=True)
+        manage_chests()
 
     if 'u' in flags:
         umaro_risk = manage_umaro(characters)
@@ -2592,6 +2607,3 @@ if __name__ == "__main__":
         if natmag_candidates:
             natmag_candidates = tuple(nc.name for nc in natmag_candidates)
             print "Natural magic: %s %s" % natmag_candidates
-
-    if 'towerofpower' in activated_codes:
-        manage_tower()

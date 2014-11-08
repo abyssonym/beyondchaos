@@ -1,5 +1,8 @@
 from utils import read_multi, write_multi, utilrandom as random
 from math import log
+from monsterrandomizer import monsterdict
+
+fsets = None
 
 
 class Formation():
@@ -169,7 +172,7 @@ class Formation():
 
         f.close()
 
-    def lookup_enemies(self, monsterdict):
+    def lookup_enemies(self):
         self.enemies = []
         self.big_enemy_ids = []
         for i, eid in enumerate(self.enemy_ids):
@@ -226,6 +229,8 @@ class Formation():
     def rank(self, levels=None):
         if levels is None:
             levels = [e.stats['level'] for e in self.present_enemies if e]
+        if len(levels) == 0:
+            return 0
         balance = sum(levels) / (log(len(levels))+1)
         average = sum(levels) / len(levels)
         score = (max(levels) + balance + average) / 3.0
@@ -363,7 +368,7 @@ class FormationSet():
             self.formations.append(f)
 
     def swap_formations(self, other):
-        if len(set(self.formids)) == 1 or len(set(other.formids)) == 1:
+        if len(set(self.formids)) < 4 or len(set(other.formids)) < 4:
             return
 
         formations = self.formations + other.formations
@@ -381,6 +386,33 @@ class FormationSet():
     def rank(self):
         return sum(f.rank() for f in self.formations) / 4.0
 
+
+def get_formations(filename):
+    formations = []
+    for i in xrange(576):
+        f = Formation(i)
+        f.read_data(filename)
+        f.lookup_enemies()
+        f.read_mould(filename)
+        formations.append(f)
+    return formations
+
+
+def get_fsets(filename=None):
+    global fsets
+    if filename is None or fsets:
+        return fsets
+    else:
+        fsets = []
+        formations = get_formations(filename)
+        for i in xrange(512):
+            fs = FormationSet(setid=i)
+            fs.read_data(filename)
+            fs.set_formations(formations)
+            fsets.append(fs)
+        return fsets
+
+
 if __name__ == "__main__":
     from sys import argv
     from randomizer import monsters_from_table, get_formations
@@ -389,15 +421,7 @@ if __name__ == "__main__":
     monsters = monsters_from_table(ENEMY_TABLE)
     for m in monsters:
         m.read_stats(filename)
-    formations = get_formations(filename)
-    #for f in formations:
-    #    print f
-    fsets = []
-    for i in xrange(512):
-        fs = FormationSet(setid=i)
-        fs.read_data(filename)
-        fs.set_formations(formations)
-        fsets.append(fs)
+    fsets = get_fsets(filename=filename)
     for fset in fsets:
         print fset.unused
         print fset

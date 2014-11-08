@@ -20,6 +20,7 @@ AICODES = {0xF0: 3, 0xF1: 1, 0xF2: 3, 0xF3: 2,
            0xF8: 2, 0xF9: 3, 0xFA: 2, 0xFB: 2,
            0xFC: 3, 0xFD: 0, 0xFE: 0, 0xFF: 0
            }
+monsterdict = {}
 
 
 def get_item_normal():
@@ -73,6 +74,7 @@ class MonsterBlock:
     def set_id(self, i):
         self.id = i
         self.specialeffectpointer = 0xF37C0 + self.id
+        monsterdict[self.id] = self
 
     def update_size(self, width, height):
         if not self.width or not self.height:
@@ -812,10 +814,9 @@ class MonsterBlock:
         for i in self.items:
             if i == 0xFF:
                 i = self.get_item_appropriate().itemid
-                i = random.choice(sorted(set(self.items + new_items + [i, 0xFF])))
-                if i == 0xFF:
-                    new_items.append(0xFF)
-                    continue
+                candidates = self.items + new_items + [i]
+                candidates = [i for i in candidates if i != 0xFF]
+                i = random.choice(sorted(candidates))
 
             index = itemids.index(i)
             index = mutate_index(index, len(itemids),
@@ -825,6 +826,7 @@ class MonsterBlock:
             new_items.append(itemids[index])
 
         self.items = new_items
+        assert 0xFF not in self.items
 
     def mutate_metamorph(self):
         # mutates both metamorph template and miss ratio
@@ -977,16 +979,36 @@ class MonsterBlock:
             return self.stats['level']
 
 
-def get_ranked_monsters(filename, bosses=True):
-    from randomizer import monsters_from_table
+def monsters_from_table(tablefile):
+    monsters = []
+    for i, line in enumerate(open(tablefile)):
+        line = line.strip()
+        if line[0] == '#':
+            continue
+
+        while '  ' in line:
+            line = line.replace('  ', ' ')
+        c = MonsterBlock(*line.split(','))
+        c.set_id(i)
+        monsters.append(c)
+    return monsters
+
+
+def get_monsters(filename=None):
+    if monsterdict:
+        return sorted(monsterdict.values(), key=lambda m: m.id)
+
     monsters = monsters_from_table(ENEMY_TABLE)
     for m in monsters:
         m.read_stats(filename)
+    return monsters
 
+
+def get_ranked_monsters(filename=None, bosses=True):
+    monsters = get_monsters(filename=filename)
     if not bosses:
         monsters = filter(lambda m: m.id <= 0xFF, monsters)
     monsters = sorted(monsters, key=lambda m: m.rank())
-
     return monsters
 
 

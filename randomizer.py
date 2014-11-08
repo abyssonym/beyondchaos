@@ -2,7 +2,7 @@ from time import time
 from sys import argv
 from shutil import copyfile
 from hashlib import md5
-from utils import (ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
+from utils import (ESPER_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
@@ -13,15 +13,15 @@ from utils import (ENEMY_TABLE, ESPER_TABLE, CHEST_TABLE,
                    mutate_index, utilrandom as random)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub,
                              RandomSpellSub, get_ranked_spells)
-from monsterrandomizer import (MonsterBlock, MonsterGraphicBlock,
+from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                MetamorphBlock, get_ranked_monsters,
-                               shuffle_monsters)
+                               shuffle_monsters, monsterdict)
 from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
                             reset_special_relics, reset_rage_blizzard)
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
-from formationrandomizer import Formation, FormationSet
+from formationrandomizer import (get_formations, get_fsets)
 from locationrandomizer import Zone, EntranceSet, get_locations
 from towerrandomizer import randomize_tower
 
@@ -338,37 +338,6 @@ def commands_from_table(tablefile):
         c.set_id(i)
         commands.append(c)
     return commands
-
-
-monsterdict = {}
-
-
-def monsters_from_table(tablefile):
-    monsters = []
-    for i, line in enumerate(open(tablefile)):
-        line = line.strip()
-        if line[0] == '#':
-            continue
-
-        while '  ' in line:
-            line = line.replace('  ', ' ')
-        c = MonsterBlock(*line.split(','))
-        c.set_id(i)
-        monsterdict[i] = c
-        monsters.append(c)
-    return monsters
-
-
-def get_formations(filename):
-    baseptr = 0xf6200
-    formations = []
-    for i in xrange(576):
-        f = Formation(i)
-        f.read_data(filename)
-        f.lookup_enemies(monsterdict)
-        f.read_mould(filename)
-        formations.append(f)
-    return formations
 
 
 def characters_from_table(tablefile):
@@ -1234,7 +1203,7 @@ def manage_magitek(spells):
 
 
 def manage_monsters():
-    monsters = monsters_from_table(ENEMY_TABLE)
+    monsters = get_monsters(sourcefile)
     for i, m in enumerate(monsters):
         m.read_stats(sourcefile)
         m.mutate()
@@ -1881,7 +1850,7 @@ def manage_formations(formations, fsets):
     # just shuffle the reset of the formations within an fset
     valid_fsets = [fset for fset in ranked_fsets if fset not in valid_fsets]
     for fset in valid_fsets:
-        fs.shuffle_formations()
+        fset.shuffle_formations()
 
     indoor_formations = set([fo for fset in indoor_fsets for fo in
                              fset.formations])
@@ -1908,6 +1877,8 @@ def manage_formations(formations, fsets):
 def manage_formations_hidden(formations, fsets, esper_graphics=None):
     for f in formations:
         f.mutate(ap=True)
+
+    fsets = [fs for fs in fsets if len(fs.formations) == 4]
 
     freespaces = []
     freespaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
@@ -2013,7 +1984,7 @@ def manage_formations_hidden(formations, fsets, esper_graphics=None):
 
         ue.graphics.copy_data(vboss.graphics)
         uf.copy_data(vbf)
-        uf.lookup_enemies(monsterdict)
+        uf.lookup_enemies()
         eids = []
         for eid in uf.enemy_ids:
             if eid & 0xFF == vboss.id & 0xFF:
@@ -2021,7 +1992,7 @@ def manage_formations_hidden(formations, fsets, esper_graphics=None):
             else:
                 eids.append(eid)
         uf.set_big_enemy_ids(eids)
-        uf.lookup_enemies(monsterdict)
+        uf.lookup_enemies()
 
         while True:
             bf = random.choice(safe_boss_formations)
@@ -2502,9 +2473,7 @@ if __name__ == "__main__":
     if 'm' in flags:
         monsters = manage_monsters()
     else:
-        monsters = monsters_from_table(ENEMY_TABLE)
-        for m in monsters:
-            m.read_stats(sourcefile)
+        monsters = get_monsters(sourcefile)
 
     if 'c' in flags:
         mgs = manage_monster_appearance(monsters)
@@ -2587,13 +2556,7 @@ if __name__ == "__main__":
 
     if 'f' in flags:
         formations = get_formations(sourcefile)
-        fsets = []
-        for i in xrange(0x100):
-            fs = FormationSet(setid=i)
-            fs.read_data(sourcefile)
-            fs.set_formations(formations)
-            fsets.append(fs)
-
+        fsets = get_fsets(sourcefile)
         manage_formations(formations, fsets)
         manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
 

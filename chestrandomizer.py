@@ -3,22 +3,31 @@ from itemrandomizer import get_ranked_items
 
 items = None
 itemids = None
-lastid = None
+valid_ids = range(0, 0x200)
 
 
 def get_valid_chest_id():
-    global lastid
-    if lastid is None:
-        lastid = 0
-        return lastid
-    lastid += 1
-    return lastid
+    global valid_ids
+    try:
+        valid = valid_ids[0]
+    except IndexError:
+        raise Exception("Not enough chest IDs available.")
+    mark_taken_id(valid)
+    return valid
+
+
+def mark_taken_id(taken):
+    global valid_ids
+    assert 0 <= taken < 0x200
+    if taken in valid_ids:
+        valid_ids = [i for i in valid_ids if i != taken]
 
 
 class ChestBlock:
     def __init__(self, pointer, location):
         self.pointer = pointer
         self.location = location
+        self.value = None
 
     def read_data(self, filename):
         global items, itemids
@@ -35,6 +44,8 @@ class ChestBlock:
         if items is None:
             items = get_ranked_items(filename)
             itemids = [i.itemid for i in items]
+
+        mark_taken_id(self.effective_id)
 
     def copy(self, other):
         self.position = other.position
@@ -70,7 +81,6 @@ class ChestBlock:
             self.contenttype = contenttype
 
     def set_new_id(self):
-        global lastid
         nextid = get_valid_chest_id()
         if nextid >= 0x100:
             if nextid >= 0x200:
@@ -80,11 +90,7 @@ class ChestBlock:
             self.contenttype &= 0xFE
         self.memid = nextid & 0xFF
 
-        if nextid > lastid:
-            lastid = nextid
-
     def write_data(self, filename, nextpointer):
-        global lastid
         f = open(filename, 'r+b')
         f.seek(nextpointer)
         write_multi(f, self.position, length=2)
@@ -97,9 +103,6 @@ class ChestBlock:
         f.write(chr(self.contenttype))
         f.write(chr(self.contents))
         f.close()
-
-        if self.effective_id > lastid:
-            lastid = self.effective_id
 
     def get_current_value(self, guideline=None):
         if self.treasure:
@@ -125,7 +128,11 @@ class ChestBlock:
         assert self.gold and not (self.treasure or self.empty or self.monster)
 
     def mutate_contents(self, guideline=None, fsets=None):
-        value = self.get_current_value(guideline=guideline)
+        if self.value:
+            value = self.value
+        else:
+            value = self.get_current_value(guideline=guideline)
+
         if self.treasure:
             index = itemids.index(self.contents)
         else:

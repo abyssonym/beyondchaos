@@ -2,6 +2,7 @@ from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,
                    UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
                    utilrandom as random)
+from copy import copy
 
 
 locations = None
@@ -370,7 +371,9 @@ class Location():
             "unknown5", "width", "height", "layerpriorities"
             ]
         for attribute in attributes:
-            setattr(self, attribute, getattr(location, attribute))
+            value = getattr(location, attribute)
+            value = copy(value)
+            setattr(self, attribute, value)
 
         eset = EntranceSet(entid=self.locid)
         self.set_entrance_set(eset)
@@ -402,6 +405,17 @@ class Location():
     def mutate_chests(self, guideline=None):
         for c in self.chests:
             c.mutate_contents(guideline=guideline)
+
+    def unlock_chests(self, low, high):
+        dist = (high - low) / 2
+        for c in self.chests:
+            c.set_content_type(0x80)
+            c.contents = None
+            value = low + random.randint(0, dist) + random.randint(0, dist)
+            c.value = value
+            c.mutate_contents()
+            if random.randint(1, 5) >= 4:
+                c.set_new_id()
 
     def write_chests(self, filename, nextpointer):
         f = open(filename, 'r+b')
@@ -596,6 +610,11 @@ def get_unused_locations(filename=None):
 
 
 if __name__ == "__main__":
-    locations = get_locations("program.rom")
+    from sys import argv
+    if len(argv) > 1:
+        filename = argv[1]
+    else:
+        filename = "program.rom"
+    locations = get_locations(filename)
     import pdb; pdb.set_trace()
     exit()

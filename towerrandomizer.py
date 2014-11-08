@@ -108,6 +108,7 @@ def get_appropriate_location(loc):
                 u.copy(loc)
                 u.make_tower_flair()
                 u.fill_battle_bg(loc.locid)
+                u.unlock_chests(20000, 100000)
                 clear_entrances(u)
                 try:
                     assert not u.entrances

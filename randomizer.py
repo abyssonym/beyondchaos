@@ -2356,10 +2356,11 @@ def manage_tower():
     total = 0
     for e in entrancesets:
         total += len(e.entrances)
-        #print e.entid, total,
-        prev = nextpointer
         nextpointer = e.write_data(outfile, nextpointer)
-        #print nextpointer - prev
+    f = open(outfile, 'r+b')
+    f.seek(e.pointer + 2)
+    write_multi(f, (nextpointer - 0x1fbb00), length=2)
+    f.close()
 
 
 def create_dimensional_vortex():
@@ -2525,6 +2526,28 @@ if __name__ == "__main__":
     if 'e' in flags:
         manage_espers()
 
+    if 'o' in flags and 'suplexwrecks' not in activated_codes:
+        # do this after swapping beserk
+        natmag_candidates = manage_natural_magic(characters)
+    else:
+        natmag_candidates = None
+
+    if VERBOSE:
+        for c in sorted(characters, key=lambda c: c.id):
+            if c.id > 13:
+                continue
+
+            ms = [m for m in c.battle_commands if m]
+            ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
+            print "%s:" % c.name,
+            for m in ms:
+                if m:
+                    print m[0].name.lower(),
+            print
+        if natmag_candidates:
+            natmag_candidates = tuple(nc.name for nc in natmag_candidates)
+            print "Natural magic: %s %s" % natmag_candidates
+
     if 'towerofpower' in activated_codes:
         # do this before treasure
         manage_tower()
@@ -2551,12 +2574,6 @@ if __name__ == "__main__":
 
         for c in characters:
             c.mutate_stats(outfile)
-
-    if 'o' in flags and 'suplexwrecks' not in activated_codes:
-        # do this after swapping beserk
-        natmag_candidates = manage_natural_magic(characters)
-    else:
-        natmag_candidates = None
 
     if 'l' in flags:
         manage_blitz()
@@ -2591,19 +2608,3 @@ if __name__ == "__main__":
 
     if 'strangejourney' in activated_codes:
         create_dimensional_vortex()
-
-    if VERBOSE:
-        for c in sorted(characters, key=lambda c: c.id):
-            if c.id > 13:
-                continue
-
-            ms = [m for m in c.battle_commands if m]
-            ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
-            print "%s:" % c.name,
-            for m in ms:
-                if m:
-                    print m[0].name.lower(),
-            print
-        if natmag_candidates:
-            natmag_candidates = tuple(nc.name for nc in natmag_candidates)
-            print "Natural magic: %s %s" % natmag_candidates

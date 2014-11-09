@@ -1319,7 +1319,7 @@ def recolor_character_palette(pointer, palette=None, flesh=False):
 def manage_character_appearance(preserve_graphics=False):
     wild = 'partyparty' in activated_codes
     sabin_mode = 'suplexwrecks' in activated_codes
-    tina_mode = 'tinaparty' in activated_codes
+    tina_mode = 'bravenudeworld' in activated_codes
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -2442,7 +2442,7 @@ if __name__ == "__main__":
     secret_codes['airship'] = "AIRSHIP MODE"
     secret_codes['cutscenes'] = "CUTSCENE SKIPS"
     secret_codes['partyparty'] = "CRAZY PARTY MODE"
-    secret_codes['tinaparty'] = "TINA PARTY MODE"
+    secret_codes['bravenudeworld'] = "TINA PARTY MODE"
     secret_codes['suplexwrecks'] = "SUPLEX MODE"
     secret_codes['strangejourney'] = "BIZARRE ADVENTURE"
     secret_codes['dearestmolulu'] = "ENCOUNTERLESS MODE"
@@ -2484,7 +2484,7 @@ if __name__ == "__main__":
         mgs = manage_monster_appearance(monsters)
 
     if 'c' in flags or 's' in flags or (
-            set(['partyparty', 'tinaparty', 'suplexwrecks']) & activated_codes):
+            set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
         preserve_graphics = ('s' not in flags and
                              'partyparty' not in activated_codes)
         manage_character_appearance(preserve_graphics=preserve_graphics)

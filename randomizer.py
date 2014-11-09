@@ -699,7 +699,7 @@ def manage_commands_new(commands, characters):
                     c.targeting = random.choice([0x2, 0x2A, 0xC0, 0x1])
 
                 c.properties = 3
-                if random.randint(1, 5) == 5 or sb.spellid in [0x23, 0xA3]:
+                if sb.spellid in [0x23, 0xA3]:
                     c.properties |= 0x4  # enable while imped
                 c.unset_retarget(outfile)
                 c.write_properties(outfile)

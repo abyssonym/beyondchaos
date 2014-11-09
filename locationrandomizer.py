@@ -406,8 +406,11 @@ class Location():
             self.chests.append(c)
 
     def mutate_chests(self, guideline=None):
+        random.shuffle(self.chests)
         for c in self.chests:
             c.mutate_contents(guideline=guideline)
+            if guideline is None and hasattr(c, "value") and c.value:
+                guideline = value
 
     def unlock_chests(self, low, high):
         dist = (high - low) / 2

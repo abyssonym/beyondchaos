@@ -217,3 +217,5 @@ class ChestBlock:
             index = mutate_index(index, len(items), [False, True],
                                  (-4, 2), (-2, 2))
             self.contents = items[index].itemid
+
+        self.value = value

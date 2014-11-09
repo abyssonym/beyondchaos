@@ -540,6 +540,11 @@ def manage_commands(commands, characters):
     locke_scenario_sub.set_location(0x42AC4)
     locke_scenario_sub.write(outfile)
 
+    fanatics_fix_sub = Substitution()
+    fanatics_fix_sub.bytestring = [0xA9, 0x15]
+    fanatics_fix_sub.set_location(0x2537E)
+    fanatics_fix_sub.write(outfile)
+
     invalid_commands = ["fight", "item", "magic", "xmagic",
                         "def", "row", "summon", "revert"]
     if random.randint(1, 5) != 5:

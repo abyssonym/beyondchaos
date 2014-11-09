@@ -27,7 +27,6 @@ def get_2pack(formation):
 
     unused = [fs for fs in fsets if fs.unused][0]
     unused.formids = [formation.formid] * 2
-    unused.set_formations(get_formations())
     return unused
 
 

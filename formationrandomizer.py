@@ -3,7 +3,7 @@ from math import log
 from monsterrandomizer import monsterdict
 
 fsets = None
-formations = None
+formdict = None
 
 
 class Formation():
@@ -286,7 +286,6 @@ class FormationSet():
             self.pointer = baseptr + (setid * 8)
         else:
             self.pointer = baseptr + (0x100 * 8) + ((setid - 0x100) * 4)
-        self.floatingcontinent = False
 
     def __repr__(self):
         s = ""
@@ -297,6 +296,10 @@ class FormationSet():
                     s += '* ' if f.misc1 & (1 << i) else '  '
             s += str([e.name for e in f.present_enemies]) + "\n"
         return s.strip()
+
+    @property
+    def formations(self):
+        return [formdict[i & 0x7FFF] for i in self.formids]
 
     @property
     def unused(self):
@@ -336,7 +339,6 @@ class FormationSet():
         if test:
             for i in range(4):
                 chosen = random.choice(candidates)
-                self.formations[i] = chosen
                 self.formids[i] = chosen.formid
             return self.formations
 
@@ -358,7 +360,6 @@ class FormationSet():
             index = min(index, len(candidates)-1)
             chosen = candidates[index]
             candidates.remove(chosen)
-            self.formations[i] = chosen
             self.formids[i] = chosen.formid
             chosens.append(chosen)
             if not candidates:
@@ -373,50 +374,36 @@ class FormationSet():
 
         return chosens
 
-    def set_formations(self, formations):
-        self.formations = []
-        for i in self.formids:
-            if i & 0x8000:
-                i &= 0x7FFF
-                self.floatingcontinent = True
-            f = [j for j in formations if j.formid == i]
-            f = f[0]
-            self.formations.append(f)
-
     def swap_formations(self, other):
         if len(set(self.formids)) < 4 or len(set(other.formids)) < 4:
             return
 
-        formations = self.formations + other.formations
         formids = self.formids + other.formids
         random.shuffle(formids)
         self.formids = formids[:4]
         other.formids = formids[4:]
-        self.set_formations(formations)
-        other.set_formations(formations)
 
     def shuffle_formations(self):
         random.shuffle(self.formids)
-        self.set_formations(list(self.formations))
 
     def rank(self):
         return sum(f.rank() for f in self.formations) / 4.0
 
 
 def get_formations(filename=None):
-    global formations
-    if formations:
-        return formations
+    global formdict
+    if formdict:
+        return [f for (_, f) in sorted(formdict.items())]
 
-    formations = []
+    formdict = {}
     for i in xrange(576):
         f = Formation(i)
         f.read_data(filename)
         f.lookup_enemies()
         f.read_mould(filename)
-        formations.append(f)
+        formdict[i] = f
 
-    return formations
+    return get_formations()
 
 
 def get_fsets(filename=None):
@@ -425,11 +412,9 @@ def get_fsets(filename=None):
         return fsets
     else:
         fsets = []
-        formations = get_formations(filename)
         for i in xrange(512):
             fs = FormationSet(setid=i)
             fs.read_data(filename)
-            fs.set_formations(formations)
             fsets.append(fs)
         return fsets
 

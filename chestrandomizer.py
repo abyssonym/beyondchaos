@@ -1,9 +1,49 @@
 from utils import read_multi, write_multi, mutate_index, utilrandom as random
 from itemrandomizer import get_ranked_items
+from formationrandomizer import get_formations, get_fsets
 
 items = None
 itemids = None
 valid_ids = range(0, 0x200)
+banned_formations = [0x1ca, 0x1e9]
+former_miabs = []
+
+
+def get_appropriate_formations():
+    formations = get_formations()
+    formations = [f for f in formations if not f.battle_event]
+    formations = [f for f in formations if f.formid not in banned_formations]
+    formations = [f for f in formations if len(f.present_enemies) >= 1]
+    return formations
+
+
+def get_2pack(formation):
+    fsets = [fs for fs in get_fsets() if fs.setid >= 0x100]
+    for fs in fsets:
+        if fs.setid < 0x100:
+            continue
+        if formation in fs.formations:
+            return fs
+
+    unused = [fs for fs in fsets if fs.unused][0]
+    unused.formids = [formation.formid] * 2
+    unused.set_formations(get_formations())
+    return unused
+
+
+def add_former_miab(setid):
+    setid |= 0x100
+    fset = [fs for fs in get_fsets() if fs.setid == setid][0]
+    formation = fset.formations[0]
+    if formation not in former_miabs:
+        former_miabs.append(fset.formations[0])
+
+
+def add_formers(candidates):
+    lowest_rank = candidates[0].rank()
+    candidates += [f for f in former_miabs if f.rank() >= lowest_rank and
+                   f.formid not in banned_formations]
+    return sorted(candidates, key=lambda f: f.rank())
 
 
 def get_valid_chest_id():
@@ -30,7 +70,7 @@ class ChestBlock:
         self.value = None
 
     def read_data(self, filename):
-        global items, itemids
+        global items, itemids, former_miabs
 
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -46,6 +86,8 @@ class ChestBlock:
             itemids = [i.itemid for i in items]
 
         mark_taken_id(self.effective_id)
+        if self.monster:
+            add_former_miab(self.contents)
 
     def copy(self, other):
         self.position = other.position
@@ -127,7 +169,7 @@ class ChestBlock:
         self.contents = value / 100
         assert self.gold and not (self.treasure or self.empty or self.monster)
 
-    def mutate_contents(self, guideline=None, fsets=None):
+    def mutate_contents(self, guideline=None):
         if self.value:
             value = self.value
         else:
@@ -149,15 +191,26 @@ class ChestBlock:
             value = value / 2
             value += (random.randint(0, value) + random.randint(0, value))
             self.contents = min(0xFF, max(1, value))
-        elif 4 <= chance <= 6 and fsets:
+        elif 4 <= chance <= 6:
+            formations = get_appropriate_formations()
             # monster
             self.set_content_type(0x20)
-            index = mutate_index(index, len(items), [False, True],
+            candidates = [f for f in formations if
+                          f.get_guaranteed_drop_value() >= value * 100]
+            if not candidates:
+                self.set_content_type(0x10)
+                return
+
+            candidates = sorted(candidates, key=lambda f: f.rank())
+            candidates = add_formers(candidates)
+            index = min(1, len(candidates)-1)
+            index = mutate_index(index, len(candidates), [False, True],
                                  (-2, 2), (-1, 1))
-            index = (float(index) / len(items)) * len(fsets)
-            index = min(int(index), len(fsets)-1)
+            chosen = candidates[index]
+            banned_formations.append(chosen.formid)
+            chosen = get_2pack(chosen)
             # only 2-packs are allowed
-            self.contents = fsets[index].setid & 0xFF
+            self.contents = chosen.setid & 0xFF
         else:
             # treasure
             self.set_content_type(0x40)

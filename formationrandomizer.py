@@ -3,6 +3,7 @@ from math import log
 from monsterrandomizer import monsterdict
 
 fsets = None
+formations = None
 
 
 class Formation():
@@ -24,6 +25,21 @@ class Formation():
         s = "%s (%x)" % (s, self.formid)
         #s += " " + " ".join(["%x" % e.id for e in self.present_enemies])
         return s
+
+    def get_guaranteed_drop_value(self, value=0):
+        if len(self.present_enemies) == 0:
+            return False
+
+        values = []
+        for e in self.present_enemies:
+            for d in e.drops:
+                value = 1000000
+                if d is None:
+                    value = 0
+                else:
+                    value = min(value, d.rank())
+            values.append(value)
+        return max(values)
 
     @property
     def veldty(self):
@@ -387,7 +403,11 @@ class FormationSet():
         return sum(f.rank() for f in self.formations) / 4.0
 
 
-def get_formations(filename):
+def get_formations(filename=None):
+    global formations
+    if formations:
+        return formations
+
     formations = []
     for i in xrange(576):
         f = Formation(i)
@@ -395,6 +415,7 @@ def get_formations(filename):
         f.lookup_enemies()
         f.read_mould(filename)
         formations.append(f)
+
     return formations
 
 
@@ -415,14 +436,13 @@ def get_fsets(filename=None):
 
 if __name__ == "__main__":
     from sys import argv
-    from randomizer import monsters_from_table, get_formations
-    from utils import ENEMY_TABLE
+    from monsterrandomizer import get_monsters
     filename = argv[1]
-    monsters = monsters_from_table(ENEMY_TABLE)
+    monsters = get_monsters(filename)
     for m in monsters:
         m.read_stats(filename)
     fsets = get_fsets(filename=filename)
-    for fset in fsets:
-        print fset.unused
-        print fset
-        print
+    for fs in fsets:
+        for f in fs.formations:
+            if 1000 < f.get_guaranteed_drop_value() < 10000:
+                print f

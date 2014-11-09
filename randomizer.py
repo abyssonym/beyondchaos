@@ -2517,6 +2517,12 @@ if __name__ == "__main__":
             natmag_candidates = tuple(nc.name for nc in natmag_candidates)
             print "Natural magic: %s %s" % natmag_candidates
 
+    if 'f' in flags:
+        formations = get_formations(sourcefile)
+        fsets = get_fsets(sourcefile)
+        manage_formations(formations, fsets)
+        manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
+
     if 'towerofpower' in activated_codes:
         # do this before treasure
         manage_tower()
@@ -2524,6 +2530,9 @@ if __name__ == "__main__":
     if 't' in flags:
         manage_treasure(monsters, shops=True)
         manage_chests()
+        for fs in fsets:
+            # write new formation sets for MiaBs
+            fs.write_data(outfile)
 
     if 'u' in flags:
         umaro_risk = manage_umaro(characters)
@@ -2553,12 +2562,6 @@ if __name__ == "__main__":
             w.read_data(sourcefile)
             w.mutate()
             w.write_data(outfile)
-
-    if 'f' in flags:
-        formations = get_formations(sourcefile)
-        fsets = get_fsets(sourcefile)
-        manage_formations(formations, fsets)
-        manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
 
     if 'dearestmolulu' in activated_codes or ('f' in flags and 'b' in flags):
         manage_encounter_rate()

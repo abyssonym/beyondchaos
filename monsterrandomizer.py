@@ -11,6 +11,7 @@ all_spells = None
 valid_spells = None
 items = None
 itemids = None
+itemdict = None
 unrageable = [0x7E, 0x7F, 0x80, 0x81]
 HIGHEST_LEVEL = 77
 xps = []
@@ -50,6 +51,16 @@ class MonsterBlock:
         self.miny, self.maxy = None, None
         self.aiscript = None
         self.ambusher = False
+
+    @property
+    def steals(self):
+        steals = self.items[:2]
+        return [itemdict[i] for i in steals]
+
+    @property
+    def drops(self):
+        drops = self.items[2:]
+        return [itemdict[i] for i in drops]
 
     @property
     def is_boss(self):
@@ -155,7 +166,8 @@ class MonsterBlock:
         self.copy_visible(chosen)
 
     def read_stats(self, filename):
-        global all_spells, valid_spells, items, itemids, HIGHEST_LEVEL
+        global all_spells, valid_spells, items, itemids, itemdict
+        global HIGHEST_LEVEL
 
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -220,6 +232,8 @@ class MonsterBlock:
         if items is None:
             items = get_ranked_items(filename)
             itemids = [i.itemid for i in items]
+            itemdict = dict([(i.itemid, i) for i in items])
+            itemdict[0xFF] = None
 
     def get_skillset(self, ids_only=True):
         skillset = set([])
@@ -740,7 +754,7 @@ class MonsterBlock:
         new_items = []
         for i in self.items:
             if i == 0xFF:
-                i = random.choice(self.items + ([0xFF] * 4))
+                i = random.choice(self.items + [0xFF])
                 if i == 0xFF:
                     new_items.append(0xFF)
                     continue
@@ -751,6 +765,24 @@ class MonsterBlock:
                                  (-3, 3), (-2, 2))
 
             new_items.append(itemids[index])
+
+        new_items = [itemdict[i] for i in new_items]
+        steals, drops = (new_items[:2], new_items[2:])
+        steals = sorted(steals, key=lambda i: i.rank() if i else 0, reverse=True)
+        drops = sorted(drops, key=lambda i: i.rank() if i else 0, reverse=True)
+
+        if self.boss_death and None in drops:
+            temp = [d for d in drops if d]
+            if temp:
+                drops = temp * 2
+        new_items = [i.itemid if i else 0xFF for i in steals + drops]
+        if self.is_boss or self.boss_death:
+            pass
+        else:
+            if random.randint(1, 5) != 5:
+                if (new_items[2] != new_items[3] or
+                        random.choice([True, False])):
+                    new_items[3] = 0xFF
 
         self.items = new_items
 

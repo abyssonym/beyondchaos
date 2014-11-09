@@ -325,7 +325,10 @@ class Location():
         self.unknown5 = towerloc.unknown5  # layer 3 priorities?
         self.layerpriorities = towerloc.layerpriorities
 
-    def fill_battle_bg(self, locid):
+    def fill_battle_bg(self, locid=None):
+        if locid is None:
+            locid = self.locid
+
         if self.battlebg in [0, 5] and locid in mapbattlebgs:
             if locid in mapbattlebgs:
                 battlebg = mapbattlebgs[locid]
@@ -586,6 +589,7 @@ def get_locations(filename=None):
         print "Decompressing location data, please wait."
         for l in locations:
             l.read_data(filename)
+            l.fill_battle_bg()
     return locations
 
 

@@ -26,7 +26,7 @@ from locationrandomizer import Zone, EntranceSet, get_locations
 from towerrandomizer import randomize_tower
 
 
-VERSION = "21"
+VERSION = "22"
 VERBOSE = False
 
 

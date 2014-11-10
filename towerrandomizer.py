@@ -19,6 +19,7 @@ map_bans = [353, 143, 319, 179, 313, 314, 221, 19, 20, 32, 62]
 map_bans.extend([225])  # dunno why this failed
 map_bans.extend(range(245, 250))  # event-based exits
 newfsets = {}
+entrance_candidates = None
 
 
 class SpecialInstructions:
@@ -268,7 +269,7 @@ class CheckRoomSet:
             return basematrix
 
         locids = self.entrances.keys()
-        for _ in xrange(1000):
+        for _ in xrange(50):
             matrix = deepcopy(basematrix)
             candidates = list(entrances)
             random.shuffle(locids)
@@ -349,6 +350,7 @@ class CheckRoomSet:
                 continue
             if e not in self.entrances[mapid]:
                 self.entrances[mapid].append(e)
+        return self.entrances[mapid]
 
     def remove_entrance(self, mapid, entid):
         if mapid not in self.entrances:
@@ -547,24 +549,24 @@ def assign_maps(rrs, maps=None, new_entrances=None):
         for e in new_entrances:
             location_entrances.append(e.reachable_entrances)
 
+    used_entrances = set([en for rr in rrs for en in rr.entrances])
     for base_entrances in reversed(location_entrances):
         assert len(set([e.location.locid for e in base_entrances])) == 1
+
+        def validate(e):
+            if e.location is None:
+                return False
+
+            invalid = si.nochanges | si.removes
+            if (e.location.locid, e.entid) in invalid:
+                return False
+
+            return True
+        base2_entrances = copy(base_entrances)
+        base2_entrances = set([e for e in base2_entrances if validate(e)])
+
         while True:
-            entrances = copy(base_entrances)
-
-            def validate(e):
-                if e.location is None:
-                    return False
-
-                invalid = si.nochanges | si.removes
-                if (e.location.locid, e.entid) in invalid:
-                    return False
-
-                return True
-
-            entrances = [e for e in entrances if validate(e)]
-            used_entrances = [en for rr in rrs for en in rr.entrances]
-            entrances = set(entrances) - set(used_entrances)
+            entrances = base2_entrances - used_entrances
             if not entrances:
                 break
 
@@ -597,12 +599,17 @@ def assign_maps(rrs, maps=None, new_entrances=None):
                         break
 
             e = random.choice(entrances)
-            segment.add_entrance(e.location.locid, e.entid)
+            usednow = segment.add_entrance(e.location.locid, e.entid)
+            used_entrances |= set(usednow)
 
 
-def get_new_entrances(filename):
+def get_all_entrances(filename=None):
+    global entrance_candidates
+    if entrance_candidates:
+        return entrance_candidates
+    entrance_candidates = [e for l in get_locations() for e in l.entrances]
+
     unused_locations = get_unused_locations(filename)
-    candidates = [e for l in get_locations() for e in l.entrances]
 
     def validate(e):
         # TODO: remove maps with adjacent entrances
@@ -623,18 +630,22 @@ def get_new_entrances(filename):
                 return False
         return True
 
+    entrance_candidates = [e for e in entrance_candidates if validate(e)]
+    return get_all_entrances()
+
+
+def get_new_entrances(filename):
+    candidates = get_all_entrances(filename)
     random.shuffle(candidates)
     used_locations = []
     chosen = []
     num_entrances = 0
     for c in candidates:
-        if not validate(c):
-            continue
         if c.location.locid in used_locations:
             continue
-        num_entrances += len(c.reachable_entrances)
-        if num_entrances >= MAX_NEW_EXITS:
+        if num_entrances + len(c.reachable_entrances) >= MAX_NEW_EXITS:
             continue
+        num_entrances += len(c.reachable_entrances)
         chosen.append(c)
         used_locations.append(c.location.locid)
         if len(chosen) == MAX_NEW_MAPS:
@@ -665,6 +676,7 @@ def randomize_tower(filename):
            "it could take a few minutes.")
     counter = 0
 
+    from time import time
     while True:
         clear_unused_locations()
         rrs = parse_checkpoints()

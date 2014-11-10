@@ -6,6 +6,7 @@ from copy import copy
 
 
 locations = None
+unused_locs = None
 mapnames = {}
 locdict = {}
 for line in open(MAP_NAMES_TABLE):
@@ -601,27 +602,30 @@ def get_locations(filename=None):
         for l in locations:
             l.read_data(filename)
             l.fill_battle_bg()
+            locdict[l.locid] = l
     return locations
 
 
 def get_location(locid):
     global locdict
     if locid not in locdict:
-        locations = get_locations()
-        for l in locations:
-            locdict[l.locid] = l
+        get_locations()
     return locdict[locid]
 
 
 def get_unused_locations(filename=None):
-    locations = get_locations(filename)
+    global unused_locs
+    if unused_locs:
+        return unused_locs
+
     unused_locs = set([])
     for line in open(UNUSED_LOCATIONS_TABLE):
         locid = int(line.strip(), 0x10)
-        loc = [l for l in locations if l.locid == locid][0]
+        loc = get_location(locid)
         unused_locs.add(loc)
 
-    return sorted(unused_locs, key=lambda l: l.locid)
+    unused_locs = sorted(unused_locs, key=lambda l: l.locid)
+    return get_unused_locations()
 
 
 if __name__ == "__main__":

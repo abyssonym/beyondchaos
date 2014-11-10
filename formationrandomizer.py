@@ -2,7 +2,7 @@ from utils import read_multi, write_multi, utilrandom as random
 from math import log
 from monsterrandomizer import monsterdict
 
-fsets = None
+fsetdict = None
 formdict = None
 
 
@@ -407,16 +407,17 @@ def get_formations(filename=None):
 
 
 def get_fsets(filename=None):
-    global fsets
-    if filename is None or fsets:
+    global fsetdict
+    if filename is None or fsetdict:
+        fsets = [fs for (_, fs) in sorted(fsetdict.items())]
         return fsets
     else:
-        fsets = []
+        fsetdict = {}
         for i in xrange(512):
             fs = FormationSet(setid=i)
             fs.read_data(filename)
-            fsets.append(fs)
-        return fsets
+            fsetdict[i] = fs
+        return get_fsets()
 
 
 if __name__ == "__main__":

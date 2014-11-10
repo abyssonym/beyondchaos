@@ -297,6 +297,10 @@ class Location():
         tiledata = f.read(tilesize)
         self.tilebytes = decompress(tiledata, complicated=True)
         assert len(self.tilebytes) == 512
+
+        f.seek(0xf5600 + self.locid)
+        self.setid = ord(f.read(1))
+
         f.close()
         self.entrance_set.read_data(filename)
         self.backup_entrances()
@@ -363,6 +367,10 @@ class Location():
         write_attributes("music", "unknown5", "width", "height",
                          "layerpriorities")
         assert f.tell() == self.pointer + 0x21
+
+        f.seek(0xf5600 + self.locid)
+        f.write(chr(self.setid))
+
         f.close()
 
     def copy(self, location):
@@ -622,6 +630,16 @@ if __name__ == "__main__":
         filename = argv[1]
     else:
         filename = "program.rom"
+    from formationrandomizer import get_formations, get_fsets
+    from monsterrandomizer import get_monsters
+    get_monsters(filename)
+    get_formations(filename)
+    get_fsets(filename)
     locations = get_locations(filename)
+    from formationrandomizer import fsetdict
+    print fsetdict
+    for l in locations:
+        print l, fsetdict[l.setid]
+        print
     import pdb; pdb.set_trace()
     exit()

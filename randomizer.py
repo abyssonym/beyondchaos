@@ -53,7 +53,7 @@ TEK_SKILLS = (# [0x18, 0x6E, 0x70, 0x7D, 0x7E] +
 
 secret_codes = {}
 activated_codes = set([])
-locdict = {}
+namelocdict = {}
 
 
 class AutoLearnRageSub(Substitution):
@@ -1852,7 +1852,7 @@ def manage_formations(formations, fsets):
     for a, b in zip(indoor_fsets, indoor_fsets[1:]):
         a.swap_formations(b)
 
-    # just shuffle the reset of the formations within an fset
+    # just shuffle the rest of the formations within an fset
     valid_fsets = [fset for fset in ranked_fsets if fset not in valid_fsets]
     for fset in valid_fsets:
         fset.shuffle_formations()
@@ -2091,31 +2091,33 @@ def manage_shops():
     return buyables
 
 
-def populate_locdict():
-    if len(locdict) > 0:
-        return
+def get_namelocdict():
+    if len(namelocdict) > 0:
+        return namelocdict
 
     for line in open(LOCATION_TABLE):
         line = line.strip().split(',')
         name, encounters = line[0], line[1:]
         encounters = map(hex2int, encounters)
-        locdict[name] = encounters
+        namelocdict[name] = encounters
         for encounter in encounters:
-            assert encounter not in locdict
-            locdict[encounter] = name
+            assert encounter not in namelocdict
+            namelocdict[encounter] = name
+
+    return namelocdict
 
 
 def manage_colorize_dungeons(locations=None, freespaces=None):
     locations = locations or get_locations(sourcefile)
-    populate_locdict()
+    get_namelocdict()
     paldict = {}
     for l in locations:
-        if l.formation in locdict:
-            name = locdict[l.formation]
+        if l.formation in namelocdict:
+            name = namelocdict[l.formation]
             if l.name and name != l.name:
                 raise Exception("Location name mismatch.")
             elif l.name is None:
-                l.name = locdict[l.formation]
+                l.name = namelocdict[l.formation]
         if l.field_palette not in paldict:
             paldict[l.field_palette] = set([])
         if l.attacks:
@@ -2234,14 +2236,14 @@ def manage_encounter_rate():
         encrate_sub.write(outfile)
         return
 
-    populate_locdict()
+    get_namelocdict()
     encrates = {}
     change_dungeons = ["floating continent", "veldt cave",
                        "ancient castle", "mt zozo", "yeti's cave",
                        "gogo's domain", "phoenix cave", "cyan's dream",
                        "ebot's rock", "kefka's tower"]
 
-    for name in locdict:
+    for name in namelocdict:
         if type(name) is not str:
             continue
 
@@ -2257,8 +2259,8 @@ def manage_encounter_rate():
         z.read_data(sourcefile)
         if z.zoneid >= 0x80:
             for setid in z.setids:
-                if setid in locdict:
-                    name = locdict[setid]
+                if setid in namelocdict:
+                    name = namelocdict[setid]
                     z.names[setid] = name
                     if name not in z.names:
                         z.names[name] = set([])
@@ -2526,11 +2528,13 @@ if __name__ == "__main__":
         formations = get_formations(sourcefile)
         fsets = get_fsets(sourcefile)
         manage_formations(formations, fsets)
-        manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
 
     if 'towerofpower' in activated_codes:
         # do this before treasure
         manage_tower()
+
+    if 'f' in flags:
+        manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
 
     if 't' in flags:
         manage_treasure(monsters, shops=True)

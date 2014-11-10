@@ -2,6 +2,7 @@ from copy import deepcopy, copy
 from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
                    utilrandom as random)
 from locationrandomizer import get_locations, get_unused_locations, Entrance
+from formationrandomizer import get_fsets
 from itertools import product
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
@@ -16,6 +17,7 @@ towerlocids = [int(line.strip(), 0x10) for line in open(TOWER_LOCATIONS_TABLE)]
 # TODO: take into account passable directions
 map_bans = [353, 143, 319, 179, 313, 314, 221, 19, 20, 32, 62]
 map_bans.extend([225])  # dunno why this failed
+newfsets = {}
 
 
 class SpecialInstructions:
@@ -94,6 +96,41 @@ def clear_unused_locations():
         clear_entrances(u)
 
 
+def get_new_formations(areaname):
+    from randomizer import get_namelocdict
+    namelocdict = get_namelocdict()
+    setids = set([])
+    for key in namelocdict:
+        if type(key) is str and areaname in key:
+            setids |= set(namelocdict[key])
+
+    fsets = [fs for fs in get_fsets() if fs.setid in setids]
+    formations = set([])
+    for fs in fsets:
+        formations |= set(fs.formations)
+    return sorted(formations, key=lambda f: f.formid)
+
+
+def get_new_fsets(areaname, number=10):
+    if areaname in newfsets:
+        return newfsets[areaname]
+    newfsets[areaname] = []
+    formations = get_new_formations(areaname)
+    fsets = get_fsets()
+    unused = [fs for fs in fsets if fs.unused and len(fs.formations) == 4]
+    tempforms = []
+    for _ in xrange(number):
+        if len(tempforms) < 4:
+            tempforms = list(formations)
+        setforms = random.sample(tempforms, 4)
+        fset = unused.pop()
+        fset.formids = [f.formid for f in setforms]
+        tempforms = [f for f in tempforms if f not in setforms]
+        newfsets[areaname].append(fset)
+
+    return get_new_fsets(areaname)
+
+
 def get_appropriate_location(loc):
     unused_locations = get_unused_locations()
     if loc in locexchange:
@@ -109,6 +146,8 @@ def get_appropriate_location(loc):
                 u.make_tower_flair()
                 u.fill_battle_bg(loc.locid)
                 u.unlock_chests(20000, 100000)
+                fsets = get_new_fsets("kefka's tower", 10)
+                u.setid = random.choice(fsets).setid
                 clear_entrances(u)
                 try:
                     assert not u.entrances

@@ -17,6 +17,7 @@ towerlocids = [int(line.strip(), 0x10) for line in open(TOWER_LOCATIONS_TABLE)]
 # TODO: take into account passable directions
 map_bans = [353, 143, 319, 179, 313, 314, 221, 19, 20, 32, 62]
 map_bans.extend([225])  # dunno why this failed
+map_bans.extend(range(245, 250))  # event-based exits
 newfsets = {}
 
 

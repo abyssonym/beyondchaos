@@ -1883,7 +1883,7 @@ def manage_formations_hidden(formations, fsets, esper_graphics=None):
     for f in formations:
         f.mutate(ap=True)
 
-    fsets = [fs for fs in fsets if len(fs.formations) == 4]
+    fsets = [fs for fs in fsets if len(fs.formations) == 4 and not fs.unused]
 
     freespaces = []
     freespaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
@@ -2060,7 +2060,7 @@ def manage_formations_hidden(formations, fsets, esper_graphics=None):
 
     boss_candidates = list(safe_boss_formations)
     boss_candidates = random.sample(boss_candidates,
-                                    random.randint(0, len(boss_candidates)/2))
+                                    random.randint(0, len(boss_candidates)))
     rare_candidates = list(repurposed_formations + boss_candidates)
     random.shuffle(fsets)
     for fs in fsets:

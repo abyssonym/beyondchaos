@@ -121,28 +121,6 @@ class Location():
         _, entrance = min(candidates)
         return entrance
 
-    def get_reachable_entrances(self, x, y):
-        entrances = self.entrance_set.entrances
-        walkable = self.walkable
-        walked = set([])
-        unchecked = set([(x, y)])
-        while True:
-            termval = len(walked)
-            for x, y in list(unchecked):
-                walked.add((x, y))
-                for a, b in [(x, y+1), (x, y-1), (x+1, y), (x-1, y)]:
-                    if (b >= len(walkable) or a >= len(walkable[0])
-                            or b < 0 or a < 0):
-                        continue
-                    value = walkable[b][a]
-                    if value == 0 and (a, b) not in walked:
-                        unchecked.add((a, b))
-            if termval == len(walked):
-                break
-        for (x, y) in list(walked):
-            walked |= set([(x, y+1), (x, y-1), (x+1, y), (x-1, y)])
-        return [e for e in entrances if (e.x, e.y) in walked]
-
     @property
     def battlebg(self):
         return self._battlebg & 0x3F
@@ -161,76 +139,6 @@ class Location():
         return 0x2dc480 + (256 * (self.palette_index & 0x3F))
         #if self.palette_index == 0x2a:
         #    return 0x2dee80  # to 0x2def60
-
-    @property
-    def walkable(self):
-        indexes = map(ord, self.map1bytes)
-        walkables = []
-        for i in indexes:
-            #i = i * 2
-            properties1 = (ord(self.tilebytes[i+1]) << 8) | ord(self.tilebytes[i])
-            if i == 0 or properties1 & 0b100:
-                walkables.append(1)
-            else:
-                walkables.append(0)
-        return line_wrap(walkables, width=self.layer1width)
-
-    def find_best_entry(self, x, y):
-        walkable = self.walkable
-        west, north, south, east = 1, 2, 2, 1
-
-        def check_coordinate(x, y):
-            try:
-                value = walkable[y][x]
-            except IndexError:
-                return False
-            if value == 0:
-                return True
-            else:
-                return False
-
-        while True:
-            termcond = sum([north, south, east, west])
-            if check_coordinate(x-west, y):
-                west += 1
-            if check_coordinate(x+east, y):
-                east += 1
-            if check_coordinate(x, y-north):
-                north += 1
-            if check_coordinate(x, y+south):
-                south += 1
-            if termcond == sum([north, south, east, west]):
-                break
-
-        if east > 2 or west > 2 or max(east, west) >= max(north, south):
-            if east > west:
-                return x+1, y
-            elif west > east:
-                return x-1, y
-            else:
-                return x, y
-        else:
-            if north > south:
-                if north > 2:
-                    return x, y-2
-                else:
-                    return x, y-1
-            elif south > north:
-                if south > 2:
-                    return x, y+2
-                else:
-                    return x, y+1
-            else:
-                return x, y
-
-    @property
-    def pretty_walkable(self):
-        walkable = self.walkable
-        s = ""
-        for line in walkable:
-            s += "".join([' ' if i == 0 else '*' for i in line])
-            s += "\n"
-        return s.strip()
 
     @property
     def layer1ptr(self):
@@ -278,28 +186,6 @@ class Location():
 
         f.seek(self.formationpointer)
         self.formation = ord(f.read(1))
-
-        f.seek(0x19CD90 + (3*self.layer1ptr))
-        mapdataptr = 0x19D1B0 + read_multi(f, length=3)
-        f.seek(mapdataptr)
-        mapsize = read_multi(f, length=2) - 2
-        mapdata = f.read(mapsize)
-        self.map1bytes = decompress(mapdata, complicated=True)
-        f.seek(0x19CD90 + (3*self.layer2ptr))
-
-        mapdataptr = 0x19D1B0 + read_multi(f, length=3)
-        f.seek(mapdataptr)
-        mapsize = read_multi(f, length=2) - 2
-        mapdata = f.read(mapsize)
-        self.map2bytes = decompress(mapdata, complicated=True)
-
-        f.seek(0x19CD10 + (2*self.tileproperties))
-        tilepropptr = read_multi(f, length=2)
-        f.seek(0x19a800 + tilepropptr)
-        tilesize = read_multi(f, length=2) - 2
-        tiledata = f.read(tilesize)
-        self.tilebytes = decompress(tiledata, complicated=True)
-        assert len(self.tilebytes) == 512
 
         f.seek(0xf5600 + self.locid)
         self.setid = ord(f.read(1))
@@ -600,7 +486,6 @@ def get_locations(filename=None):
         locations = [Location(i) for i in range(415)]
         if filename is None:
             raise Exception("Please supply a filename for new locations.")
-        print "Decompressing location data, please wait."
         for l in locations:
             l.read_data(filename)
             l.fill_battle_bg()

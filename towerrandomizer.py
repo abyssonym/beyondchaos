@@ -667,13 +667,11 @@ def randomize_tower(filename):
                             return False
         return True
 
-    print "Selecting maps, please wait."
     new_entrances = get_new_entrances(filename=filename)
     print ("Assigning maps, please wait. Because this is random, "
            "it could take a few minutes.")
     counter = 0
 
-    from time import time
     while True:
         clear_unused_locations()
         rrs = parse_checkpoints()

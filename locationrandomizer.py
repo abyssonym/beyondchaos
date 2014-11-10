@@ -1,12 +1,14 @@
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,
                    UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
+                   ENTRANCE_REACHABILITY_TABLE,
                    utilrandom as random)
 from copy import copy
 
 
 locations = None
 unused_locs = None
+reachdict = None
 mapnames = {}
 locdict = {}
 for line in open(MAP_NAMES_TABLE):
@@ -510,7 +512,7 @@ class Entrance():
     def reachable_entrances(self):
         if hasattr(self, "_entrances") and self._entrances is not None:
             return self._entrances
-        entrances = self.location.get_reachable_entrances(self.x, self.y)
+        entrances = lookup_reachable_entrances(self)
         self._entrances = entrances
         return entrances
 
@@ -628,6 +630,26 @@ def get_unused_locations(filename=None):
     return get_unused_locations()
 
 
+def lookup_reachable_entrances(entrance):
+    global reachdict
+    if not reachdict:
+        reachdict = {}
+        for line in open(ENTRANCE_REACHABILITY_TABLE):
+            locid, ents = line.strip().split(':')
+            locid = int(locid)
+            ents = map(int, ents.split(','))
+            for ent in ents:
+                if (locid, ent) in reachdict:
+                    raise Exception("Duplicate reachability in table.")
+                reachdict[(locid, ent)] = ents
+
+    key = entrance.location.locid, entrance.entid
+    if key not in reachdict:
+        return []
+
+    entrances = entrance.location.entrances
+    return [e for e in entrances if e.entid in reachdict[key]]
+
 if __name__ == "__main__":
     from sys import argv
     if len(argv) > 1:
@@ -641,9 +663,14 @@ if __name__ == "__main__":
     get_fsets(filename)
     locations = get_locations(filename)
     from formationrandomizer import fsetdict
-    print fsetdict
     for l in locations:
-        print l, fsetdict[l.setid]
-        print
-    import pdb; pdb.set_trace()
-    exit()
+        esets = []
+        seen = set([])
+        for e in l.entrances:
+            if e in seen:
+                continue
+            es = e.reachable_entrances
+            seen |= set(es)
+            esets.append(es)
+        for eset in esets:
+            print "%s:%s" % (l.locid, ",".join(["%s" % e.entid for e in eset]))

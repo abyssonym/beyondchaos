@@ -113,7 +113,8 @@ class Location():
         candidates = []
         for e in self.entrancebackups:
             if e.x != x and e.y != y:
-                continue
+                if abs((e.x - x) * (e.y - y)) != 1:
+                    continue
             value = max(abs(e.x - x), abs(e.y-y))
             candidates.append((value, e))
         if not candidates:
@@ -148,6 +149,11 @@ class Location():
     def layer1width(self):
         width = (self.layer12dimensions & 0xC0) >> 6
         return [16, 32, 64, 128][width]
+
+    @property
+    def layer1height(self):
+        height = (self.layer12dimensions & 0x30) >> 4
+        return [16, 32, 64, 128][height]
 
     @property
     def layer2ptr(self):
@@ -548,6 +554,8 @@ if __name__ == "__main__":
     get_fsets(filename)
     locations = get_locations(filename)
     from formationrandomizer import fsetdict
+    for l in locations:
+        print l.locid, l.layer1width, l.layer1height
     for l in locations:
         esets = []
         seen = set([])

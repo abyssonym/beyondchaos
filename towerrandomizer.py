@@ -4,6 +4,7 @@ from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
 from locationrandomizer import get_locations, get_unused_locations, Entrance
 from formationrandomizer import get_fsets
 from itertools import product
+from sys import stdout
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 25  # maybe?
@@ -620,11 +621,20 @@ def get_all_entrances(filename=None):
         if e.location.locid in map_bans:
             return False
         reachable = e.reachable_entrances
-        if len(reachable) < 2 + random.randint(0, 1):
+        if len(reachable) < 1 + random.randint(0, 2):
+            return False
+        if (len(reachable) <= 2 and
+                len(e.location.chests) <= random.randint(0, 1) and
+                random.randint(1, 10) != 10):
             return False
         for e2, e3 in product(reachable, reachable):
             value = abs(e2.x - e3.x) + abs(e2.y - e3.y)
             if value == 1:
+                return False
+        if (e.x <= 1 or e.y <= 1 or
+                e.x == (e.location.layer1width-2) or
+                e.y == (e.location.layer1height-2)):
+            if e.mirror is None or e.mirror.mirror is None:
                 return False
         return True
 
@@ -643,7 +653,7 @@ def get_new_entrances(filename):
             continue
         if num_entrances + len(c.reachable_entrances) >= MAX_NEW_EXITS:
             continue
-        num_entrances += len(c.reachable_entrances)
+        num_entrances += min(len(c.reachable_entrances), 5)
         chosen.append(c)
         used_locations.append(c.location.locid)
         if len(chosen) == MAX_NEW_MAPS:
@@ -687,7 +697,9 @@ def randomize_tower(filename):
             break
         counter += 1
         if not counter % 10:
-            print random.choice(["Engaging", "Calibrating", "Still Calibrating"])
+            stdout.write('.')
+            stdout.flush()
+    print
 
     usedlinks = set([])
     for rr in rrs:

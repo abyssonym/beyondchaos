@@ -216,6 +216,7 @@ class CheckRoomSet:
                 entrance.destx = destx
                 entrance.desty = desty
                 entrance.dest = loc2.locid | dest
+                entrance.dest &= 0x3DFF
                 effectsigs = [e3.effectsig for e3 in loc.entrances]
                 if entrance.effectsig in effectsigs:
                     continue

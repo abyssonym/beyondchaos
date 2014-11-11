@@ -184,6 +184,7 @@ class ChestBlock:
         if 1 <= chance <= 1:
             # empty
             self.set_content_type(0x10)
+            self.contents = 0
         elif 2 <= chance <= 3:
             # gold
             self.set_content_type(0x80)
@@ -198,6 +199,7 @@ class ChestBlock:
                           f.get_guaranteed_drop_value() >= value * 100]
             if not candidates:
                 self.set_content_type(0x10)
+                self.contents = 0
                 return
 
             candidates = sorted(candidates, key=lambda f: f.rank())

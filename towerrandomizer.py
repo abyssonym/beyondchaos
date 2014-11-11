@@ -203,7 +203,7 @@ class CheckRoomSet:
                 if mirror:
                     destx, desty = mirror.destx, mirror.desty
                     dest = mirror.dest & 0xFE00
-                if ((mirror is None or
+                if ((mirror is None or mirror.mirror is None or
                         mirror.mirror.location.locid != tempent.location.locid) or
                         abs(tempent.x - destx) + abs(tempent.y - desty) > 4):
                     destx, desty = tempent.x, tempent.y

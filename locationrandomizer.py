@@ -88,6 +88,28 @@ class Location():
     def chestpointer(self):
         return 0x2D82F4 + (self.locid * 2)
 
+    def uniqify_entrances(self):
+        new_entrances = []
+        done = []
+        for e in self.entrances:
+            values = (e.x, e.y, e.dest & 0x1FF, e.destx, e.desty)
+            if values in done:
+                continue
+            else:
+                new_entrances.append(e)
+                done.append(values)
+        self.entrance_set.entrances = new_entrances
+        self.validate_entrances()
+
+    def is_duplicate_entrance(self, entrance):
+        for e in self.entrances:
+            if (e.x == entrance.x and e.y == entrance.y and
+                    e.dest & 0x1FF == entrance.dest & 0x1FF and
+                    e.destx == entrance.destx and e.desty == entrance.desty):
+                return True
+        else:
+            return False
+
     def validate_entrances(self):
         pairs = [(e.x, e.y) for e in self.entrances]
         if len(pairs) != len(set(pairs)):
@@ -463,12 +485,14 @@ class EntranceSet():
         for e in self.entrances:
             e.read_data(filename)
             e.set_location(self.location)
+        self.location.uniqify_entrances()
 
     def write_data(self, filename, nextpointer):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         write_multi(f, (nextpointer - 0x1fbb00), length=2)
         f.close()
+        self.location.uniqify_entrances()
         for e in self.entrances:
             if nextpointer + 6 > 0x1fda00:
                 raise Exception("Too many entrance triggers.")

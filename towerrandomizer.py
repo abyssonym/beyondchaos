@@ -1,17 +1,19 @@
 from copy import deepcopy, copy
 from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
                    utilrandom as random)
-from locationrandomizer import get_locations, get_unused_locations, Entrance
+from locationrandomizer import (get_locations, get_location,
+                                get_unused_locations, Entrance)
 from formationrandomizer import get_fsets
 from itertools import product
 from sys import stdout
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 25  # maybe?
-MAX_NEW_EXITS = 42  # prob. not
+MAX_NEW_EXITS = 1000  # prob. not
 MAX_NEW_MAPS = 26  # 6 more for fanatics tower
 
 locdict = {}
+old_entrances = {}
 # dealing with one-ways: when identifying the "from" entrance in a route,
 # retroactively add the "to" entrance to earlier in the route?
 towerlocids = [int(line.strip(), 0x10) for line in open(TOWER_LOCATIONS_TABLE)]
@@ -85,6 +87,9 @@ def connect_segments(sega, segb):
 
 
 def clear_entrances(location):
+    if location not in old_entrances:
+        old_entrances[location] = set([])
+    old_entrances[location] |= set(location.entrances)
     nochanges = [b for (a, b) in si.nochanges if a == location.locid]
     location.entrance_set.entrances = [e for e in location.entrances if
                                        e.entid in nochanges]
@@ -166,6 +171,43 @@ def get_inappropriate_location(location):
         return location
 
 
+def connect_entrances(sig, sig2):
+    locid, x, y, _, _, _ = sig
+    loc = get_appropriate_location(locdict[locid])
+    loc2id, destx, desty, _, _, _ = sig2
+    temploc = locdict[loc2id]
+    loc2 = get_appropriate_location(temploc)
+
+    # getting correct x/y values for destination
+    tempent = temploc.get_nearest_entrance(destx, desty)
+    assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
+    mirror = tempent.mirror
+    dest = 0
+    if mirror:
+        destx, desty = mirror.destx, mirror.desty
+        dest = mirror.dest & 0xFE00
+    if ((mirror is None or mirror.mirror is None or
+            mirror.mirror.location.locid != tempent.location.locid) or
+            abs(tempent.x - destx) + abs(tempent.y - desty) > 4):
+        destx, desty = tempent.x, tempent.y
+    assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
+
+    entrance = Entrance(None)
+    entrance.set_location(loc.locid)
+    entrance.x = x
+    entrance.y = y
+    entrance.destx = destx
+    entrance.desty = desty
+    entrance.dest = loc2.locid | dest
+    entrance.dest &= 0x3DFF
+    effectsigs = [e3.effectsig for e3 in loc.entrances]
+    if entrance.effectsig in effectsigs:
+        return
+    if not loc.is_duplicate_entrance(entrance):
+        loc.entrance_set.entrances.append(entrance)
+    loc.validate_entrances()
+
+
 class CheckRoomSet:
     def __init__(self):
         self.entrances = {}
@@ -185,44 +227,60 @@ class CheckRoomSet:
     def establish_entrances(self):
         for mapid in self.entrances:
             for e in self.entrances[mapid]:
-                loc = get_appropriate_location(e.location)
                 sig = e.signature
-                _, x, y, _, _, _ = sig
                 if e.shortsig not in self.links:
                     #print "WARNING: %s not in links." % str(sig)
                     continue
                 sig2 = self.links[e.shortsig]
-                loc2id, destx, desty, _, _, _ = sig2
-                temploc = locdict[loc2id]
-                loc2 = get_appropriate_location(temploc)
+                connect_entrances(sig, sig2)
 
-                # getting correct x/y values for destination
-                tempent = temploc.get_nearest_entrance(destx, desty)
-                assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
-                mirror = tempent.mirror
-                dest = 0
-                if mirror:
-                    destx, desty = mirror.destx, mirror.desty
-                    dest = mirror.dest & 0xFE00
-                if ((mirror is None or mirror.mirror is None or
-                        mirror.mirror.location.locid != tempent.location.locid) or
-                        abs(tempent.x - destx) + abs(tempent.y - desty) > 4):
-                    destx, desty = tempent.x, tempent.y
-                assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
+    def get_must_assign(self):
+        musts = []
+        backups = []
+        for mapid in self.entrances:
+            oldlocation = get_location(mapid)
+            location = get_appropriate_location(oldlocation)
 
-                entrance = Entrance(None)
-                entrance.set_location(loc.locid)
-                entrance.x = x
-                entrance.y = y
-                entrance.destx = destx
-                entrance.desty = desty
-                entrance.dest = loc2.locid | dest
-                entrance.dest &= 0x3DFF
-                effectsigs = [e3.effectsig for e3 in loc.entrances]
-                if entrance.effectsig in effectsigs:
-                    continue
-                loc.entrance_set.entrances.append(entrance)
-                loc.validate_entrances()
+            coordinates = [(e.x, e.y) for e in self.entrances[mapid]]
+            locentrances = [e for e in old_entrances[location] if
+                            (e.x, e.y) in coordinates]
+
+            coordinates = [(e.x, e.y) for e in location.entrances]
+            locentrances = [e for e in locentrances if
+                            (e.x, e.y) in coordinates]
+
+            candidates = sorted([c for c in self.entrances[mapid] if
+                                 (c.x, c.y) not in coordinates],
+                                key=lambda e: e.entid)
+            if len(self.entrances[mapid]) == 3 and len(locentrances) < 3:
+                musts.extend(random.sample(candidates, 3-len(locentrances)))
+            elif len(self.entrances[mapid]) >= 2 and len(locentrances) < 2:
+                musts.append(random.choice(candidates))
+            backups.extend([c for c in self.entrances[mapid] if
+                            c not in musts and (c.x, c.y) not in coordinates])
+        taken = []
+        pairs = []
+        unwed = []
+        for e in list(musts):
+            if e in taken:
+                continue
+
+            strict = lambda c: (c not in taken and
+                                c.location.locid != e.location.locid)
+            loose = lambda c: c not in taken and c != e
+            preferences = [(musts, strict), (musts, loose),
+                           (backups, strict), (backups, loose)]
+            for candidates, evaluator in preferences:
+                candidates = filter(evaluator, candidates)
+                if candidates:
+                    c = random.choice(candidates)
+                    taken.append(e)
+                    taken.append(c)
+                    pairs.append((e, c))
+                    break
+            else:
+                unwed.append((self, e))
+        return pairs, unwed
 
     @property
     def reachability_factor(self):
@@ -699,7 +757,7 @@ def randomize_tower(filename):
         if not counter % 10:
             stdout.write('.')
             stdout.flush()
-    print
+    print "DONE"
 
     usedlinks = set([])
     for rr in rrs:
@@ -708,14 +766,81 @@ def randomize_tower(filename):
                 connect_segments(sega, segb)
 
             for segment in route:
-                print segment
                 links = set(segment.links)
                 if usedlinks & links:
                     import pdb; pdb.set_trace()
                     raise Exception("Duplicate entrance detected.")
                 usedlinks |= links
                 segment.establish_entrances()
-            print
+
+    pairs, thirdpairs = [], []
+    for rr in rrs:
+        for route in rr.routes.values():
+            unwed, unwedvals = {}, {}
+            thirdwheels = []
+            segvals = dict([(b, a) for (a, b) in enumerate(route)])
+            for segment in route:
+                a, b = segment.get_must_assign()
+                pairs.extend(a)
+                for seg, u in b:
+                    key = segvals[seg]
+                    if key not in unwed:
+                        unwed[key] = []
+                    unwed[key].append(u)
+                    unwedvals[u] = key
+
+            for key in sorted(unwed):
+                for u in unwed[key]:
+                    candidates = []
+                    if key-1 in unwed:
+                        candidates.extend(unwed[key-1])
+                    if key+1 in unwed:
+                        candidates.extend(unwed[key+1])
+                    if candidates:
+                        u2 = random.choice(candidates)
+                        pairs.append((u, u2))
+                        unwed[unwedvals[u]].remove(u)
+                        unwed[unwedvals[u2]].remove(u2)
+                    else:
+                        thirdwheels.append(u)
+
+            for t in thirdwheels:
+                val = unwedvals[t]
+                candidates = []
+                for segment in route:
+                    if segvals[segment] <= val:
+                        entrancess = segment.entrances.values()
+                        for entrances in entrancess:
+                            candidates.extend(entrances)
+                realcands = [c for c in candidates if
+                             c.location.locid != t.location.locid]
+                if len(realcands) == 0:
+                    realcands = list(candidates)
+                if len(realcands) > 1 and t in realcands:
+                    realcands.remove(t)
+                c = random.choice(realcands)
+                thirdpairs.append((t, c))
+
+    for (a, b) in pairs:
+        sig = a.signature
+        sig2 = b.signature
+        connect_entrances(sig, sig2)
+        connect_entrances(sig2, sig)
+
+    for (t, c) in thirdpairs:
+        sig = t.signature
+        sig2 = c.signature
+        connect_entrances(sig, sig2)
+
+    for rr in rrs:
+        for route in rr.routes.values():
+            for segment in route:
+                a, b = segment.get_must_assign()
+                for mapid in segment.entrances:
+                    loc = get_appropriate_location(locdict[mapid])
+                    loc.validate_entrances()
+                if a or b:
+                    raise Exception("NOPE")
 
 
 if __name__ == "__main__":

@@ -2301,7 +2301,7 @@ def manage_encounter_rate():
     normal = [base, base*bangle, base*moogle, base*bangle*moogle]
     unaffected = [base, base, base, base]
 
-    sbase = base*3
+    sbase = base*2.5
     strong = [sbase, sbase*bangle/2, sbase*moogle/2, sbase*bangle*moogle/4]
 
     wbase = base*1.5
@@ -2426,10 +2426,6 @@ if __name__ == "__main__":
                "This seed will not produce the expected result!")
     print "Using seed: %s.%s.%s" % (VERSION, flags, seed)
 
-    if 'v' in flags:
-        VERBOSE = True
-        flags = "".join([c for c in flags if c != 'v'])
-
     outfile = sourcefile.rsplit('.', 1)
     outfile = '.'.join([outfile[0], str(seed), outfile[1]])
     copyfile(sourcefile, outfile)
@@ -2449,12 +2445,17 @@ if __name__ == "__main__":
     secret_codes['strangejourney'] = "BIZARRE ADVENTURE"
     secret_codes['dearestmolulu'] = "ENCOUNTERLESS MODE"
     secret_codes['towerofpower'] = "TOWER RANDOMIZATION (EXPERIMENTAL FEATURE)"
+    s = ""
     for code, text in secret_codes.items():
         if code in flags:
             flags = flags.replace(code, '')
-            if VERBOSE:
-                print "SECRET CODE: %s ACTIVATED" % text
+            s += "SECRET CODE: %s ACTIVATED\n" % text
             activated_codes.add(code)
+
+    if 'v' in flags:
+        VERBOSE = True
+        flags = "".join([c for c in flags if c != 'v'])
+    print s.strip()
 
     if 'cutscenes' in activated_codes:
         manage_skips()

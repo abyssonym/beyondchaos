@@ -3,7 +3,7 @@ from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
                    utilrandom as random)
 from locationrandomizer import (get_locations, get_location,
                                 get_unused_locations, Entrance)
-from formationrandomizer import get_fsets
+from formationrandomizer import get_fsets, get_formations
 from itertools import product
 from sys import stdout
 
@@ -101,7 +101,7 @@ def clear_unused_locations():
         clear_entrances(u)
 
 
-def get_new_formations(areaname):
+def get_new_formations(areaname, supplement=True):
     from randomizer import get_namelocdict
     namelocdict = get_namelocdict()
     setids = set([])
@@ -113,14 +113,27 @@ def get_new_formations(areaname):
     formations = set([])
     for fs in fsets:
         formations |= set(fs.formations)
+
+    if supplement:
+        lowest = min(formations, key=lambda f: f.rank()).rank()
+        highest = max(formations, key=lambda f: f.rank()).rank()
+        supplemental = [f for f in get_formations() if
+                        not f.has_boss and lowest < f.rank() <= highest and
+                        not f.battle_event]
+        supplemental = sorted(supplemental, key=lambda f: f.rank())
+        formations |= set([f for f in supplemental if
+                           f.ambusher or f.inescapable])
+        supplemental = supplemental[len(supplemental)/2:]
+        formations |= set(supplemental)
+
     return sorted(formations, key=lambda f: f.formid)
 
 
-def get_new_fsets(areaname, number=10):
+def get_new_fsets(areaname, number=10, supplement=True):
     if areaname in newfsets:
         return newfsets[areaname]
     newfsets[areaname] = []
-    formations = get_new_formations(areaname)
+    formations = get_new_formations(areaname, supplement=supplement)
     fsets = get_fsets()
     unused = [fs for fs in fsets if fs.unused and len(fs.formations) == 4]
     tempforms = []
@@ -151,7 +164,7 @@ def get_appropriate_location(loc):
                 u.make_tower_flair()
                 u.fill_battle_bg(loc.locid)
                 u.unlock_chests(20000, 100000)
-                fsets = get_new_fsets("kefka's tower", 10)
+                fsets = get_new_fsets("kefka's tower", 20)
                 u.setid = random.choice(fsets).setid
                 clear_entrances(u)
                 try:

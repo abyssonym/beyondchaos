@@ -26,6 +26,10 @@ class Formation():
         #s += " " + " ".join(["%x" % e.id for e in self.present_enemies])
         return s
 
+    @property
+    def has_boss(self):
+        return any([e.is_boss or e.boss_death for e in self.present_enemies])
+
     def get_guaranteed_drop_value(self, value=0):
         if len(self.present_enemies) == 0:
             return False
@@ -97,6 +101,10 @@ class Formation():
     @property
     def ambusher(self):
         return any([e.ambusher for e in self.present_enemies])
+
+    @property
+    def inescapable(self):
+        return any([e.inescapable for e in self.present_enemies])
 
     def set_attack_type(self, normal=True, back=False,
                         pincer=False, side=False):
@@ -307,10 +315,7 @@ class FormationSet():
 
     @property
     def has_boss(self):
-        for f in self.formations:
-            if any([e.is_boss for e in f.present_enemies]):
-                return True
-        return False
+        return any([f.has_boss for f in self.formations])
 
     @property
     def veldty(self):

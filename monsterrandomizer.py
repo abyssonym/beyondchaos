@@ -53,6 +53,10 @@ class MonsterBlock:
         self.ambusher = False
 
     @property
+    def inescapable(self):
+        return self.misc2 & 0x08
+
+    @property
     def steals(self):
         steals = self.items[:2]
         return [itemdict[i] for i in steals]
@@ -542,7 +546,7 @@ class MonsterBlock:
     def mutate_misc(self):
         # invert "escapable" bit
         if self.is_boss:
-            if random.randint(1, 200) == 200:
+            if random.randint(1, 500) == 500:
                 self.misc2 = self.misc2 ^ 0x08
         elif random.randint(1, 20) == 20:
             if random.choice([True, False]):
@@ -554,8 +558,12 @@ class MonsterBlock:
         if random.randint(1, 10) == 10:
             self.misc2 = self.misc2 ^ 0x10  # invert scan bit
 
-        if random.randint(1, 20) == 20:
-            self.misc1 = self.misc1 ^ 0x80  # invert undead bit
+        if self.is_boss:
+            if random.randint(1, 100) == 100:
+                self.misc1 = self.misc1 ^ 0x80  # invert undead bit
+        else:
+            if random.randint(1, 20) == 20:
+                self.misc1 = self.misc1 ^ 0x80
 
     def mutate_stats(self):
         level = self.stats['level']

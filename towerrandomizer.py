@@ -252,12 +252,19 @@ class CheckRoomSet:
             candidates = sorted([c for c in self.entrances[mapid] if
                                  (c.x, c.y) not in coordinates],
                                 key=lambda e: e.entid)
-            if len(self.entrances[mapid]) == 3 and len(locentrances) < 3:
-                musts.extend(random.sample(candidates, 3-len(locentrances)))
-            elif len(self.entrances[mapid]) >= 2 and len(locentrances) < 2:
-                musts.append(random.choice(candidates))
+
+            LARGE_VALUE = 6
+            MIN_LARGE = 4
+            numentrances = len(self.entrances[mapid])
+            if numentrances < LARGE_VALUE and len(locentrances) < numentrances:
+                musts.extend(random.sample(
+                    candidates, numentrances-len(locentrances)))
+            elif numentrances >= LARGE_VALUE and len(locentrances) < MIN_LARGE:
+                musts.extend(random.sample(
+                    candidates, MIN_LARGE-len(locentrances)))
             backups.extend([c for c in self.entrances[mapid] if
                             c not in musts and (c.x, c.y) not in coordinates])
+
         taken = []
         pairs = []
         unwed = []

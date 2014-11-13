@@ -580,7 +580,11 @@ class MonsterBlock:
 
         for stat in ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
                      'def', 'mdef', 'mpow']:
-            boosted = level_boost(self.stats[stat])
+            if stat in ['speed']:
+                limit = 230
+            else:
+                limit = 0xFE
+            boosted = level_boost(self.stats[stat], limit=limit)
             if stat in ['def', 'mdef']:
                 boosted = (self.stats[stat] + boosted) / 2.0
             self.stats[stat] = int(boosted)

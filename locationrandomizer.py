@@ -245,6 +245,8 @@ class Location():
         self.unknown4 = towerloc.unknown4  # layer 3 bgshift
         self.unknown5 = towerloc.unknown5  # layer 3 priorities?
         self.layerpriorities = towerloc.layerpriorities
+        if random.randint(1, 15) != 15:
+            self.music = towerloc.music
 
     def fill_battle_bg(self, locid=None):
         if locid is None:

@@ -581,15 +581,5 @@ if __name__ == "__main__":
     locations = get_locations(filename)
     from formationrandomizer import fsetdict
     for l in locations:
-        print l.locid, l.layer1width, l.layer1height
-    for l in locations:
-        esets = []
-        seen = set([])
-        for e in l.entrances:
-            if e in seen:
-                continue
-            es = e.reachable_entrances
-            seen |= set(es)
-            esets.append(es)
-        for eset in esets:
-            print "%s:%s" % (l.locid, ",".join(["%s" % e.entid for e in eset]))
+        print l
+        print l.locid, l.layer1ptr, l.layer2ptr, l.palette_index

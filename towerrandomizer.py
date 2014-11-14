@@ -727,13 +727,14 @@ def get_new_entrances(filename):
     chosen = []
     num_entrances = 0
     for c in candidates:
-        if c.location.locid in used_locations:
+        locsig = (c.location.layer1ptr, c.location.palette_index)
+        if locsig in used_locations:
             continue
         if num_entrances + len(c.reachable_entrances) >= MAX_NEW_EXITS:
             continue
         num_entrances += min(len(c.reachable_entrances), 5)
         chosen.append(c)
-        used_locations.append(c.location.locid)
+        used_locations.append(locsig)
         if len(chosen) == MAX_NEW_MAPS:
             break
 

@@ -2522,7 +2522,13 @@ if __name__ == "__main__":
     print s.strip()
 
     if 'cutscenes' in activated_codes:
-        manage_skips()
+        print "\nNOTICE: You have selected CUTSCENE SKIPS."
+        print "This feature has proven to be unstable with strange effects."
+        x = raw_input("Would you like to use cutscene skips? (y/n) ")
+        if x and x.lower()[0] == 'y':
+            manage_skips()
+        else:
+            print "Cutscenes will NOT be skipped."
 
     if 'airship' in activated_codes:
         activate_airship_mode()

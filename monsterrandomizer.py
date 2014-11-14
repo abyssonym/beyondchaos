@@ -577,8 +577,11 @@ class MonsterBlock:
         if random.randint(1, 10) == 10:
             self.misc2 = self.misc2 ^ 0x10  # invert scan bit
 
-        if self.is_boss:
-            if random.randint(1, 100) == 100:
+        if self.undead:
+            if random.randint(1, 3) == 3:
+                self.misc1 = self.misc1 ^ 0x80
+        elif self.is_boss:
+            if random.randint(1, 150) == 150:
                 self.misc1 = self.misc1 ^ 0x80  # invert undead bit
         else:
             if random.randint(1, 20) == 20:

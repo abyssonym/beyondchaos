@@ -954,7 +954,10 @@ class MonsterBlock:
             valid = set(range(0, 0x0F))
             if random.randint(1, 1000) != 1000:
                 valid.remove(0x03)  # Magitek
+            valid.remove(0x04)  # vanish
             valid.remove(0x0A)  # image
+            valid.add(0x12)  # slow
+            valid.add(0x14)  # stop
             valid.add(0x19)  # frozen
             valid.add(0x30)  # absorb HP
             valid.add(0x31)  # absorb MP
@@ -974,7 +977,13 @@ class MonsterBlock:
             if not self.is_boss or random.randint(1, 1000) != 1000:
                 valid.remove(0x1D)  # disappear
                 valid.remove(0x1E)  # Interceptor
+            if random.randint(1, 10) != 10:
+                valid.remove(0x10)  # dance
+                valid.remove(0x18)  # rage
+            valid.remove(0x12)  # slow
+            valid.remove(0x14)  # stop
             valid.remove(0x19)  # frozen
+            valid.add(0x04)  # vanish
             valid.add(0x0A)  # image
             special = random.choice(sorted(valid))
 

@@ -2508,7 +2508,6 @@ if __name__ == "__main__":
     secret_codes['suplexwrecks'] = "SUPLEX MODE"
     secret_codes['strangejourney'] = "BIZARRE ADVENTURE"
     secret_codes['dearestmolulu'] = "ENCOUNTERLESS MODE"
-    secret_codes['towerofpower'] = "TOWER RANDOMIZATION (EXPERIMENTAL FEATURE)"
     secret_codes['canttouchthis'] = "INVINCIBILITY"
     s = ""
     for code, text in secret_codes.items():
@@ -2617,9 +2616,18 @@ if __name__ == "__main__":
         fsets = get_fsets(sourcefile)
         manage_formations(formations, fsets)
 
-    if 'towerofpower' in activated_codes:
+    if 'd' in flags:
         # do this before treasure
-        manage_tower()
+        print "\nNOTICE: You have selected FINAL DUNGEON RANDOMIZATION."
+        print ("This will greatly increase the size of the final dungeon, "
+               "but this feature is still in the testing phase.\nIt is "
+               "possible to become stuck on certain maps.\nAs such, it is "
+               "recommended to play the final dungeon with save states.\n")
+        x = raw_input("Would you like to randomize the final dungeon? (y/n) ")
+        if x and x.lower()[0] == 'y':
+            manage_tower()
+        else:
+            print "The final dungeon will NOT be randomized."
 
     if 'f' in flags:
         manage_formations_hidden(formations, fsets, freespaces=aispaces,

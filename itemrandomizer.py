@@ -522,11 +522,10 @@ def reset_equippable(items, numchars=NUM_CHARS):
                 if equippable & (1 << i):
                     item.equippable |= (1 << new_weaps[i])
         elif item.is_relic:
-            if random.randint(1, 10) == 10:
-                if random.randint(1, 5) == 5:
-                    item.equippable = 1 << (random.randint(0, numchars-1))
-                else:
-                    item.equippable = random.randint(1, CHAR_MASK)
+            if random.randint(1, 15) == 15:
+                item.equippable = 1 << (random.randint(0, numchars-1))
+                while random.randint(1, 3) == 3:
+                    item.equippable |= (1 << (random.randint(0, numchars-1)))
             else:
                 item.equippable = CHAR_MASK
 

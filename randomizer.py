@@ -1781,7 +1781,7 @@ def manage_espers():
     bonus_espers = [e for e in espers if e.id in [15, 16]]
     random.shuffle(bonus_espers)
     bonus_espers[0].bonus = 7
-    bonus_espers[1].add_spell(0x14, 1)
+    bonus_espers[1].add_spell(0x2B, 1)
     for e in sorted(espers, key=lambda e: e.name):
         e.write_data(outfile)
 

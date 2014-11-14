@@ -73,10 +73,10 @@ class EsperBlock:
 
     def get_candidates(self, rank, set_lower=True):
         candidates = get_candidates(rank, set_lower=set_lower)
-        ultima = [s for s in candidates if s.name == "Ultima"]
-        if ultima:
-            ultima = ultima[0]
-            candidates.remove(ultima)
+        quick = [s for s in candidates if s.name == "Quick"]
+        if quick:
+            quick = quick[0]
+            candidates.remove(quick)
         return candidates
 
     def generate_spells(self):
@@ -136,9 +136,9 @@ class EsperBlock:
     def add_spell(self, spellid, learnrate):
         spell = [s for s in spells if s.spellid == spellid][0]
         spellrates = zip(self.spells, self.learnrates)
-        spellrates.append((spell, learnrate))
-        if len(spellrates) > 5:
+        if len(spellrates) == 5:
             spellrates = sorted(spellrates, key=lambda (s, l): s.rank())
             spellrates = spellrates[1:]
+        spellrates.append((spell, learnrate))
         spellrates = sorted(spellrates, key=lambda (s, l): s.spellid)
         self.spells, self.learnrates = zip(*spellrates)

@@ -564,6 +564,14 @@ def reset_equippable(items, numchars=NUM_CHARS):
                 continue
             item.equippable |= (1 << random.randint(0, numchars-1))
 
+    paladin_equippable = None
+    for item in items:
+        if item.itemid in [0x66, 0x67]:
+            if paladin_equippable is not None:
+                item.equippable = paladin_equippable
+            else:
+                paladin_equippable = item.equippable
+
     return items
 
 

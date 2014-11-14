@@ -2220,12 +2220,6 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
             raise Exception("Bad formatting for location palette data.")
 
         palettes = [int(s, 0x10) for s in palettes]
-        create_new_bgs = []
-        for i, b in enumerate(backgrounds):
-            if b.endswith('!'):
-                b = b.strip('!')
-                create_new_bgs.append(b)
-                backgrounds[i] = b
         backgrounds = [int(s, 0x10) for s in backgrounds]
         candidates = set([])
         for name, palette in product(names, palettes):
@@ -2238,22 +2232,26 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
         if not candidates:
             palettes, battlebgs = [], []
 
-        transformer = get_palette_transformer()
         f = open(outfile, 'r+b')
         battlebgs = set([l.battlebg for l in candidates if l.attacks])
         battlebgs |= set(backgrounds)
+        if 0x33 in battlebgs:
+            transformer = get_palette_transformer(changing=False)
+        else:
+            transformer = get_palette_transformer(changing=True)
+
         for bg in sorted(battlebgs):
-            if bg in create_new_bgs:
-                continue
-            if bg in done:
-                raise Exception("Already recolored palette %x" % bg)
             pointer = 0x270150 + (battlebg_palettes[bg] * 0x60)
             f.seek(pointer)
+            if pointer in done:
+                #raise Exception("Already recolored palette %x" % pointer)
+                continue
             raw_palette = [read_multi(f, length=2) for i in xrange(0x30)]
             new_palette = transformer(raw_palette)
+
             f.seek(pointer)
             [write_multi(f, c, length=2) for c in new_palette]
-            done.append(bg)
+            done.append(pointer)
 
         for p in palettes:
             if p in done:
@@ -2264,20 +2262,6 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
             f.seek(p)
             [write_multi(f, c, length=2) for c in new_palette]
             done.append(p)
-
-        for old in create_new_bgs:
-            break
-            myfs = freespaces.pop()
-            pointer = myfs.start
-            new = (pointer - 0x270150) / 0x20
-            assert new <= 0x7F
-            assert 0x270150 + (0x20 * new) == pointer  # test even division
-            fss = myfs.unfree(pointer, 0x20)
-            freespaces.extend(fss)
-            for c in candidates:
-                if c.battlebg == old:
-                    c.battlebg = new
-                    c.write_data(outfile)
 
         f.close()
 

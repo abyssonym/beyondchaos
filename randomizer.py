@@ -948,6 +948,15 @@ def manage_umaro(characters):
                   2 not in c.battle_commands and
                   0x17 not in c.battle_commands]
     umaro_risk = random.choice(candidates)
+    if 0xFF in umaro_risk.battle_commands:
+        battle_commands = []
+        battle_commands.append(0)
+        battle_commands.extend(random.sample([3, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC,
+                                              0xD, 0xE, 0xF, 0x10, 0x12, 0x13,
+                                              0x16, 0x18, 0x1A, 0x1B, 0x1C,
+                                              0x1D], 2))
+        battle_commands.append(1)
+        umaro_risk.battle_commands = battle_commands
     umaro = [c for c in characters if c.id == 13][0]
     umaro.battle_commands = list(umaro_risk.battle_commands)
     umaro_risk.battle_commands = [None, 0xFF, 0xFF, 0xFF]
@@ -2572,6 +2581,21 @@ if __name__ == "__main__":
     else:
         natmag_candidates = None
 
+    if 'u' in flags:
+        umaro_risk = manage_umaro(characters)
+        reset_rage_blizzard(items, umaro_risk, outfile)
+
+    if 'o' in flags and 'suplexwrecks' not in activated_codes:
+        # do this after swapping beserk
+        manage_tempchar_commands(characters)
+
+    if 'q' in flags:
+        # do this after swapping beserk
+        reset_special_relics(items, characters, outfile)
+
+        for c in characters:
+            c.mutate_stats(outfile)
+
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):
             if c.id > 13:
@@ -2608,28 +2632,9 @@ if __name__ == "__main__":
             # write new formation sets for MiaBs
             fs.write_data(outfile)
 
-    if 'u' in flags:
-        umaro_risk = manage_umaro(characters)
-        reset_rage_blizzard(items, umaro_risk, outfile)
-
-    if 'o' in flags and 'suplexwrecks' not in activated_codes:
-        # do this after swapping beserk
-        manage_tempchar_commands(characters)
-
     spells = get_ranked_spells(sourcefile)
     if 'o' in flags or 'w' in flags or 'm' in flags:
         manage_magitek(spells)
-
-    if 'q' in flags:
-        # do this after swapping beserk
-        reset_special_relics(items, characters, outfile)
-
-        for c in characters:
-            c.mutate_stats(outfile)
-
-    if 'canttouchthis' in activated_codes:
-        for c in characters:
-            c.become_invincible(outfile)
 
     if 'l' in flags:
         manage_blitz()
@@ -2652,3 +2657,7 @@ if __name__ == "__main__":
 
     if 'strangejourney' in activated_codes:
         create_dimensional_vortex()
+
+    if 'canttouchthis' in activated_codes:
+        for c in characters:
+            c.become_invincible(outfile)

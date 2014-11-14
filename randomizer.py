@@ -1317,8 +1317,9 @@ def manage_monster_appearance(monsters, preserve_graphics=False):
         if others:
             g.palette_data = g.palette_data[:0x10]
 
-    nonbosses = [m for m in monsters if not m.is_boss]
-    bosses = [m for m in monsters if m.is_boss]
+    nonbosses = [m for m in monsters if not m.is_boss and not m.boss_death]
+    bosses = [m for m in monsters if m.is_boss or m.boss_death]
+    assert not set(bosses) & set(nonbosses)
     nonbossgraphics = [m.graphics.graphics for m in nonbosses]
     bosses = [m for m in bosses if m.graphics.graphics not in nonbossgraphics]
 

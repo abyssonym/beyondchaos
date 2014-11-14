@@ -1,0 +1,96 @@
+! KEFKA 1
+# opening dialogue
+fc 15 24 0
+f7 20
+f9 1 24 0
+fe
+# basic loop
+f1 43
+c0
+fd
+f1 47
+f0 ee fe ef
+fd
+f0 9 d2 ef
+fd
+f0 ee fe ef
+fd
+f0 a d2 ef
+fd
+f0 ee fe ef
+fd
+f0 b fe ef
+ff
+
+# replace with KEFKA 2
+fc 12 0 0
+f5 3 3 0
+f2 0 ff 81
+f5 5 2 0
+ff
+
+! KEFKA 2
+# use Goner when below 15360 HP
+fc 6 36 78
+fc 15 0 1
+f3 8c 0
+f9 1 0 0
+fa a 1
+0
+fd
+f1 47
+de
+# extra attack
+f0 de ef d1
+fd
+# followed by Meteor
+f1 47
+13
+f9 2 0 0
+fe
+
+# use goner at any HP
+f3 8c 0
+f9 1 0 0
+f9 1 0 1
+fa a 1
+0
+fd
+f1 47
+de
+# extra attack
+f0 de ef c0
+fd
+f9 2 0 0
+f9 2 0 1
+f1 47
+# followed by various attacks
+f0 ef d2 e0
+f0 ef fe fe
+fd
+f1 47
+f0 d2 ef e0
+f0 ef ef fe
+ff
+
+# death animation
+fc 12 0 0
+fa d 1
+0
+f5 11 1 ff
+fe
+
+# counterattack with ultima below 20480 HP
+fc 6 36 a0
+fc 15 0 0
+fc 5 0 0
+f1 47
+f0 fe ee 14
+fe
+
+# counterattack with hyperdrive at any HP
+fc 15 0 0
+fc 5 0 0
+f1 47
+f0 fe ee d1
+ff

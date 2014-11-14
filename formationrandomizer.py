@@ -395,6 +395,11 @@ class FormationSet():
         return sum(f.rank() for f in self.formations) / 4.0
 
 
+def get_formation(formid):
+    global formdict
+    return formdict[formid]
+
+
 def get_formations(filename=None):
     global formdict
     if formdict:

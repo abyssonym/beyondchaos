@@ -28,6 +28,7 @@ TOWER_LOCATIONS_TABLE = path.join("tables", "finaldungeonmaps.txt")
 TOWER_CHECKPOINTS_TABLE = path.join("tables", "finaldungeoncheckpoints.txt")
 MAP_BATTLE_BG_TABLE = path.join("tables", "mapbattlebgs.txt")
 ENTRANCE_REACHABILITY_TABLE = path.join("tables", "reachability.txt")
+FINAL_BOSS_AI_TABLE = path.join("tables", "finalai.txt")
 
 
 class Substitution(object):

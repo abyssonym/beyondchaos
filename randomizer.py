@@ -6,6 +6,7 @@ from utils import (ESPER_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
+                   FINAL_BOSS_AI_TABLE,
                    Substitution, texttable, shorttexttable,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -15,19 +16,20 @@ from skillrandomizer import (SpellBlock, CommandBlock, SpellSub,
                              RandomSpellSub, get_ranked_spells)
 from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                MetamorphBlock, get_ranked_monsters,
-                               shuffle_monsters, monsterdict)
+                               shuffle_monsters, get_monster, read_ai_table)
 from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
                             reset_special_relics, reset_rage_blizzard)
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
-from formationrandomizer import (get_formations, get_fsets)
+from formationrandomizer import (get_formations, get_fsets, get_formation)
 from locationrandomizer import Zone, EntranceSet, get_locations
 from towerrandomizer import randomize_tower
 
 
 VERSION = "23"
 VERBOSE = False
+flags = None
 
 
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
@@ -38,10 +40,11 @@ ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
 MD5HASH = "e986575b98300f721ce27c180264d890"
 
 # Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
-REPLACE_ENEMIES = [0x10f, 0x11a, 0x136, 0x137]
+REPLACE_ENEMIES = [0x10f, 0x136, 0x137]
 # fake Atma, Guardian x4
-REPLACE_FORMATIONS = [0x1ff, 0x20e]
-NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb, 0x230]
+REPLACE_FORMATIONS = [0x20e]
+KEFKA_EXTRA_FORMATION = 0x1FF
+NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb, 0x230, KEFKA_EXTRA_FORMATION]
 
 
 TEK_SKILLS = (# [0x18, 0x6E, 0x70, 0x7D, 0x7E] +
@@ -213,6 +216,13 @@ class CharacterBlock:
         f.seek(self.address + 6)
         f.write("".join(map(chr, stats)))
 
+        f.close()
+
+    def become_invincible(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.address + 11)
+        stats = [0xFF, 0xFF, 0x80, 0x80]
+        f.write("".join(map(chr, stats)))
         f.close()
 
     def set_id(self, i):
@@ -1207,17 +1217,82 @@ def manage_magitek(spells):
     f.close()
 
 
+def manage_final_boss(freespaces, preserve_graphics=False):
+    kefka1 = get_monster(0x12a)
+    kefka2 = get_monster(0x11a)  # dummied kefka
+    aiscripts = read_ai_table(FINAL_BOSS_AI_TABLE)
+
+    aiscript = aiscripts['KEFKA 1']
+    kefka1.aiscript = aiscript
+
+    kefka2.copy_all(kefka1, everything=True)
+    aiscript = aiscripts['KEFKA 2']
+    kefka2.aiscript = aiscript
+
+    def has_graphics(monster):
+        if monster.graphics.graphics == 0:
+            return False
+        if not monster.name.strip('_'):
+            return False
+        if monster.id in range(0x157, 0x160) + [0x11a, 0x12a]:
+            return False
+        return True
+
+    kefka2.graphics.copy_data(kefka1.graphics)
+    if not preserve_graphics:
+        monsters = get_monsters()
+        monsters = [m for m in monsters if has_graphics(m)]
+        m = random.choice(monsters)
+        kefka1.graphics.copy_data(m.graphics)
+        change_enemy_name(outfile, kefka1.id, m.name.strip('_'))
+
+    k1formation = get_formation(0x202)
+    k2formation = get_formation(KEFKA_EXTRA_FORMATION)
+    k2formation.copy_data(k1formation)
+    assert k1formation.enemy_ids[0] == (0x12a & 0xFF)
+    assert k2formation.enemy_ids[0] == (0x12a & 0xFF)
+    k2formation.enemy_ids[0] = kefka2.id & 0xFF
+    assert k1formation.enemy_ids[0] == (0x12a & 0xFF)
+    assert k2formation.enemy_ids[0] == (0x11a & 0xFF)
+    k2formation.lookup_enemies()
+
+    for m in [kefka1, kefka2]:
+        pointer = m.ai + 0xF8700
+        freespaces.append(FreeBlock(pointer, pointer + m.aiscriptsize))
+        for fs in sorted(freespaces, key=lambda fs: fs.size):
+            if fs.size > m.aiscriptsize:
+                myfs = fs
+                break
+        else:
+            # not enough free space
+            raise Exception("Not enough free space for final boss!")
+
+        freespaces.remove(myfs)
+        pointer = myfs.start
+        m.set_relative_ai(pointer)
+        fss = myfs.unfree(pointer, m.aiscriptsize)
+        freespaces.extend(fss)
+
+    kefka1.write_stats(outfile)
+    kefka2.write_stats(outfile)
+    return freespaces
+
+
 def manage_monsters():
     monsters = get_monsters(sourcefile)
-    for i, m in enumerate(monsters):
-        m.read_stats(sourcefile)
+    for m in monsters:
+        if m.id in range(0x157, 0x160) + [0x12a, 0x11a]:
+            #m.mutate()
+            m.stats['level'] = random.randint(m.stats['level'], 99)
+            m.misc1 &= (0xFF ^ 0x4)  # always show name
         m.mutate()
+        if m.id == 0x11a:
+            # boost final kefka yet another time
+            m.mutate()
+        #m.stats['hp'] = 1
 
     shuffle_monsters(monsters)
     for m in monsters:
-        if m.id in range(0x157, 0x160) + [0x12a]:
-            # boost final bosses a second time
-            m.mutate()
         m.screw_tutorial_bosses()
         m.screw_blaze()
         m.write_stats(outfile)
@@ -1226,14 +1301,8 @@ def manage_monsters():
     return monsters
 
 
-def manage_monster_appearance(monsters):
-    mgs = []
-    for j, m in enumerate(monsters):
-        mg = MonsterGraphicBlock(pointer=0x127000 + (5*j), name=m.name)
-        mg.read_data(sourcefile)
-        m.set_graphics(graphics=mg)
-        mgs.append(mg)
-
+def manage_monster_appearance(monsters, preserve_graphics=False):
+    mgs = [m.graphics for m in monsters]
     esperptr = 0x127000 + (5*384)
     espers = []
     for j in range(32):
@@ -1253,7 +1322,6 @@ def manage_monster_appearance(monsters):
     nonbossgraphics = [m.graphics.graphics for m in nonbosses]
     bosses = [m for m in bosses if m.graphics.graphics not in nonbossgraphics]
 
-    get_formations(sourcefile)
     for i, m in enumerate(nonbosses):
         if "Chupon" in m.name:
             m.update_pos(6, 6)
@@ -1269,11 +1337,15 @@ def manage_monster_appearance(monsters):
     freepointer = 0x127820
     for m in monsters:
         mg = m.graphics
-        idpair = (m.name, mg.palette_pointer)
+        if m.id == 0x12a and not preserve_graphics:
+            idpair = "KEFKA 1"
+        else:
+            idpair = (m.name, mg.palette_pointer)
+            mg.mutate_palette()
+
         if idpair not in done:
             done[idpair] = freepointer
             freepointer += len(mg.palette_data)
-        mg.mutate_palette()
         mg.write_data(outfile, palette_pointer=done[idpair])
 
     for mg in espers:
@@ -1879,17 +1951,12 @@ def manage_formations(formations, fsets):
     return formations
 
 
-def manage_formations_hidden(formations, fsets, esper_graphics=None):
+def manage_formations_hidden(formations, fsets, freespaces,
+                             esper_graphics=None):
     for f in formations:
         f.mutate(ap=True)
 
     fsets = [fs for fs in fsets if len(fs.formations) == 4 and not fs.unused]
-
-    freespaces = []
-    freespaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
-    freespaces.append(FreeBlock(0xFFF47, 0xFFF47 + 87))
-    freespaces.append(FreeBlock(0xFFFBE, 0xFFFBE + 66))
-
     unused_enemies = [u for u in monsters if u.id in REPLACE_ENEMIES]
 
     def unused_validator(formation):
@@ -2376,19 +2443,22 @@ def create_dimensional_vortex():
         nextpointer = e.write_data(outfile, nextpointer)
 
 
-def randomize_enemy_name(filename, enemy_id):
+def change_enemy_name(filename, enemy_id, name):
     pointer = 0xFC050 + (enemy_id * 10)
     f = open(filename, 'r+b')
     f.seek(pointer)
-    name = generate_name()
-    readable = name
     #monsterdict[enemy_id].name = name
     name = map(lambda c: hex2int(texttable[c]), name)
     while len(name) < 10:
         name.append(0xFF)
     f.write("".join(map(chr, name)))
     f.close()
-    return readable
+
+
+def randomize_enemy_name(filename, enemy_id):
+    name = generate_name()
+    change_enemy_name(filename, enemy_id, name)
+    return name
 
 
 if __name__ == "__main__":
@@ -2445,6 +2515,7 @@ if __name__ == "__main__":
     secret_codes['strangejourney'] = "BIZARRE ADVENTURE"
     secret_codes['dearestmolulu'] = "ENCOUNTERLESS MODE"
     secret_codes['towerofpower'] = "TOWER RANDOMIZATION (EXPERIMENTAL FEATURE)"
+    secret_codes['canttouchthis'] = "INVINCIBILITY"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -2478,18 +2549,25 @@ if __name__ == "__main__":
     if 'b' in flags:
         manage_balance(newslots='w' in flags)
 
+    preserve_graphics = ('s' not in flags and
+                         'partyparty' not in activated_codes)
+    monsters = get_monsters(sourcefile)
+    get_formations(sourcefile)
+    aispaces = []
+    aispaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
+    aispaces.append(FreeBlock(0xFFF47, 0xFFF47 + 87))
+    aispaces.append(FreeBlock(0xFFFBE, 0xFFFBE + 66))
+    aispaces = manage_final_boss(aispaces, preserve_graphics=preserve_graphics)
+
     if 'm' in flags:
         monsters = manage_monsters()
-    else:
-        monsters = get_monsters(sourcefile)
 
     if 'c' in flags:
-        mgs = manage_monster_appearance(monsters)
+        mgs = manage_monster_appearance(monsters,
+                                        preserve_graphics=preserve_graphics)
 
     if 'c' in flags or 's' in flags or (
             set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
-        preserve_graphics = ('s' not in flags and
-                             'partyparty' not in activated_codes)
         manage_character_appearance(preserve_graphics=preserve_graphics)
 
     items = get_ranked_items(sourcefile)
@@ -2535,7 +2613,8 @@ if __name__ == "__main__":
         manage_tower()
 
     if 'f' in flags:
-        manage_formations_hidden(formations, fsets, esper_graphics=mgs[-32:])
+        manage_formations_hidden(formations, fsets, freespaces=aispaces,
+                                 esper_graphics=mgs[-32:])
 
     if 't' in flags:
         manage_treasure(monsters, shops=True)
@@ -2562,6 +2641,10 @@ if __name__ == "__main__":
 
         for c in characters:
             c.mutate_stats(outfile)
+
+    if 'canttouchthis' in activated_codes:
+        for c in characters:
+            c.become_invincible(outfile)
 
     if 'l' in flags:
         manage_blitz()

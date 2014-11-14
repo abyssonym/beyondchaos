@@ -266,8 +266,8 @@ class CheckRoomSet:
                                  (c.x, c.y) not in coordinates],
                                 key=lambda e: e.entid)
 
-            LARGE_VALUE = 6
-            MIN_LARGE = 4
+            LARGE_VALUE = 5
+            MIN_LARGE = 3
             numentrances = len(self.entrances[mapid])
             if numentrances < LARGE_VALUE and len(locentrances) < numentrances:
                 musts.extend(random.sample(

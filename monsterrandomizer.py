@@ -24,6 +24,26 @@ AICODES = {0xF0: 3, 0xF1: 1, 0xF2: 3, 0xF3: 2,
 monsterdict = {}
 
 
+def read_ai_table(table):
+    aiscripts = {}
+    name = None
+    for line in open(table):
+        line = line.strip()
+        if not line or line[0] == '#':
+            continue
+        elif line[0] == '!':
+            name = line.strip('!').strip()
+            aiscripts[name] = []
+        else:
+            line = line.split()
+            line = map(lambda i: int(i, 0x10), line)
+            aiscripts[name].append(line)
+    for key, aiscript in aiscripts.items():
+        aiscript = ["".join(map(chr, action)) for action in aiscript]
+        aiscripts[key] = aiscript
+    return aiscripts
+
+
 def get_item_normal():
     base = ((len(items)-1) / 2)
     index = random.randint(0, base) + random.randint(0, base)
@@ -341,7 +361,7 @@ class MonsterBlock:
                             value = action[3]
                             step = int(value * 2 / 3.0)
                             value = step + random.randint(0, step)
-                            value = min(0xFE, max(0, value))
+                            value = min(0xFF, max(0, value))
                             action[3] = value
                         if action[1] in [0x0B, 0x16]:
                             # battle timer greater than value
@@ -350,7 +370,7 @@ class MonsterBlock:
                             step = value / 2
                             value = (step + random.randint(0, step) +
                                      random.randint(0, step/2))
-                            value = min(0xFE, max(0, value))
+                            value = min(0xFF, max(0, value))
                             action[2] = value
                         if action[1] in [0x0C, 0x0D]:
                             # variable lt/gte value
@@ -425,6 +445,8 @@ class MonsterBlock:
 
     def write_ai(self, filename):
         f = open(filename, 'r+b')
+        f.seek(self.aiptr)
+        write_multi(f, self.ai, length=2)
         pointer = self.ai + 0xF8700
         f.seek(pointer)
         f.write("".join(self.aiscript))
@@ -506,9 +528,6 @@ class MonsterBlock:
             f.seek(self.rageptr)
             f.write(''.join(map(chr, self.rages)))
 
-        f.seek(self.aiptr)
-        write_multi(f, self.ai, length=2)
-
         f.close()
         self.write_ai(filename)
 
@@ -568,7 +587,7 @@ class MonsterBlock:
     def mutate_stats(self):
         level = self.stats['level']
 
-        def level_boost(value, limit=0xFE):
+        def level_boost(value, limit=0xFF):
             low = value
             high = int(value + (value * (level / 100.0)))
             diff = high - low
@@ -583,7 +602,7 @@ class MonsterBlock:
             if stat in ['speed']:
                 limit = 230
             else:
-                limit = 0xFE
+                limit = 0xFF
             boosted = level_boost(self.stats[stat], limit=limit)
             if stat in ['def', 'mdef']:
                 boosted = (self.stats[stat] + boosted) / 2.0
@@ -592,11 +611,11 @@ class MonsterBlock:
         self.stats['hp'] = level_boost(self.stats['hp'], limit=0x10000)
         if self.stats['hp'] == 0x10000:
             self.statuses[3] |= 0x04  # life3
-            self.stats['hp'] = 0xFEFE
+            self.stats['hp'] = 0xFFFF
 
-        self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFEFE)
+        self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFFFF)
 
-        def fuddle(value, limit=0xFEFE):
+        def fuddle(value, limit=0xFFFF):
             low = value / 2
             value = low + random.randint(0, low) + random.randint(0, low)
             if value & 0xFF == 0xFF:
@@ -693,7 +712,7 @@ class MonsterBlock:
                 elif not self.is_boss and random.choice([True, False]):
                     continue
             if status in ["clear", "image"]:
-                if self.stats["level"] < 22:
+                if self.stats["level"] < 22 or self.id in [0x11a, 0x12a]:
                     continue
                 elif random.choice([True, False]):
                     continue
@@ -838,7 +857,7 @@ class MonsterBlock:
         return temp[index] if index is not None else 50000
 
     def treasure_boost(self):
-        def fuddle(value, limit=0xFEFE):
+        def fuddle(value, limit=0xFFFF):
             low = value / 2
             value = low + random.randint(0, low) + random.randint(0, low)
             while random.choice([True, True, False]):
@@ -1045,7 +1064,20 @@ def get_monsters(filename=None):
     monsters = monsters_from_table(ENEMY_TABLE)
     for m in monsters:
         m.read_stats(filename)
+
+    mgs = []
+    for j, m in enumerate(monsters):
+        mg = MonsterGraphicBlock(pointer=0x127000 + (5*j), name=m.name)
+        mg.read_data(filename)
+        m.set_graphics(graphics=mg)
+        mgs.append(mg)
+
     return monsters
+
+
+def get_monster(monster_id):
+    global monsterdict
+    return monsterdict[monster_id]
 
 
 def get_ranked_monsters(filename=None, bosses=True):

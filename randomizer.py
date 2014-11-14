@@ -2556,12 +2556,13 @@ if __name__ == "__main__":
     aispaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
     aispaces.append(FreeBlock(0xFFF47, 0xFFF47 + 87))
     aispaces.append(FreeBlock(0xFFFBE, 0xFFFBE + 66))
-    aispaces = manage_final_boss(aispaces, preserve_graphics=preserve_graphics)
 
     if 'm' in flags:
+        aispaces = manage_final_boss(aispaces,
+                                     preserve_graphics=preserve_graphics)
         monsters = manage_monsters()
 
-    if 'c' in flags:
+    if 'c' in flags and 'm' in flags:
         mgs = manage_monster_appearance(monsters,
                                         preserve_graphics=preserve_graphics)
 

@@ -2287,21 +2287,26 @@ def manage_encounter_rate():
 
     get_namelocdict()
     encrates = {}
-    change_dungeons = ["floating continent", "veldt cave",
+    change_dungeons = ["floating continent", "veldt cave", "fanatics tower",
                        "ancient castle", "mt zozo", "yeti's cave",
                        "gogo's domain", "phoenix cave", "cyan's dream",
                        "ebot's rock", "kefka's tower"]
+
+    for name in change_dungeons:
+        if name == "fanatics tower":
+            encrates[name] = random.randint(2, 3)
+        elif random.randint(1, 3) == 3:
+            encrates[name] = random.randint(1, 3)
+        else:
+            encrates[name] = 0
 
     for name in namelocdict:
         if type(name) is not str:
             continue
 
-        if "fanatics tower" in name:
-            encrates[name] = random.randint(2, 3)
-        else:
-            for n in change_dungeons:
-                if n in name and random.randint(1, 3) == 3:
-                    encrates[name] = random.randint(1, 3)
+        for shortname in change_dungeons:
+            if shortname in name:
+                encrates[name] = encrates[shortname]
 
     zones = [Zone(i) for i in range(0x100)]
     for z in zones:
@@ -2316,6 +2321,8 @@ def manage_encounter_rate():
                     z.names[name].add(setid)
             z.rates = 0
             for i, s in enumerate(z.setids):
+                if s == 0x7b:
+                    continue
                 if s in z.names and z.names[s] in encrates:
                     rate = encrates[z.names[s]]
                     z.set_formation_rate(s, rate)

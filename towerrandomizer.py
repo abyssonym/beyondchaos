@@ -1,16 +1,18 @@
 from copy import deepcopy, copy
 from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
+                   TREASURE_ROOMS_TABLE,
                    utilrandom as random)
 from locationrandomizer import (get_locations, get_location,
                                 get_unused_locations, Entrance)
 from formationrandomizer import get_fsets, get_formations
+from chestrandomizer import ChestBlock
 from itertools import product
 from sys import stdout
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 25  # maybe?
 MAX_NEW_EXITS = 1000  # prob. not
-MAX_NEW_MAPS = 26  # 6 more for fanatics tower
+MAX_NEW_MAPS = 25  # 6 more for fanatics tower, 1 more for bonus
 
 locdict = {}
 old_entrances = {}
@@ -149,7 +151,7 @@ def get_new_fsets(areaname, number=10, supplement=True):
     return get_new_fsets(areaname)
 
 
-def get_appropriate_location(loc):
+def get_appropriate_location(loc, flair=True):
     unused_locations = get_unused_locations()
     if loc in locexchange:
         return locexchange[loc]
@@ -161,7 +163,8 @@ def get_appropriate_location(loc):
         for u in unused_locations:
             if u not in locexchange.values():
                 u.copy(loc)
-                u.make_tower_flair()
+                if flair:
+                    u.make_tower_flair()
                 u.fill_battle_bg(loc.locid)
                 u.unlock_chests(20000, 100000)
                 fsets = get_new_fsets("kefka's tower", 20)
@@ -863,6 +866,49 @@ def randomize_tower(filename):
                 if a or b:
                     raise Exception("NOPE")
 
+    make_secret_treasure_room()
+
+
+def make_secret_treasure_room():
+    candidates = []
+    for line in open(TREASURE_ROOMS_TABLE):
+        locid, entid, chestid = tuple(map(int, line.strip().split(',')))
+        location = get_location(locid)
+        if location in locexchange:
+            continue
+        entrance = location.get_entrance(entid)
+        chest = location.get_chest(chestid)
+        candidates.append((location, entrance, chest))
+    location, entrance, chest = random.choice(candidates)
+    oldlocation = location
+    location = get_appropriate_location(oldlocation, flair=False)
+
+    c = ChestBlock(pointer=None, location=location.locid)
+    c.copy(chest)
+    c.set_content_type(0x40)
+    c.contents = 0
+    c.set_new_id()
+    c.do_not_mutate = True
+    location.chests = [c]
+
+    e = Entrance(None)
+    e.copy(entrance)
+    #location.entrance_set.entrances = [e]
+    e.set_location(location)
+    assert len(location.entrances) == 0
+
+    belt = get_location(287)
+    e2 = [ee for ee in belt.entrances if ee.x == 36 and ee.y == 25][0]
+    belt.entrance_set.entrances.remove(e2)
+    sig = entrance.signature
+    sig2 = e2.signature
+    connect_entrances(sig, sig2)
+    connect_entrances(sig2, sig)
+
+    location.attacks = 0
+    location.music = 21
+
 
 if __name__ == "__main__":
-    randomize_tower(filename="program.rom")
+    #randomize_tower(filename="program.rom")
+    pass

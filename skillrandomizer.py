@@ -1,5 +1,5 @@
 from utils import (hex2int, int2bytes, Substitution, SPELL_TABLE,
-                   SPELLBANS_TABLE, texttable, utilrandom as random)
+                   SPELLBANS_TABLE, name_to_bytes, utilrandom as random)
 
 spellnames = {}
 f = open(SPELL_TABLE)
@@ -276,14 +276,11 @@ class CommandBlock:
             text = text.replace('.', '')
         text = text[:7]
         self.name = text
-        text = map(lambda c: hex2int(texttable[c]), text)
-        while len(text) < 7:
-            text.append(0xFF)
-        text = "".join(map(chr, text))
+        text = name_to_bytes(text, 7)
 
         f = open(filename, 'r+b')
         f.seek(self.textptr)
-        f.write(text)
+        f.write("".join(map(chr, text)))
         f.close()
 
 

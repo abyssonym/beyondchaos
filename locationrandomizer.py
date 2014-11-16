@@ -88,6 +88,12 @@ class Location():
     def chestpointer(self):
         return 0x2D82F4 + (self.locid * 2)
 
+    def get_chest(self, chestid):
+        return [c for c in self.chests if c.chestid == chestid][0]
+
+    def get_entrance(self, entid):
+        return [e for e in self.entrances if e.entid == entid][0]
+
     def uniqify_entrances(self):
         new_entrances = []
         done = []
@@ -113,7 +119,8 @@ class Location():
     def validate_entrances(self):
         pairs = [(e.x, e.y) for e in self.entrances]
         if len(pairs) != len(set(pairs)):
-            raise Exception("Duplicate entrances found on map.")
+            raise Exception("Duplicate entrances found on map %s." %
+                            self.locid)
 
     def collapse_entids(self):
         entrances = self.entrances
@@ -322,6 +329,7 @@ class Location():
             pointer = begin + (i*5) + 0x2d8634
             c = ChestBlock(pointer, self.locid)
             c.read_data(filename)
+            c.set_id(i)
             self.chests.append(c)
 
     def copy_chests(self, location):
@@ -453,8 +461,6 @@ class Entrance():
         else:
             entid = None
         return "<%x %s: %s %s>" % (self.location.locid, entid, self.x, self.y)
-        #return "%x %x %x %x %x %x" % (self.pointer, self.x, self.y,
-        #                              self.dest & 0x1FF, self.destx, self.desty)
 
     def copy(self, entrance):
         for attribute in ["x", "y", "dest", "destx", "desty"]:
@@ -580,6 +586,7 @@ if __name__ == "__main__":
     get_fsets(filename)
     locations = get_locations(filename)
     from formationrandomizer import fsetdict
+    locations = get_locations("program.rom")
     for l in locations:
-        print l
-        print l.locid, l.layer1ptr, l.layer2ptr, l.palette_index
+        if len(l.entrances) == 1 and len(l.chests) == 1:
+            print l, l.attacks

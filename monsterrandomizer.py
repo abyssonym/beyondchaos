@@ -1,7 +1,8 @@
-from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE, texttable,
-                   mutate_palette_dict, mutate_index, utilrandom as random)
+from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
+                   name_to_bytes, mutate_palette_dict, mutate_index,
+                   utilrandom as random)
 from skillrandomizer import SpellBlock
-from itemrandomizer import get_ranked_items
+from itemrandomizer import get_ranked_items, get_item
 from namerandomizer import generate_attack
 
 
@@ -9,9 +10,6 @@ stat_order = ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
               'def', 'mdef', 'mpow']
 all_spells = None
 valid_spells = None
-items = None
-itemids = None
-itemdict = None
 unrageable = [0x7E, 0x7F, 0x80, 0x81]
 HIGHEST_LEVEL = 77
 xps = []
@@ -45,6 +43,7 @@ def read_ai_table(table):
 
 
 def get_item_normal():
+    items = get_ranked_items()
     base = ((len(items)-1) / 2)
     index = random.randint(0, base) + random.randint(0, base)
     if len(items) > (base * 2) + 1:
@@ -79,12 +78,12 @@ class MonsterBlock:
     @property
     def steals(self):
         steals = self.items[:2]
-        return [itemdict[i] for i in steals]
+        return [get_item(i) for i in steals]
 
     @property
     def drops(self):
         drops = self.items[2:]
-        return [itemdict[i] for i in drops]
+        return [get_item(i) for i in drops]
 
     @property
     def is_boss(self):
@@ -163,9 +162,7 @@ class MonsterBlock:
         f = open(filename, 'r+b')
         f.seek(attackpointer)
         attack = generate_attack()
-        attack = map(lambda c: hex2int(texttable[c]), attack)
-        while len(attack) < 10:
-            attack.append(0xFF)
+        attack = name_to_bytes(attack, 10)
         f.write("".join(map(chr, attack)))
 
         f.seek(self.specialeffectpointer)
@@ -190,7 +187,7 @@ class MonsterBlock:
         self.copy_visible(chosen)
 
     def read_stats(self, filename):
-        global all_spells, valid_spells, items, itemids, itemdict
+        global all_spells, valid_spells
         global HIGHEST_LEVEL
 
         f = open(filename, 'r+b')
@@ -252,12 +249,6 @@ class MonsterBlock:
         f.close()
 
         self.read_ai(filename)
-
-        if items is None:
-            items = get_ranked_items(filename)
-            itemids = [i.itemid for i in items]
-            itemdict = dict([(i.itemid, i) for i in items])
-            itemdict[0xFF] = None
 
     def get_skillset(self, ids_only=True):
         skillset = set([])
@@ -359,7 +350,7 @@ class MonsterBlock:
                         if action[1] == 0x06:
                             # hp below value
                             value = action[3]
-                            step = int(value * 2 / 3.0)
+                            step = int(value * 3 / 4.0)
                             value = step + random.randint(0, step)
                             value = min(0xFF, max(0, value))
                             action[3] = value
@@ -379,6 +370,7 @@ class MonsterBlock:
                                 value += random.randint(-2, 1)
                             action[3] = value
                 elif action[0] == 0xF6:
+                    items = get_ranked_items()
                     if action[1] == 0x00:
                         candidates = [i for i in items if i.itemtype & 0x20 and not i.features['targeting'] & 0x40]
                         candidates = sorted(candidates, key=lambda c: c.rank())
@@ -387,8 +379,8 @@ class MonsterBlock:
                         candidates = sorted(candidates, key=lambda c: c.features['power'])
 
                     first, second = action[2], action[3]
-                    first = [i for i in candidates if i.itemid == first][0]
-                    second = [i for i in candidates if i.itemid == second][0]
+                    first = get_item(first) or candidates[0]
+                    second = get_item(second) or candidates[0]
                     for i, a in enumerate([first, second]):
                         index = candidates.index(a)
                         index = mutate_index(index, len(candidates),
@@ -785,6 +777,8 @@ class MonsterBlock:
         if random.choice([True, False]):
             random.shuffle(self.items)
 
+        items = get_ranked_items()
+        itemids = [i.itemid for i in items]
         new_items = []
         for i in self.items:
             if i == 0xFF:
@@ -793,14 +787,17 @@ class MonsterBlock:
                     new_items.append(0xFF)
                     continue
 
-            index = itemids.index(i)
+            if i not in itemids:
+                index = 0
+            else:
+                index = itemids.index(i)
             index = mutate_index(index, len(itemids),
                                  [False, False, False, True],
                                  (-3, 3), (-2, 2))
 
             new_items.append(itemids[index])
 
-        new_items = [itemdict[i] for i in new_items]
+        new_items = [get_item(i) for i in new_items]
         steals, drops = (new_items[:2], new_items[2:])
         steals = sorted(steals, key=lambda i: i.rank() if i else 0, reverse=True)
         drops = sorted(drops, key=lambda i: i.rank() if i else 0, reverse=True)
@@ -819,6 +816,7 @@ class MonsterBlock:
                     new_items[3] = 0xFF
 
         self.items = new_items
+        assert len(self.items) == 4
 
     def level_rank(self):
         level = self.stats['level']
@@ -826,6 +824,7 @@ class MonsterBlock:
         return rank
 
     def get_item_appropriate(self):
+        items = get_ranked_items()
         rank = self.level_rank()
         index = int(len(items) * rank)
         index = mutate_index(index, len(items),
@@ -876,6 +875,8 @@ class MonsterBlock:
         self.stats['xp'] = fuddle(self.stats['xp'])
         self.stats['gp'] = fuddle(self.stats['gp'])
 
+        items = get_ranked_items()
+        itemids = [i.itemid for i in items]
         new_items = []
         for i in self.items:
             if i == 0xFF:
@@ -1236,10 +1237,6 @@ class MetamorphBlock:
         self.pointer = pointer
 
     def read_data(self, filename):
-        global items
-        if items is None:
-            items = get_ranked_items(filename)
-
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.items = map(ord, f.read(4))

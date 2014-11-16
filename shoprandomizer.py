@@ -1,7 +1,5 @@
 from utils import utilrandom as random
-from itemrandomizer import get_ranked_items
-
-items = None
+from itemrandomizer import get_ranked_items, get_item
 
 
 class ShopBlock:
@@ -10,16 +8,11 @@ class ShopBlock:
         self.pointer = pointer
 
     def read_data(self, filename):
-        global items
-
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.misc = ord(f.read(1))
         self.items = map(ord, f.read(8))
         f.close()
-
-        if items is None:
-            items = get_ranked_items(filename)
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
@@ -47,6 +40,7 @@ class ShopBlock:
             self.misc |= 0x30
 
     def mutate_items(self, filename):
+        items = get_ranked_items()
         if self.shoptype == 1:
             valid_items = [c for c in items if c.is_weapon or c.is_tool]
         elif self.shoptype == 2:
@@ -61,9 +55,13 @@ class ShopBlock:
         old_items = [i for i in self.items if i != 0xFF]
         if not old_items:
             return
-        old_items = [[j for j in items if j.itemid == i][0] for i in old_items]
+        old_items = [get_item(i) for i in old_items]
+        old_items = [i for i in old_items if i]
 
-        average_value = sum([i.rank() for i in old_items]) / len(old_items)
+        if len(old_items) == 0:
+            average_value = 0
+        else:
+            average_value = sum([i.rank() for i in old_items]) / len(old_items)
         average_item = len([i for i in valid_items if i.rank() <= average_value])
         average_item += -1
         average_item = valid_items[average_item]

@@ -29,6 +29,7 @@ TOWER_CHECKPOINTS_TABLE = path.join("tables", "finaldungeoncheckpoints.txt")
 MAP_BATTLE_BG_TABLE = path.join("tables", "mapbattlebgs.txt")
 ENTRANCE_REACHABILITY_TABLE = path.join("tables", "reachability.txt")
 FINAL_BOSS_AI_TABLE = path.join("tables", "finalai.txt")
+TREASURE_ROOMS_TABLE = path.join("tables", "treasurerooms.txt")
 
 
 class Substitution(object):
@@ -57,6 +58,14 @@ for line in f:
     texttable[char] = value
 texttable[' '] = 'FE'
 f.close()
+
+
+def name_to_bytes(name, length):
+    name = map(lambda c: hex2int(texttable[c]), name)
+    assert len(name) <= length
+    while len(name) < length:
+        name.append(0xFF)
+    return name
 
 
 shorttexttable = {}

@@ -2,8 +2,6 @@ from utils import read_multi, write_multi, mutate_index, utilrandom as random
 from itemrandomizer import get_ranked_items
 from formationrandomizer import get_formations, get_fsets
 
-items = None
-itemids = None
 valid_ids = range(0, 0x200)
 banned_formations = [0x1ca, 0x1e9]
 former_miabs = []
@@ -69,9 +67,13 @@ class ChestBlock:
         self.pointer = pointer
         self.location = location
         self.value = None
+        self.do_not_mutate = False
+
+    def set_id(self, chestid):
+        self.chestid = chestid
 
     def read_data(self, filename):
-        global items, itemids, former_miabs
+        global former_miabs
 
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -81,10 +83,6 @@ class ChestBlock:
         self.contents = ord(f.read(1))
         f.close()
         self.oldid = self.memid | ((self.contenttype & 1) << 8)
-
-        if items is None:
-            items = get_ranked_items(filename)
-            itemids = [i.itemid for i in items]
 
         mark_taken_id(self.effective_id)
         if self.monster:
@@ -149,8 +147,13 @@ class ChestBlock:
 
     def get_current_value(self, guideline=None):
         if self.treasure:
-            index = itemids.index(self.contents)
-            value = items[index].rank() / 100
+            items = get_ranked_items()
+            itemids = [i.itemid for i in items]
+            try:
+                index = itemids.index(self.contents)
+                value = items[index].rank() / 100
+            except ValueError:
+                value = 100
         elif self.gold or self.empty:
             if self.empty:
                 if guideline is not None:
@@ -171,13 +174,21 @@ class ChestBlock:
         assert self.gold and not (self.treasure or self.empty or self.monster)
 
     def mutate_contents(self, guideline=None):
+        if self.do_not_mutate:
+            return
+
         if self.value:
             value = self.value
         else:
             value = self.get_current_value(guideline=guideline)
 
+        items = get_ranked_items()
+        itemids = [i.itemid for i in items]
         if self.treasure:
-            index = itemids.index(self.contents)
+            try:
+                index = itemids.index(self.contents)
+            except ValueError:
+                index = 0
         else:
             lowpriced = [i for i in items if i.rank() <= value]
             index = max(0, len(lowpriced)-1)

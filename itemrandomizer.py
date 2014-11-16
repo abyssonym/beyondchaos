@@ -1,5 +1,5 @@
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
-                   utilrandom as random)
+                   name_to_bytes, utilrandom as random)
 from skillrandomizer import SpellBlock
 # future blocks: chests, morphs, shops
 
@@ -25,6 +25,7 @@ STATPROTECT = {"fieldeffect": 0x7c,
 
 all_spells = None
 effects_used = []
+itemdict = {}
 
 
 def bit_mutate(byte, op="on", nochange=0x00):
@@ -53,6 +54,7 @@ class ItemBlock:
         self.pointer = hex2int(pointer)
         self.name = name
         self.degree = None
+        self.banned = False
 
     def set_degree(self, value):
         self.degree = value
@@ -102,7 +104,55 @@ class ItemBlock:
                                 key=lambda s: s.rank())
             all_spells = filter(lambda s: s.valid, all_spells)
 
+        if self.is_weapon:
+            f.seek(0x2CE408 + (8*self.itemid))
+            self.weapon_animation = map(ord, f.read(8))
+
+        f.seek(0x12B300 + (13*self.itemid))
+        self.dataname = map(ord, f.read(13))
+
         f.close()
+
+    def ban(self):
+        self.banned = True
+
+    def become_gades_blade(self):
+        self.price = 60000
+        self.itemtype = 1 | 0x10
+        self.equippable = 0x3FFF
+        for key in self.features:
+            self.features[key] = 0
+        self.features['statusacquire3'] = 0x08  # haste
+        self.features['special2'] = 0x01
+        self.features['elements'] = 0x08  # poison
+        self.features['otherproperties'] = 0xC2
+        self.features['power'] = 200
+        self.features['specialaction'] = 0x75
+        self.features['hitmdef'] = 0x96
+        # right, left, weapon palette, effect, effect palette, misc, sound, 0
+        self.weapon_animation = [0x2C, 0x2C, 0x2D, 0x0, 0x34, 0x0, 0xA4, 0x0]
+        name = name_to_bytes("Gades Blade", 12)
+        name = [0xD9] + name
+        self.dataname = name
+        self.ban()
+
+    def become_dekar_blade(self):
+        self.price = 15000
+        self.itemtype = 1 | 0x30
+        self.equippable = 0x3FFF
+        for key in self.features:
+            self.features[key] = 0
+        self.features['breakeffect'] = 0x10
+        self.features['targeting'] = 0x41
+        self.features['otherproperties'] = 0xC2
+        self.features['power'] = 188
+        self.features['specialaction'] = 0x75
+        self.features['hitmdef'] = 0x96
+        self.weapon_animation = [0x20, 0x20, 0x22, 0x0, 0x33, 0x0, 0xA8, 0x0]
+        name = name_to_bytes("Dekar Blade", 12)
+        name = [0xDF] + name
+        self.dataname = name
+        self.ban()
 
     def write_stats(self, filename):
         f = open(filename, 'r+b')
@@ -116,6 +166,14 @@ class ItemBlock:
         f.write(s)
 
         write_multi(f, self.price, length=2)
+
+        if self.is_weapon:
+            f.seek(0x2CE408 + (8*self.itemid))
+            f.write("".join(map(chr, self.weapon_animation)))
+
+        f.seek(0x12B300 + (13*self.itemid))
+        f.write("".join(map(chr, self.dataname)))
+
         f.close()
 
     def confirm_heavy(self):
@@ -640,14 +698,48 @@ def reset_rage_blizzard(items, umaro_risk, filename):
         item.write_stats(filename)
 
 
-def get_ranked_items(filename):
-    from randomizer import items_from_table
+def items_from_table(tablefile):
+    items = []
+    for i, line in enumerate(open(tablefile)):
+        line = line.strip()
+        if line[0] == '#':
+            continue
+
+        while '  ' in line:
+            line = line.replace('  ', ' ')
+        c = ItemBlock(*line.split(','))
+        items.append(c)
+    return items
+
+
+def get_items(filename=None):
+    global itemdict
+    if itemdict:
+        return [i for i in itemdict.values() if i and not i.banned]
+
     items = items_from_table(ITEM_TABLE)
     for i in items:
         i.read_stats(filename)
 
-    items = sorted(items, key=lambda i: i.rank())
     for n, i in enumerate(items):
         i.set_degree(n / float(len(items)))
+        itemdict[i.itemid] = i
+    itemdict[0xFF] = None
 
-    return items
+    return get_items()
+
+
+def get_item(itemid, allow_banned=False):
+    global itemdict
+    item = itemdict[itemid]
+    if item and item.banned:
+        if allow_banned:
+            return item
+        else:
+            return None
+    return item
+
+
+def get_ranked_items(filename=None):
+    items = get_items(filename)
+    return sorted(items, key=lambda i: i.rank())

@@ -7,7 +7,7 @@ from utils import (ESPER_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE,
-                   Substitution, texttable, shorttexttable,
+                   Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes,
@@ -17,7 +17,7 @@ from skillrandomizer import (SpellBlock, CommandBlock, SpellSub,
 from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                MetamorphBlock, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table)
-from itemrandomizer import (ItemBlock, reset_equippable, get_ranked_items,
+from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard)
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
@@ -365,20 +365,6 @@ def characters_from_table(tablefile):
     return characters
 
 
-def items_from_table(tablefile):
-    items = []
-    for i, line in enumerate(open(tablefile)):
-        line = line.strip()
-        if line[0] == '#':
-            continue
-
-        while '  ' in line:
-            line = line.replace('  ', ' ')
-        c = ItemBlock(*line.split(','))
-        items.append(c)
-    return items
-
-
 def espers_from_table(tablefile):
     espers = []
     for i, line in enumerate(open(tablefile)):
@@ -402,7 +388,10 @@ def randomize_colosseum(filename, pointer):
     results = []
     f = open(filename, 'r+b')
     for i in range(0xFF):
-        index = items.index(i)
+        try:
+            index = items.index(i)
+        except ValueError:
+            continue
         trade = index
         while index == trade:
             trade = index
@@ -1298,7 +1287,7 @@ def manage_monsters():
         if m.id == 0x11a:
             # boost final kefka yet another time
             m.mutate()
-        #m.stats['hp'] = 1
+        m.stats['hp'] = 1
 
     shuffle_monsters(monsters)
     for m in monsters:
@@ -1481,9 +1470,7 @@ def manage_character_appearance(preserve_graphics=False):
 
     f = open(outfile, 'r+b')
     for c, name in enumerate(names):
-        name = map(lambda c: hex2int(texttable[c]), name)
-        while len(name) < 6:
-            name.append(0xFF)
+        name = name_to_bytes(name, 6)
         assert len(name) == 6
         f.seek(0x478C0 + (6*c))
         f.write("".join(map(chr, name)))
@@ -1839,7 +1826,7 @@ def manage_treasure(monsters, shops=True):
     def ensure_striker():
         candidates = []
         for b in buyables:
-            if b == 0xFF:
+            if b == 0xFF or b not in wagers:
                 continue
             intermediate = wagers[b]
             if intermediate.itemid == 0x29:
@@ -2442,9 +2429,7 @@ def change_enemy_name(filename, enemy_id, name):
     f = open(filename, 'r+b')
     f.seek(pointer)
     #monsterdict[enemy_id].name = name
-    name = map(lambda c: hex2int(texttable[c]), name)
-    while len(name) < 10:
-        name.append(0xFF)
+    name = name_to_bytes(name, 10)
     f.write("".join(map(chr, name)))
     f.close()
 
@@ -2550,12 +2535,32 @@ if __name__ == "__main__":
 
     preserve_graphics = ('s' not in flags and
                          'partyparty' not in activated_codes)
+    get_ranked_items(sourcefile)
     monsters = get_monsters(sourcefile)
     get_formations(sourcefile)
     aispaces = []
     aispaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
     aispaces.append(FreeBlock(0xFFF47, 0xFFF47 + 87))
     aispaces.append(FreeBlock(0xFFFBE, 0xFFFBE + 66))
+
+    if 'd' in flags:
+        # do this before treasure
+        print "\nNOTICE: You have selected FINAL DUNGEON RANDOMIZATION."
+        print ("This will greatly increase the size of the final dungeon, "
+               "but this feature is still in the testing phase.\nIt is "
+               "possible to become stuck on certain maps.\nAs such, it is "
+               "recommended to play the final dungeon with save states.\n")
+        x = raw_input("Would you like to randomize the final dungeon? (y/n) ")
+        if not x or x.lower()[0] != 'y':
+            print "The final dungeon will NOT be randomized."
+            flags = [c for c in flags if c != 'd']
+        else:
+            dirk = get_item(0)
+            if random.choice([True, False]):
+                dirk.become_dekar_blade()
+            else:
+                dirk.become_gades_blade()
+            dirk.write_stats(outfile)
 
     if 'm' in flags:
         aispaces = manage_final_boss(aispaces,
@@ -2625,16 +2630,7 @@ if __name__ == "__main__":
 
     if 'd' in flags:
         # do this before treasure
-        print "\nNOTICE: You have selected FINAL DUNGEON RANDOMIZATION."
-        print ("This will greatly increase the size of the final dungeon, "
-               "but this feature is still in the testing phase.\nIt is "
-               "possible to become stuck on certain maps.\nAs such, it is "
-               "recommended to play the final dungeon with save states.\n")
-        x = raw_input("Would you like to randomize the final dungeon? (y/n) ")
-        if x and x.lower()[0] == 'y':
-            manage_tower()
-        else:
-            print "The final dungeon will NOT be randomized."
+        manage_tower()
 
     if 'f' in flags:
         manage_formations_hidden(formations, fsets, freespaces=aispaces,

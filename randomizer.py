@@ -426,19 +426,35 @@ def randomize_colosseum(filename, pointer):
 
 def randomize_slots(filename, pointer):
     spells = get_ranked_spells(filename)
-    spells = [s.spellid for s in spells if s.target_enemy_default]
+    attackspells = [s for s in spells if s.target_enemy_default]
+    quarter = len(attackspells) / 4
+    jokerdoom = ((quarter * 2) + random.randint(0, quarter) +
+                 random.randint(0, quarter))
+    jokerdoom += random.randint(0, len(attackspells)-(4*quarter))
+    jokerdoom = attackspells[jokerdoom]
     f = open(filename, 'r+b')
-    for i in xrange(7):
-        if i == 2:
+    for i in xrange(1, 8):
+        if i in [0, 1]:
+            spell = jokerdoom
+        elif i == 3:
             continue
-        else:
-            if i in [1, 2, 4]:
-                index = random.randint(len(spells)/2, len(spells)-1)
-            else:
-                index = random.randint(0, len(spells)-1)
-            value = spells[index]
+        elif i in [4, 5, 6]:
+            half = len(spells) / 2
+            index = random.randint(0, half) + random.randint(0, half)
+            spell = spells[index]
+        elif i == 2:
+            third = len(spells) / 3
+            index = random.randint(third, len(spells))
+            spell = spells[index]
+        elif i == 7:
+            twentieth = len(spells)/20
+            index = random.randint(0, twentieth)
+            while random.randint(1, 3) == 3:
+                index += random.randint(0, twentieth)
+            index = min(index, len(spells)-1)
+            spell = spells[index]
         f.seek(pointer+i)
-        f.write(chr(value))
+        f.write(chr(spell.spellid))
     f.close()
 
 
@@ -1869,7 +1885,7 @@ def manage_blitz():
                  0xD: [0xC, 0xE],
                  0xE: [0xD, 0x7]}
     f = open(outfile, 'r+b')
-    for i in xrange(1, 8):
+    for i in xrange(8):
         # skip pummel
         current = blitzspecptr + (i * 12)
         f.seek(current + 11)

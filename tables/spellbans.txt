@@ -19,8 +19,14 @@
 41,150,Odin,noban
 42,200,Raiden,noban
 46,100,Ragnarok,noban
+4C,80,Golem,noban
+4E,80,Fenrir,noban
+50,75,Phoenix,noban
 5C,150,Cleave,noban
 8C,10,Roulette,noban
+90,50,Blow Fish,noban
+91,50,Big Guard,noban
+93,75,Pearl Wind,noban
 9A,100,ForceField,noban
 9D,1,Pep Up,ban
 A4,1,Clear,ban
@@ -28,14 +34,14 @@ A6,1,ChokeSmoke,ban
 AF,100,Delta Hit,noban
 C0,500,Fallen One,ban
 C1,100,WallChange,noban
-C2,1,Escape,ban
+C2,1000,Escape,ban
 C3,1,50 Gs,ban
 C5,500,N. Cross,ban
 C7,50,Love Token,noban
 C8,1,Seize,ban
 C9,40,R.Polarity,noban
 CA,1,Targetting,ban
-CB,1,Sneeze,ban
+CB,1000,Sneeze,ban
 CE,500,Charm,ban
 CF,500,Cold Dust,ban
 D5,5000,Engulf,ban
@@ -44,11 +50,11 @@ DA,1,Zinger,ban
 DB,1,Discard,ban
 DC,50,Overcast,noban
 E5,100,Soul Out,noban
-EA,5000,BabaBreath,ban
+EA,1000,BabaBreath,ban
 EE,3,Battle,ban
 EF,5,Special,ban
 F7,100,Sabre Soul,noban
 F8,100,Star Prism,noban
 FC,150,Takedown,noban
 FD,150,Wild Fang,noban
-FE,1,Lagomorph,ban
+FE,1,Lagomorph,noban

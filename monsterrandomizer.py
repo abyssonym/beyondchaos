@@ -295,20 +295,21 @@ class MonsterBlock:
             for skill in oldskills:
                 if skill.spellid in [0xEE, 0xEF, 0xFE]:
                     continue
-                else:
-                    skillset.remove(skill.spellid)
-                    candidates = [s for s in all_spells if similar(s, skill)]
-                    candidates = [s for s in candidates if not
-                                  (s.is_blitz or s.is_swdtech or s.is_esper)]
-                    if skill not in candidates:
-                        candidates.add(skill)
-                    candidates = sorted(candidates, key=lambda s: s.rank())
+                if not skill.valid:
+                    continue
+                skillset.remove(skill.spellid)
+                candidates = [s for s in all_spells if similar(s, skill)]
+                candidates = [s for s in candidates if not
+                              (s.is_blitz or s.is_swdtech or s.is_esper)]
+                if skill not in candidates:
+                    candidates.add(skill)
+                candidates = sorted(candidates, key=lambda s: s.rank())
 
-                    index = candidates.index(skill)
-                    index = mutate_index(index, len(candidates), [False, True],
-                                         (-2, 3), (-2, 2))
-                    skill = candidates[index]
-                    skillset.add(skill.spellid)
+                index = candidates.index(skill)
+                index = mutate_index(index, len(candidates), [False, True],
+                                     (-2, 3), (-2, 2))
+                skill = candidates[index]
+                skillset.add(skill.spellid)
 
         sortedskills = sorted([s for s in all_spells if s.spellid in skillset],
                               key=lambda s: s.rank())

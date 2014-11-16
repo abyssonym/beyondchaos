@@ -2580,12 +2580,13 @@ if __name__ == "__main__":
             print "The final dungeon will NOT be randomized."
             flags = [c for c in flags if c != 'd']
         else:
-            dirk = get_item(0)
-            if random.choice([True, False]):
-                dirk.become_dekar_blade()
-            else:
-                dirk.become_gades_blade()
-            dirk.write_stats(outfile)
+            if 'm' in flags and 't' in flags and 'q' in flags:
+                dirk = get_item(0)
+                if random.choice([True, False]):
+                    dirk.become_dekar_blade()
+                else:
+                    dirk.become_gades_blade()
+                dirk.write_stats(outfile)
 
     if 'm' in flags:
         aispaces = manage_final_boss(aispaces,

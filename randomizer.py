@@ -1276,7 +1276,7 @@ def manage_final_boss(freespaces, preserve_graphics=False):
     return freespaces
 
 
-def manage_monsters():
+def manage_monsters(weaken=False):
     monsters = get_monsters(sourcefile)
     for m in monsters:
         if m.id in range(0x157, 0x160) + [0x12a, 0x11a]:
@@ -1287,7 +1287,8 @@ def manage_monsters():
         if m.id == 0x11a:
             # boost final kefka yet another time
             m.mutate()
-        m.stats['hp'] = 1
+        if weaken:
+            m.stats['hp'] = 1
 
     shuffle_monsters(monsters)
     for m in monsters:
@@ -2494,6 +2495,7 @@ if __name__ == "__main__":
     secret_codes['strangejourney'] = "BIZARRE ADVENTURE"
     secret_codes['dearestmolulu'] = "ENCOUNTERLESS MODE"
     secret_codes['canttouchthis'] = "INVINCIBILITY"
+    secret_codes['easymodo'] = "EASY MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -2565,7 +2567,7 @@ if __name__ == "__main__":
     if 'm' in flags:
         aispaces = manage_final_boss(aispaces,
                                      preserve_graphics=preserve_graphics)
-        monsters = manage_monsters()
+        monsters = manage_monsters(weaken='easymodo' in activated_codes)
 
     if 'c' in flags and 'm' in flags:
         mgs = manage_monster_appearance(monsters,

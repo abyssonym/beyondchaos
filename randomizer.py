@@ -2145,10 +2145,13 @@ def manage_formations_hidden(formations, fsets, freespaces,
     rare_candidates = list(repurposed_formations + boss_candidates)
     random.shuffle(fsets)
     for fs in fsets:
+        if fs.has_boss:
+            continue
+
         if not rare_candidates:
             break
 
-        chosens = fs.mutate_formations(rare_candidates)
+        chosens = fs.mutate_formations(rare_candidates, verbose=False)
         for chosen in chosens:
             if chosen.misc3 & 0b00111000 == 0:
                 chosen.set_music(1)

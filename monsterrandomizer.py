@@ -585,9 +585,9 @@ class MonsterBlock:
             level = int(self.name[2:4])
             self.stats['level'] = level
         elif self.name.lower() == "magimaster":
+            self.treasure_boost()
             level = 99
             self.stats['level'] = level
-            self.treasure_boost()
             self.stats['xp'] = 0
         else:
             return False

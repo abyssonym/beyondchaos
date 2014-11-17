@@ -580,6 +580,17 @@ class MonsterBlock:
             if random.randint(1, 20) == 20:
                 self.misc1 = self.misc1 ^ 0x80
 
+    def tweak_fanatics(self):
+        if self.name[:2] == "L.":
+            level = int(self.name[2:4])
+            self.stats['level'] = level
+        elif self.name.lower() == "magimaster":
+            level = 99
+            self.stats['level'] = level
+            self.treasure_boost()
+        else:
+            return False
+
     def mutate_stats(self):
         level = self.stats['level']
 

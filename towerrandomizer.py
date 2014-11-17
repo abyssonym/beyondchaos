@@ -12,7 +12,7 @@ from sys import stdout
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 25  # maybe?
 MAX_NEW_EXITS = 1000  # prob. not
-MAX_NEW_MAPS = 25  # 6 more for fanatics tower, 1 more for bonus
+MAX_NEW_MAPS = 23  # 6 more for fanatics tower, 1 more for bonus
 
 locdict = {}
 old_entrances = {}
@@ -867,6 +867,7 @@ def randomize_tower(filename):
                     raise Exception("NOPE")
 
     make_secret_treasure_room()
+    randomize_fanatics()
 
 
 def make_secret_treasure_room():
@@ -907,6 +908,56 @@ def make_secret_treasure_room():
 
     location.attacks = 0
     location.music = 21
+
+
+def randomize_fanatics():
+    stairs = [get_location(i) for i in [363, 359, 360, 361]]
+    pitstops = [get_location(i) for i in [365, 367, 368, 369]]
+    num_new_levels = random.randint(0, 1) + random.randint(1, 2)
+    unused_locations = get_unused_locations()
+    unused_locations = [u for u in unused_locations if
+                        u not in locexchange.values()]
+    num_new_levels = 3
+    fsets = get_new_fsets("fanatics", 10, supplement=False)
+    for _ in xrange(num_new_levels):
+        stair = unused_locations.pop()
+        stop = unused_locations.pop()
+        stair.copy(random.choice(stairs[1:-1]))
+        stop.copy(random.choice(pitstops[1:]))
+        index = random.randint(1, len(stairs)-1)
+        stairs.insert(index, stair)
+        pitstops.insert(index, stop)
+
+        chest = stop.chests[0]
+        chest.set_new_id()
+
+        entrance = stop.entrances[0]
+        entrance.dest = (entrance.dest & 0xFE00) | (stair.locid & 0x1FF)
+
+        entrance = sorted(stair.entrances, key=lambda e: e.y)[1]
+        entrance.dest = (entrance.dest & 0xFE00) | (stop.locid & 0x1FF)
+
+        stair.setid = random.choice(fsets).setid
+        stop.setid = random.choice(fsets).setid
+
+    for a, b in zip(stairs, stairs[1:]):
+        lower = sorted(a.entrances, key=lambda e: e.y)[0]
+        upper = sorted(b.entrances, key=lambda e: e.y)[-1]
+        lower.dest = (lower.dest & 0xFE00) | (b.locid & 0x1FF)
+        upper.dest = (upper.dest & 0xFE00) | (a.locid & 0x1FF)
+
+    for stop in pitstops:
+        if random.choice([True, False]):
+            continue
+        index = pitstops.index(stop)
+        if index == 0:
+            continue
+        index2 = index + random.choice([-1, -1, -2])
+        if index2 < 0:
+            index2 = 0
+        stair = stairs[index2]
+        entrance = stop.entrances[0]
+        entrance.dest = (entrance.dest & 0xFE00) | (stair.locid & 0x1FF)
 
 
 if __name__ == "__main__":

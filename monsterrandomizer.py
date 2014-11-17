@@ -588,6 +588,7 @@ class MonsterBlock:
             level = 99
             self.stats['level'] = level
             self.treasure_boost()
+            self.stats['xp'] = 0
         else:
             return False
 

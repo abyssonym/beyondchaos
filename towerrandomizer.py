@@ -917,7 +917,6 @@ def randomize_fanatics():
     unused_locations = get_unused_locations()
     unused_locations = [u for u in unused_locations if
                         u not in locexchange.values()]
-    num_new_levels = 3
     fsets = get_new_fsets("fanatics", 10, supplement=False)
     for _ in xrange(num_new_levels):
         stair = unused_locations.pop()

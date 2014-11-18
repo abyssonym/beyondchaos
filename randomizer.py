@@ -2473,23 +2473,30 @@ if __name__ == "__main__":
     if len(argv) > 2:
         sourcefile = argv[1].strip()
     else:
-        sourcefile = raw_input("Path to rom file? ").strip()
+        sourcefile = raw_input("Please input the file path to your copy of "
+                               "the FF3 US 1.0 rom:\n> ").strip()
+        print
 
     f = open(sourcefile, 'rb')
     h = md5(f.read()).hexdigest()
     if h != MD5HASH:
         print ("WARNING! The md5 hash of this file does not match the known "
                "hash of the english FF6 1.0 rom!")
+        print
     f.close()
     del(f)
 
     if len(argv) > 2:
         fullseed = argv[2].strip()
     else:
-        fullseed = raw_input("Seed? ").strip()
+        fullseed = raw_input("Please input a seed value (blank for a random"
+                             "seed):\n> ").strip()
+        print
         if '.' not in fullseed:
-            flags = raw_input("Flags? ").strip()
+            flags = raw_input("Please input your desired flags (blank for "
+                              "all of them):\n> ").strip()
             fullseed = ".%s.%s" % (flags, fullseed)
+            print
 
     version, flags, seed = tuple(fullseed.split('.'))
     seed = seed.strip()
@@ -2537,13 +2544,14 @@ if __name__ == "__main__":
     print s.strip()
 
     if 'cutscenes' in activated_codes:
-        print "\nNOTICE: You have selected CUTSCENE SKIPS."
+        print "NOTICE: You have selected CUTSCENE SKIPS."
         print "This feature has proven to be unstable with strange effects."
         x = raw_input("Would you like to use cutscene skips? (y/n) ")
         if x and x.lower()[0] == 'y':
             manage_skips()
         else:
             print "Cutscenes will NOT be skipped."
+        print
 
     if 'airship' in activated_codes:
         activate_airship_mode()
@@ -2575,7 +2583,7 @@ if __name__ == "__main__":
 
     if 'd' in flags:
         # do this before treasure
-        print "\nNOTICE: You have selected FINAL DUNGEON RANDOMIZATION."
+        print "NOTICE: You have selected FINAL DUNGEON RANDOMIZATION."
         print ("This will greatly increase the size of the final dungeon, "
                "but this feature is still in the testing phase.\nIt is "
                "possible to become stuck on certain maps.\nAs such, it is "
@@ -2592,6 +2600,7 @@ if __name__ == "__main__":
                 else:
                     dirk.become_gades_blade()
                 dirk.write_stats(outfile)
+        print
 
     if 'm' in flags:
         aispaces = manage_final_boss(aispaces,
@@ -2653,6 +2662,7 @@ if __name__ == "__main__":
         if natmag_candidates:
             natmag_candidates = tuple(nc.name for nc in natmag_candidates)
             print "Natural magic: %s %s" % natmag_candidates
+        print
 
     if 'f' in flags:
         formations = get_formations(sourcefile)
@@ -2703,3 +2713,5 @@ if __name__ == "__main__":
     if 'canttouchthis' in activated_codes:
         for c in characters:
             c.become_invincible(outfile)
+
+    print "\nRandomization successful. Output filename: %s" % outfile

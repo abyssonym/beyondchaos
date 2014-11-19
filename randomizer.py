@@ -27,7 +27,7 @@ from locationrandomizer import Zone, EntranceSet, get_locations
 from towerrandomizer import randomize_tower
 
 
-VERSION = "25"
+VERSION = "26"
 VERBOSE = False
 flags = None
 
@@ -2501,6 +2501,7 @@ def dummy_item(item):
 
 
 if __name__ == "__main__":
+    print 'You are using Beyond Chaos randomizer version "%s".' % VERSION
     if len(argv) > 2:
         sourcefile = argv[1].strip()
     else:

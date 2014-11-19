@@ -1,5 +1,5 @@
 from utils import (ENEMY_NAMES_TABLE, MODIFIERS_TABLE, MOVES_TABLE,
-                   utilrandom as random)
+                   NAMEGEN_TABLE, utilrandom as random)
 
 modifiers = [line.strip() for line in open(MODIFIERS_TABLE)]
 moves = [line.strip() for line in open(MOVES_TABLE)]
@@ -7,7 +7,7 @@ enemynames = [line.strip() for line in open(ENEMY_NAMES_TABLE).readlines()]
 
 generator = {}
 lookback = None
-for line in open('tables/generator.txt'):
+for line in open(NAMEGEN_TABLE):
     key, values = tuple(line.strip().split())
     generator[key] = values
     if not lookback:

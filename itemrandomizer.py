@@ -712,10 +712,13 @@ def items_from_table(tablefile):
     return items
 
 
-def get_items(filename=None):
+def get_items(filename=None, allow_banned=False):
     global itemdict
     if itemdict:
-        return [i for i in itemdict.values() if i and not i.banned]
+        to_return = [i for i in itemdict.values() if i]
+        if not allow_banned:
+            to_return = [i for i in to_return if not i.banned]
+        return to_return
 
     items = items_from_table(ITEM_TABLE)
     for i in items:
@@ -740,6 +743,6 @@ def get_item(itemid, allow_banned=False):
     return item
 
 
-def get_ranked_items(filename=None):
-    items = get_items(filename)
+def get_ranked_items(filename=None, allow_banned=False):
+    items = get_items(filename, allow_banned)
     return sorted(items, key=lambda i: i.rank())

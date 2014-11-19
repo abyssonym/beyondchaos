@@ -894,6 +894,7 @@ def make_secret_treasure_room():
     c.contents = 0
     c.set_new_id()
     c.do_not_mutate = True
+    c.ignore_dummy = True
     location.chests = [c]
 
     e = Entrance(None)

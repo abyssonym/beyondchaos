@@ -1067,6 +1067,12 @@ class MonsterBlock:
         else:
             return self.stats['level']
 
+    def dummy_item(self, item):
+        if item.itemid in self.items:
+            self.items = [i if i != item.itemid else 0xFF for i in self.items]
+            return True
+        return False
+
 
 def monsters_from_table(tablefile):
     monsters = []
@@ -1264,3 +1270,11 @@ class MetamorphBlock:
     def mutate_items(self):
         for i in xrange(4):
             self.items[i] = get_item_normal().itemid
+
+    def dummy_item(self, item):
+        if item.itemid in self.items:
+            self.items = [i for i in self.items if i != item.itemid]
+            while len(self.items) < 4:
+                self.items.append(random.choice(self.items))
+            return True
+        return False

@@ -88,6 +88,12 @@ class Location():
     def chestpointer(self):
         return 0x2D82F4 + (self.locid * 2)
 
+    def dummy_item(self, item):
+        dummied = False
+        for c in self.chests:
+            dummied = c.dummy_item(item) or dummied
+        return dummied
+
     def get_chest(self, chestid):
         return [c for c in self.chests if c.chestid == chestid][0]
 

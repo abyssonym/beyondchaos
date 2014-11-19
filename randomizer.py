@@ -444,7 +444,7 @@ def randomize_slots(filename, pointer):
             spell = spells[index]
         elif i == 2:
             third = len(spells) / 3
-            index = random.randint(third, len(spells))
+            index = random.randint(third, len(spells)-1)
             spell = spells[index]
         elif i == 7:
             twentieth = len(spells)/20
@@ -1822,11 +1822,25 @@ def manage_espers():
     return espers
 
 
-def manage_treasure(monsters, shops=True):
+metamorphs = None
+
+
+def get_metamorphs():
+    global metamorphs
+    if metamorphs:
+        return metamorphs
+
+    metamorphs = []
     for i in range(26):
         address = 0x47f40 + (i*4)
         mm = MetamorphBlock(pointer=address)
         mm.read_data(sourcefile)
+        metamorphs.append(mm)
+    return get_metamorphs()
+
+
+def manage_treasure(monsters, shops=True):
+    for mm in get_metamorphs():
         mm.mutate_items()
         mm.write_data(outfile)
 
@@ -2197,7 +2211,7 @@ def get_namelocdict():
 
 
 def manage_colorize_dungeons(locations=None, freespaces=None):
-    locations = locations or get_locations(sourcefile)
+    locations = locations or get_locations()
     get_namelocdict()
     paldict = {}
     for l in locations:
@@ -2399,7 +2413,7 @@ def manage_encounter_rate():
 
 
 def manage_tower():
-    locations = get_locations(filename=sourcefile)
+    locations = get_locations()
     randomize_tower(filename=sourcefile)
     for l in locations:
         if l.locid in [0x154, 0x155] + range(104, 108):
@@ -2470,6 +2484,20 @@ def randomize_enemy_name(filename, enemy_id):
     name = generate_name()
     change_enemy_name(filename, enemy_id, name)
     return name
+
+
+def dummy_item(item):
+    dummied = False
+    for m in get_monsters():
+        dummied = m.dummy_item(item) or dummied
+
+    for mm in get_metamorphs():
+        dummied = mm.dummy_item(item) or dummied
+
+    for l in get_locations():
+        dummied = l.dummy_item(item) or dummied
+
+    return dummied
 
 
 if __name__ == "__main__":
@@ -2576,9 +2604,13 @@ if __name__ == "__main__":
 
     preserve_graphics = ('s' not in flags and
                          'partyparty' not in activated_codes)
-    get_ranked_items(sourcefile)
+
     monsters = get_monsters(sourcefile)
     get_formations(sourcefile)
+    get_fsets(sourcefile)
+    get_locations(sourcefile)
+    get_ranked_items(sourcefile)
+
     aispaces = []
     aispaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
     aispaces.append(FreeBlock(0xFFF47, 0xFFF47 + 87))
@@ -2603,6 +2635,8 @@ if __name__ == "__main__":
                 else:
                     dirk.become_gades_blade()
                 dirk.write_stats(outfile)
+                dummy_item(dirk)
+                assert not dummy_item(dirk)
         print
 
     if 'm' in flags:
@@ -2618,7 +2652,7 @@ if __name__ == "__main__":
             set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
 
-    items = get_ranked_items(sourcefile)
+    items = get_ranked_items()
     if 'i' in flags:
         manage_items(items)
 
@@ -2668,8 +2702,8 @@ if __name__ == "__main__":
         print
 
     if 'f' in flags:
-        formations = get_formations(sourcefile)
-        fsets = get_fsets(sourcefile)
+        formations = get_formations()
+        fsets = get_fsets()
         manage_formations(formations, fsets)
 
     if 'd' in flags:
@@ -2719,5 +2753,9 @@ if __name__ == "__main__":
     if 'canttouchthis' in activated_codes:
         for c in characters:
             c.become_invincible(outfile)
+
+    for item in get_ranked_items(allow_banned=True):
+        if item.banned:
+            assert not dummy_item(item)
 
     print "\nRandomization successful. Output filename: %s" % outfile

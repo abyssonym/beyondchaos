@@ -68,6 +68,7 @@ class ChestBlock:
         self.location = location
         self.value = None
         self.do_not_mutate = False
+        self.ignore_dummy = False
 
     def set_id(self, chestid):
         self.chestid = chestid
@@ -172,6 +173,16 @@ class ChestBlock:
         self.set_content_type(0x80)
         self.contents = value / 100
         assert self.gold and not (self.treasure or self.empty or self.monster)
+
+    def dummy_item(self, item):
+        if self.ignore_dummy:
+            return False
+
+        if self.treasure and self.contents == item.itemid:
+            self.set_content_type(0x10)
+            self.contents = 0
+            return True
+        return False
 
     def mutate_contents(self, guideline=None):
         if self.do_not_mutate:

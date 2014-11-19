@@ -114,6 +114,9 @@ class Formation():
         self.misc1 |= 0x40 if not pincer else 0
         self.misc1 |= 0x80 if not side else 0
 
+    def get_music(self):
+        return (self.misc3 >> 3) & 0b111
+
     def set_music(self, value):
         # BATTLE THEMES
         # 0 regular

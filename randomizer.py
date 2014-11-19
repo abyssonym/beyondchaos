@@ -1923,6 +1923,13 @@ def manage_formations(formations, fsets):
     ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
     ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
     valid_fsets = [fset for fset in ranked_fsets if fset.veldty]
+    valid_fsets = [fset for fset in ranked_fsets if len(fset.formations) == 4]
+
+    for fset in valid_fsets:
+        if len(fset.formations) == 4:
+            for formation in fset.formations:
+                formation.set_music(6)
+                formation.set_continuous_music()
 
     outdoors = range(0, 0x39) + [0x57, 0x58, 0x6e, 0x6f, 0x78, 0x7c]
 
@@ -1956,13 +1963,9 @@ def manage_formations(formations, fsets):
                                0x16A, 0x16B, 0x16C, 0x16D,
                                0x18A, 0x1D2, 0x1D8, 0x1DE,
                                0x1E0, 0x1E6, 0x1FA]])
-    for formation in sorted(indoor_formations, key=lambda fo: fo.formid):
-        formation.set_music(6)
-        formation.set_continuous_music()
 
     for formation in formations:
         formation.mutate(ap=False)
-        formation.write_data(outfile)
 
     return formations
 
@@ -2676,6 +2679,9 @@ if __name__ == "__main__":
     if 'f' in flags:
         manage_formations_hidden(formations, fsets, freespaces=aispaces,
                                  esper_graphics=mgs[-32:])
+
+    for f in get_formations():
+        f.write_data(outfile)
 
     if 't' in flags:
         manage_treasure(monsters, shops=True)

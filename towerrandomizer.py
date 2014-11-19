@@ -168,7 +168,11 @@ def get_appropriate_location(loc, flair=True):
                 u.fill_battle_bg(loc.locid)
                 u.unlock_chests(20000, 100000)
                 fsets = get_new_fsets("kefka's tower", 20)
-                u.setid = random.choice(fsets).setid
+                fset = random.choice(fsets)
+                for formation in fset.formations:
+                    formation.set_music(6)
+                    formation.set_continuous_music()
+                u.setid = fset.setid
                 clear_entrances(u)
                 try:
                     assert not u.entrances

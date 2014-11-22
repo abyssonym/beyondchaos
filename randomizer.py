@@ -2607,10 +2607,10 @@ if __name__ == "__main__":
                          'partyparty' not in activated_codes)
 
     monsters = get_monsters(sourcefile)
-    get_formations(sourcefile)
-    get_fsets(sourcefile)
-    get_locations(sourcefile)
-    get_ranked_items(sourcefile)
+    formations = get_formations(sourcefile)
+    fsets = get_fsets(sourcefile)
+    locations = get_locations(sourcefile)
+    items = get_ranked_items(sourcefile)
 
     aispaces = []
     aispaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
@@ -2631,10 +2631,7 @@ if __name__ == "__main__":
         else:
             if 'm' in flags and 't' in flags and 'q' in flags:
                 dirk = get_item(0)
-                if random.choice([True, False]):
-                    dirk.become_dekar_blade()
-                else:
-                    dirk.become_gades_blade()
+                dirk.become_another()
                 dirk.write_stats(outfile)
                 dummy_item(dirk)
                 assert not dummy_item(dirk)

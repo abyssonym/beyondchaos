@@ -1,0 +1,75 @@
+! Gades Blade
+price               ea60
+itemtype            11
+equippable          3fff
+statusacquire       8
+special2            1
+elements            8
+otherproperties     c2
+power               c8
+specialaction       75
+hitmdef             96
+weapon_animation    2c 2c 2d 0 34 0 a4 0
+name_icon           d9
+name_text           Gades Blade
+description         Sword of the evil Gades
+
+! Dekar Blade
+price               3a98
+itemtype            31
+equippable          3fff
+breakeffect         10
+targeting           41
+otherproperties     c2
+power               bc
+specialaction       75
+hitmdef             96
+weapon_animation    20 20 22 0 33 0 a8 0
+name_icon           df
+name_text           Dekar Blade
+description         Dekar's powerful sword
+
+! Dragon Slave
+price               2
+itemtype            25
+equippable          141
+breakeffect         17
+learnspell          17
+learnrate           32
+targeting           04
+magstam             7f
+speedvigor          70
+statboost1          42
+statboost2          40
+special3            10
+statusacquire2      e1
+statusacquire3      09
+elemabsorbs         01
+elemweaks           01
+elemnulls           04
+name_icon           e7
+name_text           Dragon Slave
+description         Darkness beyond twilight...
+
+! Demonica
+price               fde8
+itemtype            22
+equippable          3FFF
+breakeffect         18
+learnspell          18
+learnrate           2
+targeting           43
+magstam             77
+speedvigor          77
+fieldeffect         80
+statboost1          09
+statboost2          90
+statusacquire2      08
+statusacquire3      42
+special2            06
+special3            0d
+power               90
+hitmdef             80
+mblockevade         12
+name_icon           e4
+name_text           Demonica

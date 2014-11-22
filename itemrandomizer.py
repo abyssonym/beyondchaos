@@ -1,4 +1,5 @@
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
+                   CUSTOM_ITEMS_TABLE,
                    name_to_bytes, utilrandom as random)
 from skillrandomizer import SpellBlock
 # future blocks: chests, morphs, shops
@@ -6,10 +7,10 @@ from skillrandomizer import SpellBlock
 ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
               "statusprotect1", "statusprotect2", "statusacquire3",
               "statboost1", "special1", "statboost2", "special2",
-              "special3", "targeting", "elements", "vigorspeed",
-              "stammag", "breakeffect", "otherproperties", "power",
+              "special3", "targeting", "elements", "speedvigor",
+              "magstam", "breakeffect", "otherproperties", "power",
               "hitmdef", "elemabsorbs", "elemnulls", "elemweaks",
-              "statusacquire2", "evademblock", "specialaction"]
+              "statusacquire2", "mblockevade", "specialaction"]
 
 STATPROTECT = {"fieldeffect": 0x7c,
                "statusprotect1": 0x18,
@@ -26,6 +27,33 @@ STATPROTECT = {"fieldeffect": 0x7c,
 all_spells = None
 effects_used = []
 itemdict = {}
+customs = {}
+
+
+def get_custom_items():
+    if customs:
+        return customs
+
+    customname, customdict = None, None
+    for line in open(CUSTOM_ITEMS_TABLE):
+        while '  ' in line:
+            line = line.replace('  ', ' ')
+        line = line.strip()
+        if not line or line[0] == '#':
+            continue
+
+        if line[0] == '!':
+            if customname is not None:
+                customs[customname] = customdict
+            customdict = {}
+            customname = line[1:].strip()
+            continue
+
+        key, value = tuple(line.split(' ', 1))
+        customdict[key] = value
+
+    customs[customname] = customdict
+    return get_custom_items()
 
 
 def bit_mutate(byte, op="on", nochange=0x00):
@@ -116,41 +144,38 @@ class ItemBlock:
     def ban(self):
         self.banned = True
 
-    def become_gades_blade(self):
-        self.price = 60000
-        self.itemtype = 1 | 0x10
-        self.equippable = 0x3FFF
-        for key in self.features:
-            self.features[key] = 0
-        self.features['statusacquire3'] = 0x08  # haste
-        self.features['special2'] = 0x01
-        self.features['elements'] = 0x08  # poison
-        self.features['otherproperties'] = 0xC2
-        self.features['power'] = 200
-        self.features['specialaction'] = 0x75
-        self.features['hitmdef'] = 0x96
-        # right, left, weapon palette, effect, effect palette, misc, sound, 0
-        self.weapon_animation = [0x2C, 0x2C, 0x2D, 0x0, 0x34, 0x0, 0xA4, 0x0]
-        name = name_to_bytes("Gades Blade", 12)
-        name = [0xD9] + name
-        self.dataname = name
-        self.ban()
+    def become_another(self, customdict=None):
+        customs = get_custom_items()
+        if customdict is None:
+            customdict = random.choice(
+                [customs[key] for key in sorted(customs)])
 
-    def become_dekar_blade(self):
-        self.price = 15000
-        self.itemtype = 1 | 0x30
-        self.equippable = 0x3FFF
         for key in self.features:
             self.features[key] = 0
-        self.features['breakeffect'] = 0x10
-        self.features['targeting'] = 0x41
-        self.features['otherproperties'] = 0xC2
-        self.features['power'] = 188
-        self.features['specialaction'] = 0x75
-        self.features['hitmdef'] = 0x96
-        self.weapon_animation = [0x20, 0x20, 0x22, 0x0, 0x33, 0x0, 0xA8, 0x0]
-        name = name_to_bytes("Dekar Blade", 12)
-        name = [0xDF] + name
+
+        def convert_value(v):
+            v = v.split()
+            intify = lambda x: int(x, 0x10)
+            if len(v) == 1:
+                return intify(v[0])
+            else:
+                return map(intify, v)
+
+        name = []
+        for key, value in customdict.items():
+            if key == "name_text":
+                name = name + name_to_bytes(value, 12)
+            elif key == "description":
+                pass
+            else:
+                value = convert_value(value)
+                if key == "name_icon":
+                    name = [value] + name
+                elif hasattr(self, key):
+                    setattr(self, key, value)
+                elif key in self.features:
+                    self.features[key] = value
+
         self.dataname = name
         self.ban()
 
@@ -208,14 +233,14 @@ class ItemBlock:
 
     @property
     def evade(self):
-        evademblock = self.features['evademblock']
-        evade = evademblock & 0x0f
+        mblockevade = self.features['mblockevade']
+        evade = mblockevade & 0x0f
         return evade
 
     @property
     def mblock(self):
-        evademblock = self.features['evademblock']
-        mblock = (evademblock & 0xf0) >> 4
+        mblockevade = self.features['mblockevade']
+        mblock = (mblockevade & 0xf0) >> 4
         return mblock
 
     def pick_a_spell(self, magic_only=False, custom=None):
@@ -391,10 +416,10 @@ class ItemBlock:
             else:
                 return byte | nibble
 
-        self.features['vigorspeed'] = mutate_nibble(self.features['vigorspeed'])
-        self.features['vigorspeed'] = mutate_nibble(self.features['vigorspeed'], left=True)
-        self.features['stammag'] = mutate_nibble(self.features['stammag'])
-        self.features['stammag'] = mutate_nibble(self.features['stammag'], left=True)
+        self.features['speedvigor'] = mutate_nibble(self.features['speedvigor'])
+        self.features['speedvigor'] = mutate_nibble(self.features['speedvigor'], left=True)
+        self.features['magstam'] = mutate_nibble(self.features['magstam'])
+        self.features['magstam'] = mutate_nibble(self.features['magstam'], left=True)
 
         evade, mblock = self.evade, self.mblock
 
@@ -413,7 +438,7 @@ class ItemBlock:
 
         evade = evade_is_screwed_up(evade)
         mblock = evade_is_screwed_up(mblock)
-        self.features['evademblock'] = evade | (mblock << 4)
+        self.features['mblockevade'] = evade | (mblock << 4)
 
     def mutate_price(self, undo_priceless=False):
         if self.price <= 2:

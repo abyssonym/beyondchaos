@@ -2,7 +2,7 @@
 price               ea60
 itemtype            11
 equippable          3fff
-statusacquire       8
+statusacquire3      8
 special2            1
 elements            8
 otherproperties     c2

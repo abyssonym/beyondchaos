@@ -26,7 +26,10 @@ ff
 fc 12 0 0
 f5 3 3 0
 f2 0 ff 81
-f5 5 2 0
+f5 5 0 0
+f1 43
+f0 d1 d2 d2
+f0 d1 c0 c0
 ff
 
 ! KEFKA 2
@@ -38,13 +41,13 @@ f9 1 0 0
 fa a 1
 0
 fd
-f1 47
+f1 43
 de
 # extra attack
 f0 de ef d1
 fd
 # followed by Meteor
-f1 47
+f1 43
 13
 f9 2 0 0
 fe
@@ -56,19 +59,19 @@ f9 1 0 1
 fa a 1
 0
 fd
-f1 47
+f1 43
 de
 # extra attack
 f0 de ef c0
 fd
 f9 2 0 0
 f9 2 0 1
-f1 47
+f1 43
 # followed by various attacks
 f0 ef d2 e0
-f0 ef fe fe
+f0 ef c0 fe
 fd
-f1 47
+f1 43
 f0 d2 ef e0
 f0 ef ef fe
 ff
@@ -84,8 +87,8 @@ fe
 fc 6 36 a0
 fc 15 0 0
 fc 5 0 0
-f1 47
-f0 fe ee 14
+f1 43
+f0 ef ee 14
 fe
 
 # counterattack with hyperdrive at any HP

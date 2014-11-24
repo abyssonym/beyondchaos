@@ -1,6 +1,7 @@
 from time import time
 from sys import argv
 from shutil import copyfile
+import os
 from hashlib import md5
 from utils import (ESPER_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE,
@@ -30,6 +31,7 @@ from towerrandomizer import randomize_tower
 VERSION = "27"
 VERBOSE = False
 flags = None
+sourcefile, outfile = None, None
 
 
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
@@ -1990,7 +1992,7 @@ def manage_formations_hidden(formations, fsets, freespaces,
         f.mutate(ap=True)
 
     fsets = [fs for fs in fsets if len(fs.formations) == 4 and not fs.unused]
-    unused_enemies = [u for u in monsters if u.id in REPLACE_ENEMIES]
+    unused_enemies = [u for u in get_monsters() if u.id in REPLACE_ENEMIES]
 
     def unused_validator(formation):
         if formation.formid in NOREPLACE_FORMATIONS:
@@ -2038,7 +2040,7 @@ def manage_formations_hidden(formations, fsets, freespaces,
             return False
         return True
     safe_boss_formations = filter(safe_boss_validator, formations)
-    sorted_bosses = sorted([m for m in monsters if m.boss_death],
+    sorted_bosses = sorted([m for m in get_monsters() if m.boss_death],
                            key=lambda m: m.stats['level'])
 
     '''
@@ -2142,7 +2144,7 @@ def manage_formations_hidden(formations, fsets, freespaces,
             ue.write_stats(outfile)
             ue.read_ai(outfile)
             mutated_ues.append(ue.id)
-            for m in monsters:
+            for m in get_monsters():
                 if m.id != ue.id:
                     assert m.aiptr != ue.aiptr
 
@@ -2224,7 +2226,7 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
         if l.field_palette not in paldict:
             paldict[l.field_palette] = set([])
         if l.attacks:
-            formation = [f for f in fsets if f.setid == l.formation][0]
+            formation = [f for f in get_fsets() if f.setid == l.formation][0]
             if set(formation.formids) != set([0]):
                 paldict[l.field_palette].add(l)
         l.write_data(outfile)
@@ -2500,7 +2502,9 @@ def dummy_item(item):
     return dummied
 
 
-if __name__ == "__main__":
+def randomize():
+    global outfile, sourcefile, VERBOSE
+
     print 'You are using Beyond Chaos randomizer version "%s".' % VERSION
     if len(argv) > 2:
         sourcefile = argv[1].strip()
@@ -2757,3 +2761,15 @@ if __name__ == "__main__":
             assert not dummy_item(item)
 
     print "\nRandomization successful. Output filename: %s" % outfile
+
+if __name__ == "__main__":
+    try:
+        randomize()
+    except Exception, e:
+        print "ERROR: %s" % e
+        if outfile is not None:
+            print "Please try again with a different seed."
+            raw_input("Press any key to delete %s and quit. " % outfile)
+            os.remove(outfile)
+        else:
+            raw_input("Press any key to quit. ")

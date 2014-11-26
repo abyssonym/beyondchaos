@@ -1,4 +1,4 @@
-from time import time
+from time import time, sleep
 from sys import argv
 from shutil import copyfile
 import os
@@ -2505,6 +2505,7 @@ def dummy_item(item):
 def randomize():
     global outfile, sourcefile, VERBOSE
 
+    sleep(0.5)
     print 'You are using Beyond Chaos randomizer version "%s".' % VERSION
     if len(argv) > 2:
         sourcefile = argv[1].strip()
@@ -2713,8 +2714,7 @@ def randomize():
         manage_tower()
 
     if 'f' in flags:
-        manage_formations_hidden(formations, fsets, freespaces=aispaces,
-                                 esper_graphics=mgs[-32:])
+        manage_formations_hidden(formations, fsets, freespaces=aispaces)
 
     for f in get_formations():
         f.write_data(outfile)

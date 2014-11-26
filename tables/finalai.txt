@@ -94,6 +94,6 @@ fe
 # counterattack with hyperdrive at any HP
 fc 15 0 0
 fc 5 0 0
-f1 47
+f1 45
 f0 fe ee d1
 ff

@@ -2426,7 +2426,7 @@ def manage_tower():
 
     entrancesets = [l.entrance_set for l in locations]
     entrancesets = entrancesets[:0x19F]
-    nextpointer = 0x1FBB00 + (len(entrancesets) * 2)
+    nextpointer = 0x1FBB00 + (len(entrancesets) * 2) + 2
     total = 0
     for e in entrancesets:
         total += len(e.entrances)

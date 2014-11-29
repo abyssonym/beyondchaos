@@ -732,7 +732,7 @@ class MonsterBlock:
             if immcount <= 0:
                 break
 
-            byte = random.choice([0, 1])
+            byte = random.randint(0, 2)
             bit = 1 << random.randint(0, 7)
 
             status = bitdict[(byte, bit)]
@@ -745,7 +745,11 @@ class MonsterBlock:
             immcount += -1
 
         self.statuses = new_statuses
-        self.immunities = new_immunities
+        if self.is_boss and random.randint(1, 20) != 20:
+            for i in xrange(len(self.immunities)):
+                self.immunities[i] |= new_immunities[i]
+        else:
+            self.immunities = new_immunities
 
     def mutate_affinities(self):
         abscount = bin(self.absorb).count('1') + 1

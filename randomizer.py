@@ -2117,36 +2117,38 @@ def manage_formations_hidden(formations, fsets, freespaces,
         ue.copy_all(boss2, everything=False)
         ue.stats['level'] = (boss.stats['level'] + boss2.stats['level']) / 2
 
-        if ue.id not in mutated_ues:
-            for fs in sorted(freespaces, key=lambda fs: fs.size):
-                if fs.size > ue.aiscriptsize:
-                    myfs = fs
-                    break
-            else:
-                # not enough free space
-                continue
+        if ue.id in mutated_ues:
+            raise Exception("Double mutation detected.")
 
-            freespaces.remove(myfs)
-            pointer = myfs.start
-            ue.set_relative_ai(pointer)
-            fss = myfs.unfree(pointer, ue.aiscriptsize)
-            freespaces.extend(fss)
+        for fs in sorted(freespaces, key=lambda fs: fs.size):
+            if fs.size > ue.aiscriptsize:
+                myfs = fs
+                break
+        else:
+            # not enough free space
+            continue
 
-            ue.mutate_ai(change_skillset=True)
-            ue.mutate_ai(change_skillset=True)
+        freespaces.remove(myfs)
+        pointer = myfs.start
+        ue.set_relative_ai(pointer)
+        fss = myfs.unfree(pointer, ue.aiscriptsize)
+        freespaces.extend(fss)
+
+        ue.mutate_ai(change_skillset=True)
+        ue.mutate_ai(change_skillset=True)
+        ue.mutate(change_skillset=True)
+        if random.choice([True, False]):
             ue.mutate(change_skillset=True)
-            if random.choice([True, False]):
-                ue.mutate(change_skillset=True)
-            ue.treasure_boost()
-            ue.graphics.mutate_palette()
-            name = randomize_enemy_name(outfile, ue.id)
-            ue.misc1 &= (0xFF ^ 0x4)  # always show name
-            ue.write_stats(outfile)
-            ue.read_ai(outfile)
-            mutated_ues.append(ue.id)
-            for m in get_monsters():
-                if m.id != ue.id:
-                    assert m.aiptr != ue.aiptr
+        ue.treasure_boost()
+        ue.graphics.mutate_palette()
+        name = randomize_enemy_name(outfile, ue.id)
+        ue.misc1 &= (0xFF ^ 0x4)  # always show name
+        ue.write_stats(outfile)
+        ue.read_ai(outfile)
+        mutated_ues.append(ue.id)
+        for m in get_monsters():
+            if m.id != ue.id:
+                assert m.aiptr != ue.aiptr
 
         uf.set_music_appropriate()
         appearances = range(1, 14)

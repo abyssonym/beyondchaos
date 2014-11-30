@@ -314,6 +314,8 @@ class FormationSet():
 
     @property
     def unused(self):
+        if self.setid == 0x100:
+            return False
         return all([f.formid == 0 for f in self.formations])
 
     @property

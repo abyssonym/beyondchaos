@@ -1936,16 +1936,16 @@ def manage_blitz():
 
 
 def manage_formations(formations, fsets):
-    ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
-    ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
-    valid_fsets = [fset for fset in ranked_fsets if fset.veldty]
-    valid_fsets = [fset for fset in ranked_fsets if len(fset.formations) == 4]
-
-    for fset in valid_fsets:
+    for fset in fsets:
         if len(fset.formations) == 4:
             for formation in fset.formations:
                 formation.set_music(6)
                 formation.set_continuous_music()
+                formation.write_data(outfile)
+
+    ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
+    ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
+    valid_fsets = [fset for fset in ranked_fsets if len(fset.formations) == 4]
 
     outdoors = range(0, 0x39) + [0x57, 0x58, 0x6e, 0x6f, 0x78, 0x7c]
 

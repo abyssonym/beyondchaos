@@ -461,6 +461,8 @@ class ItemBlock:
             self.price = self.price * 10
             zerocount += -1
 
+        self.price = min(self.price, 65000)
+
     def mutate(self):
         self.mutate_stats()
         self.mutate_price()

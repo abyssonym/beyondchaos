@@ -163,16 +163,22 @@ class ChestBlock:
                     raise Exception("No guideline provided for empty chest.")
             else:
                 value = self.contents
-        if self.monster:
-            value = 100
-        return value
+        elif self.monster:
+            from formationrandomizer import get_fset
+            formation = get_fset(self.contents | 0x100).formations[0]
+            items = []
+            for monster in formation.present_enemies:
+                mitems = [i for i in monster.drops if i is not None]
+                if mitems:
+                    items.append(min(mitems, key=lambda i: i.rank()))
+            if items:
+                highest = max(items, key=lambda i: i.rank())
+                value = highest.rank() / 100
+            else:
+                value = 1
 
-    def set_generic_gold(self, value):
-        if value is None:
-            value = self.get_current_value(guideline=100)
-        self.set_content_type(0x80)
-        self.contents = value / 100
-        assert self.gold and not (self.treasure or self.empty or self.monster)
+        assert value < 10000
+        return value
 
     def dummy_item(self, item):
         if self.ignore_dummy:
@@ -243,4 +249,5 @@ class ChestBlock:
                                  (-4, 2), (-2, 2))
             self.contents = items[index].itemid
 
+        assert self.contents <= 0xFF
         self.value = value

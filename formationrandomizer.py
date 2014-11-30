@@ -435,6 +435,10 @@ def get_fsets(filename=None):
         return get_fsets()
 
 
+def get_fset(setid):
+    return fsetdict[setid]
+
+
 if __name__ == "__main__":
     from sys import argv
     from monsterrandomizer import get_monsters

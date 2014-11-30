@@ -1885,7 +1885,7 @@ def manage_treasure(monsters, shops=True):
 def manage_chests():
     locations = get_locations(sourcefile)
     for l in locations:
-        l.mutate_chests(guideline=100)
+        l.mutate_chests()
 
     nextpointer = 0x2d8634
     for l in locations:
@@ -2059,26 +2059,6 @@ def manage_formations_hidden(formations, fsets, freespaces,
     mutated_ues = []
     for ue, uf in zip(unused_enemies, unused_formations):
         while True:
-            '''
-            if esper:
-                gfx = random.choice(esper_graphics)
-                #gfx = esper_graphics[14]
-                # very weird: 27, 28, 29
-                # needs fix: 10, 13, 14, 15, 25
-                matching_formations = []
-                for fo in single_enemy_formations:
-                    enemygfx = fo.present_enemies[0].graphics
-                    if enemygfx.large == gfx.large and enemygfx.size_template == gfx.size_template:
-                        matching_formations.append(fo)
-                if matching_formations:
-                    vbf = random.choice(matching_formations)
-                else:
-                    #vbf = esper_formation
-                    vbf = None
-                vboss = [e for e in vbf.enemies if e][0]
-                vboss.graphics = gfx
-            else:
-            '''
             vbf = random.choice(single_boss_formations)
             vboss = [e for e in vbf.enemies if e][0]
 
@@ -2093,11 +2073,14 @@ def manage_formations_hidden(formations, fsets, freespaces,
         uf.copy_data(vbf)
         uf.lookup_enemies()
         eids = []
-        for eid in uf.enemy_ids:
-            if eid & 0xFF == vboss.id & 0xFF:
-                eids.append(ue.id)
-            else:
-                eids.append(eid)
+        if vbf.formid == 575:
+            eids = [ue.id] + ([0xFF] * 5)
+        else:
+            for eid in uf.enemy_ids:
+                if eid & 0xFF == vboss.id & 0xFF:
+                    eids.append(ue.id)
+                else:
+                    eids.append(eid)
         uf.set_big_enemy_ids(eids)
         uf.lookup_enemies()
 

@@ -347,8 +347,28 @@ class Location():
             self.chests.append(c)
 
     def mutate_chests(self, guideline=None):
+        if guideline is None:
+            if len(self.chests) > 0:
+                values = [c.get_current_value(guideline=100)
+                          for c in self.chests]
+                average_value = (sum(values)*100) / len(values)
+                guideline = average_value
+            else:
+                guideline = 100
+
+        if self.locid == 0xb4:
+            return
+        elif self.locid == 0x147:
+            guideline = random.randint(1820, 4500)
+
         random.shuffle(self.chests)
         for c in self.chests:
+            if self.locid in range(0x139, 0x13d) and c.empty:
+                if random.randint(1, 4) != 4:
+                    continue
+            elif self.locid == 0x147:
+                pass
+
             c.mutate_contents(guideline=guideline)
             if guideline is None and hasattr(c, "value") and c.value:
                 guideline = value

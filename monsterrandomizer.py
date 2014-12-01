@@ -169,6 +169,9 @@ class MonsterBlock:
         f.write(chr(random.randint(0, 0x21)))
         f.close()
 
+        options = sorted(set(range(0, 0x5A)) - set([0, 0x1C]))
+        self.attackanimation = random.choice(options)
+
     def mutate_graphics_swap(self, candidates):
         chosen = self.choose_graphics(candidates)
         #print "SWAP %s (%s) <-> %s (%s)" % (self.name, self.graphicname,

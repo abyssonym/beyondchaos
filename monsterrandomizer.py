@@ -437,6 +437,12 @@ class MonsterBlock:
         return len("".join(self.aiscript))
 
     def write_ai(self, filename):
+        for (i, action) in enumerate(self.aiscript):
+            if (len(action) == 4 and action[0] == chr(0xf0) and
+                    action[1] == chr(0x55)):
+                # fix Cyan's AI at imperial camp
+                action = "".join(map(chr, [0xF0, 0xEE, 0xEE, 0xEE]))
+                self.aiscript[i] = action
         f = open(filename, 'r+b')
         f.seek(self.aiptr)
         write_multi(f, self.ai, length=2)

@@ -1601,6 +1601,27 @@ def manage_character_appearance(preserve_graphics=False):
     f.close()
 
 
+def manage_colorize_animations():
+    f = open(sourcefile, 'r+b')
+    palettes = []
+    for i in xrange(240):
+        pointer = 0x126000 + (i*16)
+        f.seek(pointer)
+        palette = [read_multi(f, length=2) for _ in xrange(8)]
+        palettes.append(palette)
+    f.close()
+
+    f = open(outfile, 'r+b')
+    for i, palette in enumerate(palettes):
+        transformer = get_palette_transformer(
+            changing=False, always=False, middle=True)
+        palette = transformer(palette)
+        pointer = 0x126000 + (i*16)
+        f.seek(pointer)
+        [write_multi(f, c, length=2) for c in palette]
+    f.close()
+
+
 def manage_items(items):
     for i in items:
         i.mutate()
@@ -2730,6 +2751,9 @@ def randomize():
 
     if 'c' in flags:
         manage_colorize_dungeons()
+
+    if 'p' in flags:
+        manage_colorize_animations()
 
     if 'suplexwrecks' in activated_codes:
         manage_suplex(commands, characters, monsters)

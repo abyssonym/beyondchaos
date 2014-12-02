@@ -2604,15 +2604,18 @@ def randomize():
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         manage_commands(commands, characters)
+        random.seed(seed)
 
     if 'w' in flags and 'suplexwrecks' not in activated_codes:
         _, _, freespaces = manage_commands_new(commands, characters)
+        random.seed(seed)
 
     if 'z' in flags:
         manage_sprint()
 
     if 'b' in flags:
         manage_balance(newslots='w' in flags)
+        random.seed(seed)
 
     preserve_graphics = ('s' not in flags and
                          'partyparty' not in activated_codes)
@@ -2647,44 +2650,54 @@ def randomize():
                 dummy_item(dirk)
                 assert not dummy_item(dirk)
         print
+        random.seed(seed)
 
     if 'm' in flags:
         aispaces = manage_final_boss(aispaces,
                                      preserve_graphics=preserve_graphics)
         monsters = manage_monsters(weaken='easymodo' in activated_codes)
+        random.seed(seed)
 
     if 'c' in flags and 'm' in flags:
         mgs = manage_monster_appearance(monsters,
                                         preserve_graphics=preserve_graphics)
+        random.seed(seed)
 
     if 'c' in flags or 's' in flags or (
             set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
+        random.seed(seed)
 
     items = get_ranked_items()
     if 'i' in flags:
         manage_items(items)
+        random.seed(seed)
 
     if 'q' in flags:
         # do this after items
         manage_equipment(items, characters)
+        random.seed(seed)
 
     if 'e' in flags:
         manage_espers()
+        random.seed(seed)
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
         natmag_candidates = manage_natural_magic(characters)
+        random.seed(seed)
     else:
         natmag_candidates = None
 
     if 'u' in flags:
         umaro_risk = manage_umaro(characters)
         reset_rage_blizzard(items, umaro_risk, outfile)
+        random.seed(seed)
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
         manage_tempchar_commands(characters)
+        random.seed(seed)
 
     if 'q' in flags:
         # do this after swapping beserk
@@ -2692,6 +2705,7 @@ def randomize():
 
         for c in characters:
             c.mutate_stats(outfile)
+        random.seed(seed)
 
     if VERBOSE:
         for c in sorted(characters, key=lambda c: c.id):
@@ -2714,13 +2728,16 @@ def randomize():
         formations = get_formations()
         fsets = get_fsets()
         manage_formations(formations, fsets)
+        random.seed(seed)
 
     if 'd' in flags:
         # do this before treasure
         manage_tower()
+        random.seed(seed)
 
     if 'f' in flags:
         manage_formations_hidden(formations, fsets, freespaces=aispaces)
+        random.seed(seed)
 
     for f in get_formations():
         f.write_data(outfile)
@@ -2731,13 +2748,16 @@ def randomize():
         for fs in fsets:
             # write new formation sets for MiaBs
             fs.write_data(outfile)
+        random.seed(seed)
 
     spells = get_ranked_spells(sourcefile)
     if 'o' in flags or 'w' in flags or 'm' in flags:
         manage_magitek(spells)
+        random.seed(seed)
 
     if 'l' in flags:
         manage_blitz()
+        random.seed(seed)
 
     if 'n' in flags:
         for i in range(8):
@@ -2745,21 +2765,27 @@ def randomize():
             w.read_data(sourcefile)
             w.mutate()
             w.write_data(outfile)
+        random.seed(seed)
 
     if 'dearestmolulu' in activated_codes or ('f' in flags and 'b' in flags):
         manage_encounter_rate()
+        random.seed(seed)
 
     if 'c' in flags:
         manage_colorize_dungeons()
+        random.seed(seed)
 
     if 'p' in flags:
         manage_colorize_animations()
+        random.seed(seed)
 
     if 'suplexwrecks' in activated_codes:
         manage_suplex(commands, characters, monsters)
+        random.seed(seed)
 
     if 'strangejourney' in activated_codes:
         create_dimensional_vortex()
+        random.seed(seed)
 
     if 'canttouchthis' in activated_codes:
         for c in characters:

@@ -1670,10 +1670,9 @@ def manage_equipment(items, characters):
     return items, characters
 
 
-def manage_esper_boosts():
+def manage_esper_boosts(freespaces):
+    boost_subs = []
     esper_boost_sub = Substitution()
-    pointer1 = 0x26469
-    esper_boost_sub.set_location(pointer1)
     # experience: $1611,X - $1613,X
     # experience from battle: $0011,X - $0013,X
     # experience needed for levelup: $ED8220,X
@@ -1698,10 +1697,9 @@ def manage_esper_boosts():
         0x99, 0x13, 0x16,  # STA $1613,Y
         0x60,              # RTS
         ]
-    esper_boost_sub.write(outfile)
+    boost_subs.append(esper_boost_sub)
 
-    pointer2 = pointer1 + len(esper_boost_sub.bytestring)
-    esper_boost_sub.set_location(pointer2)
+    esper_boost_sub = Substitution()
     esper_boost_sub.bytestring = [
         0xE2, 0x20,        # SEP #$20
         0xB9, 0x08, 0x16,  # LDA $1608,Y (load level)
@@ -1771,22 +1769,42 @@ def manage_esper_boosts():
         0x60,              # RTS
         ]
     assert esper_boost_sub.bytestring.count(0x60) == 3
-    indices = [i for (i, x) in enumerate(esper_boost_sub.bytestring)
-               if x == 0x60]
-    subpointer = indices[1] + 1
-    subpointer = pointer2 + subpointer
-    a, b = subpointer & 0xFF, (subpointer >> 8) & 0xFF
-    while None in esper_boost_sub.bytestring:
-        index = esper_boost_sub.bytestring.index(None)
-        esper_boost_sub.bytestring[index:index+2] = [a, b]
-    assert None not in esper_boost_sub.bytestring
+    boost_subs.append(esper_boost_sub)
+    for boost_sub in boost_subs:
+        for fs in sorted(freespaces, key=lambda fs: fs.size):
+            if fs.size > boost_sub.size:
+                myfs = fs
+                break
+        else:
+            # not enough free space
+            raise Exception("Not enough free space for esper boosts.")
 
-    esper_boost_sub.write(outfile)
+        freespaces.remove(myfs)
+        pointer = myfs.start
+        fss = myfs.unfree(pointer, boost_sub.size)
+        freespaces.extend(fss)
+        boost_sub.set_location(pointer)
 
+        if None in boost_sub.bytestring:
+            indices = [i for (i, x) in enumerate(esper_boost_sub.bytestring)
+                       if x == 0x60]
+            subpointer = indices[1] + 1
+            subpointer = pointer + subpointer
+            a, b = subpointer & 0xFF, (subpointer >> 8) & 0xFF
+            while None in esper_boost_sub.bytestring:
+                index = esper_boost_sub.bytestring.index(None)
+                esper_boost_sub.bytestring[index:index+2] = [a, b]
+            assert None not in esper_boost_sub.bytestring
+
+        boost_sub.write(outfile)
+
+    esper_boost_sub = Substitution()
     esper_boost_sub.set_location(0x2615C)
-    esper_boost_sub.bytestring = [pointer2 & 0xFF, (pointer2 >> 8) & 0xFF,
-                                  pointer1 & 0xFF, (pointer1 >> 8) & 0xFF,
-                                  ]
+    pointer1, pointer2 = (boost_subs[0].location, boost_subs[1].location)
+    esper_boost_sub.bytestring = [
+        pointer2 & 0xFF, (pointer2 >> 8) & 0xFF,
+        pointer1 & 0xFF, (pointer1 >> 8) & 0xFF,
+        ]
     esper_boost_sub.write(outfile)
 
     esper_boost_sub.set_location(0xFFEED)
@@ -1798,8 +1816,10 @@ def manage_esper_boosts():
     esper_boost_sub.bytestring = desc
     esper_boost_sub.write(outfile)
 
+    return freespaces
 
-def manage_espers():
+
+def manage_espers(freespaces):
     espers = espers_from_table(ESPER_TABLE)
     random.shuffle(espers)
     for e in espers:
@@ -1841,8 +1861,8 @@ def manage_espers():
                                ]
     ragnarok_sub.write(outfile)
 
-    manage_esper_boosts()
-    return espers
+    freespaces = manage_esper_boosts(freespaces)
+    return freespaces
 
 
 metamorphs = None
@@ -2679,7 +2699,8 @@ def randomize():
         random.seed(seed)
 
     if 'e' in flags:
-        manage_espers()
+        esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
+        manage_espers(esperrage_spaces)
         random.seed(seed)
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:

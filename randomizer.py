@@ -1351,7 +1351,8 @@ def manage_monster_appearance(monsters, preserve_graphics=False):
             m.update_size(8, 8)
         candidates = nonbosses[i:]
         m.mutate_graphics_swap(candidates)
-        randomize_enemy_name(outfile, m.id)
+        name = randomize_enemy_name(outfile, m.id)
+        m.changed_name = name
 
     done = {}
     freepointer = 0x127820
@@ -1668,6 +1669,98 @@ def manage_equipment(items, characters):
         i.write_stats(outfile)
 
     return items, characters
+
+
+def manage_reorder_rages(freespaces, by_level=False):
+    for fs in sorted(freespaces, key=lambda fs: fs.size):
+        if fs.size >= 0x100:
+            myfs = fs
+            break
+    else:
+        # not enough free space
+        raise Exception("Not enough free space for reordered rages.")
+
+    freespaces.remove(myfs)
+    pointer = myfs.start
+    fss = myfs.unfree(pointer, 0x100)
+    freespaces.extend(fss)
+
+    monsters = get_monsters()
+    monsters = sorted(monsters, key=lambda m: m.display_name)
+    monsters = [m for m in monsters if m.id <= 0xFE]
+    assert len(monsters) == 255
+    if by_level:
+        monsters = reversed(sorted(monsters, key=lambda m: m.stats['level']))
+    monster_order = [m.id for m in monsters]
+
+    reordered_rages_sub = Substitution()
+    reordered_rages_sub.bytestring = monster_order
+    reordered_rages_sub.set_location(pointer)
+    reordered_rages_sub.write(outfile)
+    hirage, lorage = (pointer >> 8) & 0xFF, pointer & 0xFF
+
+    rage_reorder_sub = Substitution()
+    rage_reorder_sub.bytestring = [
+        0xA9, 0x00,         # LDA #$00
+        0xA8,               # TAY
+        # main loop
+        # get learned rages byte, store in EE
+        0xBB, 0xBF, lorage, hirage, 0xC2,
+        0x4A, 0x4A, 0x4A,   # LSR x3
+        0xAA,               # TAX
+        0xBD, 0x2C, 0x1D,   # LDA $1D2C,X (get rage byte)
+        0x85, 0xEE,         # STA $EE
+        # get bitmask for learned rage
+        0xBB, 0xBF, lorage, hirage, 0xC2,
+        0x29, 0x07,         # AND #$07 get bottom three bits
+        0xC9, 0x00,         # CMP #$00
+        0xF0, 0x05,         # BEQ 5 bytes forward
+        0x46, 0xEE,         # LSR $EE
+        0x3A,               # DEC
+        0x80, 0xF7,         # BRA 7 bytes back
+        # check that rage is learned
+        0xA9, 0x01,         # LDA #$01
+        0x25, 0xEE,         # AND $EE
+        0xEA,               # nothing
+        0xC9, 0x01,         # CMP #$01
+        0xD0, 0x0C,         # BNE 12 bytes forward (skip if not known)
+        #0xEA, 0xEA,
+        # add rage to battle menu
+        0xEE, 0x9A, 0x3A,   # INC $3A9A (number of rages known)
+        0xBB, 0xBF, lorage, hirage, 0xC2,     # get rage
+        0x8F, 0x80, 0x21, 0x00,         # STA $002180 (store rage in menu)
+        # check to terminate loop
+        0xC8,               # INY (advance to next enemy)
+        0xC0, 0xFF,         # CPY #$FF
+        0xD0, 0xC8,         # BNE (loop for all enemies 0 to 254)
+        # return from subroutine
+        0x60,               # RTS
+        ]
+
+    for fs in sorted(freespaces, key=lambda fs: fs.size):
+        if fs.size > rage_reorder_sub.size:
+            myfs = fs
+            break
+    else:
+        # not enough free space
+        raise Exception("Not enough free space for reordered rages.")
+
+    freespaces.remove(myfs)
+    pointer = myfs.start
+    fss = myfs.unfree(pointer, rage_reorder_sub.size)
+    freespaces.extend(fss)
+    rage_reorder_sub.set_location(pointer)
+    rage_reorder_sub.write(outfile)
+
+    rage_reorder_sub = Substitution()
+    rage_reorder_sub.bytestring = [
+        0x20, pointer & 0xFF, (pointer >> 8) & 0xFF,     # JSR
+        0x60,                                            # RTS
+        ]
+    rage_reorder_sub.set_location(0x25847)
+    rage_reorder_sub.write(outfile)
+
+    return freespaces
 
 
 def manage_esper_boosts(freespaces):
@@ -2702,6 +2795,11 @@ def randomize():
         esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
         manage_espers(esperrage_spaces)
         random.seed(seed)
+
+    if flags:
+        by_level = 'h' in flags and 'a' not in flags
+        esperrage_spaces = manage_reorder_rages(esperrage_spaces,
+                                                by_level=by_level)
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk

@@ -72,6 +72,13 @@ class MonsterBlock:
         self.ambusher = False
 
     @property
+    def display_name(self):
+        if hasattr(self, "changed_name"):
+            return self.changed_name
+        else:
+            return self.name
+
+    @property
     def inescapable(self):
         return self.misc2 & 0x08
 

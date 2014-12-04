@@ -2541,6 +2541,13 @@ def manage_tower():
             # leo's thamasa, etc
             # TODO: figure out consequences of 0x154
             l.entrance_set.entrances = []
+            if l.locid == 0x154:
+                thamasa_map_sub = Substitution()
+                for location in [0xBD330, 0xBD357, 0xBD309, 0xBD37E, 0xBD3A5,
+                                 0xBD3CC, 0xBD3ED, 0xBD414]:
+                    thamasa_map_sub.set_location(location)
+                    thamasa_map_sub.bytestring = [0x57]
+                    thamasa_map_sub.write(outfile)
         l.write_data(outfile)
 
     entrancesets = [l.entrance_set for l in locations]

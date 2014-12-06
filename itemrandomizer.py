@@ -155,7 +155,14 @@ class ItemBlock:
 
         def convert_value(v):
             v = v.split()
-            intify = lambda x: int(x, 0x10)
+
+            def intify(value):
+                subintify = lambda x: int(x, 0x10)
+                if ',' in value:
+                    return random.choice(map(subintify, value.split(',')))
+                else:
+                    return subintify(value)
+
             if len(v) == 1:
                 return intify(v[0])
             else:

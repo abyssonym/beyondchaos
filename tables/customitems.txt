@@ -1,3 +1,5 @@
+# right, left, weapon palette, effect, effect palette, misc, sound, 0
+
 ! Gades Blade
 price               ea60
 itemtype            11
@@ -73,3 +75,46 @@ hitmdef             80
 mblockevade         12
 name_icon           e4
 name_text           Demonica
+
+! FluoriteDice
+price               4570
+itemtype            31
+equippable          3fff
+breakeffect         3E
+targeting           6E
+fieldeffect         02
+statboost2          11
+statusacquire2      04
+statusacquire3      01
+special2            07
+special3            18
+power               58
+hitmdef             02
+mblockevade         55
+specialaction       90
+weapon_animation    12 12 00 b 00 81 5b 0
+name_icon           e0
+name_text           FluoriteDice
+
+! SORD.....
+price               0
+itemtype            11
+equippable          3fff
+breakeffect         7F
+targeting           02
+fieldeffect         00
+statusacquire2      FF
+statusacquire3      FF
+special1            FF
+special2            00
+special3            FF
+elements            FF
+power               00
+hitmdef             00
+magstam             FF
+speedvigor          FF
+mblockevade         AA
+specialaction       50
+weapon_animation    61 61 b4 0 99 0 08,34,63,97,b8,b9,bf,f1 0
+name_icon           d9
+name_text           SORD.....

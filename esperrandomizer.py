@@ -33,11 +33,9 @@ def get_candidates(myrank, set_lower=True):
         lower_bound = 0
     candidates = filter(lambda s: s.rank() in
                         range(lower_bound, upper_bound), spells)
-    fresh = []
-    while not fresh:
-        fresh = filter(lambda s: s not in used, candidates)
-        if not fresh:
-            used = used - set(candidates)
+    fresh = filter(lambda s: s not in used, candidates)
+    if not fresh:
+        fresh = candidates
 
     return fresh
 

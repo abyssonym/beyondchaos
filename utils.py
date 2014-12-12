@@ -256,10 +256,10 @@ def get_palette_transformer(changing=True, always=False, middle=True,
             swapfuncs.append(swapfunc)
     else:
         if always:
-            swapfunc = generate_swapfunc(swapcode=random.randint(1, 7))
+            swapfuncs = [generate_swapfunc(swapcode=random.randint(1, 7))
+                         for _ in xrange(transformsize)]
         else:
-            swapfunc = generate_swapfunc(swapcode=None)
-        swapfuncs = [swapfunc for _ in xrange(transformsize)]
+            swapfuncs = [generate_swapfunc() for _ in xrange(transformsize)]
 
     assert len(swapfuncs) == transformsize
 

@@ -960,12 +960,21 @@ class MonsterBlock:
             self.controls += [random.choice(candidates)]
         self.controls = sorted(self.controls)
 
-        self.sketches = sorted(random.sample(candidates, 2))
+        def get_good_selection(candidates, numselect):
+            for _ in xrange(10):
+                selection = random.sample(candidates, numselect)
+                if len(candidates) == 2 or not self.physspecial:
+                    break
+                if set(selection) != set([0xEE, 0xEF]):
+                    break
+            return sorted(selection)
+
+        self.sketches = get_good_selection(candidates, 2)
         if not self.is_boss:
             candidates = [s.spellid for s in valid_spells if
                           s.spellid in candidates]
             candidates = sorted(set(candidates) | set([0xEE, 0xEF]))
-            self.rages = sorted(random.sample(candidates, 2))
+            self.rages = get_good_selection(candidates, 2)
 
         while len(self.controls) < 4:
             self.controls.append(0xFF)
@@ -973,10 +982,17 @@ class MonsterBlock:
     @property
     def goodspecial(self):
         good = set(range(10, 0x1F))
-        good.remove(0x1D)  # disappear
+        good.remove(0x12)  # slow
+        good.remove(0x14)  # stop
         good.remove(0x19)  # frozen
+        good.remove(0x1D)  # disappear
+        good.add(0x04)  # vanish
         good.add(0x0A)  # image
         return self.special in good
+
+    @property
+    def physspecial(self):
+        return bool(self.special & 0x20)
 
     def mutate_special(self):
         if self.goodspecial:
@@ -1039,9 +1055,14 @@ class MonsterBlock:
         if random.randint(1, 10) > 6:
             self.mutate_affinities()
         if random.randint(1, 10) > 5:
+            # do this before mutate_control
             self.mutate_special()
-        if random.randint(1, 10) > 2:
-            self.mutate_ai(change_skillset=change_skillset)
+        value = random.randint(1, 10)
+        if value > 1:
+            if value == 2:
+                self.mutate_ai(change_skillset=False)
+            else:
+                self.mutate_ai(change_skillset=change_skillset)
         self.mutate_control()
 
     def swap_ai(self, other):

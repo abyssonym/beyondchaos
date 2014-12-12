@@ -215,10 +215,16 @@ def shift_middle(triple, degree, ungray=False):
     return tuple(triple)
 
 
-def get_palette_transformer(changing=True, always=False, middle=True):
+def get_palette_transformer(changing=True, always=False, middle=True,
+                            use_luma=False):
     degree = utran.randint(-75, 75)
 
-    if changing:
+    if use_luma or changing:
+        transformsize = 32
+    else:
+        transformsize = 8
+
+    if use_luma or changing:
         lumas = 32
         swapfuncs, flag = [], 6
         thirds = random.choice([True, False])
@@ -243,25 +249,29 @@ def get_palette_transformer(changing=True, always=False, middle=True):
                 break
 
         swapfuncs = []
-        for i in xrange(32):
+        for i in xrange(transformsize):
             if i in indexes:
                 swapcode = random.randint(1, 7) if always is True else None
                 swapfunc = generate_swapfunc(swapcode=swapcode)
             swapfuncs.append(swapfunc)
     else:
-        swapcode = random.randint(1, 7) if always is True else None
-        swapfunc = generate_swapfunc(swapcode=swapcode)
-        swapfuncs = [swapfunc for _ in xrange(32)]
+        if always:
+            swapfunc = generate_swapfunc(swapcode=random.randint(1, 7))
+        else:
+            swapfunc = generate_swapfunc(swapcode=None)
+        swapfuncs = [swapfunc for _ in xrange(transformsize)]
 
-    assert len(swapfuncs) == 32
+    assert len(swapfuncs) == transformsize
 
     def color_transformer(red, green, blue):
-        a = red >= green
-        b = red >= blue
-        c = green >= blue
-        index = (a << 2) | (b << 1) | c
-        luma = (red + green + blue) / 3
-        index = luma
+        if use_luma or changing:
+            luma = (red + green + blue) / 3
+            index = luma
+        else:
+            a = red >= green
+            b = red >= blue
+            c = green >= blue
+            index = (a << 2) | (b << 1) | c
         swapfunc = swapfuncs[index]
         red, green, blue = swapfunc((red, green, blue))
         if middle:

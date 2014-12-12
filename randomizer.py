@@ -1617,7 +1617,7 @@ def manage_colorize_animations():
     f = open(outfile, 'r+b')
     for i, palette in enumerate(palettes):
         transformer = get_palette_transformer(
-            changing=False, always=False, middle=True)
+            changing=False, always=False, middle=False)
         palette = transformer(palette)
         pointer = 0x126000 + (i*16)
         f.seek(pointer)

@@ -215,7 +215,7 @@ def shift_middle(triple, degree, ungray=False):
     return tuple(triple)
 
 
-def get_palette_transformer(changing=True, always=False, middle=True,
+def get_palette_transformer(changing=True, always=False, middle=False,
                             use_luma=False):
     degree = utran.randint(-75, 75)
 
@@ -293,37 +293,6 @@ def get_palette_transformer(changing=True, always=False, middle=True,
         return transformed
 
     return palette_transformer
-
-
-def mutate_palette_dict(palette_dict):
-    colorsets = {}
-    for n, (red, green, blue) in palette_dict.items():
-        key = (red >= green, red >= blue, green >= blue)
-        if key not in colorsets:
-            colorsets[key] = []
-        colorsets[key].append(n)
-
-    pastswap = []
-    for key in colorsets:
-        degree = utran.randint(-75, 75)
-
-        while True:
-            swapcode = utran.randint(0, 7)
-            if swapcode not in pastswap or utran.randint(1, 10) == 10:
-                break
-
-        pastswap.append(swapcode)
-        swapfunc = generate_swapfunc(swapcode)
-
-        for n in colorsets[key]:
-            red, green, blue = palette_dict[n]
-            red, green, blue = shift_middle((red, green, blue), degree)
-            low, medium, high = tuple(sorted([red, green, blue]))
-
-            assert low <= medium <= high
-            palette_dict[n] = swapfunc((low, medium, high))
-
-    return palette_dict
 
 
 def decompress(bytestring, simple=False, complicated=False, debug=False):

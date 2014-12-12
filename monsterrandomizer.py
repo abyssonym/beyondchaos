@@ -1,5 +1,5 @@
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
-                   name_to_bytes, mutate_palette_dict, mutate_index,
+                   name_to_bytes, get_palette_transformer, mutate_index,
                    utilrandom as random)
 from skillrandomizer import SpellBlock
 from itemrandomizer import get_ranked_items, get_item
@@ -1236,7 +1236,7 @@ class MonsterGraphicBlock:
             blue = (color & 0x7c00) >> 10
             green = (color & 0x03e0) >> 5
             red = color & 0x001f
-            self.palette_data.append((red, green, blue))
+            self.palette_data.append(color)
             self.palette_values.append(int(round(sum([red, green, blue])/3.0)))
         self.palette_data = tuple(self.palette_data)
         f.close()
@@ -1289,20 +1289,14 @@ class MonsterGraphicBlock:
         f.seek(self.pointer+4)
         f.write(chr(self.size_template))
         f.seek(palette_pointer)
-        for red, green, blue in self.palette_data:
-            color = 0x00
-            color |= red
-            color |= (green << 5)
-            color |= (blue << 10)
+        for color in self.palette_data:
             write_multi(f, color, length=2)
         f.close()
 
     def mutate_palette(self, alternatives=None):
-        numcolors = len(self.palette_data)
-        assert len(self.palette_data) == numcolors
-        palette_dict = dict(enumerate(self.palette_data))
-        palette_dict = mutate_palette_dict(palette_dict)
-        self.palette_data = tuple([palette_dict[i] for i in range(len(palette_dict))])
+        transformer = get_palette_transformer(
+            changing=False, always=False, middle=False)
+        self.palette_data = transformer(self.palette_data)
 
 
 class MetamorphBlock:

@@ -961,6 +961,14 @@ class MonsterBlock:
         self.controls = sorted(self.controls)
 
         def get_good_selection(candidates, numselect):
+            if self.deadspecial and 0xEF in candidates:
+                candidates.remove(0xEF)
+            while len(candidates) < 2:
+                value = random.randint(0, 0xEF)
+                if value in unrageable:
+                    continue
+                candidates.append(value)
+                candidates = sorted(set(candidates))
             for _ in xrange(10):
                 selection = random.sample(candidates, numselect)
                 if len(candidates) == 2 or not self.physspecial:
@@ -994,6 +1002,10 @@ class MonsterBlock:
     def physspecial(self):
         return bool(self.special & 0x20)
 
+    @property
+    def deadspecial(self):
+        return (self.special & 0x2F) == 0x07
+
     def mutate_special(self):
         if self.goodspecial:
             return
@@ -1002,11 +1014,8 @@ class MonsterBlock:
         if branch <= 7:
             # regular special
             valid = set(range(0, 0x0F))
-            if not self.is_boss:
-                valid.remove(0x07)
             if random.randint(1, 1000) != 1000:
                 valid.remove(0x03)  # Magitek
-                valid.add(0x07)
             valid.remove(0x04)  # vanish
             valid.remove(0x0A)  # image
             valid.add(0x12)  # slow
@@ -1015,8 +1024,8 @@ class MonsterBlock:
             valid.add(0x30)  # absorb HP
             valid.add(0x31)  # absorb MP
             special = random.choice(sorted(valid))
-            if (special not in [0x07, 0x30, 0x31] and
-                    random.choice([True, False])):
+            if special == 0x07 or (special not in [0x30, 0x31] and
+                                   random.choice([True, False])):
                 special |= 0x40  # no HP damage
         if branch <= 9:
             # physical special

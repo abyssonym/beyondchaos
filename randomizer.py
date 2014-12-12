@@ -2039,7 +2039,7 @@ def manage_blitz():
                  0xD: [0xC, 0xE],
                  0xE: [0xD, 0x7]}
     f = open(outfile, 'r+b')
-    for i in xrange(8):
+    for i in xrange(1, 8):
         # skip pummel
         current = blitzspecptr + (i * 12)
         f.seek(current + 11)

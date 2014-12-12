@@ -168,6 +168,8 @@ class CharacterBlock:
         if command:
             command_id = command.id
         self.battle_commands[slot] = command_id
+        if self.id == 12:
+            self.battle_commands[0] = 12
 
     def write_battle_commands(self, filename):
         f = open(filename, 'r+b')

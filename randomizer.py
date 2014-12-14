@@ -1436,6 +1436,8 @@ def manage_character_appearance(preserve_graphics=False):
     npcs = [NPCBlock(pointer) for pointer in pointers]
     for npc in npcs:
         npc.read_data(sourcefile)
+        if npc.pointer == 0x42ac0:
+            npc.read_data(outfile)
 
     if wild or tina_mode or sabin_mode:
         char_ids = range(0, 0x16)

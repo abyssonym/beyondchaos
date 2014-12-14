@@ -1321,8 +1321,13 @@ class MetamorphBlock:
 
     def dummy_item(self, item):
         if item.itemid in self.items:
-            self.items = [i for i in self.items if i != item.itemid]
+            while item.itemid in self.items:
+                self.items = [i for i in self.items if i != item.itemid]
+                if self.items == []:
+                    self.items = [get_item_normal().itemid for _ in xrange(4)]
+
             while len(self.items) < 4:
                 self.items.append(random.choice(self.items))
             return True
+
         return False

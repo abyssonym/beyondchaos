@@ -1969,7 +1969,7 @@ def get_metamorphs():
         return metamorphs
 
     metamorphs = []
-    for i in range(26):
+    for i in range(32):
         address = 0x47f40 + (i*4)
         mm = MetamorphBlock(pointer=address)
         mm.read_data(sourcefile)

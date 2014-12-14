@@ -21,6 +21,8 @@ AICODES = {0xF0: 3, 0xF1: 1, 0xF2: 3, 0xF3: 2,
            }
 monsterdict = {}
 
+globalweights = None
+
 
 def read_ai_table(table):
     aiscripts = {}
@@ -1129,11 +1131,40 @@ class MonsterBlock:
         if self.rages is not None and other.rages is not None and random.choice([True, False]):
             self.rages = type(other.rages)(other.rages)
 
-    def rank(self):
+    def itemrank(self):
+        items = self.items
+        items = [get_item(i) for i in items]
+        items = [i.rank() if i else 0 for i in items]
+        itemrank = items[0] + (items[1]*7) + ((items[2] + (items[3]*7))*2)
+        return itemrank / 32.0
+
+    def rank(self, weights=None):
+        global globalweights
         if self.has_blaze:
-            return self.stats['level'] + 4
+            level = self.stats['level'] + 4
         else:
-            return self.stats['level']
+            level = self.stats['level']
+        LEVELFACTOR, HPFACTOR = 5, 3
+        level = LEVELFACTOR * level / float(HIGHEST_LEVEL)
+        hp = HPFACTOR * self.stats['hp'] / 62000.0
+        defense = max(1, self.stats['def'] + self.stats['mdef']) / 512.0
+        offense = max(1, self.stats['attack'], self.stats['mpow']) / 256.0
+        evasion = max(1, self.stats['evade%'] + self.stats['mblock%']) / 512.0
+        speed = self.stats['speed'] / 230.0
+        elements = max(1, bin(self.absorb | self.null).count('1')) / 8.0
+        immunities = max(1, sum(bin(i).count('1') for i in self.immunities)) / 24.0
+        itemrank = max(1, self.itemrank()) / 40000.0
+        variables = [level, hp, defense, offense, evasion,
+                     speed, elements, immunities, itemrank]
+        variables = [v if v else 1 for v in variables]
+        if weights is None:
+            if globalweights is None:
+                globalweights = [random.randint(0, 50) + random.randint(0, 50) for _ in variables]
+            weights = globalweights
+        elif isinstance(weights, int):
+            weights = [weights for _ in variables]
+        variables = [w * v for (w, v) in zip(weights, variables)]
+        return sum(variables)
 
     def dummy_item(self, item):
         if item.itemid in self.items:
@@ -1161,6 +1192,7 @@ def get_monsters(filename=None):
     if monsterdict:
         return sorted(monsterdict.values(), key=lambda m: m.id)
 
+    get_ranked_items(filename)
     monsters = monsters_from_table(ENEMY_TABLE)
     for m in monsters:
         m.read_stats(filename)

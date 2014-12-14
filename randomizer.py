@@ -1304,6 +1304,7 @@ def manage_monsters(weaken=False):
             m.stats['level'] = random.randint(m.stats['level'], 99)
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         m.tweak_fanatics()
+        m.relevel_throwers()
         m.mutate()
         if m.id == 0x11a:
             # boost final kefka yet another time

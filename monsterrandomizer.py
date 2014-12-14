@@ -112,6 +112,14 @@ class MonsterBlock:
             output += " ".join(map(hexify, action)) + "\n"
         return output.strip()
 
+    @property
+    def throws_item(self):
+        for action in self.aiscript:
+            if ord(action[0]) == 0xF6 and ord(action[1]) != 0x00:
+                return True
+        else:
+            return False
+
     def set_id(self, i):
         self.id = i
         self.specialeffectpointer = 0xF37C0 + self.id
@@ -552,6 +560,12 @@ class MonsterBlock:
     @property
     def has_blaze(self):
         return self.ai == 0x356
+
+    def relevel_throwers(self):
+        if self.id == 0xbd:
+            self.stats['level'] += random.randint(30, 50)
+        if self.id == 0xad:
+            self.stats['level'] += random.randint(10, 30)
 
     def screw_blaze(self):
         if self.has_blaze:

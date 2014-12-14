@@ -263,10 +263,6 @@ class Formation():
         score = (max(levels) + balance + average) / 3.0
         return score
 
-    def oldrank(self):
-        levels = [e.oldlevel for e in self.present_enemies if e]
-        return self.rank(levels)
-
     @property
     def exp(self):
         return sum(e.stats['xp'] for e in self.present_enemies)
@@ -352,10 +348,10 @@ class FormationSet():
                 self.formids[i] = chosen.formid
             return self.formations
 
-        low = max(fo.oldrank() for fo in self.formations) * 1.0
-        high = low * 1.25
+        low = max(fo.rank() for fo in self.formations) * 1.0
+        high = low * 1.5
         while random.randint(1, 3) == 3:
-            high = high * 1.1
+            high = high * 1.25
 
         candidates = filter(lambda c: low <= c.rank() <= high, candidates)
         candidates = sorted(candidates, key=lambda c: c.rank())

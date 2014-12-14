@@ -2290,7 +2290,7 @@ def manage_formations_hidden(formations, fsets, freespaces,
     rare_candidates = list(repurposed_formations + boss_candidates)
     random.shuffle(fsets)
     for fs in fsets:
-        if fs.has_boss:
+        if fs.has_boss or len(fs.formations) != 4:
             continue
 
         if not rare_candidates:

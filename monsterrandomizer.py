@@ -1295,7 +1295,7 @@ class MonsterGraphicBlock:
 
     def mutate_palette(self, alternatives=None):
         transformer = get_palette_transformer(
-            changing=False, always=False, middle=False)
+            changing=True, always=False, middle=False)
         self.palette_data = transformer(self.palette_data)
 
 

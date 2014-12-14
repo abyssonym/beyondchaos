@@ -222,11 +222,11 @@ def get_palette_transformer(changing=True, always=False, middle=False,
     if use_luma or changing:
         transformsize = 32
     else:
-        transformsize = 8
+        transformsize = 57
 
     if use_luma or changing:
         lumas = 32
-        swapfuncs, flag = [], 6
+        swapfuncs = []
         thirds = random.choice([True, False])
         while True:
             indexes = [0, 31]
@@ -256,8 +256,9 @@ def get_palette_transformer(changing=True, always=False, middle=False,
             swapfuncs.append(swapfunc)
     else:
         if always:
-            swapfuncs = [generate_swapfunc(swapcode=random.randint(1, 7))
-                         for _ in xrange(transformsize)]
+            swapfuncs = [
+                generate_swapfunc(swapcode=random.randint(1, transformsize))
+                for _ in xrange(transformsize)]
         else:
             swapfuncs = [generate_swapfunc() for _ in xrange(transformsize)]
 
@@ -268,10 +269,19 @@ def get_palette_transformer(changing=True, always=False, middle=False,
             luma = (red + green + blue) / 3
             index = luma
         else:
+            threshold = 23
             a = red >= green
             b = red >= blue
             c = green >= blue
-            index = (a << 2) | (b << 1) | c
+            d = abs(red - green) <= threshold
+            e = abs(red - blue) <= threshold
+            f = abs(green - blue) <= threshold
+
+            index = (d << 2) | (e << 1) | f
+            index |= ((a and not d) << 5)
+            index |= ((b and not e) << 4)
+            index |= ((c and not f) << 3)
+
         swapfunc = swapfuncs[index]
         red, green, blue = swapfunc((red, green, blue))
         if middle:

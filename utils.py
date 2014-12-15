@@ -277,10 +277,11 @@ def get_palette_transformer(changing=True, always=False, middle=False,
             e = abs(red - blue) <= threshold
             f = abs(green - blue) <= threshold
 
-            index = (d << 2) | (e << 1) | f
-            index |= ((a and not d) << 5)
-            index |= ((b and not e) << 4)
-            index |= ((c and not f) << 3)
+            #index = (d << 2) | (e << 1) | f
+            #index |= ((a and not d) << 5)
+            #index |= ((b and not e) << 4)
+            #index |= ((c and not f) << 3)
+            index = (a << 2) | (b << 1) | c
 
         swapfunc = swapfuncs[index]
         red, green, blue = swapfunc((red, green, blue))

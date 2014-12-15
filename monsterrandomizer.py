@@ -1144,7 +1144,7 @@ class MonsterBlock:
             level = self.stats['level'] + 4
         else:
             level = self.stats['level']
-        LEVELFACTOR, HPFACTOR = 5, 3
+        LEVELFACTOR, HPFACTOR = 5, 5
         level = LEVELFACTOR * level / float(HIGHEST_LEVEL)
         hp = HPFACTOR * self.stats['hp'] / 62000.0
         defense = max(1, self.stats['def'] + self.stats['mdef']) / 512.0

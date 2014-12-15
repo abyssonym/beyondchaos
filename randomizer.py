@@ -1152,7 +1152,10 @@ def activate_airship_mode(freespace=0xCFE2A):
 def manage_rng():
     f = open(outfile, 'r+b')
     f.seek(0xFD00)
-    numbers = range(0x100)
+    if 'norng' in activated_codes:
+        numbers = [0 for _ in range(0x100)]
+    else:
+        numbers = range(0x100)
     random.shuffle(numbers)
     f.write("".join(map(chr, numbers)))
     f.close()
@@ -2699,6 +2702,7 @@ def randomize():
     secret_codes['dearestmolulu'] = "ENCOUNTERLESS MODE"
     secret_codes['canttouchthis'] = "INVINCIBILITY"
     secret_codes['easymodo'] = "EASY MODE"
+    secret_codes['norng'] = "NO RNG MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

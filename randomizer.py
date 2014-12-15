@@ -14,7 +14,8 @@ from utils import (ESPER_TABLE,
                    battlebg_palettes,
                    mutate_index, utilrandom as random)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub,
-                             RandomSpellSub, get_ranked_spells)
+                             RandomSpellSub, MultipleSpellSub,
+                             get_ranked_spells)
 from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                MetamorphBlock, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table)
@@ -677,6 +678,11 @@ def manage_commands_new(commands, characters):
 
         random_skill = random.choice([True, False])
         POWER_LEVEL = 130
+        scount = 1
+        while random.randint(1, 5) == 5:
+            scount += 1
+        scount = min(scount, 9)
+
         while True:
             if random_skill:
                 power = 10000
@@ -727,13 +733,28 @@ def manage_commands_new(commands, characters):
                     c.properties |= 0x4  # enable while imped
                 c.unset_retarget(outfile)
                 c.write_properties(outfile)
-                s = SpellSub(spellid=sb.spellid)
+
+                if scount < 3:
+                    s = SpellSub(spellid=sb.spellid)
+                    scount = 1
+                else:
+                    scount -= 1
+                    s = MultipleSpellSub()
+                    s.set_spells(sb.spellid)
+                    s.set_count(scount)
+
                 newname = sb.name
             elif random_skill:
                 c.properties = 3
                 c.set_retarget(outfile)
                 valid_spells = [v for v in valid_spells if v.spellid <= 0xED]
-                s = RandomSpellSub()
+
+                if scount == 1:
+                    s = RandomSpellSub()
+                else:
+                    s = MultipleSpellSub()
+                    s.set_count(scount)
+
                 try:
                     s.set_spells(valid_spells)
                 except ValueError:
@@ -758,10 +779,7 @@ def manage_commands_new(commands, characters):
                         c.targeting |= 0x48
 
                 c.write_properties(outfile)
-                s.generate_bytestring()
-                newname = "R. %s" % s.name
-                if len(newname) > 7:
-                    newname = newname.replace(' ', '')
+                newname = s.name
             break
 
         myfs = None
@@ -774,11 +792,26 @@ def manage_commands_new(commands, characters):
 
         freespaces.remove(myfs)
         s.set_location(myfs.start)
+        if not hasattr(s, "bytestring") or not s.bytestring:
+            s.generate_bytestring()
         s.write(outfile)
         c.setpointer(s.location, outfile)
         fss = myfs.unfree(s.location, s.size)
         freespaces.extend(fss)
 
+        if len(newname) > 7:
+            newname = newname.replace('-', '')
+            newname = newname.replace('.', '')
+
+        if isinstance(s, SpellSub):
+            pass
+        elif isinstance(s, RandomSpellSub):
+            newname = "R-%s" % newname
+        elif isinstance(s, MultipleSpellSub):
+            if s.count == 2:
+                newname = "W-%s" % newname
+            else:
+                newname = "%sx%s" % (s.count, newname)
         c.newname(newname, outfile)
         c.unsetmenu(outfile)
 

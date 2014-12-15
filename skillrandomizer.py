@@ -271,9 +271,6 @@ class CommandBlock:
 
     def newname(self, text, filename):
         text = text.strip().replace(' ', '')
-        if len(text) > 7:
-            text = text.replace('-', '')
-            text = text.replace('.', '')
         text = text[:7]
         self.name = text
         text = name_to_bytes(text, 7)
@@ -364,19 +361,26 @@ def get_spellsets(spells=None):
 
 
 class RandomSpellSub(Substitution):
-    def generate_bytestring(self):
-        self.bytestring = [0x20, 0x5A, 0x4B,        # get random number
-                           0x29, None,              # AND the result
-                           0xAA,                    # TAX
-                           0xBF, None, None, None,  # load byte from $addr + X
-                           0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
-                           #0x20, 0xC1, 0x19,  # JSR $19C1
-                           #0x20, 0x51, 0x29,  # JSR $2951
-                           0x64, 0xB8, 0x64, 0xB9,  # clear targets
-                           0x4C, 0x5F, 0x17,
-                           ]
+    @property
+    def template(self):
+        template = [0x20, 0x5A, 0x4B,        # get random number
+                    0x29, None,              # AND the result
+                    0xAA,                    # TAX
+                    0xBF, None, None, None,  # load byte from $addr + X
+                    0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
+                    #0x20, 0xC1, 0x19,  # JSR $19C1
+                    #0x20, 0x51, 0x29,  # JSR $2951
+                    0x64, 0xB8, 0x64, 0xB9,  # clear targets
+                    0x4C, 0x5F, 0x17,
+                    ]
+        return template
 
-    def write(self, filename):
+    @property
+    def size(self):
+        return len(self.template) + len(self.spells)
+
+    def generate_bytestring(self):
+        self.bytestring = list(self.template)
         pointer = self.location + len(self.bytestring)
         self.bytestring[4] = len(self.spells) - 1
         assert self.bytestring[4] in [(2**i)-1 for i in range(1, 8)]
@@ -385,6 +389,8 @@ class RandomSpellSub(Substitution):
         if None in self.bytestring:
             raise Exception("Bad pointer calculation.")
         self.bytestring += sorted([s.spellid for s in self.spells])
+
+    def write(self, filename):
         super(RandomSpellSub, self).write(filename)
 
     def set_spells(self, valid_spells, spellsets=None, spellclass=None):
@@ -409,3 +415,32 @@ class RandomSpellSub(Substitution):
         self.name = spellclass
 
         return self.spells
+
+
+class MultipleSpellSub(Substitution):
+    @property
+    def size(self):
+        overhead = (self.count * 3) + 1
+        return self.spellsub.size + overhead
+
+    def set_count(self, count):
+        self.count = count
+
+    def set_spells(self, spells):
+        if isinstance(spells, int):
+            self.spellsub = SpellSub(spellid=spells)
+        else:
+            self.spellsub = RandomSpellSub()
+            self.spellsub.set_spells(spells)
+            self.name = self.spellsub.name
+            self.spells = self.spellsub.spells
+
+    def generate_bytestring(self):
+        subpointer = self.location + (self.count * 3) + 1
+        self.spellsub.set_location(subpointer)
+        if not hasattr(self.spellsub, "bytestring"):
+            self.spellsub.generate_bytestring()
+        high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
+        self.bytestring = [0x20, low, high] * self.count
+        self.bytestring += [0x60]
+        self.bytestring += self.spellsub.bytestring

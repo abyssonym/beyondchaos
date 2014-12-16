@@ -702,16 +702,16 @@ def manage_commands_new(commands, characters):
                     if random.choice([True, False]):
                         break
 
-            def spell_is_valid(s):
-                if not s.valid:
-                    return False
-                if s.spellid in used:
-                    return False
-                return s.rank() <= power
-
-            valid_spells = filter(spell_is_valid, all_spells)
             c.read_properties(sourcefile)
             if not random_skill:
+                def spell_is_valid(s):
+                    if not s.valid:
+                        return False
+                    if s.spellid in used:
+                        return False
+                    return s.rank() <= power
+
+                valid_spells = filter(spell_is_valid, all_spells)
                 if not valid_spells:
                     continue
 
@@ -758,7 +758,8 @@ def manage_commands_new(commands, characters):
             elif random_skill:
                 c.properties = 3
                 c.set_retarget(outfile)
-                valid_spells = [v for v in valid_spells if v.spellid <= 0xED]
+                valid_spells = [v for v in all_spells if
+                                v.spellid <= 0xED and v.valid]
 
                 if "nineninenineninenine" in activated_codes:
                     scount = 9

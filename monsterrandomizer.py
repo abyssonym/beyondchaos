@@ -593,7 +593,7 @@ class MonsterBlock:
             if random.randint(1, 500) == 500:
                 self.misc2 = self.misc2 ^ 0x08
         elif random.randint(1, 20) == 20:
-            if random.choice([True, False]):
+            if self.stats['level'] > 10 and random.choice([True, False]):
                 self.misc2 = self.misc2 ^ 0x08
             else:
                 self.ambusher = True

@@ -742,7 +742,7 @@ def manage_commands_new(commands, characters):
                 c.unset_retarget(outfile)
                 c.write_properties(outfile)
 
-                if "nineninenineninenine" in activated_codes:
+                if "endless9" in activated_codes:
                     scount = 10
 
                 if scount < 3 or multibanned(sb.spellid):
@@ -761,7 +761,7 @@ def manage_commands_new(commands, characters):
                 valid_spells = [v for v in all_spells if
                                 v.spellid <= 0xED and v.valid]
 
-                if "nineninenineninenine" in activated_codes:
+                if "endless9" in activated_codes:
                     scount = 9
 
                 if scount == 1:
@@ -2753,7 +2753,7 @@ def randomize():
     secret_codes['canttouchthis'] = "INVINCIBILITY"
     secret_codes['easymodo'] = "EASY MODE"
     secret_codes['norng'] = "NO RNG MODE"
-    secret_codes['nineninenineninenine'] = "NINES MODE"
+    secret_codes['endless9'] = "ENDLESS NINE MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

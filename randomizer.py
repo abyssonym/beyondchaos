@@ -663,6 +663,14 @@ def manage_commands_new(commands, characters):
     freespaces.append(FreeBlock(0x2A65A, 0x2A800))
     freespaces.append(FreeBlock(0x2FAAC, 0x2FC6D))
 
+    multibannedlist = [0x63, 0x58, 0x5B]
+
+    def multibanned(spells):
+        if isinstance(spells, int):
+            return spells in multibannedlist
+        spells = [s for s in spells if s.spellid not in multibannedlist]
+        return spells
+
     valid = set(list(commands))
     valid = sorted(valid - set(["row", "def"]))
     used = []
@@ -734,7 +742,10 @@ def manage_commands_new(commands, characters):
                 c.unset_retarget(outfile)
                 c.write_properties(outfile)
 
-                if scount < 3:
+                if "nineninenineninenine" in activated_codes:
+                    scount = 10
+
+                if scount < 3 or multibanned(sb.spellid):
                     s = SpellSub(spellid=sb.spellid)
                     scount = 1
                 else:
@@ -749,9 +760,13 @@ def manage_commands_new(commands, characters):
                 c.set_retarget(outfile)
                 valid_spells = [v for v in valid_spells if v.spellid <= 0xED]
 
+                if "nineninenineninenine" in activated_codes:
+                    scount = 9
+
                 if scount == 1:
                     s = RandomSpellSub()
                 else:
+                    valid_spells = multibanned(valid_spells)
                     s = MultipleSpellSub()
                     s.set_count(scount)
 
@@ -759,6 +774,7 @@ def manage_commands_new(commands, characters):
                     s.set_spells(valid_spells)
                 except ValueError:
                     continue
+
                 if s.name in randomskill_names:
                     continue
                 randomskill_names.add(s.name)
@@ -2736,6 +2752,7 @@ def randomize():
     secret_codes['canttouchthis'] = "INVINCIBILITY"
     secret_codes['easymodo'] = "EASY MODE"
     secret_codes['norng'] = "NO RNG MODE"
+    secret_codes['nineninenineninenine'] = "NINES MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

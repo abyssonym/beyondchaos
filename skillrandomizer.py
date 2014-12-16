@@ -401,15 +401,19 @@ class RandomSpellSub(Substitution):
         if len(spellset) < 3:
             raise ValueError("Spellset %s not big enough." % spellclass)
 
-        if len(spellset) <= 8:
-            spells = sorted(spellset)
-            while len(spells) < 8:
-                spells.append(random.choice(spellset))
+        for setlength in [8, 16, 32]:
+            if len(spellset) <= setlength:
+                spells = sorted(spellset)
+                while len(spells) < setlength:
+                    spells.append(random.choice(spellset))
+                break
         else:
-            spells = random.sample(sorted(spellset), min(16, len(spellset)))
-            while len(spells) < 16:
+            assert setlength == 32
+            spells = random.sample(sorted(spellset),
+                                   min(setlength, len(spellset)))
+            while len(spells) < setlength:
                 spells.append(random.choice(spellset))
-            assert len(set(spells)) > 8
+            assert len(set(spells)) > 16
 
         self.spells = sorted(spells)
         self.name = spellclass

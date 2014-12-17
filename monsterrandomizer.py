@@ -324,6 +324,8 @@ class MonsterBlock:
                 if skill not in candidates:
                     candidates.add(skill)
                 candidates = sorted(candidates, key=lambda s: s.rank())
+                if random.choice([True, False]):
+                    candidates = [c for c in candidates if c.valid]
 
                 index = candidates.index(skill)
                 index = mutate_index(index, len(candidates), [False, True],
@@ -371,7 +373,9 @@ class MonsterBlock:
                         if action[1] == 0x06:
                             # hp below value
                             value = action[3]
-                            step = int(value * 3 / 4.0)
+                            boost = (self.stats['level'] / 100.0) + 1
+                            value = value * boost
+                            step = int(value * 5 / 7.0)
                             value = step + random.randint(0, step)
                             value = min(0xFF, max(0, value))
                             action[3] = value

@@ -1340,8 +1340,7 @@ class MonsterGraphicBlock:
         f.close()
 
     def mutate_palette(self, alternatives=None):
-        transformer = get_palette_transformer(
-            changing=True, always=False, middle=False)
+        transformer = get_palette_transformer(basepalette=self.palette_data)
         self.palette_data = transformer(self.palette_data)
 
 

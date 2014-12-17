@@ -1,4 +1,5 @@
 from os import path
+from collections import defaultdict
 import random
 
 try:
@@ -215,91 +216,190 @@ def shift_middle(triple, degree, ungray=False):
     return tuple(triple)
 
 
-def get_palette_transformer(changing=True, always=False, middle=False,
-                            use_luma=False):
-    degree = utran.randint(-75, 75)
-
-    if use_luma or changing:
-        transformsize = 32
-    else:
-        transformsize = 57
-
-    if use_luma or changing:
-        lumas = 32
-        swapfuncs = []
-        thirds = random.choice([True, False])
-        while True:
-            indexes = [0, 31]
-            if not thirds:
-                half = lumas / 2
-                midpoint = utran.randint(0, half) + utran.randint(0, half)
-                indexes.append(midpoint)
-            else:
-                third = lumas / 3
-                thirdpoint = utran.randint(0, third) + utran.randint(0, third)
-                indexes.append(thirdpoint)
-                thirdpoint = (thirdpoint + utran.randint(0, third) +
-                              utran.randint(0, third))
-                indexes.append(thirdpoint)
-            indexes = sorted(indexes)
-            for (a, b) in zip(indexes, indexes[1:]):
-                if b - a < 6 or b > 31:
-                    break
-            else:
-                break
-
-        swapfuncs = []
-        for i in xrange(transformsize):
-            if i in indexes:
-                swapcode = random.randint(1, 7) if always is True else None
-                swapfunc = generate_swapfunc(swapcode=swapcode)
-            swapfuncs.append(swapfunc)
-    else:
-        if always:
-            swapfuncs = [
-                generate_swapfunc(swapcode=random.randint(1, transformsize))
-                for _ in xrange(transformsize)]
+def get_palette_transformer(use_luma=False, always=None, middle=True,
+                            basepalette=None):
+    def get_ratio(a, b):
+        if a > 0 and b > 0:
+            return max(a, b) / float(min(a, b))
+        elif abs(a-b) <= 1:
+            return 1.0
         else:
-            swapfuncs = [generate_swapfunc() for _ in xrange(transformsize)]
+            return 9999
 
-    assert len(swapfuncs) == transformsize
+    def color_to_components(color):
+        blue = (color & 0x7c00) >> 10
+        green = (color & 0x03e0) >> 5
+        red = color & 0x001f
+        return (red, green, blue)
 
-    def color_transformer(red, green, blue):
-        if use_luma or changing:
-            luma = (red + green + blue) / 3
-            index = luma
-        else:
-            threshold = 23
+    def components_to_color((red, green, blue)):
+        return red | (green << 5) | (blue << 10)
+
+    if always is not None and basepalette is not None:
+        raise Exception("'always' argument incompatible with 'basepalette'")
+
+    swapmap = {}
+    if basepalette is not None and not use_luma:
+        threshold = 1.2
+
+        def color_to_index(color):
+            red, green, blue = color_to_components(color)
             a = red >= green
             b = red >= blue
             c = green >= blue
-            d = abs(red - green) <= threshold
-            e = abs(red - blue) <= threshold
-            f = abs(green - blue) <= threshold
+            d = get_ratio(red, green) >= threshold
+            e = get_ratio(red, blue) >= threshold
+            f = get_ratio(green, blue) >= threshold
 
-            #index = (d << 2) | (e << 1) | f
-            #index |= ((a and not d) << 5)
-            #index |= ((b and not e) << 4)
-            #index |= ((c and not f) << 3)
-            index = (a << 2) | (b << 1) | c
+            index = (d << 2) | (e << 1) | f
+            index |= ((a and not d) << 5)
+            index |= ((b and not e) << 4)
+            index |= ((c and not f) << 3)
 
-        swapfunc = swapfuncs[index]
-        red, green, blue = swapfunc((red, green, blue))
-        if middle:
-            red, green, blue = shift_middle((red, green, blue), degree)
-        return (red, green, blue)
+            return index
+
+        colordict = defaultdict(set)
+        for color in basepalette:
+            index = color_to_index(color)
+            colordict[index].add(color)
+
+        saturated = dict((k, v) for (k, v) in colordict.items() if k & 0x7)
+        satlist = sorted(saturated)
+        random.shuffle(satlist)
+        grouporder = sorted(satlist, key=lambda k: len(saturated[k]),
+                            reverse=True)
+        if grouporder:
+            dominant = grouporder[0]
+            domhue, domsat = dominant >> 3, dominant & 0x7
+            for key in grouporder[1:]:
+                colhue, colsat = key >> 3, key & 0x7
+                if (domhue ^ colhue) & (domsat | colsat) == 0:
+                    continue
+                secondary = key
+                break
+            else:
+                secondary = dominant
+            sechue, secsat = secondary >> 3, secondary & 0x7
+        else:
+            dominant, domhue, domsat = 0, 0, 0
+            secondary, sechue, secsat = 0, 0, 0
+
+        while True:
+            domswap = random.randint(0, 7)
+            secswap = random.randint(0, 7)
+            tertswap = random.randint(0, 7)
+            if domswap == secswap:
+                continue
+            break
+
+        for key in colordict:
+            colhue, colsat = key >> 3, key & 0x7
+            if ((domhue ^ colhue) & (domsat | colsat)) == 0:
+                if ((sechue ^ colhue) & (secsat | colsat)) == 0:
+                    swapmap[key] = random.choice([domswap, secswap])
+                else:
+                    swapmap[key] = domswap
+            elif ((sechue ^ colhue) & (secsat | colsat)) == 0:
+                swapmap[key] = secswap
+            elif ((domhue ^ colhue) & domsat) == 0:
+                if ((sechue ^ colhue) & secsat) == 0:
+                    swapmap[key] = random.choice([domswap, secswap])
+                else:
+                    swapmap[key] = domswap
+            elif ((sechue ^ colhue) & secsat) == 0:
+                swapmap[key] = secswap
+            elif ((domhue ^ colhue) & colsat) == 0:
+                if ((sechue ^ colhue) & colsat) == 0:
+                    swapmap[key] = random.choice([domswap, secswap])
+                else:
+                    swapmap[key] = domswap
+            elif ((sechue ^ colhue) & colsat) == 0:
+                swapmap[key] = secswap
+            else:
+                swapmap[key] = tertswap
+
+    elif basepalette is not None and use_luma:
+        def color_to_index(color):
+            red, green, blue = color_to_components(color)
+            index = red + green + blue
+            return index
+
+        values = []
+        for color in basepalette:
+            index = color_to_index(color)
+            values.append(index)
+        values = sorted(values)
+        low, high = min(values), max(values)
+        median = values[len(values)/2]
+        clusters = [{low}, {high}]
+        done = {low, high}
+        if median not in done and random.choice([True, False]):
+            clusters.append({median})
+            done.add(median)
+
+        to_cluster = sorted(basepalette)
+        random.shuffle(to_cluster)
+        for color in to_cluster:
+            index = color_to_index(color)
+            if index in done:
+                continue
+            done.add(index)
+
+            def cluster_distance(cluster):
+                distances = [abs(index-i) for i in cluster]
+                return sum(distances) / len(distances)
+                nearest = min(cluster, key=lambda x: abs(x-index))
+                return abs(nearest-index)
+
+            chosen = min(clusters, key=cluster_distance)
+            chosen.add(index)
+
+        swapmap = {}
+        for cluster in clusters:
+            swapcode = random.randint(0, 7)
+            for index in cluster:
+                try:
+                    assert index not in swapmap
+                except:
+                    import pdb; pdb.set_trace()
+                swapmap[index] = swapcode
+
+        remaining = [i for i in xrange(94) if i not in swapmap.keys()]
+        random.shuffle(remaining)
+
+        def get_nearest_swapcode(index):
+            nearest = min(swapmap, key=lambda x: abs(x-index))
+            return nearest
+
+        for i in remaining:
+            nearest = get_nearest_swapcode(i)
+            swapmap[i] = swapmap[nearest]
+
+    else:
+        def color_to_index(color):
+            return 0
+
+        if always:
+            swapmap[0] = random.randint(1, 7)
+        else:
+            swapmap[0] = random.randint(0, 7)
+
+    for key in swapmap:
+        swapmap[key] = generate_swapfunc(swapmap[key])
+
+    if middle:
+        degree = utran.randint(-75, 75)
 
     def palette_transformer(raw_palette):
         transformed = []
         for color in raw_palette:
-            blue = (color & 0x7c00) >> 10
-            green = (color & 0x03e0) >> 5
-            red = color & 0x001f
-            red, green, blue = color_transformer(red, green, blue)
-            assert min(red, green, blue) >= 0x00
-            assert max(red, green, blue) <= 0x1F
-            color = 0 | red | (green << 5) | (blue << 10)
-            assert color <= 0x7FFF
+            index = color_to_index(color)
+            swapfunc = swapmap[index]
+            red, green, blue = color_to_components(color)
+            red, green, blue = swapfunc((red, green, blue))
+            if middle:
+                red, green, blue = shift_middle((red, green, blue), degree)
+            color = components_to_color((red, green, blue))
             transformed.append(color)
         return transformed
 

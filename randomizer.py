@@ -1443,16 +1443,14 @@ def recolor_character_palette(pointer, palette=None, flesh=False):
         new_palette = []
         if not flesh:
             for piece in (outline, eyes, hair, skintone, outfit1, outfit2, NPC):
-                transformer = get_palette_transformer(
-                    changing=False, always=False, middle=False)
+                transformer = get_palette_transformer()
                 piece = list(piece)
                 piece = transformer(piece)
                 new_palette += piece
             if not flesh:
                 new_palette[6:8] = skintone
         else:
-            transformer = get_palette_transformer(
-                changing=False, always=False, middle=True)
+            transformer = get_palette_transformer()
             new_palette = transformer(palette)
 
         palette = new_palette
@@ -1671,8 +1669,7 @@ def manage_colorize_animations():
 
     f = open(outfile, 'r+b')
     for i, palette in enumerate(palettes):
-        transformer = get_palette_transformer(
-            changing=False, always=False, middle=False)
+        transformer = get_palette_transformer(basepalette=palette)
         palette = transformer(palette)
         pointer = 0x126000 + (i*16)
         f.seek(pointer)
@@ -2449,18 +2446,21 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
         f = open(outfile, 'r+b')
         battlebgs = set([l.battlebg for l in candidates if l.attacks])
         battlebgs |= set(backgrounds)
-        if 0x33 in battlebgs:
-            transformer = get_palette_transformer(changing=False)
-        else:
-            transformer = get_palette_transformer(changing=True)
 
-        for bg in sorted(battlebgs):
-            pointer = 0x270150 + (battlebg_palettes[bg] * 0x60)
+        transformer = None
+        battlebgs = sorted(battlebgs)
+        random.shuffle(battlebgs)
+        for bg in battlebgs:
+            palettenum = battlebg_palettes[bg]
+            pointer = 0x270150 + (palettenum * 0x60)
             f.seek(pointer)
             if pointer in done:
                 #raise Exception("Already recolored palette %x" % pointer)
                 continue
             raw_palette = [read_multi(f, length=2) for i in xrange(0x30)]
+            if transformer is None:
+                transformer = get_palette_transformer(basepalette=raw_palette,
+                                                      use_luma=True)
             new_palette = transformer(raw_palette)
 
             f.seek(pointer)

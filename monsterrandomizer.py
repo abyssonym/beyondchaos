@@ -21,7 +21,7 @@ AICODES = {0xF0: 3, 0xF1: 1, 0xF2: 3, 0xF3: 2,
            }
 monsterdict = {}
 
-globalweights = None
+globalweights, avgs = None, {}
 
 
 def read_ai_table(table):
@@ -563,29 +563,13 @@ class MonsterBlock:
     def has_blaze(self):
         return self.ai == 0x356
 
-    def relevel_throwers(self):
+    def relevel_specifics(self):
+        if self.id == 0x4f:
+            self.stats['level'] += random.randint(2, 6)
         if self.id == 0xbd:
             self.stats['level'] += random.randint(30, 50)
         if self.id == 0xad:
             self.stats['level'] += random.randint(10, 30)
-
-    def screw_blaze(self):
-        if self.has_blaze:
-            if "bomb" not in self.name.lower():
-                statdict = {'hp': 160,
-                            'mp': 50,
-                            'speed': 30,
-                            'attack': 10,
-                            'hit%': 100,
-                            'evade%': 0,
-                            'mblock%': 0,
-                            'def': 90,
-                            'mdef': 150,
-                            'mpow': 1,
-                            'xp': 35,
-                            'gp': 80}
-                for stat, value in statdict.items():
-                    self.stats[stat] = min(value, self.stats[stat])
 
     def mutate_misc(self):
         # invert "escapable" bit
@@ -1140,31 +1124,47 @@ class MonsterBlock:
 
     def rank(self, weights=None):
         global globalweights
-        if self.has_blaze:
-            level = self.stats['level'] + 4
-        else:
-            level = self.stats['level']
-        LEVELFACTOR, HPFACTOR = 7, 5
-        level = LEVELFACTOR * level / float(HIGHEST_LEVEL)
-        hp = HPFACTOR * self.stats['hp'] / 62000.0
-        defense = max(1, self.stats['def'] + self.stats['mdef']) / 512.0
-        offense = max(1, self.stats['attack'], self.stats['mpow']) / 256.0
-        evasion = max(1, self.stats['evade%'] + self.stats['mblock%']) / 512.0
-        speed = self.stats['speed'] / 230.0
-        elements = max(1, bin(self.absorb | self.null).count('1')) / 8.0
-        immunities = max(1, sum(bin(i).count('1') for i in self.immunities)) / 24.0
-        itemrank = max(1, self.itemrank()) / 40000.0
-        variables = [level, hp, defense, offense, evasion,
-                     speed, elements, immunities, itemrank]
-        variables = [v if v else 1 for v in variables]
+        funcs = {}
+        funcs['level'] = lambda m: m.stats['level']
+        funcs['hp'] = lambda m: m.stats['hp']
+        funcs['defense'] = lambda m: max(1, m.stats['def'] + m.stats['mdef'])
+        funcs['offense'] = lambda m: max(1, m.stats['attack'], m.stats['mpow'])
+        funcs['evasion'] = lambda m: max(1, m.stats['evade%'] +
+                                         m.stats['mblock%'])
+        funcs['speed'] = lambda m: m.stats['speed']
+        funcs['elements'] = lambda m: max(1, bin(m.absorb | m.null).count('1'))
+        funcs['immunities'] = lambda m: max(1, sum(bin(i).count('1')
+                                            for i in m.immunities))
+        funcs['itemrank'] = lambda m: max(1, m.itemrank())
+
+        if not avgs:
+            monsters = get_monsters()
+            monsters = [m for m in monsters if not (m.is_boss or m.boss_death)]
+            for key in funcs:
+                avgs[key] = (sum(funcs[key](m) for m in monsters) /
+                             float(len(monsters)))
+
         if weights is None:
             if globalweights is None:
-                globalweights = [random.randint(0, 50) + random.randint(0, 50) for _ in variables]
+                globalweights = [random.randint(0, 50) + random.randint(0, 50) for _ in avgs]
             weights = globalweights
         elif isinstance(weights, int):
-            weights = [weights for _ in variables]
-        variables = [w * v for (w, v) in zip(weights, variables)]
-        return sum(variables)
+            weights = [50 for _ in avgs]
+
+        weights = dict(zip(sorted(avgs.keys()), weights))
+        LEVELFACTOR, HPFACTOR = len(avgs)*2, len(avgs)
+        total = 0
+        for key in sorted(avgs):
+            if key == "level":
+                weights[key] = max(50, weights[key])
+            weighted = weights[key] * funcs[key](self) / avgs[key]
+            if key == "level":
+                weighted *= LEVELFACTOR
+            elif key == "hp":
+                weighted *= HPFACTOR
+            total += weighted
+
+        return total
 
     def dummy_item(self, item):
         if item.itemid in self.items:

@@ -331,10 +331,10 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
         values = sorted(values)
         low, high = min(values), max(values)
         median = values[len(values)/2]
-        clusters = [{low}, {high}]
-        done = {low, high}
+        clusters = [set([low]), set([high])]
+        done = set([low, high])
         if median not in done and random.choice([True, False]):
-            clusters.append({median})
+            clusters.append(set([median]))
             done.add(median)
 
         to_cluster = sorted(basepalette)

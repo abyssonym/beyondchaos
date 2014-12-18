@@ -1368,9 +1368,8 @@ def manage_monsters(weaken=False):
 
     shuffle_monsters(monsters)
     for m in monsters:
-        m.screw_tutorial_bosses()
-        m.write_stats(outfile)
         m.randomize_special_effect(outfile)
+        m.write_stats(outfile)
 
     return monsters
 
@@ -2836,6 +2835,11 @@ def randomize():
                                      preserve_graphics=preserve_graphics)
         monsters = manage_monsters(weaken='easymodo' in activated_codes)
         random.seed(seed)
+
+    if 'm' in flags or 'c' in flags or 'w' in flags:
+        for m in monsters:
+            m.screw_tutorial_bosses()
+            m.write_stats(outfile)
 
     if 'c' in flags and 'm' in flags:
         mgs = manage_monster_appearance(monsters,

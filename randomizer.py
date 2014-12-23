@@ -2685,6 +2685,16 @@ def dummy_item(item):
     return dummied
 
 
+def manage_equip_anything():
+    equip_anything_sub = Substitution()
+    equip_anything_sub.set_location(0x39b8b)
+    equip_anything_sub.bytestring = [0x80, 0x04]
+    equip_anything_sub.write(outfile)
+    equip_anything_sub.set_location(0x39b99)
+    equip_anything_sub.bytestring = [0xEA, 0xEA]
+    equip_anything_sub.write(outfile)
+
+
 def randomize():
     global outfile, sourcefile, VERBOSE
 
@@ -2753,6 +2763,7 @@ def randomize():
     secret_codes['easymodo'] = "EASY MODE"
     secret_codes['norng'] = "NO RNG MODE"
     secret_codes['endless9'] = "ENDLESS NINE MODE"
+    secret_codes['equipanything'] = "EQUIP ANYTHING MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -2862,8 +2873,8 @@ def randomize():
         manage_equipment(items, characters)
         random.seed(seed)
 
+    esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
     if 'e' in flags:
-        esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
         manage_espers(esperrage_spaces)
         random.seed(seed)
 
@@ -2980,6 +2991,9 @@ def randomize():
     if 'canttouchthis' in activated_codes:
         for c in characters:
             c.become_invincible(outfile)
+
+    if 'equipanything' in activated_codes:
+        manage_equip_anything()
 
     for item in get_ranked_items(allow_banned=True):
         if item.banned:

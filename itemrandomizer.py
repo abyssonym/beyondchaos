@@ -1,5 +1,5 @@
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
-                   CUSTOM_ITEMS_TABLE,
+                   CUSTOM_ITEMS_TABLE, mutate_index,
                    name_to_bytes, utilrandom as random)
 from skillrandomizer import SpellBlock
 # future blocks: chests, morphs, shops
@@ -132,9 +132,8 @@ class ItemBlock:
                                 key=lambda s: s.rank())
             all_spells = filter(lambda s: s.valid, all_spells)
 
-        if self.is_weapon:
-            f.seek(0x2CE408 + (8*self.itemid))
-            self.weapon_animation = map(ord, f.read(8))
+        f.seek(0x2CE408 + (8*self.itemid))
+        self.weapon_animation = map(ord, f.read(8))
 
         f.seek(0x12B300 + (13*self.itemid))
         self.dataname = map(ord, f.read(13))
@@ -259,24 +258,12 @@ class ItemBlock:
         if custom:
             spells = filter(custom, spells)
 
-        normal = len(spells)
-        if self.degree is not None:
-            normal = int(normal * self.degree)
-        else:
-            normal = int(normal / 4.0)
-
-        right = False
-        if normal > len(spells) / 2.0:
-            right = True
-            normal = len(spells) - normal
-
-        normal = max(normal, 2)
-        index = random.randint(0, normal) + random.randint(0, normal)
-        while random.randint(1, 10) == 10:
-            index = index + random.randint(0, normal)
-        index = min(index, len(spells)-1)
-        if right:
-            index = len(spells) - index - 1
+        spells = sorted(spells, key=lambda s: s.rank())
+        items = get_ranked_items()
+        index = items.index(self)
+        index = int((index / float(len(items))) * len(spells))
+        index = mutate_index(index, len(spells), [False, True, True],
+                             (-5, 4), (-3, 3))
         spell = spells[index]
         return spell, index / float(len(spells))
 
@@ -296,7 +283,7 @@ class ItemBlock:
 
         success = False
         for _ in xrange(100):
-            spell, _ = self.pick_a_spell(custom=lambda x: x.spellid < 0x3F)
+            spell, _ = self.pick_a_spell(custom=lambda x: x.spellid <= 0x3F)
             if spell.spellid not in effects_used:
                 effects_used.append(spell.spellid)
                 success = True

@@ -580,6 +580,17 @@ def manage_commands(commands, characters):
     xmagic_taken = False
     random.shuffle(characters)
     for c in characters:
+        if c.id == 11:
+            # Fixing Gau
+            c.set_battle_command(0, commands["fight"])
+
+        if 'collateraldamage' in activated_codes:
+            c.set_battle_command(1, command_id=0xFF)
+            c.set_battle_command(2, command_id=0xFF)
+            c.set_battle_command(3, command_id=1)
+            c.write_battle_commands(outfile)
+            continue
+
         if c.id <= 11:
             using = []
             while not using:
@@ -606,9 +617,6 @@ def manage_commands(commands, characters):
                         morph_char_sub.write(outfile)
             for i, command in enumerate(reversed(using)):
                 c.set_battle_command(i+1, command=command)
-            if c.id == 11:
-                # Fixing Gau
-                c.set_battle_command(0, commands["fight"])
         else:
             c.set_battle_command(1, command_id=0xFF)
             c.set_battle_command(2, command_id=0xFF)
@@ -889,7 +897,10 @@ def manage_suplex(commands, characters, monsters):
 def manage_natural_magic(characters):
     candidates = [c for c in characters if 0x02 in c.battle_commands or
                   0x17 in c.battle_commands]
-    candidates = random.sample(candidates, 2)
+    try:
+        candidates = random.sample(candidates, 2)
+    except ValueError:
+        return
     natmag_learn_sub = Substitution()
     natmag_learn_sub.bytestring = [0xC9, candidates[0].id]
     natmag_learn_sub.set_location(0x261B9)
@@ -1010,10 +1021,11 @@ def manage_umaro(characters):
     if 0xFF in umaro_risk.battle_commands:
         battle_commands = []
         battle_commands.append(0)
-        battle_commands.extend(random.sample([3, 5, 6, 7, 8, 9, 0xA, 0xB, 0xC,
-                                              0xD, 0xE, 0xF, 0x10, 0x12, 0x13,
-                                              0x16, 0x18, 0x1A, 0x1B, 0x1C,
-                                              0x1D], 2))
+        if "collateraldamage" not in activated_codes:
+            battle_commands.extend(random.sample([3, 5, 6, 7, 8, 9, 0xA, 0xB,
+                                                  0xC, 0xD, 0xE, 0xF, 0x10,
+                                                  0x12, 0x13, 0x16, 0x18, 0x1A,
+                                                  0x1B, 0x1C, 0x1D], 2))
         battle_commands.append(1)
         umaro_risk.battle_commands = battle_commands
     umaro = [c for c in characters if c.id == 13][0]
@@ -1351,6 +1363,7 @@ def manage_final_boss(freespaces, preserve_graphics=False):
 
 def manage_monsters(weaken=False):
     monsters = get_monsters(sourcefile)
+    itembreaker = "collateraldamage" in activated_codes
     for m in monsters:
         if m.id in range(0x157, 0x160) + [0x12a, 0x11a]:
             #m.mutate()
@@ -1358,10 +1371,10 @@ def manage_monsters(weaken=False):
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         m.tweak_fanatics()
         m.relevel_specifics()
-        m.mutate()
+        m.mutate(itembreaker=itembreaker)
         if m.id == 0x11a:
             # boost final kefka yet another time
-            m.mutate()
+            m.mutate(itembreaker=itembreaker)
         if weaken:
             m.stats['hp'] = 1
     change_enemy_name(outfile, 0x166, "L.255Magic")
@@ -1677,8 +1690,10 @@ def manage_colorize_animations():
 
 
 def manage_items(items):
+    always_break = True if "collateraldamage" in activated_codes else False
+
     for i in items:
-        i.mutate()
+        i.mutate(always_break=always_break)
         i.unrestrict()
         i.write_stats(outfile)
 
@@ -2764,6 +2779,7 @@ def randomize():
     secret_codes['norng'] = "NO RNG MODE"
     secret_codes['endless9'] = "ENDLESS NINE MODE"
     secret_codes['equipanything'] = "EQUIP ANYTHING MODE"
+    secret_codes['collateraldamage'] = "ITEM BREAK MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -2842,6 +2858,11 @@ def randomize():
         print
         random.seed(seed)
 
+    items = get_ranked_items()
+    if 'i' in flags:
+        manage_items(items)
+        random.seed(seed)
+
     if 'm' in flags:
         aispaces = manage_final_boss(aispaces,
                                      preserve_graphics=preserve_graphics)
@@ -2861,11 +2882,6 @@ def randomize():
     if 'c' in flags or 's' in flags or (
             set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
-        random.seed(seed)
-
-    items = get_ranked_items()
-    if 'i' in flags:
-        manage_items(items)
         random.seed(seed)
 
     if 'q' in flags:
@@ -2923,6 +2939,8 @@ def randomize():
         if natmag_candidates:
             natmag_candidates = tuple(nc.name for nc in natmag_candidates)
             print "Natural magic: %s %s" % natmag_candidates
+        else:
+            print "No natural magic users."
         print
 
     if 'f' in flags:

@@ -276,10 +276,13 @@ class ItemBlock:
         self.features[feature] = bit_mutate(self.features[feature], op="on",
                                             nochange=STATPROTECT[feature])
 
-    def mutate_break_effect(self):
+    def mutate_break_effect(self, always_break=False):
         global effects_used
         if self.is_consumable:
             return
+
+        if always_break:
+            effects_used = []
 
         success = False
         for _ in xrange(100):
@@ -293,7 +296,7 @@ class ItemBlock:
             return
 
         self.features['breakeffect'] = spell.spellid
-        if not self.is_weapon or random.randint(1, 2) == 2:
+        if not self.is_weapon or random.randint(1, 2) == 2 or always_break:
             # always make armors usable in battle; weapons, only sometimes
             self.itemtype = self.itemtype | 0x20
 
@@ -457,22 +460,25 @@ class ItemBlock:
 
         self.price = min(self.price, 65000)
 
-    def mutate(self):
+    def mutate(self, always_break=False):
         self.mutate_stats()
         self.mutate_price()
         broken, learned = False, False
+        if always_break:
+            self.mutate_break_effect(always_break=True)
+            broken = True
         while random.randint(1, 5) == 5:
             x = random.randint(0, 99)
             if x < 10:
                 self.mutate_special_action()
-            elif x < 20 and not learned:
+            if 10 <= x < 20 and not learned:
                 self.mutate_learning()
-            elif x < 50 and not broken:
+            if 20 <= x < 50 and not broken:
                 self.mutate_break_effect()
                 broken = True
-            elif x < 75:
+            if 50 <= x < 75:
                 self.mutate_elements()
-            else:
+            if x >= 75:
                 self.mutate_feature()
         if not self.heavy and random.randint(1, 20) == 20:
             self.heavy = True

@@ -294,7 +294,7 @@ class MonsterBlock:
         self.stats['mp'] = int(
             round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
 
-    def mutate_ai(self, change_skillset=True):
+    def mutate_ai(self, change_skillset=True, itembreaker=False):
         if self.name[:2] == "L." or "guardian" in self.name.lower():
             return
 
@@ -394,7 +394,7 @@ class MonsterBlock:
                             if value >= 3:
                                 value += random.randint(-2, 1)
                             action[3] = value
-                elif action[0] == 0xF6:
+                elif action[0] == 0xF6 and not itembreaker:
                     items = get_ranked_items()
                     if action[1] == 0x00:
                         candidates = [i for i in items if i.itemtype & 0x20 and not i.features['targeting'] & 0x40]
@@ -418,13 +418,36 @@ class MonsterBlock:
                 elif targeting:
                     pass
                 elif action[0] == 0xF0:
-                    if len(set(action[1:])) != 1:
-                        for i in xrange(1, 4):
-                            if action[i] == 0xFE:
-                                action[i] = random.choice(action[1:])
-                            value = mutate_action_skill(action[i])
-                            action[i] = value
-                    action[1:] = sorted(action[1:])
+                    if itembreaker and len(action) == 4:
+                        action[0] = 0xF6
+                        items = get_ranked_items()
+                        if random.randint(1, 5) != 5:
+                            action[1] = 0x00
+                            candidates = [i for i in items if i.itemtype & 0x20]
+                            candidates = sorted(candidates, key=lambda c: c.rank())
+                        else:
+                            action[1] = 0x01
+                            candidates = [i for i in items if i.itemtype & 0x10 and i.is_weapon]
+                            candidates = sorted(candidates, key=lambda c: c.features['power'])
+                        monsters = get_ranked_monsters()
+                        index = int((monsters.index(self) / float(len(monsters))) * len(candidates))
+                        index = mutate_index(index, len(candidates),
+                                             [False, False, False, True],
+                                             (-3, 3), (-2, 2))
+                        c1 = candidates[index]
+                        index = mutate_index(index, len(candidates),
+                                             [False, False, False, True],
+                                             (-3, 3), (-2, 2))
+                        c2 = candidates[index]
+                        action[2], action[3] = c1.itemid, c2.itemid
+                    else:
+                        if len(set(action[1:])) != 1:
+                            for i in xrange(1, 4):
+                                if action[i] == 0xFE:
+                                    action[i] = random.choice(action[1:])
+                                value = mutate_action_skill(action[i])
+                                action[i] = value
+                        action[1:] = sorted(action[1:])
             newscript.append("".join(map(chr, action)))
 
         assert len("".join(newscript)) == len("".join(self.aiscript))
@@ -1058,7 +1081,7 @@ class MonsterBlock:
             special |= 0x80  # unblockable
         self.special = special
 
-    def mutate(self, change_skillset=None):
+    def mutate(self, change_skillset=None, itembreaker=False):
         if change_skillset is None:
             change_skillset = not (self.is_boss or self.boss_death)
         self.mutate_stats()
@@ -1073,9 +1096,11 @@ class MonsterBlock:
         value = random.randint(1, 10)
         if value > 1:
             if value == 2:
-                self.mutate_ai(change_skillset=False)
+                self.mutate_ai(change_skillset=False,
+                               itembreaker=itembreaker)
             else:
-                self.mutate_ai(change_skillset=change_skillset)
+                self.mutate_ai(change_skillset=change_skillset,
+                               itembreaker=itembreaker)
         self.mutate_control()
 
     def swap_ai(self, other):

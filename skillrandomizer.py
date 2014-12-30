@@ -113,6 +113,10 @@ class SpellBlock:
     def is_esper(self):
         return self.spellid in xrange(0x36, 0x51)
 
+    @property
+    def is_slots(self):
+        return self.spellid in xrange(0x7D, 0x83)
+
     def fix_reflect(self, filename):
         self.dmgtype |= 0x02
         f = open(filename, 'r+b')

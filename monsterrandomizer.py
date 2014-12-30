@@ -320,9 +320,10 @@ class MonsterBlock:
                 skillset.remove(skill.spellid)
                 candidates = [s for s in all_spells if similar(s, skill)]
                 candidates = [s for s in candidates if not
-                              (s.is_blitz or s.is_swdtech or s.is_esper)]
+                              (s.is_blitz or s.is_swdtech or s.is_esper
+                               or s.is_slots)]
                 if skill not in candidates:
-                    candidates.add(skill)
+                    candidates.append(skill)
                 candidates = sorted(candidates, key=lambda s: s.rank())
                 if random.choice([True, False]):
                     candidates = [c for c in candidates if c.valid]
@@ -448,6 +449,7 @@ class MonsterBlock:
                                 value = mutate_action_skill(action[i])
                                 action[i] = value
                         action[1:] = sorted(action[1:])
+                        assert 0x81 not in action
             newscript.append("".join(map(chr, action)))
 
         assert len("".join(newscript)) == len("".join(self.aiscript))

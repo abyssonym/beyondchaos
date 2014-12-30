@@ -3026,7 +3026,7 @@ if __name__ == "__main__":
         print "ERROR: %s" % e
         if outfile is not None:
             print "Please try again with a different seed."
-            raw_input("Press any key to delete %s and quit. " % outfile)
+            raw_input("Press enter to delete %s and quit. " % outfile)
             os.remove(outfile)
         else:
-            raw_input("Press any key to quit. ")
+            raw_input("Press enter to quit. ")

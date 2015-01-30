@@ -1,6 +1,7 @@
 from utils import (hex2int, int2bytes, Substitution, SPELL_TABLE,
                    SPELLBANS_TABLE, name_to_bytes, utilrandom as random)
 
+spelldict = {}
 spellnames = {}
 f = open(SPELL_TABLE)
 for line in f:
@@ -285,11 +286,17 @@ class CommandBlock:
         f.close()
 
 
-def get_ranked_spells(filename, magic_only=False):
-    if magic_only:
-        spells = [SpellBlock(i, filename) for i in xrange(0x36)]
+def get_ranked_spells(filename=None, magic_only=False):
+    if spelldict:
+        spells = sorted(spelldict.values(), key=lambda s: s.spellid)
     else:
         spells = [SpellBlock(i, filename) for i in xrange(0xFF)]
+        for s in spells:
+            spelldict[s.spellid] = s
+
+    if magic_only:
+        spells = [s for s in spells if s.spellid < 0x36]
+
     spells = sorted(spells, key=lambda i: i.rank())
     return spells
 

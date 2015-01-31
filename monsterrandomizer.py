@@ -992,13 +992,17 @@ class MonsterBlock:
         def get_good_selection(candidates, numselect):
             if self.deadspecial and 0xEF in candidates:
                 candidates.remove(0xEF)
-            while len(candidates) < 2:
+            while True:
+                if len(candidates) >= 3:
+                    break
+                elif len(candidates) == 2 and not self.physspecial:
+                    break
                 value = random.randint(0, 0xEF)
                 if value in unrageable:
                     continue
                 candidates.append(value)
                 candidates = sorted(set(candidates))
-            for _ in xrange(10):
+            for _ in xrange(2):
                 selection = random.sample(candidates, numselect)
                 if len(candidates) == 2 or not self.physspecial:
                     break

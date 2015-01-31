@@ -62,6 +62,15 @@ activated_codes = set([])
 namelocdict = {}
 changed_commands = set([])
 
+randlog = ""
+
+
+def log(text):
+    global randlog
+    text = text.strip()
+    randlog = "\n\n".join([randlog, text])
+    randlog = randlog.strip()
+
 
 class AutoLearnRageSub(Substitution):
     def __init__(self, require_gau):
@@ -427,6 +436,10 @@ def randomize_colosseum(filename, pointer):
             f.write(chr(0x00))
 
     f.close()
+    collog = "- COLISEUM -\n"
+    for wager_obj, opponent_obj, win_obj in results:
+        collog += "{0:12} -> {1}\n".format(wager_obj.name, win_obj.name)
+    log(collog)
     return results
 
 
@@ -2772,10 +2785,13 @@ def randomize():
     if version and version != VERSION:
         print ("WARNING! Version mismatch! "
                "This seed will not produce the expected result!")
-    print "Using seed: %s.%s.%s" % (VERSION, flags, seed)
+    s = "Using seed: %s.%s.%s" % (VERSION, flags, seed)
+    print s
+    log(s)
 
-    outfile = sourcefile.rsplit('.', 1)
-    outfile = '.'.join([outfile[0], str(seed), outfile[1]])
+    tempname = sourcefile.rsplit('.', 1)
+    outfile = '.'.join([tempname[0], str(seed), tempname[1]])
+    outlog = '.'.join([tempname[0], str(seed), 'txt'])
     copyfile(sourcefile, outfile)
 
     commands = commands_from_table(COMMAND_TABLE)
@@ -2942,24 +2958,27 @@ def randomize():
             c.mutate_stats(outfile)
         random.seed(seed)
 
-    if VERBOSE:
-        for c in sorted(characters, key=lambda c: c.id):
-            if c.id > 13:
-                continue
+    charlog = ""
+    for c in sorted(characters, key=lambda c: c.id):
+        if c.id > 13:
+            continue
 
-            ms = [m for m in c.battle_commands if m]
-            ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
-            print "%s:" % c.name,
-            for m in ms:
-                if m:
-                    print m[0].name.lower(),
-            print
-        if natmag_candidates:
-            natmag_candidates = tuple(nc.name for nc in natmag_candidates)
-            print "Natural magic: %s %s" % natmag_candidates
-        else:
-            print "No natural magic users."
-        print
+        ms = [m for m in c.battle_commands if m]
+        ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
+        charlog += "%s:" % c.name + " "
+        for m in ms:
+            if m:
+                charlog += m[0].name.lower() + " "
+        charlog = charlog.strip() + "\n"
+    if natmag_candidates:
+        natmag_candidates = tuple(nc.name for nc in natmag_candidates)
+        charlog += "Natural magic: %s %s\n" % natmag_candidates
+    else:
+        charlog += "No natural magic users.\n"
+
+    log("- CHARACTERS -\n" + charlog)
+    if VERBOSE:
+        print charlog
 
     if 'f' in flags:
         formations = get_formations()
@@ -3036,6 +3055,9 @@ def randomize():
             assert not dummy_item(item)
 
     print "\nRandomization successful. Output filename: %s" % outfile
+    f = open(outlog, 'w+')
+    f.write(randlog)
+    f.close()
 
 if __name__ == "__main__":
     try:

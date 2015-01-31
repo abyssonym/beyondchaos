@@ -682,7 +682,11 @@ def reset_special_relics(items, characters, filename):
             if flag & item.features['special1']:
                 before, after = sperelic[flag]
                 while True:
-                    bcomm = random.randint(0, 0x1D)
+                    if item.itemid == 0xd8:
+                        bcomm = random.choice([0x0, 0x1, 0x2, 0x12])
+                    else:
+                        bcomm = random.randint(0, 0x1D)
+
                     if bcomm in [0x04, 0x14, 0x15, 0x19]:
                         continue
 

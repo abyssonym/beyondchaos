@@ -60,6 +60,7 @@ TEK_SKILLS = (# [0x18, 0x6E, 0x70, 0x7D, 0x7E] +
 secret_codes = {}
 activated_codes = set([])
 namelocdict = {}
+changed_commands = set([])
 
 
 class AutoLearnRageSub(Substitution):
@@ -631,29 +632,29 @@ def manage_commands(commands, characters):
 
 def manage_tempchar_commands(characters):
     chardict = dict([(c.id, c) for c in characters])
-    banonpool, ghostpool, leopool = set([]), set([]), set([])
-    for key in [0, 1, 4, 5]:
+    basicpool = set(range(3, 0x1E)) - changed_commands - set([0x4, 0x11, 0x14, 0x15, 0x19])
+    mooglepool, banonpool, ghostpool, leopool = map(set, [basicpool]*4)
+    for key in [0, 1, 0xA]:
+        c = chardict[key]
+        mooglepool |= set(c.battle_commands)
+    for key in [4, 5]:
         c = chardict[key]
         banonpool |= set(c.battle_commands)
-    banonpool = banonpool - set([0x00, 0x01, 0x02, 0x17])
     ghostpool = banonpool | set(chardict[3].battle_commands)
-    ghostpool = ghostpool - set([0x00, 0x01, 0x02, 0x17])
     for key in chardict:
         c = chardict[key]
         leopool |= set(c.battle_commands)
-    leopool = leopool - set([0x00, 0x01, 0x02, 0x17])
-    banonpool, ghostpool, leopool = sorted(banonpool), sorted(ghostpool), sorted(leopool)
+    pools = [banonpool, leopool] + ([ghostpool]*2) + ([mooglepool]*10)
+    banned = set([0x0, 0x1, 0x2, 0x17, 0xFF])
+    for i, pool in zip(range(0xE, 0x1C), pools):
+        pool = sorted([c for c in pool if c and c not in banned])
+        a, b = tuple(random.sample(pool, 2))
+        chardict[i].set_battle_command(1, command_id=a)
+        chardict[i].set_battle_command(2, command_id=b)
+        chardict[i].set_battle_command(3, command_id=0x1)
+        chardict[i].write_battle_commands(outfile)
 
-    chardict[14].set_battle_command(1, command_id=random.choice(banonpool))
-    chardict[14].set_battle_command(2, command_id=random.choice(banonpool))
-    chardict[15].set_battle_command(1, command_id=random.choice(leopool))
-    chardict[15].set_battle_command(2, command_id=random.choice(leopool))
-    chardict[16].set_battle_command(1, command_id=random.choice(ghostpool))
-    chardict[16].set_battle_command(2, command_id=random.choice(ghostpool))
-    chardict[17].set_battle_command(1, command_id=random.choice(ghostpool))
-    chardict[17].set_battle_command(2, command_id=random.choice(ghostpool))
-
-    for i in range(14, 18):
+    for i in range(0xE, 0x1C):
         c = chardict[i]
         if c.battle_commands[1] == 0xFF and c.battle_commands[2] != 0xFF:
             c.set_battle_command(1, command_id=c.battle_commands[2])
@@ -692,6 +693,7 @@ def manage_commands_new(commands, characters):
             if random.randint(1, 100) > 50:
                 continue
 
+        changed_commands.add(c.id)
         random_skill = random.choice([True, False])
         POWER_LEVEL = 130
         scount = 1
@@ -1702,18 +1704,37 @@ def manage_items(items):
 
 def manage_equipment(items, characters):
     reset_equippable(items)
+    equippable_dict = {"weapon": lambda i: i.is_weapon,
+                       "shield": lambda i: i.is_shield,
+                       "helm": lambda i: i.is_helm,
+                       "armor": lambda i: i.is_body_armor,
+                       "relic": lambda i: i.is_relic}
+
     for c in characters:
-        if c.id > 13:
+        if c.id >= 0xE:
             f = open(outfile, 'r+b')
+            lefthanded = random.randint(1, 10) == 10
             for equiptype in ['weapon', 'shield', 'helm', 'armor',
                               'relic1', 'relic2']:
                 f.seek(c.address + equip_offsets[equiptype])
                 equipid = ord(f.read(1))
-                if equipid != 0xFF:
-                    equipped = [i for i in items if i.itemid == equipid][0]
-                    if equipped.has_disabling_status:
-                        f.seek(c.address + equip_offsets[equiptype])
-                        f.write(chr(0xFF))
+                f.seek(c.address + equip_offsets[equiptype])
+                if lefthanded and equiptype == 'weapon':
+                    equiptype = 'shield'
+                elif lefthanded and equiptype == 'shield':
+                    equiptype = 'weapon'
+                if equiptype == 'shield' and random.randint(1, 7) == 7:
+                    equiptype = 'weapon'
+                equiptype = equiptype.strip('1').strip('2')
+                func = equippable_dict[equiptype]
+                equippable_items = filter(func, items)
+                equipitem = random.choice(equippable_items)
+                equipid = equipitem.itemid
+                if (equipitem.has_disabling_status and
+                        (0xE <= c.id <= 0xF or c.id > 0x1B)):
+                    equipid = 0xFF
+                f.write(chr(equipid))
+
             f.close()
             continue
 
@@ -1722,12 +1743,9 @@ def manage_equipment(items, characters):
         equippable_items = filter(lambda i: not i.banned, equippable_items)
         if random.randint(1, 4) < 4:
             equippable_items = filter(lambda i: not i.imp_only, equippable_items)
-        equippable_dict = {"weapon": lambda i: i.is_weapon,
-                           "shield": lambda i: i.is_shield,
-                           "helm": lambda i: i.is_helm,
-                           "armor": lambda i: i.is_body_armor}
-
         for equiptype, func in equippable_dict.items():
+            if equiptype == 'relic':
+                continue
             equippable = filter(func, equippable_items)
             weakest = 0xFF
             if equippable:

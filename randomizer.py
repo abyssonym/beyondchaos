@@ -424,21 +424,27 @@ def randomize_colosseum(filename, pointer):
         wager_obj = [j for j in item_objs if j.itemid == i][0]
         opponent_obj = [m for m in monster_objs if m.id == opponent][0]
         win_obj = [j for j in item_objs if j.itemid == trade][0]
-        results.append((wager_obj, opponent_obj, win_obj))
         f.seek(pointer + (i*4))
         f.write(chr(opponent))
         f.seek(pointer + (i*4) + 2)
         f.write(chr(trade))
 
         if abs(wager_obj.rank() - win_obj.rank()) >= 5000 and random.randint(1, 2) == 2:
+            hidden = True
             f.write(chr(0xFF))
         else:
+            hidden = False
             f.write(chr(0x00))
+        results.append((wager_obj, opponent_obj, win_obj, hidden))
 
     f.close()
     collog = "- COLISEUM -\n"
-    for wager_obj, opponent_obj, win_obj in results:
-        collog += "{0:12} -> {1}\n".format(wager_obj.name, win_obj.name)
+    for wager_obj, opponent_obj, win_obj, hidden in results:
+        if hidden:
+            winname = "????????????"
+        else:
+            winname = win_obj.name
+        collog += "{0:12} -> {1}\n".format(wager_obj.name, winname)
     log(collog)
     return results
 
@@ -2090,7 +2096,7 @@ def manage_treasure(monsters, shops=True):
 
     pointer = 0x1fb600
     wagers = randomize_colosseum(outfile, pointer)
-    wagers = dict([(a.itemid, c) for (a, b, c) in wagers])
+    wagers = dict([(a.itemid, c) for (a, b, c, d) in wagers])
 
     def ensure_striker():
         candidates = []

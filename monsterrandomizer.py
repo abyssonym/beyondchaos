@@ -918,7 +918,6 @@ class MonsterBlock:
         index = mutate_index(index, len(spell_list), [False, True],
                              (-10, 10), (-5, 5))
         spell = spell_list[index]
-        print spell.name
         return spell
 
     def get_xp_appropriate(self):

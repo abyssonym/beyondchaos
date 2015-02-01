@@ -44,10 +44,9 @@ MD5HASH = "e986575b98300f721ce27c180264d890"
 
 # Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
 REPLACE_ENEMIES = [0x10f, 0x136, 0x137]
-REPLACE_FORMATIONS = [0x20e]  # Guardian x4
+REPLACE_FORMATIONS = [0x20e, 0x1ca]  # Guardian x4, Broken Dirt Drgn
 KEFKA_EXTRA_FORMATION = 0x1FF  # Fake Atma
-NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1ca, 0x1bb, 0x230,
-                        KEFKA_EXTRA_FORMATION]
+NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb, 0x230, KEFKA_EXTRA_FORMATION]
 
 
 TEK_SKILLS = (# [0x18, 0x6E, 0x70, 0x7D, 0x7E] +
@@ -2247,8 +2246,6 @@ def manage_formations_hidden(formations, fsets, freespaces,
             return False
         return True
     unused_formations = filter(unused_validator, formations)
-    while len(unused_enemies) < len(unused_formations):
-        unused_enemies = unused_enemies * 2
 
     def single_enemy_validator(formation):
         if formation in unused_formations:

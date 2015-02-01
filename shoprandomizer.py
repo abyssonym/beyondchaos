@@ -3,9 +3,10 @@ from itemrandomizer import get_ranked_items, get_item
 
 
 class ShopBlock:
-    def __init__(self, pointer):
+    def __init__(self, pointer, name):
         #self.pointer = hex2int(pointer)
         self.pointer = pointer
+        self.name = name
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -21,6 +22,15 @@ class ShopBlock:
         f.write("".join(map(chr, self.items)))
         f.close()
 
+    def __repr__(self):
+        s = "%s %s" % (self.name, self.shoptype_pretty)
+        s = s.upper()
+        items = [get_item(i) for i in self.items]
+        items = [i for i in items if i is not None]
+        for i in items:
+            s = "\n".join([s, i.name])
+        return s
+
     @property
     def discount(self):
         return self.misc & 0xF0
@@ -28,6 +38,12 @@ class ShopBlock:
     @property
     def shoptype(self):
         return self.misc & 0x0F
+
+    @property
+    def shoptype_pretty(self):
+        shoptypes = {1: "weapons", 2: "armor", 3: "items",
+                     4: "relics", 5: "misc"}
+        return shoptypes[self.shoptype]
 
     def mutate_misc(self):
         self.misc &= 0x0F
@@ -37,7 +53,10 @@ class ShopBlock:
         elif value <= 8:
             self.misc |= 0x10
         elif value <= 9:
-            self.misc |= 0x30
+            if random.randint(1, 10) == 10:
+                self.misc |= 0x40
+            else:
+                self.misc |= 0x30
 
     def mutate_items(self, filename):
         items = get_ranked_items()

@@ -7,7 +7,7 @@ from utils import (ESPER_TABLE,
                    CHAR_TABLE, COMMAND_TABLE, LOCATION_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
-                   FINAL_BOSS_AI_TABLE,
+                   FINAL_BOSS_AI_TABLE, SHOP_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -464,7 +464,7 @@ def randomize_colosseum(filename, pointer):
         results.append((wager_obj, opponent_obj, win_obj, hidden))
 
     f.close()
-    collog = "- COLISEUM -\n"
+    collog = "--- COLISEUM ---\n"
     results = sorted(results, key=lambda (a, b, c, d): a.name)
     for wager_obj, opponent_obj, win_obj, hidden in results:
         if hidden:
@@ -2433,14 +2433,24 @@ def manage_formations_hidden(formations, fsets, freespaces,
 
 def manage_shops():
     buyables = set([])
-    for i in xrange(0x80):
+    shop_names = [line.strip() for line in open(SHOP_TABLE).readlines()]
+    descriptions = []
+    for i, name in zip(xrange(0x80), shop_names):
+        if "unused" in name.lower():
+            continue
         pointer = 0x47AC0 + (9*i)
-        s = ShopBlock(pointer)
+        s = ShopBlock(pointer, name)
         s.read_data(sourcefile)
         s.mutate_misc()
         s.mutate_items(outfile)
         s.write_data(outfile)
         buyables |= set(s.items)
+        descriptions.append(str(s))
+
+    log("--- SHOPS ---")
+    for d in sorted(descriptions):
+        log(d)
+
     return buyables
 
 
@@ -3006,7 +3016,7 @@ def randomize():
     else:
         charlog += "No natural magic users.\n"
 
-    log("- CHARACTERS -\n" + charlog)
+    log("--- CHARACTERS ---\n" + charlog)
     if VERBOSE:
         print charlog
 

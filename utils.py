@@ -39,6 +39,7 @@ FINAL_BOSS_AI_TABLE = path.join(tblpath, "finalai.txt")
 TREASURE_ROOMS_TABLE = path.join(tblpath, "treasurerooms.txt")
 NAMEGEN_TABLE = path.join(tblpath, "generator.txt")
 CUSTOM_ITEMS_TABLE = path.join(tblpath, "customitems.txt")
+SHOP_TABLE = path.join(tblpath, "shopcodes.txt")
 
 
 class Substitution(object):

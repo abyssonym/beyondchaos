@@ -1,7 +1,7 @@
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    utilrandom as random)
-from skillrandomizer import SpellBlock, get_spell
+from skillrandomizer import SpellBlock, get_spell, get_ranked_spells
 from itemrandomizer import get_ranked_items, get_item
 from namerandomizer import generate_attack
 
@@ -9,8 +9,6 @@ from namerandomizer import generate_attack
 stat_order = ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
               'def', 'mdef', 'mpow']
 all_spells = None
-valid_spells = None
-unrageable = [0x7E, 0x7F, 0x80, 0x81]
 HIGHEST_LEVEL = 77
 xps = []
 gps = []
@@ -221,7 +219,7 @@ class MonsterBlock:
         self.copy_visible(chosen)
 
     def read_stats(self, filename):
-        global all_spells, valid_spells
+        global all_spells
         global HIGHEST_LEVEL
 
         f = open(filename, 'r+b')
@@ -277,8 +275,6 @@ class MonsterBlock:
         if all_spells is None:
             all_spells = sorted([SpellBlock(i, filename) for i in xrange(0xFF)],
                                 key=lambda s: s.rank())
-        valid_spells = filter(lambda sb: sb.spellid not in unrageable and
-                              not sb.abort_on_allies and sb.valid, all_spells)
 
         f.close()
 
@@ -992,9 +988,11 @@ class MonsterBlock:
         if 0xFE in candidates:
             candidates.remove(0xFE)
 
+        valid_spells = [s for s in get_ranked_spells() if
+                        s.valid and not s.unrageable]
         if random.randint(1, 10) >= 9:
             index = None
-            while index is None or index in unrageable:
+            while index is None:
                 median = len(valid_spells) / 2
                 index = random.randint(0, median) + random.randint(0, median)
                 index = min(index, len(valid_spells) - 1)
@@ -1007,22 +1005,23 @@ class MonsterBlock:
             self.controls += [random.choice(candidates)]
         self.controls = sorted(self.controls)
 
-        def get_good_selection(candidates, numselect):
+        def get_good_selection(candidates, numselect, minimum=2):
             if self.deadspecial and 0xEF in candidates:
                 candidates.remove(0xEF)
             while True:
-                if len(candidates) >= 3:
+                if len(candidates) >= minimum:
                     break
                 elif len(candidates) == 2 and not self.physspecial:
                     break
-                value = random.randint(0, 0xEF)
-                if value in unrageable:
-                    continue
+                index = (random.randint(0, len(valid_spells)/2) +
+                         random.randint(0, len(valid_spells)/2))
+                index = min(index, len(valid_spells) - 1)
+                value = valid_spells[index].spellid
                 candidates.append(value)
                 candidates = sorted(set(candidates))
             for _ in xrange(2):
                 selection = random.sample(candidates, numselect)
-                if len(candidates) == 2 or not self.physspecial:
+                if not self.physspecial:
                     break
                 if set(selection) != set([0xEE, 0xEF]):
                     break
@@ -1030,10 +1029,8 @@ class MonsterBlock:
 
         self.sketches = get_good_selection(candidates, 2)
         if not self.is_boss:
-            candidates = [s.spellid for s in valid_spells if
-                          s.spellid in candidates]
             candidates = sorted(set(candidates) | set([0xEE, 0xEF]))
-            self.rages = get_good_selection(candidates, 2)
+            self.rages = get_good_selection(candidates, 2, minimum=3)
 
         while len(self.controls) < 4:
             self.controls.append(0xFF)

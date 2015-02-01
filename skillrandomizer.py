@@ -103,6 +103,10 @@ class SpellBlock:
         f.close()
 
     @property
+    def unrageable(self):
+        return self.is_blitz or self.is_swdtech or self.is_slots
+
+    @property
     def is_blitz(self):
         return self.spellid in xrange(0x5D, 0x65)
 

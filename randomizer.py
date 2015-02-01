@@ -44,10 +44,10 @@ MD5HASH = "e986575b98300f721ce27c180264d890"
 
 # Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
 REPLACE_ENEMIES = [0x10f, 0x136, 0x137]
-# fake Atma, Guardian x4
-REPLACE_FORMATIONS = [0x20e]
-KEFKA_EXTRA_FORMATION = 0x1FF
-NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb, 0x230, KEFKA_EXTRA_FORMATION]
+REPLACE_FORMATIONS = [0x20e]  # Guardian x4
+KEFKA_EXTRA_FORMATION = 0x1FF  # Fake Atma
+NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1ca, 0x1bb, 0x230,
+                        KEFKA_EXTRA_FORMATION]
 
 
 TEK_SKILLS = (# [0x18, 0x6E, 0x70, 0x7D, 0x7E] +
@@ -2283,17 +2283,6 @@ def manage_formations_hidden(formations, fsets, freespaces,
     sorted_bosses = sorted([m for m in get_monsters() if m.boss_death],
                            key=lambda m: m.stats['level'])
 
-    '''
-    blacklisted = []
-    #blacklisted = [1, 16, 30, 31] + [27, 28, 29]
-    temp = []
-    for i, e in enumerate(esper_graphics):
-        if i in blacklisted:
-            continue
-        temp.append(e)
-    esper_graphics = temp
-    '''
-
     repurposed_formations = []
     used_graphics = []
     mutated_ues = []
@@ -2365,6 +2354,7 @@ def manage_formations_hidden(formations, fsets, freespaces,
         ue.treasure_boost()
         ue.graphics.mutate_palette()
         name = randomize_enemy_name(outfile, ue.id)
+        ue.changed_name = name
         ue.misc1 &= (0xFF ^ 0x4)  # always show name
         ue.write_stats(outfile)
         ue.read_ai(outfile)
@@ -3005,6 +2995,7 @@ def randomize():
         f.write_data(outfile)
 
     if 't' in flags:
+        # do this after hidden formations
         manage_treasure(monsters, shops=True)
         manage_chests()
         for fs in fsets:

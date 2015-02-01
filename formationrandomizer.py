@@ -13,11 +13,18 @@ class Formation():
         self.auxpointer = 0xf5900 + (formid*4)
 
     def __repr__(self):
+        return self.description()
+
+    def description(self, renamed=False):
         counter = {}
         for e in self.present_enemies:
-            if e.name not in counter:
-                counter[e.name] = 0
-            counter[e.name] += 1
+            if renamed:
+                name = e.display_name
+            else:
+                name = e.name
+            if name not in counter:
+                counter[name] = 0
+            counter[name] += 1
         s = ""
         for name, count in sorted(counter.items()):
             s = ', '.join([s, "%s x%s" % (name, count)])

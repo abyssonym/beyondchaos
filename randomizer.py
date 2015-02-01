@@ -3061,6 +3061,11 @@ def randomize():
             assert not dummy_item(item)
 
     print "\nRandomization successful. Output filename: %s" % outfile
+
+    log("--- MONSTERS ---")
+    for m in sorted(get_monsters(), key=lambda m: m.display_name):
+        if m.display_name:
+            log(m.description)
     f = open(outlog, 'w+')
     f.write(randlog)
     f.close()

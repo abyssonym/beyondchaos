@@ -1,7 +1,7 @@
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    utilrandom as random)
-from skillrandomizer import SpellBlock
+from skillrandomizer import SpellBlock, get_spell
 from itemrandomizer import get_ranked_items, get_item
 from namerandomizer import generate_attack
 
@@ -74,11 +74,25 @@ class MonsterBlock:
         self.ambusher = False
 
     @property
+    def description(self):
+        s = "%s (%s)\n" % (self.display_name, self.stats['level'])
+
+        steals = [i.name for i in self.steals if i]
+        drops = [i.name for i in self.drops if i]
+        s += ("Steal: %s" % ", ".join(steals)).strip() + "\n"
+        s += ("Drop: %s" % ", ".join(drops)).strip() + "\n"
+        if self.rages:
+            rages = [get_spell(r).name for r in self.rages]
+            s += "Rage: %s\n" % ", ".join(rages)
+
+        return s
+
+    @property
     def display_name(self):
         if hasattr(self, "changed_name"):
-            return self.changed_name
+            return self.changed_name.strip('_')
         else:
-            return self.name
+            return self.name.strip('_')
 
     @property
     def inescapable(self):
@@ -442,13 +456,17 @@ class MonsterBlock:
                         c2 = candidates[index]
                         action[2], action[3] = c1.itemid, c2.itemid
                     else:
+                        newaction = list(action)
                         if len(set(action[1:])) != 1:
                             for i in xrange(1, 4):
-                                if action[i] == 0xFE:
-                                    action[i] = random.choice(action[1:])
-                                value = mutate_action_skill(action[i])
-                                action[i] = value
-                        action[1:] = sorted(action[1:])
+                                a = newaction[i]
+                                if a == 0xFE:
+                                    a = random.choice(action[1:])
+                                value = mutate_action_skill(a)
+                                newaction[i] = value
+                            if len(set(newaction[1:])) == 1:
+                                newaction = action
+                        action[1:] = sorted(newaction[1:])
                         assert 0x81 not in action
             newscript.append("".join(map(chr, action)))
 

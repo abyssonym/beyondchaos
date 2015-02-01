@@ -301,6 +301,10 @@ def get_ranked_spells(filename=None, magic_only=False):
     return spells
 
 
+def get_spell(spellid):
+    return spelldict[spellid]
+
+
 class SpellSub(Substitution):
     def __init__(self, spellid):
         self.spellid = spellid

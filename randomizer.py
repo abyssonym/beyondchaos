@@ -1411,9 +1411,13 @@ def manage_final_boss(freespaces, preserve_graphics=False):
 def manage_monsters(weaken=False):
     monsters = get_monsters(sourcefile)
     itembreaker = "collateraldamage" in activated_codes
+    final_bosses = (range(0x157, 0x160) + range(0x127, 0x12b) +
+                    [0x112, 0x11a, 0x17d])
     for m in monsters:
-        if m.id in range(0x157, 0x160) + [0x12a, 0x11a]:
-            #m.mutate()
+        if m.id in final_bosses:
+            if 0x127 <= m.id < 0x12a or m.id == 0x17d:
+                # boost statues and Atma a second time
+                m.mutate()
             m.stats['level'] = random.randint(m.stats['level'], 99)
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         m.tweak_fanatics()

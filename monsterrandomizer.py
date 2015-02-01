@@ -912,6 +912,15 @@ class MonsterBlock:
         #print "%s/%s" % (self.stats['level'], HIGHEST_LEVEL), item.name
         return item
 
+    def get_spell_appropriate(self, spell_list=None):
+        spell_list = spell_list or get_ranked_spells()
+        index = int(self.level_rank() * len(spell_list))
+        index = mutate_index(index, len(spell_list), [False, True],
+                             (-10, 10), (-5, 5))
+        spell = spell_list[index]
+        print spell.name
+        return spell
+
     def get_xp_appropriate(self):
         rank = self.level_rank()
         temp = [b for (a, b) in xps if a >= self.stats['level'] and b > 0]
@@ -990,12 +999,7 @@ class MonsterBlock:
 
         valid_spells = [s for s in get_ranked_spells() if s.valid]
         if random.randint(1, 10) >= 9:
-            index = None
-            while index is None:
-                median = len(valid_spells) / 2
-                index = random.randint(0, median) + random.randint(0, median)
-                index = min(index, len(valid_spells) - 1)
-                sb = valid_spells[index]
+            sb = self.get_spell_appropriate(valid_spells)
             candidates.add(sb.spellid)
 
         candidates = sorted(candidates)
@@ -1008,6 +1012,7 @@ class MonsterBlock:
 
         def get_good_selection(candidates, numselect, minimum=2):
             candidates = [c for c in candidates if not get_spell(c).unrageable]
+            candidates += [0xEF, 0xEE]
             if self.deadspecial and 0xEF in candidates:
                 candidates.remove(0xEF)
             while True:
@@ -1015,10 +1020,8 @@ class MonsterBlock:
                     break
                 elif len(candidates) == 2 and not self.physspecial:
                     break
-                index = (random.randint(0, len(valid_spells)/2) +
-                         random.randint(0, len(valid_spells)/2))
-                index = min(index, len(valid_spells) - 1)
-                value = valid_spells[index].spellid
+                spell = self.get_spell_appropriate(valid_spells)
+                value = spell.spellid
                 candidates.append(value)
                 candidates = sorted(set(candidates))
             for _ in xrange(2):
@@ -1031,7 +1034,6 @@ class MonsterBlock:
 
         self.sketches = get_good_selection(candidates, 2)
         if not self.is_boss:
-            candidates = sorted(set(candidates) | set([0xEE, 0xEF]))
             self.rages = get_good_selection(candidates, 2, minimum=3)
 
         while len(self.controls) < 4:

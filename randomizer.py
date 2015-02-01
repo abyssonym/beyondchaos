@@ -465,6 +465,7 @@ def randomize_colosseum(filename, pointer):
 
     f.close()
     collog = "- COLISEUM -\n"
+    results = sorted(results, key=lambda (a, b, c, d): a.name)
     for wager_obj, opponent_obj, win_obj, hidden in results:
         if hidden:
             winname = "????????????"

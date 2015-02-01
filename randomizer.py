@@ -29,7 +29,7 @@ from locationrandomizer import Zone, EntranceSet, get_locations
 from towerrandomizer import randomize_tower
 
 
-VERSION = "38"
+VERSION = "39"
 VERBOSE = False
 flags = None
 sourcefile, outfile = None, None

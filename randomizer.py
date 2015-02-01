@@ -1752,6 +1752,10 @@ def manage_equipment(items, characters):
                 if (equipitem.has_disabling_status and
                         (0xE <= c.id <= 0xF or c.id > 0x1B)):
                     equipid = 0xFF
+                else:
+                    if (equiptype not in ["weapon", "shield"] and
+                            random.randint(1, 100) == 100):
+                        equipid = random.randint(0, 0xFF)
                 f.write(chr(equipid))
 
             f.close()

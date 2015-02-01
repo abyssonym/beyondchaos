@@ -71,6 +71,33 @@ def log(text):
     randlog = randlog.strip()
 
 
+def rewrite_title(text):
+    f = open(outfile, 'r+b')
+    while len(text) < 20:
+        text += ' '
+    text = text[:20]
+    f.seek(0xFFC0)
+    f.write(text)
+    f.seek(0xFFDB)
+    f.write(chr(int(VERSION)))
+    f.close()
+
+
+def rewrite_checksum(filename=None):
+    if filename is None:
+        filename = outfile
+    MEGABIT = 0x20000
+    f = open(filename, 'r+b')
+    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in xrange(24)]
+    subsums += subsums[-8:]
+    checksum = sum(subsums) & 0xFFFF
+    f.seek(0xFFDE)
+    write_multi(f, checksum, length=2)
+    f.seek(0xFFDC)
+    write_multi(f, checksum ^ 0xFFFF, length=2)
+    f.close()
+
+
 class AutoLearnRageSub(Substitution):
     def __init__(self, require_gau):
         self.require_gau = require_gau
@@ -2777,6 +2804,7 @@ def randomize():
         seed = int(time())
     else:
         seed = int(seed)
+    seed = seed % (10**10)
     random.seed(seed)
 
     if version and version != VERSION:
@@ -3052,6 +3080,8 @@ def randomize():
         if item.banned:
             assert not dummy_item(item)
 
+    rewrite_title(text="FF6 BC %s" % seed)
+    rewrite_checksum()
     print "\nRandomization successful. Output filename: %s" % outfile
 
     log("--- MONSTERS ---")

@@ -988,8 +988,7 @@ class MonsterBlock:
         if 0xFE in candidates:
             candidates.remove(0xFE)
 
-        valid_spells = [s for s in get_ranked_spells() if
-                        s.valid and not s.unrageable]
+        valid_spells = [s for s in get_ranked_spells() if s.valid]
         if random.randint(1, 10) >= 9:
             index = None
             while index is None:
@@ -1005,7 +1004,10 @@ class MonsterBlock:
             self.controls += [random.choice(candidates)]
         self.controls = sorted(self.controls)
 
+        valid_spells = [v for v in valid_spells if not v.unrageable]
+
         def get_good_selection(candidates, numselect, minimum=2):
+            candidates = [c for c in candidates if not get_spell(c).unrageable]
             if self.deadspecial and 0xEF in candidates:
                 candidates.remove(0xEF)
             while True:

@@ -104,7 +104,8 @@ class SpellBlock:
 
     @property
     def unrageable(self):
-        return self.is_blitz or self.is_swdtech or self.is_slots
+        return (self.is_blitz or self.is_swdtech or self.is_slots or
+                not self.valid)
 
     @property
     def is_blitz(self):

@@ -1064,6 +1064,7 @@ def manage_umaro(characters):
     candidates = [c for c in characters if c.id <= 13 and
                   c.id != 12 and
                   2 not in c.battle_commands and
+                  0xC not in c.battle_commands and
                   0x17 not in c.battle_commands]
     umaro_risk = random.choice(candidates)
     if 0xFF in umaro_risk.battle_commands:

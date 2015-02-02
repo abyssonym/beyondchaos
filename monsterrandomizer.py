@@ -21,6 +21,57 @@ monsterdict = {}
 
 globalweights, avgs = None, {}
 
+statusdict = {"blind": (0, 0x01),
+              "zombie": (0, 0x02),
+              "poison": (0, 0x04),
+              "magitek": (0, 0x08),
+              "clear": (0, 0x10),
+              "imp": (0, 0x20),
+              "petrify": (0, 0x40),
+              "dead": (0, 0x80),
+              "condemned": (1, 0x01),
+              "critical": (1, 0x02),
+              "image": (1, 0x04),
+              "mute": (1, 0x08),
+              "berserk": (1, 0x10),
+              "muddle": (1, 0x20),
+              "seizure": (1, 0x40),
+              "sleep": (1, 0x80),
+              "float": (2, 0x01),
+              "regen": (2, 0x02),
+              "slow": (2, 0x04),
+              "haste": (2, 0x08),
+              "stop": (2, 0x10),
+              "shell": (2, 0x20),
+              "protect": (2, 0x40),
+              "reflect": (2, 0x80),
+              "true knight": (3, 0x01),
+              "runic": (3, 0x02),
+              "life3": (3, 0x04),
+              "morph": (3, 0x08),
+              "casting": (3, 0x10),
+              "disappear": (3, 0x20),
+              "interceptor": (3, 0x40),
+              "float (rhizopas)": (3, 0x80)}
+
+ranked = ["casting", "critical", "float", "regen", "poison", "blind",
+          "shell", "protect", "clear", "image", "hpdrain", "haste",
+          "reflect", "mpdrain", "reflect break", "seizure",
+          "condemned", "slow", "mute", "imp", "berserk", "life3",
+          "sleep", "rage", "muddle", "stop", "petrify", "zombie",
+          "morph", "frozen", "dead", "interceptor", "magitek",
+          "disappear"]
+specialdict = [k for (k, v) in sorted(statusdict.items(),
+               key=lambda (k, v): v)]
+specialdict = dict([(k, i) for (i, k) in enumerate(specialdict)])
+specialdict["reflect break"] = 0x80
+specialdict["rage"] = 0x18
+specialdict["frozen"] = 0x19
+specialdict["hpdrain"] = 0x30
+specialdict["mpdrain"] = 0x31
+reverse_specialdict = dict([(v, k) for (k, v) in specialdict.items()])
+ranked = [specialdict[key] for key in ranked]
+
 
 def read_ai_table(table):
     aiscripts = {}
@@ -717,38 +768,6 @@ class MonsterBlock:
 
         new_immunities = [0x00] * 3
         new_statuses = [0x00] * 4
-        statusdict = {"blind": (0, 0x01),
-                      "zombie": (0, 0x02),
-                      "poison": (0, 0x04),
-                      "magitek": (0, 0x08),
-                      "clear": (0, 0x10),
-                      "imp": (0, 0x20),
-                      "petrify": (0, 0x40),
-                      "dead": (0, 0x80),
-                      "condemned": (1, 0x01),
-                      "critical": (1, 0x02),
-                      "image": (1, 0x04),
-                      "mute": (1, 0x08),
-                      "berserk": (1, 0x10),
-                      "muddle": (1, 0x20),
-                      "seizure": (1, 0x40),
-                      "sleep": (1, 0x80),
-                      "float": (2, 0x01),
-                      "regen": (2, 0x02),
-                      "slow": (2, 0x04),
-                      "haste": (2, 0x08),
-                      "stop": (2, 0x10),
-                      "shell": (2, 0x20),
-                      "protect": (2, 0x40),
-                      "reflect": (2, 0x80),
-                      "true knight": (3, 0x01),
-                      "runic": (3, 0x02),
-                      "life3": (3, 0x04),
-                      "morph": (3, 0x08),
-                      "casting": (3, 0x10),
-                      "disappear": (3, 0x20),
-                      "interceptor": (3, 0x40),
-                      "float (rhizopas)": (3, 0x80)}
         bitdict = dict((y, x) for (x, y) in statusdict.items())
 
         for _ in xrange(100):
@@ -1065,20 +1084,20 @@ class MonsterBlock:
         if branch <= 7:
             # regular special
             valid = set(range(0, 0x0F))
+            valid = [0, 1, 2, 3, 5, 6, 7, 8, 9, 0xb, 0xc, 0xd, 0xe, 0xf,
+                     0x12, 0x14, 0x19, 0x30, 0x31, 0x80]
             if random.randint(1, 1000) != 1000:
                 valid.remove(0x03)  # Magitek
-            valid.remove(0x04)  # vanish
-            valid.remove(0x0A)  # image
-            valid.add(0x12)  # slow
-            valid.add(0x14)  # stop
-            valid.add(0x19)  # frozen
-            valid.add(0x30)  # absorb HP
-            valid.add(0x31)  # absorb MP
-            special = random.choice(sorted(valid))
+            valid = [r for r in ranked if r in valid]
+            #special = random.choice(sorted(valid))
+            index = int(self.level_rank() * len(valid))
+            index = mutate_index(index, len(valid), [False, True],
+                                 (-4, 4), (-3, 3))
+            special = valid[index]
             if special == 0x07 or (special not in [0x30, 0x31] and
                                    random.choice([True, False])):
                 special |= 0x40  # no HP damage
-        if branch <= 9:
+        elif 7 < branch <= 9:
             # physical special
             factor = int(self.stats['level'] * 16 / 99.0) + 1
             power = random.randint(0, factor) + random.randint(0, factor)
@@ -1101,8 +1120,12 @@ class MonsterBlock:
             valid.add(0x0A)  # image
             special = random.choice(sorted(valid))
 
-        if random.randint(1, 4) == 4:
+        unblockable_score = random.randint(0, self.stats['level'])
+        while random.choice([True, False]):
+            unblockable_score += random.randint(0, self.stats['level'])
+        if unblockable_score >= 60:
             special |= 0x80  # unblockable
+
         self.special = special
 
     def mutate(self, change_skillset=None, itembreaker=False):

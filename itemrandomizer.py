@@ -680,20 +680,20 @@ def reset_special_relics(items, characters, filename):
         item.equippable |= 1 << 12  # gogo
         for flag in [0x04, 0x08, 0x10, 0x20, 0x40]:
             if flag & item.features['special1']:
-                before, after = sperelic[flag]
+                beforeptr, afterptr = sperelic[flag]
                 while True:
                     if item.itemid == 0xd8:
-                        bcomm = random.choice([0x0, 0x1, 0x2, 0x12])
+                        before = random.choice([0x0, 0x1, 0x2, 0x12])
                     else:
-                        bcomm = random.randint(0, 0x1D)
+                        before = random.randint(0, 0x1D)
 
-                    if bcomm in [0x04, 0x14, 0x15, 0x19]:
+                    if before in [0x04, 0x14, 0x15, 0x19]:
                         continue
 
-                    if bcomm == 0:
+                    if before == 0:
                         tempchars = [c for c in characters]
                     else:
-                        tempchars = [c for c in characters if bcomm in c.battle_commands]
+                        tempchars = [c for c in characters if before in c.battle_commands]
 
                     if not tempchars:
                         continue
@@ -706,11 +706,11 @@ def reset_special_relics(items, characters, filename):
                     if not unused:
                         continue
 
-                    acomm = random.choice(sorted(unused))
-                    f.seek(before)
-                    f.write(chr(bcomm))
-                    f.seek(after)
-                    f.write(chr(acomm))
+                    after = random.choice(sorted(unused))
+                    f.seek(beforeptr)
+                    f.write(chr(before))
+                    f.seek(afterptr)
+                    f.write(chr(after))
                     for t in tempchars:
                         item.equippable |= (1 << t.id)
 

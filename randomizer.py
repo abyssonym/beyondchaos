@@ -2565,6 +2565,48 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
 
         f.close()
 
+    manage_colorize_wor()
+
+
+def manage_colorize_wor():
+    transformer = get_palette_transformer(always=True)
+    f = open(outfile, 'r+w')
+    f.seek(0x12ed00)
+    raw_palette = [read_multi(f, length=2) for i in xrange(0x80)]
+    new_palette = transformer(raw_palette)
+    f.seek(0x12ed00)
+    [write_multi(f, c, length=2) for c in new_palette]
+
+    f.seek(0x12ef00)
+    raw_palette = [read_multi(f, length=2) for i in xrange(0x80)]
+    new_palette = transformer(raw_palette)
+    f.seek(0x12ef00)
+    [write_multi(f, c, length=2) for c in new_palette]
+
+    f.seek(0x12ef00)
+    raw_palette = [read_multi(f, length=2) for i in xrange(0x12)]
+    airship_transformer = get_palette_transformer(basepalette=raw_palette)
+    new_palette = airship_transformer(raw_palette)
+    f.seek(0x12ef00)
+    [write_multi(f, c, length=2) for c in new_palette]
+
+    for battlebg in [1, 5, 0x29, 0x2F]:
+        palettenum = battlebg_palettes[battlebg]
+        pointer = 0x270150 + (palettenum * 0x60)
+        f.seek(pointer)
+        raw_palette = [read_multi(f, length=2) for i in xrange(0x30)]
+        new_palette = transformer(raw_palette)
+        f.seek(pointer)
+        [write_multi(f, c, length=2) for c in new_palette]
+
+    for palette_index in [0x16, 0x2c, 0x2d, 0x29]:
+        field_palette = 0x2dc480 + (256 * palette_index)
+        f.seek(field_palette)
+        raw_palette = [read_multi(f, length=2) for i in xrange(0x80)]
+        new_palette = transformer(raw_palette)
+        f.seek(field_palette)
+        [write_multi(f, c, length=2) for c in new_palette]
+
 
 def manage_encounter_rate():
     if 'dearestmolulu' in activated_codes:

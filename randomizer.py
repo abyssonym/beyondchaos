@@ -3039,7 +3039,7 @@ def randomize():
         monsters = manage_monsters(weaken='easymodo' in activated_codes)
         random.seed(seed)
 
-    if 'm' in flags or 'c' in flags or 'w' in flags:
+    if 'm' in flags or 'o' in flags or 'w' in flags:
         for m in monsters:
             m.screw_tutorial_bosses()
             m.write_stats(outfile)

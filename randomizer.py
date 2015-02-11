@@ -2899,7 +2899,7 @@ def randomize():
     if len(argv) > 2:
         fullseed = argv[2].strip()
     else:
-        fullseed = raw_input("Please input a seed value (blank for a random"
+        fullseed = raw_input("Please input a seed value (blank for a random "
                              "seed):\n> ").strip()
         print
         if '.' not in fullseed:
@@ -3011,9 +3011,10 @@ def randomize():
         # do this before treasure
         print "NOTICE: You have selected FINAL DUNGEON RANDOMIZATION."
         print ("This will greatly increase the size of the final dungeon, "
-               "but this feature is still in the testing phase.\nIt is "
-               "possible to become stuck on certain maps.\nAs such, it is "
-               "recommended to play the final dungeon with save states.\n")
+               "but this feature is a little dangerous.\nThough there is "
+               "always a solution, it is possible to become stuck on certain "
+               "maps.\nAs such, it is recommended to play the final dungeon "
+               "with save states until you become more familiar with it.\n")
         x = raw_input("Would you like to randomize the final dungeon? (y/n) ")
         if not x or x.lower()[0] != 'y':
             print "The final dungeon will NOT be randomized."

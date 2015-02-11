@@ -2564,7 +2564,8 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
 
         f.close()
 
-    manage_colorize_wor()
+    if 'p' in flags or 's' in flags:
+        manage_colorize_wor()
 
 
 def manage_colorize_wor():
@@ -2870,7 +2871,7 @@ def manage_equip_anything():
 
 
 def randomize():
-    global outfile, sourcefile, VERBOSE
+    global outfile, sourcefile, VERBOSE, flags
 
     sleep(0.5)
     print 'You are using Beyond Chaos randomizer version "%s".' % VERSION

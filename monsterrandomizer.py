@@ -646,12 +646,18 @@ class MonsterBlock:
 
     def screw_tutorial_bosses(self):
         name = self.name.lower().strip('_')
+        tutmessage = None
         if name == 'vargas':
             self.stats['hp'] = 900 + random.randint(0, 100) + random.randint(0, 100)
+            tutmessage = "".join(map(chr, [0xF7, 0x08]))
         if name == 'tunnelarmr':
             self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
+            tutmessage = "".join(map(chr, [0xF7, 0x10]))
         if name == "leader":
             self.stats['hp'] = 400 + random.randint(0, 50) + random.randint(0, 50)
+
+        if tutmessage:
+            self.aiscript = [a for a in self.aiscript if a != tutmessage]
 
     @property
     def has_blaze(self):

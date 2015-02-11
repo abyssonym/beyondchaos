@@ -2573,7 +2573,7 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
 
         f.close()
 
-    if 'p' in flags or 's' in flags:
+    if 'p' in flags or 's' in flags or 'partyparty' in activated_codes:
         manage_colorize_wor()
 
 

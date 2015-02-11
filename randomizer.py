@@ -2799,6 +2799,53 @@ def randomize_enemy_name(filename, enemy_id):
     return name
 
 
+def randomize_final_party_order():
+    f = open(outfile, 'r+b')
+    '''
+    f.seek(0x3AADE)
+    f.write("".join(map(chr, [
+        0xA9, 0x01, 0xEA, 0xEA,
+        ])))
+    '''
+    code = [
+        0x20, 0x99, 0xAA,       # JSR $AA99
+        0xA9, 0x00,             # LDA #00
+        0xA8,                   # TAY
+        0xAD, 0x1E, 0x02,       # LDA $021E (frame counter)
+        0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
+        0x8D, 0x6D, 0x1F,       # STA $1F6D
+        # 17 bytes
+        #0xEE, 0xA2, 0x1F,       # INC $1FA2
+        #0xAE, 0xA2, 0x1F,       # LDX $1FA2
+        0xEE, 0x6D, 0x1F,       # INC $1F6D
+        0xAE, 0x6D, 0x1F,       # LDX $1F6D
+        0xBF, 0x00, 0xFD, 0xC0, # LDA $C0FD00,X
+        0x29, 0x0F,             # AND $0F, Get bottom 4 bits
+        0xC9, 0x0B,             # CMP $0B
+        0xB0, 0xF0,             # BCS 16 bytes back
+        0xAA,                   # TAX
+
+        # 14 bytes
+        0xB9, 0x05, 0x02,       # LDA $0205,Y
+        0x48,                   # PHA
+        0xBD, 0x05, 0x02,       # LDA $0205,X
+        0x99, 0x05, 0x02,       # STA $0205,Y
+        0x68,                   # PLA
+        0x9D, 0x05, 0x02,       # STA $0205,X
+
+        # 6 bytes
+        0xC8,                   # INY
+        0x98,                   # TYA
+        0xC9, 0x0C,             # CMP $0C
+        0x90, 0xDB,             # BCC 37 bytes back
+
+        0x60,                   # RTS
+    ]
+    f.seek(0x3AA25)
+    f.write("".join(map(chr, code)))
+    f.close()
+
+
 def dummy_item(item):
     dummied = False
     for m in get_monsters():
@@ -2938,6 +2985,7 @@ def randomize():
 
     if 'b' in flags:
         manage_balance(newslots='w' in flags)
+        randomize_final_party_order()
         random.seed(seed)
 
     preserve_graphics = ('s' not in flags and

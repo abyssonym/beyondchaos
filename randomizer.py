@@ -1512,8 +1512,7 @@ def recolor_character_palette(pointer, palette=None, flesh=False):
                 piece = list(piece)
                 piece = transformer(piece)
                 new_palette += piece
-            if not flesh:
-                new_palette[6:8] = skintone
+            new_palette[6:8] = skintone
         else:
             transformer = get_palette_transformer()
             new_palette = transformer(palette)

@@ -655,6 +655,11 @@ class MonsterBlock:
             tutmessage = "".join(map(chr, [0xF7, 0x10]))
         if name == "leader":
             self.stats['hp'] = 400 + random.randint(0, 50) + random.randint(0, 50)
+        if name == "merchant" or name == "officer":
+            stealmessage = "".join(map(chr, [0xFC, 0x01, 0x05, 0x05]))
+            deathmessage = "".join(map(chr, [0xFC, 0x12, 0x00, 0x00]))
+            index = self.aiscript.index(stealmessage)
+            self.aiscript[index] = deathmessage
 
         if tutmessage:
             self.aiscript = [a for a in self.aiscript if a != tutmessage]

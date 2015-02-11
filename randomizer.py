@@ -602,11 +602,6 @@ def manage_commands(commands, characters):
     ungray_statscreen_sub.set_location(0x35EE1)
     ungray_statscreen_sub.write(outfile)
 
-    locke_scenario_sub = Substitution()
-    locke_scenario_sub.bytestring = [0x9D, 0xAB]
-    locke_scenario_sub.set_location(0x42AC4)
-    locke_scenario_sub.write(outfile)
-
     fanatics_fix_sub = Substitution()
     fanatics_fix_sub.bytestring = [0xA9, 0x15]
     fanatics_fix_sub.set_location(0x2537E)

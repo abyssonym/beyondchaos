@@ -2812,12 +2812,6 @@ def randomize_enemy_name(filename, enemy_id):
 
 def randomize_final_party_order():
     f = open(outfile, 'r+b')
-    '''
-    f.seek(0x3AADE)
-    f.write("".join(map(chr, [
-        0xA9, 0x01, 0xEA, 0xEA,
-        ])))
-    '''
     code = [
         0x20, 0x99, 0xAA,       # JSR $AA99
         0xA9, 0x00,             # LDA #00
@@ -2825,15 +2819,15 @@ def randomize_final_party_order():
         0xAD, 0x1E, 0x02,       # LDA $021E (frame counter)
         0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
         0x8D, 0x6D, 0x1F,       # STA $1F6D
-        # 17 bytes
-        #0xEE, 0xA2, 0x1F,       # INC $1FA2
-        #0xAE, 0xA2, 0x1F,       # LDX $1FA2
+        # 21 bytes
         0xEE, 0x6D, 0x1F,       # INC $1F6D
-        0xAE, 0x6D, 0x1F,       # LDX $1F6D
+        0xAD, 0x6D, 0x1F,       # LDA $1F6D
+        0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
+        0xAA,                   # TAX
         0xBF, 0x00, 0xFD, 0xC0, # LDA $C0FD00,X
         0x29, 0x0F,             # AND $0F, Get bottom 4 bits
         0xC9, 0x0B,             # CMP $0B
-        0xB0, 0xF0,             # BCS 16 bytes back
+        0xB0, 0xEC,             # BCS 20 bytes back
         0xAA,                   # TAX
 
         # 14 bytes
@@ -2848,7 +2842,7 @@ def randomize_final_party_order():
         0xC8,                   # INY
         0x98,                   # TYA
         0xC9, 0x0C,             # CMP $0C
-        0x90, 0xDB,             # BCC 37 bytes back
+        0x90, 0xD7,             # BCC 41 bytes back
 
         0x60,                   # RTS
     ]

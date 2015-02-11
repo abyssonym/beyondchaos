@@ -1,5 +1,5 @@
 magitek facility,kefka's tower indoors:2ddc80,2de180,2de380:1b,1d,14
-kefka's tower:2de680
+kefka's tower:2de680,2def80
 phoenix cave,sealed gate:2de480
 fanatics tower:2dee80
 zozo:2dd480

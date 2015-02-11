@@ -2602,6 +2602,8 @@ def manage_colorize_wor():
         f.seek(field_palette)
         [write_multi(f, c, length=2) for c in new_palette]
 
+    f.close()
+
 
 def manage_encounter_rate():
     if 'dearestmolulu' in activated_codes:

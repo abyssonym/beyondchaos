@@ -652,7 +652,7 @@ class MonsterBlock:
             tutmessage = "".join(map(chr, [0xF7, 0x08]))
         if name == 'tunnelarmr':
             self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
-            tutmessage = "".join(map(chr, [0xF7, 0x10]))
+            self.aiscript = self.aiscript[4:]
         if name == "leader":
             self.stats['hp'] = 400 + random.randint(0, 50) + random.randint(0, 50)
         if name == "merchant" or name == "officer":

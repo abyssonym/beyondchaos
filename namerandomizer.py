@@ -51,6 +51,7 @@ def generate_name(size=None):
                         break
 
         if len(name) >= size:
+            enemynames.append(name)
             return name
 
 

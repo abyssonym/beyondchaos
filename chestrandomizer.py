@@ -3,7 +3,7 @@ from itemrandomizer import get_ranked_items
 from formationrandomizer import get_formations, get_fsets
 
 valid_ids = range(0, 0x200)
-banned_formations = [0x1ca, 0x1e9]
+banned_formations = []
 former_miabs = []
 
 

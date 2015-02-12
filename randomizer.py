@@ -44,7 +44,8 @@ MD5HASH = "e986575b98300f721ce27c180264d890"
 
 # Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
 REPLACE_ENEMIES = [0x10f, 0x136, 0x137]
-REPLACE_FORMATIONS = [0x20e, 0x1ca]  # Guardian x4, Broken Dirt Drgn
+# Guardian x4, Broken Dirt Drgn, Kefka + Ice Dragon
+REPLACE_FORMATIONS = [0x20e, 0x1ca, 0x1e9]
 KEFKA_EXTRA_FORMATION = 0x1FF  # Fake Atma
 NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb, 0x230, KEFKA_EXTRA_FORMATION]
 

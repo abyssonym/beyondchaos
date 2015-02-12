@@ -10,6 +10,8 @@
 2A,10,Warp,noban
 2B,200,Quick,noban
 2D,3,Cure,noban
+2E,10,Cure 2,noban
+2F,25,Cure 3,noban
 30,25,Life,noban
 31,100,Life 2,noban
 32,2,Antdot,noban
@@ -24,7 +26,7 @@
 50,75,Phoenix,noban
 5C,150,Cleave,noban
 8C,10,Roulette,noban
-90,50,Blow Fish,noban
+90,65,Blow Fish,noban
 91,50,Big Guard,noban
 93,75,Pearl Wind,noban
 9A,100,ForceField,noban

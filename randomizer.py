@@ -2412,6 +2412,11 @@ def manage_formations_hidden(formations, fsets, freespaces,
         uf.write_data(outfile)
         repurposed_formations.append(uf)
 
+    lobo_formation = get_formation(0)
+    for uf in unused_formations:
+        if uf not in repurposed_formations:
+            uf.copy_data(lobo_formation)
+
     boss_candidates = list(safe_boss_formations)
     boss_candidates = random.sample(boss_candidates,
                                     random.randint(0, len(boss_candidates)))

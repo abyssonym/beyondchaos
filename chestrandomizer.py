@@ -16,6 +16,8 @@ def get_appropriate_formations():
     formations = [f for f in formations if len(f.present_enemies) >= 1]
     formations = [f for f in formations if 273 not in
                   [e.id for e in f.present_enemies]]
+    formations = [f for f in formations if all(
+                  e.display_name.strip('_') for e in f.present_enemies)]
     return formations
 
 

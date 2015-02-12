@@ -1412,6 +1412,8 @@ def manage_monsters(weaken=False):
     final_bosses = (range(0x157, 0x160) + range(0x127, 0x12b) +
                     [0x112, 0x11a, 0x17d])
     for m in monsters:
+        if not m.name.strip('_') and not m.display_name.strip('_'):
+            continue
         if m.id in final_bosses:
             if 0x127 <= m.id < 0x12a or m.id == 0x17d:
                 # boost statues and Atma a second time

@@ -479,35 +479,47 @@ def randomize_colosseum(filename, pointer):
 
 def randomize_slots(filename, pointer):
     spells = get_ranked_spells(filename)
+    spells = [s for s in spells if s.spellid >= 0x36]
     attackspells = [s for s in spells if s.target_enemy_default]
     quarter = len(attackspells) / 4
-    jokerdoom = ((quarter * 2) + random.randint(0, quarter) +
-                 random.randint(0, quarter))
-    jokerdoom += random.randint(0, len(attackspells)-(4*quarter))
+    eighth = quarter / 2
+    jokerdoom = ((eighth * 6) + random.randint(0, eighth) +
+                 random.randint(0, eighth))
+    jokerdoom += random.randint(0, len(attackspells)-(8*eighth))
     jokerdoom = attackspells[jokerdoom]
-    f = open(filename, 'r+b')
-    for i in xrange(1, 8):
+
+    def get_slots_spell(i):
         if i in [0, 1]:
-            spell = jokerdoom
+            return jokerdoom
         elif i == 3:
-            continue
+            return None
         elif i in [4, 5, 6]:
             half = len(spells) / 2
             index = random.randint(0, half) + random.randint(0, half)
-            spell = spells[index]
         elif i == 2:
             third = len(spells) / 3
             index = random.randint(third, len(spells)-1)
-            spell = spells[index]
         elif i == 7:
             twentieth = len(spells)/20
             index = random.randint(0, twentieth)
             while random.randint(1, 3) == 3:
                 index += random.randint(0, twentieth)
             index = min(index, len(spells)-1)
-            spell = spells[index]
-        f.seek(pointer+i)
-        f.write(chr(spell.spellid))
+
+        spell = spells[index]
+        return spell
+
+    used = []
+    f = open(filename, 'r+b')
+    for i in xrange(1, 8):
+        while True:
+            spell = get_slots_spell(i)
+            if spell is None or spell.spellid not in used:
+                break
+        if spell:
+            used.append(spell.spellid)
+            f.seek(pointer+i)
+            f.write(chr(spell.spellid))
     f.close()
 
 

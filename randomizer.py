@@ -2341,31 +2341,36 @@ def manage_formations_hidden(formations, fsets, freespaces,
         uf.set_big_enemy_ids(eids)
         uf.lookup_enemies()
 
-        while True:
-            bf = random.choice(safe_boss_formations)
-            boss_choices = [e for e in bf.present_enemies if e.boss_death]
-            boss_choices = [e for e in boss_choices if e in sorted_bosses]
-            if boss_choices:
-                break
+        for _ in xrange(100):
+            while True:
+                bf = random.choice(safe_boss_formations)
+                boss_choices = [e for e in bf.present_enemies if e.boss_death]
+                boss_choices = [e for e in boss_choices if e in sorted_bosses]
+                if boss_choices:
+                    break
 
-        boss = random.choice(boss_choices)
-        ue.copy_all(boss, everything=True)
-        index = sorted_bosses.index(boss)
-        index = mutate_index(index, len(sorted_bosses), [False, True],
-                             (-2, 2), (-1, 1))
-        boss2 = sorted_bosses[index]
-        ue.copy_all(boss2, everything=False)
-        ue.stats['level'] = (boss.stats['level'] + boss2.stats['level']) / 2
+            boss = random.choice(boss_choices)
+            ue.copy_all(boss, everything=True)
+            index = sorted_bosses.index(boss)
+            index = mutate_index(index, len(sorted_bosses), [False, True],
+                                 (-2, 2), (-1, 1))
+            boss2 = sorted_bosses[index]
+            ue.copy_all(boss2, everything=False)
+            ue.stats['level'] = (boss.stats['level']+boss2.stats['level']) / 2
 
-        if ue.id in mutated_ues:
-            raise Exception("Double mutation detected.")
+            if ue.id in mutated_ues:
+                raise Exception("Double mutation detected.")
 
-        for fs in sorted(freespaces, key=lambda fs: fs.size):
-            if fs.size > ue.aiscriptsize:
-                myfs = fs
-                break
+            for fs in sorted(freespaces, key=lambda fs: fs.size):
+                if fs.size > ue.aiscriptsize:
+                    myfs = fs
+                    break
+            else:
+                # not enough free space
+                continue
+
+            break
         else:
-            # not enough free space
             continue
 
         freespaces.remove(myfs)
@@ -2376,6 +2381,7 @@ def manage_formations_hidden(formations, fsets, freespaces,
 
         ue.mutate_ai(change_skillset=True)
         ue.mutate_ai(change_skillset=True)
+
         ue.mutate(change_skillset=True)
         if random.choice([True, False]):
             ue.mutate(change_skillset=True)

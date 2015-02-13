@@ -1711,6 +1711,17 @@ def manage_character_appearance(preserve_graphics=False):
         pointer = 0x2D6300 + (i*0x20)
         recolor_character_palette(pointer, palette=palette)
 
+    # recolor magitek and chocobos
+    pointer = 0x268000 + (7*0x20)
+    palette = recolor_character_palette(pointer, palette=None, flesh=True)
+    i = 7
+    pointer = 0x2cfd4
+    recolor_character_palette(pointer, palette=palette)
+    pointer = 0x12ee20
+    recolor_character_palette(pointer, palette=palette)
+    pointer = 0x12ef20
+    recolor_character_palette(pointer, palette=palette)
+
     f = open(outfile, 'r+b')
     for line in open(EVENT_PALETTE_TABLE):
         if line[0] == '#':
@@ -2599,10 +2610,10 @@ def manage_colorize_wor():
     f.seek(0x12ed00)
     [write_multi(f, c, length=2) for c in new_palette]
 
-    f.seek(0x12ef00)
-    raw_palette = [read_multi(f, length=2) for i in xrange(0x80)]
+    f.seek(0x12ef40)
+    raw_palette = [read_multi(f, length=2) for i in xrange(0x60)]
     new_palette = transformer(raw_palette)
-    f.seek(0x12ef00)
+    f.seek(0x12ef40)
     [write_multi(f, c, length=2) for c in new_palette]
 
     f.seek(0x12ef00)

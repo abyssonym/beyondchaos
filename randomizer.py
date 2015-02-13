@@ -1708,6 +1708,16 @@ def manage_character_appearance(preserve_graphics=False):
         new_palette = palette_change_to[(c, before)]
         f.seek(0x2CE2B + c)
         f.write(chr(new_palette))
+        pointers = [0, 4, 9, 13]
+        pointers = [ptr + 0x18EA60 + (18*c) for ptr in pointers]
+        if c < 14:
+            for ptr in pointers:
+                f.seek(ptr)
+                byte = ord(f.read(1))
+                byte = byte & 0xF1
+                byte |= ((new_palette+2) << 1)
+                f.seek(ptr)
+                f.write(chr(byte))
     f.close()
 
     for i in xrange(6):

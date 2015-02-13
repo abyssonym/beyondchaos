@@ -1507,7 +1507,7 @@ def manage_monster_appearance(monsters, preserve_graphics=False):
     return mgs
 
 
-def recolor_character_palette(pointer, palette=None, flesh=False):
+def recolor_character_palette(pointer, palette=None, flesh=False, middle=True):
     f = open(outfile, 'r+b')
     f.seek(pointer)
     if palette is None:
@@ -1518,13 +1518,13 @@ def recolor_character_palette(pointer, palette=None, flesh=False):
         new_palette = []
         if not flesh:
             for piece in (outline, eyes, hair, skintone, outfit1, outfit2, NPC):
-                transformer = get_palette_transformer()
+                transformer = get_palette_transformer(middle=middle)
                 piece = list(piece)
                 piece = transformer(piece)
                 new_palette += piece
             new_palette[6:8] = skintone
         else:
-            transformer = get_palette_transformer()
+            transformer = get_palette_transformer(middle=middle)
             new_palette = transformer(palette)
 
         palette = new_palette
@@ -1711,10 +1711,16 @@ def manage_character_appearance(preserve_graphics=False):
         pointer = 0x2D6300 + (i*0x20)
         recolor_character_palette(pointer, palette=palette)
 
+    # esper terra
+    pointer = 0x268000 + (8*0x20)
+    palette = recolor_character_palette(pointer, palette=None, flesh=True,
+                                        middle=False)
+    pointer = 0x2D6300 + (6*0x20)
+    palette = recolor_character_palette(pointer, palette=palette)
+
     # recolor magitek and chocobos
     pointer = 0x268000 + (7*0x20)
     palette = recolor_character_palette(pointer, palette=None, flesh=True)
-    i = 7
     pointer = 0x2cfd4
     recolor_character_palette(pointer, palette=palette)
     pointer = 0x12ee20

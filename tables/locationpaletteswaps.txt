@@ -10,5 +10,7 @@ daryl's tomb:2dec80
 phantom forest,phantom train outdoors:2de080,2dd280:21,f,3
 phantom train:2dd380
 cyan's dream:2ddf80
+opera house:2dcf80,2deb80:17,18
+sealed bridge:2de580:22
 33,34,35,36
 1c

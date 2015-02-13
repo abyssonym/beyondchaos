@@ -25,7 +25,7 @@ from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
 from formationrandomizer import (get_formations, get_fsets, get_formation)
-from locationrandomizer import Zone, EntranceSet, get_locations
+from locationrandomizer import Zone, EntranceSet, get_locations, get_location
 from towerrandomizer import randomize_tower
 
 
@@ -2546,7 +2546,7 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
             candidates |= set([l for l in locations if l.name == name and
                                l.field_palette == palette and l.attacks])
 
-        if not candidates:
+        if not candidates and not backgrounds:
             palettes, battlebgs = [], []
 
         f = open(outfile, 'r+b')
@@ -2587,6 +2587,7 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
 
     if 'p' in flags or 's' in flags or 'partyparty' in activated_codes:
         manage_colorize_wor()
+        manage_colorize_esper_world()
 
 
 def manage_colorize_wor():
@@ -2629,6 +2630,13 @@ def manage_colorize_wor():
         [write_multi(f, c, length=2) for c in new_palette]
 
     f.close()
+
+
+def manage_colorize_esper_world():
+    loc = get_location(217)
+    chosen = random.choice([1, 22, 25, 28, 34, 38, 43])
+    loc.palette_index = (loc.palette_index & 0xFFFFC0) | chosen
+    loc.write_data(outfile)
 
 
 def manage_encounter_rate():

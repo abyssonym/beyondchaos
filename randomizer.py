@@ -1600,16 +1600,22 @@ def manage_character_appearance(preserve_graphics=False):
         femalenames = sorted(set([line.strip() for line in f.readlines()]))
         f.close()
         for c in range(14):
-            if change_to[c] in male:
+            choose_male = False
+            if wild:
+                choose_male = random.choice([True, False])
+            elif change_to[c] in male:
+                choose_male = True
+
+            if choose_male:
                 name = random.choice(malenames)
-                malenames.remove(name)
-                if name in femalenames:
-                    femalenames.remove(name)
             else:
                 name = random.choice(femalenames)
+
+            if name in malenames:
+                malenames.remove(name)
+            if name in femalenames:
                 femalenames.remove(name)
-                if name in malenames:
-                    malenames.remove(name)
+
             name = name.upper()
             names.append(name)
     elif tina_mode:

@@ -2730,7 +2730,7 @@ def manage_encounter_rate():
     change_dungeons = ["floating continent", "veldt cave", "fanatics tower",
                        "ancient castle", "mt zozo", "yeti's cave",
                        "gogo's domain", "phoenix cave", "cyan's dream",
-                       "ebot's rock", "kefka's tower"]
+                       "ebot's rock"]
 
     for name in change_dungeons:
         if name == "fanatics tower":

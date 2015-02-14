@@ -1536,6 +1536,17 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True):
     return palette
 
 
+def make_palette_repair(main_palette_changes):
+    repair_sub = Substitution()
+    bytestring = []
+    for c in sorted(main_palette_changes):
+        before, after = main_palette_changes[c]
+        bytestring.extend([0x43, c, after])
+    repair_sub.bytestring = bytestring + [0xFE]
+    repair_sub.set_location(0xCB154)  # Narshe secret entrance
+    repair_sub.write(outfile)
+
+
 def manage_character_appearance(preserve_graphics=False):
     wild = 'partyparty' in activated_codes
     sabin_mode = 'suplexwrecks' in activated_codes
@@ -1700,12 +1711,14 @@ def manage_character_appearance(preserve_graphics=False):
             npc.palette = new_palette
             npc.write_data(outfile)
 
+    main_palette_changes = {}
     f = open(outfile, 'r+b')
     for c in char_ids:
         f.seek(0x2CE2B + c)
         before = ord(f.read(1))
         new_graphics = change_to[c]
         new_palette = palette_change_to[(c, before)]
+        main_palette_changes[c] = (before, new_palette)
         f.seek(0x2CE2B + c)
         f.write(chr(new_palette))
         pointers = [0, 4, 9, 13]
@@ -1719,6 +1732,9 @@ def manage_character_appearance(preserve_graphics=False):
                 f.seek(ptr)
                 f.write(chr(byte))
     f.close()
+
+    if "repairpalette" in activated_codes:
+        make_palette_repair(main_palette_changes)
 
     for i in xrange(6):
         pointer = 0x268000 + (i*0x20)
@@ -3002,6 +3018,7 @@ def randomize():
     secret_codes['endless9'] = "ENDLESS NINE MODE"
     secret_codes['equipanything'] = "EQUIP ANYTHING MODE"
     secret_codes['collateraldamage'] = "ITEM BREAK MODE"
+    secret_codes['repairpalette'] = "PALETTE REPAIR"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

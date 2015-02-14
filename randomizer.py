@@ -2284,6 +2284,15 @@ def manage_formations(formations, fsets):
                 formation.set_continuous_music()
                 formation.write_data(outfile)
 
+    for formation in formations:
+        if formation.get_music() != 6:
+            #print formation
+            if formation.formid in [0xb2, 0xb3, 0xb6]:
+                # additional floating continent formations
+                formation.set_music(6)
+                formation.set_continuous_music()
+                formation.write_data(outfile)
+
     ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
     ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
     valid_fsets = [fset for fset in ranked_fsets if len(fset.formations) == 4]

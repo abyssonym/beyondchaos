@@ -6,8 +6,14 @@ valid_ids = range(0, 0x200)
 banned_formations = []
 former_miabs = []
 
+appropriate_formations = None
+
 
 def get_appropriate_formations():
+    global appropriate_formations
+    if appropriate_formations is not None:
+        return appropriate_formations
+
     from randomizer import NOREPLACE_FORMATIONS
     formations = get_formations()
     formations = [f for f in formations if not f.battle_event]
@@ -18,7 +24,21 @@ def get_appropriate_formations():
                   [e.id for e in f.present_enemies]]
     formations = [f for f in formations if all(
                   e.display_name.strip('_') for e in f.present_enemies)]
-    return formations
+
+    def get_enames(f):
+        return " ".join(sorted([e.display_name for e in f.present_enemies]))
+
+    form_enames = [get_enames(f) for f in formations]
+    for f in list(formations):
+        enames = get_enames(f)
+        assert form_enames.count(enames) >= 1
+        if form_enames.count(enames) >= 2:
+            if f.get_music() == 0:
+                formations.remove(f)
+                form_enames.remove(enames)
+
+    appropriate_formations = formations
+    return get_appropriate_formations()
 
 
 def get_2pack(formation):

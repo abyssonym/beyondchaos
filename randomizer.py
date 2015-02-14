@@ -1751,14 +1751,21 @@ def manage_character_appearance(preserve_graphics=False):
     palette = recolor_character_palette(pointer, palette=palette)
 
     # recolor magitek and chocobos
-    pointer = 0x268000 + (7*0x20)
-    palette = recolor_character_palette(pointer, palette=None, flesh=True)
-    pointer = 0x2cfd4
-    recolor_character_palette(pointer, palette=palette)
-    pointer = 0x12ee20
-    recolor_character_palette(pointer, palette=palette)
-    pointer = 0x12ef20
-    recolor_character_palette(pointer, palette=palette)
+    transformer = get_palette_transformer(middle=True)
+
+    def recolor_palette(pointer, size):
+        f = open(outfile, 'r+w')
+        f.seek(pointer)
+        palette = [read_multi(f, length=2) for _ in xrange(size)]
+        palette = transformer(palette)
+        f.seek(pointer)
+        [write_multi(f, c, length=2) for c in palette]
+        f.close()
+
+    recolor_palette(0x2cfd4, 23)
+    recolor_palette(0x268000+(7*0x20), 16)
+    recolor_palette(0x12ee20, 16)
+    recolor_palette(0x12ef20, 16)
 
     f = open(outfile, 'r+b')
     for line in open(EVENT_PALETTE_TABLE):

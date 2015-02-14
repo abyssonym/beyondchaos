@@ -211,7 +211,7 @@ class ChestBlock:
             except ValueError:
                 index = 0
         else:
-            lowpriced = [i for i in items if i.rank() <= value]
+            lowpriced = [i for i in items if i.rank() <= value*100]
             index = max(0, len(lowpriced)-1)
 
         chance = random.randint(1, 50)

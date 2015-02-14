@@ -2751,6 +2751,8 @@ def manage_encounter_rate():
     zones = [Zone(i) for i in range(0x100)]
     for z in zones:
         z.read_data(sourcefile)
+        if z.zoneid >= 0x40:
+            z.rates = 0
         if z.zoneid >= 0x80:
             for setid in z.setids:
                 if setid in namelocdict:
@@ -2759,7 +2761,6 @@ def manage_encounter_rate():
                     if name not in z.names:
                         z.names[name] = set([])
                     z.names[name].add(setid)
-            z.rates = 0
             for i, s in enumerate(z.setids):
                 if s == 0x7b:
                     continue

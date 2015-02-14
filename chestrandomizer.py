@@ -225,6 +225,8 @@ class ChestBlock:
             value = value / 2
             value += (random.randint(0, value) + random.randint(0, value))
             self.contents = min(0xFF, max(1, value))
+            if self.contents == 0xFF:
+                self.contents -= random.randint(0, 20) + random.randint(0, 20)
         elif 4 <= chance <= 6:
             formations = get_appropriate_formations()
             # monster

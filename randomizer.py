@@ -1418,7 +1418,7 @@ def manage_final_boss(freespaces, preserve_graphics=False):
     return freespaces
 
 
-def manage_monsters(weaken=False):
+def manage_monsters():
     monsters = get_monsters(sourcefile)
     itembreaker = "collateraldamage" in activated_codes
     final_bosses = (range(0x157, 0x160) + range(0x127, 0x12b) +
@@ -1438,8 +1438,10 @@ def manage_monsters(weaken=False):
         if m.id == 0x11a:
             # boost final kefka yet another time
             m.mutate(itembreaker=itembreaker)
-        if weaken:
+        if 'easymodo' in activated_codes:
             m.stats['hp'] = 1
+        if 'llg' in activated_codes:
+            m.stats['xp'] = 0
     change_enemy_name(outfile, 0x166, "L.255Magic")
 
     shuffle_monsters(monsters)
@@ -3036,6 +3038,7 @@ def randomize():
     secret_codes['equipanything'] = "EQUIP ANYTHING MODE"
     secret_codes['collateraldamage'] = "ITEM BREAK MODE"
     secret_codes['repairpalette'] = "PALETTE REPAIR"
+    secret_codes['llg'] = "LOW LEVEL GAME MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -3124,7 +3127,7 @@ def randomize():
     if 'm' in flags:
         aispaces = manage_final_boss(aispaces,
                                      preserve_graphics=preserve_graphics)
-        monsters = manage_monsters(weaken='easymodo' in activated_codes)
+        monsters = manage_monsters()
         random.seed(seed)
 
     if 'm' in flags or 'o' in flags or 'w' in flags:

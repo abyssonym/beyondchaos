@@ -372,30 +372,38 @@ class MonsterBlock:
             f = s1.abort_on_allies == s2.abort_on_allies
             return (a and b and c and d and e and f)
 
+        restricted = [0x14]
         oldskills = sorted([s for s in all_spells if s.spellid in skillset],
                            key=lambda s: s.rank())
         if change_skillset:
+            skillmap = {}
             for skill in oldskills:
                 if skill.spellid in [0xEE, 0xEF, 0xFE]:
                     continue
                 if not skill.valid:
                     continue
-                skillset.remove(skill.spellid)
-                candidates = [s for s in all_spells if similar(s, skill)]
-                candidates = [s for s in candidates if not
-                              (s.is_blitz or s.is_swdtech or s.is_esper
-                               or s.is_slots)]
-                if skill not in candidates:
-                    candidates.append(skill)
-                candidates = sorted(candidates, key=lambda s: s.rank())
-                if random.choice([True, False]):
-                    candidates = [c for c in candidates if c.valid]
+                if skill.spellid in restricted:
+                    newskill = skill
+                else:
+                    skillset.remove(skill.spellid)
+                    candidates = [s for s in all_spells if similar(s, skill)]
+                    candidates = [s for s in candidates if not
+                                  (s.is_blitz or s.is_swdtech or s.is_esper
+                                   or s.is_slots)]
+                    if skill not in candidates:
+                        candidates.append(skill)
+                    candidates = sorted(candidates, key=lambda s: s.rank())
+                    if random.choice([True, False]):
+                        candidates = [c for c in candidates if c.valid]
+                    candidates = [c for c in candidates if
+                                  c.spellid not in restricted]
 
-                index = candidates.index(skill)
-                index = mutate_index(index, len(candidates), [False, True],
-                                     (-2, 3), (-2, 2))
-                skill = candidates[index]
-                skillset.add(skill.spellid)
+                    index = candidates.index(skill)
+                    index = mutate_index(index, len(candidates), [False, True],
+                                         (-2, 3), (-2, 2))
+                    newskill = candidates[index]
+                skillset.add(newskill.spellid)
+                skillmap[skill.spellid] = newskill.spellid
 
         sortedskills = sorted([s for s in all_spells if s.spellid in skillset],
                               key=lambda s: s.rank())
@@ -410,6 +418,8 @@ class MonsterBlock:
 
             a = [s for s in oldskills if similar(s, skill)]
             b = [s for s in sortedskills if similar(s, skill)]
+            if restricted and random.choice([True, True, False]):
+                b = [s for s in b if s.spellid not in restricted]
             index = a.index(skill)
             index = mutate_index(index, len(b), [False, True],
                                  (-1, 2), (-1, 1))
@@ -505,18 +515,25 @@ class MonsterBlock:
                         c2 = candidates[index]
                         action[2], action[3] = c1.itemid, c2.itemid
                     else:
-                        newaction = list(action)
-                        if len(set(action[1:])) != 1:
-                            for i in xrange(1, 4):
-                                a = newaction[i]
-                                if a == 0xFE:
-                                    a = random.choice(action[1:])
-                                value = mutate_action_skill(a)
-                                newaction[i] = value
-                            if len(set(newaction[1:])) == 1:
-                                newaction = action
-                        action[1:] = sorted(newaction[1:])
+                        if len(set(action[1:])) != 1 or change_skillset:
+                            for j in xrange(100):
+                                newaction = list(action)
+                                for i in xrange(1, 4):
+                                    a = newaction[i]
+                                    if a == 0xFE:
+                                        a = random.choice(action[1:])
+                                    value = mutate_action_skill(a)
+                                    newaction[i] = value
+                                if len(set(newaction[1:])) != 1:
+                                    action = newaction
+                                    break
                         assert 0x81 not in action
+            elif len(action) == 1 and change_skillset:
+                s = action[0]
+                if s in skillmap:
+                    s = skillmap[s]
+                    action[0] = s
+                assert 0x81 not in action
             newscript.append("".join(map(chr, action)))
 
         assert len("".join(newscript)) == len("".join(self.aiscript))

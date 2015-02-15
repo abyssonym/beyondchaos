@@ -356,7 +356,9 @@ class MonsterBlock:
             round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
 
     def mutate_ai(self, change_skillset=True, itembreaker=False):
-        if self.name[:2] == "L." or "guardian" in self.name.lower():
+        if self.name[:2] == "L." in self.name.lower():
+            change_skillset = False
+        elif "guardian" in self.name.lower():
             return
 
         skillset = set(self.get_skillset())

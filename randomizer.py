@@ -1129,11 +1129,6 @@ def manage_sprint():
 
 
 def manage_skips():
-    intro_skip_sub = Substitution()
-    intro_skip_sub.bytestring = [0xFD] * 4
-    intro_skip_sub.set_location(0xA5E8E)
-    intro_skip_sub.write(outfile)
-
     flashback_skip_sub = Substitution()
     flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
     flashback_skip_sub.set_location(0xAC582)
@@ -3159,6 +3154,13 @@ def randomize():
         by_level = 'h' in flags and 'a' not in flags
         esperrage_spaces = manage_reorder_rages(esperrage_spaces,
                                                 by_level=by_level)
+        titlesub = Substitution()
+        titlesub.bytestring = [0xFD]
+        titlesub.set_location(0xA5E33)
+        titlesub.write(outfile)
+        titlesub.bytestring = [0xFD] * 4
+        titlesub.set_location(0xA5E8E)
+        titlesub.write(outfile)
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk

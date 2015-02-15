@@ -266,9 +266,8 @@ class Location():
             locid = self.locid
 
         if self.battlebg in [0, 5] and locid in mapbattlebgs:
-            if locid in mapbattlebgs:
-                battlebg = mapbattlebgs[locid]
-                self._battlebg = (self._battlebg & 0xC0) | battlebg
+            battlebg = mapbattlebgs[locid]
+            self._battlebg = (self._battlebg & 0xC0) | battlebg
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
@@ -614,5 +613,4 @@ if __name__ == "__main__":
     from formationrandomizer import fsetdict
     locations = get_locations("program.rom")
     for l in locations:
-        if len(l.entrances) == 1 and len(l.chests) == 1:
-            print l, l.attacks
+        print l, l.palette_index & 0x3F

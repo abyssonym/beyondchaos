@@ -668,7 +668,7 @@ sperelic = {0x04: (0x25456, 0x2545B),
 invalid_commands = [0x00, 0x04, 0x14, 0x15, 0x19, 0xFF]
 
 
-def reset_special_relics(items, characters, filename):
+def reset_special_relics(items, characters, filename, changed_commands):
     f = open(filename, 'r+b')
     characters = [c for c in characters if c.id < 14]
     for item in items:
@@ -702,6 +702,8 @@ def reset_special_relics(items, characters, filename):
                     if len(tempchars) <= 4:
                         for t in tempchars:
                             unused = unused - set(t.battle_commands)
+                    if item.itemid == 0xd8:
+                        unused = unused - changed_commands
 
                     if not unused:
                         continue

@@ -3181,7 +3181,7 @@ def randomize():
 
     if 'q' in flags:
         # do this after swapping beserk
-        reset_special_relics(items, characters, outfile)
+        reset_special_relics(items, characters, outfile, changed_commands)
 
         for c in characters:
             c.mutate_stats(outfile)

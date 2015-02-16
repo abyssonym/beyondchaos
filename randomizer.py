@@ -2329,6 +2329,9 @@ def manage_formations(formations, fsets):
 
     for formation in formations:
         formation.mutate(ap=False)
+        if formation.formid == 0x1e2:
+            formation.set_music(2)  # change music for Atma fight
+        formation.write_data(outfile)
 
     return formations
 

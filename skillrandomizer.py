@@ -243,28 +243,6 @@ class CommandBlock:
         f.write(chr(self.targeting))
         f.close()
 
-    def unset_retarget(self, filename):
-        bit = self.id % 8
-        byte = 1 << bit
-        offset = self.id / 8
-        f = open(filename, 'r+b')
-        f.seek(0x24E46 + offset)
-        old = ord(f.read(1))
-        byte = old & (0xFF ^ byte)
-        f.seek(0x24E46 + offset)
-        f.write(chr(byte))
-
-    def set_retarget(self, filename):
-        bit = self.id % 8
-        byte = 1 << bit
-        offset = self.id / 8
-        f = open(filename, 'r+b')
-        f.seek(0x24E46 + offset)
-        old = ord(f.read(1))
-        byte = old | byte
-        f.seek(0x24E46 + offset)
-        f.write(chr(byte))
-
     def setpointer(self, value, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -289,6 +267,35 @@ class CommandBlock:
         f.seek(self.textptr)
         f.write("".join(map(chr, text)))
         f.close()
+
+    def set_bit(self, pointer, filename, unset=False):
+        bit = self.id % 8
+        byte = 1 << bit
+        offset = self.id / 8
+        f = open(filename, 'r+b')
+        f.seek(pointer + offset)
+        old = ord(f.read(1))
+        if unset:
+            byte = old & (0xFF ^ byte)
+        else:
+            byte = old | byte
+        f.seek(pointer + offset)
+        f.write(chr(byte))
+
+    def unset_retarget(self, filename):
+        self.set_bit(0x24E46, filename, unset=True)
+
+    def set_retarget(self, filename):
+        self.set_bit(0x24E46, filename)
+
+    def allow_while_confused(self, filename):
+        self.set_bit(0x204D0, filename)
+
+    def allow_while_berserk(self, filename):
+        self.set_bit(0x204D4, filename)
+
+    def disallow_while_berserk(self, filename):
+        self.set_bit(0x204D4, filename, unset=True)
 
 
 def get_ranked_spells(filename=None, magic_only=False):

@@ -895,16 +895,16 @@ def manage_commands_new(commands, characters):
                 newname = "%sx%s" % (s.count, newname)
         c.newname(newname, outfile)
         c.unsetmenu(outfile)
+        c.allow_while_confused(outfile)
+        if "playsitself" in activated_codes:
+            c.allow_while_berserk(outfile)
+        else:
+            c.disallow_while_berserk(outfile)
 
     gogo_enable_all_sub = Substitution()
     gogo_enable_all_sub.bytestring = [0xEA] * 2
     gogo_enable_all_sub.set_location(0x35E58)
     gogo_enable_all_sub.write(outfile)
-
-    ai_command_allow = Substitution()
-    ai_command_allow.bytestring = [0xED, 0x3E, 0xDF, 0x3D]
-    ai_command_allow.set_location(0x204D0)
-    ai_command_allow.write(outfile)
 
     cyan_ai_sub = Substitution()
     cyan_ai_sub.bytestring = [0xF0, 0xEE, 0xEE, 0xEE, 0xFF]
@@ -3297,6 +3297,15 @@ def randomize():
 
     if 'playsitself' in activated_codes:
         manage_full_umaro()
+        for c in commands.values():
+            if c.id not in [0x01, 0x08, 0x0E, 0x0F, 0x15, 0x19]:
+                c.allow_while_berserk(outfile)
+        whelkhead = get_monster(0x134)
+        whelkhead.stats['hp'] = 1
+        whelkhead.write_stats(outfile)
+        whelkshell = get_monster(0x100)
+        whelkshell.stats['hp'] = 1
+        whelkshell.write_stats(outfile)
 
     for item in get_ranked_items(allow_banned=True):
         if item.banned:

@@ -105,22 +105,22 @@ def get_item_normal():
 
 
 class MonsterBlock:
-    def __init__(self, name, pointer, itemptr, controlptr,
-                 sketchptr, rageptr, aiptr):
+    def __init__(self, name, monster_id):
         self.name = name
         self.graphicname = self.name
-        self.pointer = hex2int(pointer)
-        self.itemptr = hex2int(itemptr)
-        self.controlptr = hex2int(controlptr)
-        self.sketchptr = hex2int(sketchptr)
-        self.rageptr = hex2int(rageptr)
-        self.aiptr = hex2int(aiptr)
+        self.pointer = 0xF0000 + (0x20 * monster_id)
+        self.itemptr = 0xF3000 + (0x4 * monster_id)
+        self.controlptr = 0xF3D00 + (0x4 * monster_id)
+        self.sketchptr = 0xF4300 + (0x2 * monster_id)
+        self.rageptr = 0xF4600 + (0x2 * monster_id)
+        self.aiptr = 0xF8400 + (0x2 * monster_id)
         self.stats = {}
         self.moulds = set([])
         self.width, self.height = None, None
         self.miny, self.maxy = None, None
         self.aiscript = None
         self.ambusher = False
+        self.set_id(monster_id)
 
     @property
     def description(self):
@@ -560,6 +560,11 @@ class MonsterBlock:
                     seen = True
 
         self.aiscript = script
+
+        if self.id == 0xF3:
+            # account for brown Mag Roader bug
+            self.aiscript = self.aiscript[:4]
+
         return self.aiscript
 
     def set_relative_ai(self, pointer):
@@ -1288,8 +1293,9 @@ def monsters_from_table(tablefile):
 
         while '  ' in line:
             line = line.replace('  ', ' ')
-        c = MonsterBlock(*line.split(','))
-        c.set_id(i)
+        line = line.split(',')
+        name = line[0]
+        c = MonsterBlock(name, i)
         monsters.append(c)
     return monsters
 

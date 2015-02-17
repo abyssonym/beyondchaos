@@ -3225,6 +3225,8 @@ def randomize():
 
     if 'f' in flags:
         manage_formations_hidden(formations, fsets, freespaces=aispaces)
+        for m in get_monsters():
+            m.write_stats(outfile)
         random.seed(seed)
 
     for f in get_formations():
@@ -3295,6 +3297,7 @@ def randomize():
     for m in sorted(get_monsters(), key=lambda m: m.display_name):
         if m.display_name:
             log(m.description)
+
     f = open(outlog, 'w+')
     f.write(randlog)
     f.close()

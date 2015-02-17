@@ -2961,6 +2961,15 @@ def manage_equip_anything():
     equip_anything_sub.write(outfile)
 
 
+def manage_full_umaro():
+    full_umaro_sub = Substitution()
+    full_umaro_sub.bytestring = [0x80]
+    full_umaro_sub.set_location(0x21619)
+    full_umaro_sub.write(outfile)
+    full_umaro_sub.set_location(0x20928)
+    full_umaro_sub.write(outfile)
+
+
 def randomize():
     global outfile, sourcefile, VERBOSE, flags
 
@@ -3037,6 +3046,7 @@ def randomize():
     secret_codes['collateraldamage'] = "ITEM BREAK MODE"
     secret_codes['repairpalette'] = "PALETTE REPAIR"
     secret_codes['llg'] = "LOW LEVEL GAME MODE"
+    secret_codes['playsitself'] = "AUTOBATTLE MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -3284,6 +3294,9 @@ def randomize():
 
     if 'equipanything' in activated_codes:
         manage_equip_anything()
+
+    if 'playsitself' in activated_codes:
+        manage_full_umaro()
 
     for item in get_ranked_items(allow_banned=True):
         if item.banned:

@@ -2331,6 +2331,8 @@ def manage_formations(formations, fsets):
         formation.mutate(ap=False)
         if formation.formid == 0x1e2:
             formation.set_music(2)  # change music for Atma fight
+        if formation.formid == 0x162:
+            formation.ap = 0xFF  # MagiMaster always gives max AP
         formation.write_data(outfile)
 
     return formations

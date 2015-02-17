@@ -2964,10 +2964,11 @@ def manage_equip_anything():
 def manage_full_umaro():
     full_umaro_sub = Substitution()
     full_umaro_sub.bytestring = [0x80]
-    full_umaro_sub.set_location(0x21619)
-    full_umaro_sub.write(outfile)
     full_umaro_sub.set_location(0x20928)
     full_umaro_sub.write(outfile)
+    if 'u' in flags:
+        full_umaro_sub.set_location(0x21619)
+        full_umaro_sub.write(outfile)
 
 
 def randomize():

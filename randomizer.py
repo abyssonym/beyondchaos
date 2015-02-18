@@ -3229,6 +3229,8 @@ def randomize():
         formations = get_formations()
         fsets = get_fsets()
         manage_formations(formations, fsets)
+        for fset in fsets:
+            fset.write_data(outfile)
         random.seed(seed)
 
     if 'd' in flags:

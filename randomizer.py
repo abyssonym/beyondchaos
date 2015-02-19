@@ -1274,6 +1274,10 @@ def manage_rng():
     f.write("".join(map(chr, numbers)))
     f.close()
 
+death_abuse_sub = Substitution()
+death_abuse_sub.bytestring = [0x60]
+death_abuse_sub.set_location(0xC515)
+
 
 def manage_balance(newslots=True):
     vanish_doom_sub = Substitution()
@@ -1300,6 +1304,8 @@ def manage_balance(newslots=True):
     manage_rng()
     if newslots:
         randomize_slots(outfile, 0x24E4A)
+
+    death_abuse_sub.write(outfile)
 
 
 def manage_magitek(spells):
@@ -2112,6 +2118,8 @@ def manage_esper_boosts(freespaces):
     desc = map(lambda c: hex2int(shorttexttable[c]), "LV + 50% ")
     esper_boost_sub.bytestring = desc
     esper_boost_sub.write(outfile)
+
+    death_abuse_sub.write(outfile)
 
     return freespaces
 

@@ -1,48 +1,180 @@
-Run the randomizer using Python 2.6 or 2.7
+FF6 Beyond Chaos Randomizer
+Version:    43
+Date:       February 19, 2015
+URL:        https://github.com/abyssonym/beyondchaos
+Contact:    https://twitter.com/abyssonym
+            https://www.twitch.tv/abyssonym
 
-Usage:
-    python randomizer.py
-    python randomizer.py <ROMFILE> <VERSION>.<FLAGS>.<SEED VALUE>
+--- QUICKSTART ---
+Running the randomizer:
+    Windows users may use the executable file, "beyondchaos.exe". Other users, please run "randomizer.py" using Python version 2.7
 
-Arguments:
-    ROMFILE - Filepath to a copy of the FF3 US 1.0 rom (unheadered).
-    VERSION - The version of this program that generated this seed. Used to
-        check that the program will generate the same randomization as before.
-    FLAGS - A list of flags to configure what is randomized (see below)
-    SEED VALUE - A number that can be used to generate the same randomization
-        for multiple executions of this program.
+Source rom file:
+    The randomizer will ask for a rom file. Beyond Chaos does not provide this rom. Put the file in the same directory as Beyond Chaos and simply input the file name. The rom used should be the unheadered FF3 US 1.0 rom. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the checksum/hash:
+    MD5 - e986575b98300f721ce27c180264d890
+    CRC32 - a27f1c7a
 
-VERSION, FLAGS, and SEED VALUE do not need to be supplied. To generate a
-randomization without any options, simply run:
-    python randomizer.py <ROMFILE> ..
+Seed value:
+    Next, the randomizer will ask for a seed value. If you don't know which seed you want, just leave this blank and the randomizer will choose one for you. The seed value is an integer number that can be used to share the same randomization with other people. It's like a signature for the game that Beyond Chaos creates. If you want to play the game along with a friend, you can use the same seed.
 
-Program Flags:
-    v   Display each character's battle commands after randomization.
+Flags:
+    Finally, the randomizer will ask for a list of flags. If you don't know which flags you want, just leave this blank and the randomizer will give you the standard setting: all flags. If you would like to customize your experience, here is a list of flags and what they do:
+    Program Flags:
+        v   Display each character's battle commands after randomization.
+    Randomizer Flags:
+        o   Shuffle characters' in-battle commands.
+        w   Generate new commands for characters, replacing old commands.
+        z   Always have "Sprint Shoes" effect.
+        b   Make the game more balanced by removing exploits such as Joker Doom,
+                Vanish/Doom, and the Evade/Mblock bug.
+        m   Randomize enemy stats.
+        c   Randomize palettes and names of various things.
+        i   Randomize the stats of equippable items.
+        q   Randomize what equipment each character can wear.
+        e   Randomize esper spells and levelup bonuses.
+        t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
+        u   Umaro risk.
+        l   Randomize blitz inputs.
+        n   Randomize window background colors.
+        f   Randomize enemy formations.
+        s   Swap character graphics around.
+        p   Randomize the palettes of spells and weapon animations.
+        d   Randomize final dungeon.
+        a   Organize rages alphabetically (default)
+        h   Organize rages by highest level first
 
-Randomizer Flags:
-    o   Shuffle characters' in-battle commands.
-    w   Generate new commands for characters, replacing old commands.
-    z   Always have "Sprint Shoes" effect.
-    b   Make the game more balanced by removing exploits such as Joker Doom,
-            Vanish/Doom, and the Evade/Mblock bug.
-    m   Randomize enemy stats.
-    c   Randomize palettes and names of various things.
-    i   Randomize the stats of equippable items.
-    q   Randomize what equipment each character can wear.
-    e   Randomize esper spells and levelup bonuses.
-    t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
-    u   Umaro risk.
-    l   Randomize blitz inputs.
-    n   Randomize window background colors.
-    f   Randomize enemy formations.
-    s   Swap character graphics around.
-    p   Randomize the palettes of spells and weapon animations.
-    d   Randomize final dungeon.
-    a   Organize rages alphabetically (default)
-    h   Organize rages by highest level first
+Output rom file:
+    The randomizer generates two files, a patched rom file, and a mini-FAQ. Both files will have the seed value in their name. To play the game, load the patched rom file in your emulator. The mini-FAQ is a text file that mainly includes information about where to get items; colosseum rewards, monster steals and drops, shop info, and monster rages are all included.
 
-If no randomizer flags are provided, all of them will be activated.
+--- OVERVIEW ---
 
-Contact information:
-    Twitter - https://twitter.com/abyssonym
-    Twitch - http://www.twitch.tv/abyssonym
+    Beyond Chaos is a randomizer, a program that remixes game content randomly, for FF6. Every time you run Beyond Chaos, it will generate a completely unique, brand-new mod of FF6 for you to challenge and explore. There are over 10 billion different possible randomizations! Nearly everything is randomized, including treasure, enemies, colors, graphics, character abilities, and more.
+    Beyond Chaos is also customizable. Using the flags in the above section, you can choose to only randomize certain parts of the game. Every flag you select will make the game a little more random, and also a little more difficult. Therefore, even experienced players should be able to find some challenge in the resulting game. As the game progresses, enemies may become more and more difficult, so that it becomes necessary to develop specialized strategies for individual formations.
+    Because of the extent and the severity of the modifications made by Beyond Chaos, it is not recommended for competitive play. It is mainly intended for casual play, though if you would like to play it competitively anyway, go for it. Also note that there is another FF6 randomizer intended for races, made by Dessyreqt and Lenophis, that makes more conservative changes. That one is simply called "FF6 Randomizer", or "FF6 Rando Classic Original Flavor".
+
+--- OBJECTIVES ---
+
+1. To remix game content so thoroughly that even veteran FF6 fans can feel as though they are playing the game for the first time all over again.
+2. To create a challenging and festive result that encourages memorable scenarios, without making the game impossible for a casual player to complete.
+3. To create a tool that is useful to the FF6 rom hacking community by being both open source and accessible, and by showing off a wide variety of potential mods.
+
+--- FAQ/KNOWN ISSUES ---
+Q: I lost my seed number but I still have the rom. Can I find my seed number again?
+A: If you didn't rename your rom file, the seed will be in the file name. Otherwise, the seed is written in the rom in the title section of the SNES header. Some emulators, like Snes9x, will display the title of the game when you load it, so you can see the seed value by looking at the title displayed by Snes9x. The address of this title in the rom is at 0xFFC0.
+
+Q: I'm at Vargas but I don't have Blitz. How do I beat him?
+A: You can defeat him normally without Blitz. His HP was lowered to make him beatable without much (if any) grinding.
+
+Q: How do I defeat TunnelArmr without Runic?
+A: Just kill it.
+
+Q: How do I defeat Ultros at the Esper's hideout without Sketch?
+A: Just kill it.
+
+Q: The Moogle Charm doesn't work.
+A: It was nerfed. FF6 uses a threat level based random encounter system, and Moogle Charm increases threat level by the lowest possible value without removing encounters altogether. The specifics are a bit complex, but you should think of it as having about a 1/256 encounter rate if you've been wearing it for a while. Also, some later dungeons might randomly ignore Moogle Charm altogether.
+
+Q: I'm in a dungeon and the encounter rate is insanely high.
+A: Some later dungeons have a chance to become high encounter rate dungeons. However, these dungeons are twice as vulnerable to the effects of Charm Bangle and Moogle Charm.
+
+Q: The switches in the final dungeon don't seem to be working.
+A: They work, I assure you... it seems like the game is just a bit buggy when a group it doesn't expect stands on the switch. Usually you can get it to work by cycling through every party while standing on the switch. In the worse case scenario (you rarely need to do this) have all other parties leave the room, then stand on the switch.
+
+Q: I walked off of a map in the final dungeon and now I'm stuck out of bounds. Help!
+A: Looks like you're screwed. Use a Warpstone or the spell Warp to leave the dungeon, or, if you don't have access to Warp, have another party walk back to the dungeon entrance and use the hook to return to the airship.
+
+Q: The Fanatics Tower is really long. What gives?
+A: I've made some changes to the Tower, with the intent to make it the most frustrating, obnoxious dungeon possible. If you're stuck, here are some hints in ROT13 format. Decode them if you're having trouble.
+    Hint #1:  Vg'f zber qvssvphyg tbvat hc guna pbzvat qbja.
+    Hint #2:  Qba'g trg qvfgenpgrq. Fgnl sbphfrq ba lbhe tbny, naq riraghnyyl lbh jvyy ernpu vg.
+    Solution: Fbzr gernfher ebbzf ner gencf gung qebc lbh gb n ybjre yriry bs gur gbjre. Nibvq gur gernfher ebbzf naq lbh jba'g trg fghpx.
+
+Q: The old man in Narshe won't give me the Ragnarok esper. Is this a bug?
+A: It's not a bug. Ragnarok (esper) is at a different location. Location: Gur obff ng gur gbc bs Snangvpf Gbjre unf vg.
+
+Q: I heard that there's a secret item. How do I get it?
+A: Va gur svany qhatrba, gurer'f n fznyy vagrevbe ebbz jvgu n qbbe cnfg n pbairlbe oryg gung vf vanpprffvoyr. Gb ernpu gur qbbe, lbh zhfg hfr na rkcybvg gung vf abeznyyl hfrq gb fxvc Cbygetrvfg va inavyyn SS6. Ybbx hc gur Cbygetrvfg fxvc gb svaq bhg ubj gb qb gur gevpx.
+
+Q: I heard that there are secret codes. What are they?
+A: I'll give you the codes, but be aware that these are codes that were used during development for testing the randomizer. I make no guarantees about their playability, and it's recommended that you play through the randomizer without codes at least once before you use them. Here they are, as always, in ROT13:
+    nvefuvc
+    phgfprarf
+    cneglcnegl
+    oenirahqrjbeyq
+    fhcyrkjerpxf
+    fgenatrwbhearl
+    qrnerfgzbyhyh
+    pnaggbhpuguvf
+    rnflzbqb
+    abeat
+    raqyrff9
+    rdhvcnalguvat
+    pbyyngrenyqnzntr
+    ercnvecnyrggr
+    yyt
+    cynlfvgfrys
+
+Q: What level should I be for the final dungeon?
+A: It really depends on your gear and what builds you have access to. I usually end up going there around level 35-40, but it doesn't hurt to have a few absurdly high level characters to tank hits.
+
+Q: Yo this is really hard.
+A: Yeah I guess so. I was pretty careful to make sure it was always beatable, though. Obviously the difficulty depends on your specific randomization though, so if you're having trouble, don't feel bad about using savestates or anything. I tried to design the randomizer in such a way that savestates aren't necessary, but I can't account for everything. If you encounter anything that is absolutely absurd in difficulty, please let me know so I can try to adjust the balance for future versions. Also, save often! You never know when you'll randomly encounter a boss on the overworld or in a chest.
+
+Q: I encountered <boss> as a random encounter/monster in a box! Is this a bug?
+A: No.
+
+Q: I can't choose my party for the final battle. Is this a bug?
+A: No.
+
+Q: When my character uses X ability, he attacks the enemy and then attacks his own party for low damage! Is this a bug?
+A: Yes! I don't know how to fix it, but it's a bit interesting in its own right, so I've been ignoring it for now.
+
+Q: It says my character can use X ability in the menu, but in battle they have something completely different.
+A: This is also a bug that I'm not sure how to fix. It also affects relics that change abilities... the only way to tell what ability a relic like Coin Toss will give you is to equip it and enter battle.
+
+Q: I used Control on an enemy and ordered him to use a skill on his own party, but he attacked me instead!
+A: Some skills are just like that. They're flagged to never be used on your own party.
+
+Q: The final boss is impossible! How do I win?
+A: Gur orfg cerpnhgvba lbh pna gnxr vf univat rabhtu UC gb fheivir Zrgrbe (hfhnyyl nobhg 5000) naq vaihyarenovyvgl gb znal fgnghf rssrpgf, rfcrpvnyyl Fvyrapr. Xrsxn jba'g pbhagre juvyr ur'f pnfgvat Tbare naq gur fperra vf funxvat, fb guvf vf gur orfg gvzr gb fgevxr.
+
+Q: The boss of the Fanatics Tower is impossible! How do I win without Life 3?
+A: Gur pynffvp fgengrtl bs Enfcvat uvz gb qrngu fgvyy jbexf, naq ur vf bsgra ihyarenoyr gb Ofrex. Hfvat Cnyvqbe gb ynaq gur svany uvg pna jbex, ohg or jnel gung ur zvtug fgneg gur onggyr jvgu vaangr Yvsr 3. Nyfb, vs lbh unir n Trz Obk be fvzvyne vgrz, vg zvtug nyybj lbh gb hfr na novyvgl va gur gbjre gung lbh abeznyyl pna'g hfr... Hygvzn pna or Ehavpxrq, sbe rknzcyr.
+
+Q: Dude I've got like six cursed shields.
+A: Fun fact, if you equip cursed shields on multiple party members, you can uncurse one of them 2x or 3x or 4x as quickly. Except...
+
+Q: The cursed shield won't un-curse!
+A: Don't equip it on Gogo or Umaro (characters 13 and 14). This is actually a problem in vanilla FF6 too, but Umaro normally can't equip it. I might fix this in a future update if I remember/care enough.
+
+Q: I can't find some of my equipment.
+A: Did you check if Umaro is wearing it? The guy on the airship doesn't unequip Umaro. Might fix this too.
+
+Q: When I use Rage the game glitches out.
+A: Is your Rager equipped with the AtmaWeapon? I've noticed some buggy effects from using enemy specials while equipped with the AtmaWeapon, and it even crashed my game once.
+
+Q: I just got a Game Over, but I didn't get to keep my experience levels.
+A: This feature was removed because it didn't work properly with one of the new esper boosts. I also wasn't very fond of it to begin with, because I would often get a Game Over and forget to reset so I don't miss out on valuable esper levels.
+
+Q: Can you add X to the mini-guide that gets generated?
+A: Let me know. I'm not sure what kinds of things people want in the mini-FAQ.
+
+Q: Can you add X feature?
+A: Maybe. I'm open to suggestions, but things that require a lot of effort probably won't get made.
+
+Q: Can I add X feature?
+A: Possibly! Even if I don't think it's a good idea for the standard settings, it could be a secret code. Send me a pull request to the project's Github.
+
+Q: Does Beyond Chaos work with X mod?
+A: Maybe, maybe not. I haven't tested Beyond Chaos with anyone else's mods. If it's an elaborate, full-game mod than the answer is no. Some small mods might be compatible, since Beyond Chaos doesn't do rom expansion or anything like that... but it uses up a lot of commonly used free space, so conflicts are likely.
+
+Q: Does Beyond Chaos work on a real Super Nintendo?
+A: Absolutely! Beyond Chaos has been tested on both Super Everdrive and SD2SNES, and it works 100% perfectly.
+
+Q: I found a bug!
+A: Send me a tweet, or a message on Twitch, or post it in one of the Beyond Chaos threads on various forums. I'll check it out.
+
+--- SPECIAL THANKS ---
+    ffmasterfoobar - Twitch broadcaster who did a lot of playtesting for my entertainment, check out his channel
+    Tenkarider - Romhacker who gave me lots of feedback, and creator of the Ultimate Czar Dragon hack, FF6 Curse of the Gods, and many other challenges
+    AND YOU

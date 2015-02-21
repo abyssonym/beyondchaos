@@ -186,6 +186,22 @@ class FreeBlock:
         return newfree
 
 
+def get_appropriate_freespace(freespaces, size):
+    freespaces = sorted(freespaces, key=lambda f: f.size)
+    candidates = [c for c in freespaces if c.size >= size]
+    if not candidates:
+        raise Exception("Not enough free space.")
+    else:
+        return candidates[0]
+
+
+def determine_new_freespaces(freespaces, myfs, size):
+    freespaces.remove(myfs)
+    fss = myfs.unfree(myfs.start, size)
+    freespaces.extend(fss)
+    return freespaces
+
+
 equip_offsets = {"weapon": 15,
                  "shield": 16,
                  "helm": 17,
@@ -863,22 +879,13 @@ def manage_commands_new(commands, characters):
                 newname = s.name
             break
 
-        myfs = None
-        for fs in sorted(freespaces, key=lambda f: f.size):
-            if fs.size > s.size:
-                myfs = fs
-                break
-        else:
-            raise Exception("Not enough free space.")
-
-        freespaces.remove(myfs)
+        myfs = get_appropriate_freespace(freespaces, s.size)
         s.set_location(myfs.start)
         if not hasattr(s, "bytestring") or not s.bytestring:
             s.generate_bytestring()
         s.write(outfile)
         c.setpointer(s.location, outfile)
-        fss = myfs.unfree(s.location, s.size)
-        freespaces.extend(fss)
+        freespaces = determine_new_freespaces(freespaces, myfs, s.size)
 
         if len(newname) > 7:
             newname = newname.replace('-', '')
@@ -1188,7 +1195,7 @@ def manage_skips():
     narshe_skip_sub.write(outfile)
 
 
-def activate_airship_mode(freespace=0xCFE2A):
+def activate_airship_mode(freespaces):
     set_airship_sub = Substitution()
     set_airship_sub.bytestring = (
         [0x3A, 0xD2, 0xCC] +  # moving code
@@ -1200,7 +1207,11 @@ def activate_airship_mode(freespace=0xCFE2A):
         [0xFF] +  # end map script
         [0xFE]  # end subroutine
         )
-    set_airship_sub.set_location(freespace)
+    myfs = get_appropriate_freespace(freespaces, set_airship_sub.size)
+    pointer = myfs.start
+    freespaces = determine_new_freespaces(freespaces, myfs, set_airship_sub.size)
+
+    set_airship_sub.set_location(pointer)
     set_airship_sub.write(outfile)
 
     set_airship_sub.bytestring = [0xD2, 0xB9]  # airship appears in WoR
@@ -1219,8 +1230,8 @@ def activate_airship_mode(freespace=0xCFE2A):
 
     # point to airship-placing script
     set_airship_sub.bytestring = (
-        [0xB2, freespace & 0xFF, (freespace >> 8) & 0xFF,
-         (freespace >> 16) - 0xA, 0xFE])
+        [0xB2, pointer & 0xFF, (pointer >> 8) & 0xFF,
+         (pointer >> 16) - 0xA, 0xFE])
     set_airship_sub.set_location(0xCB046)
     set_airship_sub.write(outfile)
 
@@ -1261,6 +1272,8 @@ def activate_airship_mode(freespace=0xCFE2A):
     set_airship_sub.bytestring = [0x32, 0xF5]
     set_airship_sub.set_location(0x41F41)
     set_airship_sub.write(outfile)
+
+    return freespaces
 
 
 def manage_rng():
@@ -1400,19 +1413,11 @@ def manage_final_boss(freespaces, preserve_graphics=False):
     for m in [kefka1, kefka2]:
         pointer = m.ai + 0xF8700
         freespaces.append(FreeBlock(pointer, pointer + m.aiscriptsize))
-        for fs in sorted(freespaces, key=lambda fs: fs.size):
-            if fs.size > m.aiscriptsize:
-                myfs = fs
-                break
-        else:
-            # not enough free space
-            raise Exception("Not enough free space for final boss!")
+        myfs = get_appropriate_freespace(freespaces, m.aiscriptsize)
 
-        freespaces.remove(myfs)
         pointer = myfs.start
         m.set_relative_ai(pointer)
-        fss = myfs.unfree(pointer, m.aiscriptsize)
-        freespaces.extend(fss)
+        freespaces = determine_new_freespaces(freespaces, myfs, m.aiscriptsize)
 
     kefka1.write_stats(outfile)
     kefka2.write_stats(outfile)
@@ -1882,18 +1887,9 @@ def manage_equipment(items, characters):
 
 
 def manage_reorder_rages(freespaces, by_level=False):
-    for fs in sorted(freespaces, key=lambda fs: fs.size):
-        if fs.size >= 0x100:
-            myfs = fs
-            break
-    else:
-        # not enough free space
-        raise Exception("Not enough free space for reordered rages.")
-
-    freespaces.remove(myfs)
+    myfs = get_appropriate_freespace(freespaces, 0x100)
     pointer = myfs.start
-    fss = myfs.unfree(pointer, 0x100)
-    freespaces.extend(fss)
+    freespaces = determine_new_freespaces(freespaces, myfs, 0x100)
 
     monsters = get_monsters()
     monsters = sorted(monsters, key=lambda m: m.display_name)
@@ -1947,18 +1943,9 @@ def manage_reorder_rages(freespaces, by_level=False):
         0x60,               # RTS
         ]
 
-    for fs in sorted(freespaces, key=lambda fs: fs.size):
-        if fs.size > rage_reorder_sub.size:
-            myfs = fs
-            break
-    else:
-        # not enough free space
-        raise Exception("Not enough free space for reordered rages.")
-
-    freespaces.remove(myfs)
+    myfs = get_appropriate_freespace(freespaces, rage_reorder_sub.size)
     pointer = myfs.start
-    fss = myfs.unfree(pointer, rage_reorder_sub.size)
-    freespaces.extend(fss)
+    freespaces = determine_new_freespaces(freespaces, myfs, rage_reorder_sub.size)
     rage_reorder_sub.set_location(pointer)
     rage_reorder_sub.write(outfile)
 
@@ -2074,18 +2061,9 @@ def manage_esper_boosts(freespaces):
     assert esper_boost_sub.bytestring.count(0x60) == 3
     boost_subs.append(esper_boost_sub)
     for boost_sub in boost_subs:
-        for fs in sorted(freespaces, key=lambda fs: fs.size):
-            if fs.size > boost_sub.size:
-                myfs = fs
-                break
-        else:
-            # not enough free space
-            raise Exception("Not enough free space for esper boosts.")
-
-        freespaces.remove(myfs)
+        myfs = get_appropriate_freespace(freespaces, boost_sub.size)
         pointer = myfs.start
-        fss = myfs.unfree(pointer, boost_sub.size)
-        freespaces.extend(fss)
+        freespaces = determine_new_freespaces(freespaces, myfs, boost_sub.size)
         boost_sub.set_location(pointer)
 
         if None in boost_sub.bytestring:
@@ -2451,23 +2429,18 @@ def manage_formations_hidden(formations, fsets, freespaces,
             if ue.id in mutated_ues:
                 raise Exception("Double mutation detected.")
 
-            for fs in sorted(freespaces, key=lambda fs: fs.size):
-                if fs.size > ue.aiscriptsize:
-                    myfs = fs
-                    break
-            else:
-                # not enough free space
+            try:
+                myfs = get_appropriate_freespace(freespaces, ue.aiscriptsize)
+            except:
                 continue
 
             break
         else:
             continue
 
-        freespaces.remove(myfs)
         pointer = myfs.start
         ue.set_relative_ai(pointer)
-        fss = myfs.unfree(pointer, ue.aiscriptsize)
-        freespaces.extend(fss)
+        freespaces = determine_new_freespaces(freespaces, myfs, ue.aiscriptsize)
 
         ue.mutate_ai(change_skillset=True)
         ue.mutate_ai(change_skillset=True)
@@ -3080,8 +3053,9 @@ def randomize():
             print "Cutscenes will NOT be skipped."
         print
 
+    event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
     if 'airship' in activated_codes:
-        activate_airship_mode()
+        event_freespaces = activate_airship_mode(event_freespaces)
 
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'

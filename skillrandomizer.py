@@ -103,6 +103,8 @@ class SpellBlock:
         f.close()
 
     def __cmp__(self, other):
+        if other is None:
+            return 1
         return self.spellid - other.spellid
 
     def __hash__(self):

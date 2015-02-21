@@ -33,7 +33,7 @@ Flags:
         q   Randomize what equipment each character can wear.
         e   Randomize esper spells and levelup bonuses.
         t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
-        u   Umaro risk.
+        u   Umaro risk. (Random character will be berserk)
         l   Randomize blitz inputs.
         n   Randomize window background colors.
         f   Randomize enemy formations.

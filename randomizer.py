@@ -3093,6 +3093,8 @@ def randomize():
     if 'w' in flags and 'suplexwrecks' not in activated_codes:
         _, _, freespaces = manage_commands_new(commands, characters)
         random.seed(seed)
+    else:
+        get_ranked_spells(sourcefile)  # set up skill module anyway
 
     if 'z' in flags:
         manage_sprint()

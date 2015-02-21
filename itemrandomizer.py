@@ -668,6 +668,12 @@ sperelic = {0x04: (0x25456, 0x2545B),
 invalid_commands = [0x00, 0x04, 0x14, 0x15, 0x19, 0xFF]
 
 
+def reset_cursed_shield(filename):
+    cursed = get_item(0x66)
+    cursed.equippable = cursed.equippable & 0x0FFF
+    cursed.write_stats(filename)
+
+
 def reset_special_relics(items, characters, filename, changed_commands):
     f = open(filename, 'r+b')
     characters = [c for c in characters if c.id < 14]

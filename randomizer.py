@@ -20,7 +20,8 @@ from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                MetamorphBlock, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table)
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
-                            reset_special_relics, reset_rage_blizzard)
+                            reset_special_relics, reset_rage_blizzard,
+                            reset_cursed_shield)
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
@@ -3227,6 +3228,7 @@ def randomize():
     if 'q' in flags:
         # do this after swapping beserk
         reset_special_relics(items, characters, outfile, changed_commands)
+        reset_cursed_shield(outfile)
 
         for c in characters:
             c.mutate_stats(outfile)

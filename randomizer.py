@@ -187,12 +187,30 @@ class FreeBlock:
 
 
 def get_appropriate_freespace(freespaces, size):
-    freespaces = sorted(freespaces, key=lambda f: f.size)
     candidates = [c for c in freespaces if c.size >= size]
     if not candidates:
-        raise Exception("Not enough free space.")
-    else:
+        raise Exception("Not enough free space")
+
+    candidates = sorted(candidates, key=lambda f: f.size)
+    if len(candidates) == 1:
         return candidates[0]
+
+    def is_ideal(candidate):
+        return (candidate.size >= size and (candidate.size * 0.9) <= size)
+
+    ideals = [c for c in freespaces if is_ideal(c)]
+    if ideals:
+        return ideals[0]
+
+    lowest_size = candidates[0].size
+    if lowest_size >= (size*2):
+        return candidates[0]
+
+    decent_candidates = [c for c in candidates if (c.size - size) > lowest_size]
+    if decent_candidates:
+        return decent_candidates[0]
+
+    return candidates[0]
 
 
 def determine_new_freespaces(freespaces, myfs, size):
@@ -1374,6 +1392,9 @@ def manage_magitek(spells):
 def manage_final_boss(freespaces, preserve_graphics=False):
     kefka1 = get_monster(0x12a)
     kefka2 = get_monster(0x11a)  # dummied kefka
+    for m in [kefka1, kefka2]:
+        pointer = m.ai + 0xF8700
+        freespaces.append(FreeBlock(pointer, pointer + m.aiscriptsize))
     aiscripts = read_ai_table(FINAL_BOSS_AI_TABLE)
 
     aiscript = aiscripts['KEFKA 1']
@@ -1411,10 +1432,7 @@ def manage_final_boss(freespaces, preserve_graphics=False):
     k2formation.lookup_enemies()
 
     for m in [kefka1, kefka2]:
-        pointer = m.ai + 0xF8700
-        freespaces.append(FreeBlock(pointer, pointer + m.aiscriptsize))
         myfs = get_appropriate_freespace(freespaces, m.aiscriptsize)
-
         pointer = myfs.start
         m.set_relative_ai(pointer)
         freespaces = determine_new_freespaces(freespaces, myfs, m.aiscriptsize)

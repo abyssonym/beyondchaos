@@ -20,7 +20,7 @@ def generate_name(size=None):
         if size < 4:
             size += random.randint(0, 5)
     while True:
-        starts = [s for s in generator if s[0].isupper()]
+        starts = sorted([s for s in generator if s[0].isupper()])
         name = random.choice(starts)
         name = name[:size]
         while len(name) < size:

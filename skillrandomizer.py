@@ -102,6 +102,12 @@ class SpellBlock:
         self.has_status = sum([bin(b).count("1") for b in statuses])
         f.close()
 
+    def __cmp__(self, other):
+        return self.spellid - other.spellid
+
+    def __hash__(self):
+        return self.spellid
+
     @property
     def unrageable(self):
         return (self.is_blitz or self.is_swdtech or self.is_slots or
@@ -424,7 +430,8 @@ class RandomSpellSub(Substitution):
         spellsets = spellsets or get_spellsets(spells=valid_spells)
         spellclass = spellclass or random.choice(spellsets.keys())
         spellset = spellsets[spellclass]
-        spellset = [s for s in spellset if s in valid_spells]
+        spellset = sorted([s for s in spellset if s in valid_spells],
+                          key=lambda s: s.spellid)
         if len(spellset) < 3:
             raise ValueError("Spellset %s not big enough." % spellclass)
 

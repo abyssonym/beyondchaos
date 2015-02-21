@@ -1814,7 +1814,7 @@ def manage_character_appearance(preserve_graphics=False):
     transformer = get_palette_transformer(middle=True)
 
     def recolor_palette(pointer, size):
-        f = open(outfile, 'r+w')
+        f = open(outfile, 'r+b')
         f.seek(pointer)
         palette = [read_multi(f, length=2) for _ in xrange(size)]
         palette = transformer(palette)
@@ -2692,7 +2692,7 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
 
 def manage_colorize_wor():
     transformer = get_palette_transformer(always=True)
-    f = open(outfile, 'r+w')
+    f = open(outfile, 'r+b')
     f.seek(0x12ed00)
     raw_palette = [read_multi(f, length=2) for i in xrange(0x80)]
     new_palette = transformer(raw_palette)

@@ -32,6 +32,9 @@ from towerrandomizer import randomize_tower
 
 VERSION = "44"
 VERBOSE = False
+TEST_ON = False
+TEST_SEED = "44.abcefghijklmnopqrstuvwxyz-partyparty.42069"
+TEST_FILE = "program.rom"
 flags = None
 sourcefile, outfile = None, None
 
@@ -3009,10 +3012,16 @@ def manage_full_umaro():
 def randomize():
     global outfile, sourcefile, VERBOSE, flags
 
+    args = list(argv)
+    if TEST_ON:
+        while len(args) < 3:
+            args.append(None)
+        args[1] = TEST_FILE
+        args[2] = TEST_SEED
     sleep(0.5)
     print 'You are using Beyond Chaos randomizer version "%s".' % VERSION
-    if len(argv) > 2:
-        sourcefile = argv[1].strip()
+    if len(args) > 2:
+        sourcefile = args[1].strip()
     else:
         sourcefile = raw_input("Please input the file path to your copy of "
                                "the FF3 US 1.0 rom:\n> ").strip()
@@ -3027,8 +3036,8 @@ def randomize():
     f.close()
     del(f)
 
-    if len(argv) > 2:
-        fullseed = argv[2].strip()
+    if len(args) > 2:
+        fullseed = args[2].strip()
     else:
         fullseed = raw_input("Please input a seed value (blank for a random "
                              "seed):\n> ").strip()

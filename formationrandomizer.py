@@ -387,14 +387,30 @@ class FormationSet():
 
         return chosens
 
+    @property
+    def swappable(self):
+        if len(self.formids) < 4 or len(set(self.formids)) == 1:
+            return False
+        return True
+
     def swap_formations(self, other):
-        if len(set(self.formids)) < 4 or len(set(other.formids)) < 4:
+        if not (self.swappable and other.swappable):
             return
 
-        formids = self.formids + other.formids
-        random.shuffle(formids)
-        self.formids = formids[:4]
-        other.formids = formids[4:]
+        highself = max(self.formations, key=lambda f: f.rank())
+        highother = max(other.formations, key=lambda f: f.rank())
+        candidates = self.formations + other.formations
+        candidates.remove(highself)
+        candidates.remove(highother)
+        random.shuffle(candidates)
+        assert len(candidates) == 6
+        formids = [f.formid for f in candidates]
+        self.formids = formids[:3]
+        other.formids = formids[3:]
+        self.formids.append(highself.formid)
+        other.formids.append(highother.formid)
+        self.shuffle_formations()
+        other.shuffle_formations()
 
     def shuffle_formations(self):
         random.shuffle(self.formids)
@@ -450,7 +466,9 @@ if __name__ == "__main__":
     for m in monsters:
         m.read_stats(filename)
     fsets = get_fsets(filename=filename)
-    for fs in fsets:
-        for f in fs.formations:
-            if 1000 < f.get_guaranteed_drop_value() < 10000:
-                print f
+    formations = get_formations(filename=filename)
+    for f in formations:
+        print f, f.get_music()
+
+    for f in fsets:
+        print f

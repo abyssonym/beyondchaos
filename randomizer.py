@@ -2313,10 +2313,10 @@ def manage_formations(formations, fsets):
                      fset.setid in outdoors]
     indoor_fsets = [fset for fset in valid_fsets if
                     fset.setid not in outdoors]
-    for a, b in zip(outdoor_fsets, outdoor_fsets[1:]):
-        a.swap_formations(b)
-    for a, b in zip(indoor_fsets, indoor_fsets[1:]):
-        a.swap_formations(b)
+    for fsetset in [outdoor_fsets, indoor_fsets]:
+        fsetset = [f for f in fsetset if f.swappable]
+        for a, b in zip(fsetset, fsetset[1:]):
+            a.swap_formations(b)
 
     # just shuffle the rest of the formations within an fset
     valid_fsets = [fset for fset in ranked_fsets if fset not in valid_fsets]

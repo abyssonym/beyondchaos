@@ -73,6 +73,12 @@ def log(text):
     randlog = randlog.strip()
 
 
+def rngstate():
+    state = sum(random.getstate()[1])
+    print state
+    return state
+
+
 def rewrite_title(text):
     f = open(outfile, 'r+b')
     while len(text) < 20:

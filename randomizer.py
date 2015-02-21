@@ -192,24 +192,6 @@ def get_appropriate_freespace(freespaces, size):
         raise Exception("Not enough free space")
 
     candidates = sorted(candidates, key=lambda f: f.size)
-    if len(candidates) == 1:
-        return candidates[0]
-
-    def is_ideal(candidate):
-        return (candidate.size >= size and (candidate.size * 0.9) <= size)
-
-    ideals = [c for c in freespaces if is_ideal(c)]
-    if ideals:
-        return ideals[0]
-
-    lowest_size = candidates[0].size
-    if lowest_size >= (size*2):
-        return candidates[0]
-
-    decent_candidates = [c for c in candidates if (c.size - size) > lowest_size]
-    if decent_candidates:
-        return decent_candidates[0]
-
     return candidates[0]
 
 

@@ -150,6 +150,9 @@ A: Don't equip it on Gogo or Umaro (characters 13 and 14). This is actually a pr
 Q: I can't find some of my equipment.
 A: Did you check if Umaro is wearing it? The guy on the airship doesn't unequip Umaro. Might fix this too.
 
+Q: Why can't Gogo select X ability?
+A: It's probably there. You just have to scroll past the edge of the menu. Unless it's an ability Shadow had and you let him die, in which case, it won't be there.
+
 Q: When I use Rage the game glitches out.
 A: Is your Rager equipped with the AtmaWeapon? I've noticed some buggy effects from using enemy specials while equipped with the AtmaWeapon, and it even crashed my game once.
 

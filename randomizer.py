@@ -1066,7 +1066,7 @@ def manage_natural_magic(characters):
     return candidates
 
 
-def manage_umaro(characters):
+def manage_umaro(characters, freespaces):
     # ship unequip - cc3510
     equip_umaro_sub = Substitution()
     equip_umaro_sub.bytestring = [0xC9, 0x0E]
@@ -1075,6 +1075,51 @@ def manage_umaro(characters):
     equip_umaro_sub.bytestring = [0xEA] * 2
     equip_umaro_sub.set_location(0x39EF6)
     equip_umaro_sub.write(outfile)
+
+    f = open(sourcefile, 'r+b')
+    f.seek(0xC359D)
+    old_unequipper = map(ord, f.read(218))
+    f.close()
+    header = old_unequipper[:7]
+    footer = old_unequipper[-3:]
+
+    def generate_unequipper(basepointer, not_current_party=False):
+        unequipper = []
+        pointer = basepointer + len(header)
+        a, b, c = "LO", "MED", "HI"
+        for i in range(14):
+            segment = []
+            segment += [0xE1]
+            segment += [0xC0, 0xA0 | i, 0x01, a, b, c]
+            if not_current_party:
+                segment += [0xDE]
+                segment += [0xC0, 0xA0 | i, 0x81, a, b, c]
+            segment += [0x8D, i]
+            pointer += len(segment)
+            hi, med, lo = pointer >> 16, (pointer >> 8) & 0xFF, pointer & 0xFF
+            hi = hi - 0xA
+            segment = [hi if j == c else
+                       med if j == b else
+                       lo if j == a else j for j in segment]
+            unequipper += segment
+        unequipper = header + unequipper + footer
+        return unequipper
+
+    unequip_umaro_sub = Substitution()
+    unequip_umaro_sub.bytestring = generate_unequipper(0xC351E)
+    unequip_umaro_sub.set_location(0xC351E)
+    unequip_umaro_sub.write(outfile)
+
+    myfs = get_appropriate_freespace(freespaces, 234)
+    pointer = myfs.start
+    unequip_umaro_sub.bytestring = generate_unequipper(pointer, not_current_party=True)
+    freespaces = determine_new_freespaces(freespaces, myfs, unequip_umaro_sub.size)
+    unequip_umaro_sub.set_location(pointer)
+    unequip_umaro_sub.write(outfile)
+    unequip_umaro_sub.bytestring = [
+        pointer & 0xFF, (pointer >> 8) & 0xFF, (pointer >> 16) - 0xA]
+    unequip_umaro_sub.set_location(0xC3514)
+    unequip_umaro_sub.write(outfile)
 
     candidates = [c for c in characters if c.id <= 13 and
                   c.id != 12 and
@@ -1125,7 +1170,7 @@ def manage_umaro(characters):
     storm_sub.set_location(0x21710)
     storm_sub.write(outfile)
 
-    return umaro_risk
+    return umaro_risk, freespaces
 
 
 def manage_sprint():
@@ -3170,7 +3215,7 @@ def randomize():
         natmag_candidates = None
 
     if 'u' in flags:
-        umaro_risk = manage_umaro(characters)
+        umaro_risk, event_freespaces = manage_umaro(characters, event_freespaces)
         reset_rage_blizzard(items, umaro_risk, outfile)
         random.seed(seed)
 

@@ -500,6 +500,12 @@ def randomize_colosseum(filename, pointer):
             winname = win_obj.name
         collog += "{0:12} -> {1}\n".format(wager_obj.name, winname)
     log(collog)
+
+    coliseum_run_sub = Substitution()
+    coliseum_run_sub.bytestring = [0xEA] * 2
+    coliseum_run_sub.set_location(0x25BEF)
+    coliseum_run_sub.write(outfile)
+
     return results
 
 

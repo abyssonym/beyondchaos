@@ -129,8 +129,8 @@ A: No.
 Q: When my character uses X ability, he attacks the enemy and then attacks his own party for low damage! Is this a bug?
 A: Yes! I don't know how to fix it, but it's a bit interesting in its own right, so I've been ignoring it for now.
 
-Q: It says my character can use X ability in the menu, but in battle they have something completely different.
-A: This is also a bug that I'm not sure how to fix. It also affects relics that change abilities... the only way to tell what ability a relic like Coin Toss will give you is to equip it and enter battle.
+Q: It says my character can use Blitz/Lore/etc. in their skills menu, but they don't actually know it.
+A: This is a side effect of replacing the old commands. I'm not sure how to fix it, but it doesn't really affect the game so I haven't really looked into it.
 
 Q: I used Control on an enemy and ordered him to use a skill on his own party, but he attacked me instead!
 A: Some skills are just like that. They're flagged to never be used on your own party.
@@ -142,7 +142,7 @@ Q: The boss of the Fanatics Tower is impossible! How do I win without Life 3?
 A: Gur pynffvp fgengrtl bs Enfcvat uvz gb qrngu fgvyy jbexf, naq ur vf bsgra ihyarenoyr gb Ofrex. Hfvat Cnyvqbe gb ynaq gur svany uvg pna jbex, ohg or jnel gung ur zvtug fgneg gur onggyr jvgu vaangr Yvsr 3. Nyfb, vs lbh unir n Trz Obk be fvzvyne vgrz, vg zvtug nyybj lbh gb hfr na novyvgl va gur gbjre gung lbh abeznyyl pna'g hfr... Hygvzn pna or Ehavpxrq, sbe rknzcyr.
 
 Q: Dude I've got like six cursed shields.
-A: Fun fact, if you equip cursed shields on multiple party members, you can uncurse one of them 2x or 3x or 4x as quickly. Except...
+A: Fun fact, if you equip cursed shields on multiple party members, you can uncurse one of them 2x or 3x or 4x as quickly.
 
 Q: Why can't Gogo select X ability?
 A: It's probably there. You just have to scroll past the edge of the menu. Unless it's an ability Shadow had and you let him die, in which case, it won't be there.

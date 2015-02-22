@@ -665,6 +665,12 @@ sperelic = {0x04: (0x25456, 0x2545B),
             0x20: (0x25453, 0x25458),
             0x40: (0x25452, 0x25457)}
 
+sperelic2 = {0x04: (0x3619C, 0x361A1),
+             0x08: (0x3619B, 0x361A0),
+             0x10: (0x3619A, 0x3619F),
+             0x20: (0x36199, 0x3619E),
+             0x40: (0x36198, 0x3619D)}
+
 invalid_commands = [0x00, 0x04, 0x14, 0x15, 0x19, 0xFF]
 
 
@@ -686,7 +692,6 @@ def reset_special_relics(items, characters, filename, changed_commands):
         item.equippable |= 1 << 12  # gogo
         for flag in [0x04, 0x08, 0x10, 0x20, 0x40]:
             if flag & item.features['special1']:
-                beforeptr, afterptr = sperelic[flag]
                 while True:
                     if item.itemid == 0xd8:
                         before = random.choice([0x0, 0x1, 0x2, 0x12])
@@ -715,10 +720,13 @@ def reset_special_relics(items, characters, filename, changed_commands):
                         continue
 
                     after = random.choice(sorted(unused))
-                    f.seek(beforeptr)
-                    f.write(chr(before))
-                    f.seek(afterptr)
-                    f.write(chr(after))
+                    for ptrdict in [sperelic, sperelic2]:
+                        beforeptr, afterptr = ptrdict[flag]
+                        f.seek(beforeptr)
+                        f.write(chr(before))
+                        f.seek(afterptr)
+                        f.write(chr(after))
+
                     for t in tempchars:
                         item.equippable |= (1 << t.id)
 

@@ -515,6 +515,10 @@ class LongEntrance(Entrance):
         f.write(chr(self.desty))
         f.close()
 
+    def copy(self, entrance):
+        for attribute in ["x", "y", "dest", "destx", "desty", "width"]:
+            setattr(self, attribute, getattr(entrance, attribute))
+
 
 class EntranceSet():
     def __init__(self, entid):
@@ -591,6 +595,21 @@ class EntranceSet():
             e2.set_id(e.entid)
             e2.set_location(self.location)
             self.entrances.append(e2)
+        self.longentrances = []
+        for e in sorted(eset.longentrances, key=lambda x: x.entid):
+            e2 = LongEntrance(e.entid)
+            e2.copy(e)
+            e2.set_id(e.entid)
+            e2.set_location(self.location)
+            self.longentrances.append(e2)
+
+    def convert_longs(self):
+        for longentrance in self.longentrances:
+            longentrance.dest &= 0xFE00
+            longentrance.dest |= self.location.locid & 0x1FF
+            e = random.choice(self.entrances)
+            longentrance.destx = e.x
+            longentrance.desty = e.y
 
 
 def get_locations(filename=None):

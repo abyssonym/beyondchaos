@@ -870,6 +870,10 @@ def randomize_tower(filename):
                 if a or b:
                     raise Exception("NOPE")
 
+    for a, b in locexchange.items():
+        if b.locid != a.locid:
+            b.entrance_set.convert_longs()
+
     make_secret_treasure_room()
     randomize_fanatics()
 

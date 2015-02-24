@@ -3165,24 +3165,12 @@ def randomize():
 
     if 'd' in flags:
         # do this before treasure
-        print "NOTICE: You have selected FINAL DUNGEON RANDOMIZATION."
-        print ("This will greatly increase the size of the final dungeon, "
-               "but this feature is a little dangerous.\nThough there is "
-               "always a solution, it is possible to become stuck on certain "
-               "maps.\nAs such, it is recommended to play the final dungeon "
-               "with save states until you become more familiar with it.\n")
-        x = raw_input("Would you like to randomize the final dungeon? (y/n) ")
-        if not x or x.lower()[0] != 'y':
-            print "The final dungeon will NOT be randomized."
-            flags = [c for c in flags if c != 'd']
-        else:
-            if 'm' in flags and 't' in flags and 'q' in flags:
-                dirk = get_item(0)
-                dirk.become_another()
-                dirk.write_stats(outfile)
-                dummy_item(dirk)
-                assert not dummy_item(dirk)
-        print
+        if 'm' in flags and 't' in flags and 'q' in flags:
+            dirk = get_item(0)
+            dirk.become_another()
+            dirk.write_stats(outfile)
+            dummy_item(dirk)
+            assert not dummy_item(dirk)
         random.seed(seed)
 
     items = get_ranked_items()

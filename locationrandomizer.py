@@ -404,8 +404,6 @@ class Entrance():
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
-        #f.seek(self.pointerpointer)
-        #self.pointer = read_multi(f, length=2) + 0x1fbb00
         f.seek(self.pointer)
         self.x = ord(f.read(1))
         self.y = ord(f.read(1))
@@ -492,11 +490,39 @@ class Entrance():
             setattr(self, attribute, getattr(entrance, attribute))
 
 
+class LongEntrance(Entrance):
+    def read_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        self.x = ord(f.read(1))
+        self.y = ord(f.read(1))
+        self.width = ord(f.read(1))
+        self.dest = read_multi(f, length=2)
+        self.destx = ord(f.read(1))
+        self.desty = ord(f.read(1))
+        f.close()
+
+    def write_data(self, filename, nextpointer):
+        if nextpointer >= 0x2DFE00:
+            raise Exception("Not enough room for long entrances.")
+        f = open(filename, 'r+b')
+        f.seek(nextpointer)
+        f.write(chr(self.x))
+        f.write(chr(self.y))
+        f.write(chr(self.width))
+        write_multi(f, self.dest, length=2)
+        f.write(chr(self.destx))
+        f.write(chr(self.desty))
+        f.close()
+
+
 class EntranceSet():
     def __init__(self, entid):
         self.entid = entid
         self.pointer = 0x1fbb00 + (2*entid)
+        self.longpointer = 0x2df480 + (2*entid)
         self.entrances = []
+        self.longentrances = []
 
     @property
     def destinations(self):
@@ -518,12 +544,31 @@ class EntranceSet():
         for e in self.entrances:
             e.read_data(filename)
             e.set_location(self.location)
+
+        f = open(filename, 'r+b')
+        f.seek(self.longpointer)
+        start = read_multi(f, length=2)
+        end = read_multi(f, length=2)
+        f.close()
+        n = (end - start) / 7
+        assert end == start + (7*n)
+        self.longentrances = []
+        for i in xrange(n):
+            e = LongEntrance(0x2DF480 + start + (i*7))
+            e.set_id(i)
+            self.longentrances.append(e)
+        for e in self.longentrances:
+            e.read_data(filename)
+            e.set_location(self.location)
+
         self.location.uniqify_entrances()
 
-    def write_data(self, filename, nextpointer):
+    def write_data(self, filename, nextpointer, longnextpointer):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         write_multi(f, (nextpointer - 0x1fbb00), length=2)
+        f.seek(self.longpointer)
+        write_multi(f, (longnextpointer - 0x2df480), length=2)
         f.close()
         self.location.uniqify_entrances()
         for e in self.entrances:
@@ -531,7 +576,12 @@ class EntranceSet():
                 raise Exception("Too many entrance triggers.")
             e.write_data(filename, nextpointer)
             nextpointer += 6
-        return nextpointer
+        for e in self.longentrances:
+            if longnextpointer + 7 >= 0x2dfe00:
+                raise Exception("Too many long entrance triggers.")
+            e.write_data(filename, longnextpointer)
+            longnextpointer += 7
+        return nextpointer, longnextpointer
 
     def copy(self, eset):
         self.entrances = []

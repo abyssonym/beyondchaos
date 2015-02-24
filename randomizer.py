@@ -30,7 +30,7 @@ from locationrandomizer import Zone, EntranceSet, get_locations, get_location
 from towerrandomizer import randomize_tower
 
 
-VERSION = "45"
+VERSION = "46"
 VERBOSE = False
 TEST_ON = False
 TEST_SEED = "44.abcefghijklmnopqrstuvwxyz-partyparty.42069"

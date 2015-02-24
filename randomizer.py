@@ -3037,15 +3037,6 @@ def randomize():
                                "the FF3 US 1.0 rom:\n> ").strip()
         print
 
-    f = open(sourcefile, 'rb')
-    h = md5(f.read()).hexdigest()
-    if h != MD5HASH:
-        print ("WARNING! The md5 hash of this file does not match the known "
-               "hash of the english FF6 1.0 rom!")
-        print
-    f.close()
-    del(f)
-
     if len(args) > 2:
         fullseed = args[2].strip()
     else:
@@ -3077,6 +3068,28 @@ def randomize():
     tempname = sourcefile.rsplit('.', 1)
     outfile = '.'.join([tempname[0], str(seed), tempname[1]])
     outlog = '.'.join([tempname[0], str(seed), 'txt'])
+
+    f = open(sourcefile, 'rb')
+    data = f.read()
+    f.close()
+    del(f)
+
+    if len(data) % 0x400 == 0x200:
+        print "NOTICE: Headered ROM detected. Output file will have no header."
+        data = data[0x200:]
+        sourcefile = '.'.join([tempname[0], "unheadered", tempname[1]])
+        f = open(sourcefile, 'w+b')
+        f.write(data)
+        f.close()
+
+    h = md5(data).hexdigest()
+    if h != MD5HASH:
+        print ("WARNING! The md5 hash of this file does not match the known "
+               "hash of the english FF6 1.0 rom!")
+        x = raw_input("Continue? y/n ")
+        if not (x and x.lower()[0] == 'y'):
+            return
+
     copyfile(sourcefile, outfile)
 
     commands = commands_from_table(COMMAND_TABLE)

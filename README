@@ -10,7 +10,7 @@ Running the randomizer:
     Windows users may use the executable file, "beyondchaos.exe". Other users, please run "randomizer.py" using Python version 2.7
 
 Source rom file:
-    The randomizer will ask for a rom file. Beyond Chaos does not provide this rom. Put the file in the same directory as Beyond Chaos and simply input the file name. The rom used should be the unheadered FF3 US 1.0 rom. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the checksum/hash:
+    The randomizer will ask for a rom file. Beyond Chaos does not provide this rom. Put the file in the same directory as Beyond Chaos and simply input the file name. The rom used should be the FF3 US 1.0 rom. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
     MD5 - e986575b98300f721ce27c180264d890
     CRC32 - a27f1c7a
 

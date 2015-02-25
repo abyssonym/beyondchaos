@@ -1615,19 +1615,13 @@ def make_palette_repair(main_palette_changes):
     repair_sub.set_location(0xCB154)  # Narshe secret entrance
     repair_sub.write(outfile)
 
+npc_list = None
 
-def manage_character_appearance(preserve_graphics=False):
-    wild = 'partyparty' in activated_codes
-    sabin_mode = 'suplexwrecks' in activated_codes
-    tina_mode = 'bravenudeworld' in activated_codes
-    charpal_options = {}
-    for line in open(CHARACTER_PALETTE_TABLE):
-        if line[0] == '#':
-            continue
-        charid, palettes = tuple(line.strip().split(':'))
-        palettes = map(hex2int, palettes.split(','))
-        charid = hex2int(charid)
-        charpal_options[charid] = palettes
+
+def get_npcs():
+    global npc_list
+    if npc_list is not None:
+        return npc_list
 
     pointerspointer = 0x41d52
     pointers = set([])
@@ -1643,6 +1637,25 @@ def manage_character_appearance(preserve_graphics=False):
         npc.read_data(sourcefile)
         if npc.pointer == 0x42ac0:
             npc.read_data(outfile)
+
+    npc_list = npcs
+    return get_npcs()
+
+
+def manage_character_appearance(preserve_graphics=False):
+    wild = 'partyparty' in activated_codes
+    sabin_mode = 'suplexwrecks' in activated_codes
+    tina_mode = 'bravenudeworld' in activated_codes
+    charpal_options = {}
+    for line in open(CHARACTER_PALETTE_TABLE):
+        if line[0] == '#':
+            continue
+        charid, palettes = tuple(line.strip().split(':'))
+        palettes = map(hex2int, palettes.split(','))
+        charid = hex2int(charid)
+        charpal_options[charid] = palettes
+
+    npcs = get_npcs()
 
     if wild or tina_mode or sabin_mode:
         char_ids = range(0, 0x16)
@@ -2875,6 +2888,14 @@ def manage_tower():
                     thamasa_map_sub.bytestring = [0x57]
                     thamasa_map_sub.write(outfile)
         l.write_data(outfile)
+
+    npc = [n for n in get_npcs() if n.event_addr == 0x233B8][0]
+    npc.event_addr = 0x233A6
+    npc.write_data(outfile)
+    narshe_beginner_sub = Substitution()
+    narshe_beginner_sub.bytestring = [0xE5, 0x00]
+    narshe_beginner_sub.set_location(0xC33A7)
+    narshe_beginner_sub.write(outfile)
 
     entrancesets = [l.entrance_set for l in locations]
     entrancesets = entrancesets[:0x19F]

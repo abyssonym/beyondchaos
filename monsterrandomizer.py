@@ -1065,11 +1065,24 @@ class MonsterBlock:
 
         valid_spells = [v for v in valid_spells if not v.unrageable]
 
-        def get_good_selection(candidates, numselect, minimum=2):
+        def get_good_selection(candidates, numselect, minimum=2,
+                               highpower=False):
             candidates = [c for c in candidates if not get_spell(c).unrageable]
+            if highpower:
+                candidates = sorted(candidates,
+                                    key=lambda c: get_spell(c).rank())
+                for c in list(candidates)[:-2]:
+                    if len(candidates) <= 2:
+                        break
+                    if random.randint(1, len(candidates)*2) >= 4:
+                        candidates.remove(c)
+                    else:
+                        break
             candidates += [0xEF, 0xEE]
             if self.deadspecial and 0xEF in candidates:
                 candidates.remove(0xEF)
+            if highpower and len(candidates) >= 3:
+                candidates.remove(0xEE)
             while True:
                 if len(candidates) >= minimum:
                     break
@@ -1087,7 +1100,7 @@ class MonsterBlock:
                     break
             return sorted(selection)
 
-        self.sketches = get_good_selection(candidates, 2)
+        self.sketches = get_good_selection(candidates, 2, highpower=True)
         if not self.is_boss:
             self.rages = get_good_selection(candidates, 2, minimum=3)
 

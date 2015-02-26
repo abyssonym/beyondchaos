@@ -1059,6 +1059,8 @@ class MonsterBlock:
         self.controls = random.sample(candidates, min(4, len(candidates)))
         while len(self.controls) < 4:
             self.controls += [random.choice(candidates)]
+        if 0xEE not in self.controls and 0xEF not in self.controls:
+            self.controls[random.randint(0, 3)] = random.choice([0xEE, 0xEF])
         self.controls = sorted(self.controls)
 
         valid_spells = [v for v in valid_spells if not v.unrageable]

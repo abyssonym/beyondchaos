@@ -1101,6 +1101,7 @@ class MonsterBlock:
             return sorted(selection)
 
         self.sketches = get_good_selection(candidates, 2, highpower=True)
+        random.shuffle(self.sketches)
         if not self.is_boss:
             self.rages = get_good_selection(candidates, 2, minimum=3)
 

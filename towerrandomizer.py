@@ -166,7 +166,7 @@ def get_appropriate_location(loc, flair=True):
                 if flair:
                     u.make_tower_flair()
                 u.fill_battle_bg(loc.locid)
-                u.unlock_chests(20000, 100000)
+                u.unlock_chests(200, 1000)
                 fsets = get_new_fsets("kefka's tower", 20)
                 fset = random.choice(fsets)
                 for formation in fset.formations:

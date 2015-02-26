@@ -3086,7 +3086,10 @@ def randomize():
     print s
     log(s)
 
-    tempname = sourcefile.rsplit('.', 1)
+    if '.' in sourcefile:
+        tempname = sourcefile.rsplit('.', 1)
+    else:
+        tempname = [sourcefile, 'smc']
     outfile = '.'.join([tempname[0], str(seed), tempname[1]])
     outlog = '.'.join([tempname[0], str(seed), 'txt'])
 

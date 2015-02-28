@@ -400,15 +400,16 @@ class FormationSet():
         highself = max(self.formations, key=lambda f: f.rank())
         highother = max(other.formations, key=lambda f: f.rank())
         candidates = self.formations + other.formations
-        candidates.remove(highself)
-        candidates.remove(highother)
+        if random.randint(1, 7) != 7:
+            candidates.remove(highself)
+            candidates.remove(highother)
         random.shuffle(candidates)
-        assert len(candidates) == 6
         formids = [f.formid for f in candidates]
-        self.formids = formids[:3]
-        other.formids = formids[3:]
-        self.formids.append(highself.formid)
-        other.formids.append(highother.formid)
+        self.formids = formids[:len(formids)/2]
+        other.formids = formids[len(formids)/2:]
+        if len(formids) == 6:
+            self.formids.append(highself.formid)
+            other.formids.append(highother.formid)
         self.shuffle_formations()
         other.shuffle_formations()
 

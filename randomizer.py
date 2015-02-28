@@ -2399,8 +2399,17 @@ def manage_formations(formations, fsets):
                      fset.setid in outdoors]
     indoor_fsets = [fset for fset in valid_fsets if
                     fset.setid not in outdoors]
+
+    def mutate_ordering(fsetset):
+        for i in xrange(len(fsetset)-1):
+            if random.choice([True, False, False]):
+                fsetset[i], fsetset[i+1] = fsetset[i+1], fsetset[i]
+        return fsetset
+
     for fsetset in [outdoor_fsets, indoor_fsets]:
         fsetset = [f for f in fsetset if f.swappable]
+        fsetset = mutate_ordering(fsetset)
+        fsetset = sorted(fsetset, key=lambda f: f.rank())
         for a, b in zip(fsetset, fsetset[1:]):
             a.swap_formations(b)
 

@@ -1684,6 +1684,40 @@ def manage_character_appearance(preserve_graphics=False):
             change_to = dict(zip(sorted(male), male) +
                              zip(sorted(female), female))
 
+    if not preserve_graphics:
+        nameiddict = {
+            0: "Terra",
+            1: "Locke",
+            2: "Cyan",
+            3: "Shadow",
+            4: "Edgar",
+            5: "Sabin",
+            6: "Celes",
+            7: "Strago",
+            8: "Relm",
+            9: "Setzer",
+            0xa: "Mog",
+            0xb: "Gau",
+            0xc: "Gogo",
+            0xd: "Umaro",
+            0xe: "Trooper",
+            0xf: "Imp",
+            0x10: "Leo",
+            0x11: "Banon",
+            0x12: "Esper Terra",
+            0x13: "Merchant",
+            0x14: "Ghost",
+            0x15: "Kefka"}
+        s = "--- CHARACTER SPRITES ---\n"
+        for charid in xrange(0x16):
+            before = nameiddict[charid]
+            if charid in change_to:
+                after = nameiddict[change_to[charid]]
+            else:
+                after = before
+            s += "%s looks like %s.\n" % (before, after)
+        log(s)
+
     names = []
     if not tina_mode and not sabin_mode:
         f = open(MALE_NAMES_TABLE)

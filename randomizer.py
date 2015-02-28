@@ -3058,6 +3058,27 @@ def randomize():
                                "the FF3 US 1.0 rom:\n> ").strip()
         print
 
+    flaghelptext = '''o   Shuffle characters' in-battle commands.
+w   Generate new commands for characters, replacing old commands.
+z   Always have "Sprint Shoes" effect.
+b   Make the game more balanced by removing exploits such as Joker Doom,
+        Vanish/Doom, and the Evade/Mblock bug.
+m   Randomize enemy stats.
+c   Randomize palettes and names of various things.
+i   Randomize the stats of equippable items.
+q   Randomize what equipment each character can wear and character stats.
+e   Randomize esper spells and levelup bonuses.
+t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
+u   Umaro risk. (Random character will be berserk)
+l   Randomize blitz inputs.
+n   Randomize window background colors.
+f   Randomize enemy formations.
+s   Swap character graphics around.
+p   Randomize the palettes of spells and weapon animations.
+d   Randomize final dungeon.
+a   Organize rages alphabetically (default)
+h   Organize rages by highest level first'''
+
     if len(args) > 2:
         fullseed = args[2].strip()
     else:
@@ -3065,6 +3086,7 @@ def randomize():
                              "seed):\n> ").strip()
         print
         if '.' not in fullseed:
+            print flaghelptext + "\n"
             flags = raw_input("Please input your desired flags (blank for "
                               "all of them):\n> ").strip()
             fullseed = ".%s.%s" % (flags, fullseed)

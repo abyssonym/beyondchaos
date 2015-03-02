@@ -19,13 +19,24 @@ def generate_name(size=None):
         size = random.randint(1, 5) + random.randint(1, 5)
         if size < 4:
             size += random.randint(0, 5)
+
+    def has_vowel(text):
+        for c in text:
+            if c.lower() in "aeiouy":
+                return True
+        return False
+
     while True:
         starts = sorted([s for s in generator if s[0].isupper()])
         name = random.choice(starts)
         name = name[:size]
         while len(name) < size:
             key = name[-lookback:]
-            if key not in generator or random.randint(1, 15) == 15:
+            if key not in generator and size - len(name) < len(key):
+                if len(name) == 1 or len(key) > size:
+                    continue
+            if key not in generator or (random.randint(1, 15) == 15
+                                        and has_vowel(name[-2:])):
                 if len(name) <= size - lookback:
                     name += random.choice(starts)
                     continue

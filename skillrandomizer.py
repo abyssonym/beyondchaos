@@ -402,7 +402,7 @@ class RandomSpellSub(Substitution):
                     0x29, None,              # AND the result
                     0xAA,                    # TAX
                     0xBF, None, None, None,  # load byte from $addr + X
-                    0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
+                    0x85, 0xB6, 0xA9, 0x10, 0x85, 0xB5,
                     #0x20, 0xC1, 0x19,  # JSR $19C1
                     #0x20, 0x51, 0x29,  # JSR $2951
                     0x64, 0xB8, 0x64, 0xB9,  # clear targets

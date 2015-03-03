@@ -469,13 +469,16 @@ class ItemBlock:
         self.mutate_stats()
         self.mutate_price()
         broken, learned = False, False
-        if always_break or self.itemid == 0xE6:
-            self.mutate_break_effect(always_break=always_break)
+        if always_break:
+            self.mutate_break_effect(always_break=True)
             broken = True
         for command, itemids in break_unused_dict.items():
             if command in changed_commands and self.itemid in itemids:
                 self.mutate_break_effect()
                 broken = True
+        if self.itemid == 0xE6:
+            self.mutate_learning()
+            learned = True
         while random.randint(1, 5) == 5:
             x = random.randint(0, 99)
             if x < 10:

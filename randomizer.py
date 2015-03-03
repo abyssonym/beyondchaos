@@ -2333,37 +2333,75 @@ def manage_chests():
 
 def manage_blitz():
     blitzspecptr = 0x47a40
-    adjacency = {0x7: [0xE, 0x8],
-                 0x8: [0x7, 0x9],
-                 0x9: [0x8, 0xA],
-                 0xA: [0x9, 0xB],
-                 0xB: [0xA, 0xC],
-                 0xC: [0xB, 0xD],
-                 0xD: [0xC, 0xE],
-                 0xE: [0xD, 0x7]}
+    # 3: X
+    # 4: Y
+    # 5: L
+    # 6: R
+    adjacency = {0x7: [0xE, 0x8],  # down-left
+                 0x8: [0x7, 0x9],  # down
+                 0x9: [0x8, 0xA],  # down-right
+                 0xA: [0x9, 0xB],  # right
+                 0xB: [0xA, 0xC],  # up-right
+                 0xC: [0xB, 0xD],  # up
+                 0xD: [0xC, 0xE],  # up-left
+                 0xE: [0xD, 0x7]}  # left
+    perpendicular = {0x8: [0xA, 0xE],
+                     0xA: [0x8, 0xC],
+                     0xC: [0xA, 0xE],
+                     0xE: [0x8, 0xC]}
+    diagonals = [0x7, 0x9, 0xB, 0xD]
+    cardinals = [0x8, 0xA, 0xC, 0xE]
+    letters = range(3, 7)
     f = open(outfile, 'r+b')
     for i in xrange(1, 8):
         # skip pummel
         current = blitzspecptr + (i * 12)
         f.seek(current + 11)
         length = ord(f.read(1)) / 2
-        newlength = random.randint(1, length) + random.randint(0, length)
+        halflength = max(length / 2, 2)
+        newlength = (halflength + random.randint(0, halflength) +
+                     random.randint(1, halflength))
         newlength = min(newlength, 10)
 
         newcmd = []
-        while len(newcmd) < newlength:
+        used_cmds = []
+        while True:
             prev = newcmd[-1] if newcmd else None
             pprev = newcmd[-2] if len(newcmd) > 1 else None
-            if (prev and prev in adjacency and random.randint(1, 3) != 3):
+            dircontinue = prev and prev in adjacency
+            if prev and prev in diagonals:
+                dircontinue = True
+            elif prev and prev in adjacency and newlength - len(newcmd) > 1:
+                dircontinue = random.choice([True, False])
+            else:
+                dircontinue = False
+
+            if dircontinue:
                 nextin = random.choice(adjacency[prev])
-                if nextin == pprev and random.randint(1, 4) != 4:
+                if nextin == pprev and (prev in diagonals or
+                                        random.randint(1, 3) != 3):
                     nextin = [i for i in adjacency[prev] if i != nextin][0]
                 newcmd.append(nextin)
             else:
-                if random.choice([True, False]):
-                    newcmd.append(random.randint(0x07, 0x0E))
+                if random.choice([True, False, prev in cardinals]):
+                    if prev and prev not in letters:
+                        options = [c for c in cardinals if
+                                   c not in perpendicular[prev]]
+                        if pprev in diagonals:
+                            options = [c for c in options if c != prev]
+                    else:
+                        options = cardinals
+                    newcmd.append(random.choice(options))
                 else:
-                    newcmd.append(random.randint(0x03, 0x06))
+                    newcmd.append(random.choice(letters))
+
+            if len(newcmd) == newlength:
+                newcmdstr = "".join(map(chr, newcmd))
+                if newcmdstr in used_cmds:
+                    newcmd = []
+                else:
+                    used_cmds.append(newcmdstr)
+                    break
 
         newcmd += [0x01]
         while len(newcmd) < 11:

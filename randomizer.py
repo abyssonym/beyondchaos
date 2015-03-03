@@ -3367,6 +3367,11 @@ h   Organize rages by highest level first'''
         titlesub.set_location(0xA5E8E)
         titlesub.write(outfile)
 
+        savetutorial_sub = Substitution()
+        savetutorial_sub.set_location(0xC9AF1)
+        savetutorial_sub.bytestring = [0xD2, 0x33, 0xEA, 0xEA, 0xEA, 0xEA]
+        savetutorial_sub.write(outfile)
+
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
         natmag_candidates = manage_natural_magic(characters)

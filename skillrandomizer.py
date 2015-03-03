@@ -333,9 +333,10 @@ class SpellSub(Substitution):
 
 
 def get_spellsets(spells=None):
-    all_spells = spells
     spellsets = {}
-    spellsets['Wild'] = sorted(all_spells)
+    spellsets['Wild'] = get_ranked_spells()
+    spellset_bans = [0x63]
+    spells = [s for s in spells if s.spellid not in spellset_bans]
     spellsets['Magic'] = range(0, 0x36)
     spellsets['Black'] = range(0, 0x18)
     spellsets['White'] = range(0x2D, 0x36)
@@ -347,7 +348,7 @@ def get_spellsets(spells=None):
     spellsets['Beast'] = range(0x75, 0x7D)
     spellsets['Lore'] = range(0x8B, 0xA3)
     spellsets['Rare'] = range(0x7D, 0x83) + range(0xA3, 0xEE)
-    elementals = [s for s in all_spells if bin(s.elements).count('1') == 1]
+    elementals = [s for s in spells if bin(s.elements).count('1') == 1]
     spellsets['Fire'] = [s for s in elementals if s.elements & 1]
     spellsets['Ice'] = [s for s in elementals if s.elements & 2]
     spellsets['Bolt'] = [s for s in elementals if s.elements & 4]
@@ -356,30 +357,26 @@ def get_spellsets(spells=None):
     spellsets['Pearl'] = [s for s in elementals if s.elements & 0x20]
     spellsets['Earth'] = [s for s in elementals if s.elements & 0x40]
     spellsets['Water'] = [s for s in elementals if s.elements & 0x80]
-    spellsets['Multi'] = [s for s in all_spells if
-                          bin(s.elements).count('1') > 1]
-    spellsets['Elem'] = elementals + spellsets['Multi']
-    spellsets['Power'] = [s for s in all_spells if s.power and not any(
+    spellsets['Elem'] = [s for s in spells if s.elements and
+                         s.spellid not in spellsets['Black']]
+    spellsets['Nuke'] = [s for s in spells if s.power and not any(
         [s.elements, s.percentage, s.physical, s.healing])]
-    spellsets['Heal'] = [s for s in all_spells if s.healing]
-    spellsets['Phys'] = [s for s in all_spells if s.physical]
-    spellsets['Curse'] = [s for s in all_spells if all(
+    spellsets['Heal'] = [s for s in spells if s.healing]
+    spellsets['Phys'] = [s for s in spells if s.physical]
+    spellsets['Curse'] = [s for s in spells if all(
         [s.target_enemy_default, not s.miss_if_death_prot, not s.power])]
-    spellsets['Bless'] = [s for s in all_spells if not any(
+    spellsets['Bless'] = [s for s in spells if not any(
         [s.target_enemy_default, s.power, s.spellid == 0xA4])]
-    spellsets['Drain'] = [s for s in all_spells if s.draining]
-    spellsets['Mana'] = [s for s in all_spells if s.concernsmp]
-    spellsets['Death'] = [s for s in all_spells if s.miss_if_death_prot and
+    spellsets['Drain'] = [s for s in spells if s.draining]
+    spellsets['Mana'] = [s for s in spells if s.concernsmp]
+    spellsets['Death'] = [s for s in spells if s.miss_if_death_prot and
                           not s.percentage and s.has_status]
-    spellsets['Heavy'] = [s for s in all_spells if s.miss_if_death_prot and
+    spellsets['Heavy'] = [s for s in spells if s.miss_if_death_prot and
                           s.percentage]
-    spellsets['Grim'] = [s for s in all_spells if s.miss_if_death_prot]
-    spellsets['All'] = [s for s in all_spells if s.target_everyone and
+    spellsets['All'] = [s for s in spells if s.target_everyone and
                         not s.target_one_side_only]
-    spellsets['Party'] = [s for s in all_spells if s.target_group_default and
+    spellsets['Party'] = [s for s in spells if s.target_group_default and
                           not s.target_enemy_default]
-    spellsets['Group'] = [s for s in all_spells if s.target_group_default and
-                          s.target_enemy_default]
     spellsets['Tek'] = ([0x18, 0x6E, 0x70, 0x7D, 0x7E] + range(0x86, 0x8B) +
                         [0xA7, 0xB1] + range(0xB4, 0xBA) + [0x91, 0x9A] +
                         [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3])
@@ -389,8 +386,8 @@ def get_spellsets(spells=None):
 
     for key, value in spellsets.items():
         if type(value[0]) is int:
-            spellsets[key] = [s for s in all_spells if s.spellid in value]
-        spellsets[key] = sorted(set(spellsets[key]))
+            spellsets[key] = [s for s in spells if s.spellid in value]
+        spellsets[key] = sorted(set(spellsets[key]), key=lambda s: s.spellid)
 
     return spellsets
 
@@ -402,10 +399,10 @@ class RandomSpellSub(Substitution):
                     0x29, None,              # AND the result
                     0xAA,                    # TAX
                     0xBF, None, None, None,  # load byte from $addr + X
-                    0x85, 0xB6, 0xA9, 0x10, 0x85, 0xB5,
-                    #0x20, 0xC1, 0x19,  # JSR $19C1
-                    #0x20, 0x51, 0x29,  # JSR $2951
+                    0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
                     0x64, 0xB8, 0x64, 0xB9,  # clear targets
+                    0x20, 0xC1, 0x19,  # JSR $19C1
+                    0x20, 0x51, 0x29,  # JSR $2951
                     0x4C, 0x5F, 0x17,
                     ]
         return template
@@ -431,6 +428,8 @@ class RandomSpellSub(Substitution):
     def set_spells(self, valid_spells, spellsets=None, spellclass=None):
         spellsets = spellsets or get_spellsets(spells=valid_spells)
         spellclass = spellclass or random.choice(spellsets.keys())
+        if spellclass == "Wild":
+            valid_spells = get_ranked_spells()
         spellset = spellsets[spellclass]
         spellset = sorted([s for s in spellset if s in valid_spells],
                           key=lambda s: s.spellid)

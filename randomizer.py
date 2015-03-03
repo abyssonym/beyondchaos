@@ -790,7 +790,7 @@ def manage_commands_new(commands, characters):
         random_skill = random.choice([True, False])
         POWER_LEVEL = 130
         scount = 1
-        while random.randint(1, 5) == 5:
+        while random.randint(1, 7) == 7:
             scount += 1
         scount = min(scount, 9)
 
@@ -3244,10 +3244,9 @@ h   Organize rages by highest level first'''
         manage_commands(commands, characters)
     reseed()
 
+    spells = get_ranked_spells(sourcefile)
     if 'w' in flags and 'suplexwrecks' not in activated_codes:
         _, _, freespaces = manage_commands_new(commands, characters)
-    else:
-        get_ranked_spells(sourcefile)  # set up skill module anyway
     reseed()
 
     if 'z' in flags:
@@ -3409,7 +3408,6 @@ h   Organize rages by highest level first'''
             fs.write_data(outfile)
     reseed()
 
-    spells = get_ranked_spells(sourcefile)
     if 'o' in flags or 'w' in flags or 'm' in flags:
         manage_magitek(spells)
     reseed()

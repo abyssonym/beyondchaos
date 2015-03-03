@@ -1930,11 +1930,11 @@ def manage_colorize_animations():
     f.close()
 
 
-def manage_items(items):
+def manage_items(items, changed_commands=None):
     always_break = True if "collateraldamage" in activated_codes else False
 
     for i in items:
-        i.mutate(always_break=always_break)
+        i.mutate(always_break=always_break, changed_commands=changed_commands)
         i.unrestrict()
         i.write_stats(outfile)
 
@@ -3321,7 +3321,7 @@ h   Organize rages by highest level first'''
 
     items = get_ranked_items()
     if 'i' in flags:
-        manage_items(items)
+        manage_items(items, changed_commands=changed_commands)
     reseed()
 
     if 'm' in flags:

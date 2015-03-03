@@ -29,6 +29,9 @@ effects_used = []
 itemdict = {}
 customs = {}
 
+break_unused_dict = {0x09: range(0xA3, 0xAB),
+                     0x08: range(0xAB, 0xB0) + range(0x41, 0x44)}
+
 
 def get_custom_items():
     if customs:
@@ -460,13 +463,19 @@ class ItemBlock:
 
         self.price = min(self.price, 65000)
 
-    def mutate(self, always_break=False):
+    def mutate(self, always_break=False, changed_commands=None):
+        if changed_commands is None:
+            changed_commands = []
         self.mutate_stats()
         self.mutate_price()
         broken, learned = False, False
-        if always_break:
-            self.mutate_break_effect(always_break=True)
+        if always_break or self.itemid == 0xE6:
+            self.mutate_break_effect(always_break=always_break)
             broken = True
+        for command, itemids in break_unused_dict.items():
+            if command in changed_commands and self.itemid in itemids:
+                self.mutate_break_effect()
+                broken = True
         while random.randint(1, 5) == 5:
             x = random.randint(0, 99)
             if x < 10:

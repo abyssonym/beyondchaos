@@ -335,7 +335,7 @@ class SpellSub(Substitution):
 def get_spellsets(spells=None):
     spellsets = {}
     spellsets['Wild'] = get_ranked_spells()
-    spellset_bans = [0x63]
+    spellset_bans = []
     spells = [s for s in spells if s.spellid not in spellset_bans]
     spellsets['Magic'] = range(0, 0x36)
     spellsets['Black'] = range(0, 0x18)

@@ -33,8 +33,8 @@ def generate_name(size=None):
         while len(name) < size:
             key = name[-lookback:]
             if key not in generator and size - len(name) < len(key):
-                if len(name) == 1 or len(key) > size:
-                    continue
+                name = random.choice(starts)
+                continue
             if key not in generator or (random.randint(1, 15) == 15
                                         and has_vowel(name[-2:])):
                 if len(name) <= size - lookback:

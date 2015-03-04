@@ -498,15 +498,7 @@ def randomize_colosseum(filename, pointer):
         results.append((wager_obj, opponent_obj, win_obj, hidden))
 
     f.close()
-    collog = "--- COLISEUM ---\n"
     results = sorted(results, key=lambda (a, b, c, d): a.name)
-    for wager_obj, opponent_obj, win_obj, hidden in results:
-        if hidden:
-            winname = "????????????"
-        else:
-            winname = win_obj.name
-        collog += "{0:12} -> {1}\n".format(wager_obj.name, winname)
-    log(collog)
 
     coliseum_run_sub = Substitution()
     coliseum_run_sub.bytestring = [0xEA] * 2
@@ -2294,8 +2286,8 @@ def manage_treasure(monsters, shops=True):
         buyables = manage_shops()
 
     pointer = 0x1fb600
-    wagers = randomize_colosseum(outfile, pointer)
-    wagers = dict([(a.itemid, c) for (a, b, c, d) in wagers])
+    results = randomize_colosseum(outfile, pointer)
+    wagers = dict([(a.itemid, c) for (a, b, c, d) in results])
 
     def ensure_striker():
         candidates = []
@@ -2304,7 +2296,7 @@ def manage_treasure(monsters, shops=True):
                 continue
             intermediate = wagers[b]
             if intermediate.itemid == 0x29:
-                return
+                return get_item(b)
             if intermediate in candidates:
                 continue
             if intermediate.itemid not in buyables:
@@ -2313,12 +2305,28 @@ def manage_treasure(monsters, shops=True):
         candidates = sorted(candidates, key=lambda c: c.rank())
         candidates = candidates[len(candidates)/2:]
         wager = random.choice(candidates)
+        buycheck = [get_item(b).name for b in buyables
+                    if b in wagers and wagers[b] == wager]
+        if not buycheck:
+            raise Exception("Striker pickup not ensured.")
         f = open(outfile, 'r+b')
         f.seek(pointer + (wager.itemid*4) + 2)
         f.write(chr(0x29))
         f.close()
+        return wager
 
-    ensure_striker()
+    striker_wager = ensure_striker()
+    collog = "--- COLISEUM ---\n"
+    for wager_obj, opponent_obj, win_obj, hidden in results:
+        if wager_obj == striker_wager:
+            win_obj = get_item(0x29)
+            hidden = random.choice([True, False])
+        if hidden:
+            winname = "????????????"
+        else:
+            winname = win_obj.name
+        collog += "{0:12} -> {1}\n".format(wager_obj.name, winname)
+    log(collog)
 
 
 def manage_chests():

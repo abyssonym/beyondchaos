@@ -2320,7 +2320,6 @@ def manage_treasure(monsters, shops=True):
     for wager_obj, opponent_obj, win_obj, hidden in results:
         if wager_obj == striker_wager:
             win_obj = get_item(0x29)
-            hidden = random.choice([True, False])
         if hidden:
             winname = "????????????"
         else:

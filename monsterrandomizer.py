@@ -1473,8 +1473,6 @@ class MonsterGraphicBlock:
         f.seek(palette_pointer)
         for color in self.palette_data:
             write_multi(f, color, length=2)
-        if f.tell() >= 0x12a820:
-            raise Exception("Not enough room for monster palettes.")
         f.close()
 
     def mutate_palette(self, alternatives=None):

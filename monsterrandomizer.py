@@ -1438,14 +1438,18 @@ class MonsterGraphicBlock:
 
             setattr(self, attribute, value)
 
-    def write_data(self, filename, palette_pointer=None):
+    def set_palette_pointer(self, palette_pointer):
+        self.palette_pointer = palette_pointer
+        palette = (palette_pointer - 0x127820) / 0x10
+        self.palette = palette
+
+    def write_data(self, filename, palette_pointer=None, no_palette=False):
         if palette_pointer is None:
             palette_pointer = self.palette_pointer
             palette = self.palette
         else:
-            self.palette_pointer = palette_pointer
+            self.set_palette_pointer(palette_pointer)
             palette = (palette_pointer - 0x127820) / 0x10
-            self.palette = palette
 
         if self.large:
             palette |= 0x8000
@@ -1462,9 +1466,15 @@ class MonsterGraphicBlock:
         write_multi(f, palette, length=2, reverse=False)
         f.seek(self.pointer+4)
         f.write(chr(self.size_template))
+        if no_palette:
+            f.close()
+            return
+
         f.seek(palette_pointer)
         for color in self.palette_data:
             write_multi(f, color, length=2)
+        if f.tell() >= 0x12a820:
+            raise Exception("Not enough room for monster palettes.")
         f.close()
 
     def mutate_palette(self, alternatives=None):

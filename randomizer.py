@@ -1528,7 +1528,8 @@ def manage_monster_appearance(monsters, preserve_graphics=False):
         espers.append(mg)
         mgs.append(mg)
 
-    for g in mgs:
+    for m in monsters:
+        g = m.graphics
         pp = g.palette_pointer
         others = [h for h in mgs if h.palette_pointer == pp + 0x10]
         if others:
@@ -1558,14 +1559,21 @@ def manage_monster_appearance(monsters, preserve_graphics=False):
         mg = m.graphics
         if m.id == 0x12a and not preserve_graphics:
             idpair = "KEFKA 1"
+        if m.id in REPLACE_ENEMIES + [0x172]:
+            mg.set_palette_pointer(freepointer)
+            freepointer += 0x40
+            continue
         else:
             idpair = (m.name, mg.palette_pointer)
-            mg.mutate_palette()
 
         if idpair not in done:
+            mg.mutate_palette()
             done[idpair] = freepointer
             freepointer += len(mg.palette_data)
-        mg.write_data(outfile, palette_pointer=done[idpair])
+            mg.write_data(outfile, palette_pointer=done[idpair])
+        else:
+            mg.write_data(outfile, palette_pointer=done[idpair],
+                          no_palette=True)
 
     for mg in espers:
         mg.mutate_palette()

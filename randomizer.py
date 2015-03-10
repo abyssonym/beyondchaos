@@ -3307,7 +3307,8 @@ h   Organize rages by highest level first'''
 
     if 'b' in flags:
         manage_balance(newslots='w' in flags)
-        randomize_final_party_order()
+        if 'm' in flags or 'f' in flags or 'd' in flags:
+            randomize_final_party_order()
     reseed()
 
     preserve_graphics = ('s' not in flags and

@@ -12,14 +12,14 @@ ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
               "hitmdef", "elemabsorbs", "elemnulls", "elemweaks",
               "statusacquire2", "mblockevade", "specialaction"]
 
-STATPROTECT = {"fieldeffect": 0x7c,
-               "statusprotect1": 0x18,
-               "statusprotect2": 0x06,
+STATPROTECT = {"fieldeffect": 0x5c,
+               "statusprotect1": 0x00,
+               "statusprotect2": 0x00,
                "statusacquire3": 0x00,
                "statboost1": 0x00,
-               "special1": 0x03,
-               "statboost2": 0x0e,
-               "special2": 0x80,
+               "special1": 0x00,
+               "statboost2": 0x02,
+               "special2": 0xa8,
                "special3": 0x60,
                "otherproperties": 0xdf,
                "statusacquire2": 0x00}
@@ -488,9 +488,9 @@ class ItemBlock:
             if 20 <= x < 50 and not broken:
                 self.mutate_break_effect()
                 broken = True
-            if 50 <= x < 75:
+            if 50 <= x < 80:
                 self.mutate_elements()
-            if x >= 75:
+            if x >= 80:
                 self.mutate_feature()
         if not self.heavy and random.randint(1, 20) == 20:
             self.heavy = True

@@ -43,6 +43,7 @@ sourcefile, outfile = None, None
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
                  "jump", "mimic", "xmagic", "summon", "morph", "revert"]
 ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
+FORBIDDEN_COMMANDS = ["leap", "possess"]
 
 
 MD5HASH = "e986575b98300f721ce27c180264d890"
@@ -655,6 +656,10 @@ def manage_commands(commands, characters):
                         "def", "row", "summon", "revert"]
     if random.randint(1, 5) != 5:
         invalid_commands.append("magitek")
+
+    if 'w' not in flags:
+        invalid_commands.extend(FORBIDDEN_COMMANDS)
+
     invalid_commands = set([c for c in commands.values() if c.name in invalid_commands])
 
     def populate_unused():
@@ -3292,6 +3297,9 @@ h   Organize rages by highest level first'''
 
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
+
+    if 'w' in flags and 'o' not in flags:
+        flags += 'o'
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         manage_commands(commands, characters)

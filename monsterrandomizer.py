@@ -237,6 +237,15 @@ class MonsterBlock:
         chosen = random.choice(candidates)
         return chosen
 
+    def randomize_boost_level(self, limit=99):
+        level = self.stats['level']
+        diff = limit - level
+        level += random.randint(0, diff/2) + random.randint(0, diff/2)
+        if diff % 2 == 1:
+            level += random.randint(0, 1)
+        assert self.stats['level'] <= level <= limit
+        self.stats['level'] = level
+
     def randomize_special_effect(self, filename):
         attackpointer = 0xFD0D0 + (self.id * 10)
         f = open(filename, 'r+b')

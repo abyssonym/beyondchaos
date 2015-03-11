@@ -1501,7 +1501,7 @@ def manage_monsters():
             if 0x127 <= m.id < 0x12a or m.id == 0x17d:
                 # boost statues and Atma a second time
                 m.mutate()
-            m.stats['level'] = random.randint(m.stats['level'], 99)
+            m.randomize_boost_level()
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         m.tweak_fanatics()
         m.relevel_specifics()

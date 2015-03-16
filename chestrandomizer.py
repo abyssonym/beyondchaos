@@ -1,5 +1,5 @@
 from utils import read_multi, write_multi, mutate_index, utilrandom as random
-from itemrandomizer import get_ranked_items
+from itemrandomizer import get_ranked_items, get_item
 from formationrandomizer import get_formations, get_fsets
 
 valid_ids = range(0, 0x200)
@@ -139,6 +139,24 @@ class ChestBlock:
     @property
     def effective_id(self):
         return self.memid | ((self.contenttype & 1) << 8)
+
+    @property
+    def description(self):
+        if self.monster:
+            from formationrandomizer import get_fset
+            s = "Enemy: "
+            fset = get_fset(self.contents + 0x100)
+            s += fset.formations[0].description(renamed=True, simple=True)
+        elif self.empty:
+            s = "Empty!"
+        else:
+            s = "Treasure: "
+            if self.gold:
+                s += "%s GP" % (self.contents * 100)
+            else:
+                item = get_item(self.contents)
+                s += item.name
+        return s
 
     def set_content_type(self, contenttype):
         if self.effective_id >= 0x100:

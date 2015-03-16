@@ -121,6 +121,29 @@ class Location():
             raise Exception("Area for location ID %s not known." % self.locid)
         return maplocations[self.locid]
 
+    @property
+    def chest_contents(self):
+        enemies = []
+        treasures = []
+        for c in self.chests:
+            desc = c.description
+            if "Enemy:" in desc:
+                #desc = " ".join(desc.split()[1:])
+                enemies.append(desc)
+            elif "Treasure:" in desc:
+                #desc = " ".join(desc.split()[1:])
+                treasures.append(desc)
+            elif "Empty!" in desc:
+                pass
+            else:
+                raise Exception("Received unknown chest contents type.")
+        s = ""
+        for t in sorted(treasures):
+            s = "\n".join([s, t])
+        for e in sorted(enemies):
+            s = "\n".join([s, e])
+        return s.strip()
+
     def dummy_item(self, item):
         dummied = False
         for c in self.chests:
@@ -721,10 +744,14 @@ if __name__ == "__main__":
         subindex = l.locid % 4
         setid = zones[l.locid/4].setids[subindex]
         if setid != 0 and l.attacks:
-            print l, "---", l.area_name
-        elif l.chests:
-            print l, "---", l.area_name
-        else:
+            pass
+            #print l, "---", l.area_name
+        if l.chests:
+            print l, "---", l.area_name.strip()
+            print l.chest_contents
+            print
+        if not l.chests and not (l.attacks and setid != 0):
+            continue
             try:
                 l.area_name
                 print "NOT", l.locid, "---", l.area_name

@@ -15,13 +15,14 @@ class Formation():
     def __repr__(self):
         return self.description()
 
-    def description(self, renamed=False):
+    def description(self, renamed=False, simple=False):
         counter = {}
         for e in self.present_enemies:
             if renamed:
                 name = e.display_name
             else:
                 name = e.name
+            name = name.strip('_')
             if name not in counter:
                 counter[name] = 0
             counter[name] += 1
@@ -29,6 +30,8 @@ class Formation():
         for name, count in sorted(counter.items()):
             s = ', '.join([s, "%s x%s" % (name, count)])
         s = s[2:]
+        if simple:
+            return s
         s = "%s (%x)" % (s, self.formid)
         #s += " " + " ".join(["%x" % e.id for e in self.present_enemies])
         return s

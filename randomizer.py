@@ -112,6 +112,21 @@ def get_logstring(ordering=None):
     return s.strip()
 
 
+def log_chests():
+    areachests = {}
+    for l in get_locations():
+        if not l.chests:
+            continue
+        if l.area_name not in areachests:
+            areachests[l.area_name] = ""
+        areachests[l.area_name] += l.chest_contents + "\n"
+    for area_name in sorted(areachests):
+        chests = areachests[area_name]
+        chests = "\n".join(sorted(chests.strip().split("\n")))
+        chests = area_name.upper() + "\n" + chests
+        log(chests, section="treasure chests")
+
+
 def rngstate():
     state = sum(random.getstate()[1])
     print state
@@ -3582,6 +3597,7 @@ h   Organize rages by highest level first'''
         if m.display_name:
             log(m.description, section="monsters")
 
+    log_chests()
     f = open(outlog, 'w+')
     f.write(get_logstring())
     f.close()

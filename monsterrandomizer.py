@@ -1,6 +1,6 @@
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
-                   utilrandom as random)
+                   make_table, utilrandom as random)
 from skillrandomizer import SpellBlock, get_spell, get_ranked_spells
 from itemrandomizer import get_ranked_items, get_item
 from namerandomizer import generate_attack
@@ -302,21 +302,6 @@ class MonsterBlock:
                     row += " "
                 rows[i] = row
             return rows
-
-        def make_table(cols):
-            table = ""
-            while any(cols):
-                cols = [c for c in cols if c]
-                row = zip(*cols)[0]
-                row = " | ".join(row)
-                row = "| %s |" % row.strip()
-                table = "\n".join([table, row])
-                cols = [col[1:] for col in cols]
-            table = table.strip()
-            fullwidth = max([len(r.strip()) for r in table.split("\n")])
-            horizborder = "." * fullwidth
-            table = "\n".join([horizborder, table, horizborder])
-            return table
 
         cols = []
         cols.append(make_column(['hp', 'mp', 'xp', 'gp']))

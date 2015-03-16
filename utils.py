@@ -485,6 +485,34 @@ def get_matrix_reachability(M):
     return new
 
 
+def make_table(cols):
+    table = ""
+    num_rows = max(len(c) for c in cols)
+    for i, c in enumerate(cols):
+        while len(c) < num_rows:
+            c.append("")
+        maxwidth = max(len(b) for b in c)
+        new_c = []
+        for b in c:
+            while len(b) < maxwidth:
+                b += " "
+            new_c.append(b)
+        cols[i] = new_c
+
+    while any(cols):
+        cols = [c for c in cols if c]
+        row = zip(*cols)[0]
+        row = " | ".join(row)
+        row = "| %s |" % row
+        table = "\n".join([table, row])
+        cols = [col[1:] for col in cols]
+    table = table.strip()
+    fullwidth = max([len(r.strip()) for r in table.split("\n")])
+    horizborder = "-" * (fullwidth - 2)
+    horizborder = "/%s\\" % horizborder
+    table = "\n".join([horizborder, table, horizborder[::-1]])
+    return table
+
 if __name__ == "__main__":
     M = [[1,0,0,1],
          [0,1,0,0],

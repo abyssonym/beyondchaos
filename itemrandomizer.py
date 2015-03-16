@@ -586,7 +586,7 @@ IMP_MASK = 0x4000
 UMARO_ID = 13
 
 
-def reset_equippable(items, numchars=NUM_CHARS):
+def reset_equippable(items, numchars=NUM_CHARS, characters=None):
     prevents = filter(lambda i: i.prevent_encounters, items)
     for item in prevents:
         if not CHAR_MASK & item.equippable:
@@ -607,6 +607,7 @@ def reset_equippable(items, numchars=NUM_CHARS):
     new_weaps = range(numchars)
     random.shuffle(new_weaps)
     new_weaps = dict(zip(range(numchars), new_weaps))
+
     for item in items:
         if numchars == 14 and random.randint(1, 10) == 10:
             # for umaro's benefit

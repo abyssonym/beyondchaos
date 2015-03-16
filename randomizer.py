@@ -32,7 +32,6 @@ from towerrandomizer import randomize_tower
 
 
 VERSION = "52"
-VERBOSE = False
 TEST_ON = False
 TEST_SEED = "44.abcefghijklmnopqrstuvwxyz-partyparty.42069"
 TEST_FILE = "program.rom"
@@ -46,6 +45,8 @@ NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
 ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
 FORBIDDEN_COMMANDS = ["leap", "possess"]
 
+CHARSTATNAMES = ["hp", "mp", "vigor", "speed", "stamina", "m.power",
+                 "attack", "defense", "m.def", "evade", "mblock"]
 
 MD5HASH = "e986575b98300f721ce27c180264d890"
 
@@ -76,6 +77,9 @@ def log(text, section):
     global randlog
     if section not in randlog:
         randlog[section] = []
+    if "\n" in text:
+        text = text.split("\n")
+        text = "\n".join([line.strip() for line in text])
     text = text.strip()
     randlog[section].append(text)
 
@@ -83,7 +87,6 @@ def log(text, section):
 def get_logstring(ordering=None):
     global randlog
     s = ""
-    newlines = False
     if ordering is None:
         ordering = sorted(randlog.keys())
     ordering = [o for o in ordering if o is not None]
@@ -103,6 +106,7 @@ def get_logstring(ordering=None):
         s += "-{0:02d}- {1}\n".format(sectnum, section.upper())
         s += "-" * 60 + "\n"
         datas = sorted(randlog[section])
+        newlines = False
         if any("\n" in d for d in datas):
             s += "\n"
             newlines = True
@@ -281,10 +285,70 @@ equip_offsets = {"weapon": 15,
 class CharacterBlock:
     def __init__(self, address, name):
         self.address = hex2int(address)
-        self.name = name.lower()
+        self.name = name.lower().capitalize()
+        self.newname = self.name.upper()
         self.battle_commands = [0x00, None, None, None]
         self.id = None
         self.beserk = False
+        self.original_appearance = None
+        self.new_appearance = None
+
+    def __repr__(self):
+        s = self.newname + "\n"
+        s += "Commands: "
+        command_names = []
+        for c in self.command_objs:
+            if c is not None:
+                command_names.append(c.name.lower())
+        s += ", ".join(command_names) + "\n"
+        if self.original_appearance and self.new_appearance:
+            s += "Looks like: %s\n" % self.new_appearance
+            s += "Originally: %s\n" % self.original_appearance
+
+        from utils import make_table
+        statblurbs = {}
+        for name in CHARSTATNAMES:
+            blurb = "{0:8} {1}".format(name.upper() + ":", self.stats[name])
+            statblurbs[name] = blurb
+        column1 = [statblurbs[n] for n in ["hp", "mp", "evade", "mblock"]]
+        column2 = [statblurbs[n] for n in ["vigor", "speed", "stamina", "m.power"]]
+        column3 = [statblurbs[n] for n in ["attack", "defense", "m.def"]]
+        s += make_table([column1, column2, column3]) + "\n"
+        if self.id < 14:
+            s += "Notable equipment: "
+            s += ", ".join([n.name for n in self.get_notable_equips()])
+            s += "\n"
+        return s.strip()
+
+    def get_notable_equips(self):
+        items = [i for i in get_ranked_items() if
+                 i.equippable & (1 << self.id) and not i.imp_only]
+        weapons = [i for i in items if i.is_weapon]
+        rare = [i for i in items if not i.is_weapon and
+                bin(i.equippable).count('1') <= 5 and
+                i.rank() > 10000]
+        rare.extend([w for w in weapons if w.rank() > 50000])
+        if self.id == 12:
+            rare = [r for r in rare if not r.features['special1'] & 0x7C]
+        notable = []
+        if weapons:
+            weapons = sorted(weapons, key=lambda w: w.rank(), reverse=True)
+            notable.extend(weapons[:2])
+        if rare:
+            rare = sorted(rare, key=lambda r: r.rank(), reverse=True)
+            notable.extend(rare[:8])
+        notable = set(notable)
+        return sorted(notable, key=lambda n: n.itemid)
+
+    def associate_command_objects(self, commands):
+        self.command_objs = []
+        for c in self.battle_commands:
+            command = [cmd for cmd in commands if cmd.id == c]
+            if not command:
+                command = None
+            else:
+                command = command[0]
+            self.command_objs.append(command)
 
     def set_battle_command(self, slot, command=None, command_id=None):
         if command:
@@ -330,15 +394,19 @@ class CharacterBlock:
 
             return value
 
+        self.stats = {}
         f.seek(self.address)
         hpmp = map(ord, f.read(2))
         hpmp = map(lambda v: mutation(v), hpmp)
+        self.stats['hp'], self.stats['mp'] = tuple(hpmp)
         f.seek(self.address)
         f.write("".join(map(chr, hpmp)))
 
         f.seek(self.address + 6)
         stats = map(ord, f.read(9))
         stats = map(lambda v: mutation(v), stats)
+        for name, value in zip(CHARSTATNAMES[2:], stats):
+            self.stats[name] = value
         f.seek(self.address + 6)
         f.write("".join(map(chr, stats)))
 
@@ -1704,7 +1772,7 @@ def get_npcs():
     return get_npcs()
 
 
-def manage_character_appearance(preserve_graphics=False):
+def manage_character_appearance(preserve_graphics=False, characters=None):
     wild = 'partyparty' in activated_codes
     sabin_mode = 'suplexwrecks' in activated_codes
     tina_mode = 'bravenudeworld' in activated_codes
@@ -1746,38 +1814,29 @@ def manage_character_appearance(preserve_graphics=False):
             change_to = dict(zip(sorted(male), male) +
                              zip(sorted(female), female))
 
-    if not preserve_graphics:
-        nameiddict = {
-            0: "Terra",
-            1: "Locke",
-            2: "Cyan",
-            3: "Shadow",
-            4: "Edgar",
-            5: "Sabin",
-            6: "Celes",
-            7: "Strago",
-            8: "Relm",
-            9: "Setzer",
-            0xa: "Mog",
-            0xb: "Gau",
-            0xc: "Gogo",
-            0xd: "Umaro",
-            0xe: "Trooper",
-            0xf: "Imp",
-            0x10: "Leo",
-            0x11: "Banon",
-            0x12: "Esper Terra",
-            0x13: "Merchant",
-            0x14: "Ghost",
-            0x15: "Kefka"}
-        for charid in xrange(0x16):
-            before = nameiddict[charid]
-            if charid in change_to:
-                after = nameiddict[change_to[charid]]
-            else:
-                after = before
-            s = "%s looks like %s.\n" % (before, after)
-            log(s, section="character sprites")
+    nameiddict = {
+        0: "Terra",
+        1: "Locke",
+        2: "Cyan",
+        3: "Shadow",
+        4: "Edgar",
+        5: "Sabin",
+        6: "Celes",
+        7: "Strago",
+        8: "Relm",
+        9: "Setzer",
+        0xa: "Mog",
+        0xb: "Gau",
+        0xc: "Gogo",
+        0xd: "Umaro",
+        0xe: "Trooper",
+        0xf: "Imp",
+        0x10: "Leo",
+        0x11: "Banon",
+        0x12: "Esper Terra",
+        0x13: "Merchant",
+        0x14: "Ghost",
+        0x15: "Kefka"}
 
     names = []
     if not tina_mode and not sabin_mode:
@@ -1812,6 +1871,16 @@ def manage_character_appearance(preserve_graphics=False):
         names = ["TEABIN", "LOABIN", "CYABIN", "SHABIN", "EDABIN", "SABIN",
                  "CEABIN", "STABIN", "REABIN", "SEABIN", "MOABIN", "GAUBIN",
                  "GOABIN", "UMABIN"]
+
+    if characters:
+        for c in characters:
+            if c.id < 14:
+                c.newname = names[c.id]
+                c.original_appearance = nameiddict[c.id]
+                if not preserve_graphics:
+                    c.new_appearance = nameiddict[change_to[c.id]]
+                else:
+                    c.new_appearance = c.original_appearance
 
     f = open(outfile, 'r+b')
     for c, name in enumerate(names):
@@ -1996,7 +2065,7 @@ def manage_items(items, changed_commands=None):
 
 
 def manage_equipment(items, characters):
-    reset_equippable(items)
+    reset_equippable(items, characters=characters)
     equippable_dict = {"weapon": lambda i: i.is_weapon,
                        "shield": lambda i: i.is_shield,
                        "helm": lambda i: i.is_helm,
@@ -2389,7 +2458,7 @@ def manage_treasure(monsters, shops=True):
             winname = "????????????"
         else:
             winname = win_obj.name
-        s = "{0:12} -> {1}\n".format(wager_obj.name, winname)
+        s = "{0:12} -> {1}".format(wager_obj.name, winname)
         log(s, section="colosseum")
 
 
@@ -3199,7 +3268,7 @@ def manage_full_umaro():
 
 
 def randomize():
-    global outfile, sourcefile, VERBOSE, flags, seed
+    global outfile, sourcefile, flags, seed
 
     args = list(argv)
     if TEST_ON:
@@ -3326,9 +3395,6 @@ h   Organize rages by highest level first'''
             s += "SECRET CODE: %s ACTIVATED\n" % text
             activated_codes.add(code)
 
-    if 'v' in flags:
-        VERBOSE = True
-        flags = "".join([c for c in flags if c != 'v'])
     print s.strip()
 
     if 'cutscenes' in activated_codes:
@@ -3416,7 +3482,8 @@ h   Organize rages by highest level first'''
 
     if 'c' in flags or 's' in flags or (
             set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
-        manage_character_appearance(preserve_graphics=preserve_graphics)
+        manage_character_appearance(preserve_graphics=preserve_graphics,
+                                    characters=characters)
     reseed()
 
     if 'q' in flags:
@@ -3477,29 +3544,12 @@ h   Organize rages by highest level first'''
             c.mutate_stats(outfile)
     reseed()
 
-    charlog = ""
-    for c in sorted(characters, key=lambda c: c.id):
-        if c.id > 13:
-            continue
-
-        ms = [m for m in c.battle_commands if m]
-        ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
-        charbit = "%s:" % c.name + " "
-        for m in ms:
-            if m:
-                charbit += m[0].name.lower() + " "
-        charbit = charbit.strip()
-        log(charbit, section="character abilities")
-        charlog = "\n".join([charlog, charbit]).strip()
-
     if natmag_candidates:
         natmag_candidates = tuple(nc.name for nc in natmag_candidates)
         charbit = "Natural magic: %s %s\n" % natmag_candidates
     else:
         charbit = "No natural magic users.\n"
     log(charbit, section="natural magic")
-    if VERBOSE:
-        print charlog
 
     if 'f' in flags:
         formations = get_formations()
@@ -3595,7 +3645,14 @@ h   Organize rages by highest level first'''
 
     rewrite_title(text="FF6 BC %s" % seed)
     rewrite_checksum()
+
     print "\nWriting log..."
+    for c in sorted(characters, key=lambda c: c.id):
+        c.associate_command_objects(commands.values())
+        if c.id > 13:
+            continue
+        log(str(c), section="characters")
+
     for m in sorted(get_monsters(), key=lambda m: m.display_name):
         if m.display_name:
             log(m.description, section="monsters")

@@ -19,29 +19,26 @@ Seed value:
 
 Flags:
     Finally, the randomizer will ask for a list of flags. If you don't know which flags you want, just leave this blank and the randomizer will give you the standard setting: all flags. If you would like to customize your experience, here is a list of flags and what they do:
-    Program Flags:
-        v   Display each character's battle commands after randomization.
-    Randomizer Flags:
-        o   Shuffle characters' in-battle commands.
-        w   Generate new commands for characters, replacing old commands.
-        z   Always have "Sprint Shoes" effect.
-        b   Make the game more balanced by removing exploits such as Joker Doom,
-                Vanish/Doom, and the Evade/Mblock bug.
-        m   Randomize enemy stats.
-        c   Randomize palettes and names of various things.
-        i   Randomize the stats of equippable items.
-        q   Randomize what equipment each character can wear and character stats.
-        e   Randomize esper spells and levelup bonuses.
-        t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
-        u   Umaro risk. (Random character will be berserk)
-        l   Randomize blitz inputs.
-        n   Randomize window background colors.
-        f   Randomize enemy formations.
-        s   Swap character graphics around.
-        p   Randomize the palettes of spells and weapon animations.
-        d   Randomize final dungeon.
-        a   Organize rages alphabetically (default)
-        h   Organize rages by highest level first
+    o   Shuffle characters' in-battle commands.
+    w   Generate new commands for characters, replacing old commands.
+    z   Always have "Sprint Shoes" effect.
+    b   Make the game more balanced by removing exploits such as Joker Doom,
+            Vanish/Doom, and the Evade/Mblock bug.
+    m   Randomize enemy stats.
+    c   Randomize palettes and names of various things.
+    i   Randomize the stats of equippable items.
+    q   Randomize what equipment each character can wear and character stats.
+    e   Randomize esper spells and levelup bonuses.
+    t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
+    u   Umaro risk. (Random character will be berserk)
+    l   Randomize blitz inputs.
+    n   Randomize window background colors.
+    f   Randomize enemy formations.
+    s   Swap character graphics around.
+    p   Randomize the palettes of spells and weapon animations.
+    d   Randomize final dungeon.
+    a   Organize rages alphabetically (default)
+    h   Organize rages by highest level first
 
 Output rom file:
     The randomizer generates two files, a patched rom file, and a mini-FAQ. Both files will have the seed value in their name. To play the game, load the patched rom file in your emulator. The mini-FAQ is a text file that mainly includes information about where to get items; colosseum rewards, monster steals and drops, shop info, and monster rages are all included.

@@ -33,16 +33,16 @@ statusdict = {"blind": (0, 0x01),
               "zombie": (0, 0x02),
               "poison": (0, 0x04),
               "magitek": (0, 0x08),
-              "clear": (0, 0x10),
+              "vanish": (0, 0x10),
               "imp": (0, 0x20),
               "petrify": (0, 0x40),
-              "dead": (0, 0x80),
+              "death": (0, 0x80),
               "condemned": (1, 0x01),
-              "critical": (1, 0x02),
+              "near death": (1, 0x02),
               "image": (1, 0x04),
               "mute": (1, 0x08),
               "berserk": (1, 0x10),
-              "muddle": (1, 0x20),
+              "confuse": (1, 0x20),
               "seizure": (1, 0x40),
               "sleep": (1, 0x80),
               "float": (2, 0x01),
@@ -53,30 +53,31 @@ statusdict = {"blind": (0, 0x01),
               "shell": (2, 0x20),
               "protect": (2, 0x40),
               "reflect": (2, 0x80),
-              "true knight": (3, 0x01),
+              "cover": (3, 0x01),
               "runic": (3, 0x02),
-              "life3": (3, 0x04),
+              "reraise": (3, 0x04),
               "morph": (3, 0x08),
               "casting": (3, 0x10),
               "disappear": (3, 0x20),
               "interceptor": (3, 0x40),
-              "float (rhizopas)": (3, 0x80)}
+              "floating": (3, 0x80)}
+reverse_statusdict = dict([(value, key) for (key, value)
+                           in statusdict.items()])
 
-ranked = ["casting", "critical", "float", "regen", "poison", "blind",
-          "shell", "protect", "clear", "image", "hpdrain", "haste",
-          "reflect", "mpdrain", "reflect break", "seizure",
-          "condemned", "slow", "mute", "imp", "berserk", "life3",
-          "sleep", "rage", "muddle", "stop", "petrify", "zombie",
-          "morph", "frozen", "dead", "interceptor", "magitek",
+ranked = ["casting", "near death", "float", "regen", "poison", "blind",
+          "shell", "protect", "vanish", "image", "hp drain", "haste",
+          "reflect", "mp drain", "seizure",
+          "condemned", "slow", "mute", "imp", "berserk", "reraise",
+          "sleep", "rage", "confuse", "stop", "petrify", "zombie",
+          "morph", "frozen", "death", "interceptor", "magitek",
           "disappear"]
 specialdict = [k for (k, v) in sorted(statusdict.items(),
                key=lambda (k, v): v)]
 specialdict = dict([(k, i) for (i, k) in enumerate(specialdict)])
-specialdict["reflect break"] = 0x80
 specialdict["rage"] = 0x18
 specialdict["frozen"] = 0x19
-specialdict["hpdrain"] = 0x30
-specialdict["mpdrain"] = 0x31
+specialdict["hp drain"] = 0x30
+specialdict["mp drain"] = 0x31
 reverse_specialdict = dict([(v, k) for (k, v) in specialdict.items()])
 ranked = [specialdict[key] for key in ranked]
 
@@ -200,6 +201,41 @@ class MonsterBlock:
         return s
 
     @property
+    def statuses_str(self):
+        full24 = bin(self.immunities[0] | (self.immunities[1] << 8) |
+                     (self.immunities[2] << 16))
+        full24 = full24[2:]
+        full24 = "{0:0>24}".format(full24)
+        if full24.count("1") > full24.count("0"):
+            # show vulnerabilities
+            s = "Vulnerable: "
+            on_equals = False
+        else:
+            # show immunities
+            s = "Immune: "
+            on_equals = True
+        statuses = []
+        for index, byte in enumerate(self.immunities):
+            for i in xrange(8):
+                bit = 1 << i
+                if bool(byte & bit) == on_equals:
+                    statcode = (index, bit)
+                    statuses.append(reverse_statusdict[statcode])
+        if not statuses:
+            statuses = ["Nothing"]
+        s += ", ".join(sorted(statuses)) + "\n"
+        statuses = []
+        s += "Auto: "
+        for index, byte in enumerate(self.statuses):
+            for i in xrange(8):
+                bit = 1 << i
+                if bool(byte & bit) is True:
+                    statcode = (index, bit)
+                    statuses.append(reverse_statusdict[statcode])
+        s += ", ".join(sorted(statuses))
+        return s.strip()
+
+    @property
     def description(self):
         s = self.display_name + " (Level %s)" % self.stats['level'] + "\n"
 
@@ -239,8 +275,8 @@ class MonsterBlock:
         cols.append(make_column(['attack', 'def', 'mpow', 'mdef']))
         cols.append(make_column(['speed', 'hit%', 'evade%', 'mblock%']))
         s += make_table(cols) + "\n"
+        s += self.statuses_str + "\n"
         s += ("Location: %s" % self.determine_location()).strip() + "\n"
-
         steals = [i.name for i in self.steals if i]
         drops = [i.name for i in self.drops if i]
         s += ("Steal: %s" % ", ".join(steals)).strip() + "\n"
@@ -891,7 +927,7 @@ class MonsterBlock:
 
         self.stats['hp'] = level_boost(self.stats['hp'], limit=0x10000)
         if self.stats['hp'] == 0x10000:
-            self.statuses[3] |= 0x04  # life3
+            self.statuses[3] |= 0x04  # reraise
             self.stats['hp'] = 0xFFFF
 
         self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFFFF)
@@ -943,16 +979,16 @@ class MonsterBlock:
                 continue
 
             status = bitdict[(byte, bit)]
-            if status in ["zombie", "magitek", "petrify", "dead", "disappear"]:
+            if status in ["zombie", "magitek", "petrify", "death", "disappear"]:
                 if self.is_boss or random.randint(1, 1000) != 1000:
                     continue
             if status in ["condemned", "mute", "berserk",
-                          "stop", "muddle", "sleep"]:
+                          "stop", "confuse", "sleep"]:
                 if self.is_boss and random.randint(1, 100) != 100:
                     continue
                 elif not self.is_boss and random.randint(1, 10) != 10:
                     continue
-            if status in ["life3", "runic", "true knight", "image"]:
+            if status in ["reraise", "runic", "cover", "image"]:
                 if random.randint(1, 10) != 10:
                     continue
             if status in ["blind", "poison", "imp", "seizure", "slow"]:
@@ -960,7 +996,7 @@ class MonsterBlock:
                     continue
                 elif not self.is_boss and random.choice([True, False]):
                     continue
-            if status in ["clear", "image"]:
+            if status in ["vanish", "image"]:
                 if self.stats["level"] < 22 or self.id in [0x11a, 0x12a]:
                     continue
                 elif random.choice([True, False]):

@@ -68,14 +68,48 @@ activated_codes = set([])
 namelocdict = {}
 changed_commands = set([])
 
-randlog = ""
+randlog = {}
 
 
-def log(text):
+def log(text, section):
     global randlog
+    if section not in randlog:
+        randlog[section] = []
     text = text.strip()
-    randlog = "\n\n".join([randlog, text])
-    randlog = randlog.strip()
+    randlog[section].append(text)
+
+
+def get_logstring(ordering=None):
+    global randlog
+    s = ""
+    newlines = False
+    if ordering is None:
+        ordering = sorted(randlog.keys())
+    ordering = [o for o in ordering if o is not None]
+
+    for d in randlog[None]:
+        s += d + "\n"
+
+    s += "\n"
+    for sectnum, section in enumerate(ordering):
+        sectnum += 1
+        s += "-{0:02d}- {1}\n".format(
+            sectnum, " ".join([word.capitalize() for word in section.split()]))
+
+    for sectnum, section in enumerate(ordering):
+        sectnum += 1
+        s += "\n" + "=" * 40 + "\n"
+        s += "-{0:02d}- {1}\n".format(sectnum, section.upper())
+        s += "-" * 40 + "\n"
+        datas = sorted(randlog[section])
+        if any("\n" in d for d in datas):
+            s += "\n"
+            newlines = True
+        for d in datas:
+            s += d.strip() + "\n"
+            if newlines:
+                s += "\n"
+    return s.strip()
 
 
 def rngstate():
@@ -1720,15 +1754,14 @@ def manage_character_appearance(preserve_graphics=False):
             0x13: "Merchant",
             0x14: "Ghost",
             0x15: "Kefka"}
-        s = "--- CHARACTER SPRITES ---\n"
         for charid in xrange(0x16):
             before = nameiddict[charid]
             if charid in change_to:
                 after = nameiddict[change_to[charid]]
             else:
                 after = before
-            s += "%s looks like %s.\n" % (before, after)
-        log(s)
+            s = "%s looks like %s.\n" % (before, after)
+            log(s, section="character sprites")
 
     names = []
     if not tina_mode and not sabin_mode:
@@ -2329,7 +2362,6 @@ def manage_treasure(monsters, shops=True):
         return wager
 
     striker_wager = ensure_striker()
-    collog = "--- COLISEUM ---\n"
     for wager_obj, opponent_obj, win_obj, hidden in results:
         if wager_obj == striker_wager:
             win_obj = get_item(0x29)
@@ -2337,8 +2369,8 @@ def manage_treasure(monsters, shops=True):
             winname = "????????????"
         else:
             winname = win_obj.name
-        collog += "{0:12} -> {1}\n".format(wager_obj.name, winname)
-    log(collog)
+        s = "{0:12} -> {1}\n".format(wager_obj.name, winname)
+        log(s, section="colosseum")
 
 
 def manage_chests():
@@ -2698,9 +2730,8 @@ def manage_shops():
         buyables |= set(s.items)
         descriptions.append(str(s))
 
-    log("--- SHOPS ---")
     for d in sorted(descriptions):
-        log(d)
+        log(d, section="shops")
 
     return buyables
 
@@ -3214,7 +3245,7 @@ h   Organize rages by highest level first'''
                "This seed will not produce the expected result!")
     s = "Using seed: %s.%s.%s" % (VERSION, flags, seed)
     print s
-    log(s)
+    log(s, section=None)
 
     if '.' in sourcefile:
         tempname = sourcefile.rsplit('.', 1)
@@ -3434,18 +3465,20 @@ h   Organize rages by highest level first'''
 
         ms = [m for m in c.battle_commands if m]
         ms = [filter(lambda x: x.id == m, commands.values()) for m in ms]
-        charlog += "%s:" % c.name + " "
+        charbit = "%s:" % c.name + " "
         for m in ms:
             if m:
-                charlog += m[0].name.lower() + " "
-        charlog = charlog.strip() + "\n"
+                charbit += m[0].name.lower() + " "
+        charbit = charbit.strip()
+        log(charbit, section="character abilities")
+        charlog = "\n".join([charlog, charbit]).strip()
+
     if natmag_candidates:
         natmag_candidates = tuple(nc.name for nc in natmag_candidates)
-        charlog += "Natural magic: %s %s\n" % natmag_candidates
+        charbit = "Natural magic: %s %s\n" % natmag_candidates
     else:
-        charlog += "No natural magic users.\n"
-
-    log("--- CHARACTERS ---\n" + charlog)
+        charbit = "No natural magic users.\n"
+    log(charbit, section="natural magic")
     if VERBOSE:
         print charlog
 
@@ -3545,13 +3578,12 @@ h   Organize rages by highest level first'''
     rewrite_checksum()
     print "\nRandomization successful. Output filename: %s" % outfile
 
-    log("--- MONSTERS ---")
     for m in sorted(get_monsters(), key=lambda m: m.display_name):
         if m.display_name:
-            log(m.description)
+            log(m.description, section="monsters")
 
     f = open(outlog, 'w+')
-    f.write(randlog)
+    f.write(get_logstring())
     f.close()
 
 if __name__ == "__main__":

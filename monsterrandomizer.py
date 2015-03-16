@@ -64,6 +64,8 @@ statusdict = {"blind": (0, 0x01),
 reverse_statusdict = dict([(value, key) for (key, value)
                            in statusdict.items()])
 
+elemlist = ["fire", "ice", "bolt", "bio", "wind", "pearl", "earth", "water"]
+
 ranked = ["casting", "near death", "float", "regen", "poison", "blind",
           "shell", "protect", "vanish", "image", "hp drain", "haste",
           "reflect", "mp drain", "seizure",
@@ -208,11 +210,11 @@ class MonsterBlock:
         full24 = "{0:0>24}".format(full24)
         if full24.count("1") > full24.count("0"):
             # show vulnerabilities
-            s = "Vulnerable: "
+            s = "VULNERABLE: "
             on_equals = False
         else:
             # show immunities
-            s = "Immune: "
+            s = "IMMUNE: "
             on_equals = True
         statuses = []
         for index, byte in enumerate(self.immunities):
@@ -225,33 +227,72 @@ class MonsterBlock:
             statuses = ["Nothing"]
         s += ", ".join(sorted(statuses)) + "\n"
         statuses = []
-        s += "Auto: "
         for index, byte in enumerate(self.statuses):
             for i in xrange(8):
                 bit = 1 << i
                 if bool(byte & bit) is True:
                     statcode = (index, bit)
                     statuses.append(reverse_statusdict[statcode])
-        s += ", ".join(sorted(statuses))
+        if statuses:
+            s += "AUTO: "
+            s += ", ".join(sorted(statuses))
+        return s.strip()
+
+    @property
+    def elements_str(self):
+        nullify = self.absorb | self.null
+        weak = self.weakness
+        s = ""
+        elements = []
+        for i in xrange(8):
+            if nullify & (1 << i):
+                elements.append(elemlist[i])
+        if elements:
+            s += "NULLIFY: "
+            s += ", ".join(elements)
+        elements = []
+        for i in xrange(8):
+            if weak & (1 << i):
+                elements.append(elemlist[i])
+        if elements:
+            if s:
+                s += ";  "
+            s += "WEAK: "
+            s += ", ".join(elements)
         return s.strip()
 
     @property
     def description(self):
-        s = self.display_name + " (Level %s)" % self.stats['level'] + "\n"
+        s = ("~" * 40) + "\n"
+        s += self.display_name + " (Level %s)" % self.stats['level'] + "\n"
 
         def make_column(statnames):
             rows = []
             newnames = [shortnames[name] if name in shortnames else name
                         for name in statnames]
             namewidth = max(len(name) for name in newnames) + 1
-            substr = "{0:%s} {1}" % namewidth
-            for name in statnames:
+
+            def get_shortname(name):
                 if name in shortnames:
                     newname = shortnames[name]
                 else:
                     newname = name
+                return newname
+
+            values = {}
+            for name in statnames:
+                newname = get_shortname(name)
+                value = self.stats[name]
+                values[newname] = value
+
+            valuewidth = max(len(str(v)) for v in values.values())
+            substr = "{0:%s} {1:%s}" % (namewidth, valuewidth)
+            for name in statnames:
+                name = get_shortname(name)
+                value = values[name]
                 rows.append(substr.format(
-                    newname.upper() + ":", self.stats[name]))
+                    name.upper() + ":", value))
+
             width = max(len(row) for row in rows)
             for i, row in enumerate(rows):
                 while len(row) < width:
@@ -265,30 +306,37 @@ class MonsterBlock:
                 cols = [c for c in cols if c]
                 row = zip(*cols)[0]
                 row = " | ".join(row)
-                row = row.strip()
+                row = "| %s |" % row.strip()
                 table = "\n".join([table, row])
                 cols = [col[1:] for col in cols]
-            return table.strip()
+            table = table.strip()
+            fullwidth = max([len(r.strip()) for r in table.split("\n")])
+            horizborder = "." * fullwidth
+            table = "\n".join([horizborder, table, horizborder])
+            return table
 
         cols = []
         cols.append(make_column(['hp', 'mp', 'xp', 'gp']))
         cols.append(make_column(['attack', 'def', 'mpow', 'mdef']))
         cols.append(make_column(['speed', 'hit%', 'evade%', 'mblock%']))
         s += make_table(cols) + "\n"
+        elements_str = self.elements_str
+        if elements_str:
+            s += elements_str + "\n"
         s += self.statuses_str + "\n"
-        s += ("Location: %s" % self.determine_location()).strip() + "\n"
-        steals = [i.name for i in self.steals if i]
-        drops = [i.name for i in self.drops if i]
-        s += ("Steal: %s" % ", ".join(steals)).strip() + "\n"
-        s += ("Drops: %s" % ", ".join(drops)).strip() + "\n"
-        s += 'Special "%s": %s\n' % (self.attackname,
+        s += 'SPECIAL "%s": %s\n' % (self.attackname,
                                      self.special_effect_str)
         if self.rages:
             rages = [get_spell(r).name for r in self.rages]
             rages = [r if r != "Special" else self.attackname for r in rages]
-            s += "Rage: %s\n" % ", ".join(rages)
+            s += "RAGE: %s\n" % ", ".join(rages)
+        steals = [i.name for i in self.steals if i]
+        drops = [i.name for i in self.drops if i]
+        s += ("STEAL: %s" % ", ".join(steals)).strip() + "\n"
+        s += ("DROPS: %s" % ", ".join(drops)).strip() + "\n"
+        s += ("LOCATION: %s" % self.determine_location()).strip() + "\n"
 
-        return s
+        return s.strip()
 
     @property
     def display_name(self):

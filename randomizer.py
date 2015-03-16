@@ -99,9 +99,9 @@ def get_logstring(ordering=None):
 
     for sectnum, section in enumerate(ordering):
         sectnum += 1
-        s += "\n" + "=" * 40 + "\n"
+        s += "\n" + "=" * 60 + "\n"
         s += "-{0:02d}- {1}\n".format(sectnum, section.upper())
-        s += "-" * 40 + "\n"
+        s += "-" * 60 + "\n"
         datas = sorted(randlog[section])
         if any("\n" in d for d in datas):
             s += "\n"

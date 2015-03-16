@@ -26,7 +26,8 @@ from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
 from formationrandomizer import (get_formations, get_fsets, get_formation)
-from locationrandomizer import Zone, EntranceSet, get_locations, get_location
+from locationrandomizer import (EntranceSet,
+                                get_locations, get_location, get_zones)
 from towerrandomizer import randomize_tower
 
 
@@ -566,7 +567,7 @@ def randomize_slots(filename, pointer):
     eighth = quarter / 2
     jokerdoom = ((eighth * 6) + random.randint(0, eighth) +
                  random.randint(0, eighth))
-    jokerdoom += random.randint(0, len(attackspells)-(8*eighth))
+    jokerdoom += random.randint(0, len(attackspells)-(8*eighth)-1)
     jokerdoom = attackspells[jokerdoom]
 
     def get_slots_spell(i):
@@ -2959,9 +2960,8 @@ def manage_encounter_rate():
             if shortname in name:
                 encrates[name] = encrates[shortname]
 
-    zones = [Zone(i) for i in range(0x100)]
+    zones = get_zones(sourcefile)
     for z in zones:
-        z.read_data(sourcefile)
         if z.zoneid >= 0x40:
             z.rates = 0
         if z.zoneid >= 0x80:
@@ -3591,8 +3591,7 @@ h   Organize rages by highest level first'''
 
     rewrite_title(text="FF6 BC %s" % seed)
     rewrite_checksum()
-    print "\nRandomization successful. Output filename: %s" % outfile
-
+    print "\nWriting log..."
     for m in sorted(get_monsters(), key=lambda m: m.display_name):
         if m.display_name:
             log(m.description, section="monsters")
@@ -3601,10 +3600,13 @@ h   Organize rages by highest level first'''
     f = open(outlog, 'w+')
     f.write(get_logstring())
     f.close()
+    print "Randomization successful. Output filename: %s\n" % outfile
+
 
 if __name__ == "__main__":
     try:
         randomize()
+        raw_input("Press enter to close this program. ")
     except Exception, e:
         print "ERROR: %s" % e
         if outfile is not None:

@@ -7,6 +7,7 @@ from copy import copy
 
 
 locations = None
+zones = None
 unused_locs = None
 reachdict = None
 mapnames = {}
@@ -74,6 +75,41 @@ class Zone():
             temp = (self.rates >> (i*2)) & 0x3
             result.append(temp)
         return result
+
+    @property
+    def fsets(self):
+        from formationrandomizer import get_fset
+        fsets = [get_fset(setid) for setid in self.setids]
+        return fsets
+
+    @property
+    def valid(self):
+        if set(self.setids) == set([0]) or set(self.setids) == set([0xFF]):
+            return False
+        return True
+
+    def get_area_name(self, index=None):
+        if self.zoneid < 0x80:
+            index = self.zoneid % 0x40
+            x = index % 8
+            y = index / 8
+            quadrants = [["NW", "NE"],
+                         ["SW", "SE"]]
+            quadrant = quadrants[int(y >= 4)][int(x >= 4)]
+            x = str(x + 1)
+            y = "ABCDEFGH"[y]
+            if self.zoneid < 0x40:
+                return "World of Balance %s-%s %s" % (y, x, quadrant)
+            else:
+                return "World of Ruin %s-%s %s" % (y, x, quadrant)
+        else:
+            locid = ((self.zoneid % 0x80) * 4) + index
+            try:
+                location = get_location(locid)
+                area_name = location.area_name
+            except Exception:
+                area_name = "Unknown"
+            return area_name
 
     def set_formation_rate(self, setid, rate):
         for i, s in enumerate(self.setids):
@@ -228,6 +264,11 @@ class Location():
         if self.palette_index == 0x2a:
             # starts at 0x270150
             return 0x270510  # to 0x270570
+
+    @property
+    def fset(self):
+        from formationrandomizer import get_fset
+        return get_fset(self.setid)
 
     @property
     def field_palette(self):
@@ -684,6 +725,20 @@ def get_locations(filename=None):
     return locations
 
 
+def get_zones(filename=None):
+    global zones
+    if zones is None:
+        zones = [Zone(i) for i in range(0x100)]
+        if filename is None:
+            raise Exception("Please supply a filename for new zones.")
+        for z in zones:
+            z.read_data(filename)
+        return get_zones()
+    else:
+        assert len(zones) == 0x100
+        return zones
+
+
 def get_location(locid):
     global locdict
     if locid not in locdict:
@@ -732,7 +787,7 @@ if __name__ == "__main__":
         filename = argv[1]
     else:
         filename = "program.rom"
-    from formationrandomizer import get_formations, get_fsets, get_fset
+    from formationrandomizer import get_formations, get_fsets
     from monsterrandomizer import get_monsters
     get_monsters(filename)
     get_formations(filename)
@@ -740,9 +795,9 @@ if __name__ == "__main__":
     locations = get_locations(filename)
     from formationrandomizer import fsetdict
     locations = get_locations("program.rom")
-    zones = [Zone(i) for i in range(0x100)][128:]
+    zones = get_zones("program.rom")
     for z in zones:
-        z.read_data(filename)
+        print z.get_area_name(index=0)
     for l in locations:
         subindex = l.locid % 4
         setid = zones[l.locid/4].setids[subindex]

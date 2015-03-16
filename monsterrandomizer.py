@@ -130,6 +130,54 @@ class MonsterBlock:
         self.ambusher = False
         self.set_id(monster_id)
 
+    def determine_location(self):
+        from formationrandomizer import get_formations, get_fsets
+        from locationrandomizer import get_locations, get_zones
+        formations = set([f for f in get_formations()
+                          if self in f.present_enemies])
+        fsets = [fs for fs in get_fsets() if len(fs.formations) == 4]
+        fsets = [fs for fs in fsets if formations & set(fs.formations)]
+        if len(fsets) == 0:
+            return ""
+
+        def score_fset(fset):
+            score = 0
+            for formation in fset.formations[:3]:
+                if self in formation.present_enemies:
+                    score += 5
+            if self in fset.formations[3].present_enemies:
+                score += 1
+
+        areas = []
+        locations = [l for l in get_locations()
+                     if l.attacks and l.setid != 0 and l.fset in fsets]
+        if locations:
+            locations = sorted(locations, key=lambda l: score_fset(l.fset),
+                               reverse=True)
+            for l in locations:
+                try:
+                    if l.area_name not in areas:
+                        areas.append(l.area_name)
+                except Exception:
+                    continue
+        zones = [z for z in get_zones()[:0x80]
+                 if z.valid and set(z.fsets) & set(fsets)]
+
+        def score_zone(zone):
+            scores = [score_fset(fs) for fs in zone.fsets]
+            return max(scores)
+
+        if zones:
+            zones = sorted(zones, key=score_zone, reverse=True)
+            for z in zones:
+                areas.append(z.get_area_name())
+
+        areas = [a for a in areas if a.lower() != "bad"]
+        if len(areas) > 2:
+            areas = [a for a in areas if a.lower() != "final dungeon"]
+
+        return ", ".join(areas[:2])
+
     @property
     def description(self):
         s = self.display_name + " (Level %s)" % self.stats['level'] + "\n"
@@ -157,15 +205,12 @@ class MonsterBlock:
         def make_table(cols):
             table = ""
             while any(cols):
-                try:
-                    cols = [c for c in cols if c]
-                    row = zip(*cols)[0]
-                    row = " | ".join(row)
-                    row = row.strip()
-                    table = "\n".join([table, row])
-                    cols = [col[1:] for col in cols]
-                except:
-                    import pdb; pdb.set_trace()
+                cols = [c for c in cols if c]
+                row = zip(*cols)[0]
+                row = " | ".join(row)
+                row = row.strip()
+                table = "\n".join([table, row])
+                cols = [col[1:] for col in cols]
             return table.strip()
 
         cols = []
@@ -173,6 +218,7 @@ class MonsterBlock:
         cols.append(make_column(['attack', 'def', 'mpow', 'mdef']))
         cols.append(make_column(['speed', 'hit%', 'evade%', 'mblock%']))
         s += make_table(cols) + "\n"
+        s += ("Location: %s" % self.determine_location()).strip() + "\n"
 
         steals = [i.name for i in self.steals if i]
         drops = [i.name for i in self.drops if i]

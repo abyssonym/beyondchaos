@@ -787,7 +787,7 @@ def randomize_tower(filename):
         if not counter % 10:
             stdout.write('.')
             stdout.flush()
-    print "DONE"
+    print "Done assigning maps."
 
     usedlinks = set([])
     for rr in rrs:

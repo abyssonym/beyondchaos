@@ -8,6 +8,14 @@ from namerandomizer import generate_attack
 
 stat_order = ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
               'def', 'mdef', 'mpow']
+
+shortnames = {'level': 'lv',
+              'attack': 'atk',
+              'speed': 'spd',
+              'hit%': 'hit',
+              'evade%': 'evd',
+              'mblock%': 'mblk'}
+
 all_spells = None
 HIGHEST_LEVEL = 77
 xps = []
@@ -124,7 +132,47 @@ class MonsterBlock:
 
     @property
     def description(self):
-        s = "%s (%s)\n" % (self.display_name, self.stats['level'])
+        s = self.display_name + " (Level %s)" % self.stats['level'] + "\n"
+
+        def make_column(statnames):
+            rows = []
+            newnames = [shortnames[name] if name in shortnames else name
+                        for name in statnames]
+            namewidth = max(len(name) for name in newnames) + 1
+            substr = "{0:%s} {1}" % namewidth
+            for name in statnames:
+                if name in shortnames:
+                    newname = shortnames[name]
+                else:
+                    newname = name
+                rows.append(substr.format(
+                    newname.upper() + ":", self.stats[name]))
+            width = max(len(row) for row in rows)
+            for i, row in enumerate(rows):
+                while len(row) < width:
+                    row += " "
+                rows[i] = row
+            return rows
+
+        def make_table(cols):
+            table = ""
+            while any(cols):
+                try:
+                    cols = [c for c in cols if c]
+                    row = zip(*cols)[0]
+                    row = " | ".join(row)
+                    row = row.strip()
+                    table = "\n".join([table, row])
+                    cols = [col[1:] for col in cols]
+                except:
+                    import pdb; pdb.set_trace()
+            return table.strip()
+
+        cols = []
+        cols.append(make_column(['hp', 'mp', 'xp', 'gp']))
+        cols.append(make_column(['attack', 'def', 'mpow', 'mdef']))
+        cols.append(make_column(['speed', 'hit%', 'evade%', 'mblock%']))
+        s += make_table(cols) + "\n"
 
         steals = [i.name for i in self.steals if i]
         drops = [i.name for i in self.drops if i]

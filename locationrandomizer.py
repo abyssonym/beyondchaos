@@ -1,7 +1,7 @@
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,
                    UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
-                   ENTRANCE_REACHABILITY_TABLE,
+                   ENTRANCE_REACHABILITY_TABLE, LOCATION_MAPS_TABLE,
                    utilrandom as random)
 from copy import copy
 
@@ -21,6 +21,33 @@ mapbattlebgs = {}
 for line in open(MAP_BATTLE_BG_TABLE):
     a, b = tuple(line.strip().split())
     mapbattlebgs[int(a)] = int(b, 0x10)
+
+maplocations = {}
+maplocations_reverse = {}
+for line in open(LOCATION_MAPS_TABLE):
+    a, b = tuple(line.strip().split(':'))
+    b = b.strip().strip(',').split(',')
+    locids = []
+    for locid in list(b):
+        if '+' in locid:
+            l = int(locid.strip('+'))
+            locids.extend([l, l+1, l+2, l+3])
+        else:
+            locids.append(int(locid))
+
+    if a not in maplocations_reverse:
+        maplocations_reverse[a] = []
+    for locid in sorted(locids):
+        maplocations[locid] = a
+        maplocations_reverse[a].append(locid)
+
+
+def add_location_map(location_name, mapid):
+    assert location_name in maplocations_reverse
+    assert mapid not in maplocations
+    maplocations_reverse[location_name] = sorted(
+        maplocations_reverse[location_name] + [mapid])
+    maplocations[mapid] = location_name
 
 
 #256 zones
@@ -87,6 +114,12 @@ class Location():
     @property
     def chestpointer(self):
         return 0x2D82F4 + (self.locid * 2)
+
+    @property
+    def area_name(self):
+        if self.locid not in maplocations:
+            raise Exception("Area for location ID %s not known." % self.locid)
+        return maplocations[self.locid]
 
     def dummy_item(self, item):
         dummied = False
@@ -673,7 +706,7 @@ if __name__ == "__main__":
         filename = argv[1]
     else:
         filename = "program.rom"
-    from formationrandomizer import get_formations, get_fsets
+    from formationrandomizer import get_formations, get_fsets, get_fset
     from monsterrandomizer import get_monsters
     get_monsters(filename)
     get_formations(filename)
@@ -681,5 +714,19 @@ if __name__ == "__main__":
     locations = get_locations(filename)
     from formationrandomizer import fsetdict
     locations = get_locations("program.rom")
+    zones = [Zone(i) for i in range(0x100)][128:]
+    for z in zones:
+        z.read_data(filename)
     for l in locations:
-        print l, l.palette_index & 0x3F
+        subindex = l.locid % 4
+        setid = zones[l.locid/4].setids[subindex]
+        if setid != 0 and l.attacks:
+            print l, "---", l.area_name
+        elif l.chests:
+            print l, "---", l.area_name
+        else:
+            try:
+                l.area_name
+                print "NOT", l.locid, "---", l.area_name
+            except:
+                pass

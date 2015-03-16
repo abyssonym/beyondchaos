@@ -1,0 +1,45 @@
+Albrook (WoB):323,326,327,330,332
+Albrook (WoR):324
+Ancient Castle:401,406,407,408
+Cave on the Veldt:353
+Collapsing House:311
+Cyan's Dream:123,124,125,126,144,317,319,320,321,322
+Daryl's Tomb:298,299,300
+Esper Mountain:372,373,374,375
+Fanatics Tower:359,360,361,363,364,365,366,367,368,369,370
+Figaro Castle Basement:62,63,64,65,66
+Figaro Castle:59
+Final Dungeon:287,291,292,293,294,295,296,303,304,329,331,334,335,338,339,352,354,355,409,410
+Floating Continent:393,394+
+Hidon's Cave:404,405
+House at Dragon's Neck:186
+Imperial Base:378
+Imperial Camp:117
+Kohlingen:195,197
+Magitek Facility:262,263,264,269,271,273,275
+Maranda:284
+Mobliz (WoB):163
+Mobliz (WoR):150,158
+Mt. Koltz:96,97,98,99,100,101,102
+Mt. Zozo:176,177,178,179,180
+Narshe (WoB):20,30,41,42,48,50,52,105,106,107
+Narshe (WoR):32,33,34,35,36,37,38,44
+Nikeah:171
+Owzer's Mansion:207,209
+Phantom Forest:130,132,133,134,135
+Phantom Train:141,142,145,146,147,149,151,152,153
+Phoenix Cave:313,315
+Returner's Hideout:109,110
+Sabin's House:94
+Sealed Gate:382,383,384,385,386,387,388
+Serpent Trench:175
+South Figaro Basement:84,86,87,89
+South Figaro Cave (WoB):69,70,72,73,74
+South Figaro Cave (WoR):53,68,90,92
+South Figaro:75
+Thamasa:343,349,351
+Vector:240,250,252
+Yeti's Lair:281,282,283
+Zone Eater:276,277,278,280
+Zozo:221,225,226
+Bad:380

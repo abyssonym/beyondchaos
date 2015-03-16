@@ -40,6 +40,7 @@ TREASURE_ROOMS_TABLE = path.join(tblpath, "treasurerooms.txt")
 NAMEGEN_TABLE = path.join(tblpath, "generator.txt")
 CUSTOM_ITEMS_TABLE = path.join(tblpath, "customitems.txt")
 SHOP_TABLE = path.join(tblpath, "shopcodes.txt")
+LOCATION_MAPS_TABLE = path.join(tblpath, "locationmaps.txt")
 
 
 class Substitution(object):

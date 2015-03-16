@@ -168,7 +168,8 @@ class MonsterBlock:
 
         def score_zone(zone):
             scores = [score_fset(fs) for fs in zone.fsets]
-            return max(scores)
+            scores = [s for s in scores if s]
+            return sum(scores)
 
         if zones:
             zones = sorted(zones, key=score_zone, reverse=True)

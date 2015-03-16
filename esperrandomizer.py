@@ -15,6 +15,24 @@ bonus_ranks = {0: [0xFF, 0x0, 0x3, 0xD],
                3: [0x2, 0x5, 0x8, 0x10],
                4: [0x6]}  # Lv -1 bonus decided elsewhere
 
+bonus_strings = {0: "HP + 10%",
+                 1: "HP + 30%",
+                 2: "HP + 50%",
+                 3: "MP + 10%",
+                 4: "MP + 30%",
+                 5: "MP + 30%",
+                 6: "HP + 100%",
+                 7: "LV - 1",
+                 8: "LV + 50%",
+                 9: "STR + 1",
+                 0xA: "STR + 2",
+                 0xB: "SPD + 1",
+                 0xC: "SPD + 2",
+                 0xD: "STA + 1",
+                 0xE: "STA + 2",
+                 0xF: "MAG + 1",
+                 0x10: "MAG + 2"}
+
 spells = None
 used = set([])
 
@@ -48,6 +66,18 @@ class EsperBlock:
 
     def set_id(self, esperid):
         self.id = esperid
+
+    def __repr__(self):
+        assert len(self.spells) == len(self.learnrates)
+        s = self.name.upper() + "\n"
+        for spell, learnrate in zip(self.spells, self.learnrates):
+            s += "{0:6}  x{1}\n".format(spell.name, learnrate)
+        s += "BONUS: "
+        if self.bonus in bonus_strings:
+            s += bonus_strings[self.bonus]
+        else:
+            s += "None"
+        return s
 
     def read_data(self, filename):
         global spells

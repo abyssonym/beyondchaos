@@ -2314,6 +2314,10 @@ def manage_espers(freespaces):
     ragnarok_sub.write(outfile)
 
     freespaces = manage_esper_boosts(freespaces)
+
+    for e in espers:
+        log(str(e), section="espers")
+
     return freespaces
 
 

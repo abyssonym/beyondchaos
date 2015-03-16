@@ -37,7 +37,7 @@
 24,weak,Rflect
 25,weak,Shell
 26,medium,Vanish
-27,medium,Haste 2
+27,medium,Haste2
 28,medium,Slow 2
 29,medium,Osmose
 2A,weak,Warp

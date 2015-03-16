@@ -252,6 +252,8 @@ class MonsterBlock:
             s += ", ".join(elements)
         elements = []
         for i in xrange(8):
+            if nullify & (1 << i):
+                continue
             if weak & (1 << i):
                 elements.append(elemlist[i])
         if elements:

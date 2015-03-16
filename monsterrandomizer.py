@@ -179,6 +179,27 @@ class MonsterBlock:
         return ", ".join(areas[:2])
 
     @property
+    def special_effect_str(self):
+        special = self.special
+        if self.physspecial:
+            power = ((self.special & 0x2F) - 0x20) + 2
+            if power % 2:
+                power = (power / 2) + 1
+            else:
+                power = str(power / 2) + ".5"
+            s = "attack x%s" % power
+        elif special & 0x3F > 0x31:
+            s = "reflect break?"
+        else:
+            s = ""
+            if not (self.special & 0x40):
+                s += "damage + "
+            s += reverse_specialdict[special & 0x3F]
+        if self.special & 0x80:
+            s += " (unblockable)"
+        return s
+
+    @property
     def description(self):
         s = self.display_name + " (Level %s)" % self.stats['level'] + "\n"
 
@@ -223,9 +244,12 @@ class MonsterBlock:
         steals = [i.name for i in self.steals if i]
         drops = [i.name for i in self.drops if i]
         s += ("Steal: %s" % ", ".join(steals)).strip() + "\n"
-        s += ("Drop: %s" % ", ".join(drops)).strip() + "\n"
+        s += ("Drops: %s" % ", ".join(drops)).strip() + "\n"
+        s += 'Special "%s": %s\n' % (self.attackname,
+                                     self.special_effect_str)
         if self.rages:
             rages = [get_spell(r).name for r in self.rages]
+            rages = [r if r != "Special" else self.attackname for r in rages]
             s += "Rage: %s\n" % ", ".join(rages)
 
         return s
@@ -345,6 +369,7 @@ class MonsterBlock:
         f = open(filename, 'r+b')
         f.seek(attackpointer)
         attack = generate_attack()
+        self.attackname = attack
         attack = name_to_bytes(attack, 10)
         f.write("".join(map(chr, attack)))
 
@@ -1224,7 +1249,8 @@ class MonsterBlock:
 
     @property
     def physspecial(self):
-        return bool(self.special & 0x20)
+        return bool(self.special & 0x20 and
+                    self.special & 0x30 != 0x30)
 
     @property
     def deadspecial(self):

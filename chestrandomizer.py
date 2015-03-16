@@ -144,13 +144,13 @@ class ChestBlock:
     def description(self):
         if self.monster:
             from formationrandomizer import get_fset
-            s = "Enemy: "
+            s = "Enemy {0:03d}: ".format(self.effective_id)
             fset = get_fset(self.contents + 0x100)
             s += fset.formations[0].description(renamed=True, simple=True)
         elif self.empty:
-            s = "Empty!"
+            s = "Empty! ({0:03d})".format(self.effective_id)
         else:
-            s = "Treasure: "
+            s = "Treasure {0:03d}: ".format(self.effective_id)
             if self.gold:
                 s += "%s GP" % (self.contents * 100)
             else:

@@ -3,7 +3,8 @@ from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
                    TREASURE_ROOMS_TABLE,
                    utilrandom as random)
 from locationrandomizer import (get_locations, get_location,
-                                get_unused_locations, Entrance)
+                                get_unused_locations, Entrance,
+                                add_location_map)
 from formationrandomizer import get_fsets, get_formations
 from chestrandomizer import ChestBlock
 from itertools import product
@@ -163,6 +164,7 @@ def get_appropriate_location(loc, flair=True):
         for u in unused_locations:
             if u not in locexchange.values():
                 u.copy(loc)
+                add_location_map("Final Dungeon", u.locid)
                 if flair:
                     u.make_tower_flair()
                 u.fill_battle_bg(loc.locid)
@@ -932,6 +934,8 @@ def randomize_fanatics():
         stop = unused_locations.pop()
         stair.copy(random.choice(stairs[1:-1]))
         stop.copy(random.choice(pitstops[1:]))
+        add_location_map("Fanatics Tower", stair.locid)
+        add_location_map("Fanatics Tower", stop.locid)
         index = random.randint(1, len(stairs)-1)
         stairs.insert(index, stair)
         pitstops.insert(index, stop)

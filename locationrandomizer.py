@@ -126,11 +126,14 @@ class Location():
         enemies = []
         treasures = []
         for c in self.chests:
-            desc = c.description
-            if "Enemy:" in desc:
+            try:
+                desc = c.description
+            except AttributeError:
+                continue
+            if "Enemy" in desc:
                 #desc = " ".join(desc.split()[1:])
                 enemies.append(desc)
-            elif "Treasure:" in desc:
+            elif "Treasure" in desc:
                 #desc = " ".join(desc.split()[1:])
                 treasures.append(desc)
             elif "Empty!" in desc:

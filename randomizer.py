@@ -123,7 +123,7 @@ def log_chests():
     for area_name in sorted(areachests):
         chests = areachests[area_name]
         chests = "\n".join(sorted(chests.strip().split("\n")))
-        chests = area_name.upper() + "\n" + chests
+        chests = area_name.upper() + "\n" + chests.strip()
         log(chests, section="treasure chests")
 
 

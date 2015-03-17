@@ -586,7 +586,7 @@ IMP_MASK = 0x4000
 UMARO_ID = 13
 
 
-def reset_equippable(items, numchars=NUM_CHARS, characters=None):
+def reset_equippable(items, characters, numchars=NUM_CHARS):
     prevents = filter(lambda i: i.prevent_encounters, items)
     for item in prevents:
         if not CHAR_MASK & item.equippable:
@@ -668,6 +668,17 @@ def reset_equippable(items, numchars=NUM_CHARS, characters=None):
                 item.equippable = paladin_equippable
             else:
                 paladin_equippable = item.equippable
+
+    for item in items:
+        if item.itemid == 0x1C:
+            rage_chars = [c for c in characters if 0x10 in c.battle_commands]
+            rage_mask = 0
+            for c in rage_chars:
+                rage_mask |= (1 << c.id)
+            if item.equippable & rage_mask:
+                invert_rage_mask = 0xFFFF ^ rage_mask
+                item.equippable &= invert_rage_mask
+            assert not item.equippable & rage_mask
 
     return items
 

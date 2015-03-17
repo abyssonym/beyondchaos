@@ -68,6 +68,9 @@ A: Just kill it.
 Q: How do I defeat Ultros at the Esper's hideout without Sketch?
 A: Just kill it.
 
+Q: Speaking of Sketch, was the Sketch Glitch patched?
+A: No. Believe it or not, there are people out there who want to play using the Sketch Glitch, which is why the randomizer is based off of the FF3 US 1.0 rom. In an ideal world you would be able to choose whether or not to patch the glitch, but since there is such small demand for that kind of feature and it would take considerable effort, I haven't implemented it.
+
 Q: The Moogle Charm doesn't work.
 A: It was nerfed. FF6 uses a threat level based random encounter system, and Moogle Charm increases threat level by the lowest possible value without removing encounters altogether. The specifics are a bit complex, but you should think of it as having about a 1/256 encounter rate if you've been wearing it for a while. Also, some later dungeons might randomly ignore Moogle Charm altogether.
 
@@ -139,9 +142,6 @@ A: Fun fact, if you equip cursed shields on multiple party members, you can uncu
 
 Q: Why can't Gogo select X ability?
 A: It's probably there. You just have to scroll past the edge of the menu. Unless it's an ability Shadow had and you let him die, in which case, it won't be there.
-
-Q: When I use Rage the game glitches out.
-A: Is your Rager equipped with the AtmaWeapon? I've noticed some buggy effects from using enemy specials while equipped with the AtmaWeapon, and it even crashed my game once.
 
 Q: I just got a Game Over, but I didn't get to keep my experience levels.
 A: This feature was removed because it didn't work properly with one of the new esper boosts. I also wasn't very fond of it to begin with, because I would often get a Game Over and forget to reset so I don't miss out on valuable esper levels.

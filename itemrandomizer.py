@@ -712,6 +712,9 @@ def reset_special_relics(items, characters, filename, changed_commands):
                 not item.features['special1'] & 0x7C):
             continue
 
+        if item.itemid == 0x67:
+            continue
+
         item.equippable &= IMP_MASK
         item.equippable |= 1 << 12  # gogo
         for flag in [0x04, 0x08, 0x10, 0x20, 0x40]:

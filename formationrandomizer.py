@@ -278,7 +278,9 @@ class Formation():
         return sum(e.stats['xp'] for e in self.present_enemies)
 
     def mutate(self, ap=False):
-        if ap and self.ap is not None:
+        if ap and self.ap is not None and 0 < self.ap < 100:
+            factor = self.rank() / 100
+            self.ap += int(round(self.ap * factor))
             while random.choice([True, False]):
                 self.ap += random.randint(-1, 1)
                 self.ap = min(100, max(self.ap, 0))

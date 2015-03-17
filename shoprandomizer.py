@@ -1,6 +1,16 @@
 from utils import utilrandom as random
 from itemrandomizer import get_ranked_items, get_item
 
+# Despite documentation, these are the only pricings available.
+# 0 x1 price
+# 1 x2 price
+# 2 x1.5 price female discount
+# 3 x1 price figaro discount
+price_multipliers = {0: 1,
+                     1: 2,
+                     2: 1.5,
+                     3: 1}
+
 
 class ShopBlock:
     def __init__(self, pointer, name):
@@ -23,17 +33,21 @@ class ShopBlock:
         f.close()
 
     def __repr__(self):
-        s = "%s %s" % (self.name, self.shoptype_pretty)
+        multiplier = price_multipliers[self.discount]
+        s = "%s %s\n" % (self.name, self.shoptype_pretty)
         s = s.upper()
+        if self.discount == 2:
+            s += "Discounts for female characters.\n"
         items = [get_item(i) for i in self.items]
         items = [i for i in items if i is not None]
         for i in items:
-            s = "\n".join([s, i.name])
-        return s
+            s2 = "{0:13} {1:>5}\n".format(i.name, int(i.price * multiplier))
+            s += s2
+        return s.strip()
 
     @property
     def discount(self):
-        return self.misc & 0xF0
+        return (self.misc & 0xF0) >> 4
 
     @property
     def shoptype(self):
@@ -47,16 +61,19 @@ class ShopBlock:
 
     def mutate_misc(self):
         self.misc &= 0x0F
-        value = random.randint(1, 10)
-        if value <= 5:
+        value = random.randint(1, 20)
+        if value <= 3:
             self.misc |= 0x20
-        elif value <= 8:
-            self.misc |= 0x10
         elif value <= 9:
-            if random.randint(1, 10) == 10:
-                self.misc |= 0x40
-            else:
-                self.misc |= 0x30
+            self.misc |= 0x10
+
+        for i in self.items:
+            i = get_item(i)
+            if i is None:
+                continue
+            if i.price * price_multipliers[self.discount] > 65535:
+                self.misc &= 0x0F
+                break
 
     def mutate_items(self, filename):
         items = get_ranked_items()

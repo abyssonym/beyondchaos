@@ -133,6 +133,7 @@ class MonsterBlock:
         self.aiscript = None
         self.ambusher = False
         self.set_id(monster_id)
+        self.attackname = "Special"
 
     def determine_location(self):
         from formationrandomizer import get_formations, get_fsets

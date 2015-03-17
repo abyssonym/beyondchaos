@@ -1029,15 +1029,15 @@ def manage_commands_new(commands, characters):
                 elif any([spell.target_everyone and
                           not spell.target_one_side_only
                           for spell in s.spells]):
-                    pass
+                    c.targeting = 0x4
                 else:
                     if not any([spell.target_enemy_default or
                                 (spell.target_everyone and
                                  not spell.target_one_side_only)
                                for spell in s.spells]):
-                        c.targeting |= 0x08
+                        c.targeting = 0x2e
                     if all([spell.target_enemy_default for spell in s.spells]):
-                        c.targeting |= 0x48
+                        c.targeting = 0x6e
 
                 c.write_properties(outfile)
                 newname = s.name

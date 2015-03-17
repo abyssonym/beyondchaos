@@ -15,7 +15,7 @@ from utils import (ESPER_TABLE,
                    mutate_index, utilrandom as random)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub,
                              RandomSpellSub, MultipleSpellSub,
-                             get_ranked_spells)
+                             get_ranked_spells, get_spell)
 from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                MetamorphBlock, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table)
@@ -79,7 +79,7 @@ def log(text, section):
         randlog[section] = []
     if "\n" in text:
         text = text.split("\n")
-        text = "\n".join([line.strip() for line in text])
+        text = "\n".join([line.rstrip() for line in text])
     text = text.strip()
     randlog[section].append(text)
 
@@ -292,6 +292,7 @@ class CharacterBlock:
         self.beserk = False
         self.original_appearance = None
         self.new_appearance = None
+        self.natural_magic = None
 
     def __repr__(self):
         s = self.newname + "\n"
@@ -318,6 +319,10 @@ class CharacterBlock:
             s += "Notable equipment: "
             s += ", ".join([n.name for n in self.get_notable_equips()])
             s += "\n"
+        if self.natural_magic is not None:
+            s += "Natural magic:\n"
+            for level, spell in self.natural_magic:
+                s += "  LV %s - %s\n" % (level, spell.name)
         return s.strip()
 
     def get_notable_equips(self):
@@ -1137,17 +1142,12 @@ def manage_natural_magic(characters):
             levdex = int((level / 99.0) * len(spellids))
             a, b = min(index, levdex), max(index, levdex)
             index = random.randint(a, b)
-            index += random.randint(-3, 3)
-            index = max(0, min(index, len(spells)-1))
-            while random.choice([True, False]):
-                index += random.randint(-1, 1)
-                index = max(0, min(index, len(spells)-1))
+            index = mutate_index(index, len(spells), [False, True],
+                                 (-10, 10), (-5, 5))
 
-            level += random.randint(-2, 2)
-            level = max(1, min(level, 99))
-            while random.choice([True, False]):
-                level += random.randint(-1, 1)
-                level = max(0, min(level, 99))
+            level = mutate_index(level, 99, [False, True],
+                                 (-4, 4), (-2, 2))
+            level = max(level, 1)
 
             newspell = spellids[index]
             if newspell in used:
@@ -1155,19 +1155,33 @@ def manage_natural_magic(characters):
             break
 
         used.append(newspell)
-        f.seek(pointer)
-        f.write(chr(newspell))
-        f.write(chr(level))
+        return get_spell(newspell), level
 
+    candidates[0].natural_magic = []
+    candidates[1].natural_magic = []
     usedspells = []
     for i in xrange(16):
         pointer = address + (2*i)
-        mutate_spell(pointer, usedspells)
+        newspell, level = mutate_spell(pointer, usedspells)
+        candidates[0].natural_magic.append((level, newspell))
+    candidates[0].natural_magic = sorted(candidates[0].natural_magic)
+    for i, (level, newspell) in enumerate(candidates[0].natural_magic):
+        pointer = address + (2*i)
+        f.seek(pointer)
+        f.write(chr(level))
+        f.write(chr(newspell.spellid))
 
-    usedspells = []
+    usedspells = random.sample(usedspells, 12)
     for i in xrange(16):
         pointer = address + 32 + (2*i)
-        mutate_spell(pointer, usedspells)
+        newspell, level = mutate_spell(pointer, usedspells)
+        candidates[1].natural_magic.append((level, newspell))
+    candidates[1].natural_magic = sorted(candidates[1].natural_magic)
+    for i, (level, newspell) in enumerate(candidates[1].natural_magic):
+        pointer = address + +32 + (2*i)
+        f.seek(pointer)
+        f.write(chr(level))
+        f.write(chr(newspell.spellid))
 
     lores = get_ranked_spells(sourcefile, magic_only=False)
     lores = filter(lambda s: 0x8B <= s.spellid <= 0xA2, lores)
@@ -3521,9 +3535,7 @@ h   Organize rages by highest level first'''
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
-        natmag_candidates = manage_natural_magic(characters)
-    else:
-        natmag_candidates = None
+        manage_natural_magic(characters)
     reseed()
 
     if 'u' in flags:
@@ -3544,13 +3556,6 @@ h   Organize rages by highest level first'''
         for c in characters:
             c.mutate_stats(outfile)
     reseed()
-
-    if natmag_candidates:
-        natmag_candidates = tuple(nc.name for nc in natmag_candidates)
-        charbit = "Natural magic: %s %s\n" % natmag_candidates
-    else:
-        charbit = "No natural magic users.\n"
-    log(charbit, section="natural magic")
 
     if 'f' in flags:
         formations = get_formations()

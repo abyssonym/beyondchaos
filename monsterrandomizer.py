@@ -335,7 +335,7 @@ class MonsterBlock:
         if lores:
             s += "LORE: %s\n" % ", ".join([l.name for l in lores])
         if not self.is_boss:
-            controls = [get_spell(c).name for c in self.controls]
+            controls = [get_spell(c).name for c in self.controls if c != 0xFF]
             controls = [r if r != "Special" else self.attackname for r in controls]
             s += "CONTROL: %s\n" % ", ".join(sorted(controls))
         sketches = [get_spell(c).name for c in self.sketches]

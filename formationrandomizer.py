@@ -344,12 +344,21 @@ class FormationSet():
             num_encounters = 2
         for i in xrange(num_encounters):
             self.formids.append(read_multi(f, length=2))
+        if any(map(lambda f: f & 0x8000, self.formids)):
+            assert all(map(lambda f: f & 0x8000, self.formids))
+            self.sixteen_pack = True
+        else:
+            self.sixteen_pack = False
         f.close()
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         for value in self.formids:
+            if self.sixteen_pack:
+                value |= 0x8000
+            else:
+                value &= 0x7FFF
             write_multi(f, value, length=2)
         f.close()
 
@@ -471,10 +480,11 @@ if __name__ == "__main__":
     monsters = get_monsters(filename)
     for m in monsters:
         m.read_stats(filename)
-    fsets = get_fsets(filename=filename)
     formations = get_formations(filename=filename)
-    for f in formations:
-        print f, f.get_music()
+    fsets = get_fsets(filename=filename)
+    #for f in formations:
+    #    print f, f.get_music()
 
     for f in fsets:
         print f
+        print f.formids

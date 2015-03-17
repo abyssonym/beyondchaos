@@ -2455,7 +2455,9 @@ def manage_treasure(monsters, shops=True):
             winname = "????????????"
         else:
             winname = win_obj.name
-        s = "{0:12} -> {1}".format(wager_obj.name, winname)
+        s = "{0:12} -> {1:12}  :  LV {2:02d} {3}".format(
+            wager_obj.name, winname, opponent_obj.stats['level'],
+            opponent_obj.display_name)
         log(s, section="colosseum")
 
 

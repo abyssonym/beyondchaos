@@ -817,6 +817,13 @@ def get_item(itemid, allow_banned=False):
     return item
 
 
+def get_secret_item():
+    item = get_item(0, allow_banned=True)
+    if not item.banned:
+        item = get_item(0xEF)
+    return item
+
+
 def get_ranked_items(filename=None, allow_banned=False):
     items = get_items(filename, allow_banned)
     return sorted(items, key=lambda i: i.rank())

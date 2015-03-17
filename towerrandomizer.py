@@ -881,6 +881,7 @@ def randomize_tower(filename):
 
 
 def make_secret_treasure_room():
+    from itemrandomizer import get_secret_item
     candidates = []
     for line in open(TREASURE_ROOMS_TABLE):
         locid, entid, chestid = tuple(map(int, line.strip().split(',')))
@@ -897,7 +898,8 @@ def make_secret_treasure_room():
     c = ChestBlock(pointer=None, location=location.locid)
     c.copy(chest)
     c.set_content_type(0x40)
-    c.contents = 0
+    item = get_secret_item()
+    c.contents = item.itemid
     c.set_new_id()
     c.do_not_mutate = True
     c.ignore_dummy = True

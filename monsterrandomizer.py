@@ -1226,7 +1226,7 @@ class MonsterBlock:
             index = itemids.index(i)
             index = mutate_index(index, len(itemids),
                                  [False, True],
-                                 (-1, 3), (-1, 2))
+                                 (-2, 4), (-1, 2))
 
             new_items.append(itemids[index])
 
@@ -1344,7 +1344,7 @@ class MonsterBlock:
             #special = random.choice(sorted(valid))
             index = int(self.level_rank() * len(valid))
             index = mutate_index(index, len(valid), [False, True],
-                                 (-4, 4), (-3, 3))
+                                 (-5, 5), (-3, 3))
             special = valid[index]
             if special == 0x07 or (special not in [0x30, 0x31] and
                                    random.choice([True, False])):
@@ -1385,9 +1385,9 @@ class MonsterBlock:
             change_skillset = not (self.is_boss or self.boss_death)
         self.mutate_stats()
         self.mutate_misc()
-        if random.randint(1, 10) > 7:
+        if random.randint(1, 10) > 5:
             self.mutate_statuses()
-        if random.randint(1, 10) > 6:
+        if random.randint(1, 10) > 5:
             self.mutate_affinities()
         if random.randint(1, 10) > 5:
             # do this before mutate_control

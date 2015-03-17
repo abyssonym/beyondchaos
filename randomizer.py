@@ -3180,7 +3180,8 @@ def change_enemy_name(filename, enemy_id, name):
     pointer = 0xFC050 + (enemy_id * 10)
     f = open(filename, 'r+b')
     f.seek(pointer)
-    #monsterdict[enemy_id].name = name
+    monster = get_monster(enemy_id)
+    monster.changed_name = name
     name = name_to_bytes(name, 10)
     f.write("".join(map(chr, name)))
     f.close()

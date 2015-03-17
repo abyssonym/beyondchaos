@@ -3053,7 +3053,7 @@ def manage_encounter_rate():
             if shortname in name:
                 encrates[name] = encrates[shortname]
 
-    zones = get_zones(sourcefile)
+    zones = get_zones()
     for z in zones:
         if z.zoneid >= 0x40:
             z.rates = 0
@@ -3464,6 +3464,7 @@ h   Organize rages by highest level first'''
     fsets = get_fsets(sourcefile)
     locations = get_locations(sourcefile)
     items = get_ranked_items(sourcefile)
+    zones = get_zones(sourcefile)
 
     aispaces = []
     aispaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
@@ -3678,6 +3679,10 @@ h   Organize rages by highest level first'''
 
 
 if __name__ == "__main__":
+    args = list(argv)
+    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+        randomize()
+        exit()
     try:
         randomize()
         raw_input("Press enter to close this program. ")

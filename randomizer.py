@@ -317,12 +317,13 @@ class CharacterBlock:
 
     def __repr__(self):
         s = self.newname + "\n"
-        s += "Commands: "
         command_names = []
         for c in self.command_objs:
             if c is not None:
                 command_names.append(c.name.lower())
-        s += ", ".join(command_names) + "\n"
+        if set(command_names) != set(["fight"]):
+            s += "Commands: "
+            s += ", ".join(command_names) + "\n"
         if self.original_appearance and self.new_appearance:
             s += "Looks like: %s\n" % self.new_appearance
             s += "Originally: %s\n" % self.original_appearance

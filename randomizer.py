@@ -398,7 +398,7 @@ class CharacterBlock:
         f.write(chr(equipid))
         f.close()
 
-    def mutate_stats(self, filename):
+    def mutate_stats(self, filename, read_only=False):
         f = open(filename, 'r+b')
 
         def mutation(base):
@@ -423,18 +423,20 @@ class CharacterBlock:
         self.stats = {}
         f.seek(self.address)
         hpmp = map(ord, f.read(2))
-        hpmp = map(lambda v: mutation(v), hpmp)
+        if not read_only:
+            hpmp = map(lambda v: mutation(v), hpmp)
+            f.seek(self.address)
+            f.write("".join(map(chr, hpmp)))
         self.stats['hp'], self.stats['mp'] = tuple(hpmp)
-        f.seek(self.address)
-        f.write("".join(map(chr, hpmp)))
 
         f.seek(self.address + 6)
         stats = map(ord, f.read(9))
-        stats = map(lambda v: mutation(v), stats)
+        if not read_only:
+            stats = map(lambda v: mutation(v), stats)
+            f.seek(self.address + 6)
+            f.write("".join(map(chr, stats)))
         for name, value in zip(CHARSTATNAMES[2:], stats):
             self.stats[name] = value
-        f.seek(self.address + 6)
-        f.write("".join(map(chr, stats)))
 
         f.close()
 
@@ -2426,7 +2428,7 @@ def manage_espers(freespaces):
 
 
 def manage_treasure(monsters, shops=True):
-    for mm in get_metamorphs(sourcefile):
+    for mm in get_metamorphs():
         mm.mutate_items()
         mm.write_data(outfile)
 
@@ -3465,6 +3467,7 @@ h   Organize rages by highest level first'''
     locations = get_locations(sourcefile)
     items = get_ranked_items(sourcefile)
     zones = get_zones(sourcefile)
+    get_metamorphs(sourcefile)
 
     aispaces = []
     aispaces.append(FreeBlock(0xFCF50, 0xFCF50 + 384))
@@ -3562,6 +3565,9 @@ h   Organize rages by highest level first'''
 
         for c in characters:
             c.mutate_stats(outfile)
+    else:
+        for c in characters:
+            c.mutate_stats(outfile, read_only=True)
     reseed()
 
     if 'f' in flags:

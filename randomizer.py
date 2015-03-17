@@ -132,6 +132,27 @@ def log_chests():
         log(chests, section="treasure chests")
 
 
+def log_break_learn_items():
+    items = sorted(get_ranked_items(), key=lambda i: i.itemid)
+    breakable = [i for i in items if not i.is_consumable and i.itemtype & 0x20]
+    s = "BREAKABLE ITEMS\n"
+    for i in breakable:
+        spell = get_spell(i.features['breakeffect'] & 0x3F)
+        indestructible = not i.features['breakeffect'] & 0x80
+        s2 = "{0:13}  {1}".format(i.name + ":", spell.name)
+        if indestructible:
+            s2 += " (indestructible)"
+        s += s2 + "\n"
+    log(s, "item magic")
+    s = "SPELL-TEACHING ITEMS\n"
+    learnable = [i for i in items if i.features['learnrate'] > 0]
+    for i in learnable:
+        spell = get_spell(i.features['learnspell'])
+        rate = i.features['learnrate']
+        s += "{0:13}  {1} x{2}\n".format(i.name + ":", spell.name, rate)
+    log(s, "item magic")
+
+
 def rngstate():
     state = sum(random.getstate()[1])
     print state
@@ -3649,6 +3670,7 @@ h   Organize rages by highest level first'''
             log(m.description, section="monsters")
 
     log_chests()
+    log_break_learn_items()
     f = open(outlog, 'w+')
     f.write(get_logstring())
     f.close()

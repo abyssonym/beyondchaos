@@ -17,7 +17,7 @@ from skillrandomizer import (SpellBlock, CommandBlock, SpellSub,
                              RandomSpellSub, MultipleSpellSub,
                              get_ranked_spells, get_spell)
 from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
-                               MetamorphBlock, get_ranked_monsters,
+                               get_metamorphs, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table)
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
@@ -2404,25 +2404,8 @@ def manage_espers(freespaces):
     return freespaces
 
 
-metamorphs = None
-
-
-def get_metamorphs():
-    global metamorphs
-    if metamorphs:
-        return metamorphs
-
-    metamorphs = []
-    for i in range(32):
-        address = 0x47f40 + (i*4)
-        mm = MetamorphBlock(pointer=address)
-        mm.read_data(sourcefile)
-        metamorphs.append(mm)
-    return get_metamorphs()
-
-
 def manage_treasure(monsters, shops=True):
-    for mm in get_metamorphs():
+    for mm in get_metamorphs(sourcefile):
         mm.mutate_items()
         mm.write_data(outfile)
 
@@ -3253,7 +3236,7 @@ def dummy_item(item):
     for m in get_monsters():
         dummied = m.dummy_item(item) or dummied
 
-    for mm in get_metamorphs():
+    for mm in get_metamorphs(sourcefile):
         dummied = mm.dummy_item(item) or dummied
 
     for l in get_locations():

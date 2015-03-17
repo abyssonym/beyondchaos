@@ -16,6 +16,7 @@ shortnames = {'level': 'lv',
               'evade%': 'evd',
               'mblock%': 'mblk'}
 
+metamorphs = None
 all_spells = None
 HIGHEST_LEVEL = 77
 xps = []
@@ -312,16 +313,38 @@ class MonsterBlock:
         if elements_str:
             s += elements_str + "\n"
         s += self.statuses_str + "\n"
+
+        others = {"humanoid": self.humanoid,
+                  "undead": self.undead,
+                  "ambusher": self.ambusher,
+                  "can't escape": self.cantrun,
+                  "difficult to run": self.hardrun,
+                  "dies at MP zero": self.mpdeath}
+        if any(others.values()):
+            others = sorted([key for key in others if others[key]])
+            s += "OTHER: " + ", ".join(others) + "\n"
+
         s += 'SPECIAL "%s": %s\n' % (self.attackname,
                                      self.special_effect_str)
         if self.rages:
             rages = [get_spell(r).name for r in self.rages]
             rages = [r if r != "Special" else self.attackname for r in rages]
             s += "RAGE: %s\n" % ", ".join(rages)
+        lores = self.get_lores()
+        if lores:
+            s += "LORE: %s\n" % ", ".join([l.name for l in lores])
+        if not self.is_boss:
+            s += "CONTROL: %s\n" % ", ".join(
+                sorted([get_spell(c).name for c in self.controls]))
+        s += "SKETCH: %s\n" % ", ".join(
+            sorted([get_spell(k).name for k in self.sketches]))
         steals = [i.name for i in self.steals if i]
         drops = [i.name for i in self.drops if i]
         s += ("STEAL: %s" % ", ".join(steals)).strip() + "\n"
         s += ("DROPS: %s" % ", ".join(drops)).strip() + "\n"
+        if not self.cantmorph:
+            s += "MORPH (%s%%): %s\n" % (self.morphrate, ", ".join(
+                sorted([i.name for i in self.get_morph_items()])))
         s += ("LOCATION: %s" % self.determine_location()).strip() + "\n"
 
         return s.strip()
@@ -548,6 +571,11 @@ class MonsterBlock:
         if not ids_only:
             skillset = [s for s in all_spells if s.spellid in skillset]
         return sorted(skillset)
+
+    def get_lores(self):
+        skills = self.get_skillset()
+        skills = [get_spell(s) for s in skills if s in xrange(0x8B, 0xA3)]
+        return sorted(skills, key=lambda s: s.name)
 
     def set_minimum_mp(self):
         skillset = self.get_skillset(ids_only=False)
@@ -796,6 +824,42 @@ class MonsterBlock:
     @property
     def undead(self):
         return self.misc1 & 0x80
+
+    @property
+    def cantrun(self):
+        return self.misc2 & 0x08
+
+    @property
+    def hardrun(self):
+        if self.cantrun:
+            return 0
+        return self.misc2 & 0x01
+
+    @property
+    def mpdeath(self):
+        return self.misc1 & 0x01
+
+    @property
+    def cantmorph(self):
+        return self.morph & 0xE0 == 0xE0
+
+    @property
+    def morphrate(self):
+        missrate = (self.morph & 0xE0) >> 5
+        hitrate = {0: 99,
+                   1: 75,
+                   2: 50,
+                   3: 25,
+                   4: 12,
+                   5: 6,
+                   6: 3,
+                   7: 0}[missrate]
+        return hitrate
+
+    def get_morph_items(self):
+        morphpack = self.morph & 0x1F
+        morphpack = [mm for mm in get_metamorphs() if mm.id == morphpack][0]
+        return [get_item(i) for i in morphpack.items]
 
     @property
     def floating(self):
@@ -1713,3 +1777,18 @@ class MetamorphBlock:
             return True
 
         return False
+
+
+def get_metamorphs(filename=None):
+    global metamorphs
+    if metamorphs is not None:
+        return metamorphs
+
+    metamorphs = []
+    for i in range(32):
+        address = 0x47f40 + (i*4)
+        mm = MetamorphBlock(pointer=address)
+        mm.read_data(filename)
+        mm.id = i
+        metamorphs.append(mm)
+    return get_metamorphs()

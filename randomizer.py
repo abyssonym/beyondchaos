@@ -312,7 +312,7 @@ class CharacterBlock:
             blurb = "{0:8} {1}".format(name.upper() + ":", self.stats[name])
             statblurbs[name] = blurb
         column1 = [statblurbs[n] for n in ["hp", "mp", "evade", "mblock"]]
-        column2 = [statblurbs[n] for n in ["vigor", "speed", "stamina", "m.power"]]
+        column2 = [statblurbs[n] for n in ["vigor", "m.power", "speed", "stamina"]]
         column3 = [statblurbs[n] for n in ["attack", "defense", "m.def"]]
         s += make_table([column1, column2, column3]) + "\n"
         if self.id < 14:

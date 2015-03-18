@@ -31,7 +31,7 @@ from locationrandomizer import (EntranceSet,
 from towerrandomizer import randomize_tower
 
 
-VERSION = "52"
+VERSION = "53"
 TEST_ON = False
 TEST_SEED = "44.abcefghijklmnopqrstuvwxyz-partyparty.42069"
 TEST_FILE = "program.rom"

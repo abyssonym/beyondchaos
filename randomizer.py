@@ -2602,6 +2602,7 @@ def manage_formations(formations, fsets):
     # don't swap with Narshe Mines formations
     valid_fsets = [fset for fset in valid_fsets if
                    fset.setid not in [0x39, 0x3A] and
+                   not fset.sixteen_pack and
                    set([fo.formid for fo in fset.formations]) != set([0])]
 
     outdoor_fsets = [fset for fset in valid_fsets if
@@ -2869,16 +2870,16 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
     get_namelocdict()
     paldict = {}
     for l in locations:
-        if l.formation in namelocdict:
-            name = namelocdict[l.formation]
+        if l.setid in namelocdict:
+            name = namelocdict[l.setid]
             if l.name and name != l.name:
                 raise Exception("Location name mismatch.")
             elif l.name is None:
-                l.name = namelocdict[l.formation]
+                l.name = namelocdict[l.setid]
         if l.field_palette not in paldict:
             paldict[l.field_palette] = set([])
         if l.attacks:
-            formation = [f for f in get_fsets() if f.setid == l.formation][0]
+            formation = [f for f in get_fsets() if f.setid == l.setid][0]
             if set(formation.formids) != set([0]):
                 paldict[l.field_palette].add(l)
         l.write_data(outfile)

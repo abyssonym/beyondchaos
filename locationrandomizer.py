@@ -120,8 +120,9 @@ class Zone():
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        f.write("".join(map(chr, self.setids)))
+        # Do not write new set ids... let the locations do that.
+        #f.seek(self.pointer)
+        #f.write("".join(map(chr, self.setids)))
         f.seek(self.ratepointer)
         f.write(chr(self.rates))
         f.close()
@@ -156,6 +157,16 @@ class Location():
         if self.locid not in maplocations:
             raise Exception("Area for location ID %s not known." % self.locid)
         return maplocations[self.locid]
+
+    @property
+    def fsets(self):
+        from formationrandomizer import get_fset
+        fset = get_fset(self.setid)
+        fsets = [fset]
+        if fset.sixteen_pack:
+            f = fset.setid
+            fsets.extend([get_fset(i) for i in [f+1, f+2, f+3]])
+        return fsets
 
     @property
     def chest_contents(self):
@@ -324,9 +335,6 @@ class Location():
         self.height = ord(f.read(1))
         self.layerpriorities = ord(f.read(1))
         assert f.tell() == self.pointer + 0x21
-
-        f.seek(self.formationpointer)
-        self.formation = ord(f.read(1))
 
         f.seek(0xf5600 + self.locid)
         self.setid = ord(f.read(1))
@@ -787,7 +795,7 @@ if __name__ == "__main__":
         filename = argv[1]
     else:
         filename = "program.rom"
-    from formationrandomizer import get_formations, get_fsets
+    from formationrandomizer import get_formations, get_fsets, get_fset
     from monsterrandomizer import get_monsters
     get_monsters(filename)
     get_formations(filename)
@@ -796,22 +804,7 @@ if __name__ == "__main__":
     from formationrandomizer import fsetdict
     locations = get_locations("program.rom")
     zones = get_zones("program.rom")
-    for z in zones:
-        print z.get_area_name(index=0)
     for l in locations:
-        subindex = l.locid % 4
-        setid = zones[l.locid/4].setids[subindex]
-        if setid != 0 and l.attacks:
-            pass
-            #print l, "---", l.area_name
-        if l.chests:
-            print l, "---", l.area_name.strip()
-            print l.chest_contents
-            print
-        if not l.chests and not (l.attacks and setid != 0):
-            continue
-            try:
-                l.area_name
-                print "NOT", l.locid, "---", l.area_name
-            except:
-                pass
+        print l
+        print get_fset(l.setid)
+        print

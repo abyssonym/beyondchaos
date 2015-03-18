@@ -145,20 +145,38 @@ class MonsterBlock:
         if len(fsets) == 0:
             return ""
 
-        def score_fset(fset):
+        def score_location(location):
+            from locationrandomizer import Zone
             score = 0
-            for formation in fset.formations[:3]:
+            fsets = location.fsets
+            for fset in fsets:
+                for formation in fset.formations[:3]:
+                    if self in formation.present_enemies:
+                        if isinstance(location, Zone):
+                            score += 5
+                            break
+                        else:
+                            score += 5 * formation.present_enemies.count(self)
+                if score and isinstance(location, Zone):
+                    continue
+                formation = fset.formations[3]
                 if self in formation.present_enemies:
-                    score += 5
-            if self in fset.formations[3].present_enemies:
-                score += 1
+                    if isinstance(location, Zone):
+                        score += 1
+                        continue
+                    else:
+                        score += 1 * formation.present_enemies.count(self)
+            score = score / float(len(fsets))
+
+        from formationrandomizer import get_fset
+        locations = get_locations()
+        fsets = set(fsets)
+        locations = [l for l in get_locations()
+                     if l.attacks and l.setid != 0 and set(l.fsets) & fsets]
 
         areas = []
-        locations = [l for l in get_locations()
-                     if l.attacks and l.setid != 0 and l.fset in fsets]
         if locations:
-            locations = sorted(locations, key=lambda l: score_fset(l.fset),
-                               reverse=True)
+            locations = sorted(locations, key=score_location, reverse=True)
             for l in locations:
                 try:
                     if l.area_name not in areas:
@@ -166,21 +184,17 @@ class MonsterBlock:
                 except Exception:
                     continue
         zones = [z for z in get_zones()[:0x80]
-                 if z.valid and set(z.fsets) & set(fsets)]
-
-        def score_zone(zone):
-            scores = [score_fset(fs) for fs in zone.fsets]
-            scores = [s for s in scores if s]
-            return sum(scores)
+                 if z.valid and set(z.fsets) & fsets]
 
         if zones:
-            zones = sorted(zones, key=score_zone, reverse=True)
+            zones = sorted(zones, key=score_location, reverse=True)
             for z in zones:
                 areas.append(z.get_area_name())
 
         areas = [a for a in areas if a.lower() != "bad"]
-        if len(areas) > 2:
-            areas = [a for a in areas if a.lower() != "final dungeon"]
+        if len(areas) > 1 and areas[0] == "Final Dungeon":
+            areas.remove("Final Dungeon")
+            areas.insert(1, "Final Dungeon")
 
         return ", ".join(areas[:2])
 

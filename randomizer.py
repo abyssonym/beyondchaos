@@ -3359,6 +3359,10 @@ h   Organize rages by highest level first'''
     s = "Using seed: %s.%s.%s" % (VERSION, flags, seed)
     print s
     log(s, section=None)
+    log("This is a game guide generated for the Beyond Chaos FF6 randomizer.",
+        section=None)
+    log("For more information, visit https://github.com/abyssonym/beyondchaos",
+        section=None)
 
     if '.' in sourcefile:
         tempname = sourcefile.rsplit('.', 1)

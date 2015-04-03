@@ -53,7 +53,7 @@ MD5HASH = "e986575b98300f721ce27c180264d890"
 # Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
 REPLACE_ENEMIES = [0x10f, 0x136, 0x137]
 # Guardian x4, Broken Dirt Drgn, Kefka + Ice Dragon
-REPLACE_FORMATIONS = [0x20e, 0x1ca, 0x1e9]
+REPLACE_FORMATIONS = [0x20e, 0x1ca, 0x1e9, 0x1fa]
 KEFKA_EXTRA_FORMATION = 0x1FF  # Fake Atma
 NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb, 0x230, KEFKA_EXTRA_FORMATION]
 
@@ -353,7 +353,7 @@ class CharacterBlock:
         weapons = [i for i in items if i.is_weapon]
         rare = [i for i in items if not i.is_weapon and
                 bin(i.equippable).count('1') <= 5 and
-                i.rank() > 10000]
+                i.rank() > 4000]
         rare.extend([w for w in weapons if w.rank() > 50000])
         if self.id == 12:
             rare = [r for r in rare if not r.features['special1'] & 0x7C]
@@ -2638,7 +2638,7 @@ def manage_formations(formations, fsets):
                               [0xAB, 0xAC, 0xAD,
                                0x16A, 0x16B, 0x16C, 0x16D,
                                0x18A, 0x1D2, 0x1D8, 0x1DE,
-                               0x1E0, 0x1E6, 0x1FA]])
+                               0x1E0, 0x1E6]])
 
     for formation in formations:
         formation.mutate(ap=False)

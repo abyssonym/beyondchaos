@@ -1,5 +1,6 @@
-from utils import read_multi
+from utils import read_multi, write_multi
 from sys import argv
+from shutil import copyfile
 
 
 def decompress(bytestring, simple=False, complicated=True, debug=False):
@@ -160,41 +161,50 @@ def decompress_at_location(filename, address):
     decompressed = decompress(bytestring, complicated=True)
     return decompressed
 
+
+class Decompressor():
+    def __init__(self, address, fakeaddress=None, maxaddress=None):
+        self.address = address
+        self.fakeaddress = fakeaddress
+        self.maxaddress = maxaddress
+        self.data = None
+
+    def read_data(self, filename):
+        self.data = decompress_at_location(filename, self.address)
+        self.backup = str(self.data)
+        assert decompress(recompress(self.backup)) == self.backup
+
+    def writeover(self, address, to_write):
+        to_write = "".join([chr(c) if type(c) is int else c for c in to_write])
+        if self.fakeaddress:
+            address = address - self.fakeaddress
+        self.data = (self.data[:address] + to_write +
+                     self.data[address+len(to_write):])
+
+    def get_bytestring(self, address, length):
+        if self.fakeaddress:
+            address = address - self.fakeaddress
+        return map(ord, self.data[address:address+length])
+
+    def compress_and_write(self, filename):
+        compressed = recompress(self.data)
+        size = len(compressed)
+        print "Recompressed is %s" % size
+        f = open(filename, 'r+b')
+        f.seek(self.address)
+        write_multi(f, size, length=2)
+        f.write(compressed)
+        if self.maxaddress and f.tell() >= self.maxaddress:
+            raise Exception("Recompressed data out of bounds.")
+        f.close()
+
 if __name__ == "__main__":
-    f = open(argv[1], 'r+b')
-    f.seek(0x2686C + 2)
-    original_data = f.read(8692)
-    f.close()
-    d2 = decompress_at_location(argv[1], 0x2686C)
-    initial_length = len(d2)
-    initial_decompress = str(d2)
-    d3 = recompress(d2)
-    print "Recompressed is %s" % len(d3)
-    '''
-    if d3 != original_data:
-        for i, (a, b) in enumerate(zip(d3, original_data)):
-            print "%x" % ord(a),
-            if a != b:
-                print
-                print "%s: " % i,
-                print "%x %x" % (ord(a), ord(b))
-                import pdb; pdb.set_trace()
-    '''
-    dx = decompress
-    rx = recompress
-    print len(d2), len(d3)
-    for i in xrange(10):
-        print d2 == initial_decompress,
-        r2 = rx(d2)
-        print len(r2),
-        d2 = dx(r2)
-        print d2 == initial_decompress,
-        print len(d2)
-        if d2[:len(initial_decompress)] != initial_decompress:
-            for a, b in zip(initial_decompress, d2):
-                print "%x" % ord(b),
-                if b != a:
-                    print
-                    print "%x %x" % (ord(a), ord(b))
-                    import pdb; pdb.set_trace()
-    import pdb; pdb.set_trace()
+    sourcefile = argv[1]
+    outfile = argv[2]
+    copyfile(sourcefile, outfile)
+    d = Decompressor(0x2686C, fakeaddress=0x7E5000, maxaddress=0x28A70)
+    d.read_data(sourcefile)
+    print ["%x" % i for i in d.get_bytestring(0x7E7C43, 0x20)]
+    d.writeover(0x7E50F7, [0x0] * 57)
+    d.writeover(0x7E501A, [0xEA] * 3)
+    d.compress_and_write(outfile)

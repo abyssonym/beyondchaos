@@ -1185,6 +1185,12 @@ class MonsterBlock:
             self.weakness = self.weakness | bit
             weakcount += -1
 
+        nullify = self.null | self.absorb
+        if self.stats['level'] < 20 and nullify & 0x7 == 0x7:
+            denullify = 0xFF ^ (1 << random.randint(0, 2))
+            self.null &= denullify
+            self.absorb &= denullify
+
     def mutate_items(self):
         if random.choice([True, False]):
             random.shuffle(self.items)

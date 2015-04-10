@@ -2094,10 +2094,12 @@ def manage_colorize_animations():
 
 
 def manage_items(items, changed_commands=None):
+    from itemrandomizer import set_item_changed_commands
     always_break = True if "collateraldamage" in activated_codes else False
+    set_item_changed_commands(changed_commands)
 
     for i in items:
-        i.mutate(always_break=always_break, changed_commands=changed_commands)
+        i.mutate(always_break=always_break)
         i.unrestrict()
         i.write_stats(outfile)
 
@@ -3675,7 +3677,9 @@ h   Organize rages by highest level first'''
 
     if 'q' in flags:
         # do this after swapping beserk
-        reset_special_relics(items, characters, outfile, changed_commands)
+        from itemrandomizer import set_item_changed_commands
+        set_item_changed_commands(changed_commands)
+        reset_special_relics(items, characters, outfile)
         reset_cursed_shield(outfile)
 
         for c in characters:

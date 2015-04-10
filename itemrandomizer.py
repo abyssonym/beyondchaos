@@ -28,9 +28,15 @@ all_spells = None
 effects_used = []
 itemdict = {}
 customs = {}
+changed_commands = []
 
 break_unused_dict = {0x09: range(0xA3, 0xAB),
                      0x08: range(0xAB, 0xB0) + range(0x41, 0x44)}
+
+
+def set_item_changed_commands(commands):
+    global changed_commands
+    changed_commands = set(commands)
 
 
 def get_custom_items():
@@ -463,9 +469,8 @@ class ItemBlock:
 
         self.price = min(self.price, 65000)
 
-    def mutate(self, always_break=False, changed_commands=None):
-        if changed_commands is None:
-            changed_commands = []
+    def mutate(self, always_break=False):
+        global changed_commands
         self.mutate_stats()
         self.mutate_price()
         broken, learned = False, False
@@ -587,6 +592,7 @@ UMARO_ID = 13
 
 
 def reset_equippable(items, characters, numchars=NUM_CHARS):
+    global changed_commands
     prevents = filter(lambda i: i.prevent_encounters, items)
     for item in prevents:
         if not CHAR_MASK & item.equippable:
@@ -669,17 +675,19 @@ def reset_equippable(items, characters, numchars=NUM_CHARS):
             else:
                 paladin_equippable = item.equippable
 
-    for item in items:
-        if item.itemid == 0x1C:
-            rage_chars = [c for c in characters if 0x10 in c.battle_commands]
-            rage_mask = 0
-            for c in rage_chars:
-                rage_mask |= (1 << c.id)
-            rage_mask |= (1 << 12)  # gogo
-            if item.equippable & rage_mask:
-                invert_rage_mask = 0xFFFF ^ rage_mask
-                item.equippable &= invert_rage_mask
-            assert not item.equippable & rage_mask
+    if 0x10 not in changed_commands:
+        for item in items:
+            if item.itemid == 0x1C:
+                rage_chars = [c for c in characters if
+                              0x10 in c.battle_commands]
+                rage_mask = 0
+                for c in rage_chars:
+                    rage_mask |= (1 << c.id)
+                rage_mask |= (1 << 12)  # gogo
+                if item.equippable & rage_mask:
+                    invert_rage_mask = 0xFFFF ^ rage_mask
+                    item.equippable &= invert_rage_mask
+                assert not item.equippable & rage_mask
 
     return items
 
@@ -705,7 +713,8 @@ def reset_cursed_shield(filename):
     cursed.write_stats(filename)
 
 
-def reset_special_relics(items, characters, filename, changed_commands):
+def reset_special_relics(items, characters, filename):
+    global changed_commands
     f = open(filename, 'r+b')
     characters = [c for c in characters if c.id < 14]
     for item in items:

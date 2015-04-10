@@ -12,6 +12,7 @@ unused_locs = None
 reachdict = None
 mapnames = {}
 locdict = {}
+chest_id_counts = None
 for line in open(MAP_NAMES_TABLE):
     key, value = tuple(line.strip().split(':'))
     key = int(key, 0x10)
@@ -49,6 +50,19 @@ def add_location_map(location_name, mapid):
     maplocations_reverse[location_name] = sorted(
         maplocations_reverse[location_name] + [mapid])
     maplocations[mapid] = location_name
+
+
+def get_chest_id_counts():
+    global chest_id_counts
+    if chest_id_counts is not None:
+        return chest_id_counts
+    chest_id_counts = {}
+    for l in get_locations():
+        for c in l.chests:
+            if c.effective_id not in chest_id_counts:
+                chest_id_counts[c.effective_id] = 0
+            chest_id_counts[c.effective_id] += 1
+    return get_chest_id_counts()
 
 
 #256 zones
@@ -172,19 +186,21 @@ class Location():
     def chest_contents(self):
         enemies = []
         treasures = []
+        counts = get_chest_id_counts()
         for c in self.chests:
             try:
                 desc = c.description
             except AttributeError:
                 continue
+            count = counts[c.effective_id]
+            if count >= 2:
+                desc = "*%s" % desc
             if "Enemy" in desc:
-                #desc = " ".join(desc.split()[1:])
                 enemies.append(desc)
             elif "Treasure" in desc:
-                #desc = " ".join(desc.split()[1:])
                 treasures.append(desc)
             elif "Empty!" in desc:
-                pass
+                treasures.append(desc)
             else:
                 raise Exception("Received unknown chest contents type.")
         s = ""

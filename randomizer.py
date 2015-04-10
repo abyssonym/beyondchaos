@@ -29,9 +29,11 @@ from formationrandomizer import (get_formations, get_fsets, get_formation)
 from locationrandomizer import (EntranceSet,
                                 get_locations, get_location, get_zones)
 from towerrandomizer import randomize_tower
+from decompress import Decompressor
 
 
 VERSION = "53"
+VERSION_ROMAN = "LIII"
 TEST_ON = False
 TEST_SEED = "44.abcefghijklmnopqrstuvwxyz-partyparty.42069"
 TEST_FILE = "program.rom"
@@ -3292,6 +3294,113 @@ def manage_full_umaro():
         full_umaro_sub.write(outfile)
 
 
+def manage_opening():
+    d = Decompressor(0x2686C, fakeaddress=0x5000, maxaddress=0x28A60)
+    d.read_data(sourcefile)
+
+    # removing white logo screen
+    d.writeover(0x501A, [0xEA] * 3)
+    d.writeover(0x50F7, [0] * 62)
+    d.writeover(0x5135, [0] * 0x20)
+    d.writeover(0x7445, [0] * 0x20)
+    d.writeover(0x5155, [0] * 80)
+
+    # removing notices/symbols
+    bg_color = d.get_bytestring(0x7BA5, 2)
+    d.writeover(0x7BA7, bg_color)
+    d.writeover(0x52F7, [0xEA] * 3)
+    d.writeover(0x5306, [0] * 57)
+
+    def mutate_palette_set(addresses, transformer=None):
+        if transformer is None:
+            transformer = get_palette_transformer(always=True)
+        for address in addresses:
+            palette = d.get_bytestring(address, 0x20)
+            palette = transformer(palette, single_bytes=True)
+            d.writeover(address, palette)
+
+    # clouds
+    tf = get_palette_transformer(always=True)
+    mutate_palette_set([0x7B63, 0x7BE3, 0x7C03, 0x7C43, 0x56D9, 0x6498], tf)
+
+    # lightning
+    mutate_palette_set([0x7B43, 0x7C23, 0x5659, 0x5679, 0x5699, 0x56B9], tf)
+
+    # fire
+    mutate_palette_set([0x7B83, 0x7BA3, 0x7BC3], tf)
+
+    # end of the world
+    mutate_palette_set([0x717D, 0x719D, 0x71BD, 0x71DD])
+
+    # magitek
+    palette = d.get_bytestring(0x6470, 0x20)
+    tf = get_palette_transformer(use_luma=True, basepalette=palette)
+    palette = tf(palette, single_bytes=True)
+    d.writeover(0x6470, palette)
+
+    table = ("~ " + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+             "." + "abcdefghijklmnopqrstuvwxyz")
+    table = dict((c, i) for (i, c) in enumerate(table))
+
+    def replace_credits_text(address, text, split=False):
+        original = d.get_bytestring(address, 0x40)
+        length = original.index(0)
+        original = original[:length]
+        if 0xFE in original and not split:
+            linebreak = original.index(0xFE)
+            length = linebreak
+        if len(text) > length:
+            import pdb; pdb.set_trace()
+            raise Exception("Text too long to replace.")
+        if not split:
+            remaining = length - len(text)
+            text = (" " * (remaining/2)) + text
+            while len(text) < len(original):
+                text += " "
+        else:
+            midtext = len(text)/2
+            midlength = length / 2
+            a, b = text[:midtext], text[midtext:]
+            text = ""
+            for t in (a, b):
+                margin = (midlength - len(t)) / 2
+                t = (" " * margin) + t
+                while len(t) < midlength:
+                    t += " "
+                text += t
+                text = text[:-1] + chr(0xFE)
+            text = text[:-1]
+        text = [table[c] if c in table else c for c in text]
+        text.append(0)
+        d.writeover(address, text)
+
+    from string import letters as alpha
+    replace_credits_text(0x659C, "ffvi")
+    replace_credits_text(0x65A9, "BEYOND CHAOS")
+    replace_credits_text(0x65C0, "creator")
+    replace_credits_text(0x65CD, "Abyssonym")
+    replace_credits_text(0x65F1, "seed")
+    text = "".join([alpha[int(i)] for i in str(seed)])
+    replace_credits_text(0x6605, text.upper())
+    replace_credits_text(0x6625, "flags")
+    display_flags = sorted([a for a in alpha if a in flags.lower()])
+    display_flags = "".join(display_flags).upper()
+    replace_credits_text(0x663A, display_flags, split=True)
+    codestatus = "CODES ON" if activated_codes else "CODES OFF"
+    replace_credits_text(0x6661, codestatus)
+    replace_credits_text(0x6682, "ver.")
+    replace_credits_text(0x668C, VERSION_ROMAN)
+
+    for address in [0x669E, 0x66B1, 0x66C5, 0x66D8, 0x66FB, 0x670D, 0x6732,
+                    0x6758, 0x676A, 0x6791, 0x67A7, 0x67C8, 0x67DE, 0x67F4,
+                    0x6809, 0x6819, 0x6835, 0x684A, 0x6865, 0x6898, 0x68CE,
+                    0x68F9, 0x6916, 0x6929, 0x6945, 0x6959, 0x696C, 0x697E,
+                    0x6991, 0x69A9, 0x69B8]:
+        replace_credits_text(address, "")
+
+    d.compress_and_write(outfile)
+
+
 def randomize():
     global outfile, sourcefile, flags, seed
 
@@ -3531,13 +3640,13 @@ h   Organize rages by highest level first'''
         by_level = 'h' in flags and 'a' not in flags
         esperrage_spaces = manage_reorder_rages(esperrage_spaces,
                                                 by_level=by_level)
+
         titlesub = Substitution()
-        titlesub.bytestring = [0xFD]
-        titlesub.set_location(0xA5E33)
-        titlesub.write(outfile)
         titlesub.bytestring = [0xFD] * 4
         titlesub.set_location(0xA5E8E)
         titlesub.write(outfile)
+
+        manage_opening()
 
         savetutorial_sub = Substitution()
         savetutorial_sub.set_location(0xC9AF1)

@@ -9,17 +9,13 @@ f1 43
 c0
 fd
 f1 47
-f0 ee fe ef
+f0 ee d2 ef
 fd
-f0 9 d2 ef
+f0 9 a ef
 fd
-f0 ee fe ef
+f0 a b ef
 fd
-f0 a d2 ef
-fd
-f0 ee fe ef
-fd
-f0 b fe ef
+f0 b 9 ef
 ff
 
 # replace with KEFKA 2

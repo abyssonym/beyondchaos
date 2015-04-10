@@ -675,6 +675,7 @@ def reset_equippable(items, characters, numchars=NUM_CHARS):
             rage_mask = 0
             for c in rage_chars:
                 rage_mask |= (1 << c.id)
+            rage_mask |= (1 << 12)  # gogo
             if item.equippable & rage_mask:
                 invert_rage_mask = 0xFFFF ^ rage_mask
                 item.equippable &= invert_rage_mask

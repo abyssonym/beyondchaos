@@ -392,7 +392,11 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
     if middle:
         degree = utran.randint(-75, 75)
 
-    def palette_transformer(raw_palette):
+    def palette_transformer(raw_palette, single_bytes=False):
+        if single_bytes:
+            raw_palette = zip(raw_palette, raw_palette[1:])
+            raw_palette = [p for (i, p) in enumerate(raw_palette) if not i % 2]
+            raw_palette = [(b << 8) | a for (a, b) in raw_palette]
         transformed = []
         for color in raw_palette:
             index = color_to_index(color)
@@ -403,6 +407,13 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
                 red, green, blue = shift_middle((red, green, blue), degree)
             color = components_to_color((red, green, blue))
             transformed.append(color)
+        if single_bytes:
+            major = [p >> 8 for p in transformed]
+            minor = [p & 0xFF for p in transformed]
+            transformed = []
+            for a, b in zip(minor, major):
+                transformed.append(a)
+                transformed.append(b)
         return transformed
 
     return palette_transformer

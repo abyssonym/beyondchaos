@@ -106,7 +106,7 @@ def recompress(bytestring):
                         if loopbuff.endswith(loopstr):
                             j = k
                             goodloop = loopstr
-            if len(bytestring) <= (8 - i):
+            if len(bytestring) <= 8:
                 j = 0
             if j >= 3:
                 substr = bytestring[:j]
@@ -172,7 +172,7 @@ class Decompressor():
     def read_data(self, filename):
         self.data = decompress_at_location(filename, self.address)
         self.backup = str(self.data)
-        assert decompress(recompress(self.backup)) == self.backup
+        #assert decompress(recompress(self.backup)) == self.backup
 
     def writeover(self, address, to_write):
         to_write = "".join([chr(c) if type(c) is int else c for c in to_write])
@@ -191,6 +191,10 @@ class Decompressor():
         size = len(compressed)
         print "Recompressed is %s" % size
         f = open(filename, 'r+b')
+        if self.maxaddress:
+            length = self.maxaddress - self.address
+            f.seek(self.address)
+            f.write("".join([chr(0xFF)]*length))
         f.seek(self.address)
         write_multi(f, size, length=2)
         f.write(compressed)

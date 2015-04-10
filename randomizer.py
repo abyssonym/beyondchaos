@@ -1032,7 +1032,9 @@ def manage_commands_new(commands, characters):
                     continue
                 randomskill_names.add(s.name)
                 c.targeting = 0x2
-                if len(set([spell.targeting for spell in s.spells])) == 1:
+                if len(s.spells) == 0:
+                    c.targeting = 0x4
+                elif len(set([spell.targeting for spell in s.spells])) == 1:
                     c.targeting = s.spells[0].targeting
                 elif any([spell.target_everyone and
                           not spell.target_one_side_only

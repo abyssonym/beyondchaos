@@ -334,9 +334,9 @@ class SpellSub(Substitution):
 
 def get_spellsets(spells=None):
     spellsets = {}
-    spellsets['Wild'] = get_ranked_spells()
     spellset_bans = []
     spells = [s for s in spells if s.spellid not in spellset_bans]
+    spellsets['Chaos'] = []
     spellsets['Magic'] = range(0, 0x36)
     spellsets['Black'] = range(0, 0x18)
     spellsets['White'] = range(0x2D, 0x36)
@@ -385,6 +385,8 @@ def get_spellsets(spells=None):
                          0xC9, 0xDF]
 
     for key, value in spellsets.items():
+        if not value:
+            continue
         if type(value[0]) is int:
             spellsets[key] = [s for s in spells if s.spellid in value]
         spellsets[key] = sorted(set(spellsets[key]), key=lambda s: s.spellid)
@@ -395,6 +397,8 @@ def get_spellsets(spells=None):
 class RandomSpellSub(Substitution):
     @property
     def template(self):
+        if self.wild:
+            return self.get_wild()
         template = [0x20, 0x5A, 0x4B,        # get random number
                     0x29, None,              # AND the result
                     0xAA,                    # TAX
@@ -407,12 +411,27 @@ class RandomSpellSub(Substitution):
                     ]
         return template
 
+    def get_wild(self):
+        template = [0x20, 0x5A, 0x4B,        # get random number
+                    0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
+                    0x64, 0xB8, 0x64, 0xB9,  # clear targets
+                    0x20, 0xC1, 0x19,  # JSR $19C1
+                    0x20, 0x51, 0x29,  # JSR $2951
+                    0x4C, 0x5F, 0x17,
+                    ]
+        return template
+
     @property
     def size(self):
+        if self.wild:
+            return len(self.template)
         return len(self.template) + len(self.spells)
 
     def generate_bytestring(self):
         self.bytestring = list(self.template)
+        if self.wild:
+            return self.bytestring
+
         pointer = self.location + len(self.bytestring)
         self.bytestring[4] = len(self.spells) - 1
         assert self.bytestring[4] in [(2**i)-1 for i in range(1, 8)]
@@ -428,8 +447,14 @@ class RandomSpellSub(Substitution):
     def set_spells(self, valid_spells, spellsets=None, spellclass=None):
         spellsets = spellsets or get_spellsets(spells=valid_spells)
         spellclass = spellclass or random.choice(spellsets.keys())
-        if spellclass == "Wild":
-            valid_spells = get_ranked_spells()
+        self.name = spellclass
+        if spellclass.lower() in ["wild", "chaos"]:
+            self.wild = True
+            self.spells = []
+            return
+        else:
+            self.wild = False
+
         spellset = spellsets[spellclass]
         spellset = sorted([s for s in spellset if s in valid_spells],
                           key=lambda s: s.spellid)
@@ -451,7 +476,6 @@ class RandomSpellSub(Substitution):
             assert len(set(spells)) > 16
 
         self.spells = sorted(spells)
-        self.name = spellclass
 
         return self.spells
 

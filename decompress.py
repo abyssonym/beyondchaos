@@ -156,7 +156,7 @@ def decompress_at_location(filename, address):
     f = open(filename, 'r+b')
     f.seek(address)
     size = read_multi(f, length=2)
-    print "Size is %s" % size
+    #print "Size is %s" % size
     bytestring = f.read(size)
     decompressed = decompress(bytestring, complicated=True)
     return decompressed
@@ -189,7 +189,7 @@ class Decompressor():
     def compress_and_write(self, filename):
         compressed = recompress(self.data)
         size = len(compressed)
-        print "Recompressed is %s" % size
+        #print "Recompressed is %s" % size
         f = open(filename, 'r+b')
         if self.maxaddress:
             length = self.maxaddress - self.address

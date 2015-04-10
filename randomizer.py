@@ -44,6 +44,7 @@ sourcefile, outfile = None, None
 
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
                  "jump", "mimic", "xmagic", "summon", "morph", "revert"]
+RESTRICTED_REPLACE = ["throw", "steal"]
 ALWAYS_REPLACE = ["leap", "possess", "health", "shock"]
 FORBIDDEN_COMMANDS = ["leap", "possess"]
 
@@ -926,6 +927,8 @@ def manage_commands_new(commands, characters):
     randomskill_names = set([])
     for c in commands.values():
         if c.name in NEVER_REPLACE:
+            continue
+        elif c.name in RESTRICTED_REPLACE and random.choice([True, False]):
             continue
 
         if c.name not in ALWAYS_REPLACE:

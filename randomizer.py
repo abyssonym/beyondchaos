@@ -2510,6 +2510,11 @@ def manage_blitz():
     # 4: Y
     # 5: L
     # 6: R
+    display_inputs = {0x3: 'X', 0x4: 'Y', 0x5: 'L', 0x6: 'R',
+                      0x7: 'down-left', 0x8: 'down',
+                      0x9: 'down-right', 0xA: 'right',
+                      0xB: 'up-right', 0xC: 'up',
+                      0xD: 'up-left', 0xE: 'left'}
     adjacency = {0x7: [0xE, 0x8],  # down-left
                  0x8: [0x7, 0x9],  # down
                  0x9: [0x8, 0xA],  # down-right
@@ -2526,6 +2531,7 @@ def manage_blitz():
     cardinals = [0x8, 0xA, 0xC, 0xE]
     letters = range(3, 7)
     f = open(outfile, 'r+b')
+    log("1. left, right, left", section="blitz inputs")
     for i in xrange(1, 8):
         # skip pummel
         current = blitzspecptr + (i * 12)
@@ -2553,7 +2559,7 @@ def manage_blitz():
                 nextin = random.choice(adjacency[prev])
                 if nextin == pprev and (prev in diagonals or
                                         random.randint(1, 3) != 3):
-                    nextin = [i for i in adjacency[prev] if i != nextin][0]
+                    nextin = [j for j in adjacency[prev] if j != nextin][0]
                 newcmd.append(nextin)
             else:
                 if random.choice([True, False, prev in cardinals]):
@@ -2579,6 +2585,10 @@ def manage_blitz():
         newcmd += [0x01]
         while len(newcmd) < 11:
             newcmd += [0x00]
+        blitzstr = [display_inputs[j] for j in newcmd if j in display_inputs]
+        blitzstr = ", ".join(blitzstr)
+        blitzstr = "%s. %s" % (i+1, blitzstr)
+        log(blitzstr, section="blitz inputs")
         newcmd += [(newlength+1) * 2]
         f.seek(current)
         f.write("".join(map(chr, newcmd)))

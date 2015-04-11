@@ -595,12 +595,9 @@ def reset_equippable(items, characters, numchars=NUM_CHARS):
     global changed_commands
     prevents = filter(lambda i: i.prevent_encounters, items)
     for item in prevents:
-        if not CHAR_MASK & item.equippable:
-            continue
-
         while True:
             test = 1 << random.randint(0, numchars-1)
-            if item.itemid == 0xDE:
+            if item.itemid == 0xDE or not (CHAR_MASK & item.equippable):
                 item.equippable = test
                 break
 

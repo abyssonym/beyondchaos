@@ -2148,6 +2148,8 @@ def manage_equipment(items, characters):
                 if (equipitem.has_disabling_status and
                         (0xE <= c.id <= 0xF or c.id > 0x1B)):
                     equipid = 0xFF
+                elif equipitem.prevent_encounters and c.id in [0x1C, 0x1D]:
+                    equipid = 0xFF
                 else:
                     if (equiptype not in ["weapon", "shield"] and
                             random.randint(1, 100) == 100):

@@ -1471,6 +1471,9 @@ class MonsterBlock:
     def mutate(self, change_skillset=None, itembreaker=False):
         if change_skillset is None:
             change_skillset = not (self.is_boss or self.boss_death)
+            manual_change = False
+        else:
+            manual_change = True
         self.mutate_stats()
         self.mutate_misc()
         if random.randint(1, 10) > 5:
@@ -1480,7 +1483,10 @@ class MonsterBlock:
         if random.randint(1, 10) > 5:
             # do this before mutate_control
             self.mutate_special()
-        value = random.randint(1, 10)
+        if manual_change and change_skillset:
+            value = 10
+        else:
+            value = random.randint(1, 10)
         if value > 1:
             if value == 2:
                 self.mutate_ai(change_skillset=False,

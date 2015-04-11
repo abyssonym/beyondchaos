@@ -1661,21 +1661,27 @@ def manage_monsters():
         if not m.name.strip('_') and not m.display_name.strip('_'):
             continue
         if m.id in final_bosses:
-            if 0x127 <= m.id < 0x12a or m.id == 0x17d:
-                # boost statues and Atma a second time
-                m.mutate()
-            m.randomize_boost_level()
+            if 0x157 <= m.id < 0x160 or m.id == 0x17d:
+                # deep randomize three tiers, Atma
+                m.randomize_boost_level()
+                m.mutate(change_skillset=True, itembreaker=itembreaker)
+            else:
+                m.mutate(itembreaker=itembreaker)
+            if 0x127 <= m.id < 0x12a or m.id == 0x17d or m.id == 0x11a:
+                # boost statues, Atma, final kefka a second time
+                m.randomize_boost_level()
+                m.mutate(itembreaker=itembreaker)
             m.misc1 &= (0xFF ^ 0x4)  # always show name
+        else:
+            m.mutate(itembreaker=itembreaker)
         m.tweak_fanatics()
         m.relevel_specifics()
-        m.mutate(itembreaker=itembreaker)
-        if m.id == 0x11a:
-            # boost final kefka yet another time
-            m.mutate(itembreaker=itembreaker)
+
         if 'easymodo' in activated_codes:
             m.stats['hp'] = 1
         if 'llg' in activated_codes:
             m.stats['xp'] = 0
+
     change_enemy_name(outfile, 0x166, "L.255Magic")
 
     shuffle_monsters(monsters)

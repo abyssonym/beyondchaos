@@ -41,6 +41,6 @@ South Figaro (WoR):74
 Thamasa:343,349,351
 Vector:240,250,252
 Yeti's Lair:281,282,283
-Zone Eater:276,277,278,280
+Zone Eater's Belly:276,277,278,280
 Zozo:221,225,226
 Bad:380

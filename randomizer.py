@@ -319,14 +319,13 @@ class CharacterBlock:
         self.natural_magic = None
 
     def __repr__(self):
-        s = self.newname + "\n"
+        s = "{0:02d}. {1}".format(self.id+1, self.newname) + "\n"
         command_names = []
         for c in self.command_objs:
             if c is not None:
                 command_names.append(c.name.lower())
-        if set(command_names) != set(["fight"]):
-            s += "Commands: "
-            s += ", ".join(command_names) + "\n"
+        s += "Commands: "
+        s += ", ".join(command_names) + "\n"
         if self.original_appearance and self.new_appearance:
             s += "Looks like: %s\n" % self.new_appearance
             s += "Originally: %s\n" % self.original_appearance
@@ -391,7 +390,10 @@ class CharacterBlock:
         f = open(filename, 'r+b')
         for i, command in enumerate(self.battle_commands):
             if command is None:
-                continue
+                if i == 0:
+                    command = 0
+                else:
+                    continue
             f.seek(self.address + 2 + i)
             f.write(chr(command))
         f.close()
@@ -1249,7 +1251,7 @@ def manage_natural_magic(characters):
     return candidates
 
 
-def manage_umaro(characters, freespaces):
+def manage_umaro(characters, commands, freespaces):
     # ship unequip - cc3510
     equip_umaro_sub = Substitution()
     equip_umaro_sub.bytestring = [0xC9, 0x0E]
@@ -1322,7 +1324,17 @@ def manage_umaro(characters, freespaces):
         umaro_risk.battle_commands = battle_commands
     umaro = [c for c in characters if c.id == 13][0]
     umaro.battle_commands = list(umaro_risk.battle_commands)
-    umaro_risk.battle_commands = [None, 0xFF, 0xFF, 0xFF]
+    if random.choice([True, False, False]):
+        umaro_risk.battle_commands = [None, 0xFF, 0xFF, 0xFF]
+    else:
+        cands = [0x00, 0x03, 0x05, 0x06, 0x07, 0x09, 0x0A, 0x0B, 0x0D, 0x10,
+                 0x12, 0x13, 0x16, 0x18]
+        cands = [i for i in cands if i not in changed_commands]
+        base_command = random.choice(cands)
+        commands = commands.values()
+        base_command = [c for c in commands if c.id == base_command][0]
+        base_command.allow_while_berserk(outfile)
+        umaro_risk.battle_commands = [base_command.id, 0xFF, 0xFF, 0xFF]
 
     umaro.beserk = False
     umaro_risk.beserk = True
@@ -3695,7 +3707,8 @@ h   Organize rages by highest level first'''
     reseed()
 
     if 'u' in flags:
-        umaro_risk, event_freespaces = manage_umaro(characters, event_freespaces)
+        umaro_risk, event_freespaces = manage_umaro(characters, commands,
+                                                    event_freespaces)
         reset_rage_blizzard(items, umaro_risk, outfile)
     reseed()
 

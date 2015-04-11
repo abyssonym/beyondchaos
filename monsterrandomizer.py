@@ -280,8 +280,9 @@ class MonsterBlock:
             s += ", ".join(elements)
         return s.strip()
 
-    @property
-    def description(self):
+    def get_description(self, changed_commands=None):
+        if changed_commands is None:
+            changed_commands = []
         s = ("~" * 40) + "\n"
         s += self.display_name + " (Level %s)" % self.stats['level'] + "\n"
 
@@ -341,25 +342,38 @@ class MonsterBlock:
 
         s += 'SPECIAL "%s": %s\n' % (self.attackname,
                                      self.special_effect_str)
-        if self.rages:
+
+        skills = self.get_skillset(ids_only=False)
+        skills = [z for z in skills
+                  if z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]]
+        if skills:
+            names = sorted([z.name for z in skills])
+            s += "SKILLS: %s\n" % ", ".join(names)
+
+        if self.rages and 0x10 not in changed_commands:
             rages = [get_spell(r).name for r in self.rages]
             rages = [r if r != "Special" else self.attackname for r in rages]
             s += "RAGE: %s\n" % ", ".join(rages)
+
         lores = self.get_lores()
-        if lores:
+        if lores and 0x0C not in changed_commands:
             s += "LORE: %s\n" % ", ".join([l.name for l in lores])
-        if not self.is_boss:
+
+        if not self.is_boss and 0x0E not in changed_commands:
             controls = [get_spell(c).name for c in self.controls if c != 0xFF]
             controls = [r if r != "Special" else self.attackname for r in controls]
             s += "CONTROL: %s\n" % ", ".join(sorted(controls))
-        sketches = [get_spell(c).name for c in self.sketches]
-        sketches = [r if r != "Special" else self.attackname for r in sketches]
-        s += "SKETCH: %s\n" % ", ".join(sketches)
 
-        steals = [i.name for i in self.steals if i]
-        drops = [i.name for i in self.drops if i]
-        s += ("STEAL: %s" % ", ".join(steals)).strip() + "\n"
-        s += ("DROPS: %s" % ", ".join(drops)).strip() + "\n"
+        if 0x0D not in changed_commands:
+            sketches = [get_spell(c).name for c in self.sketches]
+            sketches = [r if r != "Special" else self.attackname for r in sketches]
+            s += "SKETCH: %s\n" % ", ".join(sketches)
+
+        if 0x05 not in changed_commands or 0x06 not in changed_commands:
+            steals = [i.name for i in self.steals if i]
+            drops = [i.name for i in self.drops if i]
+            s += ("STEAL: %s" % ", ".join(steals)).strip() + "\n"
+            s += ("DROPS: %s" % ", ".join(drops)).strip() + "\n"
         if not self.cantmorph:
             s += "MORPH (%s%%): %s\n" % (self.morphrate, ", ".join(
                 sorted([i.name for i in self.get_morph_items()])))
@@ -636,14 +650,18 @@ class MonsterBlock:
                     candidates = [s for s in candidates if not
                                   (s.is_blitz or s.is_swdtech or s.is_esper
                                    or s.is_slots)]
-                    if skill not in candidates:
-                        candidates.append(skill)
-                    candidates = sorted(candidates, key=lambda s: s.rank())
                     if random.choice([True, False]):
                         candidates = [c for c in candidates if c.valid]
                     candidates = [c for c in candidates if
                                   c.spellid not in restricted]
+                    if skill not in candidates:
+                        candidates.append(skill)
+                    candidates = sorted(candidates, key=lambda s: s.rank())
 
+                    if self.is_boss or self.boss_death:
+                        index = candidates.index(skill)
+                        if index >= 1 and random.randint(1, 10) != 10:
+                            candidates = candidates[index:]
                     index = candidates.index(skill)
                     index = mutate_index(index, len(candidates), [False, True],
                                          (-2, 3), (-2, 2))

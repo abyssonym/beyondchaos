@@ -3821,7 +3821,8 @@ h   Organize rages by highest level first'''
 
     for m in sorted(get_monsters(), key=lambda m: m.display_name):
         if m.display_name:
-            log(m.description, section="monsters")
+            log(m.get_description(changed_commands=changed_commands),
+                section="monsters")
 
     log_chests()
     log_break_learn_items()

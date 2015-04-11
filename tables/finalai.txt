@@ -34,8 +34,7 @@ fc 6 36 78
 fc 15 0 1
 f3 8c 0
 f9 1 0 0
-fa a 1
-0
+fa a 1 0
 fd
 f1 43
 de
@@ -52,8 +51,7 @@ fe
 f3 8c 0
 f9 1 0 0
 f9 1 0 1
-fa a 1
-0
+fa a 1 0
 fd
 f1 43
 de
@@ -74,8 +72,7 @@ ff
 
 # death animation
 fc 12 0 0
-fa d 1
-0
+fa d 1 0
 f5 11 1 ff
 fe
 

@@ -3571,6 +3571,11 @@ h   Organize rages by highest level first'''
             print "Cutscenes will NOT be skipped."
         print
 
+    print (
+        "\nNow beginning randomization.\n"
+        "The randomization is very thorough, so it may take some time.\n"
+        'Please be patient and wait for "randomization successful" to appear.')
+
     event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
     if 'airship' in activated_codes:
         event_freespaces = activate_airship_mode(event_freespaces)

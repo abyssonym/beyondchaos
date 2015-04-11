@@ -3753,7 +3753,8 @@ h   Organize rages by highest level first'''
     reseed()
 
     if 'l' in flags:
-        manage_blitz()
+        if 0x0A not in changed_commands:
+            manage_blitz()
     reseed()
 
     if 'n' in flags:

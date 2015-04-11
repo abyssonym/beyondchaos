@@ -2627,6 +2627,7 @@ def manage_formations(formations, fsets):
     # don't swap with Narshe Mines formations
     valid_fsets = [fset for fset in valid_fsets if
                    fset.setid not in [0x39, 0x3A] and
+                   fset.setid not in [0xB6, 0xB8] and
                    not fset.sixteen_pack and
                    set([fo.formid for fo in fset.formations]) != set([0])]
 

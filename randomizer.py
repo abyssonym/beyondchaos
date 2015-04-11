@@ -3701,7 +3701,13 @@ h   Organize rages by highest level first'''
         # do this after swapping beserk
         from itemrandomizer import set_item_changed_commands
         set_item_changed_commands(changed_commands)
-        reset_special_relics(items, characters, outfile)
+        loglist = reset_special_relics(items, characters, outfile)
+        for name, before, after in loglist:
+            beforename = [c for c in commands.values() if c.id == before][0].name
+            aftername = [c for c in commands.values() if c.id == after][0].name
+            logstr = "{0:13} {1:7} -> {2:7}".format(
+                name + ":", beforename.lower(), aftername.lower())
+            log(logstr, section="command changes")
         reset_cursed_shield(outfile)
 
         for c in characters:

@@ -717,6 +717,62 @@ def reset_special_relics(items, characters, filename):
     global changed_commands
     f = open(filename, 'r+b')
     characters = [c for c in characters if c.id < 14]
+    changedict = {}
+    loglist = []
+
+    hidden_commands = set(range(0, 0x1E)) - set(invalid_commands)
+    for c in characters:
+        hidden_commands = hidden_commands - set(c.battle_commands)
+    if 0x1D in hidden_commands and random.randint(1, 3) != 3:
+        hidden_commands.remove(0x1D)
+
+    flags = [0x04, 0x08, 0x10, 0x20, 0x40]
+    random.shuffle(flags)
+    for flag in flags:
+        while True:
+            if flag == 0x08:
+                before = random.choice([0x0, 0x1, 0x2, 0x12])
+            else:
+                before = random.randint(0, 0x1D)
+
+            if before in [0x04, 0x14, 0x15, 0x19]:
+                continue
+
+            if before == 0:
+                tempchars = [c for c in characters]
+            else:
+                tempchars = [c for c in characters if before in c.battle_commands]
+
+            if not tempchars:
+                continue
+
+            unused = set(range(0, 0x1E)) - set(invalid_commands)
+            if len(tempchars) <= 4:
+                for t in tempchars:
+                    unused = unused - set(t.battle_commands)
+
+            if flag == 0x08:
+                unused = unused - changed_commands
+
+            if set(hidden_commands) & set(unused):
+                unused = set(hidden_commands) & set(unused)
+
+            if not unused:
+                continue
+
+            after = random.choice(sorted(unused))
+            if after in hidden_commands:
+                hidden_commands.remove(after)
+
+            for ptrdict in [sperelic, sperelic2]:
+                beforeptr, afterptr = ptrdict[flag]
+                f.seek(beforeptr)
+                f.write(chr(before))
+                f.seek(afterptr)
+                f.write(chr(after))
+            break
+        changedict[flag] = (before, after)
+
     for item in items:
         if (item.is_consumable or item.is_tool or
                 not item.features['special1'] & 0x7C):
@@ -729,48 +785,17 @@ def reset_special_relics(items, characters, filename):
         item.equippable |= 1 << 12  # gogo
         for flag in [0x04, 0x08, 0x10, 0x20, 0x40]:
             if flag & item.features['special1']:
-                while True:
-                    if item.itemid == 0xd8:
-                        before = random.choice([0x0, 0x1, 0x2, 0x12])
-                    else:
-                        before = random.randint(0, 0x1D)
+                before, after = changedict[flag]
+                tempchars = [c for c in characters
+                             if before in c.battle_commands]
+                for t in tempchars:
+                    item.equippable |= (1 << t.id)
 
-                    if before in [0x04, 0x14, 0x15, 0x19]:
-                        continue
-
-                    if before == 0:
-                        tempchars = [c for c in characters]
-                    else:
-                        tempchars = [c for c in characters if before in c.battle_commands]
-
-                    if not tempchars:
-                        continue
-
-                    unused = set(range(0, 0x1E)) - set(invalid_commands)
-                    if len(tempchars) <= 4:
-                        for t in tempchars:
-                            unused = unused - set(t.battle_commands)
-                    if item.itemid == 0xd8:
-                        unused = unused - changed_commands
-
-                    if not unused:
-                        continue
-
-                    after = random.choice(sorted(unused))
-                    for ptrdict in [sperelic, sperelic2]:
-                        beforeptr, afterptr = ptrdict[flag]
-                        f.seek(beforeptr)
-                        f.write(chr(before))
-                        f.seek(afterptr)
-                        f.write(chr(after))
-
-                    for t in tempchars:
-                        item.equippable |= (1 << t.id)
-
-                    item.write_stats(filename)
-                    break
+                item.write_stats(filename)
+                loglist.append((item.name, before, after))
 
     f.close()
+    return loglist
 
 
 def reset_rage_blizzard(items, umaro_risk, filename):

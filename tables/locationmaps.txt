@@ -3,7 +3,7 @@ Albrook (WoR):324
 Ancient Castle:401,406,407,408
 Cave on the Veldt:353
 Collapsing House:311
-Cyan's Dream:123,124,125,126,144,317,319,320,321,322
+Cyan's Dream:123,124,125,126,143,144,317,319,320,321,322
 Daryl's Tomb:298,299,300
 Esper Mountain:372,373,374,375
 Fanatics Tower:359,360,361,363,364,365,366,367,368,369,370

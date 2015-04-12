@@ -1325,7 +1325,7 @@ def manage_umaro(characters, commands, freespaces):
     umaro = [c for c in characters if c.id == 13][0]
     umaro.battle_commands = list(umaro_risk.battle_commands)
     if random.choice([True, False, False]):
-        umaro_risk.battle_commands = [None, 0xFF, 0xFF, 0xFF]
+        umaro_risk.battle_commands = [0x00, 0xFF, 0xFF, 0xFF]
     else:
         cands = [0x00, 0x03, 0x05, 0x06, 0x07, 0x09, 0x0A, 0x0B, 0x0D, 0x10,
                  0x12, 0x13, 0x16, 0x18]
@@ -2516,12 +2516,17 @@ def manage_treasure(monsters, shops=True):
 
 def manage_chests():
     locations = get_locations(sourcefile)
+    random.shuffle(locations)
     for l in locations:
         l.mutate_chests()
+    locations = sorted(locations, key=lambda l: l.locid)
 
     nextpointer = 0x2d8634
     for l in locations:
         nextpointer = l.write_chests(outfile, nextpointer=nextpointer)
+
+    for m in get_monsters():
+        m.write_stats(outfile)
 
 
 def manage_blitz():
@@ -2691,12 +2696,10 @@ def manage_formations(formations, fsets):
     return formations
 
 
-def manage_formations_hidden(formations, fsets, freespaces,
-                             esper_graphics=None):
+def manage_formations_hidden(formations, freespaces, esper_graphics=None):
     for f in formations:
         f.mutate(ap=True)
 
-    fsets = [fs for fs in fsets if len(fs.formations) == 4 and not fs.unused]
     unused_enemies = [u for u in get_monsters() if u.id in REPLACE_ENEMIES]
 
     def unused_validator(formation):
@@ -2741,7 +2744,10 @@ def manage_formations_hidden(formations, fsets, freespaces,
             return False
         if any("Phunbaba" in m.name for m in formation.present_enemies):
             return False
+        if formation.get_music() == 0:
+            return False
         return True
+
     safe_boss_formations = filter(safe_boss_validator, formations)
     sorted_bosses = sorted([m for m in get_monsters() if m.boss_death],
                            key=lambda m: m.stats['level'])
@@ -2809,6 +2815,7 @@ def manage_formations_hidden(formations, fsets, freespaces,
         ue.set_relative_ai(pointer)
         freespaces = determine_new_freespaces(freespaces, myfs, ue.aiscriptsize)
 
+        ue.auxloc = "Missing (Boss)"
         ue.mutate_ai(change_skillset=True)
         ue.mutate_ai(change_skillset=True)
 
@@ -2846,25 +2853,80 @@ def manage_formations_hidden(formations, fsets, freespaces,
 
     boss_candidates = list(safe_boss_formations)
     boss_candidates = random.sample(boss_candidates,
-                                    random.randint(0, len(boss_candidates)))
+                                    random.randint(0, len(boss_candidates)/2))
     rare_candidates = list(repurposed_formations + boss_candidates)
-    random.shuffle(fsets)
-    for fs in fsets:
-        if fs.has_boss or len(fs.formations) != 4:
-            continue
 
-        if not rare_candidates:
+    zones = get_zones()
+    fsets = []
+    for z in zones:
+        for i in xrange(4):
+            area_name = z.get_area_name(i)
+            if area_name.lower() != "unknown":
+                try:
+                    fs = z.fsets[i]
+                except IndexError:
+                    break
+                if fs.setid != 0:
+                    fsets.append(fs)
+    random.shuffle(fsets)
+
+    done_fss = []
+
+    def good_match(fs, f, multiplier=1.5):
+        if fs in done_fss:
+            return False
+        low = max(fo.rank() for fo in fs.formations) * multiplier
+        high = low * multiplier
+        while random.randint(1, 4) == 4:
+            high = high * 1.25
+        if low <= f.rank() <= high:
+            return fs.remove_redundant_formation(fsets=fsets,
+                                                 check_only=True)
+        return False
+
+    rare_candidates = sorted(set(rare_candidates), key=lambda r: r.formid)
+    for f in rare_candidates:
+        fscands = None
+        mult = 1.2
+        while True:
+            fscands = [fs for fs in fsets if good_match(fs, f, mult)]
+            if not fscands:
+                if mult >= 50:
+                    break
+                else:
+                    mult *= 1.25
+                    continue
+            fs = None
+            while True:
+                fs = random.choice(fscands)
+                fscands.remove(fs)
+                done_fss.append(fs)
+                fs.remove_redundant_formation(fsets=fsets, replacement=f)
+                fs.write_data(outfile)
+                if not fscands:
+                    break
+                if random.randint(1, 5) != 5:
+                    break
             break
 
-        chosens = fs.mutate_formations(rare_candidates, verbose=False)
-        for chosen in chosens:
-            if chosen.misc3 & 0b00111000 == 0:
-                chosen.set_music(1)
-                chosen.write_data(outfile)
-            chosen = chosen.present_enemies[0]
-            rare_candidates = [rc for rc in rare_candidates if rc.present_enemies[0].name != chosen.name]
 
-        fs.write_data(outfile)
+def assign_unused_enemy_formations():
+    from chestrandomizer import add_orphaned_formation
+    siegfried = get_monster(0x37)
+    chupon = get_monster(0x40)
+
+    behemoth_formation = get_formation(0xb1)
+
+    for enemy, music in zip([siegfried, chupon], [3, 4]):
+        formid = REPLACE_FORMATIONS.pop()
+        NOREPLACE_FORMATIONS.append(formid)
+        uf = get_formation(formid)
+        uf.copy_data(behemoth_formation)
+        uf.enemy_ids = [enemy.id] + ([0xFF] * 5)
+        uf.lookup_enemies()
+        uf.set_music(music)
+        uf.set_appearing(random.randint(1, 13))
+        add_orphaned_formation(uf)
 
 
 def manage_shops():
@@ -3388,7 +3450,6 @@ def manage_opening():
             linebreak = original.index(0xFE)
             length = linebreak
         if len(text) > length:
-            import pdb; pdb.set_trace()
             raise Exception("Text too long to replace.")
         if not split:
             remaining = length - len(text)
@@ -3750,8 +3811,11 @@ h   Organize rages by highest level first'''
         manage_tower()
     reseed()
 
+    if 'f' in flags or 't' in flags:
+        assign_unused_enemy_formations()
+
     if 'f' in flags:
-        manage_formations_hidden(formations, fsets, freespaces=aispaces)
+        manage_formations_hidden(formations, freespaces=aispaces)
         for m in get_monsters():
             m.write_stats(outfile)
     reseed()

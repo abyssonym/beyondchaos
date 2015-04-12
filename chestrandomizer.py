@@ -2,11 +2,59 @@ from utils import read_multi, write_multi, mutate_index, utilrandom as random
 from itemrandomizer import get_ranked_items, get_item
 from formationrandomizer import get_formations, get_fsets
 
-valid_ids = range(0, 0x200)
-banned_formations = []
-former_miabs = []
+valid_ids = range(1, 0x200)
+banned_formids = [0]
+extra_miabs = []
+orphaned_formations = None
+used_formations = []
 
 appropriate_formations = None
+
+EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x09, 0x19, 0x1b, 0x22, 0x24, 0x33, 0x38,
+                 0x39, 0x3a, 0x42, 0x43, 0x50, 0x59, 0x5e, 0x64, 0x73, 0x7f,
+                 0xd1, 0xe3]
+
+
+def add_orphaned_formation(formation):
+    global orphaned_formations
+    orphaned_formations.append(formation)
+
+
+def get_orphaned_formations():
+    global orphaned_formations
+    if orphaned_formations is not None:
+        return orphaned_formations
+
+    orphaned_formations = set([])
+    from monsterrandomizer import get_monsters
+    monsters = get_monsters()
+    extra_miabs = get_extra_miabs(0)
+    for m in monsters:
+        if m.id in EVENT_ENEMIES:
+            m.auxloc = "Event Battle"
+            continue
+        if not m.is_boss:
+            location = m.determine_location()
+            if "missing" in location.lower() or not location.strip():
+                formations = set([f for f in get_formations()
+                                  if m in f.present_enemies
+                                  and not f.has_boss])
+                formations = sorted(formations, key=lambda f: f.formid)
+                try:
+                    f = random.choice(formations)
+                    orphaned_formations.add(f)
+                except IndexError:
+                    pass
+            for x in extra_miabs:
+                if m in x.present_enemies:
+                    if x == f:
+                        continue
+                    ens = set(x.present_enemies)
+                    if len(ens) == 1:
+                        banned_formids.append(x.formid)
+
+    orphaned_formations = sorted(orphaned_formations, key=lambda f: f.formid)
+    return get_orphaned_formations()
 
 
 def get_appropriate_formations():
@@ -18,7 +66,7 @@ def get_appropriate_formations():
     formations = get_formations()
     formations = [f for f in formations if not f.battle_event]
     formations = [f for f in formations if f.formid not in
-                  banned_formations + NOREPLACE_FORMATIONS]
+                  banned_formids + NOREPLACE_FORMATIONS]
     formations = [f for f in formations if len(f.present_enemies) >= 1]
     formations = [f for f in formations if 273 not in
                   [e.id for e in f.present_enemies]]
@@ -44,9 +92,7 @@ def get_appropriate_formations():
 def get_2pack(formation):
     fsets = [fs for fs in get_fsets() if fs.setid >= 0x100]
     for fs in fsets:
-        if fs.setid < 0x100:
-            continue
-        if formation in fs.formations:
+        if fs.formations[0] == formation and fs.formations[1] == formation:
             return fs
 
     unused = [fs for fs in fsets if fs.unused][0]
@@ -54,18 +100,17 @@ def get_2pack(formation):
     return unused
 
 
-def add_former_miab(setid):
+def add_extra_miab(setid):
     setid |= 0x100
     fset = [fs for fs in get_fsets() if fs.setid == setid][0]
     formation = fset.formations[0]
-    if formation not in former_miabs:
-        former_miabs.append(fset.formations[0])
+    if formation not in extra_miabs:
+        extra_miabs.append(fset.formations[0])
 
 
-def add_formers(candidates):
-    lowest_rank = candidates[0].rank()
-    candidates += [f for f in former_miabs if f.rank() >= lowest_rank and
-                   f.formid not in banned_formations]
+def get_extra_miabs(lowest_rank):
+    candidates = [f for f in extra_miabs if f.rank() >= lowest_rank and
+                  f.formid not in banned_formids]
     return sorted(candidates, key=lambda f: f.rank())
 
 
@@ -81,7 +126,7 @@ def get_valid_chest_id():
 
 def mark_taken_id(taken):
     global valid_ids
-    assert 0 <= taken < 0x200
+    assert 1 <= taken < 0x200
     if taken in valid_ids:
         valid_ids = [i for i in valid_ids if i != taken]
 
@@ -93,12 +138,13 @@ class ChestBlock:
         self.value = None
         self.do_not_mutate = False
         self.ignore_dummy = False
+        self.rank = None
 
     def set_id(self, chestid):
         self.chestid = chestid
 
     def read_data(self, filename):
-        global former_miabs
+        global extra_miabs
 
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -111,7 +157,7 @@ class ChestBlock:
 
         mark_taken_id(self.effective_id)
         if self.monster:
-            add_former_miab(self.contents)
+            add_extra_miab(self.contents)
 
     def copy(self, other):
         self.position = other.position
@@ -119,6 +165,9 @@ class ChestBlock:
         self.contenttype = other.contenttype
         self.contents = other.contents
         self.oldid = other.oldid
+
+    def set_rank(self, rank):
+        self.rank = rank
 
     @property
     def empty(self):
@@ -232,7 +281,9 @@ class ChestBlock:
             return True
         return False
 
-    def mutate_contents(self, guideline=None):
+    def mutate_contents(self, guideline=None, monster=None):
+        global used_formations
+
         if self.do_not_mutate:
             return
 
@@ -253,11 +304,57 @@ class ChestBlock:
             index = max(0, len(lowpriced)-1)
 
         chance = random.randint(1, 50)
-        if 1 <= chance <= 1:
-            # empty
-            self.set_content_type(0x10)
-            self.contents = 0
-        elif 2 <= chance <= 3:
+        orphaned_formations = get_orphaned_formations()
+        orphaned_formations = [f for f in orphaned_formations
+                               if f not in used_formations]
+        extra_miabs = get_extra_miabs(0)
+        if orphaned_formations or extra_miabs:
+            chance -= 2
+            chance = max(chance, 1)
+
+        if monster is not False and (1 <= chance <= 3 or monster is True):
+            # monster
+            self.set_content_type(0x20)
+
+            formations = get_appropriate_formations()
+            formations = [f for f in formations if
+                          f.get_guaranteed_drop_value() >= value * 100]
+            rank = self.rank or min(formations, key=lambda f: f.rank()).rank()
+            extra_miabs = get_extra_miabs(rank)
+            if orphaned_formations or extra_miabs:
+                formations = [f for f in formations if f.rank() >= rank]
+                formations = formations[:random.randint(0, 2)]
+
+            candidates = (formations + orphaned_formations + extra_miabs)
+            candidates = set(candidates)
+            candidates = [c for c in candidates if c not in used_formations]
+            candidates = [c for c in candidates
+                          if c.formid not in banned_formids]
+            if not candidates:
+                candidates = (formations +
+                              get_orphaned_formations() + get_extra_miabs(0))
+
+            candidates = sorted(candidates, key=lambda f: f.rank())
+            if orphaned_formations:
+                index = max(
+                    0, len([c for c in candidates if c.rank() <= rank])-1)
+                index = mutate_index(index, len(candidates), [False, True],
+                                     (-2, 1), (-1, 1))
+            else:
+                index = 0
+                index = mutate_index(index, len(candidates), [False, True],
+                                     (-1, 4), (-1, 1))
+
+            chosen = candidates[index]
+            for m in chosen.present_enemies:
+                m.auxloc = "Monster-in-a-Box"
+
+            banned_formids.append(chosen.formid)
+            used_formations.append(chosen)
+            chosen = get_2pack(chosen)
+            # only 2-packs are allowed
+            self.contents = chosen.setid & 0xFF
+        elif 4 <= chance <= 5:
             # gold
             self.set_content_type(0x80)
             value = value / 2
@@ -265,27 +362,6 @@ class ChestBlock:
             self.contents = min(0xFF, max(1, value))
             if self.contents == 0xFF:
                 self.contents -= random.randint(0, 20) + random.randint(0, 20)
-        elif 4 <= chance <= 6:
-            formations = get_appropriate_formations()
-            # monster
-            self.set_content_type(0x20)
-            candidates = [f for f in formations if
-                          f.get_guaranteed_drop_value() >= value * 100]
-            if not candidates:
-                self.set_content_type(0x10)
-                self.contents = 0
-                return
-
-            candidates = sorted(candidates, key=lambda f: f.rank())
-            candidates = add_formers(candidates)
-            index = min(1, len(candidates)-1)
-            index = mutate_index(index, len(candidates), [False, True],
-                                 (-2, 2), (-1, 1))
-            chosen = candidates[index]
-            banned_formations.append(chosen.formid)
-            chosen = get_2pack(chosen)
-            # only 2-packs are allowed
-            self.contents = chosen.setid & 0xFF
         else:
             # treasure
             self.set_content_type(0x40)

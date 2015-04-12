@@ -216,7 +216,7 @@ class Formation():
             if eid == 0xFF and not self.enemies_present & (1 << i):
                 self.enemies.append(None)
                 continue
-            if self.enemies_present & (1 << i) and self.bosses & (1 << i):
+            if self.bosses & (1 << i):
                 eid += 0x100
             self.big_enemy_ids.append(eid)
             self.enemies.append(monsterdict[eid])
@@ -362,44 +362,43 @@ class FormationSet():
             write_multi(f, value, length=2)
         f.close()
 
-    def mutate_formations(self, candidates, verbose=False, test=False):
-        if test:
-            for i in range(4):
-                chosen = random.choice(candidates)
-                self.formids[i] = chosen.formid
-            return self.formations
-
-        low = max(fo.rank() for fo in self.formations) * 1.0
-        high = low * 1.5
-        while random.randint(1, 3) == 3:
-            high = high * 1.25
-
-        candidates = filter(lambda c: low <= c.rank() <= high, candidates)
-        candidates = sorted(candidates, key=lambda c: c.rank())
-        if not candidates:
-            return []
-
-        slots = [3]
-        chosens = []
-        for i in slots:
-            halfway = max(0, len(candidates)/2)
-            index = random.randint(0, halfway) + random.randint(0, halfway)
-            index = min(index, len(candidates)-1)
-            chosen = candidates[index]
-            candidates.remove(chosen)
-            self.formids[i] = chosen.formid
-            chosens.append(chosen)
-            if not candidates:
-                break
-
-        if verbose:
-            print "%x" % self.setid
-            for fo in self.formations:
-                print "%x" % fo.formid,
-                print [e.name for e in fo.present_enemies]
-            print
-
-        return chosens
+    def remove_redundant_formation(self, fsets, replacement=None,
+                                   check_only=False):
+        result = False
+        if len(set(self.formations)) == 1:
+            pass
+        elif len(set(self.formations)) < 4:
+            result = True
+            if replacement:
+                for i in xrange(4):
+                    if self.formids[i] in self.formids[i+1:]:
+                        formid = self.formids[i]
+                        self.formids.remove(formid)
+                        random.shuffle(self.formids)
+                        self.formids.append(replacement.formid)
+        else:
+            formations = list(self.formations)
+            random.shuffle(formations)
+            for i in xrange(4):
+                f = self.formations[i]
+                for fs2 in fsets:
+                    if fs2 != self and f in fs2.formations:
+                        result = True
+                        if replacement:
+                            formid = self.formids[i]
+                            self.formids.remove(formid)
+                            random.shuffle(self.formids)
+                            self.formids.append(replacement.formid)
+                            break
+                if result is True:
+                    break
+        if replacement:
+            assert len(self.formations) == 4
+            assert self.formations[3] == replacement
+        if check_only:
+            return result
+        elif result is False:
+            raise Exception("Can't use this formation.")
 
     @property
     def swappable(self):
@@ -482,9 +481,9 @@ if __name__ == "__main__":
         m.read_stats(filename)
     formations = get_formations(filename=filename)
     fsets = get_fsets(filename=filename)
-    #for f in formations:
-    #    print f, f.get_music()
+    for f in formations:
+        print f, f.ap
 
-    for f in fsets:
-        print f
-        print f.formids
+    #for f in fsets:
+    #    print f
+    #    print f.formids

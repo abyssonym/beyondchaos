@@ -94,6 +94,8 @@ class Zone():
     def fsets(self):
         from formationrandomizer import get_fset
         fsets = [get_fset(setid) for setid in self.setids]
+        if self.zoneid < 0x40:
+            fsets = fsets[:3]
         return fsets
 
     @property
@@ -470,6 +472,12 @@ class Location():
             self.chests.append(c)
 
     def mutate_chests(self, guideline=None):
+        for c in self.chests:
+            if self.fset.setid == 0:
+                c.set_rank(None)
+            else:
+                c.set_rank(self.fset.rank())
+
         if guideline is None:
             if len(self.chests) > 0:
                 values = [c.get_current_value(guideline=100)
@@ -487,8 +495,8 @@ class Location():
         random.shuffle(self.chests)
         for c in self.chests:
             if self.locid in range(0x139, 0x13d) and c.empty:
-                if random.randint(1, 4) != 4:
-                    continue
+                c.mutate_contents(monster=True, guideline=guideline)
+                continue
             elif self.locid == 0x147:
                 pass
 

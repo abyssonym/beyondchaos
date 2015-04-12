@@ -369,11 +369,11 @@ class MonsterBlock:
             sketches = [r if r != "Special" else self.attackname for r in sketches]
             s += "SKETCH: %s\n" % ", ".join(sketches)
 
-        if 0x05 not in changed_commands or 0x06 not in changed_commands:
-            steals = [i.name for i in self.steals if i]
-            drops = [i.name for i in self.drops if i]
-            s += ("STEAL: %s" % ", ".join(steals)).strip() + "\n"
-            s += ("DROPS: %s" % ", ".join(drops)).strip() + "\n"
+        steals = [i.name for i in self.steals if i]
+        drops = [i.name for i in self.drops if i]
+        s += ("STEAL: %s" % ", ".join(steals)).strip() + "\n"
+        s += ("DROPS: %s" % ", ".join(drops)).strip() + "\n"
+
         if not self.cantmorph:
             s += "MORPH (%s%%): %s\n" % (self.morphrate, ", ".join(
                 sorted([i.name for i in self.get_morph_items()])))

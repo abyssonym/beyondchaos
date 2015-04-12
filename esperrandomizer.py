@@ -20,7 +20,7 @@ bonus_strings = {0: "HP + 10%",
                  2: "HP + 50%",
                  3: "MP + 10%",
                  4: "MP + 30%",
-                 5: "MP + 30%",
+                 5: "MP + 50%",
                  6: "HP + 100%",
                  7: "LV - 1",
                  8: "LV + 50%",
@@ -35,6 +35,7 @@ bonus_strings = {0: "HP + 10%",
 
 spells = None
 used = set([])
+used_bonuses = set([])
 
 
 def get_candidates(myrank, set_lower=True):
@@ -150,6 +151,14 @@ class EsperBlock:
 
     def generate_bonus(self):
         rank = self.rank
+        candidates = set(bonus_ranks[rank])
+        candidates = candidates - used_bonuses
+        if candidates:
+            candidates = sorted(candidates)
+            self.bonus = random.choice(candidates)
+            used_bonuses.add(self.bonus)
+            return
+
         if random.randint(1, 2) == 2:
             rank += 1
         while random.randint(1, 10) == 10:
@@ -160,6 +169,7 @@ class EsperBlock:
             candidates.extend(bonus_ranks[i])
         if candidates:
             self.bonus = random.choice(candidates)
+        used_bonuses.add(self.bonus)
 
     def add_spell(self, spellid, learnrate):
         spell = [s for s in spells if s.spellid == spellid][0]

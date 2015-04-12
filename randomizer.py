@@ -2866,7 +2866,7 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
                     fs = z.fsets[i]
                 except IndexError:
                     break
-                if fs.setid != 0:
+                if fs.setid != 0 and fs not in fsets:
                     fsets.append(fs)
     random.shuffle(fsets)
 

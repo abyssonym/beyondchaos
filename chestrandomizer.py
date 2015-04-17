@@ -312,7 +312,13 @@ class ChestBlock:
             chance -= 2
             chance = max(chance, 1)
 
-        if monster is not False and (1 <= chance <= 3 or monster is True):
+        if monster is True:
+            chance = 1
+        elif monster is False:
+            chance += 3
+            chance = min(chance, 50)
+
+        if 1 <= chance <= 3:
             # monster
             self.set_content_type(0x20)
 
@@ -320,13 +326,16 @@ class ChestBlock:
             formations = [f for f in formations if
                           f.get_guaranteed_drop_value() >= value * 100]
             rank = self.rank or min(formations, key=lambda f: f.rank()).rank()
-            extra_miabs = get_extra_miabs(rank)
+            if len(extra_miabs) > 1:
+                extra_miabs = get_extra_miabs(rank)
             if orphaned_formations or extra_miabs:
                 formations = [f for f in formations if f.rank() >= rank]
-                formations = formations[:random.randint(0, 2)]
+                formations = formations[:random.randint(1, 3)]
 
-            candidates = (formations + orphaned_formations + extra_miabs)
-            candidates = set(candidates)
+            candidates = (orphaned_formations + extra_miabs)
+            candidates = sorted(set(candidates))
+            if len(candidates) != 1:
+                candidates += formations
             candidates = [c for c in candidates if c not in used_formations]
             candidates = [c for c in candidates
                           if c.formid not in banned_formids]
@@ -339,7 +348,7 @@ class ChestBlock:
                 index = max(
                     0, len([c for c in candidates if c.rank() <= rank])-1)
                 index = mutate_index(index, len(candidates), [False, True],
-                                     (-2, 1), (-1, 1))
+                                     (-3, 2), (-1, 1))
             else:
                 index = 0
                 index = mutate_index(index, len(candidates), [False, True],

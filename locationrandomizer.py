@@ -471,12 +471,18 @@ class Location():
             c.copy(chest)
             self.chests.append(c)
 
+    def rank(self):
+        if self.fset.setid == 0:
+            return self.locid / 100.0
+        else:
+            return self.fset.rank()
+
     def mutate_chests(self, guideline=None):
         for c in self.chests:
             if self.fset.setid == 0:
                 c.set_rank(None)
             else:
-                c.set_rank(self.fset.rank())
+                c.set_rank(self.rank())
 
         if guideline is None:
             if len(self.chests) > 0:
@@ -511,7 +517,7 @@ class Location():
             c.contents = None
             value = low + random.randint(0, dist) + random.randint(0, dist)
             c.value = value
-            c.mutate_contents()
+            c.mutate_contents(monster=False)
             if random.randint(1, 5) >= 4:
                 c.set_new_id()
 

@@ -377,15 +377,19 @@ class MonsterBlock:
         if not self.cantmorph:
             s += "MORPH (%s%%): %s\n" % (self.morphrate, ", ".join(
                 sorted([i.name for i in self.get_morph_items()])))
+        s += ("LOCATION: %s" % self.display_location).strip() + "\n"
+
+        return s.strip()
+
+    @property
+    def display_location(self):
         location = self.determine_location()
         if not location.strip():
             if hasattr(self, "auxloc"):
                 location = self.auxloc
             elif not self.is_boss:
                 location = "Missing %x" % self.id
-        s += ("LOCATION: %s" % location).strip() + "\n"
-
-        return s.strip()
+        return location
 
     @property
     def display_name(self):

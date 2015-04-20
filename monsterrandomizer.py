@@ -67,17 +67,20 @@ reverse_statusdict = dict([(value, key) for (key, value)
 
 elemlist = ["fire", "ice", "bolt", "bio", "wind", "pearl", "earth", "water"]
 
-ranked = ["casting", "near death", "float", "regen", "poison", "blind",
+ranked = ["casting", "near death", "floating", "regen", "poison", "blind",
           "shell", "protect", "vanish", "image", "hp drain", "haste",
           "reflect", "mp drain", "seizure",
           "condemned", "slow", "mute", "imp", "berserk", "reraise",
-          "sleep", "rage", "confuse", "stop", "petrify", "zombie",
+          "sleep", "confuse", "stop", "petrify", "zombie",
           "morph", "frozen", "death", "interceptor", "magitek",
-          "disappear"]
+          "rage", "dance", "disappear"]
 specialdict = [k for (k, v) in sorted(statusdict.items(),
                key=lambda (k, v): v)]
 specialdict = dict([(k, i) for (i, k) in enumerate(specialdict)])
 specialdict["rage"] = 0x18
+specialdict["dance"] = 0x10
+del(specialdict["float"])
+del(specialdict["cover"])
 specialdict["frozen"] = 0x19
 specialdict["hp drain"] = 0x30
 specialdict["mp drain"] = 0x31
@@ -1442,7 +1445,7 @@ class MonsterBlock:
 
     @property
     def deadspecial(self):
-        return (self.special & 0x2F) == 0x07
+        return (self.special & 0x2F) in [0x07, 0x10, 0x18]
 
     def mutate_special(self):
         if self.goodspecial:
@@ -1453,11 +1456,13 @@ class MonsterBlock:
             # regular special
             valid = set(range(0, 0x0F))
             valid = [0, 1, 2, 3, 5, 6, 7, 8, 9, 0xb, 0xc, 0xd, 0xe, 0xf,
-                     0x12, 0x14, 0x19, 0x30, 0x31, 0x80]
+                     0x10, 0x12, 0x14, 0x18, 0x19, 0x30, 0x31, 0x80]
             if random.randint(1, 1000) != 1000:
                 valid.remove(0x03)  # Magitek
+            if random.randint(1, 5) != 5:
+                valid.remove(0x10)  # dance
+                valid.remove(0x18)  # rage
             valid = [r for r in ranked if r in valid]
-            #special = random.choice(sorted(valid))
             index = int(self.level_rank() * len(valid))
             index = mutate_index(index, len(valid), [False, True],
                                  (-5, 5), (-3, 3))
@@ -1478,9 +1483,8 @@ class MonsterBlock:
             if not self.is_boss or random.randint(1, 1000) != 1000:
                 valid.remove(0x1D)  # disappear
                 valid.remove(0x1E)  # Interceptor
-            if random.randint(1, 10) != 10:
-                valid.remove(0x10)  # dance
-                valid.remove(0x18)  # rage
+            valid.remove(0x10)  # dance
+            valid.remove(0x18)  # rage
             valid.remove(0x12)  # slow
             valid.remove(0x14)  # stop
             valid.remove(0x19)  # frozen

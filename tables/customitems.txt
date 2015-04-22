@@ -118,3 +118,17 @@ specialaction       50
 weapon_animation    61 61 b4 0 99 0 08,34,63,81,97,b8,b9,bf,f1 0
 name_icon           d9
 name_text           SORD.....
+
+! Death Note
+price               2
+itemtype            25
+equippable          3FFF
+breakeffect         0D
+targeting           41
+fieldeffect         02
+special3            88
+elemabsorbs         20
+elemweaks           20
+statusacquire2      01
+name_icon           e7
+name_text           Death Note

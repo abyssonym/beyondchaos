@@ -3501,6 +3501,13 @@ def manage_opening():
     d.compress_and_write(outfile)
 
 
+def manage_ending():
+    ending_sync_sub = Substitution()
+    ending_sync_sub.bytestring = [0xC0, 0x07]
+    ending_sync_sub.set_location(0x3CF93)
+    ending_sync_sub.write(outfile)
+
+
 def manage_bingo():
     target_score = 200.0
     print "WELCOME TO BEYOND CHAOS BINGO MODE"
@@ -3889,6 +3896,7 @@ h   Organize rages by highest level first'''
         titlesub.write(outfile)
 
         manage_opening()
+        manage_ending()
 
         savetutorial_sub = Substitution()
         savetutorial_sub.set_location(0xC9AF1)

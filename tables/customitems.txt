@@ -44,11 +44,10 @@ speedvigor          70
 statboost1          42
 statboost2          40
 special3            10
-statusacquire2      e1
+statusacquire2      80
 statusacquire3      09
 elemabsorbs         01
 elemweaks           01
-elemnulls           04
 name_icon           e7
 name_text           Dragon Slave
 description         Darkness beyond twilight...
@@ -63,15 +62,15 @@ learnrate           2
 targeting           43
 magstam             77
 speedvigor          77
-fieldeffect         80
+fieldeffect         DD
 statboost1          09
 statboost2          90
 statusacquire2      08
 statusacquire3      42
 special2            06
 special3            0d
-power               90
-hitmdef             80
+power               5a
+hitmdef             50
 mblockevade         12
 name_icon           e4
 name_text           Demonica
@@ -82,7 +81,7 @@ itemtype            31
 equippable          3fff
 breakeffect         3E
 targeting           6E
-fieldeffect         02
+fieldeffect         5E
 statboost2          11
 statusacquire2      04
 statusacquire3      01
@@ -125,10 +124,208 @@ itemtype            25
 equippable          3FFF
 breakeffect         0D
 targeting           41
-fieldeffect         02
+fieldeffect         5E
 special3            88
 elemabsorbs         20
 elemweaks           20
 statusacquire2      01
 name_icon           e7
 name_text           Death Note
+
+! White Lily
+price               2
+itemtype            25
+equippable          141
+breakeffect         06
+learnspell          0a
+learnrate           01
+targeting           41
+fieldeffect         01
+statboost1          42
+elemabsorbs         02
+elemweaks           0a
+elemnulls           25
+mblockevade         66
+statusacquire2      41
+name_icon           e7
+name_text           White Lily
+
+! White Clover
+price               2
+itemtype            25
+equippable          141
+breakeffect         07
+learnspell          0b
+learnrate           01
+targeting           41
+fieldeffect         5D
+statboost1          02
+statboost2          20
+special2            40
+special3            10
+elemabsorbs         04
+elemweaks           04
+elemnulls           03
+name_icon           e7
+name_text           White Clover
+
+! White Lotus
+price               2
+itemtype            25
+equippable          0abe
+breakeffect         05
+learnspell          09
+learnrate           01
+targeting           41
+statboost1          44
+statboost2          80
+speedvigor          07
+elemabsorbs         01
+elemweaks           01
+elemnulls           06
+name_icon           e7
+name_text           White Lotus
+
+! Senzu Beans
+price               2
+itemtype            25
+breakeffect         31
+targeting           01
+equippable          00
+name_icon           df
+name_text           Senzu Beans
+
+! OOO
+price               02
+itemtype            22
+equippable          3FFF
+breakeffect         3F
+targeting           2e
+magstam             77
+speedvigor          77
+fieldeffect         DD
+statboost2          9F
+statusacquire2      04
+statusacquire3      6a
+special1            83
+special2            c7
+special3            78
+power               38
+hitmdef             26
+mblockevade         23
+name_icon           e4
+name_text           OOO
+
+! Portal Gun
+price               2
+itemtype            11
+equippable          3fff
+breakeffect         52
+targeting           6a
+specialaction       D0
+power               00
+hitmdef             FF
+statboost2          10
+special2            02
+weapon_animation    15 15 1f 34 78 81 a3 0
+name_icon           e5
+name_text           Portal Gun
+
+! Angel Arm
+price               2
+itemtype            11
+equippable          3fff
+breakeffect         54
+targeting           6e
+specialaction       75
+power               FF
+hitmdef             96
+special2            42
+elements            20
+weapon_animation    15 15 29 34 33 82 19 0
+name_icon           df
+name_text           Angel Arm
+
+! Red Duster
+price               2
+itemtype            22
+equippable          3FFF
+specialaction       07
+breakeffect         35
+learnspell          2B
+learnrate           1
+targeting           4
+magstam             07
+speedvigor          70
+fieldeffect         DD
+statboost1          48
+statboost2          3F
+statusacquire2      04
+statusacquire3      6a
+special2            46
+power               4e
+hitmdef             37
+mblockevade         55
+elemnulls           20
+elements            d8
+name_icon           e4
+name_text           Red Duster
+
+! Rose Shield
+price               2
+itemtype            23
+equippable          3FFF
+breakeffect         24
+learnspell          2F
+learnrate           05
+targeting           29
+specialaction       06
+power               50
+statusacquire3      84
+special2            40
+special3            03
+hitmdef             FF
+mblockevade         51
+name_icon           e2
+name_text           Rose Shield
+
+! Ukyo Spatula
+price               2
+itemtype            23
+equippable          141
+specialaction       06
+statusacquire3      0a
+statboost1          91
+statboost2          80
+special1            80
+special2            07
+special3            10
+power               1c
+hitmdef             13
+mblockevade         12
+elemnulls           01
+magstam             07
+speedvigor          77
+name_icon           e2
+name_text           Ukyo Spatula
+
+! KingOfGames
+price               2
+itemtype            24
+equippable          3FFF
+breakeffect         2B
+learnspell          12
+learnrate           05
+targeting           02
+fieldeffect         5C
+statboost2          0F
+statusacquire2      55
+statusacquire3      09
+special1            7F
+special2            FA
+special3            FF
+power               0
+hitmdef             0
+mblockevade         0
+name_icon           e3
+name_text           KingOfGames

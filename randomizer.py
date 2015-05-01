@@ -32,8 +32,8 @@ from towerrandomizer import randomize_tower
 from decompress import Decompressor
 
 
-VERSION = "53"
-VERSION_ROMAN = "LIII"
+VERSION = "54"
+VERSION_ROMAN = "LIV"
 TEST_ON = False
 TEST_SEED = "44.abcefghijklmnopqrstuvwxyz-partyparty.42069"
 TEST_FILE = "program.rom"

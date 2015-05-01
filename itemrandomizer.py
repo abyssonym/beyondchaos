@@ -726,14 +726,23 @@ def reset_special_relics(items, characters, filename):
     flags = [0x04, 0x08, 0x10, 0x20, 0x40]
     random.shuffle(flags)
     for flag in flags:
+        if changedict:
+            donebefore, doneafter = tuple(zip(*changedict.values()))
+            donebefore, doneafter = set(donebefore), set(doneafter)
+        else:
+            donebefore, doneafter = set([]), set([])
         while True:
             if flag == 0x08:
-                before = random.choice([0x0, 0x1, 0x2, 0x12])
+                candidates = set([0x0, 0x1, 0x2, 0x12])
             else:
-                before = random.randint(0, 0x1D)
+                candidates = range(0, 0x1E)
+                candidates = set(candidates) - set([0x04, 0x14, 0x15, 0x19])
 
-            if before in [0x04, 0x14, 0x15, 0x19]:
-                continue
+            if random.randint(1, 5) != 5:
+                candidates = candidates - donebefore
+
+            candidates = sorted(candidates)
+            before = random.choice(candidates)
 
             if before == 0:
                 tempchars = [c for c in characters]
@@ -753,6 +762,12 @@ def reset_special_relics(items, characters, filename):
 
             if set(hidden_commands) & set(unused):
                 unused = set(hidden_commands) & set(unused)
+
+            if before in unused:
+                unused.remove(before)
+
+            if random.randint(1, 5) != 5:
+                unused = unused - doneafter
 
             if not unused:
                 continue

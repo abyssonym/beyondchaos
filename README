@@ -56,8 +56,11 @@ Output rom file:
 3. To create a tool that is useful to the FF6 rom hacking community by being both open source and accessible, and by showing off a wide variety of potential mods.
 
 --- FAQ/KNOWN ISSUES ---
+Q: How do I play Beyond Chaos Bingo?
+A: The code is "bingoboingo". Use the code in the flags and the randomizer will ask you some more questions when the randomization is complete.
+
 Q: I lost my seed number but I still have the rom. Can I find my seed number again?
-A: If you didn't rename your rom file, the seed will be in the file name. Otherwise, the seed is written in the rom in the title section of the SNES header. Some emulators, like Snes9x, will display the title of the game when you load it, so you can see the seed value by looking at the title displayed by Snes9x. The address of this title in the rom is at 0xFFC0.
+A: The seed is displayed in the auto-generated guide, in the rom's SNES header, and in the opening sequence with the magitek armor.
 
 Q: I'm at Vargas but I don't have Blitz. How do I beat him?
 A: You can defeat him normally without Blitz. His HP was lowered to make him beatable without much (if any) grinding.
@@ -148,6 +151,9 @@ A: This feature was removed because it didn't work properly with one of the new 
 
 Q: Can you add X to the mini-guide that gets generated?
 A: Let me know. I'm not sure what kinds of things people want in the mini-FAQ.
+
+Q: The guide says a character can learn a spell naturally, but they haven't learned it.
+A: Yeah, that's a bug I haven't bothered to figure out yet. I think it has to do with characters joining at a higher level than the magic they learn. They'll still learn the rest of their natural magic, though.
 
 Q: Can you add X feature?
 A: Maybe. I'm open to suggestions, but things that require a lot of effort probably won't get made.

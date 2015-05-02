@@ -1445,7 +1445,7 @@ class MonsterBlock:
 
     @property
     def deadspecial(self):
-        return (self.special & 0x2F) in [0x07, 0x10, 0x18]
+        return (self.special & 0x3F) in [0x07, 0x10, 0x18]
 
     def mutate_special(self):
         if self.goodspecial:

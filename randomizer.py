@@ -463,43 +463,6 @@ class CharacterBlock:
             self.palette = palettes[self.id]
 
 
-class NPCBlock():
-    def __init__(self, pointer, locid):
-        self.pointer = pointer
-        self.locid = locid
-
-    def set_id(self, eventid):
-        self.eventid = eventid
-
-    def read_data(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        self.event_addr = read_multi(f, length=3)
-        self.palette = (self.event_addr & 0x1C0000) >> 18
-        self.unknown = self.event_addr & 0xE00000
-        self.event_addr = self.event_addr & 0x3FFFF
-        self.misc0 = ord(f.read(1))
-        self.x = ord(f.read(1))
-        self.y = ord(f.read(1))
-        self.graphics = ord(f.read(1))
-        self.misc1 = ord(f.read(1))
-        self.misc2 = ord(f.read(1))
-        f.close()
-
-    def write_data(self, filename, nextpointer):
-        f = open(filename, 'r+b')
-        f.seek(nextpointer)
-        value = self.unknown | self.event_addr | (self.palette << 18)
-        write_multi(f, value, length=3)
-        f.write(chr(self.misc0))
-        f.write(chr(self.x))
-        f.write(chr(self.y))
-        f.write(chr(self.graphics))
-        f.write(chr(self.misc1))
-        f.write(chr(self.misc2))
-        f.close()
-
-
 class WindowBlock():
     def __init__(self, windowid):
         self.pointer = 0x2d1c00 + (windowid * 0x20)
@@ -1831,7 +1794,7 @@ def make_palette_repair(main_palette_changes):
 def get_npcs():
     npcs = []
     for l in get_locations():
-        npcs.extend(l.events)
+        npcs.extend(l.npcs)
     return npcs
 
 
@@ -2533,11 +2496,20 @@ def manage_chests():
         m.write_stats(outfile)
 
 
-def write_all_events():
+def write_all_npcs():
     locations = get_locations()
     locations = sorted(locations, key=lambda l: l.locid)
 
     nextpointer = 0x41d52
+    for l in locations:
+        nextpointer = l.write_npcs(outfile, nextpointer=nextpointer)
+
+
+def write_all_events():
+    locations = get_locations()
+    locations = sorted(locations, key=lambda l: l.locid)
+
+    nextpointer = 0x40342
     for l in locations:
         nextpointer = l.write_events(outfile, nextpointer=nextpointer)
 
@@ -3690,6 +3662,10 @@ def manage_ancient():
     set_airship_sub.set_location(0xAF532)  # need first branch for button press
     set_airship_sub.write(outfile)
 
+    randomize_tower(filename=sourcefile, ancient=True)
+    for l in get_locations():
+        l.write_data(outfile)
+
 
 def randomize():
     global outfile, sourcefile, flags, seed
@@ -3853,7 +3829,6 @@ h   Organize rages by highest level first'''
         for flag in 'd':
             if flag in flags:
                 flags.remove(flag)
-        manage_ancient()
 
     if 'w' in flags and 'o' not in flags:
         flags += 'o'
@@ -3900,6 +3875,8 @@ h   Organize rages by highest level first'''
             dirk.write_stats(outfile)
             dummy_item(dirk)
             assert not dummy_item(dirk)
+    elif 'ancienttower' in activated_codes:
+        manage_ancient()
     reseed()
 
     items = get_ranked_items()
@@ -4069,8 +4046,9 @@ h   Organize rages by highest level first'''
     reseed()
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
-    write_all_events()
+    write_all_npcs()
     write_all_entrances()
+    write_all_events()
 
     if 'canttouchthis' in activated_codes:
         for c in characters:
@@ -4123,6 +4101,8 @@ h   Organize rages by highest level first'''
 
 if __name__ == "__main__":
     args = list(argv)
+    randomize()
+    exit()
     if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()

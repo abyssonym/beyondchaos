@@ -44,9 +44,13 @@ for line in open(LOCATION_MAPS_TABLE):
         maplocations_reverse[a].append(locid)
 
 
-def add_location_map(location_name, mapid):
+def add_location_map(location_name, mapid, strict=True):
     assert location_name in maplocations_reverse
-    assert mapid not in maplocations
+    if strict:
+        try:
+            assert mapid not in maplocations
+        except:
+            import pdb; pdb.set_trace()
     maplocations_reverse[location_name] = sorted(
         maplocations_reverse[location_name] + [mapid])
     maplocations[mapid] = location_name
@@ -63,6 +67,68 @@ def get_chest_id_counts():
                 chest_id_counts[c.effective_id] = 0
             chest_id_counts[c.effective_id] += 1
     return get_chest_id_counts()
+
+
+class NPCBlock():
+    def __init__(self, pointer, locid):
+        self.pointer = pointer
+        self.locid = locid
+
+    def set_id(self, npcid):
+        self.npcid = npcid
+
+    def read_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        self.event_addr = read_multi(f, length=3)
+        self.palette = (self.event_addr & 0x1C0000) >> 18
+        self.unknown = self.event_addr & 0xE00000
+        self.event_addr = self.event_addr & 0x3FFFF
+        self.misc0 = ord(f.read(1))
+        self.x = ord(f.read(1))
+        self.y = ord(f.read(1))
+        self.graphics = ord(f.read(1))
+        self.misc1 = ord(f.read(1))
+        self.misc2 = ord(f.read(1))
+        f.close()
+
+    def write_data(self, filename, nextpointer):
+        f = open(filename, 'r+b')
+        f.seek(nextpointer)
+        value = self.unknown | self.event_addr | (self.palette << 18)
+        write_multi(f, value, length=3)
+        f.write(chr(self.misc0))
+        f.write(chr(self.x))
+        f.write(chr(self.y))
+        f.write(chr(self.graphics))
+        f.write(chr(self.misc1))
+        f.write(chr(self.misc2))
+        f.close()
+
+
+class EventBlock():
+    def __init__(self, pointer, locid):
+        self.pointer = pointer
+        self.locid = locid
+
+    def set_id(self, eventid):
+        self.eventid = eventid
+
+    def read_data(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.pointer)
+        self.x = ord(f.read(1))
+        self.y = ord(f.read(1))
+        self.eventaddr = read_multi(f, length=3)
+        f.close()
+
+    def write_data(self, filename, nextpointer):
+        f = open(filename, 'r+b')
+        f.seek(nextpointer)
+        f.write(chr(self.x))
+        f.write(chr(self.y))
+        write_multi(f, self.eventaddr, length=3)
+        f.close()
 
 
 #256 zones
@@ -169,8 +235,12 @@ class Location():
         return 0x2D82F4 + (self.locid * 2)
 
     @property
-    def eventpointer(self):
+    def npcpointer(self):
         return 0x41a10 + (self.locid * 2)
+
+    @property
+    def eventpointer(self):
+        return 0x40000 + (self.locid * 2)
 
     @property
     def area_name(self):
@@ -365,6 +435,7 @@ class Location():
         self.entrance_set.read_data(filename)
         self.backup_entrances()
         self.read_chests(filename)
+        self.read_npcs(filename)
         self.read_events(filename)
 
     def make_tower_flair(self):
@@ -468,19 +539,34 @@ class Location():
             c.set_id(i)
             self.chests.append(c)
 
+    def read_npcs(self, filename):
+        f = open(filename, 'r+b')
+        f.seek(self.npcpointer)
+        begin = read_multi(f, length=2)
+        end = read_multi(f, length=2)
+        numnpcs = (end - begin) / 9.0
+        assert numnpcs == round(numnpcs)
+        numnpcs = int(numnpcs)
+        self.npcs = []
+        for i in xrange(numnpcs):
+            pointer = begin + (i*9) + 0x41a10
+            e = NPCBlock(pointer, self.locid)
+            e.read_data(filename)
+            e.set_id(i)
+            self.npcs.append(e)
+
     def read_events(self, filename):
-        from randomizer import NPCBlock
         f = open(filename, 'r+b')
         f.seek(self.eventpointer)
         begin = read_multi(f, length=2)
         end = read_multi(f, length=2)
-        numevents = (end - begin) / 9.0
+        numevents = (end - begin) / 5.0
         assert numevents == round(numevents)
         numevents = int(numevents)
         self.events = []
         for i in xrange(numevents):
-            pointer = begin + (i*9) + 0x41a10
-            e = NPCBlock(pointer, self.locid)
+            pointer = begin + (i*5) + 0x40000
+            e = EventBlock(pointer, self.locid)
             e.read_data(filename)
             e.set_id(i)
             self.events.append(e)
@@ -558,27 +644,41 @@ class Location():
 
         return nextpointer
 
-    def write_events(self, filename, nextpointer, ignore_order=False):
+    def write_npcs(self, filename, nextpointer, ignore_order=False):
         f = open(filename, 'r+b')
-        f.seek(self.eventpointer)
+        f.seek(self.npcpointer)
         write_multi(f, (nextpointer - 0x41a10), length=2)
-        for i in xrange(len(self.events)):
+        for i in xrange(len(self.npcs)):
             if ignore_order:
-                e = self.events[i]
+                e = self.npcs[i]
             else:
                 try:
-                    e = [v for v in self.events if v.eventid == i][0]
+                    e = [v for v in self.npcs if v.npcid == i][0]
                 except IndexError:
-                    raise Exception("Events out of order.")
+                    raise Exception("NPCs out of order.")
             if nextpointer + 9 >= 0x46AC0:
+                import pdb; pdb.set_trace()
+                raise Exception("Not enough space for npcs.")
+            e.write_data(filename, nextpointer)
+            nextpointer += 9
+        f.seek(self.npcpointer + 2)
+        write_multi(f, (nextpointer - 0x41a10), length=2)
+        f.close()
+        return nextpointer
+
+    def write_events(self, filename, nextpointer):
+        f = open(filename, 'r+b')
+        f.seek(self.eventpointer)
+        write_multi(f, (nextpointer - 0x40000), length=2)
+        for e in self.events:
+            if nextpointer + 5 >= 0x41a10:
                 import pdb; pdb.set_trace()
                 raise Exception("Not enough space for events.")
             e.write_data(filename, nextpointer)
-            nextpointer += 9
+            nextpointer += 5
         f.seek(self.eventpointer + 2)
-        write_multi(f, (nextpointer - 0x41a10), length=2)
+        write_multi(f, (nextpointer - 0x40000), length=2)
         f.close()
-
         return nextpointer
 
 
@@ -808,6 +908,18 @@ def get_locations(filename=None):
             l.fill_battle_bg()
             locdict[l.locid] = l
     return locations
+
+
+def update_locations(newlocs):
+    global locations
+    for l in sorted(newlocs, key=lambda o: o.locid):
+        if l in locations:
+            pass
+        elif l not in locations:
+            original = [o for o in locations if o.locid == l.locid][0]
+            index = locations.index(original)
+            locations[index] = l
+            locdict[l.locid] = l
 
 
 def get_zones(filename=None):

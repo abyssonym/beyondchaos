@@ -13,7 +13,14 @@ from sys import stdout
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 25  # maybe?
 MAX_NEW_EXITS = 1000  # prob. not
-MAX_NEW_MAPS = 23  # 6 more for fanatics tower, 1 more for bonus
+MAX_NEW_MAPS = None  # 23: 6 more for fanatics tower, 1 more for bonus
+ANCIENT = False
+
+
+def set_max_maps(num, ancient=False):
+    global ANCIENT, MAX_NEW_MAPS
+    ANCIENT = ancient
+    MAX_NEW_MAPS = (num - 24)
 
 locdict = {}
 old_entrances = {}
@@ -161,27 +168,36 @@ def get_appropriate_location(loc, flair=True):
         locexchange[loc] = loc
         return loc
     else:
-        for u in unused_locations:
-            if u not in locexchange.values():
-                u.copy(loc)
-                add_location_map("Final Dungeon", u.locid)
-                if flair:
-                    u.make_tower_flair()
-                u.fill_battle_bg(loc.locid)
-                u.unlock_chests(200, 1000)
-                fsets = get_new_fsets("kefka's tower", 20)
-                fset = random.choice(fsets)
-                for formation in fset.formations:
-                    formation.set_music(6)
-                    formation.set_continuous_music()
-                u.setid = fset.setid
-                clear_entrances(u)
-                try:
-                    assert not u.entrances
-                except:
-                    import pdb; pdb.set_trace()
-                locexchange[loc] = u
-                return u
+        from locationrandomizer import Location
+        if ANCIENT:
+            for u in locexchange.keys():
+                if u.locid not in towerlocids and u not in unused_locations:
+                    unused_locations.append(u)
+        exchange_ids = [l.locid for l in locexchange.values()]
+        unused_ids = [l.locid for l in unused_locations
+                      if l.locid not in exchange_ids]
+        u = Location(unused_ids.pop())
+        u.copy(loc)
+        u.npcs = []
+        u.events = []
+        add_location_map("Final Dungeon", u.locid, strict=not ANCIENT)
+        if flair:
+            u.make_tower_flair()
+        u.fill_battle_bg(loc.locid)
+        u.unlock_chests(200, 1000)
+        fsets = get_new_fsets("kefka's tower", 20)
+        fset = random.choice(fsets)
+        for formation in fset.formations:
+            formation.set_music(6)
+            formation.set_continuous_music()
+        u.setid = fset.setid
+        clear_entrances(u)
+        try:
+            assert not u.entrances
+        except:
+            import pdb; pdb.set_trace()
+        locexchange[loc] = u
+        return u
     raise Exception("No appropriate location available.")
 
 
@@ -755,7 +771,12 @@ def get_new_entrances(filename):
     return chosen
 
 
-def randomize_tower(filename):
+def randomize_tower(filename, ancient=False):
+    if ancient:
+        set_max_maps(100, ancient=True)
+    else:
+        set_max_maps(47)
+
     for l in get_locations(filename=filename):
         locdict[l.locid] = l
 
@@ -882,7 +903,12 @@ def randomize_tower(filename):
             b.entrance_set.convert_longs()
 
     make_secret_treasure_room()
-    randomize_fanatics()
+
+    if not ancient:
+        randomize_fanatics()
+
+    from locationrandomizer import update_locations
+    update_locations(locexchange.values())
 
 
 def make_secret_treasure_room():
@@ -932,9 +958,10 @@ def randomize_fanatics():
     stairs = [get_location(i) for i in [363, 359, 360, 361]]
     pitstops = [get_location(i) for i in [365, 367, 368, 369]]
     num_new_levels = random.randint(0, 1) + random.randint(1, 2)
+    exchange_ids = [l.locid for l in locexchange.values()]
     unused_locations = get_unused_locations()
     unused_locations = [u for u in unused_locations if
-                        u not in locexchange.values()]
+                        u.locid not in exchange_ids]
     fsets = get_new_fsets("fanatics", 10, supplement=False)
     for _ in xrange(num_new_levels):
         stair = unused_locations.pop()

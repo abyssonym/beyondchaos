@@ -169,6 +169,10 @@ class Location():
         return 0x2D82F4 + (self.locid * 2)
 
     @property
+    def eventpointer(self):
+        return 0x41a10 + (self.locid * 2)
+
+    @property
     def area_name(self):
         if self.locid not in maplocations:
             raise Exception("Area for location ID %s not known." % self.locid)
@@ -361,6 +365,7 @@ class Location():
         self.entrance_set.read_data(filename)
         self.backup_entrances()
         self.read_chests(filename)
+        self.read_events(filename)
 
     def make_tower_flair(self):
         towerloc = get_location(334)
@@ -463,6 +468,23 @@ class Location():
             c.set_id(i)
             self.chests.append(c)
 
+    def read_events(self, filename):
+        from randomizer import NPCBlock
+        f = open(filename, 'r+b')
+        f.seek(self.eventpointer)
+        begin = read_multi(f, length=2)
+        end = read_multi(f, length=2)
+        numevents = (end - begin) / 9.0
+        assert numevents == round(numevents)
+        numevents = int(numevents)
+        self.events = []
+        for i in xrange(numevents):
+            pointer = begin + (i*9) + 0x41a10
+            e = NPCBlock(pointer, self.locid)
+            e.read_data(filename)
+            e.set_id(i)
+            self.events.append(e)
+
     def copy_chests(self, location):
         from chestrandomizer import ChestBlock
         self.chests = []
@@ -525,12 +547,37 @@ class Location():
         f = open(filename, 'r+b')
         f.seek(self.chestpointer)
         write_multi(f, (nextpointer - 0x2d8634), length=2)
-        f.close()
         for c in self.chests:
             if nextpointer + 5 > 0x2d8e5a:
                 raise Exception("Not enough space for treasure chests.")
             c.write_data(filename, nextpointer)
             nextpointer += 5
+        f.seek(self.chestpointer + 2)
+        write_multi(f, (nextpointer - 0x2d8634), length=2)
+        f.close()
+
+        return nextpointer
+
+    def write_events(self, filename, nextpointer, ignore_order=False):
+        f = open(filename, 'r+b')
+        f.seek(self.eventpointer)
+        write_multi(f, (nextpointer - 0x41a10), length=2)
+        for i in xrange(len(self.events)):
+            if ignore_order:
+                e = self.events[i]
+            else:
+                try:
+                    e = [v for v in self.events if v.eventid == i][0]
+                except IndexError:
+                    raise Exception("Events out of order.")
+            if nextpointer + 9 >= 0x46AC0:
+                import pdb; pdb.set_trace()
+                raise Exception("Not enough space for events.")
+            e.write_data(filename, nextpointer)
+            nextpointer += 9
+        f.seek(self.eventpointer + 2)
+        write_multi(f, (nextpointer - 0x41a10), length=2)
+        f.close()
 
         return nextpointer
 

@@ -317,6 +317,7 @@ class CharacterBlock:
         self.original_appearance = None
         self.new_appearance = None
         self.natural_magic = None
+        self.palette = None
 
     def __repr__(self):
         s = "{0:02d}. {1}".format(self.id+1, self.newname) + "\n"
@@ -457,13 +458,18 @@ class CharacterBlock:
         self.id = i
         if self.id == 13:
             self.beserk = True
+        palettes = dict(enumerate([2, 1, 4, 4, 0, 0, 0, 3, 3, 4, 5, 3, 3, 5]))
+        if self.id in palettes:
+            self.palette = palettes[self.id]
 
 
 class NPCBlock():
-    def __init__(self, pointer):
-        #self.npcid = npcid
-        #self.pointer = 0x41D51 + (9 * self.npcid)
+    def __init__(self, pointer, locid):
         self.pointer = pointer
+        self.locid = locid
+
+    def set_id(self, eventid):
+        self.eventid = eventid
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -480,9 +486,9 @@ class NPCBlock():
         self.misc2 = ord(f.read(1))
         f.close()
 
-    def write_data(self, filename):
+    def write_data(self, filename, nextpointer):
         f = open(filename, 'r+b')
-        f.seek(self.pointer)
+        f.seek(nextpointer)
         value = self.unknown | self.event_addr | (self.palette << 18)
         write_multi(f, value, length=3)
         f.write(chr(self.misc0))
@@ -578,9 +584,14 @@ def commands_from_table(tablefile):
     return commands
 
 
-def characters_from_table(tablefile):
-    characters = []
-    for i, line in enumerate(open(tablefile)):
+character_list = []
+
+
+def get_characters():
+    if character_list:
+        return character_list
+
+    for i, line in enumerate(open(CHAR_TABLE)):
         line = line.strip()
         if line[0] == '#':
             continue
@@ -589,8 +600,8 @@ def characters_from_table(tablefile):
             line = line.replace('  ', ' ')
         c = CharacterBlock(*line.split(','))
         c.set_id(i)
-        characters.append(c)
-    return characters
+        character_list.append(c)
+    return get_characters()
 
 
 def espers_from_table(tablefile):
@@ -707,7 +718,9 @@ def randomize_slots(filename, pointer):
     f.close()
 
 
-def manage_commands(commands, characters):
+def manage_commands(commands):
+    characters = get_characters()
+
     alrs = AutoLearnRageSub(require_gau=False)
     alrs.set_location(0x23b73)
     alrs.write(outfile)
@@ -869,10 +882,11 @@ def manage_commands(commands, characters):
     for ms in magitek_skills:
         ms.fix_reflect(outfile)
 
-    return commands, characters
+    return commands
 
 
-def manage_tempchar_commands(characters):
+def manage_tempchar_commands():
+    characters = get_characters()
     chardict = dict([(c.id, c) for c in characters])
     basicpool = set(range(3, 0x1E)) - changed_commands - set([0x4, 0x11, 0x14, 0x15, 0x19])
     mooglepool, banonpool, ghostpool, leopool = map(set, [basicpool]*4)
@@ -905,11 +919,12 @@ def manage_tempchar_commands(characters):
         c.write_battle_commands(outfile)
 
 
-def manage_commands_new(commands, characters):
+def manage_commands_new(commands):
     # note: x-magic targets random party member
     # replacing lore screws up enemy skills
     # replacing jump makes the character never come back down
     # replacing mimic screws up enemy skills too
+    characters = get_characters()
     freespaces = []
     freespaces.append(FreeBlock(0x2A65A, 0x2A800))
     freespaces.append(FreeBlock(0x2FAAC, 0x2FC6D))
@@ -1094,10 +1109,11 @@ def manage_commands_new(commands, characters):
     cyan_ai_sub.set_location(0xFBE85)
     cyan_ai_sub.write(outfile)
 
-    return commands, characters, freespaces
+    return commands, freespaces
 
 
-def manage_suplex(commands, characters, monsters):
+def manage_suplex(commands, monsters):
+    characters = get_characters()
     freespaces = []
     freespaces.append(FreeBlock(0x2A65A, 0x2A800))
     freespaces.append(FreeBlock(0x2FAAC, 0x2FC6D))
@@ -1133,7 +1149,8 @@ def manage_suplex(commands, characters, monsters):
     learn_blitz_sub.write(outfile)
 
 
-def manage_natural_magic(characters):
+def manage_natural_magic():
+    characters = get_characters()
     candidates = [c for c in characters if 0x02 in c.battle_commands or
                   0x17 in c.battle_commands]
     try:
@@ -1251,7 +1268,9 @@ def manage_natural_magic(characters):
     return candidates
 
 
-def manage_umaro(characters, commands, freespaces):
+def manage_umaro(commands, freespaces):
+    characters = get_characters()
+
     # ship unequip - cc3510
     equip_umaro_sub = Substitution()
     equip_umaro_sub.bytestring = [0xC9, 0x0E]
@@ -1808,34 +1827,16 @@ def make_palette_repair(main_palette_changes):
     repair_sub.set_location(0xCB154)  # Narshe secret entrance
     repair_sub.write(outfile)
 
-npc_list = None
-
 
 def get_npcs():
-    global npc_list
-    if npc_list is not None:
-        return npc_list
-
-    pointerspointer = 0x41d52
-    pointers = set([])
-    f = open(sourcefile, 'r+b')
-    f.seek(pointerspointer)
-    for i in xrange(0, 2193):
-        pointer = pointerspointer + (i*9)
-        pointers.add(pointer)
-    f.close()
-
-    npcs = [NPCBlock(pointer) for pointer in pointers]
-    for npc in npcs:
-        npc.read_data(sourcefile)
-        if npc.pointer == 0x42ac0:
-            npc.read_data(outfile)
-
-    npc_list = npcs
-    return get_npcs()
+    npcs = []
+    for l in get_locations():
+        npcs.extend(l.events)
+    return npcs
 
 
-def manage_character_appearance(preserve_graphics=False, characters=None):
+def manage_character_appearance(preserve_graphics=False):
+    characters = get_characters()
     wild = 'partyparty' in activated_codes
     sabin_mode = 'suplexwrecks' in activated_codes
     tina_mode = 'bravenudeworld' in activated_codes
@@ -1935,15 +1936,14 @@ def manage_character_appearance(preserve_graphics=False, characters=None):
                  "CEABIN", "STABIN", "REABIN", "SEABIN", "MOABIN", "GAUBIN",
                  "GOABIN", "UMABIN"]
 
-    if characters:
-        for c in characters:
-            if c.id < 14:
-                c.newname = names[c.id]
-                c.original_appearance = nameiddict[c.id]
-                if not preserve_graphics:
-                    c.new_appearance = nameiddict[change_to[c.id]]
-                else:
-                    c.new_appearance = c.original_appearance
+    for c in characters:
+        if c.id < 14:
+            c.newname = names[c.id]
+            c.original_appearance = nameiddict[c.id]
+            if not preserve_graphics:
+                c.new_appearance = nameiddict[change_to[c.id]]
+            else:
+                c.new_appearance = c.original_appearance
 
     f = open(outfile, 'r+b')
     for c, name in enumerate(names):
@@ -2018,11 +2018,13 @@ def manage_character_appearance(preserve_graphics=False, characters=None):
                 palette_change_to[(npc.graphics, npc.palette)] = new_palette
                 npc.palette = new_palette
             npc.palette = new_palette
-            npc.write_data(outfile)
 
     main_palette_changes = {}
     f = open(outfile, 'r+b')
-    for c in char_ids:
+    for character in characters:
+        c = character.id
+        if c not in change_to:
+            continue
         f.seek(0x2CE2B + c)
         before = ord(f.read(1))
         new_graphics = change_to[c]
@@ -2040,6 +2042,7 @@ def manage_character_appearance(preserve_graphics=False, characters=None):
                 byte |= ((new_palette+2) << 1)
                 f.seek(ptr)
                 f.write(chr(byte))
+        character.palette = new_palette
     f.close()
 
     if "repairpalette" in activated_codes:
@@ -2129,7 +2132,8 @@ def manage_items(items, changed_commands=None):
     return items
 
 
-def manage_equipment(items, characters):
+def manage_equipment(items):
+    characters = get_characters()
     reset_equippable(items, characters=characters)
     equippable_dict = {"weapon": lambda i: i.is_weapon,
                        "shield": lambda i: i.is_shield,
@@ -2188,7 +2192,7 @@ def manage_equipment(items, characters):
     for i in items:
         i.write_stats(outfile)
 
-    return items, characters
+    return items
 
 
 def manage_reorder_rages(freespaces, by_level=False):
@@ -2527,6 +2531,15 @@ def manage_chests():
 
     for m in get_monsters():
         m.write_stats(outfile)
+
+
+def write_all_events():
+    locations = get_locations()
+    locations = sorted(locations, key=lambda l: l.locid)
+
+    nextpointer = 0x41d52
+    for l in locations:
+        nextpointer = l.write_events(outfile, nextpointer=nextpointer)
 
 
 def manage_blitz():
@@ -3245,7 +3258,6 @@ def manage_tower():
 
     npc = [n for n in get_npcs() if n.event_addr == 0x233B8][0]
     npc.event_addr = 0x233A6
-    npc.write_data(outfile)
     narshe_beginner_sub = Substitution()
     narshe_beginner_sub.bytestring = [0xE5, 0x00]
     narshe_beginner_sub.set_location(0xC33A7)
@@ -3644,6 +3656,36 @@ def manage_bingo():
         f.close()
 
 
+def manage_ancient():
+    characters = get_characters()
+    startsub = Substitution()
+    startsub.bytestring = [0xD7, 0xF3,  # remove Daryl
+                           0xD5, 0xF0,  # remove Terra from party
+                           0xD4, 0xF1,  # add someone
+                           0xD4, 0xF2,  # add someone
+                           0xD4, 0xF3,  # add someone
+                           0xB2, 0x04, 0x21, 0x02,  # start on airship
+                           ]
+    for c in characters:
+        if c.id >= 14:
+            continue
+        i = c.id
+        startsub.bytestring.extend([0x7F, i, i,
+                                    0x37, i, i,
+                                    0x43, i, c.palette,
+                                    0x40, i, i])
+    startsub.bytestring.append(0xFE)
+    startsub.set_location(0xC9A4F)
+    # NOTE: This is probably too long!
+    startsub.write(outfile)
+
+    set_airship_sub = Substitution()
+    set_airship_sub.bytestring = [0xB2, 0xD6, 0x02, 0x00,
+                                  0xFE]
+    set_airship_sub.set_location(0xAF532)  # need first branch for button press
+    set_airship_sub.write(outfile)
+
+
 def randomize():
     global outfile, sourcefile, flags, seed
 
@@ -3749,7 +3791,7 @@ h   Organize rages by highest level first'''
     commands = commands_from_table(COMMAND_TABLE)
     commands = dict([(c.name, c) for c in commands])
 
-    characters = characters_from_table(CHAR_TABLE)
+    characters = get_characters()
 
     flags = flags.lower()
 
@@ -3770,6 +3812,7 @@ h   Organize rages by highest level first'''
     secret_codes['llg'] = "LOW LEVEL GAME MODE"
     secret_codes['playsitself'] = "AUTOBATTLE MODE"
     secret_codes['bingoboingo'] = "BINGO BONUS"
+    secret_codes['ancienttower'] = "CHAOS TOWER MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -3801,16 +3844,22 @@ h   Organize rages by highest level first'''
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
 
+    if 'ancienttower' in activated_codes:
+        for flag in 'd':
+            if flag in flags:
+                flags.remove(flag)
+        manage_ancient()
+
     if 'w' in flags and 'o' not in flags:
         flags += 'o'
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
-        manage_commands(commands, characters)
+        manage_commands(commands)
     reseed()
 
     spells = get_ranked_spells(sourcefile)
     if 'w' in flags and 'suplexwrecks' not in activated_codes:
-        _, _, freespaces = manage_commands_new(commands, characters)
+        _, freespaces = manage_commands_new(commands)
     reseed()
 
     if 'z' in flags:
@@ -3871,13 +3920,12 @@ h   Organize rages by highest level first'''
 
     if 'c' in flags or 's' in flags or (
             set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
-        manage_character_appearance(preserve_graphics=preserve_graphics,
-                                    characters=characters)
+        manage_character_appearance(preserve_graphics=preserve_graphics)
     reseed()
 
     if 'q' in flags:
         # do this after items
-        manage_equipment(items, characters)
+        manage_equipment(items)
     reseed()
 
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
@@ -3910,18 +3958,18 @@ h   Organize rages by highest level first'''
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
-        manage_natural_magic(characters)
+        manage_natural_magic()
     reseed()
 
     if 'u' in flags:
-        umaro_risk, event_freespaces = manage_umaro(characters, commands,
+        umaro_risk, event_freespaces = manage_umaro(commands,
                                                     event_freespaces)
         reset_rage_blizzard(items, umaro_risk, outfile)
     reseed()
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
-        manage_tempchar_commands(characters)
+        manage_tempchar_commands()
     reseed()
 
     if 'q' in flags:
@@ -4008,7 +4056,7 @@ h   Organize rages by highest level first'''
     reseed()
 
     if 'suplexwrecks' in activated_codes:
-        manage_suplex(commands, characters, monsters)
+        manage_suplex(commands, monsters)
     reseed()
 
     if 'strangejourney' in activated_codes:
@@ -4016,6 +4064,7 @@ h   Organize rages by highest level first'''
     reseed()
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
+    write_all_events()
 
     if 'canttouchthis' in activated_codes:
         for c in characters:

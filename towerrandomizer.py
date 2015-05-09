@@ -317,7 +317,7 @@ class CheckRoomSet:
         num_maps = len(self.entrances.keys())
         if num_entrances - self.numexits < 0:
             return 1000000
-        return float(len(num_maps)) / num_entrances
+        return float(num_maps) / num_entrances
 
     @property
     def maps(self):
@@ -366,8 +366,13 @@ class CheckRoomSet:
                     if l in done:
                         continue
                     front = [c for c in candidates if c.location.locid == l]
-                    back = [c for c in candidates if c not in front]
                     c1 = random.choice(front)
+                    back = [c for c in candidates if c.location.locid in done]
+                    if not back:
+                        back = [c for c in candidates if c not in front
+                                and len(c.location.entrances) > 1]
+                    if not back:
+                        back = [c for c in candidates if c not in front]
                     c2 = random.choice(back)
                     done.extend([l, c2.location.locid])
                     candidates.remove(c1)
@@ -381,7 +386,7 @@ class CheckRoomSet:
                 continue
 
             if len(candidates) < self.numexits:
-                continue
+                return None
 
             prevones = 0
             reach = deepcopy(matrix)

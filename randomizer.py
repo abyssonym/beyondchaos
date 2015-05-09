@@ -3664,9 +3664,13 @@ def manage_ancient():
                                     0x43, i, c.palette,
                                     0x40, i, i])
     startsub.bytestring.append(0xFE)
-    startsub.set_location(0xC9A4F)
-    # NOTE: This is probably too long!
+    startsub.set_location(0xADD1E)
     startsub.write(outfile)
+
+    startsub0 = Substitution()
+    startsub0.bytestring = [0xB2, 0x1E, 0xDD, 0x00, 0xFE]
+    startsub0.set_location(0xC9A4F)
+    startsub0.write(outfile)
 
     set_airship_sub = Substitution()
     set_airship_sub.bytestring = [0xB2, 0xD6, 0x02, 0x00,

@@ -392,9 +392,15 @@ class FormationSet():
                             break
                 if result is True:
                     break
+
         if replacement:
-            assert len(self.formations) == 4
-            assert self.formations[3] == replacement
+            try:
+                assert len(self.formations) == 4
+                assert self.formations[3] == replacement
+            except:
+                return False
+            return True
+
         if check_only:
             return result
         elif result is False:

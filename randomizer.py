@@ -2542,6 +2542,24 @@ def write_all_events():
         nextpointer = l.write_events(outfile, nextpointer=nextpointer)
 
 
+def write_all_entrances():
+    entrancesets = [l.entrance_set for l in get_locations()]
+    entrancesets = entrancesets[:0x19F]
+    nextpointer = 0x1FBB00 + (len(entrancesets) * 2) + 2
+    longnextpointer = 0x2DF480 + (len(entrancesets) * 2) + 2
+    total = 0
+    for e in entrancesets:
+        total += len(e.entrances)
+        nextpointer, longnextpointer = e.write_data(outfile, nextpointer,
+                                                    longnextpointer)
+    f = open(outfile, 'r+b')
+    f.seek(e.pointer + 2)
+    write_multi(f, (nextpointer - 0x1fbb00), length=2)
+    f.seek(e.longpointer + 2)
+    write_multi(f, (longnextpointer - 0x2df480), length=2)
+    f.close()
+
+
 def manage_blitz():
     blitzspecptr = 0x47a40
     # 3: X
@@ -2914,7 +2932,10 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
                 fs = random.choice(fscands)
                 fscands.remove(fs)
                 done_fss.append(fs)
-                fs.remove_redundant_formation(fsets=fsets, replacement=f)
+                result = fs.remove_redundant_formation(fsets=fsets,
+                                                       replacement=f)
+                if not result:
+                    continue
                 fs.write_data(outfile)
                 if not fscands:
                     break
@@ -3262,22 +3283,6 @@ def manage_tower():
     narshe_beginner_sub.bytestring = [0xE5, 0x00]
     narshe_beginner_sub.set_location(0xC33A7)
     narshe_beginner_sub.write(outfile)
-
-    entrancesets = [l.entrance_set for l in locations]
-    entrancesets = entrancesets[:0x19F]
-    nextpointer = 0x1FBB00 + (len(entrancesets) * 2) + 2
-    longnextpointer = 0x2DF480 + (len(entrancesets) * 2) + 2
-    total = 0
-    for e in entrancesets:
-        total += len(e.entrances)
-        nextpointer, longnextpointer = e.write_data(outfile, nextpointer,
-                                                    longnextpointer)
-    f = open(outfile, 'r+b')
-    f.seek(e.pointer + 2)
-    write_multi(f, (nextpointer - 0x1fbb00), length=2)
-    f.seek(e.longpointer + 2)
-    write_multi(f, (longnextpointer - 0x2df480), length=2)
-    f.close()
 
 
 def create_dimensional_vortex():
@@ -4065,6 +4070,7 @@ h   Organize rages by highest level first'''
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_events()
+    write_all_entrances()
 
     if 'canttouchthis' in activated_codes:
         for c in characters:

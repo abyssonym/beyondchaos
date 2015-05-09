@@ -2488,12 +2488,24 @@ def manage_chests():
         l.mutate_chests()
     locations = sorted(locations, key=lambda l: l.locid)
 
+    for m in get_monsters():
+        m.write_stats(outfile)
+
+
+def write_all_locations_misc():
+    write_all_chests()
+    write_all_npcs()
+    write_all_events()
+    write_all_entrances()
+
+
+def write_all_chests():
+    locations = get_locations()
+    locations = sorted(locations, key=lambda l: l.locid)
+
     nextpointer = 0x2d8634
     for l in locations:
         nextpointer = l.write_chests(outfile, nextpointer=nextpointer)
-
-    for m in get_monsters():
-        m.write_stats(outfile)
 
 
 def write_all_npcs():
@@ -4046,9 +4058,7 @@ h   Organize rages by highest level first'''
     reseed()
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
-    write_all_npcs()
-    write_all_entrances()
-    write_all_events()
+    write_all_locations_misc()
 
     if 'canttouchthis' in activated_codes:
         for c in characters:
@@ -4101,8 +4111,6 @@ h   Organize rages by highest level first'''
 
 if __name__ == "__main__":
     args = list(argv)
-    randomize()
-    exit()
     if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()

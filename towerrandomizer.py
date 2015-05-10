@@ -165,7 +165,9 @@ def get_new_fsets(areaname, number=10, supplement=True):
     return get_new_fsets(areaname)
 
 
-def get_appropriate_location(loc, flair=True):
+def get_appropriate_location(loc, flair=None):
+    if flair is None:
+        flair = not ANCIENT
     unused_locations = get_unused_locations()
     if loc in locexchange:
         return locexchange[loc]
@@ -189,6 +191,7 @@ def get_appropriate_location(loc, flair=True):
         u.npcs = []
         u.events = []
         add_location_map("Final Dungeon", u.locid, strict=not ANCIENT)
+        u.make_tower_basic()
         if flair:
             u.make_tower_flair()
         u.fill_battle_bg(loc.locid)

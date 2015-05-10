@@ -450,7 +450,6 @@ class Location():
         self._battlebg = (towerloc._battlebg & 0xC0) | self._battlebg
         self.layers_to_animate = towerloc.layers_to_animate
         self.unknown0 = towerloc.unknown0
-        self.attacks = towerloc.attacks
         self.unknown1 = (self.unknown1 & 0xFC) | searchlight
         self.graphic_sets[3] = (self.graphic_sets[3] & 0x0F) | (towerloc.graphic_sets[3] & 0xF0)
         self.tileformations = (self.tileformations & 0xFFFC) | (towerloc.tileformations & 0x3)
@@ -461,6 +460,10 @@ class Location():
         self.unknown5 = towerloc.unknown5  # layer 3 priorities?
         self.layerpriorities = towerloc.layerpriorities
         #if random.randint(1, 15) != 15 or self.music == 0:
+
+    def make_tower_basic(self):
+        towerloc = get_location(334)
+        self.attacks = towerloc.attacks
         self.music = towerloc.music
 
     def fill_battle_bg(self, locid=None):
@@ -920,6 +923,7 @@ def update_locations(newlocs):
             index = locations.index(original)
             locations[index] = l
             locdict[l.locid] = l
+            l.new = True
 
 
 def get_zones(filename=None):

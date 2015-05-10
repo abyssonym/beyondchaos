@@ -15,6 +15,12 @@ MAX_NEW_EXITS = 25  # maybe?
 MAX_NEW_EXITS = 1000  # prob. not
 MAX_NEW_MAPS = None  # 23: 6 more for fanatics tower, 1 more for bonus
 ANCIENT = False
+PROTECTED = [1, 3, 0xB, 0xC, 0xD, 0x11,
+             0x37, 0x81, 0x82, 0x88, 0x9c, 0xb6, 0xb8, 0xbd, 0xbe,
+             0xd2, 0xd3, 0xd4, 0xd5, 0xd7, 0xfe, 0xff,
+             0x100, 0x102, 0x103, 0x104, 0x105, 0x10c, 0x12e,
+             0x13b,  # Phoenix Cave
+             0x150, 0x164, 0x165, 0x19a]
 
 
 def set_max_maps(num, ancient=False):
@@ -171,13 +177,15 @@ def get_appropriate_location(loc, flair=True):
         from locationrandomizer import Location
         if ANCIENT:
             for u in locexchange.keys():
-                if u.locid not in towerlocids and u not in unused_locations:
+                if (u.locid not in towerlocids and u not in unused_locations
+                        and u.locid not in PROTECTED):
                     unused_locations.append(u)
         exchange_ids = [l.locid for l in locexchange.values()]
         unused_ids = [l.locid for l in unused_locations
                       if l.locid not in exchange_ids]
         u = Location(unused_ids.pop())
         u.copy(loc)
+        u.modname = loc.altname
         u.npcs = []
         u.events = []
         add_location_map("Final Dungeon", u.locid, strict=not ANCIENT)

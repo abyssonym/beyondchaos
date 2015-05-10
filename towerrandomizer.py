@@ -916,8 +916,6 @@ def randomize_tower(filename, ancient=False):
         return True
 
     new_entrances = get_new_entrances(filename=filename)
-    print ("Assigning maps, please wait. Because this is random, "
-           "it could take a few minutes.")
     counter = 0
 
     while True:
@@ -936,7 +934,7 @@ def randomize_tower(filename, ancient=False):
         if not counter % 10:
             stdout.write('.')
             stdout.flush()
-    print "Done assigning maps."
+    print
 
     usedlinks = set([])
     for rr in rrs:
@@ -1033,7 +1031,9 @@ def randomize_tower(filename, ancient=False):
     from locationrandomizer import update_locations
     update_locations(locexchange.values())
     rank_maps(rrs)
-    assert len([l for l in get_locations() if hasattr(l, "restrank")]) == 12
+    if ANCIENT:
+        assert len([l for l in get_locations() if
+                    hasattr(l, "restrank")]) == 12
 
 
 def make_secret_treasure_room():

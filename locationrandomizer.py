@@ -515,9 +515,14 @@ class Location():
             "tileproperties", "attacks", "unknown1", "graphic_sets",
             "tileformations", "mapdata", "unknown2", "bgshift", "unknown3",
             "layer12dimensions", "unknown4", "palette_index", "music",
-            "unknown5", "width", "height", "layerpriorities"
+            "unknown5", "width", "height", "layerpriorities",
+            "restrank", "modname",
             ]
         for attribute in attributes:
+            if not hasattr(location, attribute):
+                if hasattr(self, attribute):
+                    delattr(self, attribute)
+                continue
             value = getattr(location, attribute)
             value = copy(value)
             setattr(self, attribute, value)
@@ -949,9 +954,22 @@ def get_location(locid):
     return locdict[locid]
 
 
+def unpurpose_repurposed(locations=None):
+    global unused_locs
+    if locations is None:
+        locations = get_locations()
+    for l in locations:
+        if hasattr(l, "repurposed"):
+            l.repurposed = False
+            if l not in unused_locs:
+                unused_locs.append(l)
+
+
 def get_unused_locations(filename=None):
     global unused_locs
     if unused_locs:
+        unused_locs = [u for u in unused_locs if not
+                       (hasattr(u, "repurposed") and u.repurposed)]
         return unused_locs
 
     unused_locs = set([])

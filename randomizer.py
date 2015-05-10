@@ -3671,17 +3671,52 @@ def manage_map_names():
 
 
 def manage_ancient():
+    if 'o' not in flags:
+        alrs = AutoLearnRageSub(require_gau=True)
+        alrs.set_location(0x23b73)
+        alrs.write(outfile)
+
+        enable_morph_sub = Substitution()
+        enable_morph_sub.bytestring = [0xEA] * 2
+        enable_morph_sub.set_location(0x25410)
+        enable_morph_sub.write(outfile)
+
+        enable_mpoint_sub = Substitution()
+        enable_mpoint_sub.bytestring = [0xEA] * 2
+        enable_mpoint_sub.set_location(0x25E38)
+        enable_mpoint_sub.write(outfile)
+
     characters = get_characters()
+    gau = [c for c in characters if c.id == 11][0]
+    if gau.battle_commands[1] in [0x11, None]:
+        gau.battle_commands[1] = 0xFF
+        gau.write_battle_commands(outfile)
+
+    fi = open(outfile, 'r+b')
+    for i in xrange(14):
+        pointer = 0x2d7ca0 + 0x15 + (i*22)
+        fi.seek(pointer)
+        level = ord(fi.read(1))
+        level &= 0xF3
+        fi.seek(pointer)
+        fi.write(chr(level))
+
+    fi.seek(0xa5e74)
+    fi.write(chr(0))  # remove Terra's magitek
+    fi.close()
+
     startsub = Substitution()
     startsub.bytestring = [0xD7, 0xF3,  # remove Daryl
                            0xD5, 0xF0,  # remove Terra from party
-                           0xD4, 0xF1,  # add someone
-                           0xD4, 0xF2,  # add someone
-                           0xD4, 0xF3,  # add someone
-                           0xD4, 0xF4,  # add someone
-                           0xD4, 0xF5,  # add someone
-                           0xB2, 0x04, 0x21, 0x02,  # start on airship
                            ]
+    num_starting = 3 + random.randint(1, 2) + random.randint(0, 1)
+    starting = random.sample(range(14), num_starting)
+    0xa8956
+    for c in starting:
+        startsub.bytestring += [0xD4, 0xF0 | c]
+
+    startsub.bytestring += [0xB2, 0x04, 0x21, 0x02,  # start on airship
+                            ]
     for c in characters:
         if c.id >= 14:
             continue
@@ -3734,28 +3769,38 @@ def manage_ancient():
     boss_formations = [f for f in formations if safe_boss_validator(f)]
     used_formations = []
 
+    for l in get_locations():
+        if not hasattr(l, "ancient_rank"):
+            l.entrance_set.entrances = []
+            l.entrance_set.longentrances = []
+            l.write_data(outfile)
+
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
     for l in locations:
+        if hasattr(l, "restrank"):
+            assert l.ancient_rank == 0
+            l.music = random.randint(1, 84)
         for e in l.entrances:
             e.dest |= 0x800
         rank = l.ancient_rank
         l.name_id = rank
 
-        if rank == 0:
-            low = random.randint(0, 200)
-            high = random.randint(low, 1000)
-        else:
-            low = rank * 3
-            high = low * 3
-            while random.choice([True, False, False]):
-                high = high * 1.25
-        if rank < 40:
-            monster = False
-        else:
-            monster = None
-        l.unlock_chests(int(low), int(high), monster=monster,
-                        guarantee_miab_treasure=True)
+        if not (hasattr(l, "secret_treasure") and l.secret_treasure):
+            if rank == 0:
+                low = random.randint(0, 200)
+                high = random.randint(low, 1000)
+            else:
+                low = rank * 3
+                high = low * 3
+                while random.choice([True, False, False]):
+                    high = high * 1.25
+            if rank < 40:
+                monster = False
+            else:
+                monster = None
+            l.unlock_chests(int(low), int(high), monster=monster,
+                            guarantee_miab_treasure=True)
 
         l.setid = rank
         if rank == 0:

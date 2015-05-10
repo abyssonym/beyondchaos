@@ -11,8 +11,7 @@ from itertools import product
 from sys import stdout
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
-MAX_NEW_EXITS = 25  # maybe?
-MAX_NEW_EXITS = 1000  # prob. not
+MAX_NEW_EXITS = 1000
 MAX_NEW_MAPS = None  # 23: 6 more for fanatics tower, 1 more for bonus
 ANCIENT = False
 PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
@@ -22,7 +21,9 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x131,  # Tzen WoR?
              0x13b,  # Phoenix Cave
              0x144,  # Albrook WoR?
+             0x158,  # Thamasa WoR?
              0x150, 0x164, 0x165, 0x19a]
+PROTECTED += range(359, 371)  # Fanatics Tower
 
 
 def set_max_maps(num, ancient=False):
@@ -114,6 +115,13 @@ def clear_entrances(location):
 
 
 def clear_unused_locations():
+    from locationrandomizer import unpurpose_repurposed
+    for location in get_locations():
+        if hasattr(location, "modname"):
+            del(location.modname)
+        if hasattr(location, "restrank"):
+            del(location.restrank)
+    unpurpose_repurposed()
     unused_locations = get_unused_locations()
     for u in unused_locations:
         clear_entrances(u)
@@ -387,7 +395,7 @@ class CheckRoomSet:
             return basematrix
 
         locids = self.entrances.keys()
-        for _ in xrange(50):
+        for attempts in xrange(5):
             matrix = deepcopy(basematrix)
             candidates = list(entrances)
             random.shuffle(locids)
@@ -432,6 +440,7 @@ class CheckRoomSet:
 
             if zeroes == 0:
                 break
+
         else:
             return None
 
@@ -462,10 +471,14 @@ class CheckRoomSet:
         # adding unreachable entrance = asserting it is reachable
         if mapid not in self.entrances:
             self.entrances[mapid] = []
-        try:
-            entrance = [e for e in locdict[mapid].entrances if e.entid == entid][0]
-        except IndexError:
-            import pdb; pdb.set_trace()
+        loc = get_location(mapid)
+        if hasattr(loc, "restrank"):
+            entrance = loc.entrances[0]
+        else:
+            try:
+                entrance = [e for e in locdict[mapid].entrances if e.entid == entid][0]
+            except IndexError:
+                import pdb; pdb.set_trace()
         if entrance not in self.entrances[mapid]:
             self.entrances[mapid].append(entrance)
         for e in entrance.reachable_entrances:
@@ -602,6 +615,8 @@ def parse_checkpoints():
         checkpoints = TOWER_CHECKPOINTS_TABLE
     for line in open(checkpoints):
         line = line.strip()
+        if not line:
+            continue
         if line[0] in '#&%-' or '>>' in line:
             continue
         elif line[0] == '!':
@@ -618,6 +633,23 @@ def parse_checkpoints():
             mappoints = [tuple(m.split(':')) for m in mappoints]
             rr.set_ending(mappoints)
             rr = None
+        elif line[0] == 'R':
+            rank = int(line[1:])
+            restrooms = get_unused_locations()[:3]
+            colisseum = get_location(0x19d)
+            for r in restrooms:
+                r.copy(colisseum)
+                r.repurposed = True
+                r.restrank = rank
+                r.modname = "Rest Room"
+                r.npcs = []
+                r.events = []
+                r.fill_battle_bg(colisseum.locid)
+                r.entrance_set.entrances = [e for e in r.entrance_set.entrances
+                                            if e.entid == 3]
+                r.backup_entrances()
+            simple = [(str(r.locid), "3") for r in restrooms]
+            rr.add_checkpoint(simple, [], [])
         else:
             items = line.split(',')
             directional = []
@@ -638,8 +670,10 @@ def parse_checkpoints():
                     simple.append((loc, entrances))
             rr.add_checkpoint(simple, optional, directional)
 
-    for line in open(TOWER_CHECKPOINTS_TABLE):
+    for line in open(checkpoints):
         line = line.strip()
+        if not line:
+            continue
         if line[0] in '#!$':
             continue
         elif line[0] == '&':
@@ -788,9 +822,17 @@ def get_new_entrances(filename):
         locsig = (c.location.layer1ptr, c.location.palette_index)
         if locsig in used_locations:
             continue
-        if num_entrances + len(c.reachable_entrances) >= MAX_NEW_EXITS:
+        numreach = len(c.reachable_entrances)
+        if num_entrances + numreach >= MAX_NEW_EXITS:
             continue
-        num_entrances += min(len(c.reachable_entrances), 5)
+        if numreach == 1 and random.randint(1, 7) != 7:
+            continue
+        elif numreach == 2 and random.randint(1, 3) != 3:
+            continue
+        if not ANCIENT:
+            num_entrances += min(numreach, 5)
+        else:
+            num_entrances += numreach
         chosen.append(c)
         used_locations.append(locsig)
         if len(chosen) == MAX_NEW_MAPS:
@@ -840,6 +882,11 @@ def rank_maps(rrs):
             elif len(fringe) == size:
                 break
         chosen = random.choice(candidates)
+        if ((hasattr(chosen, "secret_treasure") and chosen.secret_treasure) or
+                hasattr(chosen, "restrank")):
+            chosen.ancient_rank = 0
+            done.add(chosen)
+            continue
         chosen.ancient_rank = rank
         rank += 1
         done.add(chosen)
@@ -986,6 +1033,7 @@ def randomize_tower(filename, ancient=False):
     from locationrandomizer import update_locations
     update_locations(locexchange.values())
     rank_maps(rrs)
+    assert len([l for l in get_locations() if hasattr(l, "restrank")]) == 12
 
 
 def make_secret_treasure_room():
@@ -1012,6 +1060,7 @@ def make_secret_treasure_room():
     c.do_not_mutate = True
     c.ignore_dummy = True
     location.chests = [c]
+    location.secret_treasure = True
 
     e = Entrance(None)
     e.copy(entrance)

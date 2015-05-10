@@ -281,13 +281,14 @@ class ChestBlock:
             return True
         return False
 
-    def mutate_contents(self, guideline=None, monster=None):
+    def mutate_contents(self, guideline=None, monster=None,
+                        guarantee_miab_treasure=False):
         global used_formations
 
-        if self.do_not_mutate:
+        if self.do_not_mutate and self.contents is not None:
             return
 
-        if self.value:
+        if self.value is not None:
             value = self.value
         else:
             value = self.get_current_value(guideline=guideline)
@@ -318,21 +319,26 @@ class ChestBlock:
             chance += 3
             chance = min(chance, 50)
 
-        if 1 <= chance <= 3:
+        formations = get_appropriate_formations()
+        formations = [f for f in formations if
+                      f.get_guaranteed_drop_value() >= value * 100]
+        if 1 <= chance <= 3 and (self.rank or formations):
             # monster
             self.set_content_type(0x20)
 
-            formations = get_appropriate_formations()
-            formations = [f for f in formations if
-                          f.get_guaranteed_drop_value() >= value * 100]
             rank = self.rank or min(formations, key=lambda f: f.rank()).rank()
-            if len(extra_miabs) > 1:
-                extra_miabs = get_extra_miabs(rank)
-            if orphaned_formations or extra_miabs:
-                formations = [f for f in formations if f.rank() >= rank]
-                formations = formations[:random.randint(1, 3)]
+            if guarantee_miab_treasure:
+                extra_miabs = []
+                orphaned_formations = []
+                candidates = []
+            else:
+                if len(extra_miabs) > 1:
+                    extra_miabs = get_extra_miabs(rank)
+                if orphaned_formations or extra_miabs:
+                    formations = [f for f in formations if f.rank() >= rank]
+                    formations = formations[:random.randint(1, 3)]
 
-            candidates = (orphaned_formations + extra_miabs)
+                candidates = (orphaned_formations + extra_miabs)
             candidates = sorted(set(candidates))
             if len(candidates) != 1:
                 candidates += formations

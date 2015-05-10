@@ -2482,6 +2482,8 @@ def manage_treasure(monsters, shops=True):
 
 
 def manage_chests():
+    if 'ancienttower' in activated_codes:
+        return
     locations = get_locations(sourcefile)
     locations = sorted(locations, key=lambda l: l.rank())
     for l in locations:
@@ -3645,6 +3647,30 @@ def manage_bingo():
         f.close()
 
 
+def manage_map_names():
+    f = open(outfile, 'r+b')
+    f.seek(0xEF101)
+    text = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            "abcdefghijklmnopqrstuvwxyz"
+            "0123456789")
+    text = dict([(c, i + 0x20) for (i, c) in enumerate(text)])
+    text[" "] = 0x7F
+    pointers = {}
+    for i in xrange(1, 101):
+        pointers[i] = f.tell()
+        room_name = "Room %s" % i
+        room_name = "".join([chr(text[c]) for c in room_name])
+        f.write(room_name)
+        f.write(chr(0))
+
+    for i in xrange(1, 101):
+        f.seek(0x268400 + (2*i))
+        pointer = pointers[i] - 0xEF100
+        write_multi(f, pointer, length=2)
+
+    f.close()
+
+
 def manage_ancient():
     characters = get_characters()
     startsub = Substitution()
@@ -3679,7 +3705,27 @@ def manage_ancient():
     set_airship_sub.write(outfile)
 
     randomize_tower(filename=sourcefile, ancient=True)
+    manage_map_names()
     for l in get_locations():
+        random.randint(1, 100)
+        for e in l.entrances:
+            e.dest |= 0x800
+        if hasattr(l, "ancient_rank"):
+            l.name_id = l.ancient_rank
+            if l.ancient_rank == 0:
+                low = random.randint(0, 200)
+                high = random.randint(low, 1000)
+            else:
+                low = l.ancient_rank * 3
+                high = low * 3
+                while random.choice([True, False, False]):
+                    high = high * 1.25
+            if l.ancient_rank < 40:
+                monster = False
+            else:
+                monster = None
+            l.unlock_chests(int(low), int(high), monster=monster,
+                            guarantee_miab_treasure=True)
         l.write_data(outfile)
 
 
@@ -4063,6 +4109,8 @@ h   Organize rages by highest level first'''
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()
+    for fs in fsets:
+        fs.write_data(outfile)
 
     if 'canttouchthis' in activated_codes:
         for c in characters:

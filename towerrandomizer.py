@@ -15,7 +15,7 @@ MAX_NEW_EXITS = 25  # maybe?
 MAX_NEW_EXITS = 1000  # prob. not
 MAX_NEW_MAPS = None  # 23: 6 more for fanatics tower, 1 more for bonus
 ANCIENT = False
-PROTECTED = [1, 3, 0xB, 0xC, 0xD, 0x11,
+PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x37, 0x81, 0x82, 0x88, 0x9c, 0xb6, 0xb8, 0xbd, 0xbe,
              0xd2, 0xd3, 0xd4, 0xd5, 0xd7, 0xfe, 0xff,
              0x100, 0x102, 0x103, 0x104, 0x105, 0x10c, 0x12e,
@@ -195,7 +195,8 @@ def get_appropriate_location(loc, flair=None):
         if flair:
             u.make_tower_flair()
         u.fill_battle_bg(loc.locid)
-        u.unlock_chests(200, 1000)
+        if not ANCIENT:
+            u.unlock_chests(200, 1000)
         fsets = get_new_fsets("kefka's tower", 20)
         fset = random.choice(fsets)
         for formation in fset.formations:
@@ -484,6 +485,13 @@ class RouteRouter:
         self.set_starting(starting)
         self.checkpoints = []
 
+    def reset_entrance_locations(self):
+        for route in self.routes.values():
+            for segment in route:
+                for entrance in segment.sorted_entrances:
+                    locid = entrance.location.locid
+                    entrance.location = get_location(locid)
+
     def backup(self):
         for route in self.routes.values():
             for segment in route:
@@ -594,6 +602,7 @@ def parse_checkpoints():
             mappoints = line.split(',')
             mappoints = [tuple(m.split(':')) for m in mappoints]
             rr = RouteRouter(mappoints)
+            rr.starter = tuple([(int(a), int(b)) for a, b in mappoints])
             rrs.append(rr)
         elif line[0] == '$':
             line = line[1:]
@@ -782,9 +791,57 @@ def get_new_entrances(filename):
     return chosen
 
 
+def rank_maps(rrs):
+    rrs = sorted(rrs, key=lambda rr: (337, 3) in rr.starter)
+    rank = 1
+    done = set([])
+    fringe = []
+    rr = rrs[0]
+    startents = []
+    for mapid, entid in rr.starter:
+        for route in rr.routes.values():
+            beginning = route[0].entrances
+            if mapid in beginning:
+                ents = beginning[mapid]
+                ents = [e for e in ents if e.entid == entid]
+                if len(ents) == 1:
+                    ent = ents[0]
+                    ents = [e for e in ent.location.entrances
+                            if e.x == ent.x and e.y == ent.y]
+                    startents.append(ents[0])
+    assert len(startents) == 3
+
+    def expand_fringe(fringe):
+        candidates = []
+        for location in fringe:
+            for ent in location.entrances:
+                if ent.destination not in candidates + fringe:
+                    candidates.append(ent.destination)
+        fringe.extend(candidates)
+        fringe = sorted(set(fringe), key=lambda l: l.locid)
+        return fringe
+
+    fringe += [get_location(e.dest & 0x1FF) for e in startents]
+    while True:
+        candidates = [c for c in fringe if c not in done]
+        if not candidates:
+            size = len(fringe)
+            fringe = expand_fringe(fringe)
+            if len(fringe) > size:
+                continue
+            elif len(fringe) == size:
+                break
+        chosen = random.choice(candidates)
+        chosen.ancient_rank = rank
+        rank += 1
+        done.add(chosen)
+
+    get_location(334).ancient_rank = 0
+
+
 def randomize_tower(filename, ancient=False):
     if ancient:
-        set_max_maps(100, ancient=True)
+        set_max_maps(1000, ancient=True)
     else:
         set_max_maps(47)
 
@@ -920,6 +977,7 @@ def randomize_tower(filename, ancient=False):
 
     from locationrandomizer import update_locations
     update_locations(locexchange.values())
+    rank_maps(rrs)
 
 
 def make_secret_treasure_room():

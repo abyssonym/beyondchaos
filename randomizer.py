@@ -25,7 +25,8 @@ from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
 from esperrandomizer import EsperBlock
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
-from formationrandomizer import (get_formations, get_fsets, get_formation)
+from formationrandomizer import (get_formations, get_fsets,
+                                 get_formation, get_fset)
 from locationrandomizer import (EntranceSet,
                                 get_locations, get_location, get_zones)
 from towerrandomizer import randomize_tower
@@ -2482,8 +2483,6 @@ def manage_treasure(monsters, shops=True):
 
 
 def manage_chests():
-    if 'ancienttower' in activated_codes:
-        return
     locations = get_locations(sourcefile)
     locations = sorted(locations, key=lambda l: l.rank())
     for l in locations:
@@ -3679,6 +3678,8 @@ def manage_ancient():
                            0xD4, 0xF1,  # add someone
                            0xD4, 0xF2,  # add someone
                            0xD4, 0xF3,  # add someone
+                           0xD4, 0xF4,  # add someone
+                           0xD4, 0xF5,  # add someone
                            0xB2, 0x04, 0x21, 0x02,  # start on airship
                            ]
     for c in characters:
@@ -3706,26 +3707,98 @@ def manage_ancient():
 
     randomize_tower(filename=sourcefile, ancient=True)
     manage_map_names()
-    for l in get_locations():
-        random.randint(1, 100)
+
+    unused_enemies = [u for u in get_monsters() if u.id in REPLACE_ENEMIES]
+
+    def safe_boss_validator(formation):
+        if set(formation.present_enemies) & set(unused_enemies):
+            return False
+        if formation.formid in NOREPLACE_FORMATIONS:
+            return False
+        if not any([m.boss_death for m in formation.present_enemies]):
+            return False
+        if formation.battle_event:
+            return False
+        if any("Phunbaba" in m.name for m in formation.present_enemies):
+            return False
+        if formation.get_music() == 0:
+            return False
+        if formation.formid in [0x1d4, 0x1d5, 0x1d6, 0x1e4,
+                                0x1e2, 0x1ff, 0x1bd, 0x1be]:
+            return False
+        return True
+
+    formations = sorted(get_formations(), key=lambda f: f.rank())
+    enemy_formations = [f for f in formations if f.present_enemies and
+                        not f.has_event and not f.has_boss]
+    boss_formations = [f for f in formations if safe_boss_validator(f)]
+    used_formations = []
+
+    locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
+    locations = sorted(locations, key=lambda l: l.ancient_rank)
+    for l in locations:
         for e in l.entrances:
             e.dest |= 0x800
-        if hasattr(l, "ancient_rank"):
-            l.name_id = l.ancient_rank
-            if l.ancient_rank == 0:
-                low = random.randint(0, 200)
-                high = random.randint(low, 1000)
-            else:
-                low = l.ancient_rank * 3
-                high = low * 3
-                while random.choice([True, False, False]):
-                    high = high * 1.25
-            if l.ancient_rank < 40:
-                monster = False
-            else:
-                monster = None
-            l.unlock_chests(int(low), int(high), monster=monster,
-                            guarantee_miab_treasure=True)
+        rank = l.ancient_rank
+        l.name_id = rank
+
+        if rank == 0:
+            low = random.randint(0, 200)
+            high = random.randint(low, 1000)
+        else:
+            low = rank * 3
+            high = low * 3
+            while random.choice([True, False, False]):
+                high = high * 1.25
+        if rank < 40:
+            monster = False
+        else:
+            monster = None
+        l.unlock_chests(int(low), int(high), monster=monster,
+                        guarantee_miab_treasure=True)
+
+        l.setid = rank
+        if rank == 0:
+            l.attacks = 0
+        else:
+            fset = get_fset(rank)
+            high = rank + random.randint(0, 1) + random.randint(0, 1)
+            low = rank - (random.randint(1, 2) + random.randint(0, 1))
+            high = min(high, 100) / 100.0
+            low = max(low, 0) / 100.0
+
+            high_e = int(round(high * len(enemy_formations)))
+            low_e = int(round(low * len(enemy_formations)))
+            while high_e - low_e < 4:
+                high_e = min(high_e + 1, len(enemy_formations))
+                low_e = max(low_e - 1, 0)
+            candidates = enemy_formations[low_e:high_e]
+            chosen_enemies = random.sample(candidates, 4)
+
+            if rank >= 20 and random.randint(1, 3) == 3:
+                high_b = int(round(high * len(boss_formations)))
+                low_b = int(round(low * len(boss_formations)))
+                if high_b - low_b < 1:
+                    high_b = min(high_b + 1, len(boss_formations))
+                    low_b = max(low_b - 1, 0)
+                candidates = boss_formations[low_b:high_b]
+                if candidates:
+                    chosen_boss = random.choice(candidates)
+                    chosen_enemies[3] = chosen_boss
+
+            for c in chosen_enemies:
+                # allow up to two of the same formation
+                if c in used_formations:
+                    if c in enemy_formations:
+                        enemy_formations.remove(c)
+                    if c in boss_formations:
+                        boss_formations.remove(c)
+                else:
+                    used_formations.append(c)
+
+            fset.formids = [f.formid for f in chosen_enemies]
+            fset.write_data(outfile)
+
         l.write_data(outfile)
 
 
@@ -3929,7 +4002,7 @@ h   Organize rages by highest level first'''
     aispaces.append(FreeBlock(0xFFF47, 0xFFF47 + 87))
     aispaces.append(FreeBlock(0xFFFBE, 0xFFFBE + 66))
 
-    if 'd' in flags:
+    if 'd' in flags or 'ancienttower' in activated_codes:
         # do this before treasure
         if 'm' in flags and 't' in flags and 'q' in flags:
             dirk = get_item(0)
@@ -3937,8 +4010,6 @@ h   Organize rages by highest level first'''
             dirk.write_stats(outfile)
             dummy_item(dirk)
             assert not dummy_item(dirk)
-    elif 'ancienttower' in activated_codes:
-        manage_ancient()
     reseed()
 
     items = get_ranked_items()
@@ -4064,10 +4135,14 @@ h   Organize rages by highest level first'''
     if 't' in flags:
         # do this after hidden formations
         manage_treasure(monsters, shops=True)
-        manage_chests()
-        for fs in fsets:
-            # write new formation sets for MiaBs
-            fs.write_data(outfile)
+        if 'ancienttower' not in activated_codes:
+            manage_chests()
+            for fs in fsets:
+                # write new formation sets for MiaBs
+                fs.write_data(outfile)
+
+    if 'ancienttower' in activated_codes:
+        manage_ancient()
     reseed()
 
     if 'o' in flags or 'w' in flags or 'm' in flags:

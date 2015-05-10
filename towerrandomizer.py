@@ -1,6 +1,6 @@
 from copy import deepcopy, copy
-from utils import (TOWER_CHECKPOINTS_TABLE, TOWER_LOCATIONS_TABLE,
-                   TREASURE_ROOMS_TABLE,
+from utils import (ANCIENT_CHECKPOINTS_TABLE, TOWER_CHECKPOINTS_TABLE,
+                   TOWER_LOCATIONS_TABLE, TREASURE_ROOMS_TABLE,
                    utilrandom as random)
 from locationrandomizer import (get_locations, get_location,
                                 get_unused_locations, Entrance,
@@ -19,7 +19,9 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x37, 0x81, 0x82, 0x88, 0x9c, 0xb6, 0xb8, 0xbd, 0xbe,
              0xd2, 0xd3, 0xd4, 0xd5, 0xd7, 0xfe, 0xff,
              0x100, 0x102, 0x103, 0x104, 0x105, 0x10c, 0x12e,
+             0x131,  # Tzen WoR?
              0x13b,  # Phoenix Cave
+             0x144,  # Albrook WoR?
              0x150, 0x164, 0x165, 0x19a]
 
 
@@ -305,6 +307,8 @@ class CheckRoomSet:
 
             LARGE_VALUE = 5
             MIN_LARGE = 3
+            if ANCIENT:
+                LARGE_VALUE = 100
             numentrances = len(self.entrances[mapid])
             if numentrances < LARGE_VALUE and len(locentrances) < numentrances:
                 musts.extend(random.sample(
@@ -592,7 +596,11 @@ class RouteRouter:
 def parse_checkpoints():
     rr = None
     rrs = []
-    for line in open(TOWER_CHECKPOINTS_TABLE):
+    if ANCIENT:
+        checkpoints = ANCIENT_CHECKPOINTS_TABLE
+    else:
+        checkpoints = TOWER_CHECKPOINTS_TABLE
+    for line in open(checkpoints):
         line = line.strip()
         if line[0] in '#&%-' or '>>' in line:
             continue

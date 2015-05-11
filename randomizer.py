@@ -3964,11 +3964,20 @@ def manage_ancient():
             chosen = random.choice(optional_chars)
             optional_chars.remove(chosen)
             assert chosen.palette is not None
+            allysub = Substitution()
+            allysub.set_location(pointer)
+            allysub.bytestring = [0xF4, 0xD0,
+                                  0xD4, 0xF0 | chosen.id,
+                                  0xD4, 0xE0 | chosen.id,
+                                  0x3E, 0x10 | len(l.npcs), 0xFE]
+            allysub.write(outfile)
+            pointer += len(allysub.bytestring)
+            event_addr = (allysub.location - 0xa0000) & 0x3FFFF
             ally = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
                 "graphics": chosen.id, "palette": chosen.palette,
                 "x": 54, "y": 18,
-                "event_addr": 0x8f3b, "facing": 2,
+                "event_addr": event_addr, "facing": 2,
                 "unknown": 0, "misc0": 0, "graphics_index": 0}
             for key, value in attributes.items():
                 setattr(ally, key, value)

@@ -3892,73 +3892,75 @@ def manage_ancient():
 
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
+    restlocs = [l for l in locations if hasattr(l, "restrank")]
+    random.shuffle(restlocs)
     restmusics = range(1, 85)
     random.shuffle(restmusics)
-    optional_chars = []
-    for l in locations:
-        if hasattr(l, "restrank"):
-            from locationrandomizer import NPCBlock
-            assert l.ancient_rank == 0
-            l.music = restmusics.pop()
+    optional_chars = [c for c in characters if c.id not in starting
+                      and c.id <= 13]
+    for l in restlocs:
+        from locationrandomizer import NPCBlock
+        assert l.ancient_rank == 0
+        l.music = restmusics.pop()
 
-            innsub = Substitution()
-            innsub.set_location(pointer)
-            price, message = inn_prices[l.restrank]
-            innsub.bytestring = list(inn_template)
-            pointer += len(inn_template)
-            price = [price & 0xFF, price >> 8]
-            message = [message & 0xFF, message >> 8]
-            p = (pointer - 0xA0000) & 0x3FFFF
-            pointerbytes = [p & 0xFF, (p >> 8) & 0xFF, p >> 16]
-            mapid = [l.locid & 0xFF, l.locid >> 8]
-            mapid[1] |= 0x23
-            innsub.bytestring[1:3] = message
-            innsub.bytestring[7:10] = pointerbytes
-            innsub.bytestring[10:13] = pointerbytes
-            innsub.bytestring[10] -= 1
-            assert None not in innsub.bytestring
-            assert len(innsub.bytestring) == 14
-            innsub.bytestring += inn_template2
-            pointer += len(inn_template2)
-            innsub.bytestring[15:17] = price
-            assert None not in innsub.bytestring
-            innsub.write(outfile)
-            event_addr = (innsub.location - 0xa0000) & 0x3FFFF
-            innkeeper = NPCBlock(pointer=None, locid=l.locid)
-            attributes = {
-                "graphics": 54, "palette": 1, "x": 52, "y": 16,
-                "event_addr": event_addr, "facing": 2,
-                "unknown": 0, "misc0": 0, "graphics_index": 0}
-            for key, value in attributes.items():
-                setattr(innkeeper, key, value)
+        innsub = Substitution()
+        innsub.set_location(pointer)
+        price, message = inn_prices[l.restrank]
+        innsub.bytestring = list(inn_template)
+        pointer += len(inn_template)
+        price = [price & 0xFF, price >> 8]
+        message = [message & 0xFF, message >> 8]
+        p = (pointer - 0xA0000) & 0x3FFFF
+        pointerbytes = [p & 0xFF, (p >> 8) & 0xFF, p >> 16]
+        mapid = [l.locid & 0xFF, l.locid >> 8]
+        mapid[1] |= 0x23
+        innsub.bytestring[1:3] = message
+        innsub.bytestring[7:10] = pointerbytes
+        innsub.bytestring[10:13] = pointerbytes
+        innsub.bytestring[10] -= 1
+        assert None not in innsub.bytestring
+        assert len(innsub.bytestring) == 14
+        innsub.bytestring += inn_template2
+        pointer += len(inn_template2)
+        innsub.bytestring[15:17] = price
+        assert None not in innsub.bytestring
+        innsub.write(outfile)
+        event_addr = (innsub.location - 0xa0000) & 0x3FFFF
+        innkeeper = NPCBlock(pointer=None, locid=l.locid)
+        attributes = {
+            "graphics": 54, "palette": 1, "x": 52, "y": 16,
+            "event_addr": event_addr, "facing": 2,
+            "unknown": 0, "misc0": 0, "graphics_index": 0}
+        for key, value in attributes.items():
+            setattr(innkeeper, key, value)
+        l.npcs.append(innkeeper)
 
-            shop = shopranks[l.restrank].pop()
-            if shop is not None:
-                shopsub = Substitution()
-                shopsub.set_location(pointer)
-                shopsub.bytestring = [0x9B, shop.shopid, 0xFE]
-                shopsub.write(outfile)
-                pointer += len(shopsub.bytestring)
-                event_addr = (shopsub.location - 0xa0000) & 0x3FFFF
-            else:
-                event_addr = 0x178cb
-                colsub = Substitution()
-                colsub.set_location(0xb78ea)
-                colsub.bytestring = [0x59, 0x04, 0x5C, 0xFE]
-                colsub.write(outfile)
-            shopkeeper = NPCBlock(pointer=None, locid=l.locid)
-            attributes = {
-                "graphics": 54, "palette": 1, "x": 39, "y": 11,
-                "event_addr": event_addr, "facing": 1,
-                "unknown": 0, "misc0": 0, "graphics_index": 0}
-            for key, value in attributes.items():
-                setattr(shopkeeper, key, value)
+        shop = shopranks[l.restrank].pop()
+        if shop is not None:
+            shopsub = Substitution()
+            shopsub.set_location(pointer)
+            shopsub.bytestring = [0x9B, shop.shopid, 0xFE]
+            shopsub.write(outfile)
+            pointer += len(shopsub.bytestring)
+            event_addr = (shopsub.location - 0xa0000) & 0x3FFFF
+        else:
+            event_addr = 0x178cb
+            colsub = Substitution()
+            colsub.set_location(0xb78ea)
+            colsub.bytestring = [0x59, 0x04, 0x5C, 0xFE]
+            colsub.write(outfile)
+        shopkeeper = NPCBlock(pointer=None, locid=l.locid)
+        attributes = {
+            "graphics": 54, "palette": 1, "x": 39, "y": 11,
+            "event_addr": event_addr, "facing": 1,
+            "unknown": 0, "misc0": 0, "graphics_index": 0}
+        for key, value in attributes.items():
+            setattr(shopkeeper, key, value)
+        l.npcs.append(shopkeeper)
 
-            if not optional_chars:
-                optional_chars = [c for c in characters
-                                  if c.id not in starting
-                                  and c.id <= 13]
+        if optional_chars:
             chosen = random.choice(optional_chars)
+            optional_chars.remove(chosen)
             assert chosen.palette is not None
             ally = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
@@ -3968,42 +3970,40 @@ def manage_ancient():
                 "unknown": 0, "misc0": 0, "graphics_index": 0}
             for key, value in attributes.items():
                 setattr(ally, key, value)
-
-            l.npcs.append(innkeeper)
-            l.npcs.append(shopkeeper)
             l.npcs.append(ally)
 
-            if l.restrank == 1:
-                num_espers = 3
-            elif l.restrank in [2, 3]:
-                num_espers = 2
-            elif l.restrank == 4:
-                num_espers = 1
-            for i in xrange(num_espers):
-                esperrank = l.restrank
-                if random.randint(1, 7) == 7:
+        if l.restrank == 1:
+            num_espers = 3
+        elif l.restrank in [2, 3]:
+            num_espers = 2
+        elif l.restrank == 4:
+            num_espers = 1
+        for i in xrange(num_espers):
+            esperrank = l.restrank
+            if random.randint(1, 7) == 7:
+                esperrank += 1
+            candidates = []
+            while not candidates:
+                candidates = [e for e in espers if e.rank <= esperrank]
+                if not candidates:
                     esperrank += 1
-                candidates = []
-                while not candidates:
-                    candidates = [e for e in espers if e.rank <= esperrank]
-                    if not candidates:
-                        esperrank += 1
-                esper = random.choice(candidates)
-                espers.remove(esper)
-                espersub = espersubs[esper.name]
-                index = espersub.bytestring.index(None)
-                espersub.bytestring[index] = 0x10 | len(l.npcs)
-                espersub.write(outfile)
-                event_addr = (espersub.location - 0xa0000) & 0x3FFFF
-                magicite = NPCBlock(pointer=None, locid=l.locid)
-                attributes = {
-                    "graphics": 0x5B, "palette": 2, "x": 44+i, "y": 16,
-                    "event_addr": event_addr, "facing": 4 | 0x50,
-                    "unknown": 0, "misc0": 0, "graphics_index": 0}
-                for key, value in attributes.items():
-                    setattr(magicite, key, value)
-                l.npcs.append(magicite)
+            esper = random.choice(candidates)
+            espers.remove(esper)
+            espersub = espersubs[esper.name]
+            index = espersub.bytestring.index(None)
+            espersub.bytestring[index] = 0x10 | len(l.npcs)
+            espersub.write(outfile)
+            event_addr = (espersub.location - 0xa0000) & 0x3FFFF
+            magicite = NPCBlock(pointer=None, locid=l.locid)
+            attributes = {
+                "graphics": 0x5B, "palette": 2, "x": 44+i, "y": 16,
+                "event_addr": event_addr, "facing": 4 | 0x50,
+                "unknown": 0, "misc0": 0, "graphics_index": 0}
+            for key, value in attributes.items():
+                setattr(magicite, key, value)
+            l.npcs.append(magicite)
 
+    for l in locations:
         for e in l.entrances:
             e.dest |= 0x800
         rank = l.ancient_rank

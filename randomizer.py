@@ -3804,7 +3804,7 @@ def manage_ancient():
             l.write_data(outfile)
 
     espersubs = {}
-    pointer = 0xA5419
+    pointer = 0xA5370
     for esper, event_value in esperevents.items():
         espersub = Substitution()
         espersub.set_location(pointer)
@@ -3814,6 +3814,29 @@ def manage_ancient():
                                0x3E, None, 0xFE]
         espersubs[esper] = espersub
         pointer += espersub.size
+
+    inn_template = [0x4B, None, None,
+                    0x4B, 0x11, 0x01,
+                    0xB6, None, None, None,
+                    None, None, None,
+                    0xFE,
+                    ]
+
+    inn_template2 = [0x85, None, None,
+                     0xC0, 0xBE, 0x81, 0xFF, 0x69, 0x01,
+                     0x31, 0x84, 0xC3, 0x8F, 0x84, 0xFF,
+                     0xF4, 0x2C, 0x73, 0x30, 0x0E, 0x01, 0x02, 0x06, 0x16,
+                     0x31, 0x86, 0xC3, 0x9C, 0x80, 0x8D, 0xCE, 0xFF,
+                     0xB2, 0x67, 0xCF, 0x00,
+                     0xF0, 0xB8, 0xFA,
+                     0x31, 0x85, 0xD5, 0x36, 0x05, 0xCE, 0xFF,
+                     0xB2, 0x96, 0xCF, 0x00,
+                     0xFE]
+
+    inn_prices = {1: (500, 0xA6E),
+                  2: (2000, 0xA71),
+                  3: (8000, 0xA5F),
+                  4: (30000, 0xA64)}
 
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
@@ -3825,10 +3848,33 @@ def manage_ancient():
             assert l.ancient_rank == 0
             l.music = restmusics.pop()
 
+            innsub = Substitution()
+            innsub.set_location(pointer)
+            price, message = inn_prices[l.restrank]
+            innsub.bytestring = list(inn_template)
+            pointer += len(inn_template)
+            price = [price & 0xFF, price >> 8]
+            message = [message & 0xFF, message >> 8]
+            p = (pointer - 0xA0000) & 0x3FFFF
+            pointerbytes = [p & 0xFF, (p >> 8) & 0xFF, p >> 16]
+            mapid = [l.locid & 0xFF, l.locid >> 8]
+            mapid[1] |= 0x23
+            innsub.bytestring[1:3] = message
+            innsub.bytestring[7:10] = pointerbytes
+            innsub.bytestring[10:13] = pointerbytes
+            innsub.bytestring[10] -= 1
+            assert None not in innsub.bytestring
+            assert len(innsub.bytestring) == 14
+            innsub.bytestring += inn_template2
+            pointer += len(inn_template2)
+            innsub.bytestring[15:17] = price
+            assert None not in innsub.bytestring
+            innsub.write(outfile)
+            event_addr = (innsub.location - 0xa0000) & 0x3FFFF
             innkeeper = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
                 "graphics": 54, "palette": 1, "x": 52, "y": 16,
-                "event_addr": 0x17864, "facing": 2,
+                "event_addr": event_addr, "facing": 2,
                 "unknown": 0, "misc0": 0, "misc1": 0}
             for key, value in attributes.items():
                 setattr(innkeeper, key, value)

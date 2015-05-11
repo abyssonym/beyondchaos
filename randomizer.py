@@ -3716,6 +3716,7 @@ def manage_ancient():
     characters = get_characters()
     gau = [c for c in characters if c.id == 11][0]
     if gau.battle_commands[1] in [0x11, None]:
+        gau.battle_commands[0] = 0x10
         gau.battle_commands[1] = 0xFF
         gau.write_battle_commands(outfile)
 
@@ -3878,6 +3879,7 @@ def manage_ancient():
     locations = sorted(locations, key=lambda l: l.ancient_rank)
     restmusics = range(1, 85)
     random.shuffle(restmusics)
+    optional_chars = []
     for l in locations:
         if hasattr(l, "restrank"):
             from locationrandomizer import NPCBlock
@@ -3911,7 +3913,7 @@ def manage_ancient():
             attributes = {
                 "graphics": 54, "palette": 1, "x": 52, "y": 16,
                 "event_addr": event_addr, "facing": 2,
-                "unknown": 0, "misc0": 0, "misc1": 0}
+                "unknown": 0, "misc0": 0, "graphics_index": 0}
             for key, value in attributes.items():
                 setattr(innkeeper, key, value)
 
@@ -3933,15 +3935,22 @@ def manage_ancient():
             attributes = {
                 "graphics": 54, "palette": 1, "x": 39, "y": 11,
                 "event_addr": event_addr, "facing": 1,
-                "unknown": 0, "misc0": 0, "misc1": 0}
+                "unknown": 0, "misc0": 0, "graphics_index": 0}
             for key, value in attributes.items():
                 setattr(shopkeeper, key, value)
 
+            if not optional_chars:
+                optional_chars = [c for c in characters
+                                  if c.id not in starting
+                                  and c.id <= 13]
+            chosen = random.choice(optional_chars)
+            assert chosen.palette is not None
             ally = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
-                "graphics": 0, "palette": 1, "x": 53, "y": 18,
+                "graphics": chosen.id, "palette": chosen.palette,
+                "x": 54, "y": 18,
                 "event_addr": 0x8f3b, "facing": 2,
-                "unknown": 0, "misc0": 0, "misc1": 0}
+                "unknown": 0, "misc0": 0, "graphics_index": 0}
             for key, value in attributes.items():
                 setattr(ally, key, value)
 
@@ -3957,7 +3966,7 @@ def manage_ancient():
                 num_espers = 1
             for i in xrange(num_espers):
                 esperrank = l.restrank
-                if random.randint(1, 7):
+                if random.randint(1, 7) == 7:
                     esperrank += 1
                 candidates = []
                 while not candidates:
@@ -3975,7 +3984,7 @@ def manage_ancient():
                 attributes = {
                     "graphics": 0x5B, "palette": 2, "x": 44+i, "y": 16,
                     "event_addr": event_addr, "facing": 4 | 0x50,
-                    "unknown": 0, "misc0": 0, "misc1": 0}
+                    "unknown": 0, "misc0": 0, "graphics_index": 0}
                 for key, value in attributes.items():
                     setattr(magicite, key, value)
                 l.npcs.append(magicite)

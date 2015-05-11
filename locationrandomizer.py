@@ -88,7 +88,7 @@ class NPCBlock():
         self.x = ord(f.read(1))
         self.y = ord(f.read(1))
         self.graphics = ord(f.read(1))
-        self.misc1 = ord(f.read(1))
+        self.graphics_index = ord(f.read(1))
         self.facing = ord(f.read(1))
         f.close()
 
@@ -101,7 +101,7 @@ class NPCBlock():
         f.write(chr(self.x))
         f.write(chr(self.y))
         f.write(chr(self.graphics))
-        f.write(chr(self.misc1))
+        f.write(chr(self.graphics_index))
         f.write(chr(self.facing))
         f.close()
 

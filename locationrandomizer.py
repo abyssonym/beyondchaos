@@ -268,7 +268,11 @@ class Location():
                 desc = c.description
             except AttributeError:
                 continue
-            count = counts[c.effective_id]
+            if c.effective_id in counts:
+                count = counts[c.effective_id]
+            else:
+                count = 1
+                desc = "?%s" % desc
             if count >= 2:
                 desc = "*%s" % desc
             if "Enemy" in desc:

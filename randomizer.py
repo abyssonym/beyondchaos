@@ -2647,6 +2647,21 @@ def manage_blitz():
     f.close()
 
 
+def manage_dragons():
+    dragon_pointers = [0xab6df, 0xc18f3, 0xc1920, 0xc2048,
+                       0xc205b, 0xc36df, 0xc43cd, 0xc558b]
+    dragons = range(0x84, 0x8c)
+    assert len(dragon_pointers) == len(dragons) == 8
+    random.shuffle(dragons)
+    f = open(outfile, 'r+b')
+    for pointer, dragon in zip(dragon_pointers, dragons):
+        f.seek(pointer)
+        c = ord(f.read(1))
+        assert c == 0x4D
+        f.write(chr(dragon))
+    f.close()
+
+
 def manage_formations(formations, fsets):
     for fset in fsets:
         if len(fset.formations) == 4:
@@ -4366,6 +4381,9 @@ h   Organize rages by highest level first'''
         manage_formations(formations, fsets)
         for fset in fsets:
             fset.write_data(outfile)
+
+    if 'f' in flags or 'ancienttower' in activated_codes:
+        manage_dragons()
     reseed()
 
     if 'd' in flags:

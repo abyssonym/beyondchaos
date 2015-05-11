@@ -3751,11 +3751,13 @@ def manage_ancient():
     startsub = Substitution()
     startsub.bytestring = [0xD7, 0xF3,  # remove Daryl
                            0xD5, 0xF0,  # remove Terra from party
+                           0xD5, 0xE0,  # remove Terra from party
                            ]
-    num_starting = 3 + random.randint(1, 2) + random.randint(0, 1)
+    num_starting = 4 + random.randint(0, 1) + random.randint(0, 1)
     starting = random.sample(range(14), num_starting)
     for c in starting:
         startsub.bytestring += [0xD4, 0xF0 | c]
+        startsub.bytestring += [0xD4, 0xE0 | c]
 
     startsub.bytestring += [0xB2, 0x04, 0x21, 0x02,  # start on airship
                             ]

@@ -21,7 +21,9 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x131,  # Tzen WoR?
              0x13b,  # Phoenix Cave
              0x144,  # Albrook WoR?
-             0x158,  # Thamasa WoR?
+             0x157, 0x158,  # Thamasa?
+             0xe7,   # opera with dancers?
+             0x7b,   # inside doma?
              0x150, 0x164, 0x165, 0x19a]
 PROTECTED += range(359, 371)  # Fanatics Tower
 

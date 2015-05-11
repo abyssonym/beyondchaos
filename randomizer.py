@@ -2515,7 +2515,11 @@ def write_all_npcs():
 
     nextpointer = 0x41d52
     for l in locations:
-        nextpointer = l.write_npcs(outfile, nextpointer=nextpointer)
+        if hasattr(l, "restrank"):
+            nextpointer = l.write_npcs(outfile, nextpointer=nextpointer,
+                                       ignore_order=True)
+        else:
+            nextpointer = l.write_npcs(outfile, nextpointer=nextpointer)
 
 
 def write_all_events():
@@ -3777,10 +3781,51 @@ def manage_ancient():
 
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
+    restmusics = range(1, 85)
+    random.shuffle(restmusics)
     for l in locations:
         if hasattr(l, "restrank"):
+            from locationrandomizer import NPCBlock
             assert l.ancient_rank == 0
-            l.music = random.randint(1, 84)
+            l.music = restmusics.pop()
+
+            innkeeper = NPCBlock(pointer=None, locid=l.locid)
+            attributes = {
+                "graphics": 54, "palette": 1, "x": 52, "y": 16,
+                "event_addr": 0x17864, "facing": 2,
+                "unknown": 0, "misc0": 0, "misc1": 0}
+            for key, value in attributes.items():
+                setattr(innkeeper, key, value)
+
+            shopkeeper = NPCBlock(pointer=None, locid=l.locid)
+            attributes = {
+                "graphics": 54, "palette": 1, "x": 39, "y": 11,
+                "event_addr": 0x8f3b, "facing": 1,
+                "unknown": 0, "misc0": 0, "misc1": 0}
+            for key, value in attributes.items():
+                setattr(shopkeeper, key, value)
+
+            ally = NPCBlock(pointer=None, locid=l.locid)
+            attributes = {
+                "graphics": 0, "palette": 1, "x": 53, "y": 18,
+                "event_addr": 0x8f3b, "facing": 2,
+                "unknown": 0, "misc0": 0, "misc1": 0}
+            for key, value in attributes.items():
+                setattr(ally, key, value)
+
+            l.npcs.append(innkeeper)
+            l.npcs.append(shopkeeper)
+            l.npcs.append(ally)
+            for i in xrange(3):
+                magicite = NPCBlock(pointer=None, locid=l.locid)
+                attributes = {
+                    "graphics": 0x5B, "palette": 2, "x": 44+i, "y": 16,
+                    "event_addr": 0x8f3b, "facing": 4 | 0x50,
+                    "unknown": 0, "misc0": 0, "misc1": 0}
+                for key, value in attributes.items():
+                    setattr(magicite, key, value)
+                l.npcs.append(magicite)
+
         for e in l.entrances:
             e.dest |= 0x800
         rank = l.ancient_rank

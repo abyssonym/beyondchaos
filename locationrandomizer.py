@@ -89,7 +89,7 @@ class NPCBlock():
         self.y = ord(f.read(1))
         self.graphics = ord(f.read(1))
         self.misc1 = ord(f.read(1))
-        self.misc2 = ord(f.read(1))
+        self.facing = ord(f.read(1))
         f.close()
 
     def write_data(self, filename, nextpointer):
@@ -102,7 +102,7 @@ class NPCBlock():
         f.write(chr(self.y))
         f.write(chr(self.graphics))
         f.write(chr(self.misc1))
-        f.write(chr(self.misc2))
+        f.write(chr(self.facing))
         f.close()
 
 

@@ -3872,6 +3872,7 @@ def manage_ancient():
             itemshops = itemshops[2:]
         assert len(shopranks[i]) == 3
         random.shuffle(shopranks[i])
+    shopranks[random.randint(1, 4)][random.randint(0, 2)] = None
 
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
@@ -3915,12 +3916,19 @@ def manage_ancient():
                 setattr(innkeeper, key, value)
 
             shop = shopranks[l.restrank].pop()
-            shopsub = Substitution()
-            shopsub.set_location(pointer)
-            shopsub.bytestring = [0x9B, shop.shopid, 0xFE]
-            shopsub.write(outfile)
-            pointer += len(shopsub.bytestring)
-            event_addr = (shopsub.location - 0xa0000) & 0x3FFFF
+            if shop is not None:
+                shopsub = Substitution()
+                shopsub.set_location(pointer)
+                shopsub.bytestring = [0x9B, shop.shopid, 0xFE]
+                shopsub.write(outfile)
+                pointer += len(shopsub.bytestring)
+                event_addr = (shopsub.location - 0xa0000) & 0x3FFFF
+            else:
+                event_addr = 0x178cb
+                colsub = Substitution()
+                colsub.set_location(0xb78ea)
+                colsub.bytestring = [0x59, 0x04, 0x5C, 0xFE]
+                colsub.write(outfile)
             shopkeeper = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
                 "graphics": 54, "palette": 1, "x": 39, "y": 11,

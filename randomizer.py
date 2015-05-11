@@ -4035,22 +4035,20 @@ def manage_ancient():
             high = min(high, 100) / 100.0
             low = max(low, 0) / 100.0
 
-            high_e = int(round(high * len(enemy_formations)))
-            low_e = int(round(low * len(enemy_formations)))
-            while high_e - low_e < 4:
-                high_e = min(high_e + 1, len(enemy_formations))
-                low_e = max(low_e - 1, 0)
-            candidates = enemy_formations[low_e:high_e]
+            high = int(round(high * len(enemy_formations)))
+            low = int(round(low * len(enemy_formations)))
+            while high - low < 4:
+                high = min(high + 1, len(enemy_formations))
+                low = max(low - 1, 0)
+            candidates = enemy_formations[low:high]
             chosen_enemies = random.sample(candidates, 4)
 
-            if rank >= 20 and random.randint(1, 3) == 3:
-                high_b = int(round(high * len(boss_formations)))
-                low_b = int(round(low * len(boss_formations)))
-                if high_b - low_b < 1:
-                    high_b = min(high_b + 1, len(boss_formations))
-                    low_b = max(low_b - 1, 0)
-                candidates = boss_formations[low_b:high_b]
+            if rank >= random.randint(10, 40) and random.randint(1, 3) == 3:
+                formrank = min(chosen_enemies, key=lambda c: c.rank()).rank()
+                candidates = [c for c in boss_formations if c.rank() >= formrank]
                 if candidates:
+                    if rank < 75:
+                        candidates = candidates[:random.randint(2, 4)]
                     chosen_boss = random.choice(candidates)
                     chosen_enemies[3] = chosen_boss
 

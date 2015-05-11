@@ -18,6 +18,9 @@ class ShopBlock:
         self.pointer = pointer
         self.name = name
 
+    def set_id(self, shopid):
+        self.shopid = shopid
+
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
@@ -151,3 +154,9 @@ class ShopBlock:
             self.items.append(0xFF)
 
         assert len(self.items) == 8
+
+    def rank(self):
+        items = [get_item(i) for i in self.items]
+        items = [i for i in items if i]
+        priciest = max(items, key=lambda i: i.price)
+        return priciest.price

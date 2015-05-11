@@ -2960,16 +2960,32 @@ def assign_unused_enemy_formations():
         add_orphaned_formation(uf)
 
 
-def manage_shops():
-    buyables = set([])
+all_shops = None
+
+
+def get_shops():
+    global all_shops
+    if all_shops:
+        return all_shops
+
     shop_names = [line.strip() for line in open(SHOP_TABLE).readlines()]
-    descriptions = []
+    all_shops = []
     for i, name in zip(xrange(0x80), shop_names):
         if "unused" in name.lower():
             continue
         pointer = 0x47AC0 + (9*i)
         s = ShopBlock(pointer, name)
+        s.set_id(i)
         s.read_data(sourcefile)
+        all_shops.append(s)
+
+    return get_shops()
+
+
+def manage_shops():
+    buyables = set([])
+    descriptions = []
+    for s in get_shops():
         s.mutate_items(outfile)
         s.mutate_misc()
         s.write_data(outfile)
@@ -3838,6 +3854,25 @@ def manage_ancient():
                   3: (8000, 0xA5F),
                   4: (30000, 0xA64)}
 
+    shops = get_shops()
+    itemshops = [s for s in shops if s.shoptype_pretty in ["items", "misc"]]
+    othershops = [s for s in shops if s not in itemshops]
+    othershops = othershops[random.randint(0, len(othershops)/2):]
+    itemshops = sorted(random.sample(itemshops, 5), key=lambda p: p.rank())
+    othershops = sorted(random.sample(othershops, 7), key=lambda p: p.rank())
+    shopranks = {}
+    for i in xrange(1, 5):
+        if i > 1:
+            shopranks[i] = othershops[:2] + itemshops[:1]
+            othershops = othershops[2:]
+            itemshops = itemshops[1:]
+        else:
+            shopranks[i] = othershops[:1] + itemshops[:2]
+            othershops = othershops[1:]
+            itemshops = itemshops[2:]
+        assert len(shopranks[i]) == 3
+        random.shuffle(shopranks[i])
+
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
     restmusics = range(1, 85)
@@ -3879,10 +3914,17 @@ def manage_ancient():
             for key, value in attributes.items():
                 setattr(innkeeper, key, value)
 
+            shop = shopranks[l.restrank].pop()
+            shopsub = Substitution()
+            shopsub.set_location(pointer)
+            shopsub.bytestring = [0x9B, shop.shopid, 0xFE]
+            shopsub.write(outfile)
+            pointer += len(shopsub.bytestring)
+            event_addr = (shopsub.location - 0xa0000) & 0x3FFFF
             shopkeeper = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
                 "graphics": 54, "palette": 1, "x": 39, "y": 11,
-                "event_addr": 0x8f3b, "facing": 1,
+                "event_addr": event_addr, "facing": 1,
                 "unknown": 0, "misc0": 0, "misc1": 0}
             for key, value in attributes.items():
                 setattr(shopkeeper, key, value)

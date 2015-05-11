@@ -7,7 +7,7 @@
 186e42,Maduin,1
 186e4d,Bismark,1
 186e58,Stray,0
-186e63,Palador,2
+186e63,Palidor,2
 186e6e,Tritoch,3
 186e79,Odin,3
 186e84,Raiden,4

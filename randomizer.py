@@ -568,9 +568,16 @@ def get_characters():
     return get_characters()
 
 
-def espers_from_table(tablefile):
-    espers = []
-    for i, line in enumerate(open(tablefile)):
+all_espers = None
+
+
+def get_espers():
+    global all_espers
+    if all_espers:
+        return all_espers
+
+    all_espers = []
+    for i, line in enumerate(open(ESPER_TABLE)):
         line = line.strip()
         if line[0] == '#':
             continue
@@ -579,8 +586,8 @@ def espers_from_table(tablefile):
             line = line.replace('  ', ' ')
         c = EsperBlock(*line.split(','))
         c.set_id(i)
-        espers.append(c)
-    return espers
+        all_espers.append(c)
+    return get_espers()
 
 
 def randomize_colosseum(filename, pointer):
@@ -2376,7 +2383,7 @@ def manage_esper_boosts(freespaces):
 
 
 def manage_espers(freespaces):
-    espers = espers_from_table(ESPER_TABLE)
+    espers = get_espers()
     random.shuffle(espers)
     for e in espers:
         e.read_data(sourcefile)
@@ -3715,7 +3722,6 @@ def manage_ancient():
                            ]
     num_starting = 3 + random.randint(1, 2) + random.randint(0, 1)
     starting = random.sample(range(14), num_starting)
-    0xa8956
     for c in starting:
         startsub.bytestring += [0xD4, 0xF0 | c]
 
@@ -3729,6 +3735,24 @@ def manage_ancient():
                                     0x37, i, i,
                                     0x43, i, c.palette,
                                     0x40, i, i])
+
+    esperevents = [
+        "Ramuh", "Ifrit", "Shiva", "Siren", "Terrato", "Shoat", "Maduin",
+        "Bismark", "Stray", "Palidor", "Tritoch", "Odin", "Raiden", "Bahamut",
+        "Alexandr", "Crusader", "Ragnarok", "Kirin", "ZoneSeek", "Carbunkl",
+        "Phantom", "Sraphim", "Golem", "Unicorn", "Fenrir", "Starlet",
+        "Phoenix"]
+    esperevents = dict([(n, i+0x36) for (i, n) in enumerate(esperevents)])
+    espers = list(get_espers())
+    for i in xrange(3):
+        esperrank = 0
+        while random.randint(1, 3) == 3:
+            esperrank += 1
+        candidates = [e for e in espers if e.rank <= esperrank]
+        esper = random.choice(candidates)
+        espers.remove(esper)
+        event_value = esperevents[esper.name]
+        startsub.bytestring += [0x86, event_value]
     startsub.bytestring.append(0xFE)
     startsub.set_location(0xADD1E)
     startsub.write(outfile)
@@ -3779,6 +3803,18 @@ def manage_ancient():
             l.entrance_set.longentrances = []
             l.write_data(outfile)
 
+    espersubs = {}
+    pointer = 0xA5419
+    for esper, event_value in esperevents.items():
+        espersub = Substitution()
+        espersub.set_location(pointer)
+        espersub.bytestring = [0xF4, 0x8D,
+                               0x86, event_value,
+                               #0xFE]
+                               0x3E, None, 0xFE]
+        espersubs[esper] = espersub
+        pointer += espersub.size
+
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
     restmusics = range(1, 85)
@@ -3816,11 +3852,33 @@ def manage_ancient():
             l.npcs.append(innkeeper)
             l.npcs.append(shopkeeper)
             l.npcs.append(ally)
-            for i in xrange(3):
+
+            if l.restrank == 1:
+                num_espers = 3
+            elif l.restrank in [2, 3]:
+                num_espers = 2
+            elif l.restrank == 4:
+                num_espers = 1
+            for i in xrange(num_espers):
+                esperrank = l.restrank
+                if random.randint(1, 7):
+                    esperrank += 1
+                candidates = []
+                while not candidates:
+                    candidates = [e for e in espers if e.rank <= esperrank]
+                    if not candidates:
+                        esperrank += 1
+                esper = random.choice(candidates)
+                espers.remove(esper)
+                espersub = espersubs[esper.name]
+                index = espersub.bytestring.index(None)
+                espersub.bytestring[index] = 0x10 | len(l.npcs)
+                espersub.write(outfile)
+                event_addr = (espersub.location - 0xa0000) & 0x3FFFF
                 magicite = NPCBlock(pointer=None, locid=l.locid)
                 attributes = {
                     "graphics": 0x5B, "palette": 2, "x": 44+i, "y": 16,
-                    "event_addr": 0x8f3b, "facing": 4 | 0x50,
+                    "event_addr": event_addr, "facing": 4 | 0x50,
                     "unknown": 0, "misc0": 0, "misc1": 0}
                 for key, value in attributes.items():
                     setattr(magicite, key, value)

@@ -17,7 +17,7 @@
 32,2,Antdot,noban
 33,20,Remedy,noban
 35,100,Life 3,noban
-3F,300,Palador,noban
+3F,300,Palidor,noban
 41,150,Odin,noban
 42,200,Raiden,noban
 46,100,Ragnarok,noban

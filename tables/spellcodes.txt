@@ -61,7 +61,7 @@
 3C,medium,Maduin
 3D,medium,Bismark
 3E,weak,Stray
-3F,strong,Palador
+3F,strong,Palidor
 40,strong,Tritoch
 41,strong,Odin
 42,strong,Raiden

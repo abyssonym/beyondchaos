@@ -3900,8 +3900,24 @@ def manage_ancient():
     random.shuffle(restmusics)
     optional_chars = [c for c in characters if c.id not in starting
                       and c.id <= 13]
+    from locationrandomizer import NPCBlock, EventBlock
+    falcon = get_location(0xb)
+    save_point = NPCBlock(pointer=None, locid=falcon.locid)
+    attributes = {
+        "graphics": 0x6f, "palette": 6, "x": 7, "y": 8,
+        "event_addr": 0x5eb3, "facing": 0x47,
+        "unknown": 4, "misc0": 0xcc, "graphics_index": 0x10}
+    for key, value in attributes.items():
+        setattr(save_point, key, value)
+    save_point.set_id(len(falcon.npcs))
+    falcon.npcs.append(save_point)
+    save_event = EventBlock(pointer=None, locid=falcon.locid)
+    attributes = {"event_addr": 0x29aeb, "x": 7, "y": 8}
+    for key, value in attributes.items():
+        setattr(save_event, key, value)
+    falcon.events.append(save_event)
+
     for l in restlocs:
-        from locationrandomizer import NPCBlock
         assert l.ancient_rank == 0
         l.music = restmusics.pop()
 

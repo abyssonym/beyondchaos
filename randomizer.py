@@ -3752,6 +3752,8 @@ def manage_ancient():
     startsub.bytestring = [0xD7, 0xF3,  # remove Daryl
                            0xD5, 0xF0,  # remove Terra from party
                            0xD5, 0xE0,  # remove Terra from party
+                           0x3F, 0x0E, 0x00,
+                           0x3F, 0x0F, 0x00,
                            ]
     num_starting = 4 + random.randint(0, 1) + random.randint(0, 1)
     starting = random.sample(range(14), num_starting)
@@ -3759,8 +3761,6 @@ def manage_ancient():
         startsub.bytestring += [0xD4, 0xF0 | c]
         startsub.bytestring += [0xD4, 0xE0 | c]
 
-    startsub.bytestring += [0xB2, 0x04, 0x21, 0x02,  # start on airship
-                            ]
     for c in characters:
         if c.id >= 14:
             continue
@@ -3787,6 +3787,8 @@ def manage_ancient():
         espers.remove(esper)
         event_value = esperevents[esper.name]
         startsub.bytestring += [0x86, event_value]
+    startsub.bytestring += [0xB2, 0x09, 0x21, 0x02,  # start on airship
+                            ]
     startsub.bytestring.append(0xFE)
     startsub.set_location(0xADD1E)
     startsub.write(outfile)
@@ -3799,8 +3801,36 @@ def manage_ancient():
     set_airship_sub = Substitution()
     set_airship_sub.bytestring = [0xB2, 0xD6, 0x02, 0x00,
                                   0xFE]
-    set_airship_sub.set_location(0xAF532)  # need first branch for button press
+    set_airship_sub.set_location(0xAF53A)  # need first branch for button press
     set_airship_sub.write(outfile)
+
+    from locationrandomizer import NPCBlock, EventBlock
+    falcon = get_location(0xb)
+    save_point = NPCBlock(pointer=None, locid=falcon.locid)
+    attributes = {
+        "graphics": 0x6f, "palette": 6, "x": 7, "y": 8,
+        "event_addr": 0x5eb3, "facing": 0x47,
+        "unknown": 4, "misc0": 0xcc, "graphics_index": 0x10}
+    for key, value in attributes.items():
+        setattr(save_point, key, value)
+    save_point.set_id(len(falcon.npcs))
+    falcon.npcs.append(save_point)
+    save_event = EventBlock(pointer=None, locid=falcon.locid)
+    attributes = {"event_addr": 0x29aeb, "x": 7, "y": 8}
+    for key, value in attributes.items():
+        setattr(save_event, key, value)
+    falcon.events.append(save_event)
+
+    pilot = random.choice([s for s in starting if s < 12])
+    pilot_sub = Substitution()
+    pilot_sub.bytestring = [0x3D, pilot, 0x45,
+                            0x3F, pilot, 0x01]
+    for i in xrange(14):
+        if i == pilot:
+            continue
+        pilot_sub.bytestring += [0x3F, i, 0x00]
+    pilot_sub.set_location(0xC2110)
+    pilot_sub.write(outfile)
 
     randomize_tower(filename=sourcefile, ancient=True)
     manage_map_names()
@@ -3900,23 +3930,6 @@ def manage_ancient():
     random.shuffle(restmusics)
     optional_chars = [c for c in characters if c.id not in starting
                       and c.id <= 13]
-    from locationrandomizer import NPCBlock, EventBlock
-    falcon = get_location(0xb)
-    save_point = NPCBlock(pointer=None, locid=falcon.locid)
-    attributes = {
-        "graphics": 0x6f, "palette": 6, "x": 7, "y": 8,
-        "event_addr": 0x5eb3, "facing": 0x47,
-        "unknown": 4, "misc0": 0xcc, "graphics_index": 0x10}
-    for key, value in attributes.items():
-        setattr(save_point, key, value)
-    save_point.set_id(len(falcon.npcs))
-    falcon.npcs.append(save_point)
-    save_event = EventBlock(pointer=None, locid=falcon.locid)
-    attributes = {"event_addr": 0x29aeb, "x": 7, "y": 8}
-    for key, value in attributes.items():
-        setattr(save_event, key, value)
-    falcon.events.append(save_event)
-
     for l in restlocs:
         assert l.ancient_rank == 0
         l.music = restmusics.pop()

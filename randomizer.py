@@ -4467,6 +4467,11 @@ h   Organize rages by highest level first'''
                 # write new formation sets for MiaBs
                 fs.write_data(outfile)
 
+    if 'c' in flags:
+        # do this before ancient cave
+        # could probably do it after if I wasn't lazy
+        manage_colorize_dungeons()
+
     if 'ancientcave' in activated_codes:
         manage_ancient()
     reseed()
@@ -4491,9 +4496,6 @@ h   Organize rages by highest level first'''
     if 'dearestmolulu' in activated_codes or ('f' in flags and 'b' in flags):
         manage_encounter_rate()
     reseed()
-
-    if 'c' in flags:
-        manage_colorize_dungeons()
     reseed()
 
     if 'p' in flags:
@@ -4539,23 +4541,25 @@ h   Organize rages by highest level first'''
     rewrite_title(text="FF6 BC %s" % seed)
     rewrite_checksum()
 
-    print "\nWriting log..."
-    for c in sorted(characters, key=lambda c: c.id):
-        c.associate_command_objects(commands.values())
-        if c.id > 13:
-            continue
-        log(str(c), section="characters")
+    if "ancientcave" not in activated_codes:
+        print "\nWriting log..."
+        for c in sorted(characters, key=lambda c: c.id):
+            c.associate_command_objects(commands.values())
+            if c.id > 13:
+                continue
+            log(str(c), section="characters")
 
-    for m in sorted(get_monsters(), key=lambda m: m.display_name):
-        if m.display_name:
-            log(m.get_description(changed_commands=changed_commands),
-                section="monsters")
+        for m in sorted(get_monsters(), key=lambda m: m.display_name):
+            if m.display_name:
+                log(m.get_description(changed_commands=changed_commands),
+                    section="monsters")
 
-    log_chests()
-    log_break_learn_items()
-    f = open(outlog, 'w+')
-    f.write(get_logstring())
-    f.close()
+        log_chests()
+        log_break_learn_items()
+        f = open(outlog, 'w+')
+        f.write(get_logstring())
+        f.close()
+
     print "Randomization successful. Output filename: %s\n" % outfile
 
     if 'bingoboingo' in activated_codes:

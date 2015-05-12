@@ -25,9 +25,6 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x157, 0x158,  # Thamasa?
              #0xcf,   # owzer's mansion
              0xe7, 0xe9,   # opera with dancers?
-             0x7b,   # inside doma?
-             0x20,   # Narshe?
-             0x107,
              0x150, 0x164, 0x165, 0x19a]
 PROTECTED += range(359, 371)  # Fanatics Tower
 
@@ -188,6 +185,10 @@ def get_appropriate_location(loc, flair=None):
     if loc in locexchange:
         return locexchange[loc]
     elif loc.locid in towerlocids:
+        clear_entrances(loc)
+        locexchange[loc] = loc
+        return loc
+    elif hasattr(loc, "restrank"):
         clear_entrances(loc)
         locexchange[loc] = loc
         return loc
@@ -831,9 +832,7 @@ def get_new_entrances(filename):
         numreach = len(c.reachable_entrances)
         if num_entrances + numreach >= MAX_NEW_EXITS:
             continue
-        if numreach == 1 and random.randint(1, 7) != 7:
-            continue
-        elif numreach == 2 and random.randint(1, 3) != 3:
+        if numreach == 1 and random.randint(1, 10) != 10:
             continue
         if not ANCIENT:
             num_entrances += min(numreach, 5)

@@ -3752,6 +3752,7 @@ def manage_ancient():
     startsub.bytestring = [0xD7, 0xF3,  # remove Daryl
                            0xD5, 0xF0,  # remove Terra from party
                            0xD5, 0xE0,  # remove Terra from party
+                           0xDC, 0x7E,  # fix ending? $1F4F bit 6
                            0x3F, 0x0E, 0x00,
                            0x3F, 0x0F, 0x00,
                            ]
@@ -3933,6 +3934,7 @@ def manage_ancient():
     for l in restlocs:
         assert l.ancient_rank == 0
         l.music = restmusics.pop()
+        l.make_warpable()
 
         innsub = Substitution()
         innsub.set_location(pointer)

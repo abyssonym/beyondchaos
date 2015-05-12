@@ -469,6 +469,10 @@ class Location():
         towerloc = get_location(334)
         self.attacks = towerloc.attacks
         self.music = towerloc.music
+        self.make_warpable()
+
+    def make_warpable(self):
+        self.layers_to_animate |= 2
 
     def fill_battle_bg(self, locid=None):
         if locid is None:
@@ -1022,6 +1026,5 @@ if __name__ == "__main__":
     locations = get_locations("program.rom")
     zones = get_zones("program.rom")
     for l in locations:
-        print l
-        print get_fset(l.setid)
+        print "%x" % (l.layers_to_animate & 2), l,
         print

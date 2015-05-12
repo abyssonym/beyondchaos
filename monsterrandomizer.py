@@ -1678,6 +1678,7 @@ def get_ranked_monsters(filename=None, bosses=True):
 def shuffle_monsters(monsters):
     monsters = sorted(monsters, key=lambda m: m.rank())
     monsters = [m for m in monsters if m.name.strip('_')]
+    monsters = [m for m in monsters if m.display_name[:2] != "L."]
     bosses = [m for m in monsters if m.is_boss or m.boss_death]
     nonbosses = [m for m in monsters if m not in bosses]
     for m in monsters:

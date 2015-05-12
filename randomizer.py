@@ -3944,6 +3944,9 @@ def manage_ancient():
     optional_chars = [c for c in characters if c.id not in starting
                       and c.id <= 13]
     npc_palettes = get_npc_palettes()
+    for g in range(14, 63):
+        if g not in npc_palettes:
+            npc_palettes[g] = range(6)
     for l in restlocs:
         assert l.ancient_rank == 0
         l.music = restmusics.pop()

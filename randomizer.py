@@ -3834,6 +3834,15 @@ def manage_ancient():
         setattr(save_event, key, value)
     falcon.events.append(save_event)
 
+    '''
+    summit = get_location(334)
+    end_event = EventBlock(pointer=None, locid=summit.locid)
+    attributes = {"event_addr": 0x135b, "x": 22, "y": 15}
+    for key, value in attributes.items():
+        setattr(end_event, key, value)
+    summit.events.append(end_event)
+    '''
+
     pilot = random.choice([s for s in starting if s < 12])
     pilot_sub = Substitution()
     pilot_sub.bytestring = [0x3D, pilot, 0x45,

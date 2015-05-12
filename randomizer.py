@@ -33,8 +33,11 @@ from towerrandomizer import randomize_tower
 from decompress import Decompressor
 
 
-VERSION = "54"
-VERSION_ROMAN = "LIV"
+VERSION = "55"
+BETA = True
+VERSION_ROMAN = "LV"
+if BETA:
+    VERSION_ROMAN += " BETA"
 TEST_ON = False
 TEST_SEED = "44.abcefghijklmnopqrstuvwxyz-partyparty.42069"
 TEST_FILE = "program.rom"
@@ -4150,6 +4153,9 @@ def randomize():
         args[2] = TEST_SEED
     sleep(0.5)
     print 'You are using Beyond Chaos randomizer version "%s".' % VERSION
+    if BETA:
+        print "WARNING: This version is a beta! Things may not work correctly."
+
     if len(args) > 2:
         sourcefile = args[1].strip()
     else:

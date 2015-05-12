@@ -1806,6 +1806,18 @@ def get_npcs():
     return npcs
 
 
+def get_npc_palettes():
+    palettes = {}
+    for n in get_npcs():
+        g = n.graphics
+        if g not in palettes:
+            palettes[g] = set([])
+        palettes[g].add(n.palette)
+    for k, v in palettes.items():
+        palettes[k] = sorted(v)
+    return palettes
+
+
 def manage_character_appearance(preserve_graphics=False):
     characters = get_characters()
     wild = 'partyparty' in activated_codes
@@ -3931,6 +3943,7 @@ def manage_ancient():
     random.shuffle(restmusics)
     optional_chars = [c for c in characters if c.id not in starting
                       and c.id <= 13]
+    npc_palettes = get_npc_palettes()
     for l in restlocs:
         assert l.ancient_rank == 0
         l.music = restmusics.pop()
@@ -3960,8 +3973,10 @@ def manage_ancient():
         innsub.write(outfile)
         event_addr = (innsub.location - 0xa0000) & 0x3FFFF
         innkeeper = NPCBlock(pointer=None, locid=l.locid)
+        graphics = random.randint(14, 63)
+        palette = random.choice(npc_palettes[graphics])
         attributes = {
-            "graphics": 54, "palette": 1, "x": 52, "y": 16,
+            "graphics": graphics, "palette": palette, "x": 52, "y": 16,
             "event_addr": event_addr, "facing": 2,
             "unknown": 0, "misc0": 0, "graphics_index": 0}
         for key, value in attributes.items():
@@ -3983,8 +3998,10 @@ def manage_ancient():
             colsub.bytestring = [0x59, 0x04, 0x5C, 0xFE]
             colsub.write(outfile)
         shopkeeper = NPCBlock(pointer=None, locid=l.locid)
+        graphics = random.randint(14, 63)
+        palette = random.choice(npc_palettes[graphics])
         attributes = {
-            "graphics": 54, "palette": 1, "x": 39, "y": 11,
+            "graphics": graphics, "palette": palette, "x": 39, "y": 11,
             "event_addr": event_addr, "facing": 1,
             "unknown": 0, "misc0": 0, "graphics_index": 0}
         for key, value in attributes.items():

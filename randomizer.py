@@ -3973,7 +3973,7 @@ def manage_ancient():
         innsub.write(outfile)
         event_addr = (innsub.location - 0xa0000) & 0x3FFFF
         innkeeper = NPCBlock(pointer=None, locid=l.locid)
-        graphics = random.randint(14, 63)
+        graphics = random.randint(14, 62)
         palette = random.choice(npc_palettes[graphics])
         attributes = {
             "graphics": graphics, "palette": palette, "x": 52, "y": 16,
@@ -3998,7 +3998,7 @@ def manage_ancient():
             colsub.bytestring = [0x59, 0x04, 0x5C, 0xFE]
             colsub.write(outfile)
         shopkeeper = NPCBlock(pointer=None, locid=l.locid)
-        graphics = random.randint(14, 63)
+        graphics = random.randint(14, 62)
         palette = random.choice(npc_palettes[graphics])
         attributes = {
             "graphics": graphics, "palette": palette, "x": 39, "y": 11,

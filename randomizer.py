@@ -4256,7 +4256,7 @@ h   Organize rages by highest level first'''
     secret_codes['llg'] = "LOW LEVEL GAME MODE"
     secret_codes['playsitself'] = "AUTOBATTLE MODE"
     secret_codes['bingoboingo'] = "BINGO BONUS"
-    secret_codes['ancienttower'] = "CHAOS TOWER MODE"
+    secret_codes['ancientcave'] = "CHAOS TOWER MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -4287,11 +4287,6 @@ h   Organize rages by highest level first'''
 
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
-
-    if 'ancienttower' in activated_codes:
-        for flag in 'd':
-            if flag in flags:
-                flags.remove(flag)
 
     if 'w' in flags and 'o' not in flags:
         flags += 'o'
@@ -4330,7 +4325,7 @@ h   Organize rages by highest level first'''
     aispaces.append(FreeBlock(0xFFF47, 0xFFF47 + 87))
     aispaces.append(FreeBlock(0xFFFBE, 0xFFFBE + 66))
 
-    if 'd' in flags or 'ancienttower' in activated_codes:
+    if 'd' in flags or 'ancientcave' in activated_codes:
         # do this before treasure
         if 'm' in flags and 't' in flags and 'q' in flags:
             dirk = get_item(0)
@@ -4442,11 +4437,11 @@ h   Organize rages by highest level first'''
         for fset in fsets:
             fset.write_data(outfile)
 
-    if 'f' in flags or 'ancienttower' in activated_codes:
+    if 'f' in flags or 'ancientcave' in activated_codes:
         manage_dragons()
     reseed()
 
-    if 'd' in flags:
+    if 'd' in flags and 'ancientcave' not in activated_codes:
         # do this before treasure
         manage_tower()
     reseed()
@@ -4466,13 +4461,13 @@ h   Organize rages by highest level first'''
     if 't' in flags:
         # do this after hidden formations
         manage_treasure(monsters, shops=True)
-        if 'ancienttower' not in activated_codes:
+        if 'ancientcave' not in activated_codes:
             manage_chests()
             for fs in fsets:
                 # write new formation sets for MiaBs
                 fs.write_data(outfile)
 
-    if 'ancienttower' in activated_codes:
+    if 'ancientcave' in activated_codes:
         manage_ancient()
     reseed()
 

@@ -548,6 +548,31 @@ class RouteRouter:
                     segment = random.choice(candidates)
                 return segment
 
+    def get_needy_segment(self, randomize=True):
+        neediness_factor = lambda d: (float(len(d.keys())) /
+                                      sum([len(v) for v in d.values()]))
+
+        def neediness_factor(segment):
+            s = segment.entrances
+            denom = 0
+            numer = len(s.keys())
+            for v in s.values():
+                denom += len(v)
+            denom = denom - segment.numexits
+            if denom <= 0:
+                return 1000000
+            return float(numer) / denom
+
+        routes = list(self.routes.values())
+        segments = [s for r in routes for s in r if s.addable]
+        segments = sorted(segments, key=lambda s: neediness_factor(s))
+        if randomize:
+            while random.randint(1, 3) == 3:
+                if len(segments) > 2:
+                    segments = segments[:-1]
+        segment = segments[-1]
+        return segment
+
     def set_starting(self, starting):
         self.starting = []
         for a, b in starting:
@@ -745,18 +770,28 @@ def assign_maps(rrs, maps=None, new_entrances=None):
             location_entrances.append(e.reachable_entrances)
 
     used_entrances = set([en for rr in rrs for en in rr.entrances])
+
+    def validate(e):
+        if e.location is None:
+            return False
+
+        invalid = si.nochanges | si.removes
+        if (e.location.locid, e.entid) in invalid:
+            return False
+
+        return True
+
+    def validate2(c, entrances):
+        if not c.addable:
+            return False
+        locid = entrances[0].location.locid
+        if locid in c.entrances:
+            return False
+        return True
+
     for base_entrances in reversed(location_entrances):
         assert len(set([e.location.locid for e in base_entrances])) == 1
 
-        def validate(e):
-            if e.location is None:
-                return False
-
-            invalid = si.nochanges | si.removes
-            if (e.location.locid, e.entid) in invalid:
-                return False
-
-            return True
         base2_entrances = copy(base_entrances)
         base2_entrances = set([e for e in base2_entrances if validate(e)])
 
@@ -765,11 +800,11 @@ def assign_maps(rrs, maps=None, new_entrances=None):
             if not entrances:
                 break
 
-            random.shuffle(rrs)
-            for rr in rrs:
-                segment = rr.get_unfilled_segment()
-                if segment is not None:
-                    break
+            if len(entrances) > 2:
+                rr = random.choice(rrs)
+                segment = rr.get_needy_segment()
+            else:
+                segment = None
 
             entrances = sorted(entrances,
                                key=lambda e: (e.location.locid, e.entid))
@@ -778,15 +813,7 @@ def assign_maps(rrs, maps=None, new_entrances=None):
                     rr = random.choice(rrs)
                     route = random.choice(rr.routes)
 
-                    def validate(c):
-                        if not c.addable:
-                            return False
-                        locid = entrances[0].location.locid
-                        if locid in c.entrances:
-                            return False
-                        return True
-
-                    candidates = filter(validate, route)
+                    candidates = [c for c in route if validate2(c, entrances)]
                     if not candidates:
                         continue
                     else:
@@ -850,10 +877,6 @@ def get_new_entrances(filename):
             continue
         numreach = len(c.reachable_entrances)
         if num_entrances + numreach >= MAX_NEW_EXITS:
-            continue
-        if numreach == 1 and random.randint(1, 10) != 10:
-            continue
-        if numreach == 2 and random.randint(1, 2) != 2:
             continue
         if not ANCIENT:
             num_entrances += min(numreach, 5)

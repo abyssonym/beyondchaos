@@ -4079,6 +4079,7 @@ def manage_ancient():
                 setattr(magicite, key, value)
             l.npcs.append(magicite)
 
+    rankmax = max(locations, key=lambda l: l.ancient_rank).ancient_rank
     for l in locations:
         for e in l.entrances:
             e.dest |= 0x800
@@ -4105,12 +4106,15 @@ def manage_ancient():
         if rank == 0:
             l.attacks = 0
         else:
-            fset = get_fset(rank)
-            high = rank + random.randint(0, 1) + random.randint(0, 1)
-            low = rank - (random.randint(1, 2) + random.randint(0, 1))
-            high = min(high, 100) / 100.0
-            low = max(low, 0) / 100.0
+            def enrank(r):
+                if r < 0:
+                    return 0
+                elif r > rankmax:
+                    return rankmax
+                return (float(r**2) / (rankmax**2))
 
+            low = enrank(rank-2)
+            high = enrank(rank+1)
             high = int(round(high * len(enemy_formations)))
             low = int(round(low * len(enemy_formations)))
             while high - low < 4:
@@ -4118,9 +4122,10 @@ def manage_ancient():
                 low = max(low - 1, 0)
             candidates = enemy_formations[low:high]
             chosen_enemies = random.sample(candidates, 4)
+            chosen_enemies = sorted(chosen_enemies, key=lambda f: f.rank())
 
             if rank >= random.randint(10, 40) and random.randint(1, 3) == 3:
-                formrank = min(chosen_enemies, key=lambda c: c.rank()).rank()
+                formrank = chosen_enemies[0].rank()
                 candidates = [c for c in boss_formations if c.rank() >= formrank]
                 if candidates:
                     if rank < 75:
@@ -4138,6 +4143,7 @@ def manage_ancient():
                 else:
                     used_formations.append(c)
 
+            fset = get_fset(rank)
             fset.formids = [f.formid for f in chosen_enemies]
             fset.write_data(outfile)
 

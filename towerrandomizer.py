@@ -455,7 +455,7 @@ class CheckRoomSet:
         self.links = links
         return matrix
 
-    def add_rule(self, ruletype, mapid, parameters):
+    def add_rule(self, ruletype, mapid, parameters, reachable=True):
         assert type(parameters) in [list, tuple]
         if self.ruletype in [OPTIONAL, DIRECTIONAL]:
             raise Exception("Already set a rule.")
@@ -472,9 +472,9 @@ class CheckRoomSet:
                 assert len(parameters) == 2
             self.addable = False
         for p in parameters:
-            self.add_entrance(mapid, p)
+            self.add_entrance(mapid, p, reachable=reachable)
 
-    def add_entrance(self, mapid, entid):
+    def add_entrance(self, mapid, entid, reachable=True):
         # adding unreachable entrance = asserting it is reachable
         if mapid not in self.entrances:
             self.entrances[mapid] = []
@@ -488,11 +488,12 @@ class CheckRoomSet:
                 import pdb; pdb.set_trace()
         if entrance not in self.entrances[mapid]:
             self.entrances[mapid].append(entrance)
-        for e in entrance.reachable_entrances:
-            if (mapid, e.entid) in si.invalid:
-                continue
-            if e not in self.entrances[mapid]:
-                self.entrances[mapid].append(e)
+        if reachable:
+            for e in entrance.reachable_entrances:
+                if (mapid, e.entid) in si.invalid:
+                    continue
+                if e not in self.entrances[mapid]:
+                    self.entrances[mapid].append(e)
         return self.entrances[mapid]
 
     def remove_entrance(self, mapid, entid):
@@ -581,16 +582,22 @@ class RouteRouter:
             parties = range(3)
             random.shuffle(parties)
             assert len(parties) >= len(rule)
+            if rule == self.starting:
+                hard = self.hardstart
+            elif rule == self.ending:
+                hard = self.hardend
+            else:
+                hard = False
             for party, subrule in zip(parties, rule):
                 ruletype, mapid, parameters = subrule
                 crs = CheckRoomSet()
-                crs.add_rule(ruletype, mapid, parameters)
+                crs.add_rule(ruletype, mapid, parameters, reachable=not hard)
                 for p in parameters:
                     for (a, b), (c, d) in si.oneways:
                         if mapid == a and p == b:
                             candidates = filter(lambda crs: crs.addable, routes[party])
                             precrs = random.choice(candidates)
-                            precrs.add_rule(SIMPLE, c, [d])
+                            precrs.add_rule(SIMPLE, c, [d], reachable=not hard)
                 if (routes[party] and not routes[party][-1].addable and
                         not crs.addable):
                     crs2 = CheckRoomSet()
@@ -629,16 +636,28 @@ def parse_checkpoints():
         elif line[0] == '!':
             # set new dungeon matrix with given positions
             line = line[1:]
+            if line[0] == '!':
+                line = line[1:]
+                hardstart = True
+            else:
+                hardstart = False
             mappoints = line.split(',')
             mappoints = [tuple(m.split(':')) for m in mappoints]
             rr = RouteRouter(mappoints)
             rr.starter = tuple([(int(a), int(b)) for a, b in mappoints])
+            rr.hardstart = hardstart
             rrs.append(rr)
         elif line[0] == '$':
             line = line[1:]
+            if line[0] == '$':
+                line = line[1:]
+                hardend = True
+            else:
+                hardend = False
             mappoints = line.split(',')
             mappoints = [tuple(m.split(':')) for m in mappoints]
             rr.set_ending(mappoints)
+            rr.hardend = hardend
             rr = None
         elif line[0] == 'R':
             rank = int(line[1:])
@@ -834,6 +853,8 @@ def get_new_entrances(filename):
             continue
         if numreach == 1 and random.randint(1, 10) != 10:
             continue
+        if numreach == 2 and random.randint(1, 2) != 2:
+            continue
         if not ANCIENT:
             num_entrances += min(numreach, 5)
         else:
@@ -847,7 +868,7 @@ def get_new_entrances(filename):
 
 
 def rank_maps(rrs):
-    rrs = sorted(rrs, key=lambda rr: (337, 3) in rr.starter)
+    rrs = sorted(rrs, key=lambda rr: (334, 0) not in rr.starter)
     rank = 1
     done = set([])
     fringe = []
@@ -901,7 +922,7 @@ def rank_maps(rrs):
 
 def randomize_tower(filename, ancient=False):
     if ancient:
-        set_max_maps(1000, ancient=True)
+        set_max_maps(200, ancient=True)
     else:
         set_max_maps(47)
 
@@ -909,7 +930,6 @@ def randomize_tower(filename, ancient=False):
         locdict[l.locid] = l
 
     def make_matrices():
-        assert len(rrs) == 2
         for rr in rrs:
             assert len(rr.routes) == 3
             for route in rr.routes.values():
@@ -943,7 +963,7 @@ def randomize_tower(filename, ancient=False):
 
     usedlinks = set([])
     for rr in rrs:
-        for route in rr.routes.values():
+        for i, route in enumerate(rr.routes.values()):
             for sega, segb in zip(route, route[1:]):
                 connect_segments(sega, segb)
 

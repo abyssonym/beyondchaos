@@ -4058,7 +4058,9 @@ def manage_ancient():
                 esperrank += 1
             candidates = []
             while not candidates:
-                candidates = [e for e in espers if e.rank <= esperrank]
+                candidates = [e for e in espers if e.rank == esperrank]
+                if not candidates or random.randint(1, 3) == 3:
+                    candidates = [e for e in espers if e.rank <= esperrank]
                 if not candidates:
                     esperrank += 1
             esper = random.choice(candidates)

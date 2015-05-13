@@ -3743,6 +3743,11 @@ def manage_ancient():
         enable_mpoint_sub.set_location(0x25E38)
         enable_mpoint_sub.write(outfile)
 
+    shadow_leaving_sub = Substitution()
+    shadow_leaving_sub.bytestring = [0xEA] * 2
+    shadow_leaving_sub.set_location(0x2488A)
+    shadow_leaving_sub.write(outfile)
+
     characters = get_characters()
     gau = [c for c in characters if c.id == 11][0]
     if gau.battle_commands[1] in [0x11, None]:
@@ -3761,6 +3766,18 @@ def manage_ancient():
 
     fi.seek(0xa5e74)
     fi.write(chr(0))  # remove Terra's magitek
+
+    # decrease exp needed for level up
+    for level in xrange(49):
+        ratio = float(level) / 49.0
+        pointer = 0x2d8220 + (level*2)
+        fi.seek(pointer)
+        exp = read_multi(fi, length=2)
+        exp = (exp / 2.0)
+        exp = int(round(exp + (ratio*exp)))
+        fi.seek(pointer)
+        write_multi(fi, exp, length=2)
+
     fi.close()
 
     startsub = Substitution()

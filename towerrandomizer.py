@@ -808,8 +808,21 @@ def assign_maps(rrs, maps=None, new_entrances=None):
             return False
         return True
 
+    def get_appropriate_rr(locid):
+        candidates = []
+        for rr in rrs:
+            for e in rr.entrances:
+                if e.location.locid == locid:
+                    candidates.append(rr)
+                    break
+        if not candidates:
+            return random.choice(rrs)
+        else:
+            return max(candidates, key=lambda c: c.rank)
+
     for base_entrances in reversed(location_entrances):
         assert len(set([e.location.locid for e in base_entrances])) == 1
+        locid = base_entrances[0].location.locid
 
         base2_entrances = copy(base_entrances)
         base2_entrances = set([e for e in base2_entrances if validate(e)])
@@ -819,17 +832,19 @@ def assign_maps(rrs, maps=None, new_entrances=None):
             if not entrances:
                 break
 
-            if len(entrances) > 2:
+            if ANCIENT and locid in towerlocids and locid != 334:
+                rr = get_appropriate_rr(locid)
+            else:
                 rr = random.choice(rrs)
+
+            if len(entrances) > 2:
                 segment = rr.get_needy_segment()
             else:
                 segment = None
 
-            entrances = sorted(entrances,
-                               key=lambda e: (e.location.locid, e.entid))
+            entrances = sorted(entrances, key=lambda e: e.entid)
             if segment is None:
                 while True:
-                    rr = random.choice(rrs)
                     route = random.choice(rr.routes)
 
                     candidates = [c for c in route if validate2(c, entrances)]

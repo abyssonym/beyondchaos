@@ -3845,6 +3845,11 @@ def manage_ancient():
     set_airship_sub.set_location(0xAF53A)  # need first branch for button press
     set_airship_sub.write(outfile)
 
+    tower_msg_sub = Substitution()
+    tower_msg_sub.bytestring = [0xFD] * 6
+    tower_msg_sub.set_location(0xA03AD)
+    tower_msg_sub.write(outfile)
+
     from locationrandomizer import NPCBlock, EventBlock
     falcon = get_location(0xb)
     save_point = NPCBlock(pointer=None, locid=falcon.locid)
@@ -4124,10 +4129,14 @@ def manage_ancient():
         if not hasattr(l, "restrank") and 'f' not in flags:
             if not hasattr(l, "routerank"):
                 l.music = 58
-            elif l.routerank in [0, 1]:
+            elif l.routerank == 0:
                 l.music = 58
-            elif l.routerank in [2, 3]:
+            elif l.routerank == 1:
+                l.music = 57
+            elif l.routerank == 2:
                 l.music = 73
+            elif l.routerank == 3:
+                l.music = 75
             else:
                 raise Exception
 
@@ -4212,7 +4221,7 @@ def randomize():
     if len(args) > 2:
         sourcefile = args[1].strip()
     else:
-        sourcefile = raw_input("Please input the file path to your copy of "
+        sourcefile = raw_input("Please input the file name of your copy of "
                                "the FF3 US 1.0 rom:\n> ").strip()
         print
 

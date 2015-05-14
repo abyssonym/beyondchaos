@@ -80,11 +80,12 @@ class NPCBlock():
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
-        self.event_addr = read_multi(f, length=3)
-        self.palette = (self.event_addr & 0x1C0000) >> 18
-        self.unknown = (self.event_addr & 0xE00000) >> 21
-        self.event_addr = self.event_addr & 0x3FFFF
-        self.misc0 = ord(f.read(1))
+        value = read_multi(f, length=4)
+        self.palette = (value & 0x1C0000) >> 18
+        self.unknown = (value & 0x200000) >> 21
+        self.membit = (value & 0x1C00000) >> 22
+        self.memaddr = (value & 0xFE000000) >> 25
+        self.event_addr = value & 0x3FFFF
         self.x = ord(f.read(1))
         self.y = ord(f.read(1))
         self.graphics = ord(f.read(1))
@@ -95,9 +96,9 @@ class NPCBlock():
     def write_data(self, filename, nextpointer):
         f = open(filename, 'r+b')
         f.seek(nextpointer)
-        value = (self.unknown << 21) | self.event_addr | (self.palette << 18)
-        write_multi(f, value, length=3)
-        f.write(chr(self.misc0))
+        value = (self.event_addr | (self.palette << 18) | (self.unknown << 21)
+                 | (self.membit << 22) | (self.memaddr << 25))
+        write_multi(f, value, length=4)
         f.write(chr(self.x))
         f.write(chr(self.y))
         f.write(chr(self.graphics))

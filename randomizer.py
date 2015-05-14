@@ -3809,7 +3809,7 @@ def manage_ancient():
         "Alexandr", "Crusader", "Ragnarok", "Kirin", "ZoneSeek", "Carbunkl",
         "Phantom", "Sraphim", "Golem", "Unicorn", "Fenrir", "Starlet",
         "Phoenix"]
-    esperevents = dict([(n, i+0x36) for (i, n) in enumerate(esperevents)])
+    esperevents = dict([(n, i) for (i, n) in enumerate(esperevents)])
     espers = list(get_espers())
     for i in xrange(3):
         esperrank = 0
@@ -3818,8 +3818,16 @@ def manage_ancient():
         candidates = [e for e in espers if e.rank <= esperrank]
         esper = random.choice(candidates)
         espers.remove(esper)
-        event_value = esperevents[esper.name]
+        event_value = esperevents[esper.name] + 0x36
         startsub.bytestring += [0x86, event_value]
+    for i in xrange(27):
+        byte, bit = i / 8, i % 8
+        mem_addr = ((0x17+byte) << 3) | bit
+        startsub.bytestring += [0xD6, mem_addr]
+    for i in xrange(14):
+        byte, bit = i / 8, i % 8
+        mem_addr = ((0x1b+byte) << 3) | bit
+        startsub.bytestring += [0xD6, mem_addr]
     startsub.bytestring += [0xB2, 0x09, 0x21, 0x02,  # start on airship
                             ]
     startsub.bytestring.append(0xFE)
@@ -3843,7 +3851,8 @@ def manage_ancient():
     attributes = {
         "graphics": 0x6f, "palette": 6, "x": 7, "y": 8,
         "event_addr": 0x5eb3, "facing": 0x47,
-        "unknown": 4, "misc0": 0xcc, "graphics_index": 0x10}
+        "memaddr": 0, "membit": 0, "unknown": 0,
+        "graphics_index": 0x10}
     for key, value in attributes.items():
         setattr(save_point, key, value)
     save_point.set_id(len(falcon.npcs))
@@ -3910,11 +3919,13 @@ def manage_ancient():
     espersubs = {}
     pointer = 0xA5370
     for esper, event_value in esperevents.items():
+        byte, bit = event_value / 8, event_value % 8
+        mem_addr = ((0x17+byte) << 3) | bit
         espersub = Substitution()
         espersub.set_location(pointer)
         espersub.bytestring = [0xF4, 0x8D,
-                               0x86, event_value,
-                               #0xFE]
+                               0x86, event_value + 0x36,
+                               0xD7, mem_addr,
                                0x3E, None, 0xFE]
         espersubs[esper] = espersub
         pointer += espersub.size
@@ -4008,7 +4019,8 @@ def manage_ancient():
         attributes = {
             "graphics": graphics, "palette": palette, "x": 52, "y": 16,
             "event_addr": event_addr, "facing": 2,
-            "unknown": 0, "misc0": 0, "graphics_index": 0}
+            "memaddr": 0, "membit": 0, "unknown": 0,
+            "graphics_index": 0}
         for key, value in attributes.items():
             setattr(innkeeper, key, value)
         l.npcs.append(innkeeper)
@@ -4033,7 +4045,8 @@ def manage_ancient():
         attributes = {
             "graphics": graphics, "palette": palette, "x": 39, "y": 11,
             "event_addr": event_addr, "facing": 1,
-            "unknown": 0, "misc0": 0, "graphics_index": 0}
+            "memaddr": 0, "membit": 0, "unknown": 0,
+            "graphics_index": 0}
         for key, value in attributes.items():
             setattr(shopkeeper, key, value)
         l.npcs.append(shopkeeper)
@@ -4042,11 +4055,14 @@ def manage_ancient():
             chosen = random.choice(optional_chars)
             optional_chars.remove(chosen)
             assert chosen.palette is not None
+            byte, bit = chosen.id / 8, chosen.id % 8
+            mem_addr = ((0x1b+byte) << 3) | bit
             allysub = Substitution()
             allysub.set_location(pointer)
             allysub.bytestring = [0xF4, 0xD0,
                                   0xD4, 0xF0 | chosen.id,
                                   0xD4, 0xE0 | chosen.id,
+                                  0xD7, mem_addr,
                                   0x3E, 0x10 | len(l.npcs), 0xFE]
             allysub.write(outfile)
             pointer += len(allysub.bytestring)
@@ -4056,7 +4072,8 @@ def manage_ancient():
                 "graphics": chosen.id, "palette": chosen.palette,
                 "x": 54, "y": 18,
                 "event_addr": event_addr, "facing": 2,
-                "unknown": 0, "misc0": 0, "graphics_index": 0}
+                "memaddr": byte + 0x1b, "membit": bit, "unknown": 0,
+                "graphics_index": 0}
             for key, value in attributes.items():
                 setattr(ally, key, value)
             l.npcs.append(ally)
@@ -4085,11 +4102,14 @@ def manage_ancient():
             espersub.bytestring[index] = 0x10 | len(l.npcs)
             espersub.write(outfile)
             event_addr = (espersub.location - 0xa0000) & 0x3FFFF
+            event_value = esperevents[esper.name]
+            byte, bit = event_value / 8, event_value % 8
             magicite = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
                 "graphics": 0x5B, "palette": 2, "x": 44+i, "y": 16,
                 "event_addr": event_addr, "facing": 4 | 0x50,
-                "unknown": 0, "misc0": 0, "graphics_index": 0}
+                "memaddr": byte + 0x17, "membit": bit, "unknown": 0,
+                "graphics_index": 0}
             for key, value in attributes.items():
                 setattr(magicite, key, value)
             l.npcs.append(magicite)

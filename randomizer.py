@@ -3888,11 +3888,9 @@ def manage_ancient():
             return False
         if formation.battle_event:
             return False
-        if any("Phunbaba" in m.name for m in formation.present_enemies):
-            return False
         if formation.get_music() == 0:
             return False
-        if formation.formid in [0x1d4, 0x1d5, 0x1d6, 0x1e4,
+        if formation.formid in [0x1a4, 0x1d4, 0x1d5, 0x1d6, 0x1e4,
                                 0x1e2, 0x1ff, 0x1bd, 0x1be]:
             return False
         return True

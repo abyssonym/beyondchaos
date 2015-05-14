@@ -4103,6 +4103,16 @@ def manage_ancient():
         rank = l.ancient_rank
         l.name_id = rank
 
+        if not hasattr(l, "restrank") and 'f' not in flags:
+            if not hasattr(l, "routerank"):
+                l.music = 58
+            elif l.routerank in [0, 1]:
+                l.music = 58
+            elif l.routerank in [2, 3]:
+                l.music = 73
+            else:
+                raise Exception
+
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):
             if rank == 0:
                 low = random.randint(0, 200)

@@ -535,6 +535,14 @@ class RouteRouter:
                     entrances |= set(zone)
         return entrances
 
+    @property
+    def locations(self):
+        locations = set([])
+        for e in self.entrances:
+            loc = get_appropriate_location(e.location)
+            locations.add(loc)
+        return locations
+
     def get_unfilled_segment(self):
         routes = list(self.routes.values())
         random.shuffle(routes)
@@ -670,6 +678,7 @@ def parse_checkpoints():
             rr = RouteRouter(mappoints)
             rr.starter = tuple([(int(a), int(b)) for a, b in mappoints])
             rr.hardstart = hardstart
+            rr.rank = len(rrs)
             rrs.append(rr)
         elif line[0] == '$':
             line = line[1:]
@@ -891,6 +900,12 @@ def get_new_entrances(filename):
 
 def rank_maps(rrs):
     rrs = sorted(rrs, key=lambda rr: (334, 0) not in rr.starter)
+    for rr in rrs:
+        for l in rr.locations:
+            if not hasattr(l, "routerank"):
+                l.routerank = rr.rank
+            else:
+                l.routerank = min(l.routerank, rr.rank)
     rank = 1
     done = set([])
     fringe = []

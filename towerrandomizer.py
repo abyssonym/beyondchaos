@@ -336,6 +336,10 @@ class CheckRoomSet:
         taken = []
         pairs = []
         unwed = []
+
+        def distance(c1, c2):
+            return abs(c1.x - c2.x) + abs(c1.y - c2.y)
+
         for e in list(musts):
             if e in taken:
                 continue
@@ -343,12 +347,17 @@ class CheckRoomSet:
             strict = lambda c: (c not in taken and
                                 c.location.locid != e.location.locid)
             loose = lambda c: c not in taken and c != e
-            preferences = [(musts, strict), (musts, loose),
-                           (backups, strict), (backups, loose)]
+            preferences = [(musts, strict), (backups, strict),
+                           (musts, loose), (backups, loose)]
             for candidates, evaluator in preferences:
                 candidates = filter(evaluator, candidates)
                 if candidates:
-                    c = random.choice(candidates)
+                    candlocs = set([c.location.locid for c in candidates])
+                    elocs = set([e.location.locid])
+                    if candlocs == elocs:
+                        c = max(candidates, key=lambda c: distance(e, c))
+                    else:
+                        c = random.choice(candidates)
                     taken.append(e)
                     taken.append(c)
                     pairs.append((e, c))
@@ -413,6 +422,7 @@ class CheckRoomSet:
                         continue
                     front = [c for c in candidates if c.location.locid == l]
                     c1 = random.choice(front)
+
                     back = [c for c in candidates if c.location.locid in done]
                     if not back:
                         back = [c for c in candidates if c not in front
@@ -420,6 +430,7 @@ class CheckRoomSet:
                     if not back:
                         back = [c for c in candidates if c not in front]
                     c2 = random.choice(back)
+
                     done.extend([l, c2.location.locid])
                     candidates.remove(c1)
                     candidates.remove(c2)

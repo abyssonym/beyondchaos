@@ -26,6 +26,7 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0xe7, 0xe9, 0xea,  # opera with dancers?
              0x150, 0x164, 0x165, 0x19a, 0x19e]
 PROTECTED += range(359, 371)  # Fanatics Tower
+PROTECTED += range(382, 389)  # Sealed Gate
 
 
 def set_max_maps(num, ancient=False):

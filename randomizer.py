@@ -3910,6 +3910,8 @@ def manage_ancient():
         if not hasattr(l, "ancient_rank"):
             l.entrance_set.entrances = []
             l.entrance_set.longentrances = []
+            l.chests = []
+            l.attacks = 0
             l.write_data(outfile)
 
     espersubs = {}

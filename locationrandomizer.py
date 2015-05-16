@@ -340,6 +340,15 @@ class Location():
     def entrances(self):
         return self.entrance_set.entrances
 
+    @property
+    def reachable_locations(self):
+        locs = []
+        for e in self.entrances:
+            loc = e.destination
+            if loc not in locs:
+                locs.append(loc)
+        return sorted(locs, key=lambda l: l.locid)
+
     def set_entrance_set(self, eset):
         self.entrance_set = eset
         eset.location = self
@@ -787,7 +796,9 @@ class Entrance():
             entid = self.entid
         else:
             entid = None
-        return "<%x %s: %s %s>" % (self.location.locid, entid, self.x, self.y)
+        destid = self.dest & 0x1FF
+        return "<%x %s: %x %s %s>" % (self.location.locid, entid, destid,
+                                      self.x, self.y)
 
     def copy(self, entrance):
         for attribute in ["x", "y", "dest", "destx", "desty"]:

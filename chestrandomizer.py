@@ -282,7 +282,7 @@ class ChestBlock:
         return False
 
     def mutate_contents(self, guideline=None, monster=None,
-                        guarantee_miab_treasure=False):
+                        guarantee_miab_treasure=False, enemy_limit=None):
         global used_formations
 
         if self.do_not_mutate and self.contents is not None:
@@ -345,9 +345,16 @@ class ChestBlock:
             candidates = [c for c in candidates if c not in used_formations]
             candidates = [c for c in candidates
                           if c.formid not in banned_formids]
+
+            if enemy_limit is not None:
+                candidates = [f for f in candidates if f.rank() <= enemy_limit]
+
             if not candidates:
                 candidates = (formations +
                               get_orphaned_formations() + get_extra_miabs(0))
+                if enemy_limit is not None:
+                    candidates = [f for f in candidates
+                                  if f.rank() <= enemy_limit]
 
             candidates = sorted(candidates, key=lambda f: f.rank())
             if orphaned_formations:

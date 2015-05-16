@@ -3868,15 +3868,6 @@ def manage_ancient():
         setattr(save_event, key, value)
     falcon.events.append(save_event)
 
-    '''
-    summit = get_location(334)
-    end_event = EventBlock(pointer=None, locid=summit.locid)
-    attributes = {"event_addr": 0x135b, "x": 22, "y": 15}
-    for key, value in attributes.items():
-        setattr(end_event, key, value)
-    summit.events.append(end_event)
-    '''
-
     pilot = random.choice([s for s in starting if s < 12])
     pilot_sub = Substitution()
     pilot_sub.bytestring = [0x3D, pilot, 0x45,
@@ -4140,22 +4131,6 @@ def manage_ancient():
             else:
                 raise Exception
 
-        if not (hasattr(l, "secret_treasure") and l.secret_treasure):
-            if rank == 0:
-                low = random.randint(0, 200)
-                high = random.randint(low, 1000)
-            else:
-                low = rank * 3
-                high = low * 3
-                while random.choice([True, False, False]):
-                    high = high * 1.25
-            if rank < 40:
-                monster = False
-            else:
-                monster = None
-            l.unlock_chests(int(low), int(high), monster=monster,
-                            guarantee_miab_treasure=True)
-
         l.setid = rank
         if rank == 0:
             l.attacks = 0
@@ -4165,7 +4140,7 @@ def manage_ancient():
                     return 0
                 elif r > rankmax:
                     return rankmax
-                return (float(r**2) / (rankmax**2))
+                return (float(r**1.5) / (rankmax**1.5))
 
             low = enrank(rank-2)
             high = enrank(rank+1)
@@ -4178,7 +4153,9 @@ def manage_ancient():
             chosen_enemies = random.sample(candidates, 4)
             chosen_enemies = sorted(chosen_enemies, key=lambda f: f.rank())
 
-            if rank >= random.randint(10, 40) and random.randint(1, 3) == 3:
+            if rank >= 90 or (
+                    rank >= random.randint(10, 75)
+                    and random.randint(1, 3) == 3):
                 formrank = chosen_enemies[0].rank()
                 candidates = [c for c in boss_formations if c.rank() >= formrank]
                 if candidates:
@@ -4201,7 +4178,31 @@ def manage_ancient():
             fset.formids = [f.formid for f in chosen_enemies]
             fset.write_data(outfile)
 
+        if not (hasattr(l, "secret_treasure") and l.secret_treasure):
+            if rank == 0:
+                low = random.randint(0, 200)
+                high = random.randint(low, 1000)
+            else:
+                low = rank * 3
+                high = low * 3
+                while random.choice([True, False, False]):
+                    high = high * 1.25
+            if rank < 40:
+                monster = False
+            else:
+                monster = None
+            if 0 < rank < 75:
+                enemy_limit = sorted([f.rank() for f in fset.formations])[-2]
+                enemy_limit *= 1.5
+            else:
+                enemy_limit = None
+            l.unlock_chests(int(low), int(high), monster=monster,
+                            guarantee_miab_treasure=True,
+                            enemy_limit=enemy_limit)
+
         l.write_data(outfile)
+        entranks = [e.destination.ancient_rank for e in l.entrances if hasattr(e.destination, "ancient_rank")]
+        s = l.chest_contents.strip()
 
 
 def randomize():

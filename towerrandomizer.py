@@ -204,6 +204,7 @@ def get_appropriate_location(loc, flair=None):
         u = Location(unused_ids.pop())
         u.copy(loc)
         u.modname = loc.altname
+        u.modid = loc.locid
         u.npcs = []
         u.events = []
         add_location_map("Final Dungeon", u.locid, strict=not ANCIENT)
@@ -375,8 +376,12 @@ class CheckRoomSet:
         return float(num_maps) / num_entrances
 
     @property
+    def locations(self):
+        return [get_location(m) for m in self.maps]
+
+    @property
     def maps(self):
-        return self.entrances.keys()
+        return sorted(self.entrances.keys())
 
     @property
     def sorted_entrances(self):
@@ -536,6 +541,41 @@ class RouteRouter:
         for route in self.routes.values():
             for segment in route:
                 segment.load_backup()
+
+    def rank_maps(self):
+        def get_true_entrance(e):
+            loc = get_location(e.location.locid)
+            ents = [e2 for e2 in loc.entrances if (e2.x, e2.y) == (e.x, e.y)]
+            if ents:
+                assert len(ents) == 1
+                return ents[0]
+
+        startmaps = sorted(set([m for (m, e) in self.starter]))
+        routes = [self.routes[key] for key in sorted(self.routes)]
+        ordering = [get_location(s) for s in startmaps]
+        for i, segments in enumerate(zip(*routes)):
+            locations = []
+            for segment in segments:
+                sublocs = segment.locations
+                for l in sublocs:
+                    if l.locid in towerlocids:
+                        locations.append(l)
+                    else:
+                        for l2 in get_locations():
+                            if hasattr(l2, "modid") and l2.modid == l.locid:
+                                locations.append(l2)
+                                break
+            while True:
+                reachable = [r for l in ordering
+                             for r in l.reachable_locations]
+                reachable = [r for r in reachable
+                             if r in locations and r not in ordering]
+                if not reachable:
+                    break
+                reachable = sorted(reachable, key=lambda r: r.locid)
+                random.shuffle(reachable)
+                ordering.extend(reachable)
+        return ordering
 
     @property
     def entrances(self):
@@ -925,62 +965,44 @@ def get_new_entrances(filename):
 
 
 def rank_maps(rrs):
-    rrs = sorted(rrs, key=lambda rr: (334, 0) not in rr.starter)
+    rrs = sorted(rrs, key=lambda rr: rr.rank)
+    rrlocs = []
+    ordering = []
     for rr in rrs:
+        ordering.extend(rr.rank_maps())
         for l in rr.locations:
+            rrlocs.append(l)
             if not hasattr(l, "routerank"):
                 l.routerank = rr.rank
             else:
                 l.routerank = min(l.routerank, rr.rank)
-    rank = 1
-    done = set([])
-    fringe = []
-    rr = rrs[0]
-    startents = []
-    for mapid, entid in rr.starter:
-        for route in rr.routes.values():
-            beginning = route[0].entrances
-            if mapid in beginning:
-                ents = beginning[mapid]
-                ents = [e for e in ents if e.entid == entid]
-                if len(ents) == 1:
-                    ent = ents[0]
-                    ents = [e for e in ent.location.entrances
-                            if e.x == ent.x and e.y == ent.y]
-                    startents.append(ents[0])
-    assert len(startents) == 3
 
-    def expand_fringe(fringe):
-        candidates = []
-        for location in fringe:
-            for ent in location.entrances:
-                if ent.destination not in candidates + fringe:
-                    candidates.append(ent.destination)
-        fringe.extend(candidates)
-        fringe = sorted(set(fringe), key=lambda l: l.locid)
-        return fringe
+    for i, l in enumerate(ordering):
+        l.ancient_rank = (i+1) * 1000
 
-    fringe += [get_location(e.dest & 0x1FF) for e in startents]
     while True:
-        candidates = [c for c in fringe if c not in done]
-        if not candidates:
-            size = len(fringe)
-            fringe = expand_fringe(fringe)
-            if len(fringe) > size:
+        if all([hasattr(l, "ancient_rank") for l in rrlocs]):
+            break
+        for l in rrlocs:
+            if hasattr(l, "ancient_rank"):
                 continue
-            elif len(fringe) == size:
-                break
-        chosen = random.choice(candidates)
-        if ((hasattr(chosen, "secret_treasure") and chosen.secret_treasure) or
-                hasattr(chosen, "restrank")):
-            chosen.ancient_rank = 0
-            done.add(chosen)
-            continue
-        chosen.ancient_rank = rank
-        rank += 1
-        done.add(chosen)
+            reachable = l.reachable_locations
+            reachable = [r for r in reachable if hasattr(r, "ancient_rank")]
+            if reachable:
+                reachable = sorted(reachable, key=lambda r: r.ancient_rank)
+                l.ancient_rank = reachable[0].ancient_rank + 1
 
+    assert set(ordering) < set(rrlocs)
+    for l in rrlocs:
+        if ((hasattr(l, "secret_treasure") and l.secret_treasure) or
+                hasattr(l, "restrank")):
+            l.ancient_rank = 0
     get_location(334).ancient_rank = 0
+
+    rerank = [l for l in rrlocs if l.ancient_rank > 0]
+    rerank = sorted(rerank, key=lambda l: l.ancient_rank)
+    for i, l in enumerate(rerank):
+        l.ancient_rank = i+1
 
 
 def randomize_tower(filename, ancient=False):

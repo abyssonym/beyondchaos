@@ -4128,7 +4128,7 @@ def manage_ancient():
                 l.music = 57
             elif l.routerank == 2:
                 l.music = 73
-            elif l.routerank == 3:
+            elif l.routerank >= 3:
                 l.music = 75
             else:
                 raise Exception
@@ -4142,7 +4142,10 @@ def manage_ancient():
                     return 0
                 elif r > rankmax:
                     return rankmax
-                return (float(r**1.5) / (rankmax**1.5))
+                factor = min(r/50.0, 1.0)
+                ratio = float(r) / rankmax
+                value = (factor*ratio) + ((1-factor)*(ratio**2))
+                return value
 
             low = enrank(rank-2)
             high = enrank(rank+1)
@@ -4153,6 +4156,7 @@ def manage_ancient():
                 low = max(low - 1, 0)
             candidates = enemy_formations[low:high]
             chosen_enemies = random.sample(candidates, 4)
+
             chosen_enemies = sorted(chosen_enemies, key=lambda f: f.rank())
 
             if rank >= 90 or (
@@ -4178,6 +4182,13 @@ def manage_ancient():
 
             fset = get_fset(rank)
             fset.formids = [f.formid for f in chosen_enemies]
+            if l.locid == 410:
+                print
+                print "INFERNO"
+            elif l.locid == 291:
+                print
+                print "GUARDIAN"
+            print fset
             fset.write_data(outfile)
 
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):

@@ -375,13 +375,18 @@ class Route:
         for segment in self.segments:
             segment.determine_need()
 
-    def check_links(self):
+    @property
+    def consolidated_links(self):
         consolidated = []
         for segment in self.segments:
-            segment.check_links()
             consolidated.extend(segment.consolidated_links)
+        return consolidated
+
+    def check_links(self):
+        for segment in self.segments:
+            segment.check_links()
         linked = []
-        for a, b in consolidated:
+        for a, b in self.consolidated_links:
             linked.append(a)
             linked.append(b)
         assert len(linked) == len(set(linked))
@@ -504,6 +509,8 @@ def assign_maps(routes):
         random.shuffle(best_clusters)
         done_maps, done_clusters = set([]), set([])
         for cluster in best_clusters:
+            if cluster.locid in done_maps:
+                continue
             chosen = None
             for route in routes:
                 for segment in route.segments:
@@ -534,10 +541,24 @@ def assign_maps(routes):
             if (cluster.locid in done_maps and len(done_maps) >= max_new_maps
                     and get_location(cluster.locid).longentrances):
                 continue
+        rank = None
+        if cluster.locid in done_maps:
+            for route in routes:
+                for segment in route.segments:
+                    for inter in segment.intersegments:
+                        for c2 in inter.clusters:
+                            if c2.locid == cluster.locid:
+                                temp = route.segments.index(segment)
+                                if rank is None:
+                                    rank = temp
+                                else:
+                                    assert rank == temp
         if len(cluster.entrances) == 1:
             candidates = []
             for route in routes:
-                for segment in route.segments:
+                for (i, segment) in enumerate(route.segments):
+                    if rank is not None and i != rank:
+                        continue
                     for inter in segment.intersegments:
                         if inter.need < 0:
                             candidates.append(inter)
@@ -548,7 +569,10 @@ def assign_maps(routes):
                 done_clusters.add(cluster.clusterid)
         elif len(cluster.entrances) >= 2:
             route = random.choice(routes)
-            segment = random.choice(route.segments)
+            if rank is not None:
+                segment = route.segments[rank]
+            else:
+                segment = random.choice(route.segments)
             chosen = random.choice(segment.intersegments)
             chosen.add_cluster(cluster, need=True)
             done_maps.add(cluster.locid)

@@ -341,6 +341,10 @@ class Location():
         return self.entrance_set.entrances
 
     @property
+    def longentrances(self):
+        return self.entrance_set.longentrances
+
+    @property
     def reachable_locations(self):
         locs = []
         for e in self.entrances:
@@ -711,7 +715,7 @@ class Location():
 
 
 class Entrance():
-    def __init__(self, pointer):
+    def __init__(self, pointer=None):
         self.pointer = pointer
         self.entid = None
 
@@ -792,16 +796,17 @@ class Entrance():
         f.close()
 
     def __repr__(self):
-        if hasattr(self, "entid"):
+        if hasattr(self, "entid") and self.entid is not None:
             entid = self.entid
         else:
-            entid = None
+            entid = "?"
         destid = self.dest & 0x1FF
-        return "<%x %s: %x %s %s>" % (self.location.locid, entid, destid,
+        return "<%s %s: %s %s %s>" % (self.location.locid, entid, destid,
                                       self.x, self.y)
 
     def copy(self, entrance):
-        for attribute in ["x", "y", "dest", "destx", "desty"]:
+        for attribute in ["x", "y", "dest", "destx", "desty",
+                          "location", "entid"]:
             setattr(self, attribute, getattr(entrance, attribute))
 
 

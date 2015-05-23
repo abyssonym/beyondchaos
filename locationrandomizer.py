@@ -812,8 +812,7 @@ class Entrance():
         else:
             entid = "?"
         destid = self.dest & 0x1FF
-        return "<%s %s: %s %s %s>" % (self.location.locid, entid, destid,
-                                      self.x, self.y)
+        return "<%s %s: %s %s>" % (self.location.locid, entid, self.x, self.y)
 
     def copy(self, entrance):
         for attribute in ["x", "y", "dest", "destx", "desty",

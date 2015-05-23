@@ -7,6 +7,7 @@ from locationrandomizer import (get_locations, get_location, Location,
                                 add_location_map, update_locations)
 from formationrandomizer import get_fsets, get_formations
 from chestrandomizer import ChestBlock
+from itertools import izip_longest
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 1000
@@ -145,7 +146,10 @@ def remap_maps(routes):
             if mirror:
                 dest = mirror.dest & 0xFE00
                 destx, desty = mirror.destx, mirror.desty
-            else:
+                if abs(destx - destent.x) + abs(desty - destent.y) > 3:
+                    mirror = None
+
+            if not mirror:
                 dest, destx, desty = 0, destent.x, destent.y
             dest &= 0x3DFF
 
@@ -178,7 +182,35 @@ def remap_maps(routes):
             oldloc = get_location(loc.locid)
             oldloc.entrance_set.entrances = loc.entrances
             oldloc.ancient_rank = loc.ancient_rank
+            oldloc.copied = oldloc.locid
             newlocations[i] = oldloc
+
+    ranked_clusters = []
+    for n in range(len(routes[0].segments)):
+        rankedcsets = [route.segments[n].ranked_clusters for route in routes]
+        for tricluster in izip_longest(*rankedcsets, fillvalue=None):
+            tricluster = list(tricluster)
+            random.shuffle(tricluster)
+            for cluster in tricluster:
+                if cluster is None:
+                    continue
+                if cluster.locid not in ranked_clusters:
+                    ranked_clusters.append(cluster)
+
+    ranked_locations = []
+    for cluster in ranked_clusters:
+        locid, clusterid = cluster.locid, cluster.clusterid
+        newlocid = locexchange[locid, clusterid]
+        newloc = [l for l in newlocations if l.locid == newlocid][0]
+        if newloc not in ranked_locations:
+            ranked_locations.append(newloc)
+    assert len(set(ranked_locations)) == len(set(newlocations))
+
+    ranked_locations = [l for l in ranked_locations
+                        if not hasattr(l, "restrank")]
+    for i, loc in enumerate(ranked_locations):
+        loc.ancient_rank = i
+        loc.make_tower_basic()
 
     return newlocations, unused_maps
 
@@ -292,6 +324,37 @@ class Segment:
         self.oneway_entrances = []
 
     @property
+    def ranked_clusters(self):
+        startclust = self.clusters[0]
+        done = set([startclust])
+        ranked = []
+        if startclust not in ranked:
+            ranked.append(startclust)
+        while True:
+            ents = [e for c in done for e in c.entrances]
+            relevant_links = [(a, b) for (a, b) in self.consolidated_links
+                              if a in ents or b in ents]
+            new_ents = set([])
+            for a, b in relevant_links:
+                if a not in ents:
+                    new_ents.add(a)
+                if b not in ents:
+                    new_ents.add(b)
+            if not new_ents:
+                break
+            newclusts = [c for c in self.consolidated_clusters
+                         if set(c.entrances) & new_ents]
+            done |= set(newclusts)
+            random.shuffle(newclusts)
+            for c in newclusts:
+                if c not in ranked:
+                    ranked.append(c)
+
+        if set(self.consolidated_clusters) != set(ranked):
+            import pdb; pdb.set_trace()
+        return ranked
+
+    @property
     def consolidated_links(self):
         links = list(self.links)
         for inter in self.intersegments:
@@ -348,13 +411,23 @@ class Segment:
                     raise Exception("Routing error.")
                 links.append((aent, excands[0]))
                 a.entering, a.exiting = True, True
-                if previnter and not (previnter.empty or inter.empty):
-                    c = previnter.get_external_candidates(num=1)[0]
-                    d = inter.get_external_candidates(num=1)[0]
-                    links.append((c, d))
+                if previnter and not previnter.empty:
+                    # TODO: Sometimes this fails
+                    for j in range(i, len(self.intersegments)):
+                        nextinter = self.intersegments[j]
+                        if nextinter.empty:
+                            continue
+                        c = previnter.get_external_candidates(num=1)[0]
+                        d = nextinter.get_external_candidates(num=1)[0]
+                        links.append((c, d))
+                        break
+                    else:
+                        raise Exception("No exit segment available.")
             elif not inter.empty:
                 if not b.singleton:
                     excands = inter.get_external_candidates(num=2)
+                    if excands is None:
+                        raise Exception("No exit segment available. (2)")
                     random.shuffle(excands)
                     links.append((bent, excands[1]))
                     b.entering = True
@@ -402,7 +475,13 @@ class Segment:
         entrances = list(self.consolidated_entrances)
         seen = []
         for cluster, inter in zip(self.clusters, self.intersegments):
-            extra = inter.fill_out()
+            if cluster.locid == 334 and 11 in cluster.entids:
+                additionals = [e for e in cluster.entrances
+                               if e not in self.consolidated_entrances]
+                assert len(additionals) == 1
+                extra = inter.fill_out(additionals[0])
+            else:
+                extra = inter.fill_out()
             seen.extend([e for e in cluster.entrances if e in entrances])
             for c in inter.clusters:
                 seen.extend([e for e in c.entrances if e in entrances])
@@ -443,7 +522,8 @@ class Segment:
             if len(cluster.entrances) == 1:
                 indexes = [i for i in [index-1, index]
                            if 0 <= i < len(self.intersegments)]
-                self.intersegments[random.choice(indexes)].need += 1
+                for i in indexes:
+                    self.intersegments[i].need += 1
 
     def __repr__(self):
         display = ""
@@ -558,7 +638,7 @@ class InterSegment(Segment):
                 break
         self.links = links
 
-    def fill_out(self):
+    def fill_out(self, additional=None):
         linked = self.linked_entrances
         links = []
         unlinked = []
@@ -575,6 +655,9 @@ class InterSegment(Segment):
                     if diff < 3:
                         remaining = 3 - diff
                         unlinked.extend(entrances[:remaining])
+
+        if additional:
+            unlinked.append(additional)
 
         if not unlinked:
             return
@@ -609,6 +692,13 @@ class InterSegment(Segment):
 class Route:
     def __init__(self, segments):
         self.segments = segments
+
+    @property
+    def ranked_clusters(self):
+        ranked = []
+        for s in self.segments:
+            ranked.extend(s.ranked_clusters)
+        return ranked
 
     def determine_need(self):
         for segment in self.segments:
@@ -811,6 +901,13 @@ def assign_maps(routes):
         if cluster.locid in done_maps:
             for route in routes:
                 for segment in route.segments:
+                    for c1 in segment.clusters:
+                        if c1.locid == cluster.locid:
+                            temp = route.segments.index(segment)
+                            if rank is None:
+                                rank = temp
+                            else:
+                                rank = min(rank, temp)
                     for inter in segment.intersegments:
                         for c2 in inter.clusters:
                             if c2.locid == cluster.locid:
@@ -818,7 +915,7 @@ def assign_maps(routes):
                                 if rank is None:
                                     rank = temp
                                 else:
-                                    assert rank == temp
+                                    rank = min(rank, temp)
         if len(cluster.entrances) == 1:
             candidates = []
             for route in routes:

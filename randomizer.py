@@ -4183,12 +4183,9 @@ def manage_ancient():
             fset = get_fset(rank)
             fset.formids = [f.formid for f in chosen_enemies]
             if l.locid == 410:
-                print
                 print "INFERNO"
             elif l.locid == 291:
-                print
                 print "GUARDIAN"
-            print fset
             fset.write_data(outfile)
 
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):
@@ -4214,7 +4211,12 @@ def manage_ancient():
                             enemy_limit=enemy_limit)
 
         l.write_data(outfile)
-        entranks = [e.destination.ancient_rank for e in l.entrances if hasattr(e.destination, "ancient_rank")]
+        entranks = [e.destination.ancient_rank for e in l.entrances
+                    if hasattr(e.destination, "ancient_rank")]
+        print l.locid, l.ancient_rank, ":",
+        print " ".join(["%s" % e for e in sorted(entranks)])
+        print l.fset
+        print
         s = l.chest_contents.strip()
 
 

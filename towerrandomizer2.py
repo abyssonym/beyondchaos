@@ -134,6 +134,13 @@ class Segment:
             links.extend(inter.links)
         return links
 
+    @property
+    def consolidated_clusters(self):
+        clusters = list(self.clusters)
+        for inter in self.intersegments:
+            clusters.extend(inter.clusters)
+        return clusters
+
     def check_links(self):
         links = self.consolidated_links
         linked_entrances = []
@@ -366,6 +373,15 @@ class InterSegment(Segment):
                 break
         self.links = links
 
+    def fill_out(self):
+        linked = self.linked_entrances
+        unlinked = []
+        for cluster in self.clusters:
+            for e in self.entrances:
+                if e not in linked:
+                    unlinked.append(e)
+        pass
+
 
 class Route:
     def __init__(self, segments):
@@ -374,6 +390,18 @@ class Route:
     def determine_need(self):
         for segment in self.segments:
             segment.determine_need()
+
+    def generate_locations(self):
+        links = self.consolidated_links
+        clusters = sorted(set(self.consolidated_clusters),
+                          key=lambda c: c.lusterid)
+
+    @property
+    def consolidated_clusters(self):
+        consolidated = []
+        for segment in self.segments:
+            consolidated.extend(segment.consolidated_clusters)
+        return consolidated
 
     @property
     def consolidated_links(self):
@@ -599,6 +627,7 @@ if __name__ == "__main__":
     assign_maps(routes)
     for route in routes:
         route.check_links()
+    for route in routes:
         print route
         print
         print

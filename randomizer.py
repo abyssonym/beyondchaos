@@ -4112,7 +4112,7 @@ def manage_ancient():
                 setattr(magicite, key, value)
             l.npcs.append(magicite)
 
-    rankmax = max(locations, key=lambda l: l.ancient_rank).ancient_rank
+    maxrank = max(locations, key=lambda l: l.ancient_rank).ancient_rank
     for l in locations:
         for e in l.entrances:
             e.dest |= 0x800
@@ -4138,19 +4138,21 @@ def manage_ancient():
         l.setid = rank
         if rank == 0:
             l.attacks = 0
+        elif rank > 0xFF:
+            l.setid = random.randint(0xF0, 0xFF)
         else:
             def enrank(r):
                 if r < 0:
                     return 0
-                elif r > rankmax:
-                    return rankmax
+                elif r > maxrank:
+                    return maxrank
                 factor = min(r/50.0, 1.0)
-                ratio = float(r) / rankmax
+                ratio = float(r) / maxrank
                 value = (factor*ratio) + ((1-factor)*(ratio**2))
                 return value
 
-            low = enrank(rank-2)
-            high = enrank(rank+1)
+            low = enrank(rank-3)
+            high = enrank(rank+2)
             high = int(round(high * len(enemy_formations)))
             low = int(round(low * len(enemy_formations)))
             while high - low < 4:
@@ -4161,25 +4163,26 @@ def manage_ancient():
 
             chosen_enemies = sorted(chosen_enemies, key=lambda f: f.rank())
 
-            if rank >= 90 or (
-                    rank >= random.randint(10, 75)
+            if rank >= maxrank * 0.9 or (
+                    rank >= random.randint(int(maxrank * 0.1),
+                                           int(maxrank * 0.75))
                     and random.randint(1, 3) == 3):
                 formrank = chosen_enemies[0].rank()
                 candidates = [c for c in boss_formations if c.rank() >= formrank]
                 if candidates:
-                    if rank < 75:
+                    if rank < maxrank * 0.75:
                         candidates = candidates[:random.randint(2, 4)]
                     chosen_boss = random.choice(candidates)
                     chosen_enemies[3] = chosen_boss
 
             for c in chosen_enemies:
-                # allow up to two of the same formation
-                if c in used_formations:
-                    if c in enemy_formations:
-                        enemy_formations.remove(c)
+                # allow up to three of the same formation
+                if used_formations.count(c) >= 2:
                     if c in boss_formations:
                         boss_formations.remove(c)
-                else:
+                    if used_formations.count(c) >= 3:
+                        if c in enemy_formations:
+                            enemy_formations.remove(c)
                     used_formations.append(c)
 
             fset = get_fset(rank)
@@ -4191,15 +4194,15 @@ def manage_ancient():
                 low = random.randint(0, 200)
                 high = random.randint(low, 1000)
             else:
-                low = rank * 3
-                high = low * 3
+                low = rank * 1
+                high = low * 3.5
                 while random.choice([True, False, False]):
                     high = high * 1.25
-            if rank < 40:
+            if rank < maxrank * 0.4:
                 monster = False
             else:
                 monster = None
-            if 0 < rank < 75:
+            if 0 < rank < maxrank * 0.75:
                 enemy_limit = sorted([f.rank() for f in fset.formations])[-2]
                 enemy_limit *= 1.5
             else:

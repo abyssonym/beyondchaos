@@ -860,8 +860,7 @@ def assign_maps(routes):
     if not ANCIENT:
         max_new_maps = 23
     else:
-        #max_new_maps = 313
-        max_new_maps = 50
+        max_new_maps = 300
     best_clusters = [c for c in new_clusters if len(c.entrances) >= 3]
     while True:
         random.shuffle(best_clusters)

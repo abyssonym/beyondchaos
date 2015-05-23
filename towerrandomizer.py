@@ -96,6 +96,7 @@ def remap_maps(routes):
         assert len(set([a for (a, b) in keys])) == 1
         copylocid = keys[0][0]
         if copylocid >= 1000:
+            copylocid = 413
             location = get_location(413)
             newlocation = Location(locid=newlocid, dummy=True)
             newlocation.copy(location)
@@ -143,13 +144,18 @@ def remap_maps(routes):
                 destx, desty = mirror.destx, mirror.desty
             else:
                 dest, destx, desty = 0, destent.x, destent.y
+            dest &= 0x3DFF
 
             dest |= newdestlocid
             entrance = Entrance()
             entrance.x, entrance.y = ent.x, ent.y
             entrance.dest, entrance.destx, entrance.desty = dest, destx, desty
+            entrance.set_location(newlocation)
             newlocation.entrance_set.entrances.append(entrance)
 
+        newlocation.setid = 0
+        newlocation.ancient_rank = 0
+        newlocation.copied = copylocid
         newlocations.append(newlocation)
 
     locations = get_locations()
@@ -160,12 +166,15 @@ def remap_maps(routes):
             if (location.locid, e.entid) not in FIXED_ENTRANCES:
                 assert e.dest & 0x1FF in newlocids
         assert location not in locations
+        if location.locid not in towerlocids:
+            location.entrance_set.convert_longs()
 
     # XXX: Unnecessary???
     for i, loc in enumerate(newlocations):
         if loc.locid in towerlocids:
             oldloc = get_location(loc.locid)
             oldloc.entrance_set.entrances = loc.entrances
+            oldloc.ancient_rank = loc.ancient_rank
             newlocations[i] = oldloc
 
     return newlocations, unused_maps
@@ -834,7 +843,6 @@ def randomize_tower(filename, ancient=False):
         route.check_links()
 
     newlocations, unused_maps = remap_maps(routes)
-    print len(newlocations), len(unused_maps)
     update_locations(newlocations)
 
     return routes

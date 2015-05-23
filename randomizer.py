@@ -4659,6 +4659,8 @@ h   Organize rages by highest level first'''
 
 if __name__ == "__main__":
     args = list(argv)
+    randomize()
+    exit()
     if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()

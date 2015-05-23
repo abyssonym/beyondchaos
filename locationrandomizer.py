@@ -217,11 +217,9 @@ class Location():
         self.locid = locid
         if dummy:
             self.pointer = None
-            self.formationpointer = None
             self.entrance_set = None
         else:
             self.pointer = 0x2D8F00 + (33 * locid)
-            self.formationpointer = 0xF5600 + locid
             self.entrance_set = EntranceSet(self.locid)
             self.entrance_set.location = self
         self.name = None
@@ -503,6 +501,8 @@ class Location():
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
+        if self.pointer is None:
+            self.pointer = 0x2D8F00 + (33 * self.locid)
         f.seek(self.pointer)
 
         def write_attributes(*args):

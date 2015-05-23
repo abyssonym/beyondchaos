@@ -4127,8 +4127,10 @@ def manage_ancient():
             elif l.routerank == 1:
                 l.music = 57
             elif l.routerank == 2:
+                l.music = 74
+            elif l.routerank == 3:
                 l.music = 73
-            elif l.routerank >= 3:
+            elif l.routerank >= 4:
                 l.music = 75
             else:
                 raise Exception
@@ -4182,10 +4184,6 @@ def manage_ancient():
 
             fset = get_fset(rank)
             fset.formids = [f.formid for f in chosen_enemies]
-            if l.locid == 410:
-                print "INFERNO"
-            elif l.locid == 291:
-                print "GUARDIAN"
             fset.write_data(outfile)
 
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):
@@ -4213,7 +4211,7 @@ def manage_ancient():
         l.write_data(outfile)
         entranks = [e.destination.ancient_rank for e in l.entrances
                     if hasattr(e.destination, "ancient_rank")]
-        print l.locid, l.ancient_rank, ":",
+        print l.locid, l.ancient_rank, l.routerank, ":",
         print " ".join(["%s" % e for e in sorted(entranks)])
         print l.fset
         print

@@ -195,6 +195,7 @@ def remap_maps(routes):
                 if cluster is None:
                     continue
                 if cluster.locid not in ranked_clusters:
+                    cluster.routerank = n
                     ranked_clusters.append(cluster)
 
     ranked_locations = []
@@ -203,6 +204,7 @@ def remap_maps(routes):
         newlocid = locexchange[locid, clusterid]
         newloc = [l for l in newlocations if l.locid == newlocid][0]
         if newloc not in ranked_locations:
+            newloc.routerank = cluster.routerank
             ranked_locations.append(newloc)
     assert len(set(ranked_locations)) == len(set(newlocations))
 
@@ -898,7 +900,7 @@ def assign_maps(routes):
                     and get_location(cluster.locid).longentrances):
                 continue
         rank = None
-        if cluster.locid in done_maps:
+        if cluster.locid in done_maps or cluster.locid in towerlocids:
             for route in routes:
                 for segment in route.segments:
                     for c1 in segment.clusters:

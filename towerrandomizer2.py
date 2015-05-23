@@ -126,6 +126,7 @@ class Segment:
             c.exiting, c.entering = False, False
         self.intersegments = [InterSegment() for c in self.clusters[:-1]]
         self.original_clusters = list(self.clusters)
+        self.oneway_entrances = []
 
     @property
     def consolidated_links(self):
@@ -141,12 +142,19 @@ class Segment:
             clusters.extend(inter.clusters)
         return clusters
 
-    def check_links(self):
+    @property
+    def consolidated_entrances(self):
         links = self.consolidated_links
         linked_entrances = []
         for a, b in links:
             linked_entrances.append(a)
             linked_entrances.append(b)
+        for e, _ in self.oneway_entrances:
+            linked_entrances.append(e)
+        return linked_entrances
+
+    def check_links(self):
+        linked_entrances = self.consolidated_entrances
         assert len(linked_entrances) == len(set(linked_entrances))
 
     def interconnect(self):
@@ -226,6 +234,18 @@ class Segment:
         except:
             import pdb; pdb.set_trace()
 
+    def fill_out(self):
+        entrances = list(self.consolidated_entrances)
+        seen = []
+        for cluster, inter in zip(self.clusters, self.intersegments):
+            extra = inter.fill_out()
+            seen.extend([e for e in cluster.entrances if e in entrances])
+            for c in inter.clusters:
+                seen.extend([e for e in c.entrances if e in entrances])
+            if extra is not None:
+                backtrack = random.choice(seen)
+                self.oneway_entrances.append((extra, backtrack))
+
     def add_cluster(self, cluster, need=False):
         self.entids.append(None)
         self.clusters.append(cluster)
@@ -276,6 +296,7 @@ class Segment:
             display = "."
         if not isinstance(self, InterSegment):
             display += "\nCONNECT %s" % self.consolidated_links
+            display += "\nONE-WAY %s" % self.oneway_entrances
         return display
 
 
@@ -375,12 +396,50 @@ class InterSegment(Segment):
 
     def fill_out(self):
         linked = self.linked_entrances
+        links = []
         unlinked = []
         for cluster in self.clusters:
-            for e in self.entrances:
-                if e not in linked:
-                    unlinked.append(e)
-        pass
+            entrances = [e for e in cluster.entrances if e not in linked]
+            random.shuffle(entrances)
+            if ANCIENT:
+                unlinked.extend(entrances)
+            else:
+                if len(cluster.entrances) <= 4:
+                    unlinked.extend(entrances)
+                else:
+                    diff = len(cluster.entrances) - len(entrances)
+                    if diff < 3:
+                        remaining = 3 - diff
+                        unlinked.extend(entrances[:remaining])
+
+        if not unlinked:
+            return
+        random.shuffle(unlinked)
+
+        locids = [e.location.locid for e in unlinked]
+        maxlocid = max(locids, key=lambda l: locids.count(l))
+        mosts = [e for e in unlinked if e.location.locid == maxlocid]
+        lesses = [e for e in unlinked if e not in mosts]
+        for m in mosts:
+            if not lesses:
+                break
+            l = random.choice(lesses)
+            links.append((m, l))
+            lesses.remove(l)
+            unlinked.remove(l)
+            unlinked.remove(m)
+
+        extra = None
+        while unlinked:
+            if len(unlinked) == 1:
+                extra = unlinked[0]
+                break
+            u1 = unlinked.pop()
+            u2 = unlinked.pop()
+            links.append((u1, u2))
+
+        self.links += links
+        return extra
 
 
 class Route:
@@ -531,7 +590,10 @@ def assign_maps(routes):
                     new_clusters.remove(cluster)
 
     # first phase - bare minimum
-    max_new_maps = 23
+    if not ANCIENT:
+        max_new_maps = 23
+    else:
+        max_new_maps = 200
     best_clusters = [c for c in new_clusters if len(c.entrances) >= 3]
     while True:
         random.shuffle(best_clusters)
@@ -625,6 +687,11 @@ if __name__ == "__main__":
     for route in routes:
         route.determine_need()
     assign_maps(routes)
+    for route in routes:
+        route.check_links()
+    for route in routes:
+        for segment in route.segments:
+            segment.fill_out()
     for route in routes:
         route.check_links()
     for route in routes:

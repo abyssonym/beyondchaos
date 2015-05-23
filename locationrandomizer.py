@@ -751,6 +751,13 @@ class Entrance():
             return None
 
         entrance = loc.get_nearest_entrance(self.destx, self.desty)
+        if entrance is None:
+            return None
+
+        distance = abs(entrance.x - self.destx) + abs(entrance.y - self.desty)
+        if distance > 3:
+            return None
+
         return entrance
 
     @property

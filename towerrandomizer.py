@@ -21,7 +21,8 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x13d,  # Three Stooges
              0x143, 0x144,  # Albrook
              0x154, 0x155, 0x157, 0x158,  # Thamasa
-             0xe7, 0xe9, 0xea,  # opera with dancers?
+             0xe7, 0xe9, 0xea, 0xeb,  # opera with dancers?
+             0x189, 0x18a,  # floating continent
              0x150, 0x164, 0x165, 0x19a, 0x19e]
 PROTECTED += range(359, 371)  # Fanatics Tower
 PROTECTED += range(382, 387)  # Sealed Gate
@@ -96,6 +97,7 @@ def remap_maps(routes):
         assert len(set([a for (a, b) in keys])) == 1
         copylocid = keys[0][0]
         if copylocid >= 1000:
+            cluster = [c for c in conclusters if c.locid == copylocid][0]
             copylocid = 413
             location = get_location(413)
             newlocation = Location(locid=newlocid, dummy=True)
@@ -103,6 +105,7 @@ def remap_maps(routes):
             newlocation.events = []
             newlocation.npcs = []
             newlocation.entrance_set.entrances = []
+            newlocation.restrank = cluster.rank
         else:
             location = get_location(copylocid)
             entrances = location.entrances
@@ -189,6 +192,19 @@ class Cluster:
     @property
     def singleton(self):
         return len(self.entrances) == 1
+
+    @property
+    def has_adjacent_entrances(self):
+        for e1 in self.entrances:
+            for e2 in self.entrances:
+                if e1 == e2:
+                    continue
+                if e1.x == e2.x and e1.y == e2.y:
+                    raise Exception("ERROR: Overlapping entrances")
+                if ((e1.x == e2.x and abs(e1.y - e2.y) == 1) or
+                        (abs(e1.x - e2.x) == 1 and e1.y == e2.y)):
+                    return True
+        return False
 
     def add_entrance(self, entrance):
         e = Entrance()
@@ -322,26 +338,30 @@ class Segment:
             bent = bcands[0]
             inter = self.intersegments[i]
             if a.singleton:
-                excands = inter.get_external_candidates(num=2, test=True)
-                if excands is None and i > 0:
-                    previnter = self.intersegments[i-1]
+                excands = inter.get_external_candidates(num=3, test=True)
+                previnter = self.intersegments[i-1] if i > 0 else None
+                if excands is None and previnter is not None:
                     excands = previnter.get_external_candidates(num=1)
-                if excands is None or len(excands) == 2:
+                if excands is None or len(excands) == 3:
                     excands = inter.get_external_candidates(num=1)
                 if excands is None:
                     raise Exception("Routing error.")
                 links.append((aent, excands[0]))
                 a.entering, a.exiting = True, True
+                if previnter and not (previnter.empty or inter.empty):
+                    c = previnter.get_external_candidates(num=1)[0]
+                    d = inter.get_external_candidates(num=1)[0]
+                    links.append((c, d))
             elif not inter.empty:
                 if not b.singleton:
                     excands = inter.get_external_candidates(num=2)
                     random.shuffle(excands)
                     links.append((bent, excands[1]))
+                    b.entering = True
                 else:
                     excands = inter.get_external_candidates(num=1)
                 links.append((aent, excands[0]))
                 a.exiting = True
-                b.entering = True
             elif (inter.empty and not b.singleton):
                 links.append((aent, bent))
                 a.exiting = True
@@ -376,10 +396,7 @@ class Segment:
                 a.entering = True
 
         self.links = links
-        try:
-            self.check_links()
-        except:
-            import pdb; pdb.set_trace()
+        self.check_links()
 
     def fill_out(self):
         entrances = list(self.consolidated_entrances)
@@ -625,7 +642,7 @@ class Route:
             consolidated.extend(segment.consolidated_entrances)
         return consolidated
 
-    def check_links(self):
+    def check_links(self, links=None):
         for segment in self.segments:
             segment.check_links()
         linked = []
@@ -745,11 +762,14 @@ def assign_maps(routes):
                 if cluster in new_clusters:
                     new_clusters.remove(cluster)
 
+    new_clusters = [c for c in new_clusters if not c.has_adjacent_entrances]
+
     # first phase - bare minimum
     if not ANCIENT:
         max_new_maps = 23
     else:
-        max_new_maps = 313
+        #max_new_maps = 313
+        max_new_maps = 50
     best_clusters = [c for c in new_clusters if len(c.entrances) >= 3]
     while True:
         random.shuffle(best_clusters)
@@ -844,6 +864,12 @@ def randomize_tower(filename, ancient=False):
 
     newlocations, unused_maps = remap_maps(routes)
     update_locations(newlocations)
+
+    for route in routes:
+        print route
+        print
+        print
+        print
 
     return routes
 

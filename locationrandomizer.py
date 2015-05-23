@@ -213,17 +213,22 @@ class Zone():
 
 # 415 locations
 class Location():
-    def __init__(self, locid):
+    def __init__(self, locid, dummy=False):
         self.locid = locid
-        self.pointer = 0x2D8F00 + (33 * locid)
-        self.formationpointer = 0xF5600 + locid
+        if dummy:
+            self.pointer = None
+            self.formationpointer = None
+            self.entrance_set = None
+        else:
+            self.pointer = 0x2D8F00 + (33 * locid)
+            self.formationpointer = 0xF5600 + locid
+            self.entrance_set = EntranceSet(self.locid)
+            self.entrance_set.location = self
         self.name = None
         if self.locid in mapnames:
             self.altname = "%x %s" % (self.locid, mapnames[self.locid])
         else:
             self.altname = "%x" % self.locid
-        self.entrance_set = EntranceSet(self.locid)
-        self.entrance_set.location = self
 
     def __repr__(self):
         if self.name:
@@ -538,7 +543,6 @@ class Location():
             "tileformations", "mapdata", "unknown2", "bgshift", "unknown3",
             "layer12dimensions", "unknown4", "palette_index", "music",
             "unknown5", "width", "height", "layerpriorities",
-            "restrank", "modname",
             ]
         for attribute in attributes:
             if not hasattr(location, attribute):
@@ -949,13 +953,12 @@ def update_locations(newlocs):
     global locations
     for l in sorted(newlocs, key=lambda o: o.locid):
         if l in locations:
-            pass
-        elif l not in locations:
-            original = [o for o in locations if o.locid == l.locid][0]
-            index = locations.index(original)
-            locations[index] = l
-            locdict[l.locid] = l
-            l.new = True
+            continue
+        original = [o for o in locations if o.locid == l.locid][0]
+        index = locations.index(original)
+        locations[index] = l
+        locdict[l.locid] = l
+        l.new = True
 
 
 def get_zones(filename=None):
@@ -979,22 +982,9 @@ def get_location(locid):
     return locdict[locid]
 
 
-def unpurpose_repurposed(locations=None):
-    global unused_locs
-    if locations is None:
-        locations = get_locations()
-    for l in locations:
-        if hasattr(l, "repurposed"):
-            l.repurposed = False
-            if l not in unused_locs:
-                unused_locs.append(l)
-
-
 def get_unused_locations(filename=None):
     global unused_locs
     if unused_locs:
-        unused_locs = [u for u in unused_locs if not
-                       (hasattr(u, "repurposed") and u.repurposed)]
         return unused_locs
 
     unused_locs = set([])

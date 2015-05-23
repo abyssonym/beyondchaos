@@ -1,19 +1,17 @@
-from copy import deepcopy, copy
 from utils import (ANCIENT_CHECKPOINTS_TABLE, TOWER_CHECKPOINTS_TABLE,
                    TOWER_LOCATIONS_TABLE, TREASURE_ROOMS_TABLE,
+                   ENTRANCE_REACHABILITY_TABLE,
                    utilrandom as random)
-from locationrandomizer import (get_locations, get_location,
+from locationrandomizer import (get_locations, get_location, Location,
                                 get_unused_locations, Entrance,
-                                add_location_map)
+                                add_location_map, update_locations)
 from formationrandomizer import get_fsets, get_formations
 from chestrandomizer import ChestBlock
-from itertools import product
-from sys import stdout
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 1000
 MAX_NEW_MAPS = None  # 23: 6 more for fanatics tower, 1 more for bonus
-ANCIENT = False
+ANCIENT = None
 PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x37, 0x81, 0x82, 0x88, 0x9c, 0xb6, 0xb8, 0xbd, 0xbe,
              0xd2, 0xd3, 0xd4, 0xd5, 0xd7, 0xfe, 0xff,
@@ -26,1223 +24,831 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0xe7, 0xe9, 0xea,  # opera with dancers?
              0x150, 0x164, 0x165, 0x19a, 0x19e]
 PROTECTED += range(359, 371)  # Fanatics Tower
-PROTECTED += range(382, 389)  # Sealed Gate
+PROTECTED += range(382, 387)  # Sealed Gate
+FIXED_ENTRANCES, REMOVE_ENTRANCES = [], []
 
-
-def set_max_maps(num, ancient=False):
-    global ANCIENT, MAX_NEW_MAPS
-    ANCIENT = ancient
-    MAX_NEW_MAPS = (num - 24)
-
-locdict = {}
+locexchange = {}
 old_entrances = {}
-# dealing with one-ways: when identifying the "from" entrance in a route,
-# retroactively add the "to" entrance to earlier in the route?
 towerlocids = [int(line.strip(), 0x10) for line in open(TOWER_LOCATIONS_TABLE)]
 map_bans = []
 newfsets = {}
-entrance_candidates = None
+clusters = None
 
 
-class SpecialInstructions:
-    def __init__(self):
-        self.deadends = set([])
-        self.oneways = set([])
-        self.nochanges = set([])
-        self.removes = set([])
+def remap_maps(routes):
+    conlinks = []
+    cononeways = []
+    conentrances = []
+    conclusters = []
+    for route in routes:
+        conlinks.extend(route.consolidated_links)
+        cononeways.extend(route.consolidated_oneways)
+        conentrances.extend(route.consolidated_entrances)
+        conclusters.extend(route.consolidated_clusters)
+        conclusters = sorted(set(conclusters), key=lambda c: c.clusterid)
 
-    @property
-    def invalid(self):
-        return self.nochanges | self.removes
-
-    def add_item(self, item, attribute):
-        a, b = item
-        item = int(a), int(b)
-        getattr(self, attribute).add(item)
-
-    def add_nochange(self, item):
-        self.add_item(item, 'nochanges')
-
-    def add_remove(self, item):
-        self.add_item(item, 'removes')
-
-    def add_oneway(self, item):
-        fro, to = item
-        fro = tuple(map(int, fro))
-        to = tuple(map(int, to))
-        self.oneways.add((fro, to))
-
-    def add_deadend(self, item):
-        self.add_item(item, 'deadends')
-
-    def remove_removes(self):
-        for mapid, entid in self.removes:
-            location = locdict[mapid]
-            ents = [e for e in location.entrances if e.entid == entid]
-            for ent in ents:
-                location.entrance_set.entrances.remove(ent)
-
-
-si = SpecialInstructions()
-locexchange = {}
-
-
-def connect_segments(sega, segb):
-    exits = {}
-    for seg in [sega, segb]:
-        if seg.addable or seg.ruletype == OPTIONAL:
-            entrances = seg.sorted_entrances
-            random.shuffle(entrances)
-        elif seg.ruletype == DIRECTIONAL:
-            entrances = seg.entrances.values()[0]
-
-        for e in entrances:
-            shortsig = e.shortsig
-            if shortsig not in seg.links:
-                exits[seg] = e
-                break
-        else:
-            raise Exception("No exits available.")
-
-    sega.links[exits[sega].shortsig] = exits[segb].signature
-    segb.links[exits[segb].shortsig] = exits[sega].signature
-
-
-def clear_entrances(location):
-    if location not in old_entrances:
-        old_entrances[location] = set([])
-    old_entrances[location] |= set(location.entrances)
-    nochanges = [b for (a, b) in si.nochanges if a == location.locid]
-    location.entrance_set.entrances = [e for e in location.entrances if
-                                       e.entid in nochanges]
-
-
-def clear_unused_locations():
-    from locationrandomizer import unpurpose_repurposed
-    for location in get_locations():
-        if hasattr(location, "modname"):
-            del(location.modname)
-        if hasattr(location, "restrank"):
-            del(location.restrank)
-    unpurpose_repurposed()
-    unused_locations = get_unused_locations()
-    for u in unused_locations:
-        clear_entrances(u)
-
-
-def get_new_formations(areaname, supplement=True):
-    from randomizer import get_namelocdict
-    namelocdict = get_namelocdict()
-    setids = set([])
-    for key in namelocdict:
-        if type(key) is str and areaname in key:
-            setids |= set(namelocdict[key])
-
-    fsets = [fs for fs in get_fsets() if fs.setid in setids]
-    formations = set([])
-    for fs in fsets:
-        formations |= set(fs.formations)
-
-    if supplement:
-        lowest = min(formations, key=lambda f: f.rank()).rank()
-        highest = max(formations, key=lambda f: f.rank()).rank()
-        supplemental = [f for f in get_formations() if
-                        not f.has_boss and lowest < f.rank() <= highest and
-                        not f.battle_event]
-        supplemental = sorted(supplemental, key=lambda f: f.rank())
-        formations |= set([f for f in supplemental if
-                           f.ambusher or f.inescapable])
-        supplemental = supplemental[len(supplemental)/2:]
-        formations |= set(supplemental)
-
-    return sorted(formations, key=lambda f: f.formid)
-
-
-def get_new_fsets(areaname, number=10, supplement=True):
-    if areaname in newfsets:
-        return newfsets[areaname]
-    newfsets[areaname] = []
-    formations = get_new_formations(areaname, supplement=supplement)
-    fsets = get_fsets()
-    unused = [fs for fs in fsets if fs.unused and len(fs.formations) == 4]
-    tempforms = []
-    for _ in xrange(number):
-        if len(tempforms) < 4:
-            tempforms = list(formations)
-        setforms = random.sample(tempforms, 4)
-        fset = unused.pop()
-        fset.formids = [f.formid for f in setforms]
-        tempforms = [f for f in tempforms if f not in setforms]
-        newfsets[areaname].append(fset)
-
-    return get_new_fsets(areaname)
-
-
-def get_appropriate_location(loc, flair=None):
-    if flair is None:
-        flair = not ANCIENT
-    unused_locations = get_unused_locations()
-    if loc in locexchange:
-        return locexchange[loc]
-    elif loc.locid in towerlocids:
-        clear_entrances(loc)
-        locexchange[loc] = loc
-        return loc
-    elif hasattr(loc, "restrank"):
-        clear_entrances(loc)
-        locexchange[loc] = loc
-        return loc
+    if ANCIENT:
+        unused_maps = [l.locid for l in get_locations()
+                       if l.locid not in towerlocids
+                       and l.locid not in PROTECTED]
+        rest_maps = [l.locid for l in get_unused_locations() if l.locid != 414]
     else:
-        from locationrandomizer import Location
-        if ANCIENT:
-            for u in locexchange.keys():
-                if (u.locid not in towerlocids and u not in unused_locations
-                        and u.locid not in PROTECTED):
-                    unused_locations.append(u)
-        exchange_ids = [l.locid for l in locexchange.values()]
-        unused_ids = [l.locid for l in unused_locations
-                      if l.locid not in exchange_ids]
-        u = Location(unused_ids.pop())
-        u.copy(loc)
-        u.modname = loc.altname
-        u.modid = loc.locid
-        u.npcs = []
-        u.events = []
-        add_location_map("Final Dungeon", u.locid, strict=not ANCIENT)
-        u.make_tower_basic()
-        if flair:
-            u.make_tower_flair()
-        u.fill_battle_bg(loc.locid)
-        if not ANCIENT:
-            u.unlock_chests(200, 1000)
-        fsets = get_new_fsets("kefka's tower", 20)
-        fset = random.choice(fsets)
-        for formation in fset.formations:
-            formation.set_music(6)
-            formation.set_continuous_music()
-        u.setid = fset.setid
-        clear_entrances(u)
+        unused_maps = [l.locid for l in get_unused_locations()]
+        rest_maps = []
+
+    for cluster in conclusters:
+        if not isinstance(cluster, RestStop):
+            continue
+        locid = cluster.locid
+        newlocid = rest_maps.pop()
+        locexchange[(locid, locid)] = newlocid
         try:
-            assert not u.entrances
+            unused_maps.remove(newlocid)
         except:
             import pdb; pdb.set_trace()
-        locexchange[loc] = u
-        return u
-    raise Exception("No appropriate location available.")
+
+    for cluster in conclusters:
+        if isinstance(cluster, RestStop):
+            continue
+
+        locid = cluster.locid
+        if (locid, cluster.clusterid) in locexchange:
+            continue
+
+        locclusters = [c for c in conclusters if
+                       not isinstance(c, RestStop) and c.locid == locid]
+        if locid in towerlocids:
+            for c in locclusters:
+                locexchange[(locid, c.clusterid)] = locid
+        else:
+            location = get_location(locid)
+            newlocid = unused_maps.pop()
+            if location.longentrances:
+                locexchange[(locid, cluster.clusterid)] = newlocid
+            else:
+                for c in locclusters:
+                    locexchange[(locid, c.clusterid)] = newlocid
+
+    newlocations = []
+    for newlocid in sorted(set(locexchange.values())):
+        keys = [key for (key, value) in locexchange.items()
+                if value == newlocid]
+        assert len(set([a for (a, b) in keys])) == 1
+        copylocid = keys[0][0]
+        if copylocid >= 1000:
+            location = get_location(413)
+            newlocation = Location(locid=newlocid, dummy=True)
+            newlocation.copy(location)
+            newlocation.events = []
+            newlocation.npcs = []
+            newlocation.entrance_set.entrances = []
+        else:
+            location = get_location(copylocid)
+            entrances = location.entrances
+            newlocation = Location(locid=newlocid, dummy=True)
+            newlocation.copy(location)
+            newlocation.events = []
+            newlocation.npcs = []
+            newlocation.entrance_set.entrances = []
+            fixed = [e for e in entrances
+                     if (e.location.locid, e.entid) in FIXED_ENTRANCES]
+            newlocation.entrance_set.entrances.extend(fixed)
+
+        locclusters = [c for c in conclusters if
+                       locexchange[(c.locid, c.clusterid)] == newlocid]
+        clustents = [e for c in locclusters for e in c.entrances]
+        clustents = [e for e in clustents if e in conentrances]
+
+        for ent in clustents:
+            destent = [(a, b) for (a, b) in conlinks if ent in (a, b)]
+            destent += [(a, b) for (a, b) in cononeways if ent == a]
+            assert len(destent) == 1
+            destent = destent[0]
+            destent = [d for d in destent if d != ent][0]
+            destclust = [c for c in conclusters
+                         if destent in c.entrances]
+            assert len(destclust) == 1
+            destclust = destclust[0]
+            newdestlocid = locexchange[(destclust.locid, destclust.clusterid)]
+            if destent.location.locid >= 1000:
+                destloc = get_location(413)
+                destent = [d for d in destloc.entrances if d.entid == 3][0]
+            else:
+                destloc = get_location(destent.location.locid)
+                destent = [d for d in destloc.entrances
+                           if d.entid == destent.entid][0]
+            mirror = destent.mirror
+            if mirror:
+                dest = mirror.dest & 0xFE00
+                destx, desty = mirror.destx, mirror.desty
+            else:
+                dest, destx, desty = 0, destent.x, destent.y
+
+            dest |= newdestlocid
+            entrance = Entrance()
+            entrance.x, entrance.y = ent.x, ent.y
+            entrance.dest, entrance.destx, entrance.desty = dest, destx, desty
+            newlocation.entrance_set.entrances.append(entrance)
+
+        newlocations.append(newlocation)
+
+    locations = get_locations()
+    newlocids = [l.locid for l in newlocations]
+    assert len(newlocids) == len(set(newlocids))
+    for location in newlocations:
+        for e in location.entrances:
+            if (location.locid, e.entid) not in FIXED_ENTRANCES:
+                assert e.dest & 0x1FF in newlocids
+        assert location not in locations
+
+    # XXX: Unnecessary???
+    for i, loc in enumerate(newlocations):
+        if loc.locid in towerlocids:
+            oldloc = get_location(loc.locid)
+            oldloc.entrance_set.entrances = loc.entrances
+            newlocations[i] = oldloc
+
+    return newlocations, unused_maps
 
 
-def get_inappropriate_location(location):
-    reverselocex = dict([(b, a) for (a, b) in locexchange.items()])
-    if location in reverselocex:
-        return reverselocex[location]
-    else:
-        return location
+class Cluster:
+    def __init__(self, locid, clusterid):
+        self.locid = locid
+        self.clusterid = clusterid
+        self.entrances = []
 
+    @property
+    def singleton(self):
+        return len(self.entrances) == 1
 
-def connect_entrances(sig, sig2):
-    locid, x, y, _, _, _ = sig
-    loc = get_appropriate_location(locdict[locid])
-    loc2id, destx, desty, _, _, _ = sig2
-    temploc = locdict[loc2id]
-    loc2 = get_appropriate_location(temploc)
+    def add_entrance(self, entrance):
+        e = Entrance()
+        e.copy(entrance)
+        self.entrances.append(e)
 
-    # getting correct x/y values for destination
-    tempent = temploc.get_nearest_entrance(destx, desty)
-    assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
-    mirror = tempent.mirror
-    dest = 0
-    if mirror:
-        destx, desty = mirror.destx, mirror.desty
-        dest = mirror.dest & 0xFE00
-    if ((mirror is None or mirror.mirror is None or
-            mirror.mirror.location.locid != tempent.location.locid) or
-            abs(tempent.x - destx) + abs(tempent.y - desty) > 4):
-        destx, desty = tempent.x, tempent.y
-    assert abs(tempent.x - destx) + abs(tempent.y - desty) <= 4
+    @property
+    def entids(self):
+        return [e.entid for e in self.entrances]
 
-    entrance = Entrance(None)
-    entrance.set_location(loc.locid)
-    entrance.x = x
-    entrance.y = y
-    entrance.destx = destx
-    entrance.desty = desty
-    entrance.dest = loc2.locid | dest
-    entrance.dest &= 0x3DFF
-    effectsigs = [e3.effectsig for e3 in loc.entrances]
-    if entrance.effectsig in effectsigs:
-        return
-    if not loc.is_duplicate_entrance(entrance):
-        loc.entrance_set.entrances.append(entrance)
-    loc.validate_entrances()
-
-
-class CheckRoomSet:
-    def __init__(self):
-        self.entrances = {}
-        self.links = {}
-        self.addable = True
-        self.ruletype = None
+    @property
+    def free_entrances(self):
+        free = [e for e in self.entrances if (e.location.locid, e.entid) not in
+                FIXED_ENTRANCES + REMOVE_ENTRANCES]
+        return free
 
     def __repr__(self):
-        return str(self.entrances)
+        display = "; ".join([str(e) for e in self.entrances])
+        return display
 
-    def backup(self):
-        self.backup_entrances = copy(self.entrances)
 
-    def load_backup(self):
-        self.entrances = copy(self.backup_entrances)
+class RestStop(Cluster):
+    counter = 0
 
-    def establish_entrances(self):
-        for mapid in self.entrances:
-            for e in self.entrances[mapid]:
-                sig = e.signature
-                if e.shortsig not in self.links:
-                    #print "WARNING: %s not in links." % str(sig)
-                    continue
-                sig2 = self.links[e.shortsig]
-                connect_entrances(sig, sig2)
+    def __init__(self, rank):
+        self.rank = rank
+        e = Entrance()
+        e.location = Location(1000 + RestStop.counter, dummy=True)
+        self.locid = e.location.locid
+        self.clusterid = self.locid
+        e.x, e.y = 48, 21
+        e.dest, e.destx, e.desty = 0, 0, 0
+        e.entid = None
+        self.entrances = [e]
+        RestStop.counter += 1
 
-    def get_must_assign(self):
-        musts = []
-        backups = []
-        for mapid in self.entrances:
-            oldlocation = get_location(mapid)
-            location = get_appropriate_location(oldlocation)
+    def __repr__(self):
+        return "Rest stop rank %s" % self.rank
 
-            coordinates = [(e.x, e.y) for e in self.entrances[mapid]]
-            locentrances = [e for e in old_entrances[location] if
-                            (e.x, e.y) in coordinates]
 
-            coordinates = [(e.x, e.y) for e in location.entrances]
-            locentrances = [e for e in locentrances if
-                            (e.x, e.y) in coordinates]
+def get_clusters():
+    global clusters
+    if clusters is not None:
+        return clusters
 
-            candidates = sorted([c for c in self.entrances[mapid] if
-                                 (c.x, c.y) not in coordinates],
-                                key=lambda e: e.entid)
-
-            LARGE_VALUE = 5
-            MIN_LARGE = 3
-            if ANCIENT:
-                LARGE_VALUE = 100
-            numentrances = len(self.entrances[mapid])
-            if numentrances < LARGE_VALUE and len(locentrances) < numentrances:
-                musts.extend(random.sample(
-                    candidates, numentrances-len(locentrances)))
-            elif numentrances >= LARGE_VALUE and len(locentrances) < MIN_LARGE:
-                musts.extend(random.sample(
-                    candidates, MIN_LARGE-len(locentrances)))
-            backups.extend([c for c in self.entrances[mapid] if
-                            c not in musts and (c.x, c.y) not in coordinates])
-
-        taken = []
-        pairs = []
-        unwed = []
-
-        def distance(c1, c2):
-            return abs(c1.x - c2.x) + abs(c1.y - c2.y)
-
-        for e in list(musts):
-            if e in taken:
-                continue
-
-            strict = lambda c: (c not in taken and
-                                c.location.locid != e.location.locid)
-            loose = lambda c: c not in taken and c != e
-            preferences = [(musts, strict), (backups, strict),
-                           (musts, loose), (backups, loose)]
-            for candidates, evaluator in preferences:
-                candidates = filter(evaluator, candidates)
-                if candidates:
-                    candlocs = set([c.location.locid for c in candidates])
-                    elocs = set([e.location.locid])
-                    if candlocs == elocs:
-                        c = max(candidates, key=lambda c: distance(e, c))
-                    else:
-                        c = random.choice(candidates)
-                    taken.append(e)
-                    taken.append(c)
-                    pairs.append((e, c))
-                    break
-            else:
-                unwed.append((self, e))
-        return pairs, unwed
-
-    @property
-    def reachability_factor(self):
-        num_entrances = sum([len(self.entrances[k]) for k in self.entrances.keys()])
-        num_maps = len(self.entrances.keys())
-        if num_entrances - self.numexits < 0:
-            return 1000000
-        return float(num_maps) / num_entrances
-
-    @property
-    def locations(self):
-        return [get_location(m) for m in self.maps]
-
-    @property
-    def maps(self):
-        return sorted(self.entrances.keys())
-
-    @property
-    def sorted_entrances(self):
-        entrances = []
-        for es in self.entrances.values():
-            entrances.extend(es)
-        entrances = sorted(set(entrances),
-                           key=lambda e: (e.location.locid, e.entid))
-        return entrances
-
-    def generate_reachability_matrix(self):
-        from utils import get_matrix_reachability
-        entrances = self.sorted_entrances
-        edict = dict(zip(entrances, range(len(entrances))))
-        basematrix = [0]*len(entrances)
-        basematrix = [list(basematrix) for _ in xrange(len(entrances))]
+    clusters = []
+    for i, line in enumerate(open(ENTRANCE_REACHABILITY_TABLE)):
+        locid, entids = line.strip().split(':')
+        locid = int(locid)
+        entids = map(int, entids.split(','))
+        loc = get_location(locid)
+        entrances = [e for e in loc.entrances if e.entid in entids]
+        c = Cluster(locid=locid, clusterid=i)
         for e in entrances:
-            a = edict[e]
-            basematrix[a][a] = 1
-            for e2 in self.entrances[e.location.locid]:
-                if e2 in edict:
-                    b = edict[e2]
-                    basematrix[a][b] = 1
-                    basematrix[b][a] = 1
+            c.add_entrance(e)
+        c.original_entrances = list(c.entrances)
+        clusters.append(c)
 
-        zeroes = sum([row.count(0) for row in basematrix])
-        if zeroes == 0:
-            if len(basematrix) < self.numexits:
-                return None
-            self.reachability = basematrix
-            return basematrix
+    return get_clusters()
 
-        locids = self.entrances.keys()
-        for attempts in xrange(5):
-            matrix = deepcopy(basematrix)
-            candidates = list(entrances)
-            random.shuffle(locids)
-            done = []
-            links = {}
-            try:
-                for l in locids:
-                    if l in done:
-                        continue
-                    front = [c for c in candidates if c.location.locid == l]
-                    c1 = random.choice(front)
 
-                    back = [c for c in candidates if c.location.locid in done]
-                    if not back:
-                        back = [c for c in candidates if c not in front
-                                and len(c.location.entrances) > 1]
-                    if not back:
-                        back = [c for c in candidates if c not in front]
-                    c2 = random.choice(back)
+def get_cluster(locid, entid):
+    for c in get_clusters():
+        if c.locid == locid and entid in c.entids:
+            return c
 
-                    done.extend([l, c2.location.locid])
-                    candidates.remove(c1)
-                    candidates.remove(c2)
-                    a, b = edict[c1], edict[c2]
-                    matrix[a][b] = 1
-                    matrix[b][a] = 1
-                    links[c1.shortsig] = c2.signature
-                    links[c2.shortsig] = c1.signature
-            except IndexError:
-                continue
 
-            if len(candidates) < self.numexits:
-                return None
-
-            prevones = 0
-            reach = deepcopy(matrix)
-            for _ in xrange(len(entrances)*2):
-                reach = get_matrix_reachability(reach)
-                zeroes = sum([row.count(0) for row in reach])
-                ones = sum([row.count(1) for row in reach])
-                assert zeroes + ones == len(entrances)**2
-                if ones == prevones:
-                    break
-
-            if zeroes == 0:
-                break
-
-        else:
-            return None
-
-        self.reachability = matrix
-        self.links = links
-        return matrix
-
-    def add_rule(self, ruletype, mapid, parameters, reachable=True):
-        assert type(parameters) in [list, tuple]
-        if self.ruletype in [OPTIONAL, DIRECTIONAL]:
-            raise Exception("Already set a rule.")
-
-        self.ruletype = ruletype
-        if ruletype == SIMPLE:
-            # can add simple rooms arbitrarily
-            self.addable = True
-        elif ruletype in [OPTIONAL, DIRECTIONAL]:
-            assert not self.entrances
-            if ruletype == OPTIONAL:
-                random.shuffle(parameters)
+class Segment:
+    def __init__(self, checkpoints):
+        self.clusters = []
+        self.entids = []
+        for locid, entid in checkpoints:
+            if locid == "R":
+                c = RestStop(rank=entid)
+                self.clusters.append(c)
+                self.entids.append(None)
             else:
-                assert len(parameters) == 2
-            self.addable = False
-        for p in parameters:
-            self.add_entrance(mapid, p, reachable=reachable)
+                c = get_cluster(locid, entid)
+                assert c is not None
+                self.clusters.append(c)
+                self.entids.append(entid)
+            c.exiting, c.entering = False, False
+        self.intersegments = [InterSegment() for c in self.clusters[:-1]]
+        self.original_clusters = list(self.clusters)
+        self.oneway_entrances = []
 
-    def add_entrance(self, mapid, entid, reachable=True):
-        # adding unreachable entrance = asserting it is reachable
-        if mapid not in self.entrances:
-            self.entrances[mapid] = []
-        loc = get_location(mapid)
-        if hasattr(loc, "restrank"):
-            entrance = loc.entrances[0]
-        else:
-            try:
-                entrance = [e for e in locdict[mapid].entrances if e.entid == entid][0]
-            except IndexError:
+    @property
+    def consolidated_links(self):
+        links = list(self.links)
+        for inter in self.intersegments:
+            links.extend(inter.links)
+        return links
+
+    @property
+    def consolidated_clusters(self):
+        clusters = list(self.clusters)
+        for inter in self.intersegments:
+            clusters.extend(inter.clusters)
+        return clusters
+
+    @property
+    def consolidated_entrances(self):
+        links = self.consolidated_links
+        linked_entrances = []
+        for a, b in links:
+            linked_entrances.append(a)
+            linked_entrances.append(b)
+        for e, _ in self.oneway_entrances:
+            linked_entrances.append(e)
+        return linked_entrances
+
+    def check_links(self):
+        linked_entrances = self.consolidated_entrances
+        assert len(linked_entrances) == len(set(linked_entrances))
+
+    def interconnect(self):
+        links = []
+        for segment in self.intersegments:
+            segment.interconnect()
+        for i, (a, b) in enumerate(zip(self.clusters, self.clusters[1:])):
+            aid = self.entids[i]
+            bid = self.entids[i+1]
+            if a.singleton:
+                acands = a.entrances
+            elif i == 0:
+                acands = [e for e in a.entrances if e.entid == aid]
+            else:
+                acands = [e for e in a.entrances if e.entid != aid]
+            aent = random.choice(acands)
+            bcands = [e for e in b.entrances if e.entid == bid]
+            bent = bcands[0]
+            inter = self.intersegments[i]
+            if a.singleton:
+                excands = inter.get_external_candidates(num=2, test=True)
+                if excands is None and i > 0:
+                    previnter = self.intersegments[i-1]
+                    excands = previnter.get_external_candidates(num=1)
+                if excands is None or len(excands) == 2:
+                    excands = inter.get_external_candidates(num=1)
+                if excands is None:
+                    raise Exception("Routing error.")
+                links.append((aent, excands[0]))
+                a.entering, a.exiting = True, True
+            elif not inter.empty:
+                if not b.singleton:
+                    excands = inter.get_external_candidates(num=2)
+                    random.shuffle(excands)
+                    links.append((bent, excands[1]))
+                else:
+                    excands = inter.get_external_candidates(num=1)
+                links.append((aent, excands[0]))
+                a.exiting = True
+                b.entering = True
+            elif (inter.empty and not b.singleton):
+                links.append((aent, bent))
+                a.exiting = True
+                b.entering = True
+            elif (inter.empty and b.singleton):
+                inter2 = self.intersegments[i+1]
+                assert not inter2.empty
+                excands = inter2.get_external_candidates(num=1)
+                links.append((aent, excands[0]))
+                a.exiting = True
+            else:
                 import pdb; pdb.set_trace()
-        if entrance not in self.entrances[mapid]:
-            self.entrances[mapid].append(entrance)
-        if reachable:
-            for e in entrance.reachable_entrances:
-                if (mapid, e.entid) in si.invalid:
-                    continue
-                if e not in self.entrances[mapid]:
-                    self.entrances[mapid].append(e)
-        return self.entrances[mapid]
+                assert False
 
-    def remove_entrance(self, mapid, entid):
-        if mapid not in self.entrances:
+        for i, a in enumerate(self.clusters):
+            aid = self.entids[i]
+            if not (a.entering or i == 0):
+                if a.singleton:
+                    aent = a.entrances[0]
+                else:
+                    acands = [e for e in a.entrances if e.entid == aid]
+                    aent = acands[0]
+                while i > 0:
+                    inter = self.intersegments[i-1]
+                    if not inter.empty:
+                        break
+                    i += -1
+                if inter.empty:
+                    raise Exception("Routing error.")
+                excands = inter.get_external_candidates(num=1)
+                links.append((aent, excands[0]))
+                a.entering = True
+
+        self.links = links
+        try:
+            self.check_links()
+        except:
+            import pdb; pdb.set_trace()
+
+    def fill_out(self):
+        entrances = list(self.consolidated_entrances)
+        seen = []
+        for cluster, inter in zip(self.clusters, self.intersegments):
+            extra = inter.fill_out()
+            seen.extend([e for e in cluster.entrances if e in entrances])
+            for c in inter.clusters:
+                seen.extend([e for e in c.entrances if e in entrances])
+            if extra is not None:
+                backtrack = random.choice(seen)
+                self.oneway_entrances.append((extra, backtrack))
+
+    def add_cluster(self, cluster, need=False):
+        self.entids.append(None)
+        self.clusters.append(cluster)
+        if need:
+            self.need -= len(cluster.entrances) - 2
+
+    @property
+    def free_entrances(self):
+        free = []
+        for (entid, cluster) in zip(self.entids, self.clusters):
+            if entid is not None:
+                clustfree = cluster.free_entrances
+                clustfree = [e for e in clustfree if e.entid != entid]
+                free.extend(clustfree)
+        return free
+
+    @property
+    def reserved_entrances(self):
+        free = self.free_entrances
+        reserved = []
+        for cluster in self.clusters:
+            if isinstance(cluster, Cluster):
+                reserved.extend([e for e in cluster.entrances
+                                 if e not in free])
+        return reserved
+
+    def determine_need(self):
+        for segment in self.intersegments:
+            segment.need = 0
+        for index, cluster in enumerate(self.clusters):
+            if len(cluster.entrances) == 1:
+                indexes = [i for i in [index-1, index]
+                           if 0 <= i < len(self.intersegments)]
+                self.intersegments[random.choice(indexes)].need += 1
+
+    def __repr__(self):
+        display = ""
+        for i, cluster in enumerate(self.clusters):
+            entid = self.entids[i]
+            if entid is None:
+                entid = '?'
+            display += "%s %s\n" % (entid, cluster)
+            if not isinstance(self, InterSegment):
+                if i < len(self.intersegments):
+                    display += str(self.intersegments[i]) + "\n"
+        display = display.strip()
+        if not display:
+            display = "."
+        if not isinstance(self, InterSegment):
+            display += "\nCONNECT %s" % self.consolidated_links
+            display += "\nONE-WAY %s" % self.oneway_entrances
+        return display
+
+
+class InterSegment(Segment):
+    def __init__(self):
+        self.clusters = []
+        self.entids = []
+        self.links = []
+        self.linked_edge = []
+
+    @property
+    def empty(self):
+        return len(self.clusters) == 0
+
+    @property
+    def linked_entrances(self):
+        linked = []
+        for a, b in self.links:
+            linked.append(a)
+            linked.append(b)
+        for e in self.linked_edge:
+            linked.append(e)
+        return linked
+
+    def get_external_candidates(self, num=2, test=False):
+        if not self.clusters:
+            return None
+        candidates = []
+        linked_clusters = []
+        for e in self.linked_entrances:
+            for c in self.clusters:
+                if e in c.entrances:
+                    linked_clusters.append(c)
+        done_clusts = set([])
+        done_ents = set(self.linked_entrances)
+        for _ in xrange(num):
+            candclusts = [c for c in self.clusters if c not in done_clusts]
+            if not candclusts:
+                candclusts = self.clusters
+            candclusts = [c for c in candclusts if set(c.entrances)-done_ents]
+            if not candclusts:
+                candclusts = [c for c in self.clusters if c not in done_clusts
+                              and set(c.entrances)-done_ents]
+                if not candclusts:
+                    candclusts = [c for c in self.clusters
+                                  if set(c.entrances)-done_ents]
+            if candclusts and linked_clusters:
+                lowclust = min(candclusts,
+                               key=lambda c: linked_clusters.count(c))
+                lowest = linked_clusters.count(lowclust)
+                candclusts = [c for c in candclusts
+                              if linked_clusters.count(c) == lowest]
+                assert lowclust in candclusts
+            try:
+                chosen = random.choice(candclusts)
+            except IndexError:
+                return None
+            done_clusts.add(chosen)
+            chosen = random.choice([c for c in chosen.entrances
+                                    if c not in done_ents])
+            done_ents.add(chosen)
+            candidates.append(chosen)
+        if not test:
+            self.linked_edge.extend(candidates)
+        return candidates
+
+    def interconnect(self):
+        self.links = []
+        if len(self.clusters) < 2:
             return
-        entrances = self.entrances[mapid]
-        for e in entrances:
-            if e.entid == entid:
-                self.entrances[mapid].remove(e)
 
-
-class RouteRouter:
-    def __init__(self, starting):
-        self.set_starting(starting)
-        self.checkpoints = []
-
-    def reset_entrance_locations(self):
-        for route in self.routes.values():
-            for segment in route:
-                for entrance in segment.sorted_entrances:
-                    locid = entrance.location.locid
-                    entrance.location = get_location(locid)
-
-    def backup(self):
-        for route in self.routes.values():
-            for segment in route:
-                segment.backup()
-
-    def load_backup(self):
-        for route in self.routes.values():
-            for segment in route:
-                segment.load_backup()
-
-    def rank_maps(self):
-        def get_true_entrance(e):
-            loc = get_location(e.location.locid)
-            ents = [e2 for e2 in loc.entrances if (e2.x, e2.y) == (e.x, e.y)]
-            if ents:
-                assert len(ents) == 1
-                return ents[0]
-
-        startmaps = sorted(set([m for (m, e) in self.starter]))
-        routes = [self.routes[key] for key in sorted(self.routes)]
-        ordering = [get_location(s) for s in startmaps]
-        for i, segments in enumerate(zip(*routes)):
-            locations = []
-            for segment in segments:
-                sublocs = segment.locations
-                for l in sublocs:
-                    if l.locid in towerlocids:
-                        locations.append(l)
-                    else:
-                        for l2 in get_locations():
-                            if hasattr(l2, "modid") and l2.modid == l.locid:
-                                locations.append(l2)
-                                break
-            while True:
-                reachable = [r for l in ordering
-                             for r in l.reachable_locations]
-                reachable = [r for r in reachable
-                             if r in locations and r not in ordering]
-                if not reachable:
-                    break
-                reachable = sorted(reachable, key=lambda r: r.locid)
-                random.shuffle(reachable)
-                ordering.extend(reachable)
-        return ordering
-
-    @property
-    def entrances(self):
-        entrances = set([])
-        for route in self.routes.values():
-            for segment in route:
-                for zone in segment.entrances.values():
-                    entrances |= set(zone)
-        return entrances
-
-    @property
-    def locations(self):
-        locations = set([])
-        for e in self.entrances:
-            loc = get_appropriate_location(e.location)
-            locations.add(loc)
-        return locations
-
-    def get_unfilled_segment(self):
-        routes = list(self.routes.values())
-        random.shuffle(routes)
-        for route in routes:
-            candidates = filter(lambda c: c.addable and not c.entrances, route)
-            if candidates:
-                if random.randint(1, 5) != 5:
-                    segment = min(candidates, key=lambda c: c.reachability_factor)
-                else:
-                    segment = random.choice(candidates)
-                return segment
-
-    def get_needy_segment(self, randomize=True):
-        neediness_factor = lambda d: (float(len(d.keys())) /
-                                      sum([len(v) for v in d.values()]))
-
-        def neediness_factor(segment):
-            s = segment.entrances
-            denom = 0
-            numer = len(s.keys())
-            for v in s.values():
-                denom += len(v)
-            denom = denom - segment.numexits
-            if denom <= 0:
-                return 1000000
-            return float(numer) / denom
-
-        routes = list(self.routes.values())
-        segments = [s for r in routes for s in r if s.addable]
-        segments = sorted(segments, key=lambda s: neediness_factor(s))
-        if randomize:
-            while random.randint(1, 3) == 3:
-                if len(segments) > 2:
-                    segments = segments[:-1]
-        segment = segments[-1]
-        return segment
-
-    def set_starting(self, starting):
-        self.starting = []
-        for a, b in starting:
-            self.starting.append((SIMPLE, int(a), [int(b)]))
-
-    def set_ending(self, ending):
-        self.ending = []
-        for a, b in ending:
-            self.ending.append((SIMPLE, int(a), [int(b)]))
-
-    def add_checkpoint(self, simple, optional, directional):
-        assert len(simple + optional + directional) <= 3
-        rule = []
-        for a, b in simple:
-            a, b = int(a), int(b)
-            rule.append((SIMPLE, a, [b]))
-        for a, options in optional:
-            a, options = int(a), map(int, options)
-            rule.append((OPTIONAL, a, options))
-        for a, fro, to in directional:
-            a, fro, to = int(a), int(fro), int(to)
-            rule.append((DIRECTIONAL, a, (fro, to)))
-        for subrule in rule:
-            assert type(subrule[2]) in [list, tuple]
-        self.checkpoints.append(rule)
-
-    def construct_check_routes(self):
-        random.shuffle(self.checkpoints)
-        routes = dict([(i, []) for i in range(3)])
-
-        for rule in [self.starting] + self.checkpoints + [self.ending]:
-            parties = range(3)
-            random.shuffle(parties)
-            assert len(parties) >= len(rule)
-            if rule == self.starting:
-                hard = self.hardstart
-            elif rule == self.ending:
-                hard = self.hardend
-            else:
-                hard = False
-            for party, subrule in zip(parties, rule):
-                ruletype, mapid, parameters = subrule
-                crs = CheckRoomSet()
-                crs.add_rule(ruletype, mapid, parameters, reachable=not hard)
-                for p in parameters:
-                    for (a, b), (c, d) in si.oneways:
-                        if mapid == a and p == b:
-                            candidates = filter(lambda crs: crs.addable, routes[party])
-                            precrs = random.choice(candidates)
-                            precrs.add_rule(SIMPLE, c, [d], reachable=not hard)
-                if (routes[party] and not routes[party][-1].addable and
-                        not crs.addable):
-                    crs2 = CheckRoomSet()
-                    routes[party].append(crs2)
-                    crs2.numexits = 2
-
-                if rule in [self.starting, self.ending]:
-                    crs.numexits = 1
-                else:
-                    crs.numexits = 2
-
-                routes[party].append(crs)
-
-        for route in routes.values():
-            for crs in route:
-                for (mapid, entid) in si.removes | si.nochanges:
+        starter = max(self.clusters, key=lambda c: len(c.entrances))
+        while True:
+            links = []
+            done_ents = set([])
+            done_clusts = set([starter])
+            clusters = self.clusters
+            random.shuffle(clusters)
+            for c in clusters:
+                if c in done_clusts:
                     continue
-                    crs.remove_entrance(mapid, entid)
+                candidates = [c2 for c2 in done_clusts
+                              if set(c2.entrances) - done_ents]
+                if not candidates:
+                    break
+                chosen = random.choice(candidates)
+                acands = [e for e in c.entrances if e not in done_ents]
+                bcands = [e for e in chosen.entrances if e not in done_ents]
+                a, b = random.choice(acands), random.choice(bcands)
+                done_clusts.add(c)
+                done_ents.add(a)
+                done_ents.add(b)
+                links.append((a, b))
+            if done_clusts == set(self.clusters):
+                break
+        self.links = links
 
-        self.routes = routes
+    def fill_out(self):
+        linked = self.linked_entrances
+        links = []
+        unlinked = []
+        for cluster in self.clusters:
+            entrances = [e for e in cluster.entrances if e not in linked]
+            random.shuffle(entrances)
+            if ANCIENT:
+                unlinked.extend(entrances)
+            else:
+                if len(cluster.entrances) <= 4:
+                    unlinked.extend(entrances)
+                else:
+                    diff = len(cluster.entrances) - len(entrances)
+                    if diff < 3:
+                        remaining = 3 - diff
+                        unlinked.extend(entrances[:remaining])
+
+        if not unlinked:
+            return
+        random.shuffle(unlinked)
+
+        locids = [e.location.locid for e in unlinked]
+        maxlocid = max(locids, key=lambda l: locids.count(l))
+        mosts = [e for e in unlinked if e.location.locid == maxlocid]
+        lesses = [e for e in unlinked if e not in mosts]
+        for m in mosts:
+            if not lesses:
+                break
+            l = random.choice(lesses)
+            links.append((m, l))
+            lesses.remove(l)
+            unlinked.remove(l)
+            unlinked.remove(m)
+
+        extra = None
+        while unlinked:
+            if len(unlinked) == 1:
+                extra = unlinked[0]
+                break
+            u1 = unlinked.pop()
+            u2 = unlinked.pop()
+            links.append((u1, u2))
+
+        self.links += links
+        return extra
+
+
+class Route:
+    def __init__(self, segments):
+        self.segments = segments
+
+    def determine_need(self):
+        for segment in self.segments:
+            segment.determine_need()
+
+    @property
+    def consolidated_oneways(self):
+        consolidated = []
+        for segment in self.segments:
+            consolidated.extend(segment.oneway_entrances)
+        return consolidated
+
+    @property
+    def consolidated_clusters(self):
+        consolidated = []
+        for segment in self.segments:
+            consolidated.extend(segment.consolidated_clusters)
+        return consolidated
+
+    @property
+    def consolidated_links(self):
+        consolidated = []
+        for segment in self.segments:
+            consolidated.extend(segment.consolidated_links)
+        return consolidated
+
+    @property
+    def consolidated_entrances(self):
+        consolidated = []
+        for segment in self.segments:
+            consolidated.extend(segment.consolidated_entrances)
+        return consolidated
+
+    def check_links(self):
+        for segment in self.segments:
+            segment.check_links()
+        linked = []
+        for a, b in self.consolidated_links:
+            linked.append(a)
+            linked.append(b)
+        assert len(linked) == len(set(linked))
+
+    def __repr__(self):
+        display = "\n---\n".join([str(s) for s in self.segments])
+
+        return display
 
 
 def parse_checkpoints():
-    rr = None
-    rrs = []
     if ANCIENT:
         checkpoints = ANCIENT_CHECKPOINTS_TABLE
     else:
         checkpoints = TOWER_CHECKPOINTS_TABLE
+
+    def ent_text_to_ints(room, single=False):
+        locid, entids = room.split(':')
+        locid = int(locid)
+        if '|' in entids:
+            entids = entids.split('|')
+        elif ',' in entids:
+            entids = entids.split(',')
+        elif '>' in entids:
+            entids = entids.split('>')[:1]
+        else:
+            entids = [entids]
+        entids = map(int, entids)
+        if single:
+            assert len(entids) == 1
+            entids = entids[0]
+        return locid, entids
+
+    done, fixed, remove, oneway = [], [], [], []
+    routes = [list([]) for _ in xrange(3)]
     for line in open(checkpoints):
         line = line.strip()
-        if not line:
+        if not line or line[0] == '#':
             continue
-        if line[0] in '#&%-' or '>>' in line:
-            continue
-        elif line[0] == '!':
-            # set new dungeon matrix with given positions
-            line = line[1:]
-            if line[0] == '!':
-                line = line[1:]
-                hardstart = True
-            else:
-                hardstart = False
-            mappoints = line.split(',')
-            mappoints = [tuple(m.split(':')) for m in mappoints]
-            rr = RouteRouter(mappoints)
-            rr.starter = tuple([(int(a), int(b)) for a, b in mappoints])
-            rr.hardstart = hardstart
-            rr.rank = len(rrs)
-            rrs.append(rr)
-        elif line[0] == '$':
-            line = line[1:]
-            if line[0] == '$':
-                line = line[1:]
-                hardend = True
-            else:
-                hardend = False
-            mappoints = line.split(',')
-            mappoints = [tuple(m.split(':')) for m in mappoints]
-            rr.set_ending(mappoints)
-            rr.hardend = hardend
-            rr = None
-        elif line[0] == 'R':
+        if line[0] == 'R':
             rank = int(line[1:])
-            restrooms = get_unused_locations()[:3]
-            colisseum = get_location(0x19d)
-            for r in restrooms:
-                r.copy(colisseum)
-                r.repurposed = True
-                r.restrank = rank
-                r.modname = "Rest Room"
-                r.npcs = []
-                r.events = []
-                r.fill_battle_bg(colisseum.locid)
-                r.entrance_set.entrances = [e for e in r.entrance_set.entrances
-                                            if e.entid == 3]
-                r.backup_entrances()
-            simple = [(str(r.locid), "3") for r in restrooms]
-            rr.add_checkpoint(simple, [], [])
-        else:
-            items = line.split(',')
-            directional = []
-            optional = []
-            simple = []
-            for item in items:
-                loc, entrances = tuple(item.split(':'))
-                if '>' in entrances:
-                    # entrances that must be used, and in a specific order
-                    fro, to = tuple(entrances.split('>'))
-                    directional.append((loc, fro, to))
-                elif '|' in entrances:
-                    # entrances that must be used, in no specific order
-                    options = entrances.split('|')
-                    optional.append((loc, options))
-                else:
-                    # one entrance
-                    simple.append((loc, entrances))
-            rr.add_checkpoint(simple, optional, directional)
-
-    for line in open(checkpoints):
-        line = line.strip()
-        if not line:
-            continue
-        if line[0] in '#!$':
-            continue
+            for route in routes:
+                route[-1].append(("R", rank))
         elif line[0] == '&':
-            # these entrances and exits must not be changed
-            line = line[1:]
-            loc, entrances = tuple(line.split(':'))
-            entrances = tuple(entrances.split(','))
-            for e in entrances:
-                si.add_nochange((loc, e))
+            locid, entids = ent_text_to_ints(line[1:])
+            for e in entids:
+                fixed.append((locid, e))
         elif line[0] == '-':
-            # useless entrances to delete
-            line = line[1:]
-            loc, entrances = tuple(line.split(':'))
-            entrances = tuple(entrances.split(','))
-            for e in entrances:
-                si.add_remove((loc, e))
-        elif line[0] == '%':
-            # these should lead nowhere, or backwards
-            line = line[1:]
-            for rr in rrs:
-                si.add_deadend(tuple(line.split(':')))
+            locid, entids = ent_text_to_ints(line[1:])
+            for e in entids:
+                remove.append((locid, e))
         elif '>>' in line:
-            # one way paths
-            fro, to = tuple(line.split('>>'))
-            fro = tuple(fro.split(':'))
-            to = tuple(to.split(':'))
-            si.add_oneway((fro, to))
-
-    return rrs
-
-
-def assign_maps(rrs, maps=None, new_entrances=None):
-    if maps is None:
-        maps = towerlocids
-
-    location_entrances = []
-    for m in maps:
-        location = locdict[m]
-        location_entrances.append(location.entrances)
-
-    if new_entrances:
-        for e in new_entrances:
-            location_entrances.append(e.reachable_entrances)
-
-    used_entrances = set([en for rr in rrs for en in rr.entrances])
-
-    def validate(e):
-        if e.location is None:
-            return False
-
-        invalid = si.nochanges | si.removes
-        if (e.location.locid, e.entid) in invalid:
-            return False
-
-        return True
-
-    def validate2(c, entrances):
-        if not c.addable:
-            return False
-        locid = entrances[0].location.locid
-        if locid in c.entrances:
-            return False
-        return True
-
-    def get_appropriate_rr(locid):
-        candidates = []
-        for rr in rrs:
-            for e in rr.entrances:
-                if e.location.locid == locid:
-                    candidates.append(rr)
-                    break
-        if not candidates:
-            return random.choice(rrs)
+            line = line.split('>>')
+            line = [ent_text_to_ints(s, single=True) for s in line]
+            first, second = tuple(line)
+            oneway.append((first, second))
         else:
-            return max(candidates, key=lambda c: c.rank)
-
-    for base_entrances in reversed(location_entrances):
-        assert len(set([e.location.locid for e in base_entrances])) == 1
-        locid = base_entrances[0].location.locid
-
-        base2_entrances = copy(base_entrances)
-        base2_entrances = set([e for e in base2_entrances if validate(e)])
-
-        while True:
-            entrances = base2_entrances - used_entrances
-            if not entrances:
-                break
-
-            if ANCIENT and locid in towerlocids and locid != 334:
-                rr = get_appropriate_rr(locid)
+            if line.startswith("!"):
+                line = line.strip("!")
+                for route in routes:
+                    route.append([])
+            elif line.startswith("$"):
+                line = line.strip("$")
+                for route in routes:
+                    subroute = route[-1]
+                    head, tail = subroute[0], subroute[1:]
+                    random.shuffle(tail)
+                    route[-1] = [head] + tail
             else:
-                rr = random.choice(rrs)
+                random.shuffle(routes)
+            rooms = line.split(',')
+            chosenrooms = []
+            for room in rooms:
+                locid, entids = ent_text_to_ints(room)
+                candidates = [(locid, entid) for entid in entids]
+                candidates = [c for c in candidates if c not in done]
+                chosen = random.choice(candidates)
+                chosenrooms.append(chosen)
+                done.append(chosen)
+            for room, route in zip(chosenrooms, routes):
+                route[-1].append(room)
 
-            if len(entrances) > 2:
-                segment = rr.get_needy_segment()
-            else:
-                segment = None
+    for first, second in oneway:
+        done = False
+        for route in routes:
+            for subroute in route:
+                if first in subroute:
+                    index = subroute.index(first)
+                    index = random.randint(1, index+1)
+                    subroute.insert(index, second)
+                    done = True
+        if not done:
+            raise Exception("Unknown oneway rule")
 
-            entrances = sorted(entrances, key=lambda e: e.entid)
-            if segment is None:
-                while True:
-                    route = random.choice(rr.routes)
+    for route in routes:
+        for i in range(len(route)):
+            route[i] = Segment(route[i])
 
-                    candidates = [c for c in route if validate2(c, entrances)]
-                    if not candidates:
-                        continue
-                    else:
-                        segment = random.choice(candidates)
-                        break
+    for index in range(len(routes)):
+        routes[index] = Route(routes[index])
 
-            e = random.choice(entrances)
-            usednow = segment.add_entrance(e.location.locid, e.entid)
-            used_entrances |= set(usednow)
-
-
-def get_all_entrances(filename=None):
-    global entrance_candidates
-    if entrance_candidates:
-        return entrance_candidates
-    entrance_candidates = [e for l in get_locations() for e in l.entrances]
-
-    unused_locations = get_unused_locations(filename)
-
-    def validate(e):
-        # TODO: remove maps with adjacent entrances
-        if e.location.locid <= 2:
-            return False
-        if e.location.locid in towerlocids:
-            return False
-        if e.location.locid in unused_locations:
-            return False
-        if e.location.locid in map_bans:
-            return False
-        reachable = e.reachable_entrances
-        if len(reachable) < 1 + random.randint(0, 2):
-            return False
-        if (len(reachable) <= 2 and
-                len(e.location.chests) <= random.randint(0, 1) and
-                random.randint(1, 10) != 10):
-            return False
-        for e2, e3 in product(reachable, reachable):
-            value = abs(e2.x - e3.x) + abs(e2.y - e3.y)
-            if value == 1:
-                return False
-        if (e.x <= 1 or e.y <= 1 or
-                e.x == (e.location.layer1width-2) or
-                e.y == (e.location.layer1height-2)):
-            if e.mirror is None or e.mirror.mirror is None:
-                return False
-        return True
-
-    entrance_candidates = [e for e in entrance_candidates if validate(e)]
-    return get_all_entrances()
+    FIXED_ENTRANCES.extend(fixed)
+    REMOVE_ENTRANCES.extend(remove)
+    return routes
 
 
-def get_new_entrances(filename):
-    candidates = get_all_entrances(filename)
-    random.shuffle(candidates)
-    used_locations = []
-    chosen = []
-    num_entrances = 0
-    for c in candidates:
-        locsig = (c.location.layer1ptr, c.location.palette_index)
-        if locsig in used_locations:
-            continue
-        numreach = len(c.reachable_entrances)
-        if num_entrances + numreach >= MAX_NEW_EXITS:
-            continue
-        if not ANCIENT:
-            num_entrances += min(numreach, 5)
-        else:
-            num_entrances += numreach
-        chosen.append(c)
-        used_locations.append(locsig)
-        if len(chosen) == MAX_NEW_MAPS:
-            break
+def assign_maps(routes):
+    clusters = get_clusters()
+    new_clusters = clusters
+    for route in routes:
+        for segment in route.segments:
+            for cluster in segment.clusters:
+                if cluster in new_clusters:
+                    new_clusters.remove(cluster)
 
-    return chosen
-
-
-def rank_maps(rrs):
-    rrs = sorted(rrs, key=lambda rr: rr.rank)
-    rrlocs = []
-    ordering = []
-    for rr in rrs:
-        ordering.extend(rr.rank_maps())
-        for l in rr.locations:
-            rrlocs.append(l)
-            if not hasattr(l, "routerank"):
-                l.routerank = rr.rank
-            else:
-                l.routerank = min(l.routerank, rr.rank)
-
-    for i, l in enumerate(ordering):
-        l.ancient_rank = (i+1) * 1000
-
+    # first phase - bare minimum
+    if not ANCIENT:
+        max_new_maps = 23
+    else:
+        max_new_maps = 313
+    best_clusters = [c for c in new_clusters if len(c.entrances) >= 3]
     while True:
-        if all([hasattr(l, "ancient_rank") for l in rrlocs]):
-            break
-        for l in rrlocs:
-            if hasattr(l, "ancient_rank"):
+        random.shuffle(best_clusters)
+        done_maps, done_clusters = set([]), set([])
+        for cluster in best_clusters:
+            if cluster.locid in done_maps:
                 continue
-            reachable = l.reachable_locations
-            reachable = [r for r in reachable if hasattr(r, "ancient_rank")]
-            if reachable:
-                reachable = sorted(reachable, key=lambda r: r.ancient_rank)
-                l.ancient_rank = reachable[0].ancient_rank + 1
+            chosen = None
+            for route in routes:
+                for segment in route.segments:
+                    for inter in segment.intersegments:
+                        if chosen is None or chosen.need < inter.need:
+                            chosen = inter
+            if chosen.need > 0:
+                chosen.add_cluster(cluster, need=True)
+                done_maps.add(cluster.locid)
+                done_clusters.add(cluster.clusterid)
+        if len(done_maps) <= max_new_maps:
+            break
+        else:
+            for route in routes:
+                for segment in route.segments:
+                    segment.intersegments = [InterSegment()
+                                             for _ in segment.intersegments]
 
-    assert set(ordering) < set(rrlocs)
-    for l in rrlocs:
-        if ((hasattr(l, "secret_treasure") and l.secret_treasure) or
-                hasattr(l, "restrank")):
-            l.ancient_rank = 0
-    get_location(334).ancient_rank = 0
+    # second phase -supplementary
+    random.shuffle(new_clusters)
+    for cluster in new_clusters:
+        if cluster.clusterid in done_clusters:
+            continue
+        if cluster.locid not in towerlocids:
+            if (cluster.locid not in done_maps
+                    and len(done_maps) >= max_new_maps):
+                continue
+            if (cluster.locid in done_maps and len(done_maps) >= max_new_maps
+                    and get_location(cluster.locid).longentrances):
+                continue
+        rank = None
+        if cluster.locid in done_maps:
+            for route in routes:
+                for segment in route.segments:
+                    for inter in segment.intersegments:
+                        for c2 in inter.clusters:
+                            if c2.locid == cluster.locid:
+                                temp = route.segments.index(segment)
+                                if rank is None:
+                                    rank = temp
+                                else:
+                                    assert rank == temp
+        if len(cluster.entrances) == 1:
+            candidates = []
+            for route in routes:
+                for (i, segment) in enumerate(route.segments):
+                    if rank is not None and i != rank:
+                        continue
+                    for inter in segment.intersegments:
+                        if inter.need < 0:
+                            candidates.append(inter)
+            if candidates:
+                chosen = random.choice(candidates)
+                chosen.add_cluster(cluster, need=True)
+                done_maps.add(cluster.locid)
+                done_clusters.add(cluster.clusterid)
+        elif len(cluster.entrances) >= 2:
+            route = random.choice(routes)
+            if rank is not None:
+                segment = route.segments[rank]
+            else:
+                segment = random.choice(route.segments)
+            chosen = random.choice(segment.intersegments)
+            chosen.add_cluster(cluster, need=True)
+            done_maps.add(cluster.locid)
+            done_clusters.add(cluster.clusterid)
 
-    rerank = [l for l in rrlocs if l.ancient_rank > 0]
-    rerank = sorted(rerank, key=lambda l: l.ancient_rank)
-    for i, l in enumerate(rerank):
-        l.ancient_rank = i+1
+    for route in routes:
+        for segment in route.segments:
+            segment.interconnect()
 
 
 def randomize_tower(filename, ancient=False):
-    if ancient:
-        set_max_maps(200, ancient=True)
-    else:
-        set_max_maps(47)
+    global ANCIENT
+    ANCIENT = ancient
+    routes = parse_checkpoints()
+    for route in routes:
+        route.determine_need()
+    assign_maps(routes)
+    for route in routes:
+        for segment in route.segments:
+            segment.fill_out()
+    for route in routes:
+        route.check_links()
 
-    for l in get_locations(filename=filename):
-        locdict[l.locid] = l
+    newlocations, unused_maps = remap_maps(routes)
+    print len(newlocations), len(unused_maps)
+    update_locations(newlocations)
 
-    def make_matrices():
-        for rr in rrs:
-            assert len(rr.routes) == 3
-            for route in rr.routes.values():
-                for segment in route:
-                    if segment.addable:
-                        m = segment.generate_reachability_matrix()
-                        if m is None:
-                            return False
-        return True
-
-    new_entrances = get_new_entrances(filename=filename)
-    counter = 0
-
-    while True:
-        clear_unused_locations()
-        rrs = parse_checkpoints()
-        si.remove_removes()
-        for rr in rrs:
-            rr.construct_check_routes()
-
-        new_entrances = get_new_entrances(filename=filename)
-        assign_maps(rrs, new_entrances=new_entrances)
-        done = make_matrices()
-        if done:
-            break
-        counter += 1
-        if not counter % 10:
-            stdout.write('.')
-            stdout.flush()
-    print
-
-    usedlinks = set([])
-    for rr in rrs:
-        for i, route in enumerate(rr.routes.values()):
-            for sega, segb in zip(route, route[1:]):
-                connect_segments(sega, segb)
-
-            for segment in route:
-                links = set(segment.links)
-                if usedlinks & links:
-                    import pdb; pdb.set_trace()
-                    raise Exception("Duplicate entrance detected.")
-                usedlinks |= links
-                segment.establish_entrances()
-
-    pairs, thirdpairs = [], []
-    for rr in rrs:
-        for route in rr.routes.values():
-            unwed, unwedvals = {}, {}
-            thirdwheels = []
-            segvals = dict([(b, a) for (a, b) in enumerate(route)])
-            for segment in route:
-                a, b = segment.get_must_assign()
-                pairs.extend(a)
-                for seg, u in b:
-                    key = segvals[seg]
-                    if key not in unwed:
-                        unwed[key] = []
-                    unwed[key].append(u)
-                    unwedvals[u] = key
-
-            for key in sorted(unwed):
-                for u in unwed[key]:
-                    candidates = []
-                    if key-1 in unwed:
-                        candidates.extend(unwed[key-1])
-                    if key+1 in unwed:
-                        candidates.extend(unwed[key+1])
-                    if candidates:
-                        u2 = random.choice(candidates)
-                        pairs.append((u, u2))
-                        unwed[unwedvals[u]].remove(u)
-                        unwed[unwedvals[u2]].remove(u2)
-                    else:
-                        thirdwheels.append(u)
-
-            for t in thirdwheels:
-                val = unwedvals[t]
-                candidates = []
-                for segment in route:
-                    if segvals[segment] <= val:
-                        entrancess = segment.entrances.values()
-                        for entrances in entrancess:
-                            candidates.extend(entrances)
-                realcands = [c for c in candidates if
-                             c.location.locid != t.location.locid]
-                if len(realcands) == 0:
-                    realcands = list(candidates)
-                if len(realcands) > 1 and t in realcands:
-                    realcands.remove(t)
-                c = random.choice(realcands)
-                thirdpairs.append((t, c))
-
-    for (a, b) in pairs:
-        sig = a.signature
-        sig2 = b.signature
-        connect_entrances(sig, sig2)
-        connect_entrances(sig2, sig)
-
-    for (t, c) in thirdpairs:
-        sig = t.signature
-        sig2 = c.signature
-        connect_entrances(sig, sig2)
-
-    for rr in rrs:
-        for route in rr.routes.values():
-            for segment in route:
-                a, b = segment.get_must_assign()
-                for mapid in segment.entrances:
-                    loc = get_appropriate_location(locdict[mapid])
-                    loc.validate_entrances()
-                if a or b:
-                    raise Exception("NOPE")
-
-    for a, b in locexchange.items():
-        if b.locid != a.locid:
-            b.entrance_set.convert_longs()
-
-    make_secret_treasure_room()
-
-    if not ancient:
-        randomize_fanatics()
-
-    from locationrandomizer import update_locations
-    update_locations(locexchange.values())
-    rank_maps(rrs)
-    if ANCIENT:
-        assert len([l for l in get_locations() if
-                    hasattr(l, "restrank")]) == 12
-
-
-def make_secret_treasure_room():
-    from itemrandomizer import get_secret_item
-    candidates = []
-    for line in open(TREASURE_ROOMS_TABLE):
-        locid, entid, chestid = tuple(map(int, line.strip().split(',')))
-        location = get_location(locid)
-        if location in locexchange:
-            continue
-        entrance = location.get_entrance(entid)
-        chest = location.get_chest(chestid)
-        candidates.append((location, entrance, chest))
-    location, entrance, chest = random.choice(candidates)
-    oldlocation = location
-    location = get_appropriate_location(oldlocation, flair=False)
-
-    c = ChestBlock(pointer=None, location=location.locid)
-    c.copy(chest)
-    c.set_content_type(0x40)
-    item = get_secret_item()
-    c.contents = item.itemid
-    c.set_new_id()
-    c.do_not_mutate = True
-    c.ignore_dummy = True
-    location.chests = [c]
-    location.secret_treasure = True
-
-    e = Entrance(None)
-    e.copy(entrance)
-    #location.entrance_set.entrances = [e]
-    e.set_location(location)
-    assert len(location.entrances) == 0
-
-    belt = get_location(287)
-    e2 = [ee for ee in belt.entrances if ee.x == 36 and ee.y == 25][0]
-    belt.entrance_set.entrances.remove(e2)
-    sig = entrance.signature
-    sig2 = e2.signature
-    connect_entrances(sig, sig2)
-    connect_entrances(sig2, sig)
-
-    location.attacks = 0
-    location.music = 21
-
-
-def randomize_fanatics():
-    stairs = [get_location(i) for i in [363, 359, 360, 361]]
-    pitstops = [get_location(i) for i in [365, 367, 368, 369]]
-    num_new_levels = random.randint(0, 1) + random.randint(1, 2)
-    exchange_ids = [l.locid for l in locexchange.values()]
-    unused_locations = get_unused_locations()
-    unused_locations = [u for u in unused_locations if
-                        u.locid not in exchange_ids]
-    fsets = get_new_fsets("fanatics", 10, supplement=False)
-    for _ in xrange(num_new_levels):
-        stair = unused_locations.pop()
-        stop = unused_locations.pop()
-        stair.copy(random.choice(stairs[1:-1]))
-        stop.copy(random.choice(pitstops[1:]))
-        add_location_map("Fanatics Tower", stair.locid)
-        add_location_map("Fanatics Tower", stop.locid)
-        index = random.randint(1, len(stairs)-1)
-        stairs.insert(index, stair)
-        pitstops.insert(index, stop)
-
-        chest = stop.chests[0]
-        chest.set_new_id()
-
-        entrance = stop.entrances[0]
-        entrance.dest = (entrance.dest & 0xFE00) | (stair.locid & 0x1FF)
-
-        entrance = sorted(stair.entrances, key=lambda e: e.y)[1]
-        entrance.dest = (entrance.dest & 0xFE00) | (stop.locid & 0x1FF)
-
-        stair.setid = random.choice(fsets).setid
-        stop.setid = random.choice(fsets).setid
-
-    for a, b in zip(stairs, stairs[1:]):
-        lower = sorted(a.entrances, key=lambda e: e.y)[0]
-        upper = sorted(b.entrances, key=lambda e: e.y)[-1]
-        lower.dest = (lower.dest & 0xFE00) | (b.locid & 0x1FF)
-        upper.dest = (upper.dest & 0xFE00) | (a.locid & 0x1FF)
-
-    for stop in pitstops:
-        if random.choice([True, False]):
-            continue
-        index = pitstops.index(stop)
-        if index == 0:
-            continue
-        index2 = index + random.choice([-1, -1, -2])
-        if index2 < 0:
-            index2 = 0
-        stair = stairs[index2]
-        entrance = stop.entrances[0]
-        entrance.dest = (entrance.dest & 0xFE00) | (stair.locid & 0x1FF)
+    return routes
 
 
 if __name__ == "__main__":
-    #randomize_tower(filename="program.rom")
-    pass
+    from randomizer import get_monsters
+    get_monsters(filename="program.rom")
+    get_formations(filename="program.rom")
+    get_fsets(filename="program.rom")
+    get_locations(filename="program.rom")
+
+    routes = randomize_tower("program.rom", ancient=True)
+    for route in routes:
+        print route
+        print
+        print

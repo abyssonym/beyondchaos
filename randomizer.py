@@ -4598,7 +4598,8 @@ h   Organize rages by highest level first'''
     reseed()
 
     if 'dearestmolulu' in activated_codes or ('f' in flags and 'b' in flags):
-        manage_encounter_rate()
+        if 'ancientcave' not in activated_codes:
+            manage_encounter_rate()
     reseed()
     reseed()
 

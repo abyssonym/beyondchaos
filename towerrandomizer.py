@@ -20,7 +20,7 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x131, 0x132,  # Tzen WoR?
              0x139, 0x13a, 0x13b, 0x13c,  # Phoenix Cave
              0x13d,  # Three Stooges
-             0x143, 0x144,  # Albrook
+             0x141, 0x143, 0x144,  # Albrook
              0x154, 0x155, 0x157, 0x158,  # Thamasa
              0xe7, 0xe9, 0xea, 0xeb,  # opera with dancers?
              0x189, 0x18a,  # floating continent
@@ -163,6 +163,33 @@ def remap_maps(routes):
         newlocation.setid = 0
         newlocation.ancient_rank = 0
         newlocation.copied = copylocid
+
+        adjents = []
+        for ent in newlocation.entrances:
+            for clust in locclusters:
+                if isinstance(clust, RestStop):
+                    continue
+                assert clust.locid == newlocation.copied
+                if clust.has_adjacent_entrances:
+                    x, y = ent.x, ent.y
+                    for ent2 in clust.entgroups.keys():
+                        if ent2.x == ent.x and ent2.y == ent.y:
+                            break
+                    else:
+                        continue
+                    entgroup = clust.entgroups[ent2]
+                    for ent3 in entgroup:
+                        x3, y3 = ent3.x, ent3.y
+                        if x == x3 and y == y3:
+                            continue
+                        entrance = Entrance()
+                        entrance.x, entrance.y = x3, y3
+                        entrance.dest, entrance.destx, entrance.desty = (
+                            ent.dest, ent.destx, ent.desty)
+                        entrance.set_location(newlocation)
+                        adjents.append(entrance)
+        newlocation.entrance_set.entrances.extend(adjents)
+
         newlocations.append(newlocation)
 
     locations = get_locations()
@@ -229,6 +256,9 @@ class Cluster:
 
     @property
     def has_adjacent_entrances(self):
+        if hasattr(self, "_has_adjacent_entrances"):
+            return self._has_adjacent_entrances
+
         for e1 in self.entrances:
             for e2 in self.entrances:
                 if e1 == e2:
@@ -237,8 +267,49 @@ class Cluster:
                     raise Exception("ERROR: Overlapping entrances")
                 if ((e1.x == e2.x and abs(e1.y - e2.y) == 1) or
                         (abs(e1.x - e2.x) == 1 and e1.y == e2.y)):
-                    return True
-        return False
+                    self._has_adjacent_entrances = True
+                    return self.has_adjacent_entrances
+        self._has_adjacent_entrances = False
+        return self.has_adjacent_entrances
+
+    def remove_adjacent_entrances(self):
+        if not self.has_adjacent_entrances:
+            return
+
+        self.entgroups = {}
+        for e in self.entrances:
+            self.entgroups[e] = set([e])
+        for e1 in self.entrances:
+            for e2 in self.entrances:
+                if e1 == e2:
+                    continue
+                if ((e1.x == e2.x and abs(e1.y - e2.y) == 1) or
+                        (abs(e1.x - e2.x) == 1 and e1.y == e2.y)):
+                    self.entgroups[e1].add(e2)
+
+        for e1 in self.entgroups:
+            for e2 in self.entgroups[e1]:
+                assert self.entgroups[e1] == self.entgroups[e2]
+
+        entgroups = []
+        for entgroup in self.entgroups.values():
+            if entgroup not in entgroups:
+                entgroups.append(entgroup)
+
+        for eg1 in entgroups:
+            for eg2 in entgroups:
+                if eg1 == eg2:
+                    continue
+                assert eg1 & eg2 == set([])
+
+        for entgroup in entgroups:
+            if len(entgroup) > 1:
+                ent = random.choice(sorted(entgroup, key=lambda e: e.entid))
+                for e in entgroup:
+                    if e != ent:
+                        self.entrances.remove(e)
+
+        assert self.has_adjacent_entrances
 
     def add_entrance(self, entrance):
         e = Entrance()
@@ -854,7 +925,8 @@ def assign_maps(routes):
                 if cluster in new_clusters:
                     new_clusters.remove(cluster)
 
-    new_clusters = [c for c in new_clusters if not c.has_adjacent_entrances]
+    for c in new_clusters:
+        c.remove_adjacent_entrances()
 
     # first phase - bare minimum
     if not ANCIENT:

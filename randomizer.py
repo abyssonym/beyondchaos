@@ -4126,7 +4126,7 @@ def manage_ancient():
         for e in l.entrances:
             e.dest |= 0x800
         rank = l.ancient_rank
-        l.name_id = rank
+        l.name_id = min(rank, 0xFF)
 
         if not hasattr(l, "restrank") and 'f' not in flags:
             if not hasattr(l, "routerank"):

@@ -4141,6 +4141,8 @@ def manage_ancient():
                 l.music = 73
             elif l.routerank >= 4:
                 l.music = 75
+            elif hasattr(l, "secret_treasure") and l.secret_treasure:
+                pass
             else:
                 raise Exception
 
@@ -4223,12 +4225,13 @@ def manage_ancient():
         l.write_data(outfile)
         entranks = [e.destination.ancient_rank for e in l.entrances
                     if hasattr(e.destination, "ancient_rank")]
-        print l.locid, l.ancient_rank, l.routerank, ":",
-        print " ".join(["%s" % e for e in sorted(entranks)])
-        print l.fset
-        s = l.chest_contents.strip()
-        print s
-        print
+        if not hasattr(l, "secret_treasure"):
+            print l.locid, l.ancient_rank, l.routerank, ":",
+            print " ".join(["%s" % e for e in sorted(entranks)])
+            print l.fset
+            s = l.chest_contents.strip()
+            print s
+            print
 
 
 def randomize():
@@ -4597,9 +4600,10 @@ h   Organize rages by highest level first'''
             w.write_data(outfile)
     reseed()
 
-    if 'dearestmolulu' in activated_codes or ('f' in flags and 'b' in flags):
-        if 'ancientcave' not in activated_codes:
-            manage_encounter_rate()
+    if 'dearestmolulu' in activated_codes or (
+            'f' in flags and 'b' in flags and
+            'ancientcave' not in activated_codes):
+        manage_encounter_rate()
     reseed()
     reseed()
 

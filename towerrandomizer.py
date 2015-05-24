@@ -14,15 +14,18 @@ MAX_NEW_EXITS = 1000
 MAX_NEW_MAPS = None  # 23: 6 more for fanatics tower, 1 more for bonus
 ANCIENT = None
 PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
-             0x37, 0x81, 0x82, 0x88, 0x9c, 0xb6, 0xb8, 0xbd, 0xbe,
+             0x37, 0x81, 0x82, 0x88, 0x89, 0x99, 0x9c, 0xb6, 0xb8, 0xbd, 0xbe,
              0xd2, 0xd3, 0xd4, 0xd5, 0xd7, 0xfe, 0xff,
              0x100, 0x102, 0x103, 0x104, 0x105, 0x10c, 0x12e,
              0x131, 0x132,  # Tzen WoR?
              0x139, 0x13a, 0x13b, 0x13c,  # Phoenix Cave
              0x13d,  # Three Stooges
+             0x13e,
              0x141, 0x143, 0x144,  # Albrook
              0x154, 0x155, 0x157, 0x158,  # Thamasa
              0xe7, 0xe9, 0xea, 0xeb,  # opera with dancers?
+             0x187,  # sealed gate - layer issues
+             0x18f,  # same
              0x189, 0x18a,  # floating continent
              0x150, 0x164, 0x165, 0x19a, 0x19e]
 PROTECTED += range(359, 371)  # Fanatics Tower
@@ -932,7 +935,8 @@ def assign_maps(routes):
     if not ANCIENT:
         max_new_maps = 23
     else:
-        max_new_maps = 300
+        #max_new_maps = 300
+        max_new_maps = 40
     best_clusters = [c for c in new_clusters if len(c.entrances) >= 3]
     while True:
         random.shuffle(best_clusters)
@@ -1033,6 +1037,14 @@ def randomize_tower(filename, ancient=False):
         route.check_links()
 
     newlocations, unused_maps = remap_maps(routes)
+    mapid = unused_maps.pop()
+    beltroom = [l for l in newlocations if l.locid == 287][0]
+    newlocations.remove(beltroom)
+    treasure_room, beltroom = make_secret_treasure_room(mapid, beltroom)
+    newlocations.append(treasure_room)
+    newlocations.append(beltroom)
+    assert treasure_room.chests
+    assert len(beltroom.entrances) == 3
     update_locations(newlocations)
 
     for route in routes:
@@ -1042,6 +1054,55 @@ def randomize_tower(filename, ancient=False):
         print
 
     return routes
+
+
+def make_secret_treasure_room(mapid, beltroom):
+    from itemrandomizer import get_secret_item
+    candidates = []
+    for line in open(TREASURE_ROOMS_TABLE):
+        locid, entid, chestid = tuple(map(int, line.strip().split(',')))
+        location = get_location(locid)
+        entrance = location.get_entrance(entid)
+        chest = location.get_chest(chestid)
+        candidates.append((location, entrance, chest))
+    location, entrance, chest = random.choice(candidates)
+    newlocation = Location(mapid)
+    newlocation.copy(location)
+    newlocation.entrance_set.entrances = []
+    newlocation.events = []
+    newlocation.npcs = []
+
+    c = ChestBlock(pointer=None, location=newlocation.locid)
+    c.copy(chest)
+    c.set_content_type(0x40)
+    item = get_secret_item()
+    c.contents = item.itemid
+    c.set_new_id()
+    c.do_not_mutate = True
+    c.ignore_dummy = True
+    newlocation.chests = [c]
+    newlocation.secret_treasure = True
+    newlocation.ancient_rank = 0
+
+    e = Entrance(None)
+    e.copy(entrance)
+    e.set_location(newlocation)
+    e.destx, e.desty, e.dest = 36, 27, 287
+    newlocation.entrances.append(e)
+    assert len(newlocation.entrances) == 1
+
+    e2 = Entrance()
+    e2.x = 36
+    e2.y = 25
+    e2.destx, e2.desty, e2.dest = e.x, e.y, mapid
+    beltroom.entrance_set.entrances = [ent for ent in beltroom.entrances
+                                       if not (ent.x == 36 and ent.y == 25)]
+    beltroom.entrance_set.entrances.append(e2)
+
+    newlocation.attacks = 0
+    newlocation.setid = 0
+    newlocation.music = 21
+    return newlocation, beltroom
 
 
 if __name__ == "__main__":

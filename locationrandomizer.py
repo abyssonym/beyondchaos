@@ -194,9 +194,9 @@ class Zone():
                 area_name = "Unknown"
             return area_name
 
-    def set_formation_rate(self, setid, rate):
+    def set_formation_rate(self, setid=None, rate=0):
         for i, s in enumerate(self.setids):
-            if setid == s:
+            if setid is None or setid == s:
                 shift = (3-i)*2
                 self.rates &= (0xFF ^ (0x3 << shift))
                 self.rates |= (rate << shift)

@@ -4112,6 +4112,15 @@ def manage_ancient():
                 setattr(magicite, key, value)
             l.npcs.append(magicite)
 
+    # lower encounter rate
+    dungeon_rates = [0x38, 0, 0x20, 0, 0xb0, 0, 0x00, 1,
+                     0x1c, 0, 0x10, 0, 0x58, 0, 0x80, 0] + ([0]*16)
+    assert len(dungeon_rates) == 32
+    encrate_sub = Substitution()
+    encrate_sub.set_location(0xC2BF)
+    encrate_sub.bytestring = dungeon_rates
+    encrate_sub.write(outfile)
+
     maxrank = max(locations, key=lambda l: l.ancient_rank).ancient_rank
     for l in locations:
         for e in l.entrances:
@@ -4217,8 +4226,9 @@ def manage_ancient():
         print l.locid, l.ancient_rank, l.routerank, ":",
         print " ".join(["%s" % e for e in sorted(entranks)])
         print l.fset
-        print
         s = l.chest_contents.strip()
+        print s
+        print
 
 
 def randomize():

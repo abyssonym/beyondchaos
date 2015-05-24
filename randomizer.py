@@ -4225,6 +4225,7 @@ def manage_ancient():
         l.write_data(outfile)
         entranks = [e.destination.ancient_rank for e in l.entrances
                     if hasattr(e.destination, "ancient_rank")]
+        '''
         if not hasattr(l, "secret_treasure"):
             print l.locid, l.ancient_rank, l.routerank, ":",
             print " ".join(["%s" % e for e in sorted(entranks)])
@@ -4232,6 +4233,7 @@ def manage_ancient():
             s = l.chest_contents.strip()
             print s
             print
+        '''
 
 
 def randomize():

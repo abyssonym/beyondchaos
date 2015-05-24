@@ -1158,11 +1158,10 @@ def randomize_tower(filename, ancient=False):
     if not ANCIENT:
         randomize_fanatics(unused_maps)
 
+    '''
     for route in routes:
         print route
-        print
-        print
-        print
+    '''
 
     return routes
 

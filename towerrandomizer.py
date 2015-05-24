@@ -40,6 +40,54 @@ newfsets = {}
 clusters = None
 
 
+def get_new_formations(areaname, supplement=True):
+    from randomizer import get_namelocdict
+    namelocdict = get_namelocdict()
+    setids = set([])
+    for key in namelocdict:
+        if type(key) is str and areaname in key:
+            setids |= set(namelocdict[key])
+
+    fsets = [fs for fs in get_fsets() if fs.setid in setids]
+    formations = set([])
+    for fs in fsets:
+        formations |= set(fs.formations)
+
+    if supplement:
+        lowest = min(formations, key=lambda f: f.rank()).rank()
+        highest = max(formations, key=lambda f: f.rank()).rank()
+        supplemental = [f for f in get_formations() if
+                        not f.has_boss and lowest < f.rank() <= highest and
+                        not f.battle_event]
+        supplemental = sorted(supplemental, key=lambda f: f.rank())
+        formations |= set([f for f in supplemental if
+                           f.ambusher or f.inescapable])
+        supplemental = supplemental[len(supplemental)/2:]
+        formations |= set(supplemental)
+
+    return sorted(formations, key=lambda f: f.formid)
+
+
+def get_new_fsets(areaname, number=10, supplement=True):
+    if areaname in newfsets:
+        return newfsets[areaname]
+    newfsets[areaname] = []
+    formations = get_new_formations(areaname, supplement=supplement)
+    fsets = get_fsets()
+    unused = [fs for fs in fsets if fs.unused and len(fs.formations) == 4]
+    tempforms = []
+    for _ in xrange(number):
+        if len(tempforms) < 4:
+            tempforms = list(formations)
+        setforms = random.sample(tempforms, 4)
+        fset = unused.pop()
+        fset.formids = [f.formid for f in setforms]
+        tempforms = [f for f in tempforms if f not in setforms]
+        newfsets[areaname].append(fset)
+
+    return get_new_fsets(areaname)
+
+
 def remap_maps(routes):
     conlinks = []
     cononeways = []
@@ -243,6 +291,16 @@ def remap_maps(routes):
     for i, loc in enumerate(ranked_locations):
         loc.ancient_rank = i
         loc.make_tower_basic()
+        if not ANCIENT:
+            if loc.locid not in towerlocids:
+                loc.make_tower_flair()
+                loc.unlock_chests(200, 1000)
+                fsets = get_new_fsets("kefka's tower", 20)
+                fset = random.choice(fsets)
+                for formation in fset.formations:
+                    formation.set_music(6)
+                    formation.set_continuous_music()
+                loc.setid = fset.setid
 
     return newlocations, unused_maps
 
@@ -966,6 +1024,8 @@ def assign_maps(routes):
     for cluster in new_clusters:
         if cluster.clusterid in done_clusters:
             continue
+        if cluster.locid in done_maps and not ANCIENT:
+            continue
         if cluster.locid not in towerlocids:
             if (cluster.locid not in done_maps
                     and len(done_maps) >= max_new_maps):
@@ -1067,6 +1127,7 @@ def make_secret_treasure_room(mapid, beltroom):
     location, entrance, chest = random.choice(candidates)
     newlocation = Location(mapid)
     newlocation.copy(location)
+    newlocation.make_tower_basic()
     newlocation.entrance_set.entrances = []
     newlocation.events = []
     newlocation.npcs = []

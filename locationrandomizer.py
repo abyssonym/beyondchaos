@@ -44,13 +44,8 @@ for line in open(LOCATION_MAPS_TABLE):
         maplocations_reverse[a].append(locid)
 
 
-def add_location_map(location_name, mapid, strict=True):
+def add_location_map(location_name, mapid):
     assert location_name in maplocations_reverse
-    if strict:
-        try:
-            assert mapid not in maplocations
-        except:
-            import pdb; pdb.set_trace()
     maplocations_reverse[location_name] = sorted(
         maplocations_reverse[location_name] + [mapid])
     maplocations[mapid] = location_name
@@ -487,6 +482,7 @@ class Location():
         self.attacks = towerloc.attacks
         self.music = towerloc.music
         self.make_warpable()
+        add_location_map("Final Dungeon", self.locid)
 
     def make_warpable(self):
         self.layers_to_animate |= 2

@@ -1,43 +1,38 @@
-!334:0,334:8,334:12
-# Co-op locations
-334:10,334:3|7
+!334:0,334:8,334:11|12
+# first switch room
 292:0,292:1|2
-# Inferno
-410:0|9
+# second switch room
+334:5|10,334:3|7
+# Dragons
+335:0|1,354:5|6
+# Inferno and Atma
+410:0|9,331:0
 &410:1,4,5,8
 -410:2,3,6,7
-# Dragons
-354:5,335:0
-# Atma
 # there's only 1 entrance on 331, but there's a one-way event to 329
-331:0
 331:0>>329:1
 -329:0
-409:0|1|2
-#-409:0
-#409:0>>338:3
-#&409:0
 -338:4
 # Weight rooms
 $337:0,337:7,337:8
 &355:4,6
 &337:1,2,4,6
+
 !337:3,337:5,355:7
 # Guardian
 291:4>5
 # Three Statues
-#-287:2
-&287:2
 355:0>8,354:4>7,334:13>14
 # dummied stairs
 267:0|1
 # Last rooms
--411:1
 $412:0,411:0,411:2
-#
+-411:1
+
 # various other removals
 -20:15
 -32:15
 -38:2
 -50:2
 -126:2
+-287:2

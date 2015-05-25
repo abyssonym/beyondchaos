@@ -4186,6 +4186,7 @@ def manage_ancient():
                     chosen_enemies[3] = chosen_boss
 
             for c in chosen_enemies:
+                used_formations.append(c)
                 # allow up to three of the same formation
                 if used_formations.count(c) >= 2:
                     if c in boss_formations:
@@ -4193,7 +4194,6 @@ def manage_ancient():
                     if used_formations.count(c) >= 3:
                         if c in enemy_formations:
                             enemy_formations.remove(c)
-                    used_formations.append(c)
 
             fset = get_fset(rank)
             fset.formids = [f.formid for f in chosen_enemies]

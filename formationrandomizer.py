@@ -40,6 +40,14 @@ class Formation():
     def has_boss(self):
         return any([e.is_boss or e.boss_death for e in self.present_enemies])
 
+    @property
+    def is_fanatics(self):
+        for e in self.present_enemies:
+            if e.id in [0x125, 0x12b, 0x130, 0x132, 0x133,
+                        0x139, 0x143, 0x163, 0x164]:
+                return True
+        return False
+
     def get_guaranteed_drop_value(self, value=0):
         if len(self.present_enemies) == 0:
             return False

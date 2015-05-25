@@ -3885,6 +3885,8 @@ def manage_ancient():
     unused_enemies = [u for u in get_monsters() if u.id in REPLACE_ENEMIES]
 
     def safe_boss_validator(formation):
+        if formation.is_fanatics:
+            return False
         if set(formation.present_enemies) & set(unused_enemies):
             return False
         if formation.formid in NOREPLACE_FORMATIONS:
@@ -3901,8 +3903,11 @@ def manage_ancient():
         return True
 
     formations = sorted(get_formations(), key=lambda f: f.rank())
-    enemy_formations = [f for f in formations if f.present_enemies and
-                        not f.has_event and not f.has_boss]
+    enemy_formations = [
+        f for f in formations if f.is_fanatics or
+        (f.present_enemies and not f.has_event and not f.has_boss)]
+    enemy_formations = [f for f in enemy_formations if f.formid not in
+                        REPLACE_FORMATIONS + NOREPLACE_FORMATIONS]
     boss_formations = [f for f in formations if safe_boss_validator(f)]
     used_formations = []
 

@@ -308,7 +308,7 @@ def remap_maps(routes):
            switch334: None,
            gate292: None,
            gate334: None}
-    segments = [route.segments[1] for route in routes]
+    segments = [s for route in routes for s in route.segments]
     for segment in segments:
         for cluster in segment.ranked_clusters:
             for key in swd.keys():

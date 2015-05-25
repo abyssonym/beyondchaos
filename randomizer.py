@@ -4157,10 +4157,8 @@ def manage_ancient():
                     return 0
                 elif r > maxrank:
                     return maxrank
-                factor = min(r/50.0, 1.0)
                 ratio = float(r) / maxrank
-                value = (factor*ratio) + ((1-factor)*(ratio**2))
-                return value
+                return ratio
 
             low = enrank(rank-3)
             high = enrank(rank+2)

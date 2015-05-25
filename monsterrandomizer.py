@@ -1618,6 +1618,9 @@ class MonsterBlock:
                 weighted *= HPFACTOR
             total += weighted
 
+        if self.has_blaze:
+            total *= 1.5
+
         return total
 
     def dummy_item(self, item):

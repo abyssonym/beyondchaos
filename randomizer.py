@@ -4153,11 +4153,12 @@ def manage_ancient():
             l.setid = random.randint(0xF0, 0xFF)
         else:
             def enrank(r):
+                mr = min(maxrank, 0xFF)
                 if r < 0:
                     return 0
-                elif r > maxrank:
+                elif r > mr:
                     return 1.0
-                ratio = float(r) / maxrank
+                ratio = float(r) / mr
                 return ratio
 
             low = enrank(rank-3)
@@ -4221,9 +4222,9 @@ def manage_ancient():
                             enemy_limit=enemy_limit)
 
         l.write_data(outfile)
+        '''
         entranks = [e.destination.ancient_rank for e in l.entrances
                     if hasattr(e.destination, "ancient_rank")]
-        '''
         if not hasattr(l, "secret_treasure"):
             print l.locid, l.ancient_rank, l.routerank, ":",
             print " ".join(["%s" % e for e in sorted(entranks)])

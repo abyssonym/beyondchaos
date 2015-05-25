@@ -263,14 +263,13 @@ class Formation():
             value = type(value)(value)
             setattr(self, attribute, value)
 
-    def rank(self, levels=None):
-        if levels is None:
-            levels = [e.stats['level'] for e in self.present_enemies if e]
-        if len(levels) == 0:
+    def rank(self):
+        ranks = [e.rank() for e in self.present_enemies if e]
+        if len(ranks) == 0:
             return 0
-        balance = sum(levels) / (log(len(levels))+1)
-        average = sum(levels) / len(levels)
-        score = (max(levels) + balance + average) / 3.0
+        balance = sum(ranks) / (log(len(ranks))+1)
+        average = sum(ranks) / len(ranks)
+        score = (max(ranks) + balance + average) / 3.0
         return score
 
     @property

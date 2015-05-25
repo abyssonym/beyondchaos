@@ -4156,7 +4156,7 @@ def manage_ancient():
                 if r < 0:
                     return 0
                 elif r > maxrank:
-                    return maxrank
+                    return 1.0
                 ratio = float(r) / maxrank
                 return ratio
 

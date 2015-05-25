@@ -302,6 +302,34 @@ def remap_maps(routes):
                     formation.set_continuous_music()
                 loc.setid = fset.setid
 
+    switch292, gate292 = (292, 0), (292, 1)
+    switch334, gate334 = (334, 5), (334, 3)
+    swd = {switch292: None,
+           switch334: None,
+           gate292: None,
+           gate334: None}
+    segments = [route.segments[1] for route in routes]
+    for segment in segments:
+        for cluster in segment.ranked_clusters:
+            for key in swd.keys():
+                locid, entid = key
+                if cluster.locid == locid and entid in cluster.entids:
+                    assert swd[key] is None
+                    swd[key] = (segment, cluster)
+    assert None not in swd.values()
+
+    s292segment, s292cluster = swd[switch292]
+    s334segment, s334cluster = swd[switch334]
+    g292segment, g292cluster = swd[gate292]
+    g334segment, g334cluster = swd[gate334]
+    if s292segment == g334segment and s334segment == g292segment:
+        assert s292segment != s334segment
+        ranked292 = s292segment.ranked_clusters
+        ranked334 = s334segment.ranked_clusters
+        if (ranked292.index(s292cluster) > ranked292.index(g334cluster) and
+                ranked334.index(s334cluster) > ranked334.index(g292cluster)):
+            raise Exception("Dungeon cannot be completed with this layout.")
+
     return newlocations, unused_maps
 
 

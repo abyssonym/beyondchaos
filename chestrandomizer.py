@@ -355,6 +355,12 @@ class ChestBlock:
                 if enemy_limit is not None:
                     candidates = [f for f in candidates
                                   if f.rank() <= enemy_limit]
+                    candidates = sorted(candidates, key=lambda f: f.rank())
+                    half = len(candidates) / 2
+                    candidates = candidates[half:]
+                    index = random.randint(0, half) + random.randint(0, half)
+                    index = min(index, len(candidates)-1)
+                    candidates = candidates[index:]
 
             candidates = sorted(candidates, key=lambda f: f.rank())
             if orphaned_formations:

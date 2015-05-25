@@ -1026,6 +1026,24 @@ def assign_maps(routes):
     for c in new_clusters:
         c.remove_adjacent_entrances()
 
+    similars = []
+
+    def is_too_similar(c):
+        if c.locid in towerlocids:
+            return False
+        if len(c.entrances) == 1:
+            return False
+        loc = get_location(c.locid)
+        layer1 = loc.layer1ptr
+        palette = loc.palette_index
+        entxys = set([(e.x, e.y) for e in c.entrances])
+        for l, p, xys in similars:
+            if layer1 == l and palette == p:
+                if xys & entxys:
+                    return True
+        similars.append((layer1, palette, entxys))
+        return False
+
     # first phase - bare minimum
     if not ANCIENT:
         max_new_maps = 23
@@ -1045,6 +1063,8 @@ def assign_maps(routes):
                         if chosen is None or chosen.need < inter.need:
                             chosen = inter
             if chosen.need > 0:
+                if is_too_similar(cluster):
+                    continue
                 chosen.add_cluster(cluster, need=True)
                 done_maps.add(cluster.locid)
                 done_clusters.add(cluster.clusterid)
@@ -1089,6 +1109,10 @@ def assign_maps(routes):
                                     rank = temp
                                 else:
                                     rank = min(rank, temp)
+        if len(cluster.entrances) <= 2 and cluster.locid not in towerlocids:
+            location = get_location(cluster.locid)
+            if len(location.chests) == 0 and random.choice([True, False]):
+                continue
         if len(cluster.entrances) == 1:
             candidates = []
             for route in routes:
@@ -1099,11 +1123,15 @@ def assign_maps(routes):
                         if inter.need < 0:
                             candidates.append(inter)
             if candidates:
+                if is_too_similar(cluster):
+                    continue
                 chosen = random.choice(candidates)
                 chosen.add_cluster(cluster, need=True)
                 done_maps.add(cluster.locid)
                 done_clusters.add(cluster.clusterid)
         elif len(cluster.entrances) >= 2:
+            if is_too_similar(cluster):
+                continue
             route = random.choice(routes)
             if rank is not None:
                 segment = route.segments[rank]

@@ -353,7 +353,11 @@ class Cluster:
                 assert self.entgroups[e1] == self.entgroups[e2]
 
         entgroups = []
-        for entgroup in self.entgroups.values():
+        keys = sorted(self.entgroups.keys(), key=lambda k: k.entid)
+        entids = [k.entid for k in keys]
+        assert len(entids) == len(set(entids))
+        for key in keys:
+            entgroup = self.entgroups[key]
             if entgroup not in entgroups:
                 entgroups.append(entgroup)
 
@@ -365,7 +369,8 @@ class Cluster:
 
         for entgroup in entgroups:
             if len(entgroup) > 1:
-                ent = random.choice(sorted(entgroup, key=lambda e: e.entid))
+                entgroup = sorted(entgroup, key=lambda e: e.entid)
+                ent = random.choice(entgroup)
                 for e in entgroup:
                     if e != ent:
                         self.entrances.remove(e)
@@ -389,6 +394,7 @@ class Cluster:
 
     def __repr__(self):
         display = "; ".join([str(e) for e in self.entrances])
+        display = "%s %s" % (self.clusterid, display)
         return display
 
 
@@ -479,6 +485,7 @@ class Segment:
             newclusts = [c for c in self.consolidated_clusters
                          if set(c.entrances) & new_ents]
             done |= set(newclusts)
+            newclusts = sorted(newclusts, key=lambda c: c.clusterid)
             random.shuffle(newclusts)
             for c in newclusts:
                 if c not in ranked:
@@ -493,6 +500,7 @@ class Segment:
         links = list(self.links)
         for inter in self.intersegments:
             links.extend(inter.links)
+        links = sorted(links, key=lambda (e, _): (e.location.locid, e.entid))
         return links
 
     @property
@@ -733,8 +741,8 @@ class InterSegment(Segment):
             except IndexError:
                 return None
             done_clusts.add(chosen)
-            chosen = random.choice([c for c in chosen.entrances
-                                    if c not in done_ents])
+            choices = [c for c in chosen.entrances if c not in done_ents]
+            chosen = random.choice(choices)
             done_ents.add(chosen)
             candidates.append(chosen)
         if not test:
@@ -750,7 +758,7 @@ class InterSegment(Segment):
         while True:
             links = []
             done_ents = set([])
-            done_clusts = set([starter])
+            done_clusts = [starter]
             clusters = self.clusters
             random.shuffle(clusters)
             for c in clusters:
@@ -764,11 +772,12 @@ class InterSegment(Segment):
                 acands = [e for e in c.entrances if e not in done_ents]
                 bcands = [e for e in chosen.entrances if e not in done_ents]
                 a, b = random.choice(acands), random.choice(bcands)
-                done_clusts.add(c)
+                if c not in done_clusts:
+                    done_clusts.append(c)
                 done_ents.add(a)
                 done_ents.add(b)
                 links.append((a, b))
-            if done_clusts == set(self.clusters):
+            if set(done_clusts) == set(self.clusters):
                 break
         self.links = links
 

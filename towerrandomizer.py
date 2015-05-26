@@ -14,7 +14,8 @@ MAX_NEW_EXITS = 1000
 MAX_NEW_MAPS = None  # 23: 6 more for fanatics tower, 1 more for bonus
 ANCIENT = None
 PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
-             0x37, 0x81, 0x82, 0x88, 0x89, 0x99, 0x9c, 0xb6, 0xb8, 0xbd, 0xbe,
+             0x37, 0x81, 0x82, 0x88, 0x89, 0x8c, 0x90, 0x92, 0x99, 0x9c,
+             0xb6, 0xb8, 0xbd, 0xbe,
              0xd2, 0xd3, 0xd4, 0xd5, 0xd7, 0xfe, 0xff,
              0x100, 0x102, 0x103, 0x104, 0x105, 0x10c, 0x12e,
              0x131, 0x132,  # Tzen WoR?
@@ -571,16 +572,31 @@ class Segment:
             bent = bcands[0]
             inter = self.intersegments[i]
             if a.singleton:
-                excands = inter.get_external_candidates(num=3, test=True)
                 previnter = self.intersegments[i-1] if i > 0 else None
-                if excands is None and previnter is not None:
-                    excands = previnter.get_external_candidates(num=1)
-                if excands is None or len(excands) == 3:
-                    excands = inter.get_external_candidates(num=1)
+                thresh = 3
+                for j in xrange(thresh):
+                    k = thresh-j
+                    intercands = []
+                    excands = inter.get_external_candidates(num=k, test=True)
+                    if excands:
+                        intercands.append(inter)
+                    k = max(1, k-1)
+                    if previnter is not None:
+                        excands = previnter.get_external_candidates(num=k,
+                                                                    test=True)
+                        if excands:
+                            intercands.append(previnter)
+                    if intercands:
+                        break
+                else:
+                    raise Exception("No available intersegments.")
+                chosen = random.choice(intercands)
+                excands = (chosen.get_external_candidates(num=1))
                 if excands is None:
                     raise Exception("Routing error.")
                 links.append((aent, excands[0]))
                 a.entering, a.exiting = True, True
+
                 if previnter and not previnter.empty:
                     # TODO: Sometimes this fails
                     for j in range(i, len(self.intersegments)):
@@ -735,6 +751,54 @@ class InterSegment(Segment):
             linked.append(e)
         return linked
 
+    def get_entrance_cluster(self, entrance):
+        for c in self.clusters:
+            if entrance in c.entrances:
+                return c
+        raise Exception("Could not find related cluster.")
+
+    def calculate_distance(self, a, b):
+        reachable = [a]
+        done = []
+        for i in xrange(20):
+            for r in list(reachable):
+                for c, d in self.links:
+                    if c in done or d in done:
+                        continue
+                    dest = None
+                    if c in r.entrances:
+                        dest = self.get_entrance_cluster(d)
+                    if d in r.entrances:
+                        assert dest is None
+                        dest = self.get_entrance_cluster(c)
+                    if dest == b:
+                        return i
+                    if dest is not None and dest not in reachable:
+                        reachable.append(dest)
+        raise Exception("Clusters not connected.")
+
+    def get_max_edge_distance(self, clusters):
+        if len(clusters) == 1:
+            return random.choice(clusters)
+        if not self.linked_edge:
+            if len(clusters) == 2:
+                return random.choice(clusters)
+            linked = [random.choice(clusters)]
+            clusters = [c for c in clusters if c not in linked]
+        else:
+            linked = [self.get_entrance_cluster(e)
+                      for e in self.linked_edge]
+        scores = {}
+        for c in clusters:
+            scores[c] = 9999
+            for l in linked:
+                d = self.calculate_distance(c, l)
+                scores[c] = min(d, scores[c])
+        hiscore = max(scores.values())
+        assert hiscore < 999
+        clusters = [c for c in clusters if scores[c] == hiscore]
+        return random.choice(clusters)
+
     def get_external_candidates(self, num=2, test=False):
         if not self.clusters:
             return None
@@ -746,25 +810,19 @@ class InterSegment(Segment):
                     linked_clusters.append(c)
         done_clusts = set([])
         done_ents = set(self.linked_entrances)
+
         for _ in xrange(num):
-            candclusts = [c for c in self.clusters if c not in done_clusts]
-            if not candclusts:
-                candclusts = self.clusters
-            candclusts = [c for c in candclusts if set(c.entrances)-done_ents]
-            if not candclusts:
-                candclusts = [c for c in self.clusters if c not in done_clusts
-                              and set(c.entrances)-done_ents]
-                if not candclusts:
-                    candclusts = [c for c in self.clusters
-                                  if set(c.entrances)-done_ents]
-            if candclusts and linked_clusters:
-                lowclust = min(candclusts,
-                               key=lambda c: linked_clusters.count(c))
-                lowest = linked_clusters.count(lowclust)
-                candclusts = [c for c in candclusts
-                              if linked_clusters.count(c) == lowest]
-                assert lowclust in candclusts
+            candclusts = [c for c in self.clusters
+                          if set(c.entrances)-done_ents]
+            tempclusts = [c for c in candclusts if c not in done_clusts]
+            if tempclusts:
+                candclusts = tempclusts
+            tempclusts = [c for c in candclusts if
+                          not set(c.entrances) & set(self.linked_edge)]
+            if tempclusts:
+                candclusts = tempclusts
             try:
+                #chosen = self.get_max_edge_distance(candclusts)
                 chosen = random.choice(candclusts)
             except IndexError:
                 return None
@@ -792,10 +850,13 @@ class InterSegment(Segment):
             for c in clusters:
                 if c in done_clusts:
                     continue
-                candidates = [c2 for c2 in done_clusts
-                              if set(c2.entrances) - done_ents]
-                if not candidates:
+                prelim = max(done_clusts,
+                             key=lambda c2: len(set(c2.entrances)-done_ents))
+                numents = len(set(prelim.entrances) - done_ents)
+                if numents == 0:
                     break
+                candidates = [c2 for c2 in done_clusts if
+                              len(set(c2.entrances)-done_ents) == numents]
                 chosen = random.choice(candidates)
                 acands = [e for e in c.entrances if e not in done_ents]
                 bcands = [e for e in chosen.entrances if e not in done_ents]

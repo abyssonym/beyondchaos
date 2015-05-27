@@ -4237,9 +4237,12 @@ def manage_ancient():
             fset.write_data(outfile)
 
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):
-            if rank == 0 or 'speedcave' in activated_codes:
+            if 'speedcave' in activated_codes:
                 low = random.randint(0, 200)
-                high = random.randint(low, 1000)
+                high = random.randint(low*2, low*5)
+            elif rank == 0:
+                low = random.randint(0, 200)
+                high = random.randint(low*2, 1000)
             else:
                 low = rank * 1
                 high = low * 3.5

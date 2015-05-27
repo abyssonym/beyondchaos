@@ -7,6 +7,7 @@ banned_formids = [0]
 extra_miabs = []
 orphaned_formations = None
 used_formations = []
+done_items = []
 
 appropriate_formations = None
 
@@ -282,7 +283,8 @@ class ChestBlock:
         return False
 
     def mutate_contents(self, guideline=None, monster=None,
-                        guarantee_miab_treasure=False, enemy_limit=None):
+                        guarantee_miab_treasure=False, enemy_limit=None,
+                        uniqueness=False):
         global used_formations
 
         if self.do_not_mutate and self.contents is not None:
@@ -300,9 +302,13 @@ class ChestBlock:
                 index = itemids.index(self.contents)
             except ValueError:
                 index = 0
+            indexed_item = items[index]
         else:
             lowpriced = [i for i in items if i.rank() <= value*100]
+            if not lowpriced:
+                lowpriced = items[:random.randint(1, 16)]
             index = max(0, len(lowpriced)-1)
+            indexed_item = lowpriced[index]
 
         chance = random.randint(1, 50)
         orphaned_formations = get_orphaned_formations()
@@ -393,9 +399,18 @@ class ChestBlock:
         else:
             # treasure
             self.set_content_type(0x40)
+            if uniqueness and random.choice([True, False]):
+                temp = [i for i in items
+                        if i == indexed_item or i not in done_items]
+                if len(temp) > 1:
+                    items = temp
+                    index = items.index(indexed_item)
+                    if indexed_item in done_items:
+                        items.remove(indexed_item)
             index = mutate_index(index, len(items), [False, True],
                                  (-4, 2), (-2, 2))
             self.contents = items[index].itemid
+            done_items.append(items[index])
 
         assert self.contents <= 0xFF
         self.value = value

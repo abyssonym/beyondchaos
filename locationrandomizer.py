@@ -657,7 +657,8 @@ class Location():
             value = low + random.randint(0, dist) + random.randint(0, dist)
             c.value = value
             c.mutate_contents(monster=monster, enemy_limit=enemy_limit,
-                              guarantee_miab_treasure=guarantee_miab_treasure)
+                              guarantee_miab_treasure=guarantee_miab_treasure,
+                              uniqueness=True)
             if random.randint(1, 5) >= 4:
                 c.set_new_id()
 

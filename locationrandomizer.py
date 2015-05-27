@@ -650,6 +650,8 @@ class Location():
 
     def unlock_chests(self, low, high, monster=False,
                       guarantee_miab_treasure=False, enemy_limit=None):
+        if len(self.chests) == 1:
+            low = (low + high) / 2
         dist = (high - low) / 2
         for c in self.chests:
             c.set_content_type(0x80)
@@ -658,7 +660,7 @@ class Location():
             c.value = value
             c.mutate_contents(monster=monster, enemy_limit=enemy_limit,
                               guarantee_miab_treasure=guarantee_miab_treasure,
-                              uniqueness=True)
+                              uniqueness=len(self.chests) != 1)
             if random.randint(1, 5) >= 4:
                 c.set_new_id()
 

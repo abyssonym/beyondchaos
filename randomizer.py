@@ -4004,7 +4004,8 @@ def manage_ancient():
     locations = sorted(locations, key=lambda l: l.ancient_rank)
     restlocs = [l for l in locations if hasattr(l, "restrank")]
     random.shuffle(restlocs)
-    restmusics = range(1, 85)
+    ban_musics = [0, 36, 56, 57, 58, 73, 74, 75]
+    restmusics = [m for m in range(1, 85) if m not in ban_musics]
     random.shuffle(restmusics)
     optional_chars = [c for c in characters if c.id not in starting
                       and c.id <= 13]
@@ -4233,6 +4234,12 @@ def manage_ancient():
                             enemy_formations.remove(c)
 
             fset = get_fset(rank)
+            if l.routerank >= 4:
+                for formation in fset.formations:
+                    if formation.get_music() == 0:
+                        formation.set_music(6)
+                        formation.set_continuous_music()
+                        formation.write_data(outfile)
             fset.formids = [f.formid for f in chosen_enemies]
             fset.write_data(outfile)
 

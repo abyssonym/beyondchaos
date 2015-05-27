@@ -1075,7 +1075,7 @@ def parse_checkpoints():
     return routes
 
 
-def assign_maps(routes):
+def assign_maps(routes, nummaps=None):
     clusters = get_clusters()
     new_clusters = clusters
     for route in routes:
@@ -1106,10 +1106,7 @@ def assign_maps(routes):
         return False
 
     # first phase - bare minimum
-    if not ANCIENT:
-        max_new_maps = 23
-    else:
-        max_new_maps = 300
+    max_new_maps = nummaps
     best_clusters = [c for c in new_clusters if len(c.entrances) >= 3]
     while True:
         random.shuffle(best_clusters)
@@ -1257,13 +1254,15 @@ def randomize_fanatics(unused_locids):
         entrance.dest = (entrance.dest & 0xFE00) | (stair.locid & 0x1FF)
 
 
-def randomize_tower(filename, ancient=False):
+def randomize_tower(filename, ancient=False, nummaps=None):
     global ANCIENT
     ANCIENT = ancient
+    if nummaps is None:
+        nummaps = 23
     routes = parse_checkpoints()
     for route in routes:
         route.determine_need()
-    assign_maps(routes)
+    assign_maps(routes, nummaps=nummaps)
     for route in routes:
         for segment in route.segments:
             segment.fill_out()

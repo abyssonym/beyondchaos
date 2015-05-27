@@ -3768,15 +3768,24 @@ def manage_ancient():
     fi.write(chr(0))  # remove Terra's magitek
 
     # decrease exp needed for level up
-    for level in xrange(49):
-        ratio = float(level) / 49.0
+    if 'speedcave' in activated_codes:
+        maxlevel = 39
+        divisor = 8.0
+    else:
+        maxlevel = 49
+        divisor = 2.0
+    for level in xrange(maxlevel):
+        ratio = (float(level) / maxlevel)**2
+        ratio = min(ratio, 1.0)
         pointer = 0x2d8220 + (level*2)
         fi.seek(pointer)
         exp = read_multi(fi, length=2)
-        exp = (exp / 2.0)
-        exp = int(round(exp + (ratio*exp)))
+        newexp = (exp / divisor)
+        remaining = exp - newexp
+        newexp = int(round(newexp + (ratio*remaining)))
+        newexp = max(newexp, 1)
         fi.seek(pointer)
-        write_multi(fi, exp, length=2)
+        write_multi(fi, newexp, length=2)
 
     fi.close()
 
@@ -3788,7 +3797,10 @@ def manage_ancient():
                            0x3F, 0x0E, 0x00,
                            0x3F, 0x0F, 0x00,
                            ]
-    num_starting = 4 + random.randint(0, 1) + random.randint(0, 1)
+    if 'speedcave' in activated_codes:
+        num_starting = 12
+    else:
+        num_starting = 4 + random.randint(0, 1) + random.randint(0, 1)
     starting = random.sample(range(14), num_starting)
     for c in starting:
         startsub.bytestring += [0xD4, 0xF0 | c]
@@ -3851,22 +3863,23 @@ def manage_ancient():
     tower_msg_sub.write(outfile)
 
     from locationrandomizer import NPCBlock, EventBlock
-    falcon = get_location(0xb)
-    save_point = NPCBlock(pointer=None, locid=falcon.locid)
-    attributes = {
-        "graphics": 0x6f, "palette": 6, "x": 7, "y": 8,
-        "event_addr": 0x5eb3, "facing": 0x47,
-        "memaddr": 0, "membit": 0, "unknown": 0,
-        "graphics_index": 0x10}
-    for key, value in attributes.items():
-        setattr(save_point, key, value)
-    save_point.set_id(len(falcon.npcs))
-    falcon.npcs.append(save_point)
-    save_event = EventBlock(pointer=None, locid=falcon.locid)
-    attributes = {"event_addr": 0x29aeb, "x": 7, "y": 8}
-    for key, value in attributes.items():
-        setattr(save_event, key, value)
-    falcon.events.append(save_event)
+    if "speedcave" not in activated_codes:
+        falcon = get_location(0xb)
+        save_point = NPCBlock(pointer=None, locid=falcon.locid)
+        attributes = {
+            "graphics": 0x6f, "palette": 6, "x": 7, "y": 8,
+            "event_addr": 0x5eb3, "facing": 0x47,
+            "memaddr": 0, "membit": 0, "unknown": 0,
+            "graphics_index": 0x10}
+        for key, value in attributes.items():
+            setattr(save_point, key, value)
+        save_point.set_id(len(falcon.npcs))
+        falcon.npcs.append(save_point)
+        save_event = EventBlock(pointer=None, locid=falcon.locid)
+        attributes = {"event_addr": 0x29aeb, "x": 7, "y": 8}
+        for key, value in attributes.items():
+            setattr(save_event, key, value)
+        falcon.events.append(save_event)
 
     pilot = random.choice([s for s in starting if s < 12])
     pilot_sub = Substitution()
@@ -3879,7 +3892,10 @@ def manage_ancient():
     pilot_sub.set_location(0xC2110)
     pilot_sub.write(outfile)
 
-    randomize_tower(filename=sourcefile, ancient=True)
+    if "speedcave" in activated_codes:
+        randomize_tower(filename=sourcefile, ancient=True, nummaps=100)
+    else:
+        randomize_tower(filename=sourcefile, ancient=True, nummaps=300)
     manage_map_names()
 
     unused_enemies = [u for u in get_monsters() if u.id in REPLACE_ENEMIES]
@@ -3957,23 +3973,31 @@ def manage_ancient():
                   4: (30000, 0xA64)}
 
     shops = get_shops()
-    itemshops = [s for s in shops if s.shoptype_pretty in ["items", "misc"]]
-    othershops = [s for s in shops if s not in itemshops]
-    othershops = othershops[random.randint(0, len(othershops)/2):]
-    itemshops = sorted(random.sample(itemshops, 5), key=lambda p: p.rank())
-    othershops = sorted(random.sample(othershops, 7), key=lambda p: p.rank())
     shopranks = {}
-    for i in xrange(1, 5):
-        if i > 1:
-            shopranks[i] = othershops[:2] + itemshops[:1]
-            othershops = othershops[2:]
-            itemshops = itemshops[1:]
-        else:
-            shopranks[i] = othershops[:1] + itemshops[:2]
-            othershops = othershops[1:]
-            itemshops = itemshops[2:]
-        assert len(shopranks[i]) == 3
-        random.shuffle(shopranks[i])
+    if "speedcave" in activated_codes:
+        shops = random.sample(shops, 12)
+        for i in xrange(1, 5):
+            shopranks[i] = shops[:3]
+            shops = shops[3:]
+    else:
+        itemshops = [s for s in shops
+                     if s.shoptype_pretty in ["items", "misc"]]
+        othershops = [s for s in shops if s not in itemshops]
+        othershops = othershops[random.randint(0, len(othershops)/2):]
+        itemshops = sorted(random.sample(itemshops, 5), key=lambda p: p.rank())
+        othershops = sorted(random.sample(othershops, 7),
+                            key=lambda p: p.rank())
+        for i in xrange(1, 5):
+            if i > 1:
+                shopranks[i] = othershops[:2] + itemshops[:1]
+                othershops = othershops[2:]
+                itemshops = itemshops[1:]
+            else:
+                shopranks[i] = othershops[:1] + itemshops[:2]
+                othershops = othershops[1:]
+                itemshops = itemshops[2:]
+            assert len(shopranks[i]) == 3
+            random.shuffle(shopranks[i])
     shopranks[random.randint(1, 4)][random.randint(0, 2)] = None
 
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
@@ -4178,8 +4202,12 @@ def manage_ancient():
 
             chosen_enemies = sorted(chosen_enemies, key=lambda f: f.rank())
 
+            if "speedcave" in activated_codes:
+                thresh = 0.5
+            else:
+                thresh = 0.1
             if rank >= maxrank * 0.9 or (
-                    rank >= random.randint(int(maxrank * 0.1),
+                    rank >= random.randint(int(maxrank * thresh),
                                            int(maxrank * 0.75))
                     and random.randint(1, 3) == 3):
                 formrank = chosen_enemies[0].rank()
@@ -4190,13 +4218,17 @@ def manage_ancient():
                     chosen_boss = random.choice(candidates)
                     chosen_enemies[3] = chosen_boss
 
+            if "speedcave" in activated_codes:
+                thresh, bossthresh = 2, 1
+            else:
+                # allow up to three of the same formation
+                thresh, bossthresh = 3, 2
             for c in chosen_enemies:
                 used_formations.append(c)
-                # allow up to three of the same formation
-                if used_formations.count(c) >= 2:
+                if used_formations.count(c) >= bossthresh:
                     if c in boss_formations:
                         boss_formations.remove(c)
-                    if used_formations.count(c) >= 3:
+                    if used_formations.count(c) >= thresh:
                         if c in enemy_formations:
                             enemy_formations.remove(c)
 
@@ -4205,7 +4237,7 @@ def manage_ancient():
             fset.write_data(outfile)
 
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):
-            if rank == 0:
+            if rank == 0 or 'speedcave' in activated_codes:
                 low = random.randint(0, 200)
                 high = random.randint(low, 1000)
             else:
@@ -4370,12 +4402,15 @@ h   Organize rages by highest level first'''
     secret_codes['playsitself'] = "AUTOBATTLE MODE"
     secret_codes['bingoboingo'] = "BINGO BONUS"
     secret_codes['ancientcave'] = "CHAOS TOWER MODE"
+    secret_codes['speedcave'] = "FAST CHAOS TOWER MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
             flags = flags.replace(code, '')
             s += "SECRET CODE: %s ACTIVATED\n" % text
             activated_codes.add(code)
+    if 'speedcave' in activated_codes:
+        activated_codes.add('ancientcave')
 
     print s.strip()
 

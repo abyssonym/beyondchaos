@@ -57,7 +57,7 @@ Output rom file:
 
 --- FAQ/KNOWN ISSUES ---
 Q: How do I play Beyond Chaos Ancient Cave mode?
-A: The code is "ancientcave". Input the code in the flags. For vanilla Ancient Cave mode, I recommend using "ancientcavez".
+A: There are two codes you can use. "ancientcave" is for the standard Ancient Cave mode with ~250 maps and takes a very long time to complete. "speedcave" is a shorter, faster mode (~100 maps) that is designed to be completed in one sitting. Input the code in the flags. For vanilla Ancient Cave mode, I recommend using "ancientcavez".
 
 Q: How do I play Beyond Chaos Bingo?
 A: The code is "bingoboingo". Use the code in the flags and the randomizer will ask you some more questions when the randomization is complete.

@@ -33,9 +33,9 @@ from towerrandomizer import randomize_tower
 from decompress import Decompressor
 
 
-VERSION = "55"
-BETA = True
-VERSION_ROMAN = "LV"
+VERSION = "56"
+BETA = False
+VERSION_ROMAN = "LVI"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False
@@ -2673,6 +2673,7 @@ def manage_dragons():
         f.seek(pointer)
         c = ord(f.read(1))
         assert c == 0x4D
+        f.seek(pointer+1)
         f.write(chr(dragon))
     f.close()
 

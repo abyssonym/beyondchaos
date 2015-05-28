@@ -3823,10 +3823,17 @@ def manage_ancient():
         "Phoenix"]
     esperevents = dict([(n, i) for (i, n) in enumerate(esperevents)])
     espers = list(get_espers())
-    for i in xrange(3):
-        esperrank = 0
-        while random.randint(1, 3) == 3:
-            esperrank += 1
+    if "speedcave" in activated_codes:
+        num_espers = 4
+    else:
+        num_espers = 3
+    for i in xrange(num_espers):
+        if "speedcave" in activated_codes:
+            esperrank = 999
+        else:
+            esperrank = 0
+            while random.randint(1, 3) == 3:
+                esperrank += 1
         candidates = [e for e in espers if e.rank <= esperrank]
         esper = random.choice(candidates)
         espers.remove(esper)
@@ -3893,7 +3900,7 @@ def manage_ancient():
     pilot_sub.write(outfile)
 
     if "speedcave" in activated_codes:
-        randomize_tower(filename=sourcefile, ancient=True, nummaps=100)
+        randomize_tower(filename=sourcefile, ancient=True, nummaps=85)
     else:
         randomize_tower(filename=sourcefile, ancient=True, nummaps=300)
     manage_map_names()
@@ -3974,15 +3981,17 @@ def manage_ancient():
 
     shops = get_shops()
     shopranks = {}
+    itemshops = [s for s in shops
+                 if s.shoptype_pretty in ["items", "misc"]]
+    othershops = [s for s in shops if s not in itemshops]
     if "speedcave" in activated_codes:
+        othershops = othershops[random.randint(0, len(othershops)/3):]
+        shops = itemshops + othershops
         shops = random.sample(shops, 12)
         for i in xrange(1, 5):
             shopranks[i] = shops[:3]
             shops = shops[3:]
     else:
-        itemshops = [s for s in shops
-                     if s.shoptype_pretty in ["items", "misc"]]
-        othershops = [s for s in shops if s not in itemshops]
         othershops = othershops[random.randint(0, len(othershops)/2):]
         itemshops = sorted(random.sample(itemshops, 5), key=lambda p: p.rank())
         othershops = sorted(random.sample(othershops, 7),
@@ -4106,23 +4115,31 @@ def manage_ancient():
                 setattr(ally, key, value)
             l.npcs.append(ally)
 
-        if l.restrank == 1:
-            num_espers = 3
-        elif l.restrank in [2, 3]:
-            num_espers = 2
-        elif l.restrank == 4:
-            num_espers = 1
+        if "speedcave" in activated_codes:
+            num_espers = random.randint(1, 2) + random.randint(0, 1)
+        else:
+            if l.restrank == 1:
+                num_espers = 3
+            elif l.restrank in [2, 3]:
+                num_espers = 2
+            elif l.restrank == 4:
+                num_espers = 1
         for i in xrange(num_espers):
-            esperrank = l.restrank
-            if random.randint(1, 7) == 7:
-                esperrank += 1
-            candidates = []
-            while not candidates:
-                candidates = [e for e in espers if e.rank == esperrank]
-                if not candidates or random.randint(1, 3) == 3:
-                    candidates = [e for e in espers if e.rank <= esperrank]
-                if not candidates:
+            if len(espers) == 0:
+                break
+            if "speedcave" in activated_codes:
+                candidates = espers
+            else:
+                esperrank = l.restrank
+                if random.randint(1, 7) == 7:
                     esperrank += 1
+                candidates = []
+                while not candidates:
+                    candidates = [e for e in espers if e.rank == esperrank]
+                    if not candidates or random.randint(1, 3) == 3:
+                        candidates = [e for e in espers if e.rank <= esperrank]
+                    if not candidates:
+                        esperrank += 1
             esper = random.choice(candidates)
             espers.remove(esper)
             espersub = espersubs[esper.name]
@@ -4246,7 +4263,7 @@ def manage_ancient():
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):
             if 'speedcave' in activated_codes:
                 low = random.randint(0, 200)
-                high = random.randint(low*2, low*5)
+                high = random.randint(low*3, low*5)
             elif rank == 0:
                 low = random.randint(0, 200)
                 high = random.randint(low*2, 1000)

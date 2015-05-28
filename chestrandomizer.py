@@ -399,7 +399,7 @@ class ChestBlock:
         else:
             # treasure
             self.set_content_type(0x40)
-            if uniqueness and random.choice([True, False]):
+            if uniqueness and random.choice([True, True, False]):
                 temp = [i for i in items
                         if i == indexed_item or i not in done_items]
                 if len(temp) > 1:

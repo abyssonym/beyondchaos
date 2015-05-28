@@ -1112,6 +1112,10 @@ def assign_maps(routes, nummaps=None):
         random.shuffle(best_clusters)
         done_maps, done_clusters = set([]), set([])
         for cluster in best_clusters:
+            location = get_location(cluster.locid)
+            if (cluster.locid not in towerlocids and len(location.chests) == 0
+                    and random.choice([True, False])):
+                continue
             if cluster.locid in done_maps:
                 continue
             chosen = None
@@ -1137,6 +1141,7 @@ def assign_maps(routes, nummaps=None):
     # second phase -supplementary
     random.shuffle(new_clusters)
     for cluster in new_clusters:
+        CAPACITY_RATIO = len(done_maps) / float(max_new_maps)
         if cluster.clusterid in done_clusters:
             continue
         if cluster.locid in done_maps and not ANCIENT:
@@ -1167,10 +1172,11 @@ def assign_maps(routes, nummaps=None):
                                     rank = temp
                                 else:
                                     rank = min(rank, temp)
-        if len(cluster.entrances) <= 2 and cluster.locid not in towerlocids:
-            location = get_location(cluster.locid)
-            if len(location.chests) == 0 and random.choice([True, False]):
-                continue
+        location = get_location(cluster.locid)
+        if (cluster.locid not in towerlocids and CAPACITY_RATIO > 0.2
+                and len(cluster.entrances) <= 2 and len(location.chests) == 0
+                and random.choice([True, False])):
+            continue
         if len(cluster.entrances) == 1:
             candidates = []
             for route in routes:
@@ -1188,8 +1194,12 @@ def assign_maps(routes, nummaps=None):
                 done_maps.add(cluster.locid)
                 done_clusters.add(cluster.clusterid)
         elif len(cluster.entrances) >= 2:
-            if is_too_similar(cluster):
-                continue
+            if cluster.locid not in towerlocids:
+                if (CAPACITY_RATIO > 0.5 and len(location.chests) == 0
+                        and random.randint(1, 3) == 3):
+                    continue
+                if is_too_similar(cluster):
+                    continue
             route = random.choice(routes)
             if rank is not None:
                 segment = route.segments[rank]

@@ -3794,6 +3794,7 @@ def manage_ancient():
                            0xD5, 0xF0,  # remove Terra from party
                            0xD5, 0xE0,  # remove Terra from party
                            0xDC, 0x7E,  # fix ending? $1F4F bit 6
+                           0xB8, 0x43,  # show magic points after battle
                            0x3F, 0x0E, 0x00,
                            0x3F, 0x0F, 0x00,
                            ]

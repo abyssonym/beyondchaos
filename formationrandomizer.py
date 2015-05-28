@@ -271,6 +271,15 @@ class Formation():
             value = type(value)(value)
             setattr(self, attribute, value)
 
+    def levelrank(self):
+        ranks = [e.stats['level'] for e in self.present_enemies if e]
+        if len(ranks) == 0:
+            return 0
+        balance = sum(ranks) / (log(len(ranks))+1)
+        average = sum(ranks) / len(ranks)
+        score = (max(ranks) + balance + average) / 3.0
+        return score
+
     def rank(self):
         ranks = [e.rank() for e in self.present_enemies if e]
         if len(ranks) == 0:
@@ -286,7 +295,7 @@ class Formation():
 
     def mutate(self, ap=False):
         if ap and self.ap is not None and 0 < self.ap < 100:
-            factor = self.rank() / 100
+            factor = self.levelrank() / 100
             self.ap += int(round(self.ap * factor))
             while random.choice([True, False]):
                 self.ap += random.randint(-1, 1)

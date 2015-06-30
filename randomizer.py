@@ -3530,12 +3530,13 @@ def manage_opening():
         d.writeover(address, text)
 
     from string import letters as alpha
+    consonants = "".join([c for c in alpha if c not in "aeiouy"])
     replace_credits_text(0x659C, "ffvi")
     replace_credits_text(0x65A9, "BEYOND CHAOS")
     replace_credits_text(0x65C0, "creator")
     replace_credits_text(0x65CD, "Abyssonym")
     replace_credits_text(0x65F1, "seed")
-    text = "".join([alpha[int(i)] for i in str(seed)])
+    text = "".join([consonants[int(i)] for i in str(seed)])
     replace_credits_text(0x6605, text.upper())
     replace_credits_text(0x6625, "flags")
     display_flags = sorted([a for a in alpha if a in flags.lower()])

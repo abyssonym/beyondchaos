@@ -1,5 +1,5 @@
 from utils import hex2int, utilrandom as random
-from skillrandomizer import get_ranked_spells
+from skillrandomizer import get_ranked_spells, get_spell
 
 items = None
 
@@ -84,9 +84,17 @@ class EsperBlock:
         global spells
         f = open(filename, 'r+b')
         f.seek(self.pointer)
-        f.close()
         if spells is None:
             spells = get_ranked_spells(filename, magic_only=True)
+        self.spells, self.learnrates = [], []
+        for i in xrange(5):
+            learnrate = ord(f.read(1))
+            spell = ord(f.read(1))
+            if spell != 0xFF and learnrate != 0:
+                self.spells.append(get_spell(spell))
+                self.learnrates.append(learnrate)
+        self.bonus = ord(f.read(1))
+        f.close()
 
     def write_data(self, filename):
         f = open(filename, 'r+b')
@@ -111,7 +119,7 @@ class EsperBlock:
     def generate_spells(self):
         global used
 
-        self.spells = []
+        self.spells, self.learnrates = [], []
         rank = self.rank
         if random.randint(1, 5) == 5:
             rank += 1

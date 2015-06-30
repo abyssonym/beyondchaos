@@ -588,6 +588,7 @@ def get_espers():
         while '  ' in line:
             line = line.replace('  ', ' ')
         c = EsperBlock(*line.split(','))
+        c.read_data(sourcefile)
         c.set_id(i)
         all_espers.append(c)
     return get_espers()
@@ -1682,11 +1683,6 @@ def manage_monsters():
         m.tweak_fanatics()
         m.relevel_specifics()
 
-        if 'easymodo' in activated_codes:
-            m.stats['hp'] = 1
-        if 'llg' in activated_codes:
-            m.stats['xp'] = 0
-
     change_enemy_name(outfile, 0x166, "L.255Magic")
 
     shuffle_monsters(monsters)
@@ -2401,7 +2397,6 @@ def manage_espers(freespaces):
     espers = get_espers()
     random.shuffle(espers)
     for e in espers:
-        e.read_data(sourcefile)
         e.generate_spells()
         e.generate_bonus()
 
@@ -4428,6 +4423,8 @@ h   Organize rages by highest level first'''
     secret_codes['collateraldamage'] = "ITEM BREAK MODE"
     secret_codes['repairpalette'] = "PALETTE REPAIR"
     secret_codes['llg'] = "LOW LEVEL GAME MODE"
+    secret_codes['naturalmagic'] = "NATURAL MAGIC MODE"
+    secret_codes['naturalstats'] = "NATURAL STATS MODE"
     secret_codes['playsitself'] = "AUTOBATTLE MODE"
     secret_codes['bingoboingo'] = "BINGO BONUS"
     secret_codes['ancientcave'] = "CHAOS TOWER MODE"
@@ -4693,6 +4690,29 @@ h   Organize rages by highest level first'''
     write_all_locations_misc()
     for fs in fsets:
         fs.write_data(outfile)
+
+    if 'easymodo' in activated_codes or 'llg' in activated_codes:
+        for m in monsters:
+            if 'easymodo' in activated_codes:
+                m.stats['hp'] = 1
+            if 'llg' in activated_codes:
+                m.stats['xp'] = 0
+            m.write_stats(outfile)
+
+    if 'naturalmagic' in activated_codes or 'naturalstats' in activated_codes:
+        espers = get_espers()
+        if 'naturalstats' in activated_codes:
+            for e in espers:
+                e.bonus = 0xFF
+        if 'naturalmagic' in activated_codes:
+            for e in espers:
+                e.spells, e.learnrates = [], []
+            for i in items:
+                i.features['learnrate'] = 0
+                i.features['learnspell'] = 0
+                i.write_stats(outfile)
+        for e in espers:
+            e.write_data(outfile)
 
     if 'canttouchthis' in activated_codes:
         for c in characters:

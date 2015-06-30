@@ -3871,7 +3871,7 @@ def manage_ancient():
         falcon = get_location(0xb)
         save_point = NPCBlock(pointer=None, locid=falcon.locid)
         attributes = {
-            "graphics": 0x6f, "palette": 6, "x": 7, "y": 8,
+            "graphics": 0x6f, "palette": 6, "x": 20, "y": 8,
             "event_addr": 0x5eb3, "facing": 0x47,
             "memaddr": 0, "membit": 0, "unknown": 0,
             "graphics_index": 0x10}
@@ -3880,7 +3880,7 @@ def manage_ancient():
         save_point.set_id(len(falcon.npcs))
         falcon.npcs.append(save_point)
         save_event = EventBlock(pointer=None, locid=falcon.locid)
-        attributes = {"event_addr": 0x29aeb, "x": 7, "y": 8}
+        attributes = {"event_addr": 0x29aeb, "x": 20, "y": 8}
         for key, value in attributes.items():
             setattr(save_event, key, value)
         falcon.events.append(save_event)

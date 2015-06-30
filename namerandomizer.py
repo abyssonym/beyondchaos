@@ -14,7 +14,7 @@ for line in open(NAMEGEN_TABLE):
         lookback = len(key)
 
 
-def generate_name(size=None):
+def generate_name(size=None, maxsize=10):
     if not size:
         size = random.randint(1, 5) + random.randint(1, 5)
         if size < 4:
@@ -38,6 +38,8 @@ def generate_name(size=None):
             if key not in generator or (random.randint(1, 15) == 15
                                         and has_vowel(name[-2:])):
                 if len(name) <= size - lookback:
+                    if len(name) + len(key) < maxsize:
+                        name += " "
                     name += random.choice(starts)
                     continue
                 else:
@@ -86,3 +88,7 @@ def generate_attack():
         return ("%s %s" % (modifier, move)).strip()
     else:
         return modifier + move
+
+if __name__ == "__main__":
+    for i in xrange(0x100):
+        print generate_name()

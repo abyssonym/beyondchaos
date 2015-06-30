@@ -53,7 +53,6 @@ Ahm ae
 Aid aei
 Ail eim
 Aim eil
-Air Fabcdefhilmpstwy
 Ais hl
 Aja rx
 Aki hmntv
@@ -110,7 +109,6 @@ Apr io
 Aps ae
 Apt eiln
 Aqu aei
-Ara Mbcfglmprw
 Arb iou
 Arc aehikt
 Ard eou
@@ -167,7 +165,6 @@ Bad degilmn
 Bae dz
 Bag aeghpu
 Bah air
-Bai Shklrtz
 Bak eiu
 Bal abcdefiklmostuz
 Bam ab
@@ -369,7 +366,6 @@ Dat aeiu
 Dau bgmnp
 Dav aeiy
 Daw dns
-Day Sbdlt
 Daz eiz
 Dea cdflnrt
 Deb abiortu
@@ -562,7 +558,6 @@ Fax ei
 Faz ei
 Fea lrst
 Fec aku
-Fed Eeo
 Fee bdlt
 Fei gns
 Fel deilot
@@ -693,7 +688,6 @@ Gru bdefmny
 Gua mnrv
 Guc cu
 Gue dlrsv
-Gui Xadlnrstyz
 Gul acflp
 Gum bdmp
 Gun bfkmnpstw
@@ -773,7 +767,6 @@ Hos aeipt
 Hot bcehlnpst
 Hou dmnrs
 How adeil
-Hua Pn
 Hub bcer
 Hud ds
 Hue dry
@@ -781,7 +774,6 @@ Hug eghou
 Hul akl
 Hum abdeimopuv
 Hun cdgkst
-Huo Nn
 Hur dlorst
 Hus bhkst
 Hut ctuz
@@ -792,7 +784,6 @@ Hyp ehino
 Ibe rx
 Ibi csz
 Ica hr
-Ice Dbcdl
 Ici celn
 Ick iy
 Ide ano
@@ -926,7 +917,6 @@ Kid dn
 Kie ltv
 Kil alnort
 Kim bo
-Kin Kdefgklmns
 Kio sw
 Kip lp
 Kir bcgikos
@@ -1054,9 +1044,6 @@ Lyn cdenx
 Lyr aei
 Lys eo
 Mab el
-Mac BLabehikoruy
-Mad Oacdeghilmnoruw
-Mag Raeghimnopry
 Mah adfijlo
 Mai dglmnstz
 Maj eou
@@ -1111,7 +1098,6 @@ Moa nt
 Mob bisu
 Moc chk
 Mod aeiu
-Moh Saio
 Moi ers
 Mol adeilnotu
 Mom bemu
@@ -1121,7 +1107,6 @@ Mop eip
 Mor abdegilmnoprst
 Mos acelqstu
 Mot ehilort
-Mou Rnrst
 Mov aei
 Mow egin
 Moz ai
@@ -1174,7 +1159,6 @@ Nia cgmo
 Nib be
 Nic acehko
 Nie bcl
-Nig ehi
 Nik eiko
 Nim bir
 Nin aejnt
@@ -1281,7 +1265,6 @@ Pag aeilo
 Pai dglnrs
 Pal aeilmopst
 Pam eip
-Pan Dacdeginostz
 Pap aeiory
 Par abcdefiklmnoqrstv
 Pas achqst
@@ -1289,7 +1272,6 @@ Pat cehinorst
 Pau clnps
 Pav eil
 Paw eilnp
-Pay Pacdeilmnopr
 Pea bcfhklnrst
 Pec achkotu
 Ped adeilr
@@ -1392,12 +1374,10 @@ Rat cehilt
 Rau cln
 Rav aei
 Raw behn
-Ray Bblmo
 Raz eioz
 Rea cdfglmprsw
 Reb aeiou
 Rec aehiklortuy
-Red DFRWcdefghimnorsuw
 Ree bdfklmnsv
 Ref efiloru
 Reg aegioru
@@ -1495,7 +1475,6 @@ Sco flnoprtuw
 Scr aeiou
 Scu bdflprtz
 Scy lt
-Sea Fbcfglmnprstw
 Sec elortu
 Sed aeginu
 See bdikmnprst
@@ -1541,7 +1520,6 @@ Ske eilptw
 Ski defilmnprtv
 Sko gp
 Sku ln
-Sky ABCcdeijlpw
 Sla bcgiklmnpstvwy
 Sle adeinpuw
 Sli cdeglmnptv
@@ -1597,7 +1575,6 @@ Sud adors
 Sue dtz
 Suf fi
 Sug ag
-Sui Kcnt
 Suk aik
 Sul aefklpt
 Sum aemnopt
@@ -1628,10 +1605,8 @@ Tah io
 Tai clnpwy
 Tak ei
 Tal bceiklmo
-Tam Laeimprw
 Tan acdegiknstyz
 Tao it
-Tap Deipr
 Tar abdegimnoprtz
 Tas hkmst
 Tat aetu
@@ -1673,7 +1648,6 @@ Tla lz
 Toa ds
 Tob aoy
 Tod ad
-Toe Cdhin
 Tof fu
 Tog aego
 Tok aeiuy
@@ -1701,7 +1675,6 @@ Tuc ksu
 Tug bg
 Tul ails
 Tum bimou
-Tun Sadegin
 Tur bdefgikmnprt
 Tus chks
 Tut eosu
@@ -1876,7 +1849,6 @@ Yok eio
 Yol ak
 Yon dgk
 Yor eku
-You Tnrt
 Yuc ack
 Yuk iko
 Yur il
@@ -1889,7 +1861,6 @@ Zed eo
 Zel im
 Zen gio
 Zep hp
-Zhu TYk
 Zig gz
 Zil cl
 Zin cgn
@@ -1913,9 +1884,7 @@ aby hilst
 aca bdlmnorstuw
 acc ahio
 ace abdfklmnrstwy
-ach Faeimnoty
 aci acdeflnost
-ack DFMRabdefhilnoprstuwy
 acl ey
 aco abcmnor
 acr eiou
@@ -1953,7 +1922,6 @@ aga bclnrstz
 age adlnrsty
 agg aeiloy
 agh dr
-agi Mcelno
 agl aei
 agm aei
 agn aeiou
@@ -1978,7 +1946,6 @@ aig ehnor
 aik ahiu
 ail abcefgilmoprstuwy
 aim aeil
-ain Mabcdefgilmnpsty
 aip aehisu
 air cdeilmnopswy
 ais aeilmosty
@@ -1991,7 +1958,6 @@ ajo lrs
 aju nrw
 aka dgimnrt
 ake defilmnorsuwy
-aki Maelmnrsu
 akk aeiu
 akl aeiuy
 ako rtw
@@ -2002,7 +1968,6 @@ ala abcdghimnprstuvwxyz
 alb aeo
 alc iouy
 ald aehilnorsw
-ale Rabcdefimnrstvyz
 alf abostw
 alg ar
 alh ao
@@ -2020,9 +1985,7 @@ alv aeio
 alw ae
 aly acnpstuxz
 alz ay
-ama Tabcdeghiklnprstwyz
 amb adeiklorsu
-ame Eacdfklnorsty
 ami abcdefklnorst
 aml ei
 amm aeiouy
@@ -2032,13 +1995,10 @@ amp abefhilnoprstuy
 amr aoy
 ams aehotu
 amu derst
-ana Sacdgikmnorstu
 anb aeu
 anc aehikortuy
-and HRWabcdefghilmoprstuwy
 ane deflnorstuy
 anf aoru
-ang Ladehijklmnorstuwyz
 anh aou
 ani acdefklnstuz
 anj iou
@@ -2046,7 +2006,6 @@ ank abefilnrty
 anl eiy
 anm ae
 ann aehiouy
-ano Oeilmnoprsuv
 anp ou
 ans aefhikmoy
 ant aehilorsuy
@@ -2054,7 +2013,6 @@ anu abceklmprst
 any amo
 anz aehio
 aom ai
-aos Dh
 aot io
 aou ln
 aow ei
@@ -2081,7 +2039,6 @@ arg aeilory
 arh aeo
 ari abcefglmnostuz
 arj aeo
-ark FSWadehilmnorsuw
 arl abdeiosty
 arm aefhilotuy
 arn aeiotuy
@@ -2089,7 +2046,6 @@ aro dilmnoqtuvxy
 arp aehilouy
 arr aehioy
 ars aehiklmnot
-art Paefhilmnorsuwyz
 aru cds
 arv aeio
 arw ahi
@@ -2097,7 +2053,6 @@ ary aikln
 arz ai
 asa dgiklnrtz
 asc aehiou
-ase Mbdilmnorswy
 ash abcdefghiklmnortuy
 asi abcdelnostv
 ask aei
@@ -2105,10 +2060,7 @@ asl eiy
 asm aiu
 aso hlntu
 asp aeiouy
-ass Habefiklopuwy
 ast aefhilmnoruwy
-asu Tabirs
-ata Mabcdeghklnprsw
 atb aeio
 atc ah
 ate adefglnprsuvwx
@@ -2145,7 +2097,6 @@ avi acdeglnorst
 avo clnrtuwy
 avu orst
 avv iy
-avy As
 awa bgiknrsty
 awb aeo
 awd ilruy
@@ -2230,7 +2181,6 @@ bir det
 bis chmot
 bit aehirtuyz
 bla intz
-ble Wadmnprst
 bli cegmnqsv
 blo cinoqrst
 blu mt
@@ -2274,13 +2224,6 @@ but aeimtuz
 bvi aeo
 byi ns
 bys aims
-cCa ilr
-cCl au
-cDo nw
-cGo vw
-cGu fi
-cKe en
-cLe aio
 cab blr
 cac aiy
 cad aeio
@@ -2409,10 +2352,6 @@ cup aeipy
 cur aefgirsuvy
 cus eipst
 cut eiot
-dCa nt
-dDr ag
-dRa ty
-dWo lr
 dab lo
 dac ehit
 dag aeio
@@ -2452,7 +2391,6 @@ den acdeilostuz
 deo glnu
 dep lt
 der abcdefgilmnopsty
-des Ghist
 det st
 deu rs
 dew aei
@@ -2547,7 +2485,6 @@ dyi ns
 dyl il
 dym aei
 dys hs
-eDr ag
 eab aeilo
 eac ehlortu
 ead abefghijlmoprstwy
@@ -2580,13 +2517,11 @@ ecc aei
 ece adilmnps
 ech aeinostuy
 eci abdeflmnopst
-eck Haehilotuy
 ecl aiu
 eco cdilmnprsuvy
 ecr aeiouy
 ect aeilorsu
 ecu behlnrt
-edF ae
 eda glnrtyz
 edb au
 edc ao
@@ -2605,7 +2540,6 @@ edu clps
 edw ao
 eeb aeilo
 eec aehiy
-eed Fbefilmosuwy
 eef eiuy
 eeg ae
 eeh aio
@@ -2613,7 +2547,6 @@ eek adeilny
 eel eioy
 eem aeilp
 een aeilnsty
-eep Eadehilnsy
 eer abefilsy
 ees aehitwy
 eet aehiloy
@@ -2627,9 +2560,7 @@ efi acelnrstx
 efl aeoy
 efo cegiorux
 efr aeio
-eft Beilmnoy
 efu deglnst
-ega Abcdiklnrstwy
 ege adelmnrstv
 egf er
 egg aeiy
@@ -2676,7 +2607,6 @@ ele abcdegilmnorstuvxyz
 elf ailrst
 elg airu
 eli abcdefgklmnoprstuvxz
-elk Hei
 ell abehimotuy
 elm aeos
 elo abcdgnprtuvw
@@ -2702,14 +2632,12 @@ ena bcdeghiklmnrstu
 enc ehikoy
 end aehiloruy
 ene abcdefgiklmrstvwxyz
-eng Hadehiltu
 enh aeo
 eni abcefgilmnorstuxz
 enk aeino
 enl eiy
 enm ao
 enn aeioyz
-eno Uabcdilmnoprstuvwz
 enp ei
 enr eiy
 ens aeiklotuwy
@@ -2718,7 +2646,6 @@ enu dehimors
 eny aio
 enz aeioy
 eod eo
-eof If
 eog ehr
 eol aeou
 eom ae
@@ -2734,19 +2661,16 @@ epe adelnrs
 eph aeortuy
 epi acdelnst
 epl aeiouy
-epo Mrsty
 epp aeioy
 epr aeio
 eps aioy
 ept aehilou
 epu blst
 equ aeioy
-erG ru
 era bcghiklmnprstw
 erb aeiloy
 erc aehiklouy
 erd aeiorsuy
-ere Rabdefgiklmnorstuvwyz
 erf deilou
 erg aeimorsuy
 erh aeu
@@ -2780,7 +2704,6 @@ esn eio
 eso lmnprstuz
 esp aehiou
 ess aeimnopuy
-est Raefhilmnoruwy
 esu bcilmprsv
 eta chiklmnprtw
 etc ho
@@ -2916,7 +2839,6 @@ gag ei
 gai ln
 gal eilo
 gam eioy
-gan Tcdgioty
 gar acdeiloty
 gas amsuy
 gat aehiotu
@@ -2949,11 +2871,8 @@ ghi ensz
 ghl ay
 ghn eu
 gho lru
-ght Bacefhiloswy
 ghu amr
-giM ai
 gia cn
-gic Uai
 gid il
 gie bdnrs
 gil aeivy
@@ -3013,9 +2932,7 @@ haf efit
 hag aegiru
 hai cklnrst
 hak aeiy
-hal Wadefiklst
 ham abeimopr
-han Xabcdeghiknotuy
 hao st
 hap eilmpst
 har abcdefgiklmoprty
@@ -3044,7 +2961,6 @@ hem aeioy
 hen aceginty
 heo dlnprs
 hep ahp
-her Habdeiklmnoprstuvwyz
 hes adehiopstuy
 het aehilot
 heu ms
@@ -3136,7 +3052,6 @@ hym eiu
 hyr ouy
 hys eit
 hyt eh
-iMa gs
 iab eilo
 iac ahio
 iad enu
@@ -3159,7 +3074,6 @@ ibo dsu
 ibr aeio
 ibu lnrst
 iby al
-ica CLNbcdeghilmnprstwy
 icc aou
 ice dlnprsty
 ich aeilmnotuy
@@ -3211,8 +3125,6 @@ ift ehiloy
 iga bdilmnrst
 ige delnors
 igg aeilsy
-igh Pabeijlnotuw
-igi Mbdelnot
 igm aeiouy
 ign aeilop
 igo dilnrt
@@ -3232,17 +3144,13 @@ ikh aio
 iki eknrt
 ikk ei
 iko klnry
-iku My
 ila cfghmnrstuw
 ilb aeouy
 ilc ahlo
-ild CHRacefilnoru
-ile Badeflmnoprstuvy
 ilf eioru
 ilg aer
 ili acefgmnopstuz
 ilk eimswy
-ill GLabdefijmorstuwy
 ilm aeioy
 iln ei
 ilo bfghimnrtuw
@@ -3268,10 +3176,8 @@ imu lmrst
 ina cdefghiklmnrstuwy
 inb aeo
 inc ehiklotuy
-ind Cabefhilmnoprsuwy
 ine acdefgklmnprstuvwyz
 inf aeoru
-ing FHNSadehikloprstuwy
 inh eo
 ini abcdefmnostuv
 ink aeghilsuy
@@ -3322,7 +3228,6 @@ iro bchlntuvy
 irp eilo
 irr eiou
 irs hiptu
-irt Dehiuy
 iru lpst
 irw ai
 iry im
@@ -3349,7 +3254,6 @@ isu anrs
 ita bcdgiklmnprt
 itb ai
 itc aho
-ite DRcdflnors
 itf aiou
 ith adefhiorsy
 iti abcefglmnoqsvz
@@ -3416,7 +3320,6 @@ kee pt
 kei ns
 kel eiy
 kem aeip
-ken Ldeist
 keo fuv
 ker esvy
 kes ty
@@ -3483,11 +3386,9 @@ lah ao
 lai acdlmnrst
 lak eiy
 lal ot
-lam Dabeimopuy
 lan acdegiknostx
 lap djprst
 lar adeghikmnouy
-las Aeghikmpst
 lat abcefhilnortwyz
 lau bcdegnst
 lav eio
@@ -3586,7 +3487,6 @@ lle cdegilnorsty
 llf oru
 lli abcdefgknopstuvw
 llm ao
-llo Vcfgilnopqrstuvwy
 llp aeo
 llr aio
 lls hipty
@@ -3639,7 +3539,6 @@ lsh eimo
 lsi defnotu
 lso mnp
 lst aeio
-lta Bgilmnrv
 lte cdnors
 lth eiouy
 lti ceflmnpst
@@ -3650,7 +3549,6 @@ lua bt
 lub bfl
 luc chiko
 lud egir
-lue Dbdfijlnrsy
 lug egiu
 lui acdenst
 luk eiy
@@ -3727,7 +3625,6 @@ mil aceilty
 min acdeghiotuy
 mir aceiknos
 mis aehimost
-mit Caehilortyz
 miu mr
 mla nu
 mle rst
@@ -3798,7 +3695,6 @@ nai adlnr
 nak aeiry
 nal deilosty
 nam aeio
-nan Sacdeiktz
 nap epst
 nar cdeilmoy
 nas ahikmst
@@ -3846,7 +3742,6 @@ nee cdhilrsz
 nef eiu
 neg aeiu
 nei ds
-nel Aaeilotuy
 nem aeiopy
 nen cdet
 neo nu
@@ -3866,7 +3761,6 @@ nfl aeiou
 nfo ilru
 nfr aeio
 nfu lnrst
-ngH su
 nga egilnrtuv
 ngb io
 ngd aou
@@ -3986,7 +3880,6 @@ ntr aeiouy
 nts imu
 ntu acimnrs
 ntw aei
-nty Mir
 ntz ey
 nua lrt
 nub bei
@@ -4126,7 +4019,6 @@ oku gkmpst
 ola bcdinrst
 olb aeoy
 olc ako
-old BDabefilmnorstuwy
 ole acdefhlmnorstuxy
 olf aefgior
 olg aeio
@@ -4142,7 +4034,6 @@ olu bclmst
 olv aeio
 oly agmnpt
 oma cdghilmnrst
-omb Taeioru
 ome bdhilmnoprstvwyz
 omf iouy
 omi acdelnstuz
@@ -4157,9 +4048,7 @@ ona cdeghiklnrstu
 onb eo
 onc aehiloru
 ond aehilnorsu
-one Ecdehlmnrstvyz
 onf aeiloru
-ong Aabefhilnorstuwy
 oni acdefgklmnoqstuz
 onj aou
 onk aei
@@ -4184,7 +4073,6 @@ ooh ei
 ooi en
 ook abceilmosuwy
 ool abefiklnosy
-oom DGSefimpsy
 oon abdefilsty
 oop ehily
 oor abeiklmsw
@@ -4219,13 +4107,11 @@ org aehilou
 ori abcdeflnostuz
 ork abdefilmnostwy
 orl adeoy
-orm Daehilouwy
 orn abcefilmoprtwy
 oro cdlnrstuwx
 orp ehilosu
 orr aehiouy
 ors acehikotwy
-ort Aaceghilmoruy
 oru bms
 orv aeu
 orw aei
@@ -4241,7 +4127,6 @@ osm aeio
 oso dlmt
 osp ehio
 oss abeilouy
-ost ATabcdeilmnopruwy
 osu elnr
 ota bglmnprstu
 otb ae
@@ -4253,7 +4138,6 @@ oti acdeflnosuv
 otl aeiuy
 otm ae
 otn eo
-oto Aceimnpruvwz
 otp aio
 otr aeiuy
 ots adehikmotw
@@ -4267,7 +4151,6 @@ oud aehilnoy
 ouf aef
 oug aehil
 oui elnsv
-oul DSadefilnot
 oum aemo
 oun cdgost
 oup eiloy
@@ -4335,7 +4218,6 @@ pec acikt
 ped aeio
 pee cdr
 pef auy
-pek Ta
 pel aegilty
 pen cdegilnstw
 per abceilmorstuy
@@ -4363,7 +4245,6 @@ pio cnu
 pip eh
 pir aeioy
 pis ehmot
-pit Fabefhiotyz
 piu ms
 pla cinrstuy
 ple denrstxy
@@ -4378,7 +4259,6 @@ poc ahk
 poi lns
 pok aer
 pol adeiloy
-pon Ddegrs
 poo fhklnrs
 pop lo
 por aeiortu
@@ -4386,7 +4266,6 @@ pos aeistu
 pot eilt
 pou lnrst
 pox iy
-ppa Tglnr
 ppe adelnrstw
 pph io
 ppi celnst
@@ -4424,7 +4303,6 @@ qua bcdeilnrstvw
 que adflnorstuz
 qui bcdefglnprst
 quo irty
-rPu gp
 rab abeilnoy
 rac acehiklortuy
 rad abdefilosuy
@@ -4447,7 +4325,6 @@ rat acefhiotu
 rau dgmnswx
 rav adeiouy
 raw abefiln
-ray Caefino
 raz eioyz
 rba dgklnrt
 rbe acdlnqrt
@@ -4498,7 +4375,6 @@ reu dpst
 rev aeiou
 rew adehimnosy
 rex is
-rey Daefi
 rfa cikr
 rfe cdirw
 rfi denrs
@@ -4581,7 +4457,6 @@ roj ae
 rok aei
 rol adeiloy
 rom abeimopwy
-ron FHacdegiklostuwxyz
 roo cdfgklmnptv
 rop aehilopsy
 ror aei
@@ -4621,7 +4496,6 @@ rsw eo
 rta begiklnrx
 rte bcdefglmnrstxz
 rtf ou
-rth Gadefiloruy
 rti acefgklmnosvz
 rtl aeiy
 rtm aou
@@ -4704,7 +4578,6 @@ sel aefilmosy
 sem abei
 sen acdegikst
 sep hpst
-ser Gabikltuvy
 ses est
 set aeot
 seu dmrs
@@ -4735,7 +4608,6 @@ sid aeiruy
 sie dgrsu
 sif aiy
 sig hno
-sil Feioy
 sin aegikot
 sio dn
 sip eiy
@@ -4861,7 +4733,6 @@ tem aikmp
 ten cdegnst
 teo rstu
 tep ahops
-ter Pabcegilmnoprsuvwy
 tes eisty
 tet ist
 teu brs
@@ -4907,7 +4778,6 @@ tle degrsty
 tli efnpv
 tlo aco
 tlu cd
-tma Winpr
 tme agn
 tmi cn
 tmo dosu
@@ -4925,7 +4795,6 @@ tom abeipy
 ton aceilosy
 too degklnpt
 top acegiopsu
-tor Paceikmnotwy
 tos ehi
 tot au
 tou cmnrst
@@ -4983,7 +4852,6 @@ tyr eo
 tze delr
 tzi emn
 tzo ht
-uTu bn
 uab bl
 uac ky
 uad eor
@@ -5079,7 +4947,6 @@ uji bltw
 uju bt
 uka hr
 uke bdmwy
-uki Jeny
 ukk aeio
 uko nrv
 uku no
@@ -5092,7 +4959,6 @@ ulf aeiou
 ulg aeiy
 uli aemnopstu
 ulk aehiny
-ull Dabcdefhimnoprsuy
 uln ae
 ulo gmtu
 ulp aehirty
@@ -5169,7 +5035,6 @@ usb aioy
 usc ahilou
 use adfloprstuwy
 ush acdeikmnortuy
-usi Mabcelnouv
 usk aeilory
 usl eiy
 uso elnr
@@ -5189,7 +5054,6 @@ uti aceflnoqsz
 utl aeioy
 utm eo
 utn aei
-uto Acfmnprtu
 utp lou
 utr aeiou
 uts cehikmotuy
@@ -5223,7 +5087,6 @@ vei gl
 vel aegilorty
 vem abe
 ven acdegiklnotu
-ver GMabcdefghijklmnprstuvwy
 ves iqt
 vet aeioty
 vey eo
@@ -5233,7 +5096,6 @@ vid eilsu
 vie dhnrstw
 vif iy
 vig an
-vil Oadeilrty
 vin acegios
 vio lnrtu
 vir ao
@@ -5278,7 +5140,6 @@ wed eil
 wee bdknptz
 wel efilrtv
 wen at
-wer DRaefipvy
 wes iost
 wgi rv
 wha lnt
@@ -5332,7 +5193,6 @@ xce delprs
 xci st
 xcl au
 xec ru
-xed Slo
 xem ip
 xer ct
 xha lu
@@ -5365,8 +5225,6 @@ xtu ar
 xud ei
 xur iy
 xwo or
-yBa ns
-yCa pt
 yac it
 yad ehi
 yag ei
@@ -5449,7 +5307,6 @@ ypu ns
 yra cmnt
 yre denux
 yri acdelnt
-yro Jdilno
 yrt el
 yru ps
 ysa ty
@@ -5472,7 +5329,6 @@ zaa kr
 zab al
 zal ceo
 zan ain
-zar Ddeikortu
 zaz ez
 zea bu
 zeb eo

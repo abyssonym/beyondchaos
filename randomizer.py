@@ -4197,6 +4197,13 @@ def manage_ancient():
 
     maxrank = max(locations, key=lambda l: l.ancient_rank).ancient_rank
     for l in locations:
+        if l not in restlocs and (l.npcs or l.events):
+            for n in l.npcs:
+                if n.graphics == 0x6F:
+                    n.memaddr, n.membit = 0x73, 1
+            for e in l.events:
+                if e.event_addr == 0x29AEB:
+                    e.event_addr == 0x5EB3
         for e in l.entrances:
             e.dest |= 0x800
         rank = l.ancient_rank
@@ -4313,17 +4320,6 @@ def manage_ancient():
                             enemy_limit=enemy_limit)
 
         l.write_data(outfile)
-        '''
-        entranks = [e.destination.ancient_rank for e in l.entrances
-                    if hasattr(e.destination, "ancient_rank")]
-        if not hasattr(l, "secret_treasure"):
-            print l.locid, l.ancient_rank, l.routerank, ":",
-            print " ".join(["%s" % e for e in sorted(entranks)])
-            print l.fset
-            s = l.chest_contents.strip()
-            print s
-            print
-        '''
 
 
 def randomize():

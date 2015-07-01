@@ -4091,6 +4091,16 @@ def manage_ancient():
             setattr(innkeeper, key, value)
         l.npcs.append(innkeeper)
 
+        unequipper = NPCBlock(pointer=None, locid=l.locid)
+        attributes = {
+            "graphics": 0x17, "palette": 0, "x": 55, "y": 16,
+            "event_addr": 0x23510, "facing": 2,
+            "memaddr": 0, "membit": 0, "unknown": 0,
+            "graphics_index": 0}
+        for key, value in attributes.items():
+            setattr(unequipper, key, value)
+        l.npcs.append(unequipper)
+
         event_addr = (savesub.location - 0xa0000) & 0x3FFFF
         pay_to_save = NPCBlock(pointer=None, locid=l.locid)
         attributes = {

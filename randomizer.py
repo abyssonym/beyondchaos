@@ -3955,12 +3955,10 @@ def manage_ancient():
         pointer += espersub.size
 
     inn_template = [0x4B, None, None,
-                    0x4B, 0x11, 0x01,
+                    0x4B, 0x11, 0x81,
                     0xB6, None, None, None,
                     None, None, None,
-                    0xFE,
-                    ]
-
+                    0xFE]
     inn_template2 = [0x85, None, None,
                      0xC0, 0xBE, 0x81, 0xFF, 0x69, 0x01,
                      0x31, 0x84, 0xC3, 0x8F, 0x84, 0xFF,
@@ -3972,10 +3970,20 @@ def manage_ancient():
                      0xB2, 0x96, 0xCF, 0x00,
                      0xFE]
 
-    inn_prices = {1: (500, 0xA6E),
-                  2: (2000, 0xA71),
-                  3: (8000, 0xA5F),
-                  4: (30000, 0xA64)}
+    prices = {1: (500, 0xA6E),
+              2: (2000, 0xA71),
+              3: (8000, 0xA5F),
+              4: (30000, 0xA64)}
+
+    save_template = [0x4B, None, None,
+                     0x4B, 0x24, 0x85,
+                     0xB6, None, None, None,
+                     None, None, None,
+                     0xFE]
+    save_template2 = [0x85, None, None,
+                      0xC0, 0xBE, 0x81, 0xFF, 0x69, 0x01,
+                      0xB2, 0xEB, 0x9A, 0x02,
+                      0xFE]
 
     shops = get_shops()
     shopranks = {}
@@ -4020,33 +4028,43 @@ def manage_ancient():
     for g in range(14, 63):
         if g not in npc_palettes:
             npc_palettes[g] = range(6)
+
+    def make_paysub(template, template2, loc, ptr):
+        sub = Substitution()
+        sub.set_location(ptr)
+        price, message = prices[loc.restrank]
+        message |= 0x8000
+        sub.bytestring = list(template)
+        ptr += len(template)
+        price = [price & 0xFF, price >> 8]
+        message = [message & 0xFF, message >> 8]
+        p = (ptr - 0xA0000) & 0x3FFFF
+        ptrbytes = [p & 0xFF, (p >> 8) & 0xFF, p >> 16]
+        mapid = [loc.locid & 0xFF, loc.locid >> 8]
+        mapid[1] |= 0x23
+        sub.bytestring[1:3] = message
+        sub.bytestring[7:10] = ptrbytes
+        sub.bytestring[10:13] = ptrbytes
+        sub.bytestring[10] -= 1
+        assert None not in sub.bytestring
+        assert len(sub.bytestring) == 14
+        sub.bytestring += template2
+        ptr += len(template2)
+        sub.bytestring[15:17] = price
+        assert None not in sub.bytestring
+        sub.write(outfile)
+        return sub
+
     for l in restlocs:
         assert l.ancient_rank == 0
         l.music = restmusics.pop()
         l.make_warpable()
 
-        innsub = Substitution()
-        innsub.set_location(pointer)
-        price, message = inn_prices[l.restrank]
-        innsub.bytestring = list(inn_template)
-        pointer += len(inn_template)
-        price = [price & 0xFF, price >> 8]
-        message = [message & 0xFF, message >> 8]
-        p = (pointer - 0xA0000) & 0x3FFFF
-        pointerbytes = [p & 0xFF, (p >> 8) & 0xFF, p >> 16]
-        mapid = [l.locid & 0xFF, l.locid >> 8]
-        mapid[1] |= 0x23
-        innsub.bytestring[1:3] = message
-        innsub.bytestring[7:10] = pointerbytes
-        innsub.bytestring[10:13] = pointerbytes
-        innsub.bytestring[10] -= 1
-        assert None not in innsub.bytestring
-        assert len(innsub.bytestring) == 14
-        innsub.bytestring += inn_template2
-        pointer += len(inn_template2)
-        innsub.bytestring[15:17] = price
-        assert None not in innsub.bytestring
-        innsub.write(outfile)
+        innsub = make_paysub(inn_template, inn_template2, l, pointer)
+        pointer += innsub.size
+        savesub = make_paysub(save_template, save_template2, l, pointer)
+        pointer += savesub.size
+
         event_addr = (innsub.location - 0xa0000) & 0x3FFFF
         innkeeper = NPCBlock(pointer=None, locid=l.locid)
         graphics = random.randint(14, 62)
@@ -4059,6 +4077,17 @@ def manage_ancient():
         for key, value in attributes.items():
             setattr(innkeeper, key, value)
         l.npcs.append(innkeeper)
+
+        event_addr = (savesub.location - 0xa0000) & 0x3FFFF
+        pay_to_save = NPCBlock(pointer=None, locid=l.locid)
+        attributes = {
+            "graphics": 0x6f, "palette": 6, "x": 47, "y": 4,
+            "event_addr": event_addr, "facing": 0x43,
+            "memaddr": 0, "membit": 0, "unknown": 0,
+            "graphics_index": 0}
+        for key, value in attributes.items():
+            setattr(pay_to_save, key, value)
+        l.npcs.append(pay_to_save)
 
         shop = shopranks[l.restrank].pop()
         if shop is not None:

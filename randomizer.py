@@ -3764,6 +3764,19 @@ def manage_ancient():
     fi.seek(0xa5e74)
     fi.write(chr(0))  # remove Terra's magitek
 
+    to_dummy = [get_item(0xF6), get_item(0xF7)]
+    name = [0xFF] + name_to_bytes("Pebble", 12)
+    for item in to_dummy:
+        item.dataname = name
+        item.price = 4
+        item.itemtype = 6
+        item.write_stats(outfile)
+    blank_sub = Substitution()
+    blank_sub.set_location(0x2D76C1)
+    blank_sub.bytestring = [0xFF] * (0x2D76F5 - blank_sub.location)
+    blank_sub.bytestring[blank_sub.size/2] = 0
+    blank_sub.write(outfile)
+
     # decrease exp needed for level up
     if 'speedcave' in activated_codes:
         maxlevel = 39

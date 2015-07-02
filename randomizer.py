@@ -349,9 +349,9 @@ class CharacterBlock:
             s += ", ".join([n.name for n in self.get_notable_equips()])
             s += "\n"
         if self.natural_magic is not None:
-            s += "Natural magic:\n"
-            for level, spell in self.natural_magic:
-                s += "  LV %s - %s\n" % (level, spell.name)
+            s += "Has natural magic.\n"
+            #for level, spell in self.natural_magic:
+            #    s += "  LV %s - %s\n" % (level, spell.name)
         return s.strip()
 
     def get_notable_equips(self):

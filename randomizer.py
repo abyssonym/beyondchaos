@@ -4037,7 +4037,7 @@ def manage_ancient():
     shopranks[random.randint(1, 4)][random.randint(0, 2)] = None
 
     levelmusic = {}
-    dungeonmusics = [23, 24, 32, 33, 35, 55, 71, 40, 41, 75, 77, 78]
+    dungeonmusics = [23, 24, 33, 35, 55, 71, 40, 41, 75, 77, 78]
     random.shuffle(dungeonmusics)
     for i in xrange(5):
         levelmusic[i] = dungeonmusics.pop()
@@ -4066,13 +4066,14 @@ def manage_ancient():
         price = [price & 0xFF, price >> 8]
         message = [message & 0xFF, message >> 8]
         p = (ptr - 0xA0000) & 0x3FFFF
+        p2 = p - 1
         ptrbytes = [p & 0xFF, (p >> 8) & 0xFF, p >> 16]
+        ptrbytes2 = [p2 & 0xFF, (p2 >> 8) & 0xFF, p2 >> 16]
         mapid = [loc.locid & 0xFF, loc.locid >> 8]
         mapid[1] |= 0x23
         sub.bytestring[1:3] = message
         sub.bytestring[7:10] = ptrbytes
-        sub.bytestring[10:13] = ptrbytes
-        sub.bytestring[10] -= 1
+        sub.bytestring[10:13] = ptrbytes2
         assert None not in sub.bytestring
         assert len(sub.bytestring) == 14
         sub.bytestring += template2

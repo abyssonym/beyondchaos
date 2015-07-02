@@ -369,8 +369,9 @@ def get_spellsets(spells=None):
         [s.target_enemy_default, s.power, s.spellid == 0xA4])]
     spellsets['Drain'] = [s for s in spells if s.draining]
     spellsets['Mana'] = [s for s in spells if s.concernsmp]
-    spellsets['Death'] = [s for s in spells if s.miss_if_death_prot and
-                          not s.percentage and s.has_status]
+    spellsets['Death'] = ([s for s in spells if s.miss_if_death_prot and
+                           not s.percentage and s.has_status]
+                          + [0x46, 0xC4, 0xE2, 0xE5])
     spellsets['Heavy'] = [s for s in spells if s.miss_if_death_prot and
                           s.percentage]
     spellsets['All'] = [s for s in spells if s.target_everyone and

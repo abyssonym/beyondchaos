@@ -1243,9 +1243,7 @@ def manage_natural_magic():
     return candidates
 
 
-def manage_umaro(commands, freespaces):
-    characters = get_characters()
-
+def manage_equip_umaro(freespaces):
     # ship unequip - cc3510
     equip_umaro_sub = Substitution()
     equip_umaro_sub.bytestring = [0xC9, 0x0E]
@@ -1300,11 +1298,17 @@ def manage_umaro(commands, freespaces):
     unequip_umaro_sub.set_location(0xC3514)
     unequip_umaro_sub.write(outfile)
 
+    return freespaces
+
+
+def manage_umaro(commands):
+    characters = get_characters()
     candidates = [c for c in characters if c.id <= 13 and
                   c.id != 12 and
                   2 not in c.battle_commands and
                   0xC not in c.battle_commands and
                   0x17 not in c.battle_commands]
+
     umaro_risk = random.choice(candidates)
     if 0xFF in umaro_risk.battle_commands:
         battle_commands = []
@@ -1316,6 +1320,7 @@ def manage_umaro(commands, freespaces):
                                                   0x1B, 0x1C, 0x1D], 2))
         battle_commands.append(1)
         umaro_risk.battle_commands = battle_commands
+
     umaro = [c for c in characters if c.id == 13][0]
     umaro.battle_commands = list(umaro_risk.battle_commands)
     if random.choice([True, False, False]):
@@ -1359,7 +1364,7 @@ def manage_umaro(commands, freespaces):
     storm_sub.set_location(0x21710)
     storm_sub.write(outfile)
 
-    return umaro_risk, freespaces
+    return umaro_risk
 
 
 def manage_sprint():
@@ -4653,8 +4658,7 @@ h   Organize rages by highest level first'''
     reseed()
 
     if 'u' in flags:
-        umaro_risk, event_freespaces = manage_umaro(commands,
-                                                    event_freespaces)
+        umaro_risk = manage_umaro(commands)
         reset_rage_blizzard(items, umaro_risk, outfile)
     reseed()
 
@@ -4769,6 +4773,9 @@ h   Organize rages by highest level first'''
     write_all_locations_misc()
     for fs in fsets:
         fs.write_data(outfile)
+
+    if 'u' in flags or 'q' in flags:
+        manage_equip_umaro(event_freespaces)
 
     if 'easymodo' in activated_codes or 'llg' in activated_codes:
         for m in monsters:

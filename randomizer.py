@@ -4366,6 +4366,41 @@ def randomize():
                                "the FF3 US 1.0 rom:\n> ").strip()
         print
 
+    try:
+        f = open(sourcefile, 'rb')
+        data = f.read()
+        f.close()
+    except IOError:
+        response = raw_input(
+            "File not found. Would you like to search the current directory \n"
+            "for a valid FF3 1.0 rom? (y/n) ")
+        if response and response[0].lower() == 'y':
+            for filename in sorted(os.listdir('.')):
+                stats = os.stat(filename)
+                size = stats.st_size
+                if size not in [3145728, 3145728 + 0x200]:
+                    continue
+
+                try:
+                    f = open(filename, 'r+b')
+                except IOError:
+                    continue
+
+                data = f.read()
+                f.close()
+                if size == 3145728 + 0x200:
+                    data = data[0x200:]
+                h = md5(data).hexdigest()
+                if h == MD5HASH:
+                    sourcefile = filename
+                    break
+            else:
+                raise Exception("File not found.")
+        else:
+            raise Exception("File not found.")
+        print "Success! Using valid rom file: %s\n" % sourcefile
+    del(f)
+
     flaghelptext = '''o   Shuffle characters' in-battle commands.
 w   Generate new commands for characters, replacing old commands.
 z   Always have "Sprint Shoes" effect.
@@ -4409,28 +4444,12 @@ h   Organize rages by highest level first'''
     seed = seed % (10**10)
     reseed()
 
-    if version and version != VERSION:
-        print ("WARNING! Version mismatch! "
-               "This seed will not produce the expected result!")
-    s = "Using seed: %s.%s.%s" % (VERSION, flags, seed)
-    print s
-    log(s, section=None)
-    log("This is a game guide generated for the Beyond Chaos FF6 randomizer.",
-        section=None)
-    log("For more information, visit https://github.com/abyssonym/beyondchaos",
-        section=None)
-
     if '.' in sourcefile:
         tempname = sourcefile.rsplit('.', 1)
     else:
         tempname = [sourcefile, 'smc']
     outfile = '.'.join([tempname[0], str(seed), tempname[1]])
     outlog = '.'.join([tempname[0], str(seed), 'txt'])
-
-    f = open(sourcefile, 'rb')
-    data = f.read()
-    f.close()
-    del(f)
 
     if len(data) % 0x400 == 0x200:
         print "NOTICE: Headered ROM detected. Output file will have no header."
@@ -4449,6 +4468,17 @@ h   Organize rages by highest level first'''
             return
 
     copyfile(sourcefile, outfile)
+
+    if version and version != VERSION:
+        print ("WARNING! Version mismatch! "
+               "This seed will not produce the expected result!")
+    s = "Using seed: %s.%s.%s" % (VERSION, flags, seed)
+    print s
+    log(s, section=None)
+    log("This is a game guide generated for the Beyond Chaos FF6 randomizer.",
+        section=None)
+    log("For more information, visit https://github.com/abyssonym/beyondchaos",
+        section=None)
 
     commands = commands_from_table(COMMAND_TABLE)
     commands = dict([(c.name, c) for c in commands])

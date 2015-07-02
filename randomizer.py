@@ -4036,11 +4036,17 @@ def manage_ancient():
             random.shuffle(shopranks[i])
     shopranks[random.randint(1, 4)][random.randint(0, 2)] = None
 
+    levelmusic = {}
+    dungeonmusics = [23, 24, 32, 33, 35, 55, 71, 40, 41, 75, 77, 78]
+    random.shuffle(dungeonmusics)
+    for i in xrange(5):
+        levelmusic[i] = dungeonmusics.pop()
+
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
     restlocs = [l for l in locations if hasattr(l, "restrank")]
     random.shuffle(restlocs)
-    ban_musics = [0, 36, 56, 57, 58, 73, 74, 75]
+    ban_musics = [0, 36, 56, 57, 58, 73, 74, 75] + levelmusic.values()
     restmusics = [m for m in range(1, 85) if m not in ban_musics]
     random.shuffle(restmusics)
     optional_chars = [c for c in characters if c.id not in starting
@@ -4241,20 +4247,12 @@ def manage_ancient():
         l.name_id = min(rank, 0xFF)
 
         if not hasattr(l, "restrank") and 'f' not in flags:
-            if not hasattr(l, "routerank"):
-                l.music = 58
-            elif l.routerank == 0:
-                l.music = 58
-            elif l.routerank == 1:
-                l.music = 57
-            elif l.routerank == 2:
-                l.music = 74
-            elif l.routerank == 3:
-                l.music = 73
-            elif l.routerank >= 4:
-                l.music = 75
-            elif hasattr(l, "secret_treasure") and l.secret_treasure:
+            if hasattr(l, "secret_treasure") and l.secret_treasure:
                 pass
+            elif l.locid == 334 or not hasattr(l, "routerank"):
+                l.music = 58
+            elif l.routerank in levelmusic:
+                l.music = levelmusic[l.routerank]
             else:
                 raise Exception
 
@@ -4316,12 +4314,11 @@ def manage_ancient():
                             enemy_formations.remove(c)
 
             fset = get_fset(rank)
-            if l.routerank >= 4:
-                for formation in fset.formations:
-                    if formation.get_music() == 0:
-                        formation.set_music(6)
-                        formation.set_continuous_music()
-                        formation.write_data(outfile)
+            for formation in fset.formations:
+                if formation.get_music() == 0:
+                    formation.set_music(6)
+                    formation.set_continuous_music()
+                    formation.write_data(outfile)
             fset.formids = [f.formid for f in chosen_enemies]
             fset.write_data(outfile)
 

@@ -3785,6 +3785,15 @@ def manage_ancient():
     blank_sub.bytestring[blank_sub.size/2] = 0
     blank_sub.write(outfile)
 
+    goddess_save_sub = Substitution()
+    goddess_save_sub.bytestring = [0xFD, 0xFD]
+    goddess_save_sub.set_location(0xC170A)
+    goddess_save_sub.write(outfile)
+    goddess_save_sub.set_location(0xC1743)
+    goddess_save_sub.write(outfile)
+    goddess_save_sub.set_location(0xC1866)
+    goddess_save_sub.write(outfile)
+
     # decrease exp needed for level up
     if 'speedcave' in activated_codes:
         maxlevel = 39
@@ -4238,10 +4247,16 @@ def manage_ancient():
         if l not in restlocs and (l.npcs or l.events):
             for n in l.npcs:
                 if n.graphics == 0x6F:
-                    n.memaddr, n.membit = 0x73, 1
-            for e in l.events:
-                if e.event_addr == 0x29AEB:
-                    e.event_addr == 0x5EB3
+                    n.memaddr, n.membit, n.event_addr = 0x73, 1, 0x5EB3
+                    success = False
+                    for e in l.events:
+                        if e.x % 128 == n.x % 128 and e.y % 128 == n.y % 128:
+                            if success:
+                                raise Exception("Duplicate events found.")
+                            e.event_addr = 0x5EB3
+                            success = True
+                    if not success:
+                        raise Exception("No corresponding event found.")
         for e in l.entrances:
             e.dest |= 0x800
         rank = l.ancient_rank

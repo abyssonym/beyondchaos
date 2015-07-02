@@ -3954,7 +3954,7 @@ def manage_ancient():
             l.write_data(outfile)
 
     espersubs = {}
-    pointer = 0xA5370
+    pointer = 0xB4E56
     for esper, event_value in esperevents.items():
         byte, bit = event_value / 8, event_value % 8
         mem_addr = ((0x17+byte) << 3) | bit

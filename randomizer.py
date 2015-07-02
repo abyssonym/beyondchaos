@@ -1559,6 +1559,9 @@ def manage_balance(newslots=True):
 
     death_abuse_sub.write(outfile)
 
+    get_monsters(sourcefile)
+    sealed_kefka = get_monster(0x174)
+
 
 def manage_magitek(spells):
     exploder = [s for s in spells if s.spellid == 0xA2][0]

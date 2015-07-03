@@ -4330,12 +4330,12 @@ def manage_ancient():
                             enemy_formations.remove(c)
 
             fset = get_fset(rank)
+            fset.formids = [f.formid for f in chosen_enemies]
             for formation in fset.formations:
                 if formation.get_music() == 0:
                     formation.set_music(6)
                     formation.set_continuous_music()
                     formation.write_data(outfile)
-            fset.formids = [f.formid for f in chosen_enemies]
             fset.write_data(outfile)
 
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):

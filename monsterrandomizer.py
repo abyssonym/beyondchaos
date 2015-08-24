@@ -1380,6 +1380,8 @@ class MonsterBlock:
             self.controls += [random.choice(candidates)]
         if 0xEE not in self.controls and 0xEF not in self.controls:
             self.controls[random.randint(0, 3)] = random.choice([0xEE, 0xEF])
+        self.controls = [c if c not in range(0x7D, 0x83) else 0xEE
+                         for c in self.controls]
         self.controls = sorted(self.controls)
 
         valid_spells = [v for v in valid_spells if not v.unrageable]

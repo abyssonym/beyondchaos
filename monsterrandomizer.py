@@ -1172,6 +1172,9 @@ class MonsterBlock:
 
         self.statuses = new_statuses
         if self.is_boss and random.randint(1, 20) != 20:
+            index = random.randint(0, 2)
+            bit = 1 << random.randint(0, 7)
+            self.immunities[index] ^= bit
             for i in xrange(len(self.immunities)):
                 self.immunities[i] |= new_immunities[i]
         else:

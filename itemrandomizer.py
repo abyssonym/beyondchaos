@@ -367,7 +367,7 @@ class ItemBlock:
         self.features['learnspell'] = spell.spellid
 
     def mutate_special_action(self):
-        if not self.is_weapon:
+        if self.features['specialaction'] != 0 or not self.is_weapon:
             return
 
         new_action = random.randint(1, 0xf)

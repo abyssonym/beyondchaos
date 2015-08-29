@@ -501,8 +501,8 @@ class ItemBlock:
             self.heavy = True
 
     def rank(self):
-        if self.price > 2:
-            return self.price
+        if hasattr(self, "_rank"):
+            return self._rank
 
         bl = 0
         if self.is_consumable:
@@ -529,11 +529,14 @@ class ItemBlock:
                     power = 250
                 bl += power
 
-                if self.evade in range(1, 6):
-                    bl += (self.evade * self.evade) * 25
+                if self.evade in range(2, 6):
+                    bl += (self.evade ** 2) * 25
 
-                if self.mblock in range(1, 6):
-                    bl += (self.mblock * self.mblock) * 25
+                if self.mblock in range(2, 6):
+                    bl += (self.mblock ** 2) * 25
+
+                if self.evade == self.mblock == 1:
+                    bl += 100
 
                 if (self.is_armor and (self.features['elemabsorbs'] or
                                        self.features['elemnulls'] or
@@ -547,7 +550,8 @@ class ItemBlock:
                 bl += 50
 
             if self.features['statboost2'] & 0x40:
-                bl += 400
+                # Economizer
+                bl += 1001
 
             if self.features['special1'] & 0x80:
                 bl += 100
@@ -559,7 +563,8 @@ class ItemBlock:
                 bl += 100
 
             if self.features['special2'] & 0x21:
-                bl += 500
+                # Merit Award and Offering
+                bl += 1000
 
             if self.features['special3'] & 0x08:
                 bl += 300
@@ -581,8 +586,8 @@ class ItemBlock:
                 bl += 277
 
         baseline += (bl * 100)
-
-        return int(baseline)
+        self._rank = int(baseline)
+        return self.rank()
 
 
 NUM_CHARS = 14

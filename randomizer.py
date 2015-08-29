@@ -2433,7 +2433,7 @@ def manage_espers(freespaces):
                                0x5C,
                                0xF4, 0x67,  # SFX
                                0xB2, 0xD5, 0x9A, 0x02,  # GFX
-                               0x4B, 0x3B, 0x84,
+                               0x4B, 0x6A, 0x85,
                                0xB2, 0xD5, 0x9A, 0x02,  # GFX
                                0xF4, 0x8D,  # SFX
                                0x86, 0x46,  # receive esper

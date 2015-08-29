@@ -3121,8 +3121,11 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
                 continue
             raw_palette = [read_multi(f, length=2) for i in xrange(0x30)]
             if transformer is None:
-                transformer = get_palette_transformer(basepalette=raw_palette,
-                                                      use_luma=True)
+                if bg in [0x33, 0x34, 0x35, 0x36]:
+                    transformer = get_palette_transformer(always=True)
+                else:
+                    transformer = get_palette_transformer(
+                        basepalette=raw_palette, use_luma=True)
             new_palette = transformer(raw_palette)
 
             f.seek(pointer)

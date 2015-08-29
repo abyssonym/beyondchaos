@@ -1613,7 +1613,7 @@ def manage_magitek(spells):
     f.close()
 
 
-def manage_final_boss(freespaces, preserve_graphics=False):
+def manage_final_boss(freespaces):
     kefka1 = get_monster(0x12a)
     kefka2 = get_monster(0x11a)  # dummied kefka
     for m in [kefka1, kefka2]:
@@ -1638,12 +1638,11 @@ def manage_final_boss(freespaces, preserve_graphics=False):
         return True
 
     kefka2.graphics.copy_data(kefka1.graphics)
-    if not preserve_graphics:
-        monsters = get_monsters()
-        monsters = [m for m in monsters if has_graphics(m)]
-        m = random.choice(monsters)
-        kefka1.graphics.copy_data(m.graphics)
-        change_enemy_name(outfile, kefka1.id, m.name.strip('_'))
+    monsters = get_monsters()
+    monsters = [m for m in monsters if has_graphics(m)]
+    m = random.choice(monsters)
+    kefka1.graphics.copy_data(m.graphics)
+    change_enemy_name(outfile, kefka1.id, m.name.strip('_'))
 
     k1formation = get_formation(0x202)
     k2formation = get_formation(KEFKA_EXTRA_FORMATION)
@@ -4660,8 +4659,7 @@ h   Organize rages by highest level first'''
     reseed()
 
     if 'm' in flags:
-        aispaces = manage_final_boss(aispaces,
-                                     preserve_graphics=preserve_graphics)
+        aispaces = manage_final_boss(aispaces)
         monsters = manage_monsters()
     reseed()
 

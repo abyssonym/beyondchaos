@@ -4307,7 +4307,7 @@ def manage_ancient():
         rank = l.ancient_rank
         l.name_id = min(rank, 0xFF)
 
-        if not hasattr(l, "restrank") and 'f' not in flags:
+        if not hasattr(l, "restrank"):
             if hasattr(l, "secret_treasure") and l.secret_treasure:
                 pass
             elif l.locid == 334 or not hasattr(l, "routerank"):

@@ -3025,8 +3025,9 @@ def manage_shops():
         buyables |= set(s.items)
         descriptions.append(str(s))
 
-    for d in sorted(descriptions):
-        log(d, section="shops")
+    if "ancientcave" not in activated_codes:
+        for d in sorted(descriptions):
+            log(d, section="shops")
 
     return buyables
 
@@ -4889,24 +4890,24 @@ h   Organize rages by highest level first'''
     rewrite_title(text="FF6 BC %s" % seed)
     rewrite_checksum()
 
+    print "\nWriting log..."
+    for c in sorted(characters, key=lambda c: c.id):
+        c.associate_command_objects(commands.values())
+        if c.id > 13:
+            continue
+        log(str(c), section="characters")
+
+    for m in sorted(get_monsters(), key=lambda m: m.display_name):
+        if m.display_name:
+            log(m.get_description(changed_commands=changed_commands),
+                section="monsters")
+
     if "ancientcave" not in activated_codes:
-        print "\nWriting log..."
-        for c in sorted(characters, key=lambda c: c.id):
-            c.associate_command_objects(commands.values())
-            if c.id > 13:
-                continue
-            log(str(c), section="characters")
-
-        for m in sorted(get_monsters(), key=lambda m: m.display_name):
-            if m.display_name:
-                log(m.get_description(changed_commands=changed_commands),
-                    section="monsters")
-
         log_chests()
-        log_break_learn_items()
-        f = open(outlog, 'w+')
-        f.write(get_logstring())
-        f.close()
+    log_break_learn_items()
+    f = open(outlog, 'w+')
+    f.write(get_logstring())
+    f.close()
 
     print "Randomization successful. Output filename: %s\n" % outfile
 

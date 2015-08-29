@@ -329,3 +329,66 @@ hitmdef             0
 mblockevade         0
 name_icon           e3
 name_text           KingOfGames
+
+! Murderface
+price               2
+itemtype            24
+equippable          3FFF
+statboost1          01
+statboost2          91
+statusacquire2      10
+statusacquire3      08
+special1            80
+special2            03
+special3            90
+power               0
+hitmdef             0
+mblockevade         0
+name_icon           e3
+name_text           Murderface
+
+! Neku Phones
+price               2
+itemtype            24
+equippable          3FFF
+statboost1          42
+statboost2          20
+special2            04
+power               0
+hitmdef             0
+mblockevade         50
+speedvigor          70
+name_icon           e3
+name_text           Neku Phones
+
+! No.21 Wings
+price               2
+itemtype            22
+equippable          3FFF
+statusprotect1      80
+statboost1          10
+statusacquire3      05
+special1            80
+power               3a
+mblockevade         AA
+speedvigor          f0
+name_icon           e4
+name_text           No.21 Wings
+
+! Scenes Hat
+price               2
+itemtype            24
+equippable          3FFF
+breakeffect         23
+learnspell          1E
+learnrate           05
+targeting           c0
+statusacquire2      04
+special1            7C
+special2            FA
+special3            18
+power               19
+hitmdef             21
+mblockevade         0
+name_icon           e3
+name_text           Scenes Hat

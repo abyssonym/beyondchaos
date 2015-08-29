@@ -3572,6 +3572,51 @@ def manage_ending():
     ending_sync_sub.write(outfile)
 
 
+def manage_auction_house():
+    new_format = {
+        0x4ea4: [0x5312],          # Entry Point
+        0x4ecc: [0x55b0, 0x501d],  # Cherub Down (2x)
+        0x501d: [0x5460],          # Chocobo
+        0x5197: [0x58fa, 0x58fa],  # Golem (2x)
+        0x5312: [0x5197, 0x5197],  # Zoneseek (2x)
+        0x5460: [],                # Cure Ring (terminal)
+        0x55b0: [0x5b85, 0x5b85],  # Hero Ring (2x)
+        0x570c: [0x5cad],          # 1/1200 Airship
+        0x58fa: [0x5a39, 0x5a39],  # Golem WoR (2x)
+        0x5a39: [0x4ecc, 0x4ecc],  # Zoneseek WoR (2x)
+        0x5b85: [0x570c, 0x570c],  # Zephyr Cape (2x)
+        0x5cad: [],                # Imp Robot (terminal)
+        }
+    destinations = [d for (k, v) in new_format.items()
+                    for d in v if v is not None]
+    for key in new_format:
+        if key == 0x4ea4:
+            continue
+        assert key in destinations
+    f = open(outfile, "r+b")
+    for key in new_format:
+        pointer = 0xb0000 | key
+        for dest in new_format[key]:
+            f.seek(pointer)
+            value = ord(f.read(1))
+            if value in [0xb2, 0xbd]:
+                pointer += 1
+            elif value == 0xc0:
+                pointer += 3
+            elif value == 0xc1:
+                pointer += 5
+            else:
+                raise Exception("Unknown auction house byte %x %x" % (pointer, value))
+            f.seek(pointer)
+            oldaddr = read_multi(f, 2)
+            assert oldaddr in new_format
+            assert dest in new_format
+            f.seek(pointer)
+            write_multi(f, dest, 2)
+            pointer += 3
+    f.close()
+
+
 def manage_bingo():
     target_score = 200.0
     print "WELCOME TO BEYOND CHAOS BINGO MODE"
@@ -4657,6 +4702,7 @@ h   Organize rages by highest level first'''
 
         manage_opening()
         manage_ending()
+        manage_auction_house()
 
         savetutorial_sub = Substitution()
         savetutorial_sub.set_location(0xC9AF1)

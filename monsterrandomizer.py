@@ -645,7 +645,7 @@ class MonsterBlock:
             f = s1.abort_on_allies == s2.abort_on_allies
             return (a and b and c and d and e and f)
 
-        restricted = [0x14]
+        restricted = [0x13, 0x14]
         oldskills = sorted([s for s in all_spells if s.spellid in skillset],
                            key=lambda s: s.rank())
         if change_skillset:

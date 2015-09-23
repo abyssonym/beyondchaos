@@ -700,6 +700,8 @@ class MonsterBlock:
             index = a.index(skill)
             index = mutate_index(index, len(b), [False, True],
                                  (-1, 2), (-1, 1))
+            if index is None:
+                return spellid
             newskill = b[index]
             if not newskill.valid:
                 return spellid

@@ -22,7 +22,8 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x139, 0x13a, 0x13b, 0x13c,  # Phoenix Cave
              0x13d,  # Three Stooges
              0x13e,
-             0x141, 0x143, 0x144,  # Albrook
+             0x141, 0x142,  # Dream train
+             0x143, 0x144,  # Albrook
              0x154, 0x155, 0x157, 0x158,  # Thamasa
              0xe7, 0xe9, 0xea, 0xeb,  # opera with dancers?
              0x187,  # sealed gate - layer issues
@@ -136,7 +137,11 @@ def remap_maps(routes):
                 locexchange[(locid, c.clusterid)] = locid
         else:
             location = get_location(locid)
-            newlocid = unused_maps.pop()
+            if locid in unused_maps:
+                newlocid = locid
+                unused_maps = [u for u in unused_maps if u != newlocid]
+            else:
+                newlocid = unused_maps.pop()
             if location.longentrances:
                 locexchange[(locid, cluster.clusterid)] = newlocid
             else:

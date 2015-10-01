@@ -33,9 +33,9 @@ from towerrandomizer import randomize_tower
 from decompress import Decompressor
 
 
-VERSION = "58"
+VERSION = "59"
 BETA = False
-VERSION_ROMAN = "LVIII"
+VERSION_ROMAN = "LIX"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False

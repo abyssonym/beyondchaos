@@ -149,6 +149,10 @@ def recompress(bytestring):
                 subresult += c
                 add_buff(c)
         result += chr(control) + subresult
+        if not bytestring and (
+                control != 0xFF
+                or not subresult.endswith("".join([chr(0), chr(0)]))):
+            result += chr(0xFF) + "".join(map(chr, [0]*8))
     return result
 
 

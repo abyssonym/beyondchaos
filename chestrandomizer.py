@@ -285,7 +285,7 @@ class ChestBlock:
     def mutate_contents(self, guideline=None, monster=None,
                         guarantee_miab_treasure=False, enemy_limit=None,
                         uniqueness=False):
-        global used_formations
+        global used_formations, done_items
 
         if self.do_not_mutate and self.contents is not None:
             return
@@ -399,7 +399,9 @@ class ChestBlock:
         else:
             # treasure
             self.set_content_type(0x40)
-            if uniqueness and random.choice([True, True, False]):
+            if uniqueness and random.randint(1, 7) != 7:
+                if len(done_items) >= len(items):
+                    done_items = []
                 temp = [i for i in items
                         if i == indexed_item or i not in done_items]
                 if len(temp) > 1:

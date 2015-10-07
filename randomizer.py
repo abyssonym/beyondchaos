@@ -4387,17 +4387,15 @@ def manage_ancient():
             fset.write_data(outfile)
 
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):
-            if 'speedcave' in activated_codes:
-                low = random.randint(0, 200)
-                high = random.randint(low*3, low*5)
-            elif rank == 0:
-                low = random.randint(0, 200)
-                high = random.randint(low*2, 1000)
+            if 'speedcave' in activated_codes or rank == 0:
+                low = random.randint(0, 400)
+                high = random.randint(low, low*5)
+                high = random.randint(low, high)
             else:
-                low = rank * 1
-                high = low * 3.5
+                low = rank * 2
+                high = low * 1.5
                 while random.choice([True, False, False]):
-                    high = high * 1.25
+                    high = high * 1.5
             if rank < maxrank * 0.4:
                 monster = False
             else:

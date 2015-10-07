@@ -732,7 +732,7 @@ def manage_commands(commands):
     learn_blitz_sub.bytestring = [0xEA] * 2
     learn_blitz_sub.set_location(0x261E5)
     learn_blitz_sub.write(outfile)
-    learn_blitz_sub.bytestring = [0xEA] * 4
+    learn_blitz_sub.bytestring = [0x4C, 0x95, 0xA1, 0xEA]
     learn_blitz_sub.set_location(0xA18E)
     learn_blitz_sub.write(outfile)
 

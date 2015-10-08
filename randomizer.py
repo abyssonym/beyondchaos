@@ -4201,8 +4201,10 @@ def manage_ancient():
     optional_chars = [c for c in characters if c.id not in starting
                       and c.id <= 13]
     npc_palettes = get_npc_palettes()
+    for g in npc_palettes:
+        npc_palettes[g] = [v for v in npc_palettes[g] if 0 <= v <= 5]
     for g in range(14, 63):
-        if g not in npc_palettes:
+        if g not in npc_palettes or not npc_palettes[g]:
             npc_palettes[g] = range(6)
 
     def make_paysub(template, template2, loc, ptr):

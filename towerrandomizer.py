@@ -1350,6 +1350,13 @@ def make_secret_treasure_room(mapid, beltroom):
                                        if not (ent.x == 36 and ent.y == 25)]
     beltroom.entrance_set.entrances.append(e2)
 
+    final_room = get_location(411)
+    e3 = Entrance()
+    e3.x = 109
+    e3.y = 46
+    e3.destx, e3.desty, e3.dest = 82, 46, 412 | 0x2000
+    final_room.entrance_set.entrances.append(e3)
+
     newlocation.attacks = 0
     newlocation.setid = 0
     newlocation.music = 21

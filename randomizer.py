@@ -4276,6 +4276,19 @@ def manage_ancient():
             setattr(pay_to_save, key, value)
         l.npcs.append(pay_to_save)
 
+        if l.restrank == 4:
+            final_loc = get_location(412)
+            if len(final_loc.npcs) < 2:
+                final_save = NPCBlock(pointer=None, locid=l.locid)
+                attributes = {
+                    "graphics": 0x6f, "palette": 6, "x": 82, "y": 43,
+                    "event_addr": event_addr, "facing": 0x43,
+                    "memaddr": 0, "membit": 0, "unknown": 0,
+                    "graphics_index": 0, "npcid": 1}
+                for key, value in attributes.items():
+                    setattr(final_save, key, value)
+                final_loc.npcs.append(final_save)
+
         shop = shopranks[l.restrank].pop()
         if shop is not None:
             shopsub = Substitution()
@@ -4398,6 +4411,8 @@ def manage_ancient():
     for l in locations:
         if l not in restlocs and (l.npcs or l.events):
             for n in l.npcs:
+                if n == final_save:
+                    continue
                 if n.graphics == 0x6F:
                     n.memaddr, n.membit, n.event_addr = 0x73, 1, 0x5EB3
                     success = False

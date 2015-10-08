@@ -2750,7 +2750,9 @@ def manage_formations(formations, fsets):
         if formation.formid == 0x1e2:
             formation.set_music(2)  # change music for Atma fight
         if formation.formid == 0x162:
-            formation.ap = 0xFF  # MagiMaster always gives max AP
+            formation.ap = 255  # Magimaster
+        elif formation.formid in [0x1d4, 0x1d5, 0x1d6, 0x1e2]:
+            formation.ap = 100  # Triad
         formation.write_data(outfile)
 
     return formations

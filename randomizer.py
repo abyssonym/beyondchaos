@@ -4010,7 +4010,8 @@ def manage_ancient():
             return False
         if formation.battle_event:
             return False
-        if formation.formid in [0x1a4, 0x1ff, 0x1bd, 0x1d7, 0x200, 0x201]:
+        if formation.formid in [0x1a4, 0x1ff, 0x1bd, 0x1d7, 0x200, 0x201,
+                                0x23f]:
             return False
         if formation.get_music() == 0:
             if any([f for f in formations if f.formid != formation.formid
@@ -4124,7 +4125,9 @@ def manage_ancient():
         if timer >= 32768:
             reverse = True
             timer = 65535 - timer
-        while random.randint(1, 5) == 5:
+        timer = max(timer, 3600)
+        half = None
+        while half is None or random.randint(1, 5) == 5:
             half = timer / 2
             timer = half + random.randint(0, half) + random.randint(0, half)
         if reverse:

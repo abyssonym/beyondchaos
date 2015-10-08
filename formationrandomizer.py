@@ -63,6 +63,17 @@ class Formation():
             values.append(value)
         return max(values)
 
+    def get_best_drop(self):
+        drops = []
+        for e in self.present_enemies:
+            for d in e.drops:
+                if d is not None:
+                    drops.append(d)
+
+        if not drops:
+            return None
+        return max(drops, key=lambda d: d.rank())
+
     @property
     def veldty(self):
         return self.formid <= 0x1af

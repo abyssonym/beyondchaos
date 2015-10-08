@@ -4001,6 +4001,27 @@ def manage_ancient():
             return False
         return True
 
+    def challenge_battle_validator(formation):
+        if len(formation.present_enemies) == 0:
+            return False
+        if set(formation.present_enemies) & set(unused_enemies):
+            return False
+        if formation.formid in NOREPLACE_FORMATIONS:
+            return False
+        if formation.battle_event:
+            return False
+        if formation.formid in [0x1a4, 0x1ff, 0x1bd, 0x1d7, 0x200, 0x201]:
+            return False
+        if formation.get_music() == 0:
+            if any([f for f in formations if f.formid != formation.formid
+                    and set(f.enemy_ids) == set(formation.enemy_ids)
+                    and f.get_music() != 0]):
+                return False
+        best_drop = formation.get_best_drop()
+        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000):
+            return True
+        return False
+
     formations = sorted(get_formations(), key=lambda f: f.rank())
     enemy_formations = [
         f for f in formations if f.is_fanatics or
@@ -4009,6 +4030,21 @@ def manage_ancient():
                         REPLACE_FORMATIONS + NOREPLACE_FORMATIONS]
     boss_formations = [f for f in formations if safe_boss_validator(f)]
     used_formations = []
+
+    challenges = sorted([f for f in formations
+                         if challenge_battle_validator(f)],
+                        key=lambda f: f.get_best_drop().rank())[-48:]
+    challenges = sorted(random.sample(challenges, 24), key=lambda f: f.rank())
+    challenges = [f.formid for f in challenges]
+    challenges = {1: challenges[:6],
+                  2: challenges[6:12],
+                  3: challenges[12:18],
+                  4: challenges[18:24]}
+    ch_bgs = range(0x31) + [0x36, 0x37]
+    waters = [0xD, 0x1F, 0x23]
+    snows = [0x12]
+    ch_bgs = random.sample(ch_bgs, 10) + [random.choice(waters), snows[0]]
+    random.shuffle(ch_bgs)
 
     for l in get_locations():
         if not hasattr(l, "ancient_rank"):
@@ -4062,6 +4098,57 @@ def manage_ancient():
                       0xC0, 0xBE, 0x81, 0xFF, 0x69, 0x01,
                       0xB2, 0xEB, 0x9A, 0x02,
                       0xFE]
+
+    enemy_template = [0x4B, 0x0B, 0x07,
+                      0xB6, None, None, None,
+                      None, None, None,
+                      0xA0, None, None, 0xB3, 0x5E, 0x70,
+                      0x4D, None, None,
+                      0xA1, 0x00,
+                      0x96, 0x5C,
+                      0xFE]
+
+    def make_challenge_event(loc, ptr):
+        bg = ch_bgs.pop()
+        formids = random.sample(challenges[loc.restrank], 2)
+        formations = [get_formation(formid) for formid in formids]
+        for formid in formids:
+            challenges[loc.restrank].remove(formid)
+        setcands = [f for f in get_fsets() if f.setid >= 0x100 and f.unused]
+        fset = setcands.pop()
+        fset.formids = formids
+        fset.write_data(outfile)
+        timer = max([e.stats['hp'] for f in formations
+                     for e in f.present_enemies])
+        reverse = False
+        if timer >= 32768:
+            reverse = True
+            timer = 65535 - timer
+        while random.randint(1, 5) == 5:
+            half = timer / 2
+            timer = half + random.randint(0, half) + random.randint(0, half)
+        if reverse:
+            timer = 65535 - timer
+        timer = int(round(timer / 1800.0))
+        timer = max(2, min(timer, 36))
+        timer = timer * 1800
+        timer = [timer & 0xFF, timer >> 8]
+        addr1 = ptr + 10 - 0xa0000
+        addr2 = ptr + (len(enemy_template) - 1) - 0xa0000
+        addr1 = [addr1 & 0xFF, (addr1 >> 8) & 0xFF, addr1 >> 16]
+        addr2 = [addr2 & 0xFF, (addr2 >> 8) & 0xFF, addr2 >> 16]
+        bytestring = list(enemy_template)
+        bytestring[4:7] = addr1
+        bytestring[7:10] = addr2
+        bytestring[11:13] = timer
+        bytestring[17] = fset.setid & 0xFF
+        bytestring[18] = bg
+        assert None not in bytestring
+        sub = Substitution()
+        sub.set_location(ptr)
+        sub.bytestring = bytestring
+        sub.write(outfile)
+        return ptr + len(enemy_template)
 
     shops = get_shops()
     shopranks = {}
@@ -4280,6 +4367,18 @@ def manage_ancient():
             for key, value in attributes.items():
                 setattr(magicite, key, value)
             l.npcs.append(magicite)
+
+        event_addr = pointer - 0xa0000
+        pointer = make_challenge_event(l, pointer)
+        enemy = NPCBlock(pointer=None, locid=l.locid)
+        attributes = {
+            "graphics": 0x3e, "palette": 2, "x": 42, "y": 6,
+            "event_addr": event_addr, "facing": 2,
+            "memaddr": 0, "membit": 0, "unknown": 0,
+            "graphics_index": 0}
+        for key, value in attributes.items():
+            setattr(enemy, key, value)
+        l.npcs.append(enemy)
 
     # lower encounter rate
     dungeon_rates = [0x38, 0, 0x20, 0, 0xb0, 0, 0x00, 1,

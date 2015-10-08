@@ -504,6 +504,9 @@ class ItemBlock:
         if hasattr(self, "_rank"):
             return self._rank
 
+        if self.price > 10:
+            return self.price
+
         bl = 0
         if self.is_consumable:
             baseline = 5000

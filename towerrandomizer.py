@@ -207,7 +207,7 @@ def remap_maps(routes):
                     mirror = None
 
             if not mirror:
-                dest, destx, desty = 0, destent.x, destent.y
+                dest, destx, desty = 0x2000, destent.x, destent.y
             dest &= 0x3DFF
 
             dest |= newdestlocid

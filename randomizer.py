@@ -721,19 +721,33 @@ def manage_commands(commands):
     learn_dance_sub.write(outfile)
 
     learn_swdtech_sub = Substitution()
-    learn_swdtech_sub.bytestring = [0xEA] * 2
-    learn_swdtech_sub.set_location(0x261C9)
+    learn_swdtech_sub.bytestring = [0xEB,       # XBA
+                                    0x48,       # PHA
+                                    0xEB,       # XBA
+                                    0xEA]
+    learn_swdtech_sub.set_location(0x261C7)
     learn_swdtech_sub.write(outfile)
-    learn_swdtech_sub.bytestring = [0x4C, 0xDA, 0xA1, 0xEA]
+    learn_swdtech_sub.bytestring = [0x4C, 0xDA, 0xA1, 0x60]
     learn_swdtech_sub.set_location(0xA18A)
     learn_swdtech_sub.write(outfile)
 
     learn_blitz_sub = Substitution()
-    learn_blitz_sub.bytestring = [0xEA] * 2
-    learn_blitz_sub.set_location(0x261E5)
+    learn_blitz_sub.bytestring = [0xF0, 0x09]
+    learn_blitz_sub.set_location(0x261CE)
     learn_blitz_sub.write(outfile)
-    learn_blitz_sub.bytestring = [0x4C, 0x95, 0xA1, 0xEA]
-    learn_blitz_sub.set_location(0xA18E)
+    learn_blitz_sub.bytestring = [0xD0, 0x04]
+    learn_blitz_sub.set_location(0x261D3)
+    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.bytestring = [0x68,       # PLA
+                                  0xEB,       # XBA
+                                  0xEA, 0xEA, 0xEA, 0xEA, 0xEA]
+    learn_blitz_sub.set_location(0x261D9)
+    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.bytestring = [0xEA] * 4
+    learn_blitz_sub.set_location(0x261E3)
+    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.bytestring = [0xEA]
+    learn_blitz_sub.set_location(0xA200)
     learn_blitz_sub.write(outfile)
 
     learn_multiple_sub = Substitution()
@@ -745,10 +759,6 @@ def manage_commands(commands):
     learn_multiple_sub.set_location(0xA1D6)
     reljump = 0xFE - (learn_multiple_sub.location - 0xA18A)
     learn_multiple_sub.bytestring = [0xF0, reljump]
-    learn_multiple_sub.write(outfile)
-
-    learn_multiple_sub.set_location(0xA200)
-    learn_multiple_sub.bytestring = [0xEA]
     learn_multiple_sub.write(outfile)
 
     learn_multiple_sub.set_location(0x261DD)

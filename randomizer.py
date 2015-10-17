@@ -4170,29 +4170,21 @@ def manage_ancient():
     itemshops = [s for s in shops
                  if s.shoptype_pretty in ["items", "misc"]]
     othershops = [s for s in shops if s not in itemshops]
-    if "speedcave" in activated_codes:
-        othershops = othershops[random.randint(0, len(othershops)/3):]
-        shops = itemshops + othershops
-        shops = random.sample(shops, 12)
-        for i in xrange(1, 5):
-            shopranks[i] = shops[:3]
-            shops = shops[3:]
-    else:
-        othershops = othershops[random.randint(0, len(othershops)/2):]
-        itemshops = sorted(random.sample(itemshops, 5), key=lambda p: p.rank())
-        othershops = sorted(random.sample(othershops, 7),
-                            key=lambda p: p.rank())
-        for i in xrange(1, 5):
-            if i > 1:
-                shopranks[i] = othershops[:2] + itemshops[:1]
-                othershops = othershops[2:]
-                itemshops = itemshops[1:]
-            else:
-                shopranks[i] = othershops[:1] + itemshops[:2]
-                othershops = othershops[1:]
-                itemshops = itemshops[2:]
-            assert len(shopranks[i]) == 3
-            random.shuffle(shopranks[i])
+    othershops = othershops[random.randint(0, len(othershops)/2):]
+    itemshops = sorted(random.sample(itemshops, 5), key=lambda p: p.rank())
+    othershops = sorted(random.sample(othershops, 7),
+                        key=lambda p: p.rank())
+    for i in xrange(1, 5):
+        if i > 1:
+            shopranks[i] = othershops[:2] + itemshops[:1]
+            othershops = othershops[2:]
+            itemshops = itemshops[1:]
+        else:
+            shopranks[i] = othershops[:1] + itemshops[:2]
+            othershops = othershops[1:]
+            itemshops = itemshops[2:]
+        assert len(shopranks[i]) == 3
+        random.shuffle(shopranks[i])
     shopranks[random.randint(1, 4)][random.randint(0, 2)] = None
 
     levelmusic = {}

@@ -3856,7 +3856,7 @@ def manage_ancient():
 
     # decrease exp needed for level up
     if 'speedcave' in activated_codes:
-        maxlevel = 39
+        maxlevel = 49
         divisor = 8.0
     else:
         maxlevel = 49

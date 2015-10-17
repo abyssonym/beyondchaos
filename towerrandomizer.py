@@ -14,7 +14,7 @@ MAX_NEW_EXITS = 1000
 MAX_NEW_MAPS = None  # 23: 6 more for fanatics tower, 1 more for bonus
 ANCIENT = None
 PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
-             0x37, 0x81, 0x82, 0x88, 0x89, 0x8c, 0x90, 0x92, 0x99, 0x9c,
+             0x37, 0x81, 0x82, 0x88, 0x89, 0x8c, 0x8f, 0x90, 0x92, 0x99, 0x9c,
              0xb6, 0xb7, 0xb8, 0xbd, 0xbe,
              0xd2, 0xd3, 0xd4, 0xd5, 0xd7, 0xfe, 0xff,
              0x100, 0x102, 0x103, 0x104, 0x105, 0x10c, 0x12e,
@@ -956,6 +956,10 @@ class Route:
         return consolidated
 
     @property
+    def reststops(self):
+        return [c for c in self.consolidated_clusters if c.locid >= 1000]
+
+    @property
     def consolidated_links(self):
         consolidated = []
         for segment in self.segments:
@@ -977,6 +981,14 @@ class Route:
             linked.append(a)
             linked.append(b)
         assert len(linked) == len(set(linked))
+
+    def claim_reststops(self):
+        entid = min(self.consolidated_clusters[0].entids)
+        ent_to_party = {0: 1, 8: 2, 11: 3}
+        party_id = ent_to_party[entid]
+        for c in self.reststops:
+            loc = get_location(locexchange[c.locid, c.locid])
+            loc.party_id = party_id
 
     def __repr__(self):
         display = "\n---\n".join([str(s) for s in self.segments])
@@ -1298,10 +1310,9 @@ def randomize_tower(filename, ancient=False, nummaps=None):
     if not ANCIENT:
         randomize_fanatics(unused_maps)
 
-    '''
     for route in routes:
-        print route
-    '''
+        #print route
+        route.claim_reststops()
 
     return routes
 

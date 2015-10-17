@@ -3886,7 +3886,7 @@ def manage_ancient():
                            0x3F, 0x0F, 0x00,
                            ]
     if 'speedcave' in activated_codes:
-        num_starting = 12
+        num_starting = 6 + random.randint(0, 2) + random.randint(0, 1)
     else:
         num_starting = 4 + random.randint(0, 1) + random.randint(0, 1)
     starting = random.sample(range(14), num_starting)
@@ -4331,9 +4331,18 @@ def manage_ancient():
                                   0xD4, 0xF0 | chosen.id,
                                   0xD4, 0xE0 | chosen.id,
                                   0xD7, mem_addr,
-                                  0x3E, 0x10 | len(l.npcs), 0xFE]
+                                  0x3E, 0x10 | len(l.npcs),
+                                  0xB2, 0xC1, 0xC5, 0x00,  # set caseword bit
+                                  0xC0, 0xA3, 0x81, None, None, None,  # if
+                                  0x3D, chosen.id,
+                                  0x3F, chosen.id, l.party_id,
+                                  0x45,
+                                  0xFE]
+            pointer = pointer + len(allysub.bytestring)
+            uptr = (pointer - 1) - 0xa0000
+            a, b, c = (uptr >> 16, (uptr >> 8) & 0xFF, uptr & 0xFF)
+            allysub.bytestring[-10:-7] = [c, b, a]
             allysub.write(outfile)
-            pointer += len(allysub.bytestring)
             event_addr = (allysub.location - 0xa0000) & 0x3FFFF
             ally = NPCBlock(pointer=None, locid=l.locid)
             attributes = {

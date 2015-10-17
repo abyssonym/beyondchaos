@@ -3911,10 +3911,7 @@ def manage_ancient():
         "Phoenix"]
     esperevents = dict([(n, i) for (i, n) in enumerate(esperevents)])
     espers = list(get_espers())
-    if "speedcave" in activated_codes:
-        num_espers = 4
-    else:
-        num_espers = 3
+    num_espers = 3
     for i in xrange(num_espers):
         if "speedcave" in activated_codes:
             esperrank = 999
@@ -4355,15 +4352,12 @@ def manage_ancient():
                 setattr(ally, key, value)
             l.npcs.append(ally)
 
-        if "speedcave" in activated_codes:
-            num_espers = random.randint(1, 2) + random.randint(0, 1)
-        else:
-            if l.restrank == 1:
-                num_espers = 3
-            elif l.restrank in [2, 3]:
-                num_espers = 2
-            elif l.restrank == 4:
-                num_espers = 1
+        if l.restrank == 1:
+            num_espers = 3
+        elif l.restrank in [2, 3]:
+            num_espers = 2
+        elif l.restrank == 4:
+            num_espers = 1
         for i in xrange(num_espers):
             if len(espers) == 0:
                 break

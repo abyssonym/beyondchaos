@@ -3898,9 +3898,11 @@ def manage_ancient():
         startsub.bytestring += [0xD4, 0xF0 | c]
         startsub.bytestring += [0xD4, 0xE0 | c]
 
-    charcands = range(14) + random.sample([14, 15, random.choice([16, 17]),
+    charcands = range(14) + random.sample([14, 15,
                                            random.choice(range(18, 28)),
                                            random.choice([32, 33])], 2)
+    if 'speedcave' in activated_codes:
+        charcands.append(random.choice([16, 17]))
     chargraphics = {14: 0x11, 15: 0x10, 16: 0x14, 17: 0x14, 32: 0xE, 33: 0xE}
     for c in range(14):
         chargraphics[c] = c

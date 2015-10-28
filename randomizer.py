@@ -464,7 +464,8 @@ class CharacterBlock:
             self.beserk = True
         palettes = dict(enumerate([2, 1, 4, 4, 0, 0, 0, 3, 3, 4, 5, 3, 3, 5,
                                    3, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
-                                   5, 2, 4, 2, 1, 1]))
+                                   5, 2, 4, 2, 1, 1, 0, 0, 0, 0, 0, 0, 0, 3,
+                                   3, 3]))
         if self.id in palettes:
             self.palette = palettes[self.id]
 
@@ -571,6 +572,11 @@ def get_characters():
         c.set_id(i)
         character_list.append(c)
     return get_characters()
+
+
+def get_character(i):
+    characters = get_characters()
+    return [c for c in characters if c.id == i][0]
 
 
 all_espers = None
@@ -1575,7 +1581,8 @@ def manage_balance(newslots=True):
     sealed_kefka = get_monster(0x174)
 
 
-def manage_magitek(spells):
+def manage_magitek():
+    spells = get_ranked_spells()
     exploder = [s for s in spells if s.spellid == 0xA2][0]
     tek_skills = [s for s in spells if s.spellid in TEK_SKILLS]
     targets = sorted(set([s.targeting for s in spells]))
@@ -2142,8 +2149,13 @@ def manage_equipment(items):
                        "armor": lambda i: i.is_body_armor,
                        "relic": lambda i: i.is_relic}
 
+    tempchars = [14, 15, 16, 17, 32, 33] + range(18, 28)
+    if 'ancientcave' in activated_codes:
+        tempchars += [41, 42, 43]
     for c in characters:
-        if c.id >= 0xE:
+        if c.id >= 14 and c.id not in tempchars:
+            continue
+        if c.id in tempchars:
             f = open(outfile, 'r+b')
             lefthanded = random.randint(1, 10) == 10
             for equiptype in ['weapon', 'shield', 'helm', 'armor',
@@ -3795,6 +3807,7 @@ def manage_map_names():
 
 
 def manage_ancient():
+    change_battle_commands = [41, 42, 43]
     if 'o' not in flags:
         alrs = AutoLearnRageSub(require_gau=True)
         alrs.set_location(0x23b73)
@@ -3810,6 +3823,22 @@ def manage_ancient():
         enable_mpoint_sub.set_location(0x25E38)
         enable_mpoint_sub.write(outfile)
 
+        change_battle_commands += range(18, 28)
+
+    moogle_commands = [0x03, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0a, 0x0b,
+                       0x0d, 0x0e, 0x0f, 0x10, 0x12, 0x13, 0x16, 0x18,
+                       0x1a, 0x1b, 0x1d]
+    for i in change_battle_commands:
+        commands = random.sample(moogle_commands, 2)
+        c = get_character(i)
+        c.battle_commands = [0x00, commands[0], commands[1], 0x01]
+        c.write_battle_commands(outfile)
+
+    for i in [32, 33]:
+        c = get_character(i)
+        c.battle_commands = [0x00, 0x1D, 0xFF, 0x01]
+        c.write_battle_commands(outfile)
+
     characters = get_characters()
     gau = [c for c in characters if c.id == 11][0]
     if gau.battle_commands[1] in [0x11, None]:
@@ -3818,12 +3847,13 @@ def manage_ancient():
         gau.write_battle_commands(outfile)
 
     fi = open(outfile, 'r+b')
-    for i in xrange(34):
+    for c in characters:
+        i = c.id
         pointer = 0x2d7ca0 + 0x15 + (i*22)
         fi.seek(pointer)
         level = ord(fi.read(1))
         level &= 0xF3
-        if i >= 14:
+        if i >= 14 or "speedcave" in activated_codes:
             level |= 0b1000
         fi.seek(pointer)
         fi.write(chr(level))
@@ -3898,12 +3928,13 @@ def manage_ancient():
         startsub.bytestring += [0xD4, 0xF0 | c]
         startsub.bytestring += [0xD4, 0xE0 | c]
 
-    charcands = range(14) + random.sample([14, 15,
-                                           random.choice(range(18, 28)),
-                                           random.choice([32, 33])], 2)
+    tempcands = [14, 15, random.choice(range(18, 28)), random.choice([32, 33])]
     if 'speedcave' in activated_codes:
-        charcands.append(random.choice([16, 17]))
-    chargraphics = {14: 0x11, 15: 0x10, 16: 0x14, 17: 0x14, 32: 0xE, 33: 0xE}
+        tempcands.append(random.choice([16, 17]))
+        tempcands.append(random.choice([41, 42, 43]))
+    charcands = range(14) + random.sample(tempcands, 2)
+    chargraphics = {14: 0x11, 15: 0x10, 16: 0x14, 17: 0x14, 32: 0xE, 33: 0xE,
+                    41: 0x15, 42: 0x15, 43: 0x15}
     for c in range(14):
         chargraphics[c] = c
     for c in range(18, 28):
@@ -5098,7 +5129,7 @@ h   Organize rages by highest level first'''
     reseed()
 
     if 'o' in flags or 'w' in flags or 'm' in flags:
-        manage_magitek(spells)
+        manage_magitek()
     reseed()
 
     if 'l' in flags:
@@ -5166,6 +5197,8 @@ h   Organize rages by highest level first'''
 
     if 'canttouchthis' in activated_codes:
         for c in characters:
+            if c.id >= 14:
+                continue
             c.become_invincible(outfile)
 
     if 'equipanything' in activated_codes:

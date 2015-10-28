@@ -3810,11 +3810,6 @@ def manage_ancient():
         enable_mpoint_sub.set_location(0x25E38)
         enable_mpoint_sub.write(outfile)
 
-    shadow_leaving_sub = Substitution()
-    shadow_leaving_sub.bytestring = [0xEA] * 2
-    shadow_leaving_sub.set_location(0x2488A)
-    shadow_leaving_sub.write(outfile)
-
     characters = get_characters()
     gau = [c for c in characters if c.id == 11][0]
     if gau.battle_commands[1] in [0x11, None]:
@@ -3923,6 +3918,67 @@ def manage_ancient():
                                     0x40, n, i])
         c.slotid = n
 
+    runaway = random.choice([c for c in characters if hasattr(c, "slotid")
+                             and c.id == c.slotid]).slotid
+    if runaway in starting:
+        byte, bit = runaway / 8, runaway % 8
+        mem_addr = ((0x1b+byte) << 3) | bit
+        startsub.bytestring += [0xD7, mem_addr]
+    shadow_leaving_sub = Substitution()
+    shadow_leaving_sub.set_location(0x248A6)
+    shadow_leaving_sub.bytestring = [
+        0x1C, 0xDE + (runaway/8), 0x1E,     # TRB $1ede
+        0x20, 0xE3, 0x47,
+        0xAD, 0xFB + (runaway/8), 0x1E,     # LDA $1efb
+        0x09, 1 << (runaway % 8),           # ORA #$08
+        0x8D, 0xFB + (runaway/8), 0x1E,     # STA $1efb
+        0xAD, 0xDE + (runaway/8), 0x1E,     # LDA $1ede
+        0x29, 0xFF ^ (1 << (runaway % 8)),  # AND #$F7
+        0x8D, 0xDE + (runaway/8), 0x1E,     # STA $1ede
+        ]
+    while len(shadow_leaving_sub.bytestring) < 23:
+        shadow_leaving_sub.bytestring.append(0xEA)
+    shadow_leaving_sub.bytestring += [0xA9, 0xFE,
+                                      0x20, 0x92, 0x07]
+    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.set_location(0x24861)
+    shadow_leaving_sub.bytestring = [
+        0xAE, runaway, 0x30,
+        0x30, 0x26,
+        0x20, 0x5A, 0x4B,
+        0xC9, random.choice([0x20, 0x10, 0x8, 0x4, 0x2, 0x1]),
+        0xB0, 0x1F,
+        0xAD, 0x1F, 0x20,
+        0xD0, 0x1A,
+        0xAD, 0x76, 0x3A,
+        0xC9, 0x02,
+        0x90, 0x13,
+        0xBD, 0xE4, 0x3E,
+        0x89, 0xC2,
+        0xD0, 0x0C,
+        0xA9, 1 << (runaway % 8),
+        0x2C, 0xBD + (runaway/8), 0x3E,
+        0xD0, 0x05,
+        0x2C, 0xDE + (runaway/8), 0x1E,
+        ]
+    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.set_location(0x10A851)
+    shadow_leaving_sub.bytestring = [
+        0x0E, 0x03, runaway, 0x6A, 0xA8, 0x0F,
+        0x11,
+        0x01, 0xFB,
+        0x0E, 0x03, runaway, 0x7E, 0xA8, 0x0F,
+        0x01, 0xFC,
+        0x0E, 0x03, runaway, 0x92, 0xA8, 0x0F,
+        0x10, 0xFF,
+        ]
+    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.bytestring = [runaway]
+    shadow_leaving_sub.set_location(0x10FC2F)
+    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.set_location(0x10FC5D)
+    shadow_leaving_sub.write(outfile)
+
     esperevents = [
         "Ramuh", "Ifrit", "Shiva", "Siren", "Terrato", "Shoat", "Maduin",
         "Bismark", "Stray", "Palidor", "Tritoch", "Odin", "Raiden", "Bahamut",
@@ -3949,6 +4005,8 @@ def manage_ancient():
         mem_addr = ((0x17+byte) << 3) | bit
         startsub.bytestring += [0xD6, mem_addr]
     for i in xrange(16):  # characters
+        if i in starting:
+            continue
         byte, bit = i / 8, i % 8
         mem_addr = ((0x1b+byte) << 3) | bit
         startsub.bytestring += [0xD6, mem_addr]
@@ -4220,12 +4278,14 @@ def manage_ancient():
     restmusics = [m for m in range(1, 85) if m not in ban_musics]
     random.shuffle(restmusics)
 
-    optional_chars = [c for c in characters if c.id not in starting
-                      and c.id in charcands]
+    optional_chars = [c for c in characters if hasattr(c, "slotid")]
+    optional_chars = [c for c in optional_chars if c.slotid == runaway or
+                      (c.id not in starting and c.id in charcands)]
     if "speedcave" in activated_codes:
         while len(optional_chars) < 24:
             if random.choice([True, True, False]):
-                supplement = [c for c in optional_chars if c.id >= 14]
+                supplement = [c for c in optional_chars if c.id >= 14 or
+                              c.slotid == runaway]
             else:
                 supplement = list(optional_chars)
             supplement = sorted(set(supplement), key=lambda c: c.id)

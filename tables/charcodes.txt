@@ -26,5 +26,9 @@
 2D7EC6,Kurin
 2D7EDC,Kuru
 2D7EF2,Kamog
+2D7F08,Mog2
+2D7F1E,Terra2
+2D7F34,Maduin
+2D7F4A,Terra3
 2D7F60,Wedge
 2D7F76,Vicks

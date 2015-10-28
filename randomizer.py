@@ -462,7 +462,9 @@ class CharacterBlock:
         self.id = i
         if self.id == 13:
             self.beserk = True
-        palettes = dict(enumerate([2, 1, 4, 4, 0, 0, 0, 3, 3, 4, 5, 3, 3, 5]))
+        palettes = dict(enumerate([2, 1, 4, 4, 0, 0, 0, 3, 3, 4, 5, 3, 3, 5,
+                                   3, 0, 0, 0, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5,
+                                   5, 2, 4, 2, 1, 1]))
         if self.id in palettes:
             self.palette = palettes[self.id]
 
@@ -3821,11 +3823,13 @@ def manage_ancient():
         gau.write_battle_commands(outfile)
 
     fi = open(outfile, 'r+b')
-    for i in xrange(14):
+    for i in xrange(34):
         pointer = 0x2d7ca0 + 0x15 + (i*22)
         fi.seek(pointer)
         level = ord(fi.read(1))
         level &= 0xF3
+        if i >= 14:
+            level |= 0b1000
         fi.seek(pointer)
         fi.write(chr(level))
 
@@ -3855,7 +3859,10 @@ def manage_ancient():
     goddess_save_sub.write(outfile)
 
     # decrease exp needed for level up
-    if 'speedcave' in activated_codes:
+    if 'racecave' in activated_codes:
+        maxlevel = 49
+        divisor = 12.0
+    elif 'speedcave' in activated_codes:
         maxlevel = 49
         divisor = 8.0
     else:
@@ -3885,8 +3892,10 @@ def manage_ancient():
                            0x3F, 0x0E, 0x00,
                            0x3F, 0x0F, 0x00,
                            ]
-    if 'speedcave' in activated_codes:
-        num_starting = 6 + random.randint(0, 2) + random.randint(0, 1)
+    if 'racecave' in activated_codes:
+        num_starting = 9 + random.randint(0, 2) + random.randint(0, 1)
+    elif 'speedcave' in activated_codes:
+        num_starting = 4 + random.randint(0, 3) + random.randint(0, 2)
     else:
         num_starting = 4 + random.randint(0, 1) + random.randint(0, 1)
     starting = random.sample(range(14), num_starting)
@@ -3894,14 +3903,25 @@ def manage_ancient():
         startsub.bytestring += [0xD4, 0xF0 | c]
         startsub.bytestring += [0xD4, 0xE0 | c]
 
-    for c in characters:
-        if c.id >= 14:
-            continue
-        i = c.id
-        startsub.bytestring.extend([0x7F, i, i,
-                                    0x37, i, i,
-                                    0x43, i, c.palette,
-                                    0x40, i, i])
+    charcands = range(14) + random.sample([14, 15, random.choice([16, 17]),
+                                           random.choice(range(18, 28)),
+                                           random.choice([32, 33])], 2)
+    chargraphics = {14: 0x11, 15: 0x10, 16: 0x14, 17: 0x14, 32: 0xE, 33: 0xE}
+    for c in range(14):
+        chargraphics[c] = c
+    for c in range(18, 28):
+        chargraphics[c] = 0xA
+    for n, i in enumerate(charcands):
+        c = [x for x in characters if x.id == i][0]
+        if i in chargraphics:
+            g = chargraphics[i]
+        else:
+            g = i
+        startsub.bytestring.extend([0x7F, n, i,
+                                    0x37, n, g,
+                                    0x43, n, c.palette,
+                                    0x40, n, i])
+        c.slotid = n
 
     esperevents = [
         "Ramuh", "Ifrit", "Shiva", "Siren", "Terrato", "Shoat", "Maduin",
@@ -3924,11 +3944,11 @@ def manage_ancient():
         espers.remove(esper)
         event_value = esperevents[esper.name] + 0x36
         startsub.bytestring += [0x86, event_value]
-    for i in xrange(27):
+    for i in xrange(27):  # espers
         byte, bit = i / 8, i % 8
         mem_addr = ((0x17+byte) << 3) | bit
         startsub.bytestring += [0xD6, mem_addr]
-    for i in xrange(14):
+    for i in xrange(16):  # characters
         byte, bit = i / 8, i % 8
         mem_addr = ((0x1b+byte) << 3) | bit
         startsub.bytestring += [0xD6, mem_addr]
@@ -3950,28 +3970,29 @@ def manage_ancient():
     set_airship_sub.write(outfile)
 
     tower_msg_sub = Substitution()
-    tower_msg_sub.bytestring = [0xFD] * 6
-    tower_msg_sub.set_location(0xA03AD)
+    tower_msg_sub.bytestring = [0xD6, 0xE6, 0xD6, 0xE7]  # reset temp chars
+    while len(tower_msg_sub.bytestring) < 12:
+        tower_msg_sub.bytestring.append(0xFD)
+    tower_msg_sub.set_location(0xA03A7)
     tower_msg_sub.write(outfile)
 
     from locationrandomizer import NPCBlock, EventBlock
-    if "speedcave" not in activated_codes:
-        falcon = get_location(0xb)
-        save_point = NPCBlock(pointer=None, locid=falcon.locid)
-        attributes = {
-            "graphics": 0x6f, "palette": 6, "x": 20, "y": 8,
-            "event_addr": 0x5eb3, "facing": 0x47,
-            "memaddr": 0, "membit": 0, "unknown": 0,
-            "graphics_index": 0x10}
-        for key, value in attributes.items():
-            setattr(save_point, key, value)
-        save_point.set_id(len(falcon.npcs))
-        falcon.npcs.append(save_point)
-        save_event = EventBlock(pointer=None, locid=falcon.locid)
-        attributes = {"event_addr": 0x29aeb, "x": 20, "y": 8}
-        for key, value in attributes.items():
-            setattr(save_event, key, value)
-        falcon.events.append(save_event)
+    falcon = get_location(0xb)
+    save_point = NPCBlock(pointer=None, locid=falcon.locid)
+    attributes = {
+        "graphics": 0x6f, "palette": 6, "x": 20, "y": 8,
+        "event_addr": 0x5eb3, "facing": 0x47,
+        "memaddr": 0, "membit": 0, "unknown": 0,
+        "graphics_index": 0x10}
+    for key, value in attributes.items():
+        setattr(save_point, key, value)
+    save_point.set_id(len(falcon.npcs))
+    falcon.npcs.append(save_point)
+    save_event = EventBlock(pointer=None, locid=falcon.locid)
+    attributes = {"event_addr": 0x29aeb, "x": 20, "y": 8}
+    for key, value in attributes.items():
+        setattr(save_event, key, value)
+    falcon.events.append(save_event)
 
     pilot = random.choice([s for s in starting if s < 12])
     pilot_sub = Substitution()
@@ -3984,7 +4005,9 @@ def manage_ancient():
     pilot_sub.set_location(0xC2110)
     pilot_sub.write(outfile)
 
-    if "speedcave" in activated_codes:
+    if "racecave" in activated_codes:
+        randomize_tower(filename=sourcefile, ancient=True, nummaps=40)
+    elif "speedcave" in activated_codes:
         randomize_tower(filename=sourcefile, ancient=True, nummaps=85)
     else:
         randomize_tower(filename=sourcefile, ancient=True, nummaps=300)
@@ -4193,12 +4216,74 @@ def manage_ancient():
     locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
     restlocs = [l for l in locations if hasattr(l, "restrank")]
-    random.shuffle(restlocs)
     ban_musics = [0, 36, 56, 57, 58, 73, 74, 75] + levelmusic.values()
     restmusics = [m for m in range(1, 85) if m not in ban_musics]
     random.shuffle(restmusics)
+
     optional_chars = [c for c in characters if c.id not in starting
-                      and c.id <= 13]
+                      and c.id in charcands]
+    if "speedcave" in activated_codes:
+        while len(optional_chars) < 24:
+            if random.choice([True, True, False]):
+                supplement = [c for c in optional_chars if c.id >= 14]
+            else:
+                supplement = list(optional_chars)
+            supplement = sorted(set(supplement), key=lambda c: c.id)
+            optional_chars.append(random.choice(supplement))
+    random.shuffle(optional_chars)
+
+    ptr = pointer - 0xA0000
+    c0, b0, a0 = ptr & 0xFF, (ptr >> 8) & 0xFF, ptr >> 16
+    ptr = (pointer + 10) - 0xA0000
+    c1, b1, a1 = ptr & 0xFF, (ptr >> 8) & 0xFF, ptr >> 16
+    ptr = (pointer + 20) - 0xA0000
+    c2, b2, a2 = ptr & 0xFF, (ptr >> 8) & 0xFF, ptr >> 16
+    num_in_party_sub = Substitution()
+    num_in_party_sub.set_location(0xAC654)
+    num_in_party_sub.bytestring = [0xB2, c0, b0, a0]
+    num_in_party_sub.write(outfile)
+    num_in_party_sub.set_location(pointer)
+    num_in_party_sub.bytestring = [0xC0, 0xAE, 0x01, c1, b1, a1,
+                                   0xB2, 0x80, 0xC6, 0x00,
+                                   0xC0, 0xAF, 0x01, c2, b2, a2,
+                                   0xB2, 0x80, 0xC6, 0x00,
+                                   0xD3, 0xA3,
+                                   0xD3, 0xA2,
+                                   0xFE]
+    num_in_party_sub.write(outfile)
+    pointer += len(num_in_party_sub.bytestring)
+    ally_addrs = {}
+    for chosen in sorted(set(optional_chars)):
+        byte, bit = chosen.slotid / 8, chosen.slotid % 8
+        mem_addr = ((0x1b+byte) << 3) | bit
+        allysub = Substitution()
+        for party_id in range(1, 4):
+            for npc_id in range(4, 6):
+                allysub.set_location(pointer)
+                allysub.bytestring = [0xB2, 0xC1, 0xC5, 0x00,  # set caseword
+                                      0xC0, 0xA3, 0x81, None, None, None]
+                allysub.bytestring += [0xD4, 0xF0 | chosen.slotid,
+                                       0xD4, 0xE0 | chosen.slotid,
+                                       0xD7, mem_addr]
+                if chosen.id >= 14 or "speedcave" in activated_codes:
+                    allysub.bytestring += [0x77, chosen.slotid,
+                                           0x8b, chosen.slotid, 0x7F,
+                                           0x8c, chosen.slotid, 0x7F,
+                                           0x88, chosen.slotid, 0x00, 0x00]
+                allysub.bytestring += [0x3E, 0x10 | npc_id,
+                                       0x3D, chosen.slotid,
+                                       0x3F, chosen.slotid, party_id,
+                                       0x45,
+                                       0xF4, 0xD0,
+                                       0xFE]
+                pointer = pointer + len(allysub.bytestring)
+                uptr = (pointer - 1) - 0xa0000
+                a, b, c = (uptr >> 16, (uptr >> 8) & 0xFF, uptr & 0xFF)
+                allysub.bytestring[7:10] = [c, b, a]
+                allysub.write(outfile)
+                event_addr = (allysub.location - 0xa0000) & 0x3FFFF
+                ally_addrs[chosen.id, party_id, npc_id] = event_addr
+
     npc_palettes = get_npc_palettes()
     for g in npc_palettes:
         npc_palettes[g] = [v for v in npc_palettes[g] if 0 <= v <= 5]
@@ -4233,6 +4318,7 @@ def manage_ancient():
         sub.write(outfile)
         return sub
 
+    random.shuffle(restlocs)
     for l in restlocs:
         assert l.ancient_rank == 0
         l.music = restmusics.pop()
@@ -4317,40 +4403,42 @@ def manage_ancient():
         l.npcs.append(shopkeeper)
 
         if optional_chars:
-            chosen = random.choice(optional_chars)
-            optional_chars.remove(chosen)
+            chosen = optional_chars.pop()
             assert chosen.palette is not None
-            byte, bit = chosen.id / 8, chosen.id % 8
-            mem_addr = ((0x1b+byte) << 3) | bit
-            allysub = Substitution()
-            allysub.set_location(pointer)
-            allysub.bytestring = [0xF4, 0xD0,
-                                  0xD4, 0xF0 | chosen.id,
-                                  0xD4, 0xE0 | chosen.id,
-                                  0xD7, mem_addr,
-                                  0x3E, 0x10 | len(l.npcs),
-                                  0xB2, 0xC1, 0xC5, 0x00,  # set caseword bit
-                                  0xC0, 0xA3, 0x81, None, None, None,  # if
-                                  0x3D, chosen.id,
-                                  0x3F, chosen.id, l.party_id,
-                                  0x45,
-                                  0xFE]
-            pointer = pointer + len(allysub.bytestring)
-            uptr = (pointer - 1) - 0xa0000
-            a, b, c = (uptr >> 16, (uptr >> 8) & 0xFF, uptr & 0xFF)
-            allysub.bytestring[-10:-7] = [c, b, a]
-            allysub.write(outfile)
-            event_addr = (allysub.location - 0xa0000) & 0x3FFFF
+            if chosen.id >= 14 and False:
+                byte, bit = 0, 0
+            else:
+                byte, bit = (chosen.slotid / 8) + 0x1b, chosen.slotid % 8
+            event_addr = ally_addrs[chosen.id, l.party_id, len(l.npcs)]
             ally = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
-                "graphics": chosen.id, "palette": chosen.palette,
-                "x": 54, "y": 18,
-                "event_addr": event_addr, "facing": 2,
-                "memaddr": byte + 0x1b, "membit": bit, "unknown": 0,
-                "graphics_index": 0}
+                "graphics": chargraphics[chosen.id],
+                "palette": chosen.palette,
+                "x": 54, "y": 18, "event_addr": event_addr,
+                "facing": 2, "memaddr": byte, "membit": bit,
+                "unknown": 0, "graphics_index": 0}
             for key, value in attributes.items():
                 setattr(ally, key, value)
             l.npcs.append(ally)
+            if len(optional_chars) > 0 and "speedcave" in activated_codes:
+                temp = optional_chars.pop()
+                if chosen.id != temp.id:
+                    chosen = temp
+                    if chosen.id >= 14 and False:
+                        byte, bit = 0, 0
+                    else:
+                        byte, bit = (chosen.slotid / 8) + 0x1b, chosen.slotid % 8
+                    event_addr = ally_addrs[chosen.id, l.party_id, len(l.npcs)]
+                    attributes = {
+                        "graphics": chargraphics[chosen.id],
+                        "palette": chosen.palette,
+                        "x": 53, "y": 18, "event_addr": event_addr,
+                        "facing": 2, "memaddr": byte, "membit": bit,
+                        "unknown": 0, "graphics_index": 0}
+                    ally = NPCBlock(pointer=None, locid=l.locid)
+                    for key, value in attributes.items():
+                        setattr(ally, key, value)
+                    l.npcs.append(ally)
 
         if l.restrank == 1:
             num_espers = 3
@@ -4405,6 +4493,11 @@ def manage_ancient():
             setattr(enemy, key, value)
         l.npcs.append(enemy)
 
+    assert len(optional_chars) == 0
+
+    if pointer >= 0xb5ec9:
+        raise Exception("Cave events out of bounds.")
+
     # lower encounter rate
     dungeon_rates = [0x38, 0, 0x20, 0, 0xb0, 0, 0x00, 1,
                      0x1c, 0, 0x10, 0, 0x58, 0, 0x80, 0] + ([0]*16)
@@ -4454,9 +4547,15 @@ def manage_ancient():
         else:
             def enrank(r):
                 mr = min(maxrank, 0xFF)
-                if r < 0:
+                r = max(0, min(r, mr))
+                if "racecave" in activated_codes:
+                    half = r/2
+                    quarter = half/2
+                    r = (half + random.randint(0, quarter) +
+                         random.randint(0, quarter))
+                if r <= 0:
                     return 0
-                elif r > mr:
+                elif r >= mr:
                     return 1.0
                 ratio = float(r) / mr
                 return ratio
@@ -4473,14 +4572,19 @@ def manage_ancient():
 
             chosen_enemies = sorted(chosen_enemies, key=lambda f: f.rank())
 
-            if "speedcave" in activated_codes:
-                thresh = 0.5
+            if "racecave" in activated_codes:
+                bossify = False
+            elif rank >= maxrank * 0.9:
+                bossify = True
             else:
-                thresh = 0.1
-            if rank >= maxrank * 0.9 or (
-                    rank >= random.randint(int(maxrank * thresh),
-                                           int(maxrank * 0.75))
-                    and random.randint(1, 3) == 3):
+                if "speedcave" in activated_codes:
+                    thresh = 0.5
+                else:
+                    thresh = 0.1
+                bossify = rank >= random.randint(int(maxrank * thresh),
+                                                 int(maxrank * 0.9))
+                bossify = bossify and random.randint(1, 3) == 3
+            if bossify:
                 formrank = chosen_enemies[0].rank()
                 candidates = [c for c in boss_formations if c.rank() >= formrank]
                 if candidates:
@@ -4536,6 +4640,13 @@ def manage_ancient():
                             enemy_limit=enemy_limit)
 
         l.write_data(outfile)
+
+    if "racecave" in activated_codes:
+        event_bosses = {
+            1: [0xC18A4, 0xC184B],
+            2: [0xC16DD, 0xC171D, 0xC1755],
+            3: [0xA0F6E]}
+        pass
 
 
 def randomize():
@@ -4701,12 +4812,15 @@ h   Organize rages by highest level first'''
     secret_codes['bingoboingo'] = "BINGO BONUS"
     secret_codes['ancientcave'] = "CHAOS TOWER MODE"
     secret_codes['speedcave'] = "FAST CHAOS TOWER MODE"
+    secret_codes['racecave'] = "EXTRA FAST CHAOS TOWER MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
             flags = flags.replace(code, '')
             s += "SECRET CODE: %s ACTIVATED\n" % text
             activated_codes.add(code)
+    if 'racecave' in activated_codes:
+        activated_codes.add('speedcave')
     if 'speedcave' in activated_codes:
         activated_codes.add('ancientcave')
 

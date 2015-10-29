@@ -3846,21 +3846,6 @@ def manage_ancient():
         gau.battle_commands[1] = 0xFF
         gau.write_battle_commands(outfile)
 
-    fi = open(outfile, 'r+b')
-    for c in characters:
-        i = c.id
-        pointer = 0x2d7ca0 + 0x15 + (i*22)
-        fi.seek(pointer)
-        level = ord(fi.read(1))
-        level &= 0xF3
-        if i >= 14 or "speedcave" in activated_codes:
-            level |= 0b1000
-        fi.seek(pointer)
-        fi.write(chr(level))
-
-    fi.seek(0xa5e74)
-    fi.write(chr(0))  # remove Terra's magitek
-
     to_dummy = [get_item(0xF6), get_item(0xF7)]
     name = [0xFF] + name_to_bytes("Pebble", 12)
     for item in to_dummy:
@@ -3893,6 +3878,8 @@ def manage_ancient():
     else:
         maxlevel = 49
         divisor = 2.0
+
+    fi = open(outfile, 'r+b')
     for level in xrange(maxlevel):
         ratio = (float(level) / maxlevel)**2
         ratio = min(ratio, 1.0)
@@ -3905,7 +3892,6 @@ def manage_ancient():
         newexp = max(newexp, 1)
         fi.seek(pointer)
         write_multi(fi, newexp, length=2)
-
     fi.close()
 
     startsub = Substitution()
@@ -3927,6 +3913,21 @@ def manage_ancient():
     for c in starting:
         startsub.bytestring += [0xD4, 0xF0 | c]
         startsub.bytestring += [0xD4, 0xE0 | c]
+
+    fi = open(outfile, 'r+b')
+    for c in characters:
+        i = c.id
+        pointer = 0x2d7ca0 + 0x15 + (i*22)
+        fi.seek(pointer)
+        level = ord(fi.read(1))
+        level &= 0xF3
+        if i >= 14 or "speedcave" in activated_codes and i not in starting:
+            level |= 0b1000
+        fi.seek(pointer)
+        fi.write(chr(level))
+    fi.seek(0xa5e74)
+    fi.write(chr(0))  # remove Terra's magitek
+    fi.close()
 
     tempcands = [14, 15, random.choice(range(18, 28)), random.choice([32, 33])]
     if 'speedcave' in activated_codes:
@@ -4183,7 +4184,7 @@ def manage_ancient():
             l.write_data(outfile)
 
     espersubs = {}
-    pointer = 0xB4E56
+    pointer = 0xB4E35
     for esper, event_value in esperevents.items():
         byte, bit = event_value / 8, event_value % 8
         mem_addr = ((0x17+byte) << 3) | bit
@@ -4592,8 +4593,8 @@ def manage_ancient():
 
     assert len(optional_chars) == 0
 
-    if pointer >= 0xb5ec9:
-        raise Exception("Cave events out of bounds.")
+    if pointer >= 0xb6965:
+        raise Exception("Cave events out of bounds. %x" % pointer)
 
     # lower encounter rate
     dungeon_rates = [0x38, 0, 0x20, 0, 0xb0, 0, 0x00, 1,

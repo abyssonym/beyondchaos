@@ -202,6 +202,8 @@ class Formation():
         # 13 blink in
         # 14 stay below screen
         # 15 slowly fall, play Dancing Mad
+        if type(value) in [list, tuple, set]:
+            value = random.choice(sorted(value))
         self.misc1 &= 0xF0
         self.misc1 |= value
         if value == 15:

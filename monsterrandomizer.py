@@ -421,7 +421,8 @@ class MonsterBlock:
 
     @property
     def boss_death(self):
-        return "".join(map(chr, [0xF5, 0x0C, 0x01, 0xFF])) in self.aiscript
+        return ("".join(map(chr, [0xF5, 0x0C, 0x01, 0xFF])) in self.aiscript or
+                "".join(map(chr, [0xF5, 0x0C, 0x01, 0x00])) in self.aiscript)
 
     @property
     def battle_event(self):

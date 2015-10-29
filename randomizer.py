@@ -4113,14 +4113,18 @@ def manage_ancient():
             return False
         if formation.formid in NOREPLACE_FORMATIONS:
             return False
-        if not any([m.boss_death for m in formation.present_enemies]):
-            return False
-        if formation.battle_event:
+        if not (any([m.boss_death for m in formation.present_enemies]) or
+                formation.get_music() in [1, 2, 5]):
             return False
         if formation.get_music() == 0:
             return False
+        if formation.formid in [0x1b0, 0x1b3, 0x1d9, 0x1db, 0x1d7]:
+            return False
         if formation.formid in [0x1a4, 0x1d4, 0x1d5, 0x1d6, 0x1e4,
                                 0x1e2, 0x1ff, 0x1bd, 0x1be]:
+            return False
+        if ("racecave" in activated_codes
+                and formation.formid in [0x162, 0x1c8]):
             return False
         return True
 
@@ -4734,12 +4738,90 @@ def manage_ancient():
 
         l.write_data(outfile)
 
-    if "racecave" in activated_codes:
+    final_cut = Substitution()
+    final_cut.set_location(0xA057D)
+    final_cut.bytestring = [0x3F, 0x0E, 0x00,
+                            0x3F, 0x0F, 0x00,
+                            0x3E, 0x0E,
+                            0x3E, 0x0F]
+    if "racecave" not in activated_codes:
+        final_cut.bytestring += [0x9D,
+                                 0x4D, 0x65, 0x33,
+                                 0xB2, 0xA9, 0x5E, 0x00]
+    elif "racecave" in activated_codes:
+        for i in range(14):
+            final_cut.bytestring += [0x3F, i, 0x00]
+        final_cut.bytestring += [0xB2, 0xAF, 0xCB, 0x00]
+        locked = 0
+        protected = random.sample(starting, 4)
+        assignments = {0: [], 1: [], 2: [], 3: []}
+        for i, c in enumerate(protected):
+            if 1 <= i <= 3 and random.choice([True, False]):
+                assignments[i].append(c)
+
+        for c in range(14):
+            if c in protected:
+                continue
+            if random.choice([True, False]):
+                i = random.randint(0, 3)
+                if len(assignments[i]) >= 3:
+                    continue
+                assignments[i].append(c)
+
+        for key in assignments:
+            for c in assignments[key]:
+                locked |= (1 << c)
+                if key > 0:
+                    final_cut.bytestring += [0x3F, c, key]
+        final_cut.bytestring += [0x99, 0x03, locked & 0xFF, locked >> 8]
+        from chestrandomizer import get_2pack
         event_bosses = {
             1: [0xC18A4, 0xC184B],
-            2: [0xC16DD, 0xC171D, 0xC1755],
-            3: [0xA0F6E]}
-        pass
+            2: [0xC16DD, 0xC171D, 0xC1756],
+            3: [None, None, None]}
+        g = open(outfile, 'r+b')
+        g.seek(0xA0F6F)
+        g.write(chr(0x36))
+        g.close()
+        candidates = sorted(boss_formations, key=lambda b: b.rank())
+        candidates = candidates[random.randint(0, len(candidates)-8):]
+        chosens = random.sample(candidates, 8)
+        chosens = sorted(chosens, key=lambda b: b.rank())
+        for rank in sorted(event_bosses):
+            num = len(event_bosses[rank])
+            rankchosens, chosens = chosens[:num], chosens[num:]
+            assert len(rankchosens) == num
+            random.shuffle(rankchosens)
+            if rank == 3:
+                bgs = random.sample([0x07, 0x0D, 0x17, 0x18, 0x19, 0x1C,
+                                     0x1F, 0x21, 0x22, 0x23, 0x29, 0x2C,
+                                     0x30, 0x36, 0x37], 3)
+            for i, (address, chosen) in enumerate(
+                    zip(event_bosses[rank], rankchosens)):
+                if rank == 3:
+                    chosen.set_music(5)
+                elif rank == 2:
+                    chosen.set_music(2)
+                else:
+                    chosen.set_music(4)
+                chosen.set_appearing([1, 2, 3, 4, 5, 6,
+                                      7, 8, 9, 10, 11, 13])
+                fset = get_2pack(chosen)
+                if address is not None:
+                    g = open(outfile, 'r+b')
+                    g.seek(address)
+                    g.write(chr(fset.setid & 0xFF))
+                    g.close()
+                else:
+                    bg = bgs.pop()
+                    final_cut.bytestring += [0x46, i+1,
+                                             0x4D, fset.setid & 0xFF, bg,
+                                             0xB2, 0xA9, 0x5E, 0x00]
+
+        assert len(chosens) == 0
+
+    final_cut.bytestring += [0xB2, 0x64, 0x13, 0x00]
+    final_cut.write(outfile)
 
 
 def randomize():

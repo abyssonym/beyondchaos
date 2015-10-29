@@ -4125,7 +4125,7 @@ def manage_ancient():
                                 0x1e2, 0x1ff, 0x1bd, 0x1be]:
             return False
         if ("racecave" in activated_codes
-                and formation.formid in [0x162, 0x1c8]):
+                and formation.formid in [0x162, 0x1c8, 0x1d3]):
             return False
         return True
 
@@ -4785,7 +4785,8 @@ def manage_ancient():
         g.write(chr(0x36))
         g.close()
         candidates = sorted(boss_formations, key=lambda b: b.rank())
-        candidates = candidates[random.randint(0, len(candidates)-8):]
+        candidates = [c for c in candidates if c.inescapable]
+        candidates = candidates[random.randint(0, len(candidates)-16):]
         chosens = random.sample(candidates, 8)
         chosens = sorted(chosens, key=lambda b: b.rank())
         for rank in sorted(event_bosses):

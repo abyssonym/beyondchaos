@@ -3883,14 +3883,14 @@ def manage_ancient():
     for level in xrange(maxlevel):
         ratio = (float(level) / maxlevel)**2
         ratio = min(ratio, 1.0)
-        pointer = 0x2d8220 + (level*2)
-        fi.seek(pointer)
+        xptr = 0x2d8220 + (level*2)
+        fi.seek(xptr)
         exp = read_multi(fi, length=2)
         newexp = (exp / divisor)
         remaining = exp - newexp
         newexp = int(round(newexp + (ratio*remaining)))
         newexp = max(newexp, 1)
-        fi.seek(pointer)
+        fi.seek(xptr)
         write_multi(fi, newexp, length=2)
     fi.close()
 
@@ -3917,13 +3917,13 @@ def manage_ancient():
     fi = open(outfile, 'r+b')
     for c in characters:
         i = c.id
-        pointer = 0x2d7ca0 + 0x15 + (i*22)
-        fi.seek(pointer)
+        cptr = 0x2d7ca0 + 0x15 + (i*22)
+        fi.seek(cptr)
         level = ord(fi.read(1))
         level &= 0xF3
         if i >= 14 or "speedcave" in activated_codes and i not in starting:
             level |= 0b1000
-        fi.seek(pointer)
+        fi.seek(cptr)
         fi.write(chr(level))
     fi.seek(0xa5e74)
     fi.write(chr(0))  # remove Terra's magitek
@@ -4183,8 +4183,41 @@ def manage_ancient():
             l.attacks = 0
             l.write_data(outfile)
 
-    espersubs = {}
     pointer = 0xB4E35
+    if 'racecave' in activated_codes:
+        candidates = [c for c in starting if c != runaway]
+        leaders = random.sample(candidates, 3)
+        subptr = pointer - 0xa0000
+        leader_sub = Substitution()
+        leader_sub.set_location(0xa02da)
+        leader_sub.bytestring = [
+            0xB2, subptr & 0xFF, (subptr >> 8) & 0xFF, subptr >> 16]
+        leader_sub.write(outfile)
+        leader_sub.set_location(pointer)
+        leader_sub.bytestring = []
+        for c in range(16):
+            if c in leaders:
+                continue
+            leader_sub.bytestring += [0x3F, c, 0x00]
+            leader_sub.bytestring += [0x3E, c]
+        leader_sub.bytestring += [0x47,
+                                  0xB2, 0xAF, 0xCB, 0x00]
+        locked = 0
+        for i, c in enumerate(leaders):
+            leader_sub.bytestring += [0x3F, c, 0]
+            leader_sub.bytestring += [0x3F, c, i+1]
+            locked |= (1 << c)
+        leader_sub.bytestring += [0x99, 0x03, locked & 0xFF, locked >> 8]
+        for i in [14, 15]:
+            byte, bit = i / 8, i % 8
+            mem_addr = ((0x1b+byte) << 3) | bit
+            leader_sub.bytestring += [0xD6, mem_addr]
+        leader_sub.bytestring += [0x96, 0xFE]
+        leader_sub.write(outfile)
+        pswitch_ptr = pointer - 0xa0000
+        pointer += len(leader_sub.bytestring)
+
+    espersubs = {}
     for esper, event_value in esperevents.items():
         byte, bit = event_value / 8, event_value % 8
         mem_addr = ((0x17+byte) << 3) | bit
@@ -4217,6 +4250,21 @@ def manage_ancient():
               2: (2000, 0xA71),
               3: (8000, 0xA5F),
               4: (30000, 0xA64)}
+
+    if "racecave" in activated_codes:
+        partyswitch_template = [
+            0x4B, None, None,
+            0x4B, 0x86, 0x83,
+            0xB6, None, None, None,
+            None, None, None,
+            0xFE]
+
+        partyswitch_template2 = [
+            0x85, None, None,
+            0xC0, 0xBE, 0x81, 0xFF, 0x69, 0x01,
+            0xB2,
+            pswitch_ptr & 0xFF, (pswitch_ptr >> 8) & 0xFF, pswitch_ptr >> 16,
+            0xFE]
 
     save_template = [0x4B, None, None,
                      0x4B, 0x24, 0x85,
@@ -4371,6 +4419,7 @@ def manage_ancient():
                 allysub.bytestring += [0x3E, 0x10 | npc_id,
                                        0x3D, chosen.slotid,
                                        0x3F, chosen.slotid, party_id,
+                                       0x47,
                                        0x45,
                                        0xF4, 0xD0,
                                        0xFE]
@@ -4426,6 +4475,10 @@ def manage_ancient():
         pointer += innsub.size
         savesub = make_paysub(save_template, save_template2, l, pointer)
         pointer += savesub.size
+        if "racecave" in activated_codes:
+            pswitch_sub = make_paysub(partyswitch_template,
+                                      partyswitch_template2, l, pointer)
+            pointer += pswitch_sub.size
 
         event_addr = (innsub.location - 0xa0000) & 0x3FFFF
         innkeeper = NPCBlock(pointer=None, locid=l.locid)
@@ -4442,7 +4495,7 @@ def manage_ancient():
 
         unequipper = NPCBlock(pointer=None, locid=l.locid)
         attributes = {
-            "graphics": 0x17, "palette": 0, "x": 55, "y": 16,
+            "graphics": 0x1e, "palette": 3, "x": 49, "y": 16,
             "event_addr": 0x23510, "facing": 2,
             "memaddr": 0, "membit": 0, "unknown": 0,
             "graphics_index": 0}
@@ -4590,6 +4643,18 @@ def manage_ancient():
         for key, value in attributes.items():
             setattr(enemy, key, value)
         l.npcs.append(enemy)
+
+        if "racecave" in activated_codes:
+            event_addr = (pswitch_sub.location - 0xa0000) & 0x3FFFF
+            partyswitch = NPCBlock(pointer=None, locid=l.locid)
+            attributes = {
+                "graphics": 0x17, "palette": 0, "x": 55, "y": 16,
+                "event_addr": event_addr, "facing": 2,
+                "memaddr": 0, "membit": 0, "unknown": 0,
+                "graphics_index": 0}
+            for key, value in attributes.items():
+                setattr(partyswitch, key, value)
+            l.npcs.append(partyswitch)
 
     assert len(optional_chars) == 0
 
@@ -4743,16 +4808,14 @@ def manage_ancient():
     final_cut.set_location(0xA057D)
     final_cut.bytestring = [0x3F, 0x0E, 0x00,
                             0x3F, 0x0F, 0x00,
-                            0x3E, 0x0E,
-                            0x3E, 0x0F]
+                            ]
     if "racecave" not in activated_codes:
         final_cut.bytestring += [0x9D,
                                  0x4D, 0x65, 0x33,
                                  0xB2, 0xA9, 0x5E, 0x00]
     elif "racecave" in activated_codes:
-        for i in range(14):
+        for i in range(16):
             final_cut.bytestring += [0x3F, i, 0x00]
-        final_cut.bytestring += [0xB2, 0xAF, 0xCB, 0x00]
         locked = 0
         protected = random.sample(starting, 4)
         assignments = {0: [], 1: [], 2: [], 3: []}
@@ -4760,12 +4823,18 @@ def manage_ancient():
             if 1 <= i <= 3 and random.choice([True, False]):
                 assignments[i].append(c)
 
-        for c in range(14):
+        chars = range(16)
+        random.shuffle(chars)
+        for c in chars:
             if c in protected:
                 continue
-            if random.choice([True, False]):
+            if c >= 14 and random.choice([True, False]):
+                continue
+            if random.choice([True, True, False]):
                 i = random.randint(0, 3)
                 if len(assignments[i]) >= 3:
+                    continue
+                elif len(assignments[i]) == 2 and random.choice([True, False]):
                     continue
                 assignments[i].append(c)
 

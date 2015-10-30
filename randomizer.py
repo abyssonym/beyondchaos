@@ -4085,6 +4085,15 @@ def manage_ancient():
     for key, value in attributes.items():
         setattr(save_event, key, value)
     falcon.events.append(save_event)
+    partyswitch = NPCBlock(pointer=None, locid=falcon.locid)
+    attributes = {
+        "graphics": 0x17, "palette": 0, "x": 16, "y": 6,
+        "event_addr": 0x047d, "facing": 2,
+        "memaddr": 0, "membit": 0, "unknown": 0,
+        "graphics_index": 0, "npcid": 2}
+    for key, value in attributes.items():
+        setattr(partyswitch, key, value)
+    falcon.npcs.append(partyswitch)
 
     pilot = random.choice([s for s in starting if s < 12])
     pilot_sub = Substitution()

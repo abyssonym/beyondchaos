@@ -4580,7 +4580,8 @@ def manage_ancient():
             for key, value in attributes.items():
                 setattr(ally, key, value)
             l.npcs.append(ally)
-            if len(optional_chars) > 0 and "speedcave" in activated_codes:
+            if (len(optional_chars) == 12 or (len(optional_chars) > 0 and
+                                              "speedcave" in activated_codes)):
                 temp = optional_chars.pop()
                 if chosen.id != temp.id:
                     chosen = temp

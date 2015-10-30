@@ -4107,7 +4107,7 @@ def manage_ancient():
     pilot_sub.write(outfile)
 
     if "racecave" in activated_codes:
-        randomize_tower(filename=sourcefile, ancient=True, nummaps=40)
+        randomize_tower(filename=sourcefile, ancient=True, nummaps=50)
     elif "speedcave" in activated_codes:
         randomize_tower(filename=sourcefile, ancient=True, nummaps=85)
     else:

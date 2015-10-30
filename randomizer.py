@@ -4204,18 +4204,22 @@ def manage_ancient():
         leader_sub.write(outfile)
         leader_sub.set_location(pointer)
         leader_sub.bytestring = []
+        locked = 0
+        for i, c in enumerate(leaders):
+            leader_sub.bytestring += [0x3F, c, i+1]
+            locked |= (1 << c)
         for c in range(16):
             if c in leaders:
                 continue
             leader_sub.bytestring += [0x3F, c, 0x00]
             leader_sub.bytestring += [0x3E, c]
         leader_sub.bytestring += [0x47,
-                                  0xB2, 0xAF, 0xCB, 0x00]
-        locked = 0
+                                  0xE1,
+                                  0xB2, 0x0B, 0xC9, 0x00,
+                                  0x45]
         for i, c in enumerate(leaders):
             leader_sub.bytestring += [0x3F, c, 0]
             leader_sub.bytestring += [0x3F, c, i+1]
-            locked |= (1 << c)
         leader_sub.bytestring += [0x99, 0x03, locked & 0xFF, locked >> 8]
         for i in [14, 15]:
             byte, bit = i / 8, i % 8

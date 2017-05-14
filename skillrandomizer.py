@@ -331,66 +331,114 @@ class SpellSub(Substitution):
         self.bytestring = [0xA9, self.spellid, 0x85, 0xB6, 0xA9,
                            0x02, 0x85, 0xB5, 0x4C, 0x5F, 0x17]
 
+    def __repr__(self):
+        return "Use the skill '{0}'".format(spellnames[self.spellid])
+
 
 def get_spellsets(spells=None):
+    """Create various thematic groups of spells."""
     spellsets = {}
     spellset_bans = []
     spells = [s for s in spells if s.spellid not in spellset_bans]
-    spellsets['Chaos'] = []
-    spellsets['Magic'] = range(0, 0x36)
-    spellsets['Black'] = range(0, 0x18)
-    spellsets['White'] = range(0x2D, 0x36)
-    spellsets['Gray'] = range(0x18, 0x2D)
-    spellsets['Esper'] = range(0x36, 0x51)
-    spellsets['Sword'] = range(0x55, 0x5D)
-    spellsets['Blitz'] = range(0x5D, 0x65)
-    spellsets['Geo'] = range(0x65, 0x75)
-    spellsets['Beast'] = range(0x75, 0x7D)
-    spellsets['Lore'] = range(0x8B, 0xA3)
-    spellsets['Rare'] = range(0x7D, 0x83) + range(0xA3, 0xEE)
+    # Each spellset is a tuple of (description, spell list)
+    spellsets['Chaos'] = ('chaos', [])
+    spellsets['Magic'] = ('magic spell', range(0, 0x36))
+    spellsets['Black'] = ('black magic spell', range(0, 0x18))
+    spellsets['White'] = ('white magic spell', range(0x2D, 0x36))
+    spellsets['Gray'] = ('gray magic spell', range(0x18, 0x2D))
+    spellsets['Esper'] = ('Esper summon', range(0x36, 0x51))
+    spellsets['Sword'] = ('SwdTech skill', range(0x55, 0x5D))
+    spellsets['Blitz'] = ('Blitz', range(0x5D, 0x65))
+    spellsets['Geo'] = ('geomancer-type Dance move', range(0x65, 0x75))
+    spellsets['Beast'] = ('beast-summoning Dance move', range(0x75, 0x7D))
+    spellsets['Lore'] = ('Lore', range(0x8B, 0xA3))
+    spellsets['Rare'] = ('rare effect (Slots, Super Ball, non-Lore monster skill)',
+                         range(0x7D, 0x83) + range(0xA3, 0xEE))
     elementals = [s for s in spells if bin(s.elements).count('1') == 1]
-    spellsets['Fire'] = [s for s in elementals if s.elements & 1]
-    spellsets['Ice'] = [s for s in elementals if s.elements & 2]
-    spellsets['Bolt'] = [s for s in elementals if s.elements & 4]
-    spellsets['Bio'] = [s for s in elementals if s.elements & 8]
-    spellsets['Wind'] = [s for s in elementals if s.elements & 0x10]
-    spellsets['Pearl'] = [s for s in elementals if s.elements & 0x20]
-    spellsets['Earth'] = [s for s in elementals if s.elements & 0x40]
-    spellsets['Water'] = [s for s in elementals if s.elements & 0x80]
-    spellsets['Elem'] = [s for s in spells if s.elements and
-                         s.spellid not in spellsets['Black']]
-    spellsets['Nuke'] = [s for s in spells if s.power and not any(
-        [s.elements, s.percentage, s.physical, s.healing])]
-    spellsets['Heal'] = [s for s in spells if s.healing]
-    spellsets['Phys'] = [s for s in spells if s.physical]
-    spellsets['Curse'] = [s for s in spells if all(
-        [s.target_enemy_default, not s.miss_if_death_prot, not s.power])]
-    spellsets['Bless'] = [s for s in spells if not any(
-        [s.target_enemy_default, s.power, s.spellid == 0xA4])]
-    spellsets['Drain'] = [s for s in spells if s.draining]
-    spellsets['Mana'] = [s for s in spells if s.concernsmp]
-    spellsets['Death'] = ([s for s in spells if s.miss_if_death_prot and
-                           not s.percentage and s.has_status]
-                          + [get_spell(s) for s in [0x46, 0xC4, 0xE2, 0xE5]])
-    spellsets['Heavy'] = [s for s in spells if s.miss_if_death_prot and
-                          s.percentage]
-    spellsets['All'] = [s for s in spells if s.target_everyone and
-                        not s.target_one_side_only]
-    spellsets['Party'] = [s for s in spells if s.target_group_default and
-                          not s.target_enemy_default]
-    spellsets['Tek'] = ([0x18, 0x6E, 0x70, 0x7D, 0x7E] + range(0x86, 0x8B) +
-                        [0xA7, 0xB1] + range(0xB4, 0xBA) + [0x91, 0x9A] +
-                        [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3])
-    spellsets['Time'] = [0x10, 0x11, 0x12, 0x13, 0x19, 0x1B, 0x1F, 0x20, 0x22,
-                         0x26, 0x27, 0x28, 0x2A, 0x2B, 0x34, 0x89, 0x9B, 0xA0,
-                         0xC9, 0xDF]
+    spellsets['Fire'] = ('fire-elemental skill',
+                         [s for s in elementals if s.elements & 1])
+    spellsets['Ice'] = ('ice-elemental skill',
+                        [s for s in elementals if s.elements & 2])
+    spellsets['Bolt'] = ('lightning-elemental skill',
+                         [s for s in elementals if s.elements & 4])
+    spellsets['Bio'] = ('poison-elemental skill',
+                        [s for s in elementals if s.elements & 8])
+    spellsets['Wind'] = ('wind-elemental skill',
+                         [s for s in elementals if s.elements & 0x10])
+    spellsets['Pearl'] = ('holy-elemental skill',
+                          [s for s in elementals if s.elements & 0x20])
+    spellsets['Earth'] = ('earth-elemental skill',
+                          [s for s in elementals if s.elements & 0x40])
+    spellsets['Water'] = ('water-elemental skill',
+                          [s for s in elementals if s.elements & 0x80])
+    spellsets['Elem'] = ('elemental skill (excluding black magic spells)',
+                         [s for s in spells if s.elements and
+                          s.spellid not in spellsets['Black']])
+    # Skills that deal non-elemental magic damage - Meteor, Ultima, Crusader...
+    # This includes most desperation attacks as well.
+    # TODO: also includes Drain, Rasp, Osmose, Empowerer - a bug?
+    spellsets['Nuke'] = ('non-elemental magic damage skill',
+                         [s for s in spells if s.power and not any(
+                             [s.elements, s.percentage, s.physical, s.healing])])
+    spellsets['Heal'] = ('HP- and/or MP-restoring skill',
+                         [s for s in spells if s.healing])
+    spellsets['Phys'] = ('physical skill', [s for s in spells if s.physical])
+    spellsets['Curse'] = (
+        'enemy harmful-status skill',
+        [s for s in spells if all(
+            [s.target_enemy_default, not s.miss_if_death_prot, not s.power])])
+    # Explicitly exclude Clear (0xA4) as that's actually a debuff
+    spellsets['Bless'] = (
+        'ally beneficial-status skill',
+        [s for s in spells if not any(
+            [s.target_enemy_default, s.power, s.spellid == 0xA4])])
+    spellsets['Drain'] = ('HP- and/or MP-draining skill',
+                          [s for s in spells if s.draining])
+    # Just Rasp, Osmose, and Empowerer - not very exciting
+    spellsets['Mana'] = ('MP-affecting skill',
+                         [s for s in spells if s.concernsmp])
+    # Death Skills.
+    # All status-inflicting spells that are blocked by death protection.
+    # Plus some specific death spells that ignore death protection:
+    spellsets['Death'] = (
+        'instant-death skill',
+        ([s for s in spells if s.miss_if_death_prot and
+          not s.percentage and s.has_status] +
+         # these ignore death protection -  Ragnarok, Mind Blast, Dread, Soul Out
+         [get_spell(s) for s in [0x46, 0xC4, 0xE2, 0xE5]]))
+    # Demi, Quartr, W Wind, Cave In, Shimsham, Launcher, etc.
+    spellsets['Heavy'] = ('percentage-damage skill',
+                          [s for s in spells if s.miss_if_death_prot and
+                           s.percentage])
+    # Quake, W Wind, Crusader, Merton, ForceField
+    spellsets['All'] = ('skill targeting allies and enemies alike',
+                        [s for s in spells if s.target_everyone and
+                         not s.target_one_side_only])
+    # Includes Haste2, Big Guard, Pearl Wind, and a bunch of defensive Espers
+    spellsets['Party'] = ('full-party buff',
+                          [s for s in spells if s.target_group_default and
+                           not s.target_enemy_default])
+    spellsets['Tek'] = ('Magitek or other tech-themed skill',
+                        ([0x18, 0x6E, 0x70, 0x7D, 0x7E] + range(0x86, 0x8B) +
+                         [0xA7, 0xB1] + range(0xB4, 0xBA) + [0x91, 0x9A] +
+                         [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3]))
+    spellsets['Time'] = ('time mage skill (a la FF5)',
+                         [0x10, 0x11, 0x12, 0x13, 0x19, 0x1B, 0x1F, 0x20, 0x22,
+                          0x26, 0x27, 0x28, 0x2A, 0x2B, 0x34, 0x89, 0x9B, 0xA0,
+                          0xC9, 0xDF])
 
-    for key, value in spellsets.items():
-        if not value:
+    for key, desc_and_spellset in spellsets.items():
+        if not desc_and_spellset:
             continue
-        if type(value[0]) is int:
-            spellsets[key] = [s for s in spells if s.spellid in value]
-        spellsets[key] = sorted(set(spellsets[key]), key=lambda s: s.spellid)
+        desc, spellset = desc_and_spellset
+        if not spellset:
+            continue
+        # Convert lists of spell IDs into lists of spells
+        if type(spellset[0]) is int:
+            spellset = [s for s in spells if s.spellid in spellset]
+        # Sort the spell set by spell ID
+        spellset = sorted(set(spellset), key=lambda s: s.spellid)
+        spellsets[key] = (desc, spellset)
 
     return spellsets
 
@@ -456,7 +504,8 @@ class RandomSpellSub(Substitution):
         else:
             self.wild = False
 
-        spellset = spellsets[spellclass]
+        desc, spellset = spellsets[spellclass]
+        self.spells_description = desc
         spellset = sorted([s for s in spellset if s in valid_spells],
                           key=lambda s: s.spellid)
         if len(spellset) < 3:
@@ -479,6 +528,33 @@ class RandomSpellSub(Substitution):
         self.spells = sorted(spells)
 
         return self.spells
+
+    @property
+    def spells_string(self):
+        unique_spells = sorted(set(self.spells), key=lambda s: s.name)
+        if len(self.spells) == len(unique_spells):
+            # No repetition of spells - all equal chances
+            return ("Equal chance of any of the following:\n  " +
+                    ", ".join(spell.name for spell in unique_spells))
+        # Else, let's try to pretty-print things a bit...
+        descs = []
+        last_count = -1
+        # Sort by descending probability
+        unique_spells.sort(key=lambda s: self.spells.count(s), reverse=True)
+        for unique_s in unique_spells:
+            desc = unique_s.name
+            c = self.spells.count(unique_s)
+            if c != last_count:
+                desc = "\n  ({0}/{1} chance each)  {2}".format(c, len(self.spells), desc)
+                last_count = c
+            else:
+                desc = ", " + desc
+            descs.append(desc)
+        return ''.join(descs)
+
+    def __repr__(self):
+        return "Use a random {0}.\n{1}".format(self.spells_description,
+                                                self.spells_string)
 
 
 class MultipleSpellSub(Substitution):
@@ -508,3 +584,12 @@ class MultipleSpellSub(Substitution):
         self.bytestring = [0x20, low, high] * self.count
         self.bytestring += [0x60]
         self.bytestring += self.spellsub.bytestring
+
+    def __repr__(self):
+        if isinstance(self.spellsub, RandomSpellSub):
+            return "{0} times, use a random {1}.\n{2}".format(
+                self.count, self.spellsub.spells_description,
+                self.spellsub.spells_string)
+        else:
+            return "{0} times, use the skill '{1}'".format(
+                self.count, spellnames[self.spellsub.spellid])

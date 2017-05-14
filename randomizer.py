@@ -1092,6 +1092,9 @@ def manage_commands_new(commands):
         else:
             c.disallow_while_berserk(outfile)
 
+        command_descr = "{0}\n-------\n{1}".format(c.name, str(s))
+        log(command_descr, 'commands')
+
     gogo_enable_all_sub = Substitution()
     gogo_enable_all_sub.bytestring = [0xEA] * 2
     gogo_enable_all_sub.set_location(0x35E58)
@@ -5242,7 +5245,7 @@ h   Organize rages by highest level first'''
             aftername = [c for c in commands.values() if c.id == after][0].name
             logstr = "{0:13} {1:7} -> {2:7}".format(
                 name + ":", beforename.lower(), aftername.lower())
-            log(logstr, section="command changes")
+            log(logstr, section="command-change relics")
         reset_cursed_shield(outfile)
 
         for c in characters:

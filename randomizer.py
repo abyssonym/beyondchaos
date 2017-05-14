@@ -4999,7 +4999,10 @@ h   Organize rages by highest level first'''
             fullseed = ".%s.%s" % (flags, fullseed)
             print
 
-    version, flags, seed = tuple(fullseed.split('.'))
+    try:
+        version, flags, seed = tuple(fullseed.split('.'))
+    except ValueError:
+        raise ValueError('Seed should be in the format <version>.<flags>.<seed>')
     seed = seed.strip()
     if not seed:
         seed = int(time())

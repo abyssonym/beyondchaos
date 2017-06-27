@@ -341,7 +341,7 @@ def get_spellsets(spells=None):
     spellset_bans = []
     spells = [s for s in spells if s.spellid not in spellset_bans]
     # Each spellset is a tuple of (description, spell list)
-    spellsets['Chaos'] = ('chaos', [])
+    spellsets['Chaos'] = ('skill (including broken and glitchy skills)', [])
     spellsets['Magic'] = ('magic spell', range(0, 0x36))
     spellsets['Black'] = ('black magic spell', range(0, 0x18))
     spellsets['White'] = ('white magic spell', range(0x2D, 0x36))
@@ -497,6 +497,8 @@ class RandomSpellSub(Substitution):
         spellsets = spellsets or get_spellsets(spells=valid_spells)
         spellclass = spellclass or random.choice(spellsets.keys())
         self.name = spellclass
+        desc, spellset = spellsets[spellclass]
+        self.spells_description = desc
         if spellclass.lower() in ["wild", "chaos"]:
             self.wild = True
             self.spells = []
@@ -504,8 +506,6 @@ class RandomSpellSub(Substitution):
         else:
             self.wild = False
 
-        desc, spellset = spellsets[spellclass]
-        self.spells_description = desc
         spellset = sorted([s for s in spellset if s in valid_spells],
                           key=lambda s: s.spellid)
         if len(spellset) < 3:
@@ -532,6 +532,8 @@ class RandomSpellSub(Substitution):
     @property
     def spells_string(self):
         unique_spells = sorted(set(self.spells), key=lambda s: s.name)
+        if len(self.spells) == 0:
+            return ""
         if len(self.spells) == len(unique_spells):
             # No repetition of spells - all equal chances
             return ("Equal chance of any of the following:\n  " +

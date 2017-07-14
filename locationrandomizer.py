@@ -288,6 +288,14 @@ class Location():
         for e in sorted(enemies):
             s = "\n".join([s, e])
         return s.strip()
+        
+    @property
+    def treasure_ids(self):
+        treasures = []
+        for c in self.chests:
+            if (c.treasure):
+                treasures.append(c.contents)
+        return treasures
 
     def dummy_item(self, item):
         dummied = False

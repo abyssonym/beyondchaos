@@ -3813,13 +3813,13 @@ def manage_wor():
     characters = get_characters()
     f = open(outfile, 'r+b')
 
-	# jump to FC end cutscene for more space
+    # jump to FC end cutscene for more space
     startsub0 = Substitution()
     startsub0.bytestring = [0xB2, 0x1E, 0xDD, 0x00, 0xFE]
     startsub0.set_location(0xC9A4F)
     startsub0.write(outfile)
-	
-	# change code at start of game to warp to wor
+
+    # change code at start of game to warp to wor
     wor_sub = Substitution()
     wor_sub.bytestring = [0x6C, 0x01, 0x00, 0x91, 0xD3, 0x02, # make WoR the parent map
                           0x88, 0x00, 0x00, 0x00,  # remove Magitek from Terra
@@ -3828,43 +3828,50 @@ def manage_wor():
                           0x3F, 0x00, 0x00,  # remove Terra from party
                           0x3F, 0x0E, 0x00,  # remove Vicks from party
                           0x3F, 0x0F, 0x00,  # remove Wedge from party
-						  0x3E, 0x00,  # delete Terra
-						  0x3E, 0x0E,  # delete Vicks
-						  0x3E, 0x0F,  # delete Wedge
-						  
-						  # there's no command to set a char's level, so I'ma do something hacky and continually set Mog/Strago's properties.  Each of them will consider the other's level as the "party average".  Strago will be boosted 2 levels above this average, and Mog will be boosted 5 levels, which effectively see-saws their levels upwards until they are around the level I want Celes to be at.
-						  0xD4, 0xF7,  # flag Strago as obtained
+                          0x3E, 0x00,  # delete Terra
+                          0x3E, 0x0E,  # delete Vicks
+                          0x3E, 0x0F,  # delete Wedge
+
+                          # there's no command to set a char's level, so I'ma
+                          # do something hacky and continually set Mog/Strago's
+                          # properties.  Each of them will consider the other's
+                          # level as the "party average".  Strago will be
+                          # boosted 2 levels above this average, and Mog will
+                          # be boosted 5 levels, which effectively see-saws
+                          # their levels upwards until they are around the
+                          # level I want Celes to be at.
+                          0xD4, 0xF7,  # flag Strago as obtained
                           0xD4, 0xE7,  # flag Strago as obtained
-						  0xD4, 0xFA,  # flag Mog as obtained
+                          0xD4, 0xFA,  # flag Mog as obtained
                           0xD4, 0xEA,  # flag Mog as obtained
-						  0x40, 0x0A, 0x0A,  # give Mog properties
-						  0x40, 0x07, 0x07,  # give Strago properties
-						  0x40, 0x0A, 0x0A,  # give Mog properties
-						  0x40, 0x07, 0x07,  # give Strago properties
-						  0x40, 0x0A, 0x0A,  # give Mog properties
-						  0x40, 0x07, 0x07,  # give Strago properties
-						  0x40, 0x0A, 0x0A,  # give Mog properties
-						  0x40, 0x07, 0x07,  # give Strago properties
-						  0x40, 0x0A, 0x0A,  # give Mog properties
-						  0x40, 0x07, 0x07,  # give Strago properties
-						  0x40, 0x0A, 0x0A,  # give Mog properties
-						  0x40, 0x07, 0x07,  # give Strago properties
-						  0x40, 0x06, 0x06,  # give Celes properties
-						  0xD5, 0xF7,  # flag Strago as unobtained
+                          0x40, 0x0A, 0x0A,  # give Mog properties
+                          0x40, 0x07, 0x07,  # give Strago properties
+                          0x40, 0x0A, 0x0A,  # give Mog properties
+                          0x40, 0x07, 0x07,  # give Strago properties
+                          0x40, 0x0A, 0x0A,  # give Mog properties
+                          0x40, 0x07, 0x07,  # give Strago properties
+                          0x40, 0x0A, 0x0A,  # give Mog properties
+                          0x40, 0x07, 0x07,  # give Strago properties
+                          0x40, 0x0A, 0x0A,  # give Mog properties
+                          0x40, 0x07, 0x07,  # give Strago properties
+                          0x40, 0x0A, 0x0A,  # give Mog properties
+                          0x40, 0x07, 0x07,  # give Strago properties
+                          0x40, 0x06, 0x06,  # give Celes properties
+                          0xD5, 0xF7,  # flag Strago as unobtained
                           0xD5, 0xE7,  # flag Strago as unobtained
-						  0xD5, 0xFA,  # flag Mog as unobtained
+                          0xD5, 0xFA,  # flag Mog as unobtained
                           0xD5, 0xEA,  # flag Mog as unobtained
-						  
-						  0xD4, 0xF6,  # flag Celes as obtained
+
+                          0xD4, 0xF6,  # flag Celes as obtained
                           0xD4, 0xE6,  # flag Celes as obtained
-						  0x3D, 0x06,  # create Celes
+                          0x3D, 0x06,  # create Celes
                           0x3F, 0x06, 0x01,  # add Celes to party
-                          
+
                           0x40, 0x0C, 0x1B,  # give Gogo the properties of Kamog
-						  0x40, 0x0D, 0x1C,  # give Umaro the properties of Mog (three scenario party selection)
+                          0x40, 0x0D, 0x1C,  # give Umaro the properties of Mog (three scenario party selection)
                           0x8D, 0x0C,  # unequip Kamog
                           0x8D, 0x0D,  # unequip fake Mog
-                          
+
                           0x40, 0x01, 0x01,  # give Locke properties
                           0x40, 0x02, 0x02,  # give Cyan properties
                           0x40, 0x03, 0x03,  # give Shadow properties
@@ -3875,7 +3882,7 @@ def manage_wor():
                           0x40, 0x09, 0x09,  # give Setzer properties
                           0x40, 0x0A, 0x0A,  # give Mog properties
                           0x40, 0x0B, 0x0B,  # give Gau properties
-                          
+
                           0x37, 0x01, 0x01,  # give Locke graphics
                           0x37, 0x02, 0x02,  # give Cyan graphics
                           0x37, 0x03, 0x03,  # give Shadow graphics
@@ -3887,7 +3894,7 @@ def manage_wor():
                           0x37, 0x09, 0x09,  # give Setzer graphics
                           0x37, 0x0A, 0x0A,  # give Mog graphics
                           0x37, 0x0B, 0x0B,  # give Gau graphics
-                          
+
                           0x7F, 0x00, 0x00,  # give Terra name
                           0x7F, 0x01, 0x01,  # give Locke name
                           0x7F, 0x02, 0x02,  # give Cyan name
@@ -3900,9 +3907,9 @@ def manage_wor():
                           0x7F, 0x09, 0x09,  # give Setzer name
                           0x7F, 0x0A, 0x0A,  # give Mog name
                           0x7F, 0x0B, 0x0B,  # give Gau name
-                          
+
                           0x84, 0x50, 0xC3,  # give party 50K Gil
-                          
+
                           0x86, 0x36,  # give Ramuh
                           0x86, 0x37,  # give Ifrit
                           0x86, 0x38,  # give Shiva
@@ -3915,21 +3922,21 @@ def manage_wor():
                           0x86, 0x49,  # give Carbunkl
                           0x86, 0x4A,  # give Phantom
                           0x86, 0x4D,  # give Unicorn
-                          
+
                           0xB8, 0x42,  # allow Morph
                           0xB8, 0x43,  # display AP
                           0xB8, 0x49,  # Gau handed Meat
                           0xB8, 0x4B,  # Shadow can't leave
                           0xE8, 0x06, 0x08, 0x00,  # set up 8 dragons
-						  ]
-    
+                          ]
+
     # assign a palette to each character
     partymembers = filter(lambda c: 1 <= c.id <= 12, characters)
     for character in partymembers:
         id = character.id
         palette = character.palette
         wor_sub.bytestring += [0x43, id, palette]
-                          
+
     # obtain all locations with WoB treasures
     wobtreasurelocs = []
     for line in open(WOB_TREASURE_TABLE):
@@ -3943,17 +3950,19 @@ def manage_wor():
             continue
         if l.area_name.upper() in wobtreasurelocs:
             wobtreasures.extend(l.treasure_ids)
-    
+
     # give the items to the player via event code
     for t in wobtreasures:
         wor_sub.bytestring += [0x80, t]
-        
-    # give the player a basic set of items.  These items are intended to reflect the items a player would probably have by the time they get this far, so that they aren't missing basic supplies they would have in almost any seed.
+
+    # give the player a basic set of items.  These items are intended to
+    # reflect the items a player would probably have by the time they get this
+    # far, so that they aren't missing basic supplies they would have in almost any seed.
     for line in open(WOR_ITEMS_TABLE):
         line = line.strip().split(',')
         for i in range (0, int(line[1])):
             wor_sub.bytestring += [0x80, int(line[0], 16)]
-    
+
     # jump to overwriting the Ramuh cutscene because we need even more space
     wor_sub.bytestring += [0xB2, 0x49, 0x97, 0x00,
                            0xFE
@@ -3962,7 +3971,7 @@ def manage_wor():
     wor_sub.write(outfile)
     wor_sub2 = Substitution()
     wor_sub2.bytestring = []
-    
+
     # set most of the event bits that would have been set in the WoB
     for line in open(WOB_EVENTS_TABLE):
         line = line.strip().split(',')
@@ -3973,13 +3982,13 @@ def manage_wor():
         wor_sub2.bytestring += [firstbyte, lastbyte]
 
     wor_sub2.bytestring += [0x6B, 0x01, 0x00, 0x91, 0xD3, 0x00, # go to WoR
-						  0xFF,  # end map script
-						  0xFE,  # return
-                          ]
-    
+                            0xFF,  # end map script
+                            0xFE,  # return
+                            ]
+
     wor_sub2.set_location(0xA9749)
     wor_sub2.write(outfile)
-    
+
     # set more Lores as starting Lores
     odds = [True, True, False]
     address = 0x26F564
@@ -5523,6 +5532,10 @@ h   Organize rages by highest level first'''
         create_dimensional_vortex()
     reseed()
 
+    if 'worringtriad' in activated_codes:
+        manage_wor()
+    reseed()
+
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()
     for fs in fsets:
@@ -5581,9 +5594,6 @@ h   Organize rages by highest level first'''
 
     rewrite_title(text="FF6 BC %s" % seed)
     rewrite_checksum()
-	
-    if 'worringtriad' in activated_codes:
-        manage_wor();
 
     print "\nWriting log..."
     for c in sorted(characters, key=lambda c: c.id):

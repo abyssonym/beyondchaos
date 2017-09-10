@@ -373,7 +373,7 @@ def get_spellsets(spells=None):
                           [s for s in elementals if s.elements & 0x80])
     spellsets['Elem'] = ('elemental skill (excluding black magic spells)',
                          [s for s in spells if s.elements and
-                          s.spellid not in spellsets['Black']])
+                          s.spellid not in range(0, 0x18)])
     # Skills that deal non-elemental magic damage - Meteor, Ultima, Crusader...
     # This includes most desperation attacks as well.
     # TODO: also includes Drain, Rasp, Osmose, Empowerer - a bug?

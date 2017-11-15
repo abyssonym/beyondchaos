@@ -5181,7 +5181,8 @@ s   Swap character graphics around.
 p   Randomize the palettes of spells and weapon animations.
 d   Randomize final dungeon.
 a   Organize rages alphabetically (default)
-h   Organize rages by highest level first'''
+h   Organize rages by highest level first
+-   Use all flags EXCEPT the ones listed'''
 
     if len(args) > 2:
         fullseed = args[2].strip()
@@ -5306,8 +5307,16 @@ h   Organize rages by highest level first'''
     if 'airship' in activated_codes:
         event_freespaces = activate_airship_mode(event_freespaces)
 
+    allFlags = 'abcdefghijklmnopqrstuvwxyz'
+    
+    if '-' in flags:
+        newFlags = allFlags
+        for f in flags.strip():
+            newFlags = newFlags.replace(f,"")
+        flags = newFlags
+
     if not flags.strip():
-        flags = 'abcdefghijklmnopqrstuvwxyz'
+        flags = allFlags
 
     if 'w' in flags and 'o' not in flags:
         flags += 'o'

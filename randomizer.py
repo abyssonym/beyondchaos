@@ -4053,8 +4053,9 @@ def manage_ancient():
     for c in characters:
         i = c.id
         cptr = 0x2d7ca0 + 0x15 + (i*22)
-        fi.seek(cptr)
-        level = ord(fi.read(1))
+        fout.flush()
+        fout.seek(cptr)
+        level = ord(fout.read(1))
         level &= 0xF3
         if i >= 14 or "speedcave" in activated_codes and i not in starting:
             level |= 0b1000

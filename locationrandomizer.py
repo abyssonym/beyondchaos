@@ -88,18 +88,16 @@ class NPCBlock():
         self.facing = ord(f.read(1))
         f.close()
 
-    def write_data(self, filename, nextpointer):
-        f = open(filename, 'r+b')
-        f.seek(nextpointer)
+    def write_data(self, fout, nextpointer):
+        fout.seek(nextpointer)
         value = (self.event_addr | (self.palette << 18) | (self.unknown << 21)
                  | (self.membit << 22) | (self.memaddr << 25))
-        write_multi(f, value, length=4)
-        f.write(chr(self.x))
-        f.write(chr(self.y))
-        f.write(chr(self.graphics))
-        f.write(chr(self.graphics_index))
-        f.write(chr(self.facing))
-        f.close()
+        write_multi(fout, value, length=4)
+        fout.write(chr(self.x))
+        fout.write(chr(self.y))
+        fout.write(chr(self.graphics))
+        fout.write(chr(self.graphics_index))
+        fout.write(chr(self.facing))
 
 
 class EventBlock():
@@ -118,13 +116,11 @@ class EventBlock():
         self.event_addr = read_multi(f, length=3)
         f.close()
 
-    def write_data(self, filename, nextpointer):
-        f = open(filename, 'r+b')
-        f.seek(nextpointer)
-        f.write(chr(self.x))
-        f.write(chr(self.y))
-        write_multi(f, self.event_addr, length=3)
-        f.close()
+    def write_data(self, fout, nextpointer):
+        fout.seek(nextpointer)
+        fout.write(chr(self.x))
+        fout.write(chr(self.y))
+        write_multi(fout, self.event_addr, length=3)
 
 
 #256 zones
@@ -196,14 +192,12 @@ class Zone():
                 self.rates &= (0xFF ^ (0x3 << shift))
                 self.rates |= (rate << shift)
 
-    def write_data(self, filename):
-        f = open(filename, 'r+b')
+    def write_data(self, fout):
         # Do not write new set ids... let the locations do that.
-        #f.seek(self.pointer)
-        #f.write("".join(map(chr, self.setids)))
-        f.seek(self.ratepointer)
-        f.write(chr(self.rates))
-        f.close()
+        #fout.seek(self.pointer)
+        #fout.write("".join(map(chr, self.setids)))
+        fout.seek(self.ratepointer)
+        fout.write(chr(self.rates))
 
 
 # 415 locations
@@ -503,11 +497,10 @@ class Location():
             battlebg = mapbattlebgs[locid]
             self._battlebg = (self._battlebg & 0xC0) | battlebg
 
-    def write_data(self, filename):
-        f = open(filename, 'r+b')
+    def write_data(self, fout):
         if self.pointer is None:
             self.pointer = 0x2D8F00 + (33 * self.locid)
-        f.seek(self.pointer)
+        fout.seek(self.pointer)
 
         def write_attributes(*args):
             for attribute in args:
@@ -516,29 +509,27 @@ class Location():
                     attribute = "".join(map(chr, attribute))
                 except TypeError:
                     attribute = chr(attribute)
-                f.write(attribute)
+                fout.write(attribute)
 
         write_attributes("name_id", "layers_to_animate", "_battlebg",
                          "unknown0", "tileproperties", "attacks",
                          "unknown1", "graphic_sets")
 
-        write_multi(f, self.tileformations, length=2, reverse=True)
-        write_multi(f, self.mapdata, length=4, reverse=True)
+        write_multi(fout, self.tileformations, length=2, reverse=True)
+        write_multi(fout, self.mapdata, length=4, reverse=True)
 
         write_attributes(
             "unknown2", "bgshift", "unknown3", "layer12dimensions",
             "unknown4")
 
-        write_multi(f, self.palette_index, length=3)
+        write_multi(fout, self.palette_index, length=3)
 
         write_attributes("music", "unknown5", "width", "height",
                          "layerpriorities")
-        assert f.tell() == self.pointer + 0x21
+        assert fout.tell() == self.pointer + 0x21
 
-        f.seek(0xf5600 + self.locid)
-        f.write(chr(self.setid))
-
-        f.close()
+        fout.seek(0xf5600 + self.locid)
+        fout.write(chr(self.setid))
 
     def copy(self, location):
         attributes = [
@@ -672,25 +663,22 @@ class Location():
             if random.randint(1, 5) >= 4:
                 c.set_new_id()
 
-    def write_chests(self, filename, nextpointer):
-        f = open(filename, 'r+b')
-        f.seek(self.chestpointer)
-        write_multi(f, (nextpointer - 0x2d8634), length=2)
+    def write_chests(self, fout, nextpointer):
+        fout.seek(self.chestpointer)
+        write_multi(fout, (nextpointer - 0x2d8634), length=2)
         for c in self.chests:
             if nextpointer + 5 > 0x2d8e5a:
                 raise Exception("Not enough space for treasure chests.")
-            c.write_data(filename, nextpointer)
+            c.write_data(fout, nextpointer)
             nextpointer += 5
-        f.seek(self.chestpointer + 2)
-        write_multi(f, (nextpointer - 0x2d8634), length=2)
-        f.close()
+        fout.seek(self.chestpointer + 2)
+        write_multi(fout, (nextpointer - 0x2d8634), length=2)
 
         return nextpointer
 
-    def write_npcs(self, filename, nextpointer, ignore_order=False):
-        f = open(filename, 'r+b')
-        f.seek(self.npcpointer)
-        write_multi(f, (nextpointer - 0x41a10), length=2)
+    def write_npcs(self, fout, nextpointer, ignore_order=False):
+        fout.seek(self.npcpointer)
+        write_multi(fout, (nextpointer - 0x41a10), length=2)
         for i in xrange(len(self.npcs)):
             if ignore_order:
                 e = self.npcs[i]
@@ -702,26 +690,23 @@ class Location():
             if nextpointer + 9 >= 0x46AC0:
                 import pdb; pdb.set_trace()
                 raise Exception("Not enough space for npcs.")
-            e.write_data(filename, nextpointer)
+            e.write_data(fout, nextpointer)
             nextpointer += 9
-        f.seek(self.npcpointer + 2)
-        write_multi(f, (nextpointer - 0x41a10), length=2)
-        f.close()
+        fout.seek(self.npcpointer + 2)
+        write_multi(fout, (nextpointer - 0x41a10), length=2)
         return nextpointer
 
-    def write_events(self, filename, nextpointer):
-        f = open(filename, 'r+b')
-        f.seek(self.eventpointer)
-        write_multi(f, (nextpointer - 0x40000), length=2)
+    def write_events(self, fout, nextpointer):
+        fout.seek(self.eventpointer)
+        write_multi(fout, (nextpointer - 0x40000), length=2)
         for e in self.events:
             if nextpointer + 5 >= 0x41a10:
                 import pdb; pdb.set_trace()
                 raise Exception("Not enough space for events.")
-            e.write_data(filename, nextpointer)
+            e.write_data(fout, nextpointer)
             nextpointer += 5
-        f.seek(self.eventpointer + 2)
-        write_multi(f, (nextpointer - 0x40000), length=2)
-        f.close()
+        fout.seek(self.eventpointer + 2)
+        write_multi(fout, (nextpointer - 0x40000), length=2)
         return nextpointer
 
 
@@ -801,17 +786,15 @@ class Entrance():
     def reset_reachable_entrances(self):
         self._entrances = None
 
-    def write_data(self, filename, nextpointer):
+    def write_data(self, fout, nextpointer):
         if nextpointer >= 0x1FDA00:
             raise Exception("Not enough room for entrances.")
-        f = open(filename, 'r+b')
-        f.seek(nextpointer)
-        f.write(chr(self.x))
-        f.write(chr(self.y))
-        write_multi(f, self.dest, length=2)
-        f.write(chr(self.destx))
-        f.write(chr(self.desty))
-        f.close()
+        fout.seek(nextpointer)
+        fout.write(chr(self.x))
+        fout.write(chr(self.y))
+        write_multi(fout, self.dest, length=2)
+        fout.write(chr(self.destx))
+        fout.write(chr(self.desty))
 
     def __repr__(self):
         if hasattr(self, "entid") and self.entid is not None:
@@ -839,18 +822,16 @@ class LongEntrance(Entrance):
         self.desty = ord(f.read(1))
         f.close()
 
-    def write_data(self, filename, nextpointer):
+    def write_data(self, fout, nextpointer):
         if nextpointer >= 0x2DFE00:
             raise Exception("Not enough room for long entrances.")
-        f = open(filename, 'r+b')
-        f.seek(nextpointer)
-        f.write(chr(self.x))
-        f.write(chr(self.y))
-        f.write(chr(self.width))
-        write_multi(f, self.dest, length=2)
-        f.write(chr(self.destx))
-        f.write(chr(self.desty))
-        f.close()
+        fout.seek(nextpointer)
+        fout.write(chr(self.x))
+        fout.write(chr(self.y))
+        fout.write(chr(self.width))
+        write_multi(fout, self.dest, length=2)
+        fout.write(chr(self.destx))
+        fout.write(chr(self.desty))
 
     def copy(self, entrance):
         for attribute in ["x", "y", "dest", "destx", "desty", "width"]:
@@ -904,23 +885,21 @@ class EntranceSet():
 
         self.location.uniqify_entrances()
 
-    def write_data(self, filename, nextpointer, longnextpointer):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        write_multi(f, (nextpointer - 0x1fbb00), length=2)
-        f.seek(self.longpointer)
-        write_multi(f, (longnextpointer - 0x2df480), length=2)
-        f.close()
+    def write_data(self, fout, nextpointer, longnextpointer):
+        fout.seek(self.pointer)
+        write_multi(fout, (nextpointer - 0x1fbb00), length=2)
+        fout.seek(self.longpointer)
+        write_multi(fout, (longnextpointer - 0x2df480), length=2)
         self.location.uniqify_entrances()
         for e in self.entrances:
             if nextpointer + 6 > 0x1fda00:
                 raise Exception("Too many entrance triggers.")
-            e.write_data(filename, nextpointer)
+            e.write_data(fout, nextpointer)
             nextpointer += 6
         for e in self.longentrances:
             if longnextpointer + 7 >= 0x2dfe00:
                 raise Exception("Too many long entrance triggers.")
-            e.write_data(filename, longnextpointer)
+            e.write_data(fout, longnextpointer)
             longnextpointer += 7
         return nextpointer, longnextpointer
 

@@ -28,12 +28,10 @@ class ShopBlock:
         self.items = map(ord, f.read(8))
         f.close()
 
-    def write_data(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        f.write(chr(self.misc))
-        f.write("".join(map(chr, self.items)))
-        f.close()
+    def write_data(self, fout):
+        fout.seek(self.pointer)
+        fout.write(chr(self.misc))
+        fout.write("".join(map(chr, self.items)))
 
     def __repr__(self):
         multiplier = price_multipliers[self.discount]
@@ -78,7 +76,7 @@ class ShopBlock:
                 self.misc &= 0x0F
                 break
 
-    def mutate_items(self, filename):
+    def mutate_items(self, fout):
         items = get_ranked_items()
         if self.shoptype == 1:
             valid_items = [c for c in items if c.is_weapon or c.is_tool]
@@ -146,7 +144,7 @@ class ShopBlock:
                     i.price = i.price * 10
                     zerocount += -1
 
-                i.write_stats(filename)
+                i.write_stats(fout)
 
         self.items = [i.itemid for i in new_items]
         self.items = sorted(set(self.items))

@@ -194,27 +194,25 @@ class ItemBlock:
         self.dataname = name
         self.ban()
 
-    def write_stats(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        f.write(chr(self.itemtype))
+    def write_stats(self, fout):
+        fout.seek(self.pointer)
+        fout.write(chr(self.itemtype))
 
         self.confirm_heavy()
-        write_multi(f, self.equippable, length=2)
+        write_multi(fout, self.equippable, length=2)
 
         s = "".join(map(chr, [self.features[key] for key in ITEM_STATS]))
-        f.write(s)
+        fout.write(s)
 
-        write_multi(f, self.price, length=2)
+        write_multi(fout, self.price, length=2)
 
         if self.is_weapon:
-            f.seek(0x2CE408 + (8*self.itemid))
-            f.write("".join(map(chr, self.weapon_animation)))
+            fout.seek(0x2CE408 + (8*self.itemid))
+            fout.write("".join(map(chr, self.weapon_animation)))
 
-        f.seek(0x12B300 + (13*self.itemid))
-        f.write("".join(map(chr, self.dataname)))
+        fout.seek(0x12B300 + (13*self.itemid))
+        fout.write("".join(map(chr, self.dataname)))
 
-        f.close()
 
     def confirm_heavy(self):
         if self.heavy and self.equippable:
@@ -712,15 +710,14 @@ sperelic2 = {0x04: (0x3619C, 0x361A1),
 invalid_commands = [0x00, 0x04, 0x14, 0x15, 0x19, 0xFF]
 
 
-def reset_cursed_shield(filename):
+def reset_cursed_shield(fout):
     cursed = get_item(0x66)
     cursed.equippable = cursed.equippable & 0x0FFF
-    cursed.write_stats(filename)
+    cursed.write_stats(fout)
 
 
-def reset_special_relics(items, characters, filename):
+def reset_special_relics(items, characters, fout):
     global changed_commands
-    f = open(filename, 'r+b')
     characters = [c for c in characters if c.id < 14]
     changedict = {}
     loglist = []
@@ -786,10 +783,10 @@ def reset_special_relics(items, characters, filename):
 
             for ptrdict in [sperelic, sperelic2]:
                 beforeptr, afterptr = ptrdict[flag]
-                f.seek(beforeptr)
-                f.write(chr(before))
-                f.seek(afterptr)
-                f.write(chr(after))
+                fout.seek(beforeptr)
+                fout.write(chr(before))
+                fout.seek(afterptr)
+                fout.write(chr(after))
             break
         changedict[flag] = (before, after)
 
@@ -811,20 +808,19 @@ def reset_special_relics(items, characters, filename):
                 for t in tempchars:
                     item.equippable |= (1 << t.id)
 
-                item.write_stats(filename)
+                item.write_stats(fout)
                 loglist.append((item.name, before, after))
 
-    f.close()
     return loglist
 
 
-def reset_rage_blizzard(items, umaro_risk, filename):
+def reset_rage_blizzard(items, umaro_risk, fout):
     for item in items:
         if item.itemid not in [0xC5, 0xC6]:
             continue
 
         item.equippable = 1 << (umaro_risk.id)
-        item.write_stats(filename)
+        item.write_stats(fout)
 
 
 def items_from_table(tablefile):

@@ -209,26 +209,23 @@ class Formation():
         if value == 15:
             self.set_music(6)
 
-    def write_data(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        f.write(chr(self.mouldbyte))
-        f.write(chr(self.enemies_present))
-        f.write("".join(map(chr, self.enemy_ids)))
-        f.write("".join(map(chr, self.enemy_pos)))
-        f.write(chr(self.bosses))
+    def write_data(self, fout):
+        fout.seek(self.pointer)
+        fout.write(chr(self.mouldbyte))
+        fout.write(chr(self.enemies_present))
+        fout.write("".join(map(chr, self.enemy_ids)))
+        fout.write("".join(map(chr, self.enemy_pos)))
+        fout.write(chr(self.bosses))
 
-        f.seek(self.auxpointer)
-        f.write(chr(self.misc1))
-        f.write(chr(self.misc2))
-        f.write(chr(self.eventscript))
-        f.write(chr(self.misc3))
+        fout.seek(self.auxpointer)
+        fout.write(chr(self.misc1))
+        fout.write(chr(self.misc2))
+        fout.write(chr(self.eventscript))
+        fout.write(chr(self.misc3))
 
         if self.ap is not None:
-            f.seek(0x1fb400 + self.formid)
-            f.write(chr(self.ap))
-
-        f.close()
+            fout.seek(0x1fb400 + self.formid)
+            fout.write(chr(self.ap))
 
     def lookup_enemies(self):
         self.enemies = []
@@ -380,16 +377,15 @@ class FormationSet():
             self.sixteen_pack = False
         f.close()
 
-    def write_data(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
+
+    def write_data(self, fout):
+        fout.seek(self.pointer)
         for value in self.formids:
             if self.sixteen_pack:
                 value |= 0x8000
             else:
                 value &= 0x7FFF
-            write_multi(f, value, length=2)
-        f.close()
+            write_multi(fout, value, length=2)
 
     def remove_redundant_formation(self, fsets, replacement=None,
                                    check_only=False):

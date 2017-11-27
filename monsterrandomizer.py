@@ -505,18 +505,16 @@ class MonsterBlock:
         assert self.stats['level'] <= level <= limit
         self.stats['level'] = level
 
-    def randomize_special_effect(self, filename):
+    def randomize_special_effect(self, fout):
         attackpointer = 0xFD0D0 + (self.id * 10)
-        f = open(filename, 'r+b')
-        f.seek(attackpointer)
+        fout.seek(attackpointer)
         attack = generate_attack()
         self.attackname = attack
         attack = name_to_bytes(attack, 10)
-        f.write("".join(map(chr, attack)))
+        fout.write("".join(map(chr, attack)))
 
-        f.seek(self.specialeffectpointer)
-        f.write(chr(random.randint(0, 0x21)))
-        f.close()
+        fout.seek(self.specialeffectpointer)
+        fout.write(chr(random.randint(0, 0x21)))
 
         options = sorted(set(range(0, 0x5A)) - set([0, 0x1C]))
         self.attackanimation = random.choice(options)
@@ -854,20 +852,18 @@ class MonsterBlock:
     def aiscriptsize(self):
         return len("".join(self.aiscript))
 
-    def write_ai(self, filename):
+    def write_ai(self, fout):
         for (i, action) in enumerate(self.aiscript):
             if (len(action) == 4 and action[0] == chr(0xf0) and
                     action[1] == chr(0x55)):
                 # fix Cyan's AI at imperial camp
                 action = "".join(map(chr, [0xF0, 0xEE, 0xEE, 0xEE]))
                 self.aiscript[i] = action
-        f = open(filename, 'r+b')
-        f.seek(self.aiptr)
-        write_multi(f, self.ai, length=2)
+        fout.seek(self.aiptr)
+        write_multi(fout, self.ai, length=2)
         pointer = self.ai + 0xF8700
-        f.seek(pointer)
-        f.write("".join(self.aiscript))
-        f.close()
+        fout.seek(pointer)
+        fout.write("".join(self.aiscript))
 
     @property
     def humanoid(self):
@@ -936,53 +932,51 @@ class MonsterBlock:
         if self.floating != other.floating:
             self.statuses[2] ^= 0x1
 
-    def write_stats(self, filename):
+    def write_stats(self, fout):
         self.set_minimum_mp()
 
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
+        fout.seek(self.pointer)
         for key in stat_order:
-            f.write(chr(self.stats[key]))
-        write_multi(f, self.stats['hp'], length=2)
-        write_multi(f, self.stats['mp'], length=2)
-        write_multi(f, self.stats['xp'], length=2)
-        write_multi(f, self.stats['gp'], length=2)
-        f.write(chr(self.stats['level']))
+            fout.write(chr(self.stats[key]))
+        write_multi(fout, self.stats['hp'], length=2)
+        write_multi(fout, self.stats['mp'], length=2)
+        write_multi(fout, self.stats['xp'], length=2)
+        write_multi(fout, self.stats['gp'], length=2)
+        fout.write(chr(self.stats['level']))
 
-        f.write(chr(self.morph))
-        f.write(chr(self.misc1))
-        f.write(chr(self.misc2))
+        fout.write(chr(self.morph))
+        fout.write(chr(self.misc1))
+        fout.write(chr(self.misc2))
 
-        f.seek(self.pointer + 20)
+        fout.seek(self.pointer + 20)
         for i in self.immunities:
-            f.write(chr(i))
-        f.write(chr(self.absorb))
-        f.write(chr(self.null))
-        f.write(chr(self.weakness))
+            fout.write(chr(i))
+        fout.write(chr(self.absorb))
+        fout.write(chr(self.null))
+        fout.write(chr(self.weakness))
 
-        f.seek(self.pointer + 26)
-        f.write(chr(self.attackanimation))
+        fout.seek(self.pointer + 26)
+        fout.write(chr(self.attackanimation))
 
-        f.seek(self.pointer + 27)
+        fout.seek(self.pointer + 27)
         for s in self.statuses:
-            f.write(chr(s))
-        f.write(chr(self.special))
+            fout.write(chr(s))
+        fout.write(chr(self.special))
 
-        f.seek(self.itemptr)
-        f.write(''.join(map(chr, self.items)))
+        fout.seek(self.itemptr)
+        fout.write(''.join(map(chr, self.items)))
 
-        f.seek(self.controlptr)
-        f.write(''.join(map(chr, self.controls)))
+        fout.seek(self.controlptr)
+        fout.write(''.join(map(chr, self.controls)))
 
-        f.seek(self.sketchptr)
-        f.write(''.join(map(chr, self.sketches)))
+        fout.seek(self.sketchptr)
+        fout.write(''.join(map(chr, self.sketches)))
 
         if not self.is_boss:
-            f.seek(self.rageptr)
-            f.write(''.join(map(chr, self.rages)))
+            fout.seek(self.rageptr)
+            fout.write(''.join(map(chr, self.rages)))
 
-        f.close()
-        self.write_ai(filename)
+        self.write_ai(fout)
 
     def screw_tutorial_bosses(self):
         name = self.name.lower().strip('_')
@@ -1782,7 +1776,7 @@ class MonsterGraphicBlock:
         palette = (palette_pointer - 0x127820) / 0x10
         self.palette = palette
 
-    def write_data(self, filename, palette_pointer=None, no_palette=False):
+    def write_data(self, fout, palette_pointer=None, no_palette=False):
         if palette_pointer is None:
             palette_pointer = self.palette_pointer
             palette = self.palette
@@ -1798,21 +1792,18 @@ class MonsterGraphicBlock:
         if palette_pointer > 0x12a800:
             raise Exception("Palette pointer out of bounds.")
 
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        write_multi(f, self.graphics, length=2)
-        f.seek(self.pointer+2)
-        write_multi(f, palette, length=2, reverse=False)
-        f.seek(self.pointer+4)
-        f.write(chr(self.size_template))
+        fout.seek(self.pointer)
+        write_multi(fout, self.graphics, length=2)
+        fout.seek(self.pointer+2)
+        write_multi(fout, palette, length=2, reverse=False)
+        fout.seek(self.pointer+4)
+        fout.write(chr(self.size_template))
         if no_palette:
-            f.close()
             return
 
-        f.seek(palette_pointer)
+        fout.seek(palette_pointer)
         for color in self.palette_data:
-            write_multi(f, color, length=2)
-        f.close()
+            write_multi(fout, color, length=2)
 
     def mutate_palette(self, alternatives=None):
         transformer = get_palette_transformer(basepalette=self.palette_data)
@@ -1829,11 +1820,9 @@ class MetamorphBlock:
         self.items = map(ord, f.read(4))
         f.close()
 
-    def write_data(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
-        f.write("".join(map(chr, self.items)))
-        f.close()
+    def write_data(self, fout):
+        fout.seek(self.pointer)
+        fout.write("".join(map(chr, self.items)))
 
     def mutate_items(self):
         for i in xrange(4):

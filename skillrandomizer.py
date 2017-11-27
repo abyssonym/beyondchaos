@@ -131,12 +131,10 @@ class SpellBlock:
     def is_slots(self):
         return self.spellid in xrange(0x7D, 0x83)
 
-    def fix_reflect(self, filename):
+    def fix_reflect(self, fout):
         self.dmgtype |= 0x02
-        f = open(filename, 'r+b')
-        f.seek(self.pointer+3)
-        f.write(chr(self.dmgtype))
-        f.close()
+        fout.seek(self.pointer+3)
+        fout.write(chr(self.dmgtype))
 
     def rank(self):
         if self.power >= 1 and not self.percentage and not self.draining:
@@ -244,66 +242,57 @@ class CommandBlock:
         self.targeting = ord(f.read(1))
         f.close()
 
-    def write_properties(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.proppointer)
-        f.write(chr(self.properties))
-        f.write(chr(self.targeting))
-        f.close()
+    def write_properties(self, fout):
+        fout.seek(self.proppointer)
+        fout.write(chr(self.properties))
+        fout.write(chr(self.targeting))
 
-    def setpointer(self, value, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
+    def setpointer(self, value, fout):
+        fout.seek(self.pointer)
         bytestring = "".join(map(chr, int2bytes(value, length=2)))
-        f.write(bytestring)
-        f.close()
+        fout.write(bytestring)
 
-    def unsetmenu(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.menu)
+    def unsetmenu(self, fout):
+        fout.seek(self.menu)
         bytestring = "".join(map(chr, [0x95, 0x77]))
-        f.write(bytestring)
-        f.close()
+        fout.write(bytestring)
 
-    def newname(self, text, filename):
+    def newname(self, text, fout):
         text = text.strip().replace(' ', '')
         text = text[:7]
         self.name = text
         text = name_to_bytes(text, 7)
 
-        f = open(filename, 'r+b')
-        f.seek(self.textptr)
-        f.write("".join(map(chr, text)))
-        f.close()
+        fout.seek(self.textptr)
+        fout.write("".join(map(chr, text)))
 
-    def set_bit(self, pointer, filename, unset=False):
+    def set_bit(self, pointer, fout, unset=False):
         bit = self.id % 8
         byte = 1 << bit
         offset = self.id / 8
-        f = open(filename, 'r+b')
-        f.seek(pointer + offset)
-        old = ord(f.read(1))
+        fout.seek(pointer + offset)
+        old = ord(fout.read(1))
         if unset:
             byte = old & (0xFF ^ byte)
         else:
             byte = old | byte
-        f.seek(pointer + offset)
-        f.write(chr(byte))
+        fout.seek(pointer + offset)
+        fout.write(chr(byte))
 
-    def unset_retarget(self, filename):
-        self.set_bit(0x24E46, filename, unset=True)
+    def unset_retarget(self, fout):
+        self.set_bit(0x24E46, fout, unset=True)
 
-    def set_retarget(self, filename):
-        self.set_bit(0x24E46, filename)
+    def set_retarget(self, fout):
+        self.set_bit(0x24E46, fout)
 
-    def allow_while_confused(self, filename):
-        self.set_bit(0x204D0, filename)
+    def allow_while_confused(self, fout):
+        self.set_bit(0x204D0, fout)
 
-    def allow_while_berserk(self, filename):
-        self.set_bit(0x204D4, filename)
+    def allow_while_berserk(self, fout):
+        self.set_bit(0x204D4, fout)
 
-    def disallow_while_berserk(self, filename):
-        self.set_bit(0x204D4, filename, unset=True)
+    def disallow_while_berserk(self, fout):
+        self.set_bit(0x204D4, fout, unset=True)
 
 
 def get_ranked_spells(filename=None, magic_only=False):
@@ -490,8 +479,8 @@ class RandomSpellSub(Substitution):
             raise Exception("Bad pointer calculation.")
         self.bytestring += sorted([s.spellid for s in self.spells])
 
-    def write(self, filename):
-        super(RandomSpellSub, self).write(filename)
+    def write(self, fout):
+        super(RandomSpellSub, self).write(fout)
 
     def set_spells(self, valid_spells, spellsets=None, spellclass=None):
         spellsets = spellsets or get_spellsets(spells=valid_spells)

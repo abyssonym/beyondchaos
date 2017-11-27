@@ -96,17 +96,15 @@ class EsperBlock:
         self.bonus = ord(f.read(1))
         f.close()
 
-    def write_data(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
+    def write_data(self, fout):
+        fout.seek(self.pointer)
         for learnrate, spell in zip(self.learnrates, self.spells):
-            f.write(chr(learnrate))
-            f.write(chr(spell.spellid))
+            fout.write(chr(learnrate))
+            fout.write(chr(spell.spellid))
         for i in xrange(5 - len(self.spells)):
-            f.write(chr(0x0))
-            f.write(chr(0xFF))
-        f.write(chr(self.bonus))
-        f.close()
+            fout.write(chr(0x0))
+            fout.write(chr(0xFF))
+        fout.write(chr(self.bonus))
 
     def get_candidates(self, rank, set_lower=True):
         candidates = get_candidates(rank, set_lower=set_lower)

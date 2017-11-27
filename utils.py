@@ -57,12 +57,10 @@ class Substitution(object):
     def set_location(self, location):
         self.location = location
 
-    def write(self, filename):
-        f = open(filename, 'r+b')
+    def write(self, fout):
         bs = "".join(map(chr, self.bytestring))
-        f.seek(self.location)
-        f.write(bs)
-        f.close()
+        fout.seek(self.location)
+        fout.write(bs)
 
 
 texttable = {}

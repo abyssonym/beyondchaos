@@ -45,6 +45,7 @@ TEST_FILE = "program.rom"
 seed, flags = None, None
 seedcounter = 1
 sourcefile, outfile = None, None
+fout = None
 
 
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
@@ -174,15 +175,13 @@ def reseed():
 
 
 def rewrite_title(text):
-    f = open(outfile, 'r+b')
     while len(text) < 20:
         text += ' '
     text = text[:20]
-    f.seek(0xFFC0)
-    f.write(text)
-    f.seek(0xFFDB)
-    f.write(chr(int(VERSION)))
-    f.close()
+    fout.seek(0xFFC0)
+    fout.write(text)
+    fout.seek(0xFFDB)
+    fout.write(chr(int(VERSION)))
 
 
 def rewrite_checksum(filename=None):
@@ -392,26 +391,21 @@ class CharacterBlock:
         if self.id == 12:
             self.battle_commands[0] = 0x12
 
-    def write_battle_commands(self, filename):
-        f = open(filename, 'r+b')
+    def write_battle_commands(self, fout):
         for i, command in enumerate(self.battle_commands):
             if command is None:
                 if i == 0:
                     command = 0
                 else:
                     continue
-            f.seek(self.address + 2 + i)
-            f.write(chr(command))
-        f.close()
+            fout.seek(self.address + 2 + i)
+            fout.write(chr(command))
 
-    def write_default_equipment(self, filename, equipid, equiptype):
-        f = open(filename, 'r+b')
-        f.seek(self.address + equip_offsets[equiptype])
-        f.write(chr(equipid))
-        f.close()
+    def write_default_equipment(self, fout, equipid, equiptype):
+        fout.seek(self.address + equip_offsets[equiptype])
+        fout.write(chr(equipid))
 
-    def mutate_stats(self, filename, read_only=False):
-        f = open(filename, 'r+b')
+    def mutate_stats(self, fout, read_only=False):
 
         def mutation(base):
             while True:
@@ -433,31 +427,27 @@ class CharacterBlock:
             return value
 
         self.stats = {}
-        f.seek(self.address)
-        hpmp = map(ord, f.read(2))
+        fout.seek(self.address)
+        hpmp = map(ord, fout.read(2))
         if not read_only:
             hpmp = map(lambda v: mutation(v), hpmp)
-            f.seek(self.address)
-            f.write("".join(map(chr, hpmp)))
+            fout.seek(self.address)
+            fout.write("".join(map(chr, hpmp)))
         self.stats['hp'], self.stats['mp'] = tuple(hpmp)
 
-        f.seek(self.address + 6)
-        stats = map(ord, f.read(9))
+        fout.seek(self.address + 6)
+        stats = map(ord, fout.read(9))
         if not read_only:
             stats = map(lambda v: mutation(v), stats)
-            f.seek(self.address + 6)
-            f.write("".join(map(chr, stats)))
+            fout.seek(self.address + 6)
+            fout.write("".join(map(chr, stats)))
         for name, value in zip(CHARSTATNAMES[2:], stats):
             self.stats[name] = value
 
-        f.close()
-
-    def become_invincible(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.address + 11)
+    def become_invincible(self, fout):
+        fout.seek(self.address + 11)
         stats = [0xFF, 0xFF, 0x80, 0x80]
-        f.write("".join(map(chr, stats)))
-        f.close()
+        fout.write("".join(map(chr, stats)))
 
     def set_id(self, i):
         self.id = i
@@ -488,13 +478,11 @@ class WindowBlock():
             self.palette.append((red, green, blue))
         f.close()
 
-    def write_data(self, filename):
-        f = open(filename, 'r+b')
-        f.seek(self.pointer)
+    def write_data(self, fout):
+        fout.seek(self.pointer)
         for (red, green, blue) in self.palette:
             color = (blue << 10) | (green << 5) | red
-            write_multi(f, color, length=2)
-        f.close()
+            write_multi(fout, color, length=2)
 
     def mutate(self):
         def cluster_colors(colors):
@@ -603,13 +591,12 @@ def get_espers():
     return get_espers()
 
 
-def randomize_colosseum(filename, pointer):
+def randomize_colosseum(filename, fout, pointer):
     item_objs = get_ranked_items(filename)
     monster_objs = get_ranked_monsters(filename, bosses=False)
     items = [i.itemid for i in item_objs]
     monsters = [m.id for m in monster_objs]
     results = []
-    f = open(filename, 'r+b')
     for i in range(0xFF):
         try:
             index = items.index(i)
@@ -632,31 +619,31 @@ def randomize_colosseum(filename, pointer):
         wager_obj = [j for j in item_objs if j.itemid == i][0]
         opponent_obj = [m for m in monster_objs if m.id == opponent][0]
         win_obj = [j for j in item_objs if j.itemid == trade][0]
-        f.seek(pointer + (i*4))
-        f.write(chr(opponent))
-        f.seek(pointer + (i*4) + 2)
-        f.write(chr(trade))
+        fout.seek(pointer + (i*4))
+        fout.write(chr(opponent))
+        fout.seek(pointer + (i*4) + 2)
+        fout.write(chr(trade))
 
         if abs(wager_obj.rank() - win_obj.rank()) >= 5000 and random.randint(1, 2) == 2:
             hidden = True
-            f.write(chr(0xFF))
+            fout.write(chr(0xFF))
         else:
             hidden = False
-            f.write(chr(0x00))
+            fout.write(chr(0x00))
         results.append((wager_obj, opponent_obj, win_obj, hidden))
 
-    f.close()
+
     results = sorted(results, key=lambda (a, b, c, d): a.name)
 
     coliseum_run_sub = Substitution()
     coliseum_run_sub.bytestring = [0xEA] * 2
     coliseum_run_sub.set_location(0x25BEF)
-    coliseum_run_sub.write(outfile)
+    coliseum_run_sub.write(fout)
 
     return results
 
 
-def randomize_slots(filename, pointer):
+def randomize_slots(filename, fout, pointer):
     spells = get_ranked_spells(filename)
     spells = [s for s in spells if s.spellid >= 0x36]
     attackspells = [s for s in spells if s.target_enemy_default]
@@ -689,7 +676,6 @@ def randomize_slots(filename, pointer):
         return spell
 
     used = []
-    f = open(filename, 'r+b')
     for i in xrange(1, 8):
         while True:
             spell = get_slots_spell(i)
@@ -697,9 +683,8 @@ def randomize_slots(filename, pointer):
                 break
         if spell:
             used.append(spell.spellid)
-            f.seek(pointer+i)
-            f.write(chr(spell.spellid))
-    f.close()
+            fout.seek(pointer+i)
+            fout.write(chr(spell.spellid))
 
 
 def manage_commands(commands):
@@ -707,27 +692,27 @@ def manage_commands(commands):
 
     alrs = AutoLearnRageSub(require_gau=False)
     alrs.set_location(0x23b73)
-    alrs.write(outfile)
+    alrs.write(fout)
 
     args = AutoRecruitGauSub()
     args.set_location(0xcfe1a)
-    args.write(outfile)
+    args.write(fout)
 
     recruit_gau_sub = Substitution()
     recruit_gau_sub.bytestring = [0x89, 0xFF]
     recruit_gau_sub.set_location(0x24856)
-    recruit_gau_sub.write(outfile)
+    recruit_gau_sub.write(fout)
 
     learn_lore_sub = Substitution()
     learn_lore_sub.bytestring = [0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00,
                                  0x00]
     learn_lore_sub.set_location(0x236E4)
-    learn_lore_sub.write(outfile)
+    learn_lore_sub.write(fout)
 
     learn_dance_sub = Substitution()
     learn_dance_sub.bytestring = [0xEA] * 2
     learn_dance_sub.set_location(0x25EE8)
-    learn_dance_sub.write(outfile)
+    learn_dance_sub.write(fout)
 
     learn_swdtech_sub = Substitution()
     learn_swdtech_sub.bytestring = [0xEB,       # XBA
@@ -735,81 +720,81 @@ def manage_commands(commands):
                                     0xEB,       # XBA
                                     0xEA]
     learn_swdtech_sub.set_location(0x261C7)
-    learn_swdtech_sub.write(outfile)
+    learn_swdtech_sub.write(fout)
     learn_swdtech_sub.bytestring = [0x4C, 0xDA, 0xA1, 0x60]
     learn_swdtech_sub.set_location(0xA18A)
-    learn_swdtech_sub.write(outfile)
+    learn_swdtech_sub.write(fout)
 
     learn_blitz_sub = Substitution()
     learn_blitz_sub.bytestring = [0xF0, 0x09]
     learn_blitz_sub.set_location(0x261CE)
-    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.write(fout)
     learn_blitz_sub.bytestring = [0xD0, 0x04]
     learn_blitz_sub.set_location(0x261D3)
-    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.write(fout)
     learn_blitz_sub.bytestring = [0x68,       # PLA
                                   0xEB,       # XBA
                                   0xEA, 0xEA, 0xEA, 0xEA, 0xEA]
     learn_blitz_sub.set_location(0x261D9)
-    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.write(fout)
     learn_blitz_sub.bytestring = [0xEA] * 4
     learn_blitz_sub.set_location(0x261E3)
-    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.write(fout)
     learn_blitz_sub.bytestring = [0xEA]
     learn_blitz_sub.set_location(0xA200)
-    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.write(fout)
 
     learn_multiple_sub = Substitution()
     learn_multiple_sub.set_location(0xA1B4)
     reljump = 0xFE - (learn_multiple_sub.location - 0xA186)
     learn_multiple_sub.bytestring = [0xF0, reljump]
-    learn_multiple_sub.write(outfile)
+    learn_multiple_sub.write(fout)
 
     learn_multiple_sub.set_location(0xA1D6)
     reljump = 0xFE - (learn_multiple_sub.location - 0xA18A)
     learn_multiple_sub.bytestring = [0xF0, reljump]
-    learn_multiple_sub.write(outfile)
+    learn_multiple_sub.write(fout)
 
     learn_multiple_sub.set_location(0x261DD)
     learn_multiple_sub.bytestring = [0xEA] * 3
-    learn_multiple_sub.write(outfile)
+    learn_multiple_sub.write(fout)
 
     rage_blank_sub = Substitution()
     rage_blank_sub.bytestring = [0x01] + ([0x00] * 31)
     rage_blank_sub.set_location(0x47AA0)
-    rage_blank_sub.write(outfile)
+    rage_blank_sub.write(fout)
 
     eems = EnableEsperMagicSub()
     eems.set_location(0x3F091)
-    eems.write(outfile)
+    eems.write(fout)
 
     # Prevent Runic, SwdTech, and Capture from being disabled/altered
     protect_battle_commands_sub = Substitution()
     protect_battle_commands_sub.bytestring = [0x03, 0xFF, 0xFF, 0x0C,
                                               0x17, 0x02, 0xFF, 0x00]
     protect_battle_commands_sub.set_location(0x252E9)
-    protect_battle_commands_sub.write(outfile)
+    protect_battle_commands_sub.write(fout)
 
     enable_morph_sub = Substitution()
     enable_morph_sub.bytestring = [0xEA] * 2
     enable_morph_sub.set_location(0x25410)
-    enable_morph_sub.write(outfile)
+    enable_morph_sub.write(fout)
 
     enable_mpoint_sub = Substitution()
     enable_mpoint_sub.bytestring = [0xEA] * 2
     enable_mpoint_sub.set_location(0x25E38)
-    enable_mpoint_sub.write(outfile)
+    enable_mpoint_sub.write(fout)
 
     ungray_statscreen_sub = Substitution()
     ungray_statscreen_sub.bytestring = [0x20, 0x6F, 0x61, 0x30, 0x26, 0xEA,
                                         0xEA, 0xEA]
     ungray_statscreen_sub.set_location(0x35EE1)
-    ungray_statscreen_sub.write(outfile)
+    ungray_statscreen_sub.write(fout)
 
     fanatics_fix_sub = Substitution()
     fanatics_fix_sub.bytestring = [0xA9, 0x15]
     fanatics_fix_sub.set_location(0x2537E)
-    fanatics_fix_sub.write(outfile)
+    fanatics_fix_sub.write(fout)
 
     invalid_commands = ["fight", "item", "magic", "xmagic",
                         "def", "row", "summon", "revert"]
@@ -838,7 +823,7 @@ def manage_commands(commands):
             c.set_battle_command(1, command_id=0xFF)
             c.set_battle_command(2, command_id=0xFF)
             c.set_battle_command(3, command_id=1)
-            c.write_battle_commands(outfile)
+            c.write_battle_commands(fout)
             continue
 
         if c.id <= 11:
@@ -864,17 +849,17 @@ def manage_commands(commands):
                         morph_char_sub = Substitution()
                         morph_char_sub.bytestring = [0xC9, c.id]
                         morph_char_sub.set_location(0x25E32)
-                        morph_char_sub.write(outfile)
+                        morph_char_sub.write(fout)
             for i, command in enumerate(reversed(using)):
                 c.set_battle_command(i+1, command=command)
         else:
             c.set_battle_command(1, command_id=0xFF)
             c.set_battle_command(2, command_id=0xFF)
-        c.write_battle_commands(outfile)
+        c.write_battle_commands(fout)
 
     magitek_skills = [SpellBlock(i, sourcefile) for i in xrange(0x83, 0x8B)]
     for ms in magitek_skills:
-        ms.fix_reflect(outfile)
+        ms.fix_reflect(fout)
 
     return commands
 
@@ -902,7 +887,7 @@ def manage_tempchar_commands():
         chardict[i].set_battle_command(1, command_id=a)
         chardict[i].set_battle_command(2, command_id=b)
         chardict[i].set_battle_command(3, command_id=0x1)
-        chardict[i].write_battle_commands(outfile)
+        chardict[i].write_battle_commands(fout)
 
     for i in range(0xE, 0x1C):
         c = chardict[i]
@@ -910,7 +895,7 @@ def manage_tempchar_commands():
             c.set_battle_command(1, command_id=c.battle_commands[2])
         if c.battle_commands[1] == c.battle_commands[2]:
             c.set_battle_command(2, command_id=0xFF)
-        c.write_battle_commands(outfile)
+        c.write_battle_commands(fout)
 
 
 def manage_commands_new(commands):
@@ -1002,8 +987,8 @@ def manage_commands_new(commands):
                 c.properties = 3
                 if sb.spellid in [0x23, 0xA3]:
                     c.properties |= 0x4  # enable while imped
-                c.unset_retarget(outfile)
-                c.write_properties(outfile)
+                c.unset_retarget(fout)
+                c.write_properties(fout)
 
                 if "endless9" in activated_codes:
                     scount = 10
@@ -1020,7 +1005,7 @@ def manage_commands_new(commands):
                 newname = sb.name
             elif random_skill:
                 c.properties = 3
-                c.set_retarget(outfile)
+                c.set_retarget(fout)
                 valid_spells = [v for v in all_spells if
                                 v.spellid <= 0xED and v.valid]
 
@@ -1060,7 +1045,7 @@ def manage_commands_new(commands):
                     if all([spell.target_enemy_default for spell in s.spells]):
                         c.targeting = 0x6e
 
-                c.write_properties(outfile)
+                c.write_properties(fout)
                 newname = s.name
             break
 
@@ -1068,8 +1053,8 @@ def manage_commands_new(commands):
         s.set_location(myfs.start)
         if not hasattr(s, "bytestring") or not s.bytestring:
             s.generate_bytestring()
-        s.write(outfile)
-        c.setpointer(s.location, outfile)
+        s.write(fout)
+        c.setpointer(s.location, fout)
         freespaces = determine_new_freespaces(freespaces, myfs, s.size)
 
         if len(newname) > 7:
@@ -1085,13 +1070,13 @@ def manage_commands_new(commands):
                 newname = "W-%s" % newname
             else:
                 newname = "%sx%s" % (s.count, newname)
-        c.newname(newname, outfile)
-        c.unsetmenu(outfile)
-        c.allow_while_confused(outfile)
+        c.newname(newname, fout)
+        c.unsetmenu(fout)
+        c.allow_while_confused(fout)
         if "playsitself" in activated_codes:
-            c.allow_while_berserk(outfile)
+            c.allow_while_berserk(fout)
         else:
-            c.disallow_while_berserk(outfile)
+            c.disallow_while_berserk(fout)
 
         command_descr = "{0}\n-------\n{1}".format(c.name, str(s))
         log(command_descr, 'commands')
@@ -1099,12 +1084,12 @@ def manage_commands_new(commands):
     gogo_enable_all_sub = Substitution()
     gogo_enable_all_sub.bytestring = [0xEA] * 2
     gogo_enable_all_sub.set_location(0x35E58)
-    gogo_enable_all_sub.write(outfile)
+    gogo_enable_all_sub.write(fout)
 
     cyan_ai_sub = Substitution()
     cyan_ai_sub.bytestring = [0xF0, 0xEE, 0xEE, 0xEE, 0xFF]
     cyan_ai_sub.set_location(0xFBE85)
-    cyan_ai_sub.write(outfile)
+    cyan_ai_sub.write(fout)
 
     return commands, freespaces
 
@@ -1119,11 +1104,11 @@ def manage_suplex(commands, monsters):
     s = SpellSub(spellid=0x5F)
     sb = SpellBlock(0x5F, sourcefile)
     s.set_location(myfs.start)
-    s.write(outfile)
+    s.write(fout)
     c.targeting = sb.targeting
-    c.setpointer(s.location, outfile)
-    c.newname(sb.name, outfile)
-    c.unsetmenu(outfile)
+    c.setpointer(s.location, fout)
+    c.newname(sb.name, fout)
+    c.unsetmenu(fout)
     fss = myfs.unfree(s.location, s.size)
     freespaces.extend(fss)
     for c in characters:
@@ -1131,19 +1116,19 @@ def manage_suplex(commands, monsters):
         c.set_battle_command(1, command_id=5)
         c.set_battle_command(2, command_id=0xA)
         c.set_battle_command(3, command_id=1)
-        c.write_battle_commands(outfile)
+        c.write_battle_commands(fout)
 
     for m in monsters:
         m.misc2 &= 0xFB
-        m.write_stats(outfile)
+        m.write_stats(fout)
 
     learn_blitz_sub = Substitution()
     learn_blitz_sub.bytestring = [0xEA] * 2
     learn_blitz_sub.set_location(0x261E5)
-    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.write(fout)
     learn_blitz_sub.bytestring = [0xEA] * 4
     learn_blitz_sub.set_location(0xA18E)
-    learn_blitz_sub.write(outfile)
+    learn_blitz_sub.write(fout)
 
 
 def manage_natural_magic():
@@ -1157,32 +1142,31 @@ def manage_natural_magic():
     natmag_learn_sub = Substitution()
     natmag_learn_sub.bytestring = [0xC9, candidates[0].id]
     natmag_learn_sub.set_location(0x261B9)
-    natmag_learn_sub.write(outfile)
+    natmag_learn_sub.write(fout)
     natmag_learn_sub.set_location(0xA182)
-    natmag_learn_sub.write(outfile)
+    natmag_learn_sub.write(fout)
     address = 0x1A6E + (54 * candidates[0].id)
     natmag_learn_sub.bytestring = [0x99, address & 0xFF, address >> 8]
     natmag_learn_sub.set_location(0xA1AB)
-    natmag_learn_sub.write(outfile)
+    natmag_learn_sub.write(fout)
 
     natmag_learn_sub.bytestring = [0xC9, candidates[1].id]
     natmag_learn_sub.set_location(0x261C0)
-    natmag_learn_sub.write(outfile)
+    natmag_learn_sub.write(fout)
     natmag_learn_sub.set_location(0xA186)
-    natmag_learn_sub.write(outfile)
+    natmag_learn_sub.write(fout)
     address = 0x1A6E + (54 * candidates[1].id)
     natmag_learn_sub.bytestring = [0x99, address & 0xFF, address >> 8]
     natmag_learn_sub.set_location(0xA1CD)
-    natmag_learn_sub.write(outfile)
+    natmag_learn_sub.write(fout)
 
     spells = get_ranked_spells(sourcefile, magic_only=True)
     spellids = [s.spellid for s in spells]
-    f = open(outfile, 'r+b')
     address = 0x2CE3C0
 
     def mutate_spell(pointer, used):
-        f.seek(pointer)
-        spell, level = tuple(map(ord, f.read(2)))
+        fout.seek(pointer)
+        spell, level = tuple(map(ord, fout.read(2)))
 
         while True:
             index = spellids.index(spell)
@@ -1214,9 +1198,9 @@ def manage_natural_magic():
     candidates[0].natural_magic = sorted(candidates[0].natural_magic)
     for i, (level, newspell) in enumerate(candidates[0].natural_magic):
         pointer = address + (2*i)
-        f.seek(pointer)
-        f.write(chr(level))
-        f.write(chr(newspell.spellid))
+        fout.seek(pointer)
+        fout.write(chr(level))
+        fout.write(chr(newspell.spellid))
 
     usedspells = random.sample(usedspells, 12)
     for i in xrange(16):
@@ -1226,17 +1210,17 @@ def manage_natural_magic():
     candidates[1].natural_magic = sorted(candidates[1].natural_magic)
     for i, (level, newspell) in enumerate(candidates[1].natural_magic):
         pointer = address + +32 + (2*i)
-        f.seek(pointer)
-        f.write(chr(level))
-        f.write(chr(newspell.spellid))
+        fout.seek(pointer)
+        fout.write(chr(level))
+        fout.write(chr(newspell.spellid))
 
     lores = get_ranked_spells(sourcefile, magic_only=False)
     lores = filter(lambda s: 0x8B <= s.spellid <= 0xA2, lores)
     lore_ids = [l.spellid for l in lores]
     lores_in_order = sorted(lore_ids)
     address = 0x26F564
-    f.seek(address)
-    known_lores = read_multi(f, length=3)
+    fout.seek(address)
+    known_lores = read_multi(fout, length=3)
     known_lore_ids = []
     for i in xrange(24):
         if (1 << i) & known_lores:
@@ -1258,9 +1242,8 @@ def manage_natural_magic():
         order = lores_in_order.index(new_lore.spellid)
         new_known_lores |= (1 << order)
 
-    f.seek(address)
-    write_multi(f, new_known_lores, length=3)
-    f.close()
+    fout.seek(address)
+    write_multi(fout, new_known_lores, length=3)
 
     return candidates
 
@@ -1270,10 +1253,10 @@ def manage_equip_umaro(freespaces):
     equip_umaro_sub = Substitution()
     equip_umaro_sub.bytestring = [0xC9, 0x0E]
     equip_umaro_sub.set_location(0x31E6E)
-    equip_umaro_sub.write(outfile)
+    equip_umaro_sub.write(fout)
     equip_umaro_sub.bytestring = [0xEA] * 2
     equip_umaro_sub.set_location(0x39EF6)
-    equip_umaro_sub.write(outfile)
+    equip_umaro_sub.write(fout)
 
     f = open(sourcefile, 'r+b')
     f.seek(0xC359D)
@@ -1307,18 +1290,18 @@ def manage_equip_umaro(freespaces):
     unequip_umaro_sub = Substitution()
     unequip_umaro_sub.bytestring = generate_unequipper(0xC351E)
     unequip_umaro_sub.set_location(0xC351E)
-    unequip_umaro_sub.write(outfile)
+    unequip_umaro_sub.write(fout)
 
     myfs = get_appropriate_freespace(freespaces, 234)
     pointer = myfs.start
     unequip_umaro_sub.bytestring = generate_unequipper(pointer, not_current_party=True)
     freespaces = determine_new_freespaces(freespaces, myfs, unequip_umaro_sub.size)
     unequip_umaro_sub.set_location(pointer)
-    unequip_umaro_sub.write(outfile)
+    unequip_umaro_sub.write(fout)
     unequip_umaro_sub.bytestring = [
         pointer & 0xFF, (pointer >> 8) & 0xFF, (pointer >> 16) - 0xA]
     unequip_umaro_sub.set_location(0xC3514)
-    unequip_umaro_sub.write(outfile)
+    unequip_umaro_sub.write(fout)
 
     return freespaces
 
@@ -1354,21 +1337,21 @@ def manage_umaro(commands):
         base_command = random.choice(cands)
         commands = commands.values()
         base_command = [c for c in commands if c.id == base_command][0]
-        base_command.allow_while_berserk(outfile)
+        base_command.allow_while_berserk(fout)
         umaro_risk.battle_commands = [base_command.id, 0xFF, 0xFF, 0xFF]
 
     umaro.beserk = False
     umaro_risk.beserk = True
 
-    umaro_risk.write_battle_commands(outfile)
-    umaro.write_battle_commands(outfile)
+    umaro_risk.write_battle_commands(fout)
+    umaro.write_battle_commands(fout)
 
     umaro_exchange_sub = Substitution()
     umaro_exchange_sub.bytestring = [0xC9, umaro_risk.id]
     umaro_exchange_sub.set_location(0x21617)
-    umaro_exchange_sub.write(outfile)
+    umaro_exchange_sub.write(fout)
     umaro_exchange_sub.set_location(0x20926)
-    umaro_exchange_sub.write(outfile)
+    umaro_exchange_sub.write(fout)
 
     spells = get_ranked_spells(sourcefile)
     spells = filter(lambda x: x.target_enemy_default, spells)
@@ -1384,7 +1367,7 @@ def manage_umaro(commands):
     storm_sub = Substitution()
     storm_sub.bytestring = [0xA9, spell_id]
     storm_sub.set_location(0x21710)
-    storm_sub.write(outfile)
+    storm_sub.write(fout)
 
     return umaro_risk
 
@@ -1393,14 +1376,14 @@ def manage_sprint():
     autosprint = Substitution()
     autosprint.set_location(0x4E2D)
     autosprint.bytestring = [0x80, 0x00]
-    autosprint.write(outfile)
+    autosprint.write(fout)
 
 
 def manage_skips():
     flashback_skip_sub = Substitution()
     flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
     flashback_skip_sub.set_location(0xAC582)
-    flashback_skip_sub.write(outfile)
+    flashback_skip_sub.write(fout)
 
     boat_skip_sub = Substitution()
     boat_skip_sub.bytestring = (
@@ -1410,7 +1393,7 @@ def manage_skips():
         [0x6B, 0x00, 0x04, 0xE8, 0x96, 0x40, 0xFF]
         )
     boat_skip_sub.set_location(0xC615A)
-    boat_skip_sub.write(outfile)
+    boat_skip_sub.write(fout)
 
     leo_skip_sub = Substitution()
     leo_skip_sub.bytestring = (
@@ -1434,12 +1417,12 @@ def manage_skips():
         [0xC7, 0xF9, 0x7F, 0xFF]  # place airship
         )
     leo_skip_sub.set_location(0xBF2B5)
-    leo_skip_sub.write(outfile)
+    leo_skip_sub.write(fout)
 
     shadow_leaving_sub = Substitution()
     shadow_leaving_sub.bytestring = [0xEA] * 2
     shadow_leaving_sub.set_location(0x2488A)
-    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.write(fout)
 
     narshe_skip_sub = Substitution()
     narshe_skip_sub.bytestring = []
@@ -1450,10 +1433,10 @@ def manage_skips():
     narshe_skip_sub.bytestring += [0x3F, 0x00, 0x01, 0x3F, 0x0D, 0x00]
     address = 0x2BC44 - len(narshe_skip_sub.bytestring)
     narshe_skip_sub.set_location(address + 0xA0000)
-    narshe_skip_sub.write(outfile)
+    narshe_skip_sub.write(fout)
     narshe_skip_sub.bytestring = [0xB2, address & 0xFF, (address >> 8) & 0xFF, address >> 16]
     narshe_skip_sub.set_location(0xAADC4)
-    narshe_skip_sub.write(outfile)
+    narshe_skip_sub.write(fout)
 
 
 def activate_airship_mode(freespaces):
@@ -1473,11 +1456,11 @@ def activate_airship_mode(freespaces):
     freespaces = determine_new_freespaces(freespaces, myfs, set_airship_sub.size)
 
     set_airship_sub.set_location(pointer)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     set_airship_sub.bytestring = [0xD2, 0xB9]  # airship appears in WoR
     set_airship_sub.set_location(0xA532A)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     set_airship_sub.bytestring = (
         [0x6B, 0x01, 0x04, 0x4A, 0x16, 0x01] +  # load WoR, place party
@@ -1487,66 +1470,64 @@ def activate_airship_mode(freespaces):
         [0xC7, 0x4E, 0xf0] +  # place airship
         [0xD2, 0x8E, 0x25, 0x07, 0x07, 0x40])  # load beach with fish
     set_airship_sub.set_location(0xA51E9)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     # point to airship-placing script
     set_airship_sub.bytestring = (
         [0xB2, pointer & 0xFF, (pointer >> 8) & 0xFF,
          (pointer >> 16) - 0xA, 0xFE])
     set_airship_sub.set_location(0xCB046)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     # always access floating continent
     set_airship_sub.bytestring = [0xC0, 0x27, 0x01, 0x79, 0xF5, 0x00]
     set_airship_sub.set_location(0xAF53A)  # need first branch for button press
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     # always exit airship
     set_airship_sub.bytestring = [0xFD] * 6
     set_airship_sub.set_location(0xAF4B1)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
     set_airship_sub.bytestring = [0xFD] * 8
     set_airship_sub.set_location(0xAF4E3)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     # chocobo stables are airship stables now
     set_airship_sub.bytestring = [0xB6, 0x8D, 0xF5, 0x00, 0xB3, 0x5E, 0x00]
     set_airship_sub.set_location(0xA7A39)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
     set_airship_sub.set_location(0xA8FB7)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
     set_airship_sub.set_location(0xB44D0)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
     set_airship_sub.set_location(0xC3335)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     # don't force Locke and Celes at party select
     set_airship_sub.bytestring = [0x99, 0x01, 0x00, 0x00]
     set_airship_sub.set_location(0xAAB67)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
     set_airship_sub.set_location(0xAF60F)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
     set_airship_sub.set_location(0xCC2F3)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     # Daryl is not such an airship hog
     set_airship_sub.bytestring = [0x32, 0xF5]
     set_airship_sub.set_location(0x41F41)
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     return freespaces
 
 
 def manage_rng():
-    f = open(outfile, 'r+b')
-    f.seek(0xFD00)
+    fout.seek(0xFD00)
     if 'norng' in activated_codes:
         numbers = [0 for _ in range(0x100)]
     else:
         numbers = range(0x100)
     random.shuffle(numbers)
-    f.write("".join(map(chr, numbers)))
-    f.close()
+    fout.write("".join(map(chr, numbers)))
 
 death_abuse_sub = Substitution()
 death_abuse_sub.bytestring = [0x60]
@@ -1564,7 +1545,7 @@ def manage_balance(newslots=True):
         0xB9, 0x18, 0x30, 0x04, 0xA6, 0x4C, 0xE5, 0x22
         ]
     vanish_doom_sub.set_location(0x22215)
-    vanish_doom_sub.write(outfile)
+    vanish_doom_sub.write(fout)
 
     evade_mblock_sub = Substitution()
     evade_mblock_sub.bytestring = [
@@ -1573,13 +1554,13 @@ def manage_balance(newslots=True):
         0x80, 0x43, 0xB9, 0x54, 0x3B, 0x48, 0xEA
         ]
     evade_mblock_sub.set_location(0x2232C)
-    evade_mblock_sub.write(outfile)
+    evade_mblock_sub.write(fout)
 
     manage_rng()
     if newslots:
-        randomize_slots(outfile, 0x24E4A)
+        randomize_slots(outfile, fout, 0x24E4A)
 
-    death_abuse_sub.write(outfile)
+    death_abuse_sub.write(fout)
 
     get_monsters(sourcefile)
     sealed_kefka = get_monster(0x174)
@@ -1621,19 +1602,17 @@ def manage_magitek():
 
     terra_used.reverse()
     others_used.reverse()
-    f = open(outfile, 'r+b')
-    f.seek(target_pointer+3)
+    fout.seek(target_pointer+3)
     for s in terra_used:
-        f.write(chr(s.targeting))
-    f.seek(terra_pointer+3)
+        fout.write(chr(s.targeting))
+    fout.seek(terra_pointer+3)
     for s in terra_used:
-        f.write(chr(s.spellid-0x83))
-    f.seek(others_pointer+3)
+        fout.write(chr(s.spellid-0x83))
+    fout.seek(others_pointer+3)
     for s in others_used:
         if s is None:
             break
-        f.write(chr(s.spellid-0x83))
-    f.close()
+        fout.write(chr(s.spellid-0x83))
 
 
 def manage_final_boss(freespaces):
@@ -1665,7 +1644,7 @@ def manage_final_boss(freespaces):
     monsters = [m for m in monsters if has_graphics(m)]
     m = random.choice(monsters)
     kefka1.graphics.copy_data(m.graphics)
-    change_enemy_name(outfile, kefka1.id, m.name.strip('_'))
+    change_enemy_name(fout, kefka1.id, m.name.strip('_'))
 
     k1formation = get_formation(0x202)
     k2formation = get_formation(KEFKA_EXTRA_FORMATION)
@@ -1683,8 +1662,8 @@ def manage_final_boss(freespaces):
         m.set_relative_ai(pointer)
         freespaces = determine_new_freespaces(freespaces, myfs, m.aiscriptsize)
 
-    kefka1.write_stats(outfile)
-    kefka2.write_stats(outfile)
+    kefka1.write_stats(fout)
+    kefka2.write_stats(fout)
     return freespaces
 
 
@@ -1713,12 +1692,12 @@ def manage_monsters():
         m.tweak_fanatics()
         m.relevel_specifics()
 
-    change_enemy_name(outfile, 0x166, "L.255Magic")
+    change_enemy_name(fout, 0x166, "L.255Magic")
 
     shuffle_monsters(monsters)
     for m in monsters:
-        m.randomize_special_effect(outfile)
-        m.write_stats(outfile)
+        m.randomize_special_effect(fout)
+        m.write_stats(fout)
 
     return monsters
 
@@ -1755,7 +1734,7 @@ def manage_monster_appearance(monsters, preserve_graphics=False):
             m.update_size(8, 8)
         candidates = nonbosses[i:]
         m.mutate_graphics_swap(candidates)
-        name = randomize_enemy_name(outfile, m.id)
+        name = randomize_enemy_name(fout, m.id)
         m.changed_name = name
 
     done = {}
@@ -1775,24 +1754,23 @@ def manage_monster_appearance(monsters, preserve_graphics=False):
             mg.mutate_palette()
             done[idpair] = freepointer
             freepointer += len(mg.palette_data)
-            mg.write_data(outfile, palette_pointer=done[idpair])
+            mg.write_data(fout, palette_pointer=done[idpair])
         else:
-            mg.write_data(outfile, palette_pointer=done[idpair],
+            mg.write_data(fout, palette_pointer=done[idpair],
                           no_palette=True)
 
     for mg in espers:
         mg.mutate_palette()
-        mg.write_data(outfile, palette_pointer=freepointer)
+        mg.write_data(fout, palette_pointer=freepointer)
         freepointer += len(mg.palette_data)
 
     return mgs
 
 
 def recolor_character_palette(pointer, palette=None, flesh=False, middle=True):
-    f = open(outfile, 'r+b')
-    f.seek(pointer)
+    fout.seek(pointer)
     if palette is None:
-        palette = [read_multi(f, length=2) for _ in xrange(16)]
+        palette = [read_multi(fout, length=2) for _ in xrange(16)]
         outline, eyes, hair, skintone, outfit1, outfit2, NPC = (
             palette[:2], palette[2:4], palette[4:6], palette[6:8],
             palette[8:10], palette[10:12], palette[12:])
@@ -1810,10 +1788,9 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True):
 
         palette = new_palette
 
-    f.seek(pointer)
+    fout.seek(pointer)
     for p in palette:
-        write_multi(f, p, length=2)
-    f.close()
+        write_multi(fout, p, length=2)
     return palette
 
 
@@ -1825,7 +1802,7 @@ def make_palette_repair(main_palette_changes):
         bytestring.extend([0x43, c, after])
     repair_sub.bytestring = bytestring + [0xFE]
     repair_sub.set_location(0xCB154)  # Narshe secret entrance
-    repair_sub.write(outfile)
+    repair_sub.write(fout)
 
 
 def get_npcs():
@@ -1957,13 +1934,11 @@ def manage_character_appearance(preserve_graphics=False):
             else:
                 c.new_appearance = c.original_appearance
 
-    f = open(outfile, 'r+b')
     for c, name in enumerate(names):
         name = name_to_bytes(name, 6)
         assert len(name) == 6
-        f.seek(0x478C0 + (6*c))
-        f.write("".join(map(chr, name)))
-    f.close()
+        fout.seek(0x478C0 + (6*c))
+        fout.write("".join(map(chr, name)))
 
     ssizes = ([0x16A0] * 0x10) + ([0x1560] * 6)
     spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in char_ids])
@@ -1972,16 +1947,16 @@ def manage_character_appearance(preserve_graphics=False):
     char_portraits = {}
     char_portrait_palettes = {}
     sprites = {}
-    f = open(outfile, 'r+b')
+
     for c in char_ids:
-        f.seek(0x36F1B + (2*c))
-        portrait = read_multi(f, length=2)
+        fout.seek(0x36F1B + (2*c))
+        portrait = read_multi(fout, length=2)
         char_portraits[c] = portrait
-        f.seek(0x36F00 + c)
-        portrait_palette = f.read(1)
+        fout.seek(0x36F00 + c)
+        portrait_palette = fout.read(1)
         char_portrait_palettes[c] = portrait_palette
-        f.seek(spointers[c])
-        sprite = f.read(ssizes[c])
+        fout.seek(spointers[c])
+        sprite = fout.read(ssizes[c])
         sprites[c] = sprite
 
     if tina_mode:
@@ -1995,18 +1970,17 @@ def manage_character_appearance(preserve_graphics=False):
         if wild and portrait == 0 and change_to[c] != 0:
             portrait = char_portraits[0xE]
             portrait_palette = char_portrait_palettes[0xE]
-        f.seek(0x36F1B + (2*c))
-        write_multi(f, portrait, length=2)
-        f.seek(0x36F00 + c)
-        f.write(portrait_palette)
+        fout.seek(0x36F1B + (2*c))
+        write_multi(fout, portrait, length=2)
+        fout.seek(0x36F00 + c)
+        fout.write(portrait_palette)
         if wild:
-            f.seek(spointers[c])
-            f.write(sprites[0xE][:ssizes[c]])
-        f.seek(spointers[c])
+            fout.seek(spointers[c])
+            fout.write(sprites[0xE][:ssizes[c]])
+        fout.seek(spointers[c])
         newsprite = sprites[change_to[c]]
         newsprite = newsprite[:ssizes[c]]
-        f.write(newsprite)
-    f.close()
+        fout.write(newsprite)
 
     palette_change_to = {}
     for npc in npcs:
@@ -2032,30 +2006,28 @@ def manage_character_appearance(preserve_graphics=False):
             npc.palette = new_palette
 
     main_palette_changes = {}
-    f = open(outfile, 'r+b')
     for character in characters:
         c = character.id
         if c not in change_to:
             continue
-        f.seek(0x2CE2B + c)
-        before = ord(f.read(1))
+        fout.seek(0x2CE2B + c)
+        before = ord(fout.read(1))
         new_graphics = change_to[c]
         new_palette = palette_change_to[(c, before)]
         main_palette_changes[c] = (before, new_palette)
-        f.seek(0x2CE2B + c)
-        f.write(chr(new_palette))
+        fout.seek(0x2CE2B + c)
+        fout.write(chr(new_palette))
         pointers = [0, 4, 9, 13]
         pointers = [ptr + 0x18EA60 + (18*c) for ptr in pointers]
         if c < 14:
             for ptr in pointers:
-                f.seek(ptr)
-                byte = ord(f.read(1))
+                fout.seek(ptr)
+                byte = ord(fout.read(1))
                 byte = byte & 0xF1
                 byte |= ((new_palette+2) << 1)
-                f.seek(ptr)
-                f.write(chr(byte))
+                fout.seek(ptr)
+                fout.write(chr(byte))
         character.palette = new_palette
-    f.close()
 
     if "repairpalette" in activated_codes:
         make_palette_repair(main_palette_changes)
@@ -2078,26 +2050,23 @@ def manage_character_appearance(preserve_graphics=False):
     transformer = get_palette_transformer(middle=True)
 
     def recolor_palette(pointer, size):
-        f = open(outfile, 'r+b')
-        f.seek(pointer)
-        palette = [read_multi(f, length=2) for _ in xrange(size)]
+        fout.seek(pointer)
+        palette = [read_multi(fout, length=2) for _ in xrange(size)]
         palette = transformer(palette)
-        f.seek(pointer)
-        [write_multi(f, c, length=2) for c in palette]
-        f.close()
+        fout.seek(pointer)
+        [write_multi(fout, c, length=2) for c in palette]
 
     recolor_palette(0x2cfd4, 23)
     recolor_palette(0x268000+(7*0x20), 16)
     recolor_palette(0x12ee20, 16)
     recolor_palette(0x12ef20, 16)
 
-    f = open(outfile, 'r+b')
     for line in open(EVENT_PALETTE_TABLE):
         if line[0] == '#':
             continue
         pointer = hex2int(line.strip())
-        f.seek(pointer)
-        data = map(ord, f.read(5))
+        fout.seek(pointer)
+        data = map(ord, fout.read(5))
         char_id, palette = data[1], data[4]
         if char_id not in char_ids:
             continue
@@ -2106,29 +2075,24 @@ def manage_character_appearance(preserve_graphics=False):
         except KeyError:
             continue
 
-        f.seek(pointer)
-        f.write("".join(map(chr, data)))
-    f.close()
+        fout.seek(pointer)
+        fout.write("".join(map(chr, data)))
 
 
 def manage_colorize_animations():
-    f = open(sourcefile, 'r+b')
     palettes = []
     for i in xrange(240):
         pointer = 0x126000 + (i*16)
-        f.seek(pointer)
-        palette = [read_multi(f, length=2) for _ in xrange(8)]
+        fout.seek(pointer)
+        palette = [read_multi(fout, length=2) for _ in xrange(8)]
         palettes.append(palette)
-    f.close()
 
-    f = open(outfile, 'r+b')
     for i, palette in enumerate(palettes):
         transformer = get_palette_transformer(basepalette=palette)
         palette = transformer(palette)
         pointer = 0x126000 + (i*16)
-        f.seek(pointer)
-        [write_multi(f, c, length=2) for c in palette]
-    f.close()
+        fout.seek(pointer)
+        [write_multi(fout, c, length=2) for c in palette]
 
 
 def manage_items(items, changed_commands=None):
@@ -2139,7 +2103,7 @@ def manage_items(items, changed_commands=None):
     for i in items:
         i.mutate(always_break=always_break)
         i.unrestrict()
-        i.write_stats(outfile)
+        i.write_stats(fout)
 
     return items
 
@@ -2160,13 +2124,12 @@ def manage_equipment(items):
         if c.id >= 14 and c.id not in tempchars:
             continue
         if c.id in tempchars:
-            f = open(outfile, 'r+b')
             lefthanded = random.randint(1, 10) == 10
             for equiptype in ['weapon', 'shield', 'helm', 'armor',
                               'relic1', 'relic2']:
-                f.seek(c.address + equip_offsets[equiptype])
-                equipid = ord(f.read(1))
-                f.seek(c.address + equip_offsets[equiptype])
+                fout.seek(c.address + equip_offsets[equiptype])
+                equipid = ord(fout.read(1))
+                fout.seek(c.address + equip_offsets[equiptype])
                 if lefthanded and equiptype == 'weapon':
                     equiptype = 'shield'
                 elif lefthanded and equiptype == 'shield':
@@ -2187,9 +2150,8 @@ def manage_equipment(items):
                     if (equiptype not in ["weapon", "shield"] and
                             random.randint(1, 100) == 100):
                         equipid = random.randint(0, 0xFF)
-                f.write(chr(equipid))
+                fout.write(chr(equipid))
 
-            f.close()
             continue
 
         equippable_items = filter(lambda i: i.equippable & (1 << c.id), items)
@@ -2204,10 +2166,10 @@ def manage_equipment(items):
             weakest = 0xFF
             if equippable:
                 weakest = min(equippable, key=lambda i: i.rank()).itemid
-            c.write_default_equipment(outfile, weakest, equiptype)
+            c.write_default_equipment(fout, weakest, equiptype)
 
     for i in items:
-        i.write_stats(outfile)
+        i.write_stats(fout)
 
     return items
 
@@ -2228,7 +2190,7 @@ def manage_reorder_rages(freespaces, by_level=False):
     reordered_rages_sub = Substitution()
     reordered_rages_sub.bytestring = monster_order
     reordered_rages_sub.set_location(pointer)
-    reordered_rages_sub.write(outfile)
+    reordered_rages_sub.write(fout)
     hirage, lorage = (pointer >> 8) & 0xFF, pointer & 0xFF
 
     rage_reorder_sub = Substitution()
@@ -2273,7 +2235,7 @@ def manage_reorder_rages(freespaces, by_level=False):
     pointer = myfs.start
     freespaces = determine_new_freespaces(freespaces, myfs, rage_reorder_sub.size)
     rage_reorder_sub.set_location(pointer)
-    rage_reorder_sub.write(outfile)
+    rage_reorder_sub.write(fout)
 
     rage_reorder_sub = Substitution()
     rage_reorder_sub.bytestring = [
@@ -2281,7 +2243,7 @@ def manage_reorder_rages(freespaces, by_level=False):
         0x60,                                            # RTS
         ]
     rage_reorder_sub.set_location(0x25847)
-    rage_reorder_sub.write(outfile)
+    rage_reorder_sub.write(fout)
 
     return freespaces
 
@@ -2403,7 +2365,7 @@ def manage_esper_boosts(freespaces):
                 esper_boost_sub.bytestring[index:index+2] = [a, b]
             assert None not in esper_boost_sub.bytestring
 
-        boost_sub.write(outfile)
+        boost_sub.write(fout)
 
     esper_boost_sub = Substitution()
     esper_boost_sub.set_location(0x2615C)
@@ -2412,18 +2374,18 @@ def manage_esper_boosts(freespaces):
         pointer2 & 0xFF, (pointer2 >> 8) & 0xFF,
         pointer1 & 0xFF, (pointer1 >> 8) & 0xFF,
         ]
-    esper_boost_sub.write(outfile)
+    esper_boost_sub.write(fout)
 
     esper_boost_sub.set_location(0xFFEED)
     desc = map(lambda c: hex2int(shorttexttable[c]), "LV - 1   ")
     esper_boost_sub.bytestring = desc
-    esper_boost_sub.write(outfile)
+    esper_boost_sub.write(fout)
     esper_boost_sub.set_location(0xFFEF6)
     desc = map(lambda c: hex2int(shorttexttable[c]), "LV + 50% ")
     esper_boost_sub.bytestring = desc
-    esper_boost_sub.write(outfile)
+    esper_boost_sub.write(fout)
 
-    death_abuse_sub.write(outfile)
+    death_abuse_sub.write(fout)
 
     return freespaces
 
@@ -2440,12 +2402,12 @@ def manage_espers(freespaces):
     bonus_espers[0].bonus = 7
     bonus_espers[1].add_spell(0x2B, 1)
     for e in sorted(espers, key=lambda e: e.name):
-        e.write_data(outfile)
+        e.write_data(fout)
 
     ragnarok_sub = Substitution()
     ragnarok_sub.set_location(0xC0B37)
     ragnarok_sub.bytestring = [0xB2, 0x58, 0x0B, 0x02, 0xFE]
-    ragnarok_sub.write(outfile)
+    ragnarok_sub.write(fout)
     pointer = ragnarok_sub.location + len(ragnarok_sub.bytestring) + 1
     a, b = pointer & 0xFF, (pointer >> 8) & 0xFF
     c = 2
@@ -2454,7 +2416,7 @@ def manage_espers(freespaces):
                                0xDD, 0x99,
                                0x6B, 0x6C, 0x21, 0x08, 0x08, 0x80,
                                0xB2, a, b, c]
-    ragnarok_sub.write(outfile)
+    ragnarok_sub.write(fout)
     ragnarok_sub.set_location(pointer)
     # CA5EA9
     ragnarok_sub.bytestring = [0xB2, 0xA9, 0x5E, 0x00,  # event stuff
@@ -2467,7 +2429,7 @@ def manage_espers(freespaces):
                                0x86, 0x46,  # receive esper
                                0xFE,
                                ]
-    ragnarok_sub.write(outfile)
+    ragnarok_sub.write(fout)
 
     freespaces = manage_esper_boosts(freespaces)
 
@@ -2480,18 +2442,18 @@ def manage_espers(freespaces):
 def manage_treasure(monsters, shops=True):
     for mm in get_metamorphs():
         mm.mutate_items()
-        mm.write_data(outfile)
+        mm.write_data(fout)
 
     for m in monsters:
         m.mutate_items()
         m.mutate_metamorph()
-        m.write_stats(outfile)
+        m.write_stats(fout)
 
     if shops:
         buyables = manage_shops()
 
     pointer = 0x1fb600
-    results = randomize_colosseum(outfile, pointer)
+    results = randomize_colosseum(outfile, fout, pointer)
     wagers = dict([(a.itemid, c) for (a, b, c, d) in results])
 
     def ensure_striker():
@@ -2514,10 +2476,8 @@ def manage_treasure(monsters, shops=True):
                     if b in wagers and wagers[b] == wager]
         if not buycheck:
             raise Exception("Striker pickup not ensured.")
-        f = open(outfile, 'r+b')
-        f.seek(pointer + (wager.itemid*4) + 2)
-        f.write(chr(0x29))
-        f.close()
+        fout.seek(pointer + (wager.itemid*4) + 2)
+        fout.write(chr(0x29))
         return wager
 
     striker_wager = ensure_striker()
@@ -2542,7 +2502,7 @@ def manage_chests():
     locations = sorted(locations, key=lambda l: l.locid)
 
     for m in get_monsters():
-        m.write_stats(outfile)
+        m.write_stats(fout)
 
 
 def write_all_locations_misc():
@@ -2558,7 +2518,7 @@ def write_all_chests():
 
     nextpointer = 0x2d8634
     for l in locations:
-        nextpointer = l.write_chests(outfile, nextpointer=nextpointer)
+        nextpointer = l.write_chests(fout, nextpointer=nextpointer)
 
 
 def write_all_npcs():
@@ -2568,10 +2528,10 @@ def write_all_npcs():
     nextpointer = 0x41d52
     for l in locations:
         if hasattr(l, "restrank"):
-            nextpointer = l.write_npcs(outfile, nextpointer=nextpointer,
+            nextpointer = l.write_npcs(fout, nextpointer=nextpointer,
                                        ignore_order=True)
         else:
-            nextpointer = l.write_npcs(outfile, nextpointer=nextpointer)
+            nextpointer = l.write_npcs(fout, nextpointer=nextpointer)
 
 
 def write_all_events():
@@ -2580,7 +2540,7 @@ def write_all_events():
 
     nextpointer = 0x40342
     for l in locations:
-        nextpointer = l.write_events(outfile, nextpointer=nextpointer)
+        nextpointer = l.write_events(fout, nextpointer=nextpointer)
 
 
 def write_all_entrances():
@@ -2591,14 +2551,12 @@ def write_all_entrances():
     total = 0
     for e in entrancesets:
         total += len(e.entrances)
-        nextpointer, longnextpointer = e.write_data(outfile, nextpointer,
+        nextpointer, longnextpointer = e.write_data(fout, nextpointer,
                                                     longnextpointer)
-    f = open(outfile, 'r+b')
-    f.seek(e.pointer + 2)
-    write_multi(f, (nextpointer - 0x1fbb00), length=2)
-    f.seek(e.longpointer + 2)
-    write_multi(f, (longnextpointer - 0x2df480), length=2)
-    f.close()
+    fout.seek(e.pointer + 2)
+    write_multi(fout, (nextpointer - 0x1fbb00), length=2)
+    fout.seek(e.longpointer + 2)
+    write_multi(fout, (longnextpointer - 0x2df480), length=2)
 
 
 def manage_blitz():
@@ -2627,13 +2585,12 @@ def manage_blitz():
     diagonals = [0x7, 0x9, 0xB, 0xD]
     cardinals = [0x8, 0xA, 0xC, 0xE]
     letters = range(3, 7)
-    f = open(outfile, 'r+b')
     log("1. left, right, left", section="blitz inputs")
     for i in xrange(1, 8):
         # skip pummel
         current = blitzspecptr + (i * 12)
-        f.seek(current + 11)
-        length = ord(f.read(1)) / 2
+        fout.seek(current + 11)
+        length = ord(fout.read(1)) / 2
         halflength = max(length / 2, 2)
         newlength = (halflength + random.randint(0, halflength) +
                      random.randint(1, halflength))
@@ -2687,9 +2644,8 @@ def manage_blitz():
         blitzstr = "%s. %s" % (i+1, blitzstr)
         log(blitzstr, section="blitz inputs")
         newcmd += [(newlength+1) * 2]
-        f.seek(current)
-        f.write("".join(map(chr, newcmd)))
-    f.close()
+        fout.seek(current)
+        fout.write("".join(map(chr, newcmd)))
 
 
 def manage_dragons():
@@ -2698,14 +2654,12 @@ def manage_dragons():
     dragons = range(0x84, 0x8c)
     assert len(dragon_pointers) == len(dragons) == 8
     random.shuffle(dragons)
-    f = open(outfile, 'r+b')
     for pointer, dragon in zip(dragon_pointers, dragons):
-        f.seek(pointer)
-        c = ord(f.read(1))
+        fout.seek(pointer)
+        c = ord(fout.read(1))
         assert c == 0x4D
-        f.seek(pointer+1)
-        f.write(chr(dragon))
-    f.close()
+        fout.seek(pointer+1)
+        fout.write(chr(dragon))
 
 
 def manage_formations(formations, fsets):
@@ -2714,7 +2668,7 @@ def manage_formations(formations, fsets):
             for formation in fset.formations:
                 formation.set_music(6)
                 formation.set_continuous_music()
-                formation.write_data(outfile)
+                formation.write_data(fout)
 
     for formation in formations:
         if formation.get_music() != 6:
@@ -2723,7 +2677,7 @@ def manage_formations(formations, fsets):
                 # additional floating continent formations
                 formation.set_music(6)
                 formation.set_continuous_music()
-                formation.write_data(outfile)
+                formation.write_data(fout)
 
     ranked_fsets = sorted(fsets, key=lambda fs: fs.rank())
     ranked_fsets = [fset for fset in ranked_fsets if not fset.has_boss]
@@ -2781,7 +2735,7 @@ def manage_formations(formations, fsets):
             formation.ap = 255  # Magimaster
         elif formation.formid in [0x1d4, 0x1d5, 0x1d6, 0x1e2]:
             formation.ap = 100  # Triad
-        formation.write_data(outfile)
+        formation.write_data(fout)
 
     return formations
 
@@ -2914,10 +2868,11 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
             ue.mutate(change_skillset=True)
         ue.treasure_boost()
         ue.graphics.mutate_palette()
-        name = randomize_enemy_name(outfile, ue.id)
+        name = randomize_enemy_name(fout, ue.id)
         ue.changed_name = name
         ue.misc1 &= (0xFF ^ 0x4)  # always show name
-        ue.write_stats(outfile)
+        ue.write_stats(fout)
+        fout.flush()
         ue.read_ai(outfile)
         mutated_ues.append(ue.id)
         for m in get_monsters():
@@ -2931,9 +2886,9 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
         uf.set_appearing(random.choice(appearances))
         uf.get_special_ap()
         uf.mouldbyte = 0x60
-        ue.graphics.write_data(outfile)
+        ue.graphics.write_data(fout)
         uf.misc1 &= 0xCF  # allow front and back attacks
-        uf.write_data(outfile)
+        uf.write_data(fout)
         repurposed_formations.append(uf)
 
     lobo_formation = get_formation(0)
@@ -2995,7 +2950,7 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
                                                        replacement=f)
                 if not result:
                     continue
-                fs.write_data(outfile)
+                fs.write_data(fout)
                 if not fscands:
                     break
                 if random.randint(1, 5) != 5:
@@ -3049,9 +3004,9 @@ def manage_shops():
     buyables = set([])
     descriptions = []
     for s in get_shops():
-        s.mutate_items(outfile)
+        s.mutate_items(fout)
         s.mutate_misc()
-        s.write_data(outfile)
+        s.write_data(fout)
         buyables |= set(s.items)
         descriptions.append(str(s))
 
@@ -3095,7 +3050,7 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
             formation = [f for f in get_fsets() if f.setid == l.setid][0]
             if set(formation.formids) != set([0]):
                 paldict[l.field_palette].add(l)
-        l.write_data(outfile)
+        l.write_data(fout)
 
     from itertools import product
     if freespaces is None:
@@ -3136,7 +3091,6 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
         if not candidates and not backgrounds:
             palettes, battlebgs = [], []
 
-        f = open(outfile, 'r+b')
         battlebgs = set([l.battlebg for l in candidates if l.attacks])
         battlebgs |= set(backgrounds)
 
@@ -3146,11 +3100,11 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
         for bg in battlebgs:
             palettenum = battlebg_palettes[bg]
             pointer = 0x270150 + (palettenum * 0x60)
-            f.seek(pointer)
+            fout.seek(pointer)
             if pointer in done:
                 #raise Exception("Already recolored palette %x" % pointer)
                 continue
-            raw_palette = [read_multi(f, length=2) for i in xrange(0x30)]
+            raw_palette = [read_multi(fout, length=2) for i in xrange(0x30)]
             if transformer is None:
                 if bg in [0x33, 0x34, 0x35, 0x36]:
                     transformer = get_palette_transformer(always=True)
@@ -3159,21 +3113,20 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
                         basepalette=raw_palette, use_luma=True)
             new_palette = transformer(raw_palette)
 
-            f.seek(pointer)
-            [write_multi(f, c, length=2) for c in new_palette]
+            fout.seek(pointer)
+            [write_multi(fout, c, length=2) for c in new_palette]
             done.append(pointer)
 
         for p in palettes:
             if p in done:
                 raise Exception("Already recolored palette %x" % p)
-            f.seek(p)
-            raw_palette = [read_multi(f, length=2) for i in xrange(0x80)]
+            fout.seek(p)
+            raw_palette = [read_multi(fout, length=2) for i in xrange(0x80)]
             new_palette = transformer(raw_palette)
-            f.seek(p)
-            [write_multi(f, c, length=2) for c in new_palette]
+            fout.seek(p)
+            [write_multi(fout, c, length=2) for c in new_palette]
             done.append(p)
 
-        f.close()
 
     if 'p' in flags or 's' in flags or 'partyparty' in activated_codes:
         manage_colorize_wor()
@@ -3182,51 +3135,49 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
 
 def manage_colorize_wor():
     transformer = get_palette_transformer(always=True)
-    f = open(outfile, 'r+b')
-    f.seek(0x12ed00)
-    raw_palette = [read_multi(f, length=2) for i in xrange(0x80)]
+    fout.seek(0x12ed00)
+    raw_palette = [read_multi(fout, length=2) for i in xrange(0x80)]
     new_palette = transformer(raw_palette)
-    f.seek(0x12ed00)
-    [write_multi(f, c, length=2) for c in new_palette]
+    fout.seek(0x12ed00)
+    [write_multi(fout, c, length=2) for c in new_palette]
 
-    f.seek(0x12ef40)
-    raw_palette = [read_multi(f, length=2) for i in xrange(0x60)]
+    fout.seek(0x12ef40)
+    raw_palette = [read_multi(fout, length=2) for i in xrange(0x60)]
     new_palette = transformer(raw_palette)
-    f.seek(0x12ef40)
-    [write_multi(f, c, length=2) for c in new_palette]
+    fout.seek(0x12ef40)
+    [write_multi(fout, c, length=2) for c in new_palette]
 
-    f.seek(0x12ef00)
-    raw_palette = [read_multi(f, length=2) for i in xrange(0x12)]
+    fout.seek(0x12ef00)
+    raw_palette = [read_multi(fout, length=2) for i in xrange(0x12)]
     airship_transformer = get_palette_transformer(basepalette=raw_palette)
     new_palette = airship_transformer(raw_palette)
-    f.seek(0x12ef00)
-    [write_multi(f, c, length=2) for c in new_palette]
+    fout.seek(0x12ef00)
+    [write_multi(fout, c, length=2) for c in new_palette]
 
     for battlebg in [1, 5, 0x29, 0x2F]:
         palettenum = battlebg_palettes[battlebg]
         pointer = 0x270150 + (palettenum * 0x60)
-        f.seek(pointer)
-        raw_palette = [read_multi(f, length=2) for i in xrange(0x30)]
+        fout.seek(pointer)
+        raw_palette = [read_multi(fout, length=2) for i in xrange(0x30)]
         new_palette = transformer(raw_palette)
-        f.seek(pointer)
-        [write_multi(f, c, length=2) for c in new_palette]
+        fout.seek(pointer)
+        [write_multi(fout, c, length=2) for c in new_palette]
 
     for palette_index in [0x16, 0x2c, 0x2d, 0x29]:
         field_palette = 0x2dc480 + (256 * palette_index)
-        f.seek(field_palette)
-        raw_palette = [read_multi(f, length=2) for i in xrange(0x80)]
+        fout.seek(field_palette)
+        raw_palette = [read_multi(fout, length=2) for i in xrange(0x80)]
         new_palette = transformer(raw_palette)
-        f.seek(field_palette)
-        [write_multi(f, c, length=2) for c in new_palette]
+        fout.seek(field_palette)
+        [write_multi(fout, c, length=2) for c in new_palette]
 
-    f.close()
 
 
 def manage_colorize_esper_world():
     loc = get_location(217)
     chosen = random.choice([1, 22, 25, 28, 34, 38, 43])
     loc.palette_index = (loc.palette_index & 0xFFFFC0) | chosen
-    loc.write_data(outfile)
+    loc.write_data(fout)
 
 
 def manage_encounter_rate():
@@ -3244,10 +3195,10 @@ def manage_encounter_rate():
         encrate_sub = Substitution()
         encrate_sub.set_location(0xC29F)
         encrate_sub.bytestring = overworld_rates
-        encrate_sub.write(outfile)
+        encrate_sub.write(fout)
         encrate_sub.set_location(0xC2BF)
         encrate_sub.bytestring = dungeon_rates
-        encrate_sub.write(outfile)
+        encrate_sub.write(fout)
         return
 
     get_namelocdict()
@@ -3291,7 +3242,7 @@ def manage_encounter_rate():
                 if s in z.names and z.names[s] in encrates:
                     rate = encrates[z.names[s]]
                     z.set_formation_rate(s, rate)
-        z.write_data(outfile)
+        z.write_data(fout)
 
     def rates_cleaner(rates):
         rates = [max(int(round(o)), 1) for o in rates]
@@ -3312,7 +3263,7 @@ def manage_encounter_rate():
     encrate_sub = Substitution()
     encrate_sub.set_location(0xC29F)
     encrate_sub.bytestring = overworld_rates
-    encrate_sub.write(outfile)
+    encrate_sub.write(fout)
 
     # dungeon encounters: normal, strongly affected by charms,
     # weakly affected by charms, and unaffected by charms
@@ -3336,7 +3287,7 @@ def manage_encounter_rate():
     encrate_sub = Substitution()
     encrate_sub.set_location(0xC2BF)
     encrate_sub.bytestring = dungeon_rates
-    encrate_sub.write(outfile)
+    encrate_sub.write(fout)
 
 
 def manage_tower():
@@ -3353,15 +3304,15 @@ def manage_tower():
                                  0xBD3CC, 0xBD3ED, 0xBD414]:
                     thamasa_map_sub.set_location(location)
                     thamasa_map_sub.bytestring = [0x57]
-                    thamasa_map_sub.write(outfile)
-        l.write_data(outfile)
+                    thamasa_map_sub.write(fout)
+        l.write_data(fout)
 
     npc = [n for n in get_npcs() if n.event_addr == 0x233B8][0]
     npc.event_addr = 0x233A6
     narshe_beginner_sub = Substitution()
     narshe_beginner_sub.bytestring = [0xE5, 0x00]
     narshe_beginner_sub.set_location(0xC33A7)
-    narshe_beginner_sub.write(outfile)
+    narshe_beginner_sub.write(fout)
 
 
 def create_dimensional_vortex():
@@ -3396,28 +3347,25 @@ def create_dimensional_vortex():
     entrancesets = entrancesets[:0x19F]
     nextpointer = 0x1FBB00 + (len(entrancesets) * 2)
     for e in entrancesets:
-        nextpointer = e.write_data(outfile, nextpointer)
+        nextpointer = e.write_data(fout, nextpointer)
 
 
-def change_enemy_name(filename, enemy_id, name):
+def change_enemy_name(fout, enemy_id, name):
     pointer = 0xFC050 + (enemy_id * 10)
-    f = open(filename, 'r+b')
-    f.seek(pointer)
+    fout.seek(pointer)
     monster = get_monster(enemy_id)
     monster.changed_name = name
     name = name_to_bytes(name, 10)
-    f.write("".join(map(chr, name)))
-    f.close()
+    fout.write("".join(map(chr, name)))
 
 
-def randomize_enemy_name(filename, enemy_id):
+def randomize_enemy_name(fout, enemy_id):
     name = generate_name()
-    change_enemy_name(filename, enemy_id, name)
+    change_enemy_name(fout, enemy_id, name)
     return name
 
 
 def randomize_final_party_order():
-    f = open(outfile, 'r+b')
     code = [
         0x20, 0x99, 0xAA,       # JSR $AA99
         0xA9, 0x00,             # LDA #00
@@ -3452,9 +3400,8 @@ def randomize_final_party_order():
 
         0x60,                   # RTS
     ]
-    f.seek(0x3AA25)
-    f.write("".join(map(chr, code)))
-    f.close()
+    fout.seek(0x3AA25)
+    fout.write("".join(map(chr, code)))
 
 
 def dummy_item(item):
@@ -3475,20 +3422,20 @@ def manage_equip_anything():
     equip_anything_sub = Substitution()
     equip_anything_sub.set_location(0x39b8b)
     equip_anything_sub.bytestring = [0x80, 0x04]
-    equip_anything_sub.write(outfile)
+    equip_anything_sub.write(fout)
     equip_anything_sub.set_location(0x39b99)
     equip_anything_sub.bytestring = [0xEA, 0xEA]
-    equip_anything_sub.write(outfile)
+    equip_anything_sub.write(fout)
 
 
 def manage_full_umaro():
     full_umaro_sub = Substitution()
     full_umaro_sub.bytestring = [0x80]
     full_umaro_sub.set_location(0x20928)
-    full_umaro_sub.write(outfile)
+    full_umaro_sub.write(fout)
     if 'u' in flags:
         full_umaro_sub.set_location(0x21619)
-        full_umaro_sub.write(outfile)
+        full_umaro_sub.write(fout)
 
 
 def manage_opening():
@@ -3595,14 +3542,14 @@ def manage_opening():
                     0x6991, 0x69A9, 0x69B8]:
         replace_credits_text(address, "")
 
-    d.compress_and_write(outfile)
+    d.compress_and_write(fout)
 
 
 def manage_ending():
     ending_sync_sub = Substitution()
     ending_sync_sub.bytestring = [0xC0, 0x07]
     ending_sync_sub.set_location(0x3CF93)
-    ending_sync_sub.write(outfile)
+    ending_sync_sub.write(fout)
 
 
 def manage_auction_house():
@@ -3626,12 +3573,11 @@ def manage_auction_house():
         if key == 0x4ea4:
             continue
         assert key in destinations
-    f = open(outfile, "r+b")
     for key in new_format:
         pointer = 0xb0000 | key
         for dest in new_format[key]:
-            f.seek(pointer)
-            value = ord(f.read(1))
+            fout.seek(pointer)
+            value = ord(fout.read(1))
             if value in [0xb2, 0xbd]:
                 pointer += 1
             elif value == 0xc0:
@@ -3640,14 +3586,13 @@ def manage_auction_house():
                 pointer += 5
             else:
                 raise Exception("Unknown auction house byte %x %x" % (pointer, value))
-            f.seek(pointer)
-            oldaddr = read_multi(f, 2)
+            fout.seek(pointer)
+            oldaddr = read_multi(fout, 2)
             assert oldaddr in new_format
             assert dest in new_format
-            f.seek(pointer)
-            write_multi(f, dest, 2)
+            fout.seek(pointer)
+            write_multi(fout, dest, 2)
             pointer += 3
-    f.close()
 
 
 def manage_bingo():
@@ -3787,8 +3732,7 @@ def manage_bingo():
 
 
 def manage_map_names():
-    f = open(outfile, 'r+b')
-    f.seek(0xEF101)
+    fout.seek(0xEF101)
     text = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
             "abcdefghijklmnopqrstuvwxyz"
             "0123456789")
@@ -3796,28 +3740,26 @@ def manage_map_names():
     text[" "] = 0x7F
     pointers = {}
     for i in xrange(1, 101):
-        pointers[i] = f.tell()
+        pointers[i] = fout.tell()
         room_name = "Room %s" % i
         room_name = "".join([chr(text[c]) for c in room_name])
-        f.write(room_name)
-        f.write(chr(0))
+        fout.write(room_name)
+        fout.write(chr(0))
 
     for i in xrange(1, 101):
-        f.seek(0x268400 + (2*i))
+        fout.seek(0x268400 + (2*i))
         pointer = pointers[i] - 0xEF100
-        write_multi(f, pointer, length=2)
+        write_multi(fout, pointer, length=2)
 
-    f.close()
 
 def manage_wor():
     characters = get_characters()
-    f = open(outfile, 'r+b')
 
     # jump to FC end cutscene for more space
     startsub0 = Substitution()
     startsub0.bytestring = [0xB2, 0x1E, 0xDD, 0x00, 0xFE]
     startsub0.set_location(0xC9A4F)
-    startsub0.write(outfile)
+    startsub0.write(fout)
 
     # change code at start of game to warp to wor
     wor_sub = Substitution()
@@ -3968,7 +3910,7 @@ def manage_wor():
                            0xFE
                           ]
     wor_sub.set_location(0xADD1E)
-    wor_sub.write(outfile)
+    wor_sub.write(fout)
     wor_sub2 = Substitution()
     wor_sub2.bytestring = []
 
@@ -3987,38 +3929,37 @@ def manage_wor():
                             ]
 
     wor_sub2.set_location(0xA9749)
-    wor_sub2.write(outfile)
+    wor_sub2.write(fout)
 
     # set more Lores as starting Lores
     odds = [True, True, False]
     address = 0x26F564
-    f.seek(address)
-    extra_known_lores = read_multi(f, length=3)
+    fout.seek(address)
+    extra_known_lores = read_multi(fout, length=3)
     for i in xrange(24):
         if random.choice(odds):
             extra_known_lores |= (1 << i)
         if random.choice([True, False, False]):
             odds.append(False)
-    f.seek(address)
-    write_multi(f, extra_known_lores, length=3)
-    f.close()
+    fout.seek(address)
+    write_multi(fout, extra_known_lores, length=3)
 
 def manage_ancient():
     change_battle_commands = [41, 42, 43]
     if 'o' not in flags:
         alrs = AutoLearnRageSub(require_gau=True)
         alrs.set_location(0x23b73)
-        alrs.write(outfile)
+        alrs.write(fout)
 
         enable_morph_sub = Substitution()
         enable_morph_sub.bytestring = [0xEA] * 2
         enable_morph_sub.set_location(0x25410)
-        enable_morph_sub.write(outfile)
+        enable_morph_sub.write(fout)
 
         enable_mpoint_sub = Substitution()
         enable_mpoint_sub.bytestring = [0xEA] * 2
         enable_mpoint_sub.set_location(0x25E38)
-        enable_mpoint_sub.write(outfile)
+        enable_mpoint_sub.write(fout)
 
         change_battle_commands += range(18, 28)
 
@@ -4029,19 +3970,19 @@ def manage_ancient():
         commands = random.sample(moogle_commands, 2)
         c = get_character(i)
         c.battle_commands = [0x00, commands[0], commands[1], 0x01]
-        c.write_battle_commands(outfile)
+        c.write_battle_commands(fout)
 
     for i in [32, 33]:
         c = get_character(i)
         c.battle_commands = [0x00, 0x1D, 0xFF, 0x01]
-        c.write_battle_commands(outfile)
+        c.write_battle_commands(fout)
 
     characters = get_characters()
     gau = [c for c in characters if c.id == 11][0]
     if gau.battle_commands[1] in [0x11, None]:
         gau.battle_commands[0] = 0x10
         gau.battle_commands[1] = 0xFF
-        gau.write_battle_commands(outfile)
+        gau.write_battle_commands(fout)
 
     to_dummy = [get_item(0xF6), get_item(0xF7)]
     name = [0xFF] + name_to_bytes("Pebble", 12)
@@ -4049,21 +3990,21 @@ def manage_ancient():
         item.dataname = name
         item.price = 4
         item.itemtype = 6
-        item.write_stats(outfile)
+        item.write_stats(fout)
     blank_sub = Substitution()
     blank_sub.set_location(0x2D76C1)
     blank_sub.bytestring = [0xFF] * (0x2D76F5 - blank_sub.location)
     blank_sub.bytestring[blank_sub.size/2] = 0
-    blank_sub.write(outfile)
+    blank_sub.write(fout)
 
     goddess_save_sub = Substitution()
     goddess_save_sub.bytestring = [0xFD, 0xFD]
     goddess_save_sub.set_location(0xC170A)
-    goddess_save_sub.write(outfile)
+    goddess_save_sub.write(fout)
     goddess_save_sub.set_location(0xC1743)
-    goddess_save_sub.write(outfile)
+    goddess_save_sub.write(fout)
     goddess_save_sub.set_location(0xC1866)
-    goddess_save_sub.write(outfile)
+    goddess_save_sub.write(fout)
 
     # decrease exp needed for level up
     if 'racecave' in activated_codes:
@@ -4076,20 +4017,18 @@ def manage_ancient():
         maxlevel = 49
         divisor = 2.0
 
-    fi = open(outfile, 'r+b')
     for level in xrange(maxlevel):
         ratio = (float(level) / maxlevel)**2
         ratio = min(ratio, 1.0)
         xptr = 0x2d8220 + (level*2)
-        fi.seek(xptr)
-        exp = read_multi(fi, length=2)
+        fout.seek(xptr)
+        exp = read_multi(fout, length=2)
         newexp = (exp / divisor)
         remaining = exp - newexp
         newexp = int(round(newexp + (ratio*remaining)))
         newexp = max(newexp, 1)
-        fi.seek(xptr)
-        write_multi(fi, newexp, length=2)
-    fi.close()
+        fout.seek(xptr)
+        write_multi(fout, newexp, length=2)
 
     startsub = Substitution()
     startsub.bytestring = [0xD7, 0xF3,  # remove Daryl
@@ -4111,7 +4050,6 @@ def manage_ancient():
         startsub.bytestring += [0xD4, 0xF0 | c]
         startsub.bytestring += [0xD4, 0xE0 | c]
 
-    fi = open(outfile, 'r+b')
     for c in characters:
         i = c.id
         cptr = 0x2d7ca0 + 0x15 + (i*22)
@@ -4120,11 +4058,10 @@ def manage_ancient():
         level &= 0xF3
         if i >= 14 or "speedcave" in activated_codes and i not in starting:
             level |= 0b1000
-        fi.seek(cptr)
-        fi.write(chr(level))
-    fi.seek(0xa5e74)
-    fi.write(chr(0))  # remove Terra's magitek
-    fi.close()
+        fout.seek(cptr)
+        fout.write(chr(level))
+    fout.seek(0xa5e74)
+    fout.write(chr(0))  # remove Terra's magitek
 
     tempcands = [14, 15, random.choice(range(18, 28)), random.choice([32, 33])]
     if 'speedcave' in activated_codes:
@@ -4171,7 +4108,7 @@ def manage_ancient():
         shadow_leaving_sub.bytestring.append(0xEA)
     shadow_leaving_sub.bytestring += [0xA9, 0xFE,
                                       0x20, 0x92, 0x07]
-    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.write(fout)
     shadow_leaving_sub.set_location(0x24861)
     shadow_leaving_sub.bytestring = [
         0xAE, runaway, 0x30,
@@ -4192,7 +4129,7 @@ def manage_ancient():
         0xD0, 0x05,
         0x2C, 0xDE + (runaway/8), 0x1E,
         ]
-    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.write(fout)
     shadow_leaving_sub.set_location(0x10A851)
     shadow_leaving_sub.bytestring = [
         0x0E, 0x03, runaway, 0x6A, 0xA8, 0x0F,
@@ -4203,12 +4140,12 @@ def manage_ancient():
         0x0E, 0x03, runaway, 0x92, 0xA8, 0x0F,
         0x10, 0xFF,
         ]
-    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.write(fout)
     shadow_leaving_sub.bytestring = [runaway]
     shadow_leaving_sub.set_location(0x10FC2F)
-    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.write(fout)
     shadow_leaving_sub.set_location(0x10FC5D)
-    shadow_leaving_sub.write(outfile)
+    shadow_leaving_sub.write(fout)
 
     esperevents = [
         "Ramuh", "Ifrit", "Shiva", "Siren", "Terrato", "Shoat", "Maduin",
@@ -4245,25 +4182,25 @@ def manage_ancient():
                             ]
     startsub.bytestring.append(0xFE)
     startsub.set_location(0xADD1E)
-    startsub.write(outfile)
+    startsub.write(fout)
 
     startsub0 = Substitution()
     startsub0.bytestring = [0xB2, 0x1E, 0xDD, 0x00, 0xFE]
     startsub0.set_location(0xC9A4F)
-    startsub0.write(outfile)
+    startsub0.write(fout)
 
     set_airship_sub = Substitution()
     set_airship_sub.bytestring = [0xB2, 0xD6, 0x02, 0x00,
                                   0xFE]
     set_airship_sub.set_location(0xAF53A)  # need first branch for button press
-    set_airship_sub.write(outfile)
+    set_airship_sub.write(fout)
 
     tower_msg_sub = Substitution()
     tower_msg_sub.bytestring = [0xD6, 0xE6, 0xD6, 0xE7]  # reset temp chars
     while len(tower_msg_sub.bytestring) < 12:
         tower_msg_sub.bytestring.append(0xFD)
     tower_msg_sub.set_location(0xA03A7)
-    tower_msg_sub.write(outfile)
+    tower_msg_sub.write(fout)
 
     from locationrandomizer import NPCBlock, EventBlock
     falcon = get_location(0xb)
@@ -4301,7 +4238,7 @@ def manage_ancient():
             continue
         pilot_sub.bytestring += [0x3F, i, 0x00]
     pilot_sub.set_location(0xC2110)
-    pilot_sub.write(outfile)
+    pilot_sub.write(fout)
 
     if "racecave" in activated_codes:
         randomize_tower(filename=sourcefile, ancient=True, nummaps=50)
@@ -4357,7 +4294,7 @@ def manage_ancient():
             return True
         return False
 
-    formations = sorted(get_formations(), key=lambda f: f.rank())
+    formations = sorted(get_formations(), key=lambda fout: fout.rank())
     enemy_formations = [
         f for f in formations if f.is_fanatics or
         (f.present_enemies and not f.has_event and not f.has_boss)]
@@ -4387,7 +4324,7 @@ def manage_ancient():
             l.entrance_set.longentrances = []
             l.chests = []
             l.attacks = 0
-            l.write_data(outfile)
+            l.write_data(fout)
 
     pointer = 0xB4E35
     if 'racecave' in activated_codes:
@@ -4398,7 +4335,7 @@ def manage_ancient():
         leader_sub.set_location(0xa02da)
         leader_sub.bytestring = [
             0xB2, subptr & 0xFF, (subptr >> 8) & 0xFF, subptr >> 16]
-        leader_sub.write(outfile)
+        leader_sub.write(fout)
         leader_sub.set_location(pointer)
         leader_sub.bytestring = []
         locked = 0
@@ -4423,7 +4360,7 @@ def manage_ancient():
             mem_addr = ((0x1b+byte) << 3) | bit
             leader_sub.bytestring += [0xD6, mem_addr]
         leader_sub.bytestring += [0x96, 0xFE]
-        leader_sub.write(outfile)
+        leader_sub.write(fout)
         pswitch_ptr = pointer - 0xa0000
         pointer += len(leader_sub.bytestring)
 
@@ -4504,7 +4441,7 @@ def manage_ancient():
         setcands = [f for f in get_fsets() if f.setid >= 0x100 and f.unused]
         fset = setcands.pop()
         fset.formids = formids
-        fset.write_data(outfile)
+        fset.write_data(fout)
         timer = max([e.stats['hp'] for f in formations
                      for e in f.present_enemies])
         reverse = False
@@ -4536,7 +4473,7 @@ def manage_ancient():
         sub = Substitution()
         sub.set_location(ptr)
         sub.bytestring = bytestring
-        sub.write(outfile)
+        sub.write(fout)
         return ptr + len(enemy_template)
 
     shops = get_shops()
@@ -4597,7 +4534,7 @@ def manage_ancient():
     num_in_party_sub = Substitution()
     num_in_party_sub.set_location(0xAC654)
     num_in_party_sub.bytestring = [0xB2, c0, b0, a0]
-    num_in_party_sub.write(outfile)
+    num_in_party_sub.write(fout)
     num_in_party_sub.set_location(pointer)
     num_in_party_sub.bytestring = [0xC0, 0xAE, 0x01, c1, b1, a1,
                                    0xB2, 0x80, 0xC6, 0x00,
@@ -4606,7 +4543,7 @@ def manage_ancient():
                                    0xD3, 0xA3,
                                    0xD3, 0xA2,
                                    0xFE]
-    num_in_party_sub.write(outfile)
+    num_in_party_sub.write(fout)
     pointer += len(num_in_party_sub.bytestring)
     ally_addrs = {}
     for chosen in sorted(set(optional_chars)):
@@ -4637,7 +4574,7 @@ def manage_ancient():
                 uptr = (pointer - 1) - 0xa0000
                 a, b, c = (uptr >> 16, (uptr >> 8) & 0xFF, uptr & 0xFF)
                 allysub.bytestring[7:10] = [c, b, a]
-                allysub.write(outfile)
+                allysub.write(fout)
                 event_addr = (allysub.location - 0xa0000) & 0x3FFFF
                 ally_addrs[chosen.id, party_id, npc_id] = event_addr
 
@@ -4672,7 +4609,7 @@ def manage_ancient():
         ptr += len(template2)
         sub.bytestring[15:17] = price
         assert None not in sub.bytestring
-        sub.write(outfile)
+        sub.write(fout)
         return sub
 
     random.shuffle(restlocs)
@@ -4742,7 +4679,7 @@ def manage_ancient():
             shopsub = Substitution()
             shopsub.set_location(pointer)
             shopsub.bytestring = [0x9B, shop.shopid, 0xFE]
-            shopsub.write(outfile)
+            shopsub.write(fout)
             pointer += len(shopsub.bytestring)
             event_addr = (shopsub.location - 0xa0000) & 0x3FFFF
         else:
@@ -4750,7 +4687,7 @@ def manage_ancient():
             colsub = Substitution()
             colsub.set_location(0xb78ea)
             colsub.bytestring = [0x59, 0x04, 0x5C, 0xFE]
-            colsub.write(outfile)
+            colsub.write(fout)
         shopkeeper = NPCBlock(pointer=None, locid=l.locid)
         graphics = random.randint(14, 62)
         palette = random.choice(npc_palettes[graphics])
@@ -4829,7 +4766,7 @@ def manage_ancient():
             espersub = espersubs[esper.name]
             index = espersub.bytestring.index(None)
             espersub.bytestring[index] = 0x10 | len(l.npcs)
-            espersub.write(outfile)
+            espersub.write(fout)
             event_addr = (espersub.location - 0xa0000) & 0x3FFFF
             event_value = esperevents[esper.name]
             byte, bit = event_value / 8, event_value % 8
@@ -4879,7 +4816,7 @@ def manage_ancient():
     encrate_sub = Substitution()
     encrate_sub.set_location(0xC2BF)
     encrate_sub.bytestring = dungeon_rates
-    encrate_sub.write(outfile)
+    encrate_sub.write(fout)
 
     maxrank = max(locations, key=lambda l: l.ancient_rank).ancient_rank
     for l in locations:
@@ -4987,8 +4924,8 @@ def manage_ancient():
                 if formation.get_music() == 0:
                     formation.set_music(6)
                     formation.set_continuous_music()
-                    formation.write_data(outfile)
-            fset.write_data(outfile)
+                    formation.write_data(fout)
+            fset.write_data(fout)
 
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):
             if 'speedcave' in activated_codes or rank == 0:
@@ -5013,7 +4950,7 @@ def manage_ancient():
                             guarantee_miab_treasure=True,
                             enemy_limit=enemy_limit)
 
-        l.write_data(outfile)
+        l.write_data(fout)
 
     final_cut = Substitution()
     final_cut.set_location(0xA057D)
@@ -5060,10 +4997,8 @@ def manage_ancient():
             1: [0xC18A4, 0xC184B],
             2: [0xC16DD, 0xC171D, 0xC1756],
             3: [None, None, None]}
-        g = open(outfile, 'r+b')
-        g.seek(0xA0F6F)
-        g.write(chr(0x36))
-        g.close()
+        fout.seek(0xA0F6F)
+        fout.write(chr(0x36))
         candidates = sorted(boss_formations, key=lambda b: b.rank())
         candidates = [c for c in candidates if c.inescapable]
         candidates = candidates[random.randint(0, len(candidates)-16):]
@@ -5090,10 +5025,8 @@ def manage_ancient():
                                       7, 8, 9, 10, 11, 13])
                 fset = get_2pack(chosen)
                 if address is not None:
-                    g = open(outfile, 'r+b')
-                    g.seek(address)
-                    g.write(chr(fset.setid & 0xFF))
-                    g.close()
+                    fout.seek(address)
+                    fout.write(chr(fset.setid & 0xFF))
                 else:
                     bg = bgs.pop()
                     final_cut.bytestring += [0x46, i+1,
@@ -5103,11 +5036,11 @@ def manage_ancient():
         assert len(chosens) == 0
 
     final_cut.bytestring += [0xB2, 0x64, 0x13, 0x00]
-    final_cut.write(outfile)
+    final_cut.write(fout)
 
 
 def randomize():
-    global outfile, sourcefile, flags, seed
+    global outfile, sourcefile, flags, seed, fout
 
     args = list(argv)
     if TEST_ON:
@@ -5302,6 +5235,7 @@ h   Organize rages by highest level first'''
         "The randomization is very thorough, so it may take some time.\n"
         'Please be patient and wait for "randomization successful" to appear.')
 
+    fout = open(outfile, "r+b")
     event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
     if 'airship' in activated_codes:
         event_freespaces = activate_airship_mode(event_freespaces)
@@ -5351,7 +5285,7 @@ h   Organize rages by highest level first'''
         if 'm' in flags and 't' in flags and 'q' in flags:
             dirk = get_item(0)
             dirk.become_another()
-            dirk.write_stats(outfile)
+            dirk.write_stats(fout)
             dummy_item(dirk)
             assert not dummy_item(dirk)
     reseed()
@@ -5369,7 +5303,7 @@ h   Organize rages by highest level first'''
     if 'm' in flags or 'o' in flags or 'w' in flags:
         for m in monsters:
             m.screw_tutorial_bosses()
-            m.write_stats(outfile)
+            m.write_stats(fout)
 
     if 'c' in flags and 'm' in flags:
         mgs = manage_monster_appearance(monsters,
@@ -5399,7 +5333,7 @@ h   Organize rages by highest level first'''
         titlesub = Substitution()
         titlesub.bytestring = [0xFD] * 4
         titlesub.set_location(0xA5E8E)
-        titlesub.write(outfile)
+        titlesub.write(fout)
 
         manage_opening()
         manage_ending()
@@ -5408,12 +5342,12 @@ h   Organize rages by highest level first'''
         savetutorial_sub = Substitution()
         savetutorial_sub.set_location(0xC9AF1)
         savetutorial_sub.bytestring = [0xD2, 0x33, 0xEA, 0xEA, 0xEA, 0xEA]
-        savetutorial_sub.write(outfile)
+        savetutorial_sub.write(fout)
 
         savecheck_sub = Substitution()
         savecheck_sub.bytestring = [0xEA, 0xEA]
         savecheck_sub.set_location(0x319f2)
-        savecheck_sub.write(outfile)
+        savecheck_sub.write(fout)
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
@@ -5422,7 +5356,7 @@ h   Organize rages by highest level first'''
 
     if 'u' in flags:
         umaro_risk = manage_umaro(commands)
-        reset_rage_blizzard(items, umaro_risk, outfile)
+        reset_rage_blizzard(items, umaro_risk, fout)
     reseed()
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
@@ -5434,20 +5368,20 @@ h   Organize rages by highest level first'''
         # do this after swapping beserk
         from itemrandomizer import set_item_changed_commands
         set_item_changed_commands(changed_commands)
-        loglist = reset_special_relics(items, characters, outfile)
+        loglist = reset_special_relics(items, characters, fout)
         for name, before, after in loglist:
             beforename = [c for c in commands.values() if c.id == before][0].name
             aftername = [c for c in commands.values() if c.id == after][0].name
             logstr = "{0:13} {1:7} -> {2:7}".format(
                 name + ":", beforename.lower(), aftername.lower())
             log(logstr, section="command-change relics")
-        reset_cursed_shield(outfile)
+        reset_cursed_shield(fout)
 
         for c in characters:
-            c.mutate_stats(outfile)
+            c.mutate_stats(fout)
     else:
         for c in characters:
-            c.mutate_stats(outfile, read_only=True)
+            c.mutate_stats(fout, read_only=True)
     reseed()
 
     if 'f' in flags:
@@ -5455,7 +5389,7 @@ h   Organize rages by highest level first'''
         fsets = get_fsets()
         manage_formations(formations, fsets)
         for fset in fsets:
-            fset.write_data(outfile)
+            fset.write_data(fout)
 
     if 'f' in flags or 'ancientcave' in activated_codes:
         manage_dragons()
@@ -5472,11 +5406,11 @@ h   Organize rages by highest level first'''
     if 'f' in flags:
         manage_formations_hidden(formations, freespaces=aispaces)
         for m in get_monsters():
-            m.write_stats(outfile)
+            m.write_stats(fout)
     reseed()
 
     for f in get_formations():
-        f.write_data(outfile)
+        f.write_data(fout)
 
     if 't' in flags:
         # do this after hidden formations
@@ -5485,7 +5419,7 @@ h   Organize rages by highest level first'''
             manage_chests()
             for fs in fsets:
                 # write new formation sets for MiaBs
-                fs.write_data(outfile)
+                fs.write_data(fout)
 
     if 'c' in flags:
         # do this before ancient cave
@@ -5510,7 +5444,7 @@ h   Organize rages by highest level first'''
             w = WindowBlock(i)
             w.read_data(sourcefile)
             w.mutate()
-            w.write_data(outfile)
+            w.write_data(fout)
     reseed()
 
     if 'dearestmolulu' in activated_codes or (
@@ -5539,7 +5473,7 @@ h   Organize rages by highest level first'''
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()
     for fs in fsets:
-        fs.write_data(outfile)
+        fs.write_data(fout)
 
     if 'u' in flags or 'q' in flags:
         manage_equip_umaro(event_freespaces)
@@ -5550,7 +5484,7 @@ h   Organize rages by highest level first'''
                 m.stats['hp'] = 1
             if 'llg' in activated_codes:
                 m.stats['xp'] = 0
-            m.write_stats(outfile)
+            m.write_stats(fout)
 
     if 'naturalmagic' in activated_codes or 'naturalstats' in activated_codes:
         espers = get_espers()
@@ -5563,15 +5497,15 @@ h   Organize rages by highest level first'''
             for i in items:
                 i.features['learnrate'] = 0
                 i.features['learnspell'] = 0
-                i.write_stats(outfile)
+                i.write_stats(fout)
         for e in espers:
-            e.write_data(outfile)
+            e.write_data(fout)
 
     if 'canttouchthis' in activated_codes:
         for c in characters:
             if c.id >= 14:
                 continue
-            c.become_invincible(outfile)
+            c.become_invincible(fout)
 
     if 'equipanything' in activated_codes:
         manage_equip_anything()
@@ -5580,19 +5514,20 @@ h   Organize rages by highest level first'''
         manage_full_umaro()
         for c in commands.values():
             if c.id not in [0x01, 0x08, 0x0E, 0x0F, 0x15, 0x19]:
-                c.allow_while_berserk(outfile)
+                c.allow_while_berserk(fout)
         whelkhead = get_monster(0x134)
         whelkhead.stats['hp'] = 1
-        whelkhead.write_stats(outfile)
+        whelkhead.write_stats(fout)
         whelkshell = get_monster(0x100)
         whelkshell.stats['hp'] = 1
-        whelkshell.write_stats(outfile)
+        whelkshell.write_stats(fout)
 
     for item in get_ranked_items(allow_banned=True):
         if item.banned:
             assert not dummy_item(item)
 
     rewrite_title(text="FF6 BC %s" % seed)
+    fout.close()
     rewrite_checksum()
 
     print "\nWriting log..."

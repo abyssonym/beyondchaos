@@ -224,19 +224,17 @@ class ChestBlock:
             self.contenttype &= 0xFE
         self.memid = nextid & 0xFF
 
-    def write_data(self, filename, nextpointer):
-        f = open(filename, 'r+b')
-        f.seek(nextpointer)
-        write_multi(f, self.position, length=2)
+    def write_data(self, fout, nextpointer):
+        fout.seek(nextpointer)
+        write_multi(fout, self.position, length=2)
 
         if self.memid is None:
             self.set_new_id()
 
         # TODO: Preserve same IDs on chests like in Figaro Cave
-        f.write(chr(self.memid))
-        f.write(chr(self.contenttype))
-        f.write(chr(self.contents))
-        f.close()
+        fout.write(chr(self.memid))
+        fout.write(chr(self.contenttype))
+        fout.write(chr(self.contents))
 
     def get_current_value(self, guideline=None):
         if self.treasure:

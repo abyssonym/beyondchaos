@@ -190,21 +190,19 @@ class Decompressor():
             address = address - self.fakeaddress
         return map(ord, self.data[address:address+length])
 
-    def compress_and_write(self, filename):
+    def compress_and_write(self, fout):
         compressed = recompress(self.data)
         size = len(compressed)
         #print "Recompressed is %s" % size
-        f = open(filename, 'r+b')
         if self.maxaddress:
             length = self.maxaddress - self.address
-            f.seek(self.address)
-            f.write("".join([chr(0xFF)]*length))
-        f.seek(self.address)
-        write_multi(f, size, length=2)
-        f.write(compressed)
-        if self.maxaddress and f.tell() >= self.maxaddress:
+            fout.seek(self.address)
+            fout.write("".join([chr(0xFF)]*length))
+        fout.seek(self.address)
+        write_multi(fout, size, length=2)
+        fout.write(compressed)
+        if self.maxaddress and fout.tell() >= self.maxaddress:
             raise Exception("Recompressed data out of bounds.")
-        f.close()
 
 if __name__ == "__main__":
     sourcefile = argv[1]

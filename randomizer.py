@@ -4003,6 +4003,192 @@ def manage_wor():
     write_multi(f, extra_known_lores, length=3)
     f.close()
 
+def manage_clock():
+    hour = random.randint(0,5)
+    minute = random.randint(0,4)
+    second = random.randint(0,4)
+    
+    # Change correct options
+    hour_sub = Substitution()
+    hour_sub.bytestring = [0xE4, 0x96, 0x00] * 6
+    hour_sub.bytestring[hour*3] = 0xE2
+    hour_sub.set_location(0xA96CF)
+    hour_sub.write(outfile)
+    
+    minute_sub = Substitution()
+    minute_sub.bytestring = [0xFA, 0x96, 0x00] * 5
+    minute_sub.bytestring[minute*3] = 0xF8
+    minute_sub.set_location(0xA96E8)
+    minute_sub.write(outfile)
+    
+    second_sub = Substitution()
+    second_sub.bytestring = [0x16, 0x97, 0x00] * 5
+    second_sub.bytestring[second*3] = 0x0E
+    second_sub.set_location(0xA96FE)
+    second_sub.write(outfile)
+
+    clockstr = "%d:%02d:%02d" % ((hour+1)*2, (minute+1) * 10, (second+1) * 10)
+    log(clockstr, section="zozo clock")
+  
+    # Change text of hints
+    wrong_hours = [0, 1, 2, 3, 4, 5]
+    wrong_hours.remove(hour)
+    random.shuffle(wrong_hours)
+    hour_to_hex = [chr(0x56), chr(0x58), chr(0x5A), chr(0x5C), bytearray([0x55, 0x54]), bytearray([0x55,0x56])]
+    
+    f = open(sourcefile, 'r+b')
+    start = 0xDACC7
+    end = 0xDAD18
+    f.seek(start)
+    hour_strings = f.read(end - start)
+    f.close()
+    
+    hour_strings = hour_strings[0:6] + hour_to_hex[wrong_hours[0]] + hour_strings[7:21] + hour_to_hex[wrong_hours[1]] + hour_strings[22:42] + hour_to_hex[wrong_hours[2]] + hour_strings[43:48] + hour_to_hex[wrong_hours[3]] + hour_strings[50:75] + hour_to_hex[wrong_hours[4]] + hour_strings[77:]
+    
+    if hour >= 4: # double digit hour
+        hour_strings = hour_strings + '\0'
+    
+    hour_text_sub = Substitution()
+    hour_text_sub.bytestring = hour_strings
+    hour_text_sub.set_location(start)
+    hour_text_sub.write(outfile)
+    
+    ptr_start = 0xCE602
+    ptr_index = 0x416
+    
+    f = open(outfile, 'r+b')
+    offset = 0
+    
+    #adjust text pointers
+    for i in range(1,5):
+        location = ptr_start + (ptr_index+i) * 2
+        f.seek(location)
+        ptr = read_multi(f, 2)
+        if i <= 3:
+            if wrong_hours[i-1] >= 4:
+                offset += 1
+        elif wrong_hours[i-1] < 4:
+            offset -= 1
+        f.seek(location)
+        write_multi(f, ptr + offset, 2)
+        
+    f.close()
+
+    # Change text that says "Hand's pointin' at the two."
+    if minute != 0:
+        minute_text_sub = Substitution()
+        if minute == 1:
+            minute_text_sub.bytestring = [0xAB, 0x8B, 0x4B] # ' f', 'ou', 'r'
+        elif minute == 2:
+            minute_text_sub.bytestring = [0x8E, 0x42, 0x51] # ' s', 'i', 'x'
+        elif minute == 3:
+            minute_text_sub.bytestring = [0x7F, 0x5C, 0x65, 0x00] # ' ', '8', '.', '\0'
+        else:
+            minute_text_sub.bytestring = [0x81, 0x3E, 0x47] # ' t', 'e', 'n'
+            
+        minute_text_sub.set_location(0xDB035)
+        minute_text_sub.write(outfile)
+    
+    
+    wrong_seconds = [0, 1, 2, 3, 4]
+    wrong_seconds.remove(second)
+    random.shuffle(wrong_seconds)
+    
+    double_clue = wrong_seconds[:2]
+    wrong_seconds = wrong_seconds[2:]
+    
+    if 0 in double_clue and 1 in double_clue:
+        # Change to "The seconds? They're less than 30!".
+        
+        second_text_sub0 = Substitution()
+        second_text_sub0.bytestring = [0xBB, 0xAF, 0x86, 0x83, 0x8F, 0x7F, 0x57, 0x54, 0x5E, 0x00] # ' l', 'es', 's ' 'th', 'an', ' ', '3', '0', '!', '\0'
+        second_text_sub0.set_location(0xDAEE4)
+        second_text_sub0.write(outfile)
+
+    elif 0 in double_clue and 2 in double_clue:
+        # Change to "The seconds? They're a factor of 30!".
+        
+        second_text_sub0 = Substitution()
+        second_text_sub0.bytestring = [0x88, 0xAB, 0xEE, 0x96, 0x93, 0xD8, 0x7F, 0x57, 0x54, 0x5E, 0x00] # ' a', ' f', 'ac', 'to', 'r ', 'of', ' ', '3', '0', '!', '\0',
+        second_text_sub0.set_location(0xDAEE4)
+        second_text_sub0.write(outfile)
+
+    elif 0 in double_clue and 3 in double_clue:
+        # Change to "The seconds are 10 modulo 30.".
+        
+        second_text_sub0 = Substitution()
+        second_text_sub0.bytestring = [0x88, 0x89, 0x7F, 0x55, 0x54, 0x9C, 0x48, 0x3D, 0x4E, 0xEA, 0x7F, 0x57, 0x54, 0x65, 0x00] # ' a', 're', ' ', '1', '0', ' m', 'o', 'd', 'u', 'lo',  ' ', '3', '0', '.', '\0',
+        second_text_sub0.set_location(0xDAEDD)
+        second_text_sub0.write(outfile)
+
+    elif 0 in double_clue and 4 in double_clue:
+        # Change to "The second hand's pointin' a bit upward." (i.e., 10 or 50)
+        second_text_sub0 = Substitution()
+        second_text_sub0.bytestring = [0x91, 0x8F, 0x3D, 0xB4, 0x7F, 0x49, 0x48, 0x8A, 0xE8, 0xE2, 0x88, 0xA1, 0xA5, 0xF1, 0x49, 0x50, 0x3A, 0x4B, 0x3D, 0x65] # ' h', 'an', 'd', '\'s', ' ', 'p', 'o', 'in', 'ti', 'n\'', '_a', '_b', 'it', ' u', 'p' 'w', 'a', 'r', 'd', '.'
+        second_text_sub0.set_location(0xDAEDC)
+        second_text_sub0.write(outfile)
+    
+    elif 1 in double_clue and 2 in double_clue:
+        # Change to "The seconds? They're around 25!".
+        second_text_sub0 = Substitution()
+        second_text_sub0.bytestring = [0x88, 0xCA, 0x4E, 0xB5, 0x7F, 0x56, 0x59, 0x5E, 0x00] # ' a', 'ro', 'u', 'nd', ' ', '2', '5', '!', '\0',
+        second_text_sub0.set_location(0xDAEE4)
+        second_text_sub0.write(outfile)
+        
+    #elif 1 in double_clue and 3 in double_clue:
+        # Leave the clue as "The seconds? They're divisible by 20!".
+
+    elif 1 in double_clue and 4 in double_clue:
+        # Change to "The seconds are 20 modulo 30.".
+        
+        second_text_sub0 = Substitution()
+        second_text_sub0.bytestring = [0x88, 0x89, 0x7F, 0x56, 0x54, 0x9C, 0x48, 0x3D, 0x4E, 0xEA, 0x7F, 0x57, 0x54, 0x65, 0x00] # ' a', 're', ' ', '2', '0', ' m', 'o', 'd', 'u', 'lo',  ' ', '3', '0', '.', '\0',
+        second_text_sub0.set_location(0xDAEDD)
+        second_text_sub0.write(outfile)
+
+    elif 2 in double_clue and 3 in double_clue:
+        # Change to "The seconds? They're around 35!".
+        second_text_sub0 = Substitution()
+        second_text_sub0.bytestring = [0x88, 0xCA, 0x4e, 0xB5, 0x7F, 0x57, 0x59, 0x5E, 0x00] # ' a', 'ro', 'u', 'nd', ' ', '3', '5', '!', '\0',
+        second_text_sub0.set_location(0xDAEE4)
+        second_text_sub0.write(outfile)
+
+    elif 2 in double_clue and 4 in double_clue:
+        # Change to "The seconds are an odd prime times 10!".
+        second_text_sub0 = Substitution()
+        second_text_sub0.bytestring = [0x88, 0x89, 0x88, 0x94, 0x48, 0x3D, 0x8C, 0x49, 0xCC, 0xA2, 0x81, 0x42, 0xA2, 0x86, 0x55, 0x54, 0x5E, 0x00] # ' a', 're', ' a', 'n ', 'o', 'd', 'd ', 'p', 'ri', 'me', ' t', 'i', 'me', 's ', '1', '0', '!'
+        second_text_sub0.set_location(0xDAEDD)
+        second_text_sub0.write(outfile)
+
+    elif 3 in double_clue and 4 in double_clue:
+        # Change to "The seconds? They're greater than 30!".
+        second_text_sub0 = Substitution()
+        second_text_sub0.bytestring = [0xC6, 0x89, 0x95, 0x87, 0x81, 0x9B, 0x94, 0x57, 0x54, 0x5E, 0x00] # ' g', 're', 'at', 'er', ' t', 'ha', 'n', '3', '0', '!', '\0',
+        second_text_sub0.set_location(0xDAEE4)
+        second_text_sub0.write(outfile)
+
+
+    # Change text that says 'Clock's second hand's pointin' at 30'
+    second_text_sub1 = Substitution()
+    second_text_sub1.bytestring = [0x55 + wrong_seconds[0]]
+    second_text_sub1.set_location(0xDAEA4)
+    second_text_sub1.write(outfile)
+
+    if wrong_seconds[1] != 1:
+        # Change clue that says "The second hand of my watch is pointing at four."
+        # In the original game, this clue is redundant. It should say "at two".
+        second_text_sub2 = Substitution()
+        if wrong_seconds[1] == 0:
+            second_text_sub2.bytestring = [0x81, 0x50, 0x48] #' t', 'w', 'o'
+        elif wrong_seconds[1] == 2:
+            second_text_sub2.bytestring = [0x8E, 0x42, 0x51] #' s', 'i', 'x'
+        elif wrong_seconds[1] == 3:
+            second_text_sub2.bytestring = [0x7F, 0x5C, 0x65, 0x00] # ' ', '8', '.', '\0'
+        else:
+            second_text_sub2.bytestring = [0x81, 0x3E, 0x47] #' t', 'e', 'n'
+        second_text_sub2.set_location(0xDAF63)
+        second_text_sub2.write(outfile)
+    
 def manage_ancient():
     change_battle_commands = [41, 42, 43]
     if 'o' not in flags:
@@ -5181,7 +5367,8 @@ s   Swap character graphics around.
 p   Randomize the palettes of spells and weapon animations.
 d   Randomize final dungeon.
 a   Organize rages alphabetically (default)
-h   Organize rages by highest level first'''
+h   Organize rages by highest level first
+k   Randomize the clock in Zozo'''
 
     if len(args) > 2:
         fullseed = args[2].strip()
@@ -5306,6 +5493,14 @@ h   Organize rages by highest level first'''
     if 'airship' in activated_codes:
         event_freespaces = activate_airship_mode(event_freespaces)
 
+    if '-' in flags:
+        newFlags = ""
+        allFlags = 'abcdefghijklmnopqrstuvwxyz'
+        for f in allFlags:
+            if f not in flags:
+                newFlags += f
+        flags = newFlags
+        
     if not flags.strip():
         flags = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -5536,6 +5731,10 @@ h   Organize rages by highest level first'''
         manage_wor()
     reseed()
 
+    if 'k' in flags:
+        manage_clock()
+    reseed()
+    
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()
     for fs in fsets:

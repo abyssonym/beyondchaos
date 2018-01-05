@@ -807,7 +807,10 @@ def manage_commands(commands):
     ungray_statscreen_sub.write(outfile)
 
     fanatics_fix_sub = Substitution()
-    fanatics_fix_sub.bytestring = [0xA9, 0x15]
+    if "metronome" in activated_codes:
+        fanatics_fix_sub.bytestring = [0xA9, 0x1D]
+    else:
+        fanatics_fix_sub.bytestring = [0xA9, 0x15]
     fanatics_fix_sub.set_location(0x2537E)
     fanatics_fix_sub.write(outfile)
 
@@ -833,6 +836,14 @@ def manage_commands(commands):
         if c.id == 11:
             # Fixing Gau
             c.set_battle_command(0, commands["fight"])
+
+        if 'metronome' in activated_codes:
+            c.set_battle_command(0, command_id=0)
+            c.set_battle_command(1, command_id=0x1D)
+            c.set_battle_command(2, command_id=2)
+            c.set_battle_command(3, command_id=1)
+            c.write_battle_commands(outfile)
+            continue
 
         if 'collateraldamage' in activated_codes:
             c.set_battle_command(1, command_id=0xFF)
@@ -880,6 +891,8 @@ def manage_commands(commands):
 
 
 def manage_tempchar_commands():
+    if "metronome" in activated_codes:
+        return
     characters = get_characters()
     chardict = dict([(c.id, c) for c in characters])
     basicpool = set(range(3, 0x1E)) - changed_commands - set([0x4, 0x11, 0x14, 0x15, 0x19])
@@ -1095,6 +1108,33 @@ def manage_commands_new(commands):
 
         command_descr = "{0}\n-------\n{1}".format(c.name, str(s))
         log(command_descr, 'commands')
+
+    if "metronome" in activated_codes:
+        magitek = [c for c in commands.values() if c.name == "magitek"][0]
+        magitek.read_properties(sourcefile)
+        magitek.targeting = 0x04
+        magitek.set_retarget(outfile)
+        if "endless9" in activated_codes:
+            s = MultipleSpellSub()
+            s.set_count(9)
+            magitek.newname("9xChaos", outfile)
+            s.set_spells([])
+        else:
+            s = RandomSpellSub()
+            magitek.newname("R-Chaos", outfile)
+            s.set_spells([], [], "Chaos")
+        magitek.write_properties(outfile)
+        magitek.unsetmenu(outfile)
+        magitek.allow_while_confused(outfile)
+        magitek.allow_while_berserk(outfile)
+
+        myfs = get_appropriate_freespace(freespaces, s.size)
+        s.set_location(myfs.start)
+        if not hasattr(s, "bytestring") or not s.bytestring:
+            s.generate_bytestring()
+        s.write(outfile)
+        magitek.setpointer(s.location, outfile)
+        freespaces = determine_new_freespaces(freespaces, myfs, s.size)
 
     gogo_enable_all_sub = Substitution()
     gogo_enable_all_sub.bytestring = [0xEA] * 2
@@ -1331,7 +1371,10 @@ def manage_umaro(commands):
                   0xC not in c.battle_commands and
                   0x17 not in c.battle_commands]
 
-    umaro_risk = random.choice(candidates)
+    if not candidates:
+        umaro_risk = random.choice(characters)
+    else:
+        umaro_risk = random.choice(candidates)
     if 0xFF in umaro_risk.battle_commands:
         battle_commands = []
         battle_commands.append(0)
@@ -1359,6 +1402,9 @@ def manage_umaro(commands):
 
     umaro.beserk = False
     umaro_risk.beserk = True
+
+    if "metronome" in activated_codes:
+        umaro_risk.battle_commands = [0x1D, 0xFF, 0xFF, 0xFF]
 
     umaro_risk.write_battle_commands(outfile)
     umaro.write_battle_commands(outfile)
@@ -5181,7 +5227,8 @@ s   Swap character graphics around.
 p   Randomize the palettes of spells and weapon animations.
 d   Randomize final dungeon.
 a   Organize rages alphabetically (default)
-h   Organize rages by highest level first'''
+h   Organize rages by highest level first
+-   Use all flags EXCEPT the ones listed'''
 
     if len(args) > 2:
         fullseed = args[2].strip()
@@ -5274,6 +5321,7 @@ h   Organize rages by highest level first'''
     secret_codes['ancientcave'] = "CHAOS TOWER MODE"
     secret_codes['speedcave'] = "FAST CHAOS TOWER MODE"
     secret_codes['racecave'] = "EXTRA FAST CHAOS TOWER MODE"
+    secret_codes['metronome'] = "R-CHAOS MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -5306,8 +5354,17 @@ h   Organize rages by highest level first'''
     if 'airship' in activated_codes:
         event_freespaces = activate_airship_mode(event_freespaces)
 
+    allFlags = 'abcdefghijklmnopqrstuvwxyz'
+
+    if '-' in flags:
+        print "NOTE: Using all flags EXCEPT the specified flags."
+        newFlags = allFlags
+        for f in flags.strip():
+            newFlags = newFlags.replace(f,"")
+        flags = newFlags
+
     if not flags.strip():
-        flags = 'abcdefghijklmnopqrstuvwxyz'
+        flags = allFlags
 
     if 'w' in flags and 'o' not in flags:
         flags += 'o'

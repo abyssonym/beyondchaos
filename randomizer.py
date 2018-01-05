@@ -5308,8 +5308,9 @@ h   Organize rages by highest level first
         event_freespaces = activate_airship_mode(event_freespaces)
 
     allFlags = 'abcdefghijklmnopqrstuvwxyz'
-    
+
     if '-' in flags:
+        print "NOTE: Using all flags EXCEPT the specified flags."
         newFlags = allFlags
         for f in flags.strip():
             newFlags = newFlags.replace(f,"")

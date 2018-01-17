@@ -551,7 +551,10 @@ class RandomSpellSub(Substitution):
 class MultipleSpellSub(Substitution):
     @property
     def size(self):
-        overhead = (self.count * 3) + 1
+        if isinstance(self.spellsub, RandomSpellSub):
+            overhead = ((self.count - 1) * 9) + 4
+        else:
+            overhead = ((self.count - 1) * 5) + 4
         return self.spellsub.size + overhead
 
     def set_count(self, count):
@@ -567,12 +570,18 @@ class MultipleSpellSub(Substitution):
             self.spells = self.spellsub.spells
 
     def generate_bytestring(self):
-        subpointer = self.location + (self.count * 3) + 1
+        if isinstance(self.spellsub, RandomSpellSub):
+            subpointer = self.location + ((self.count-1) * 9) + 4
+        else:
+            subpointer = self.location + ((self.count-1) * 5) + 4
         self.spellsub.set_location(subpointer)
         if not hasattr(self.spellsub, "bytestring"):
             self.spellsub.generate_bytestring()
         high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
-        self.bytestring = [0x20, low, high] * self.count
+        if isinstance(self.spellsub, RandomSpellSub):
+            self.bytestring = [0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2] * (self.count - 1) + [0x20, low, high]
+        else:
+            self.bytestring = [0x5A, 0x20, low, high, 0x7A] * (self.count - 1) + [0x20, low, high]
         self.bytestring += [0x60]
         self.bytestring += self.spellsub.bytestring
 

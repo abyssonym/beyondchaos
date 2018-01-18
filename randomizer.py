@@ -5426,6 +5426,46 @@ def manage_santa():
         BattleSANTAsub.set_location(location)
         BattleSANTAsub.write(outfile)
 
+def manage_dances():
+    f = open(sourcefile, 'r+b')
+    f.seek(0x0FFE80)
+    dances = map(ord, f.read(32))
+    f.close()
+
+    # Shuffle the geos, plus Fire Dance, Pearl Wind, Lullaby, Acid Rain, and N. Cross because why not
+    geo = [dances[i*4] for i in range(8)] + [dances[i*4+1] for i in range(8)] + [0x60, 0x93, 0xa8, 0xa9, 0xc5]
+    random.shuffle(geo)
+
+    # Shuffle 1/16 beasts, plus chocobop, takedown, and wild fang, since they seem on theme
+    beasts = [dances[i*4+3] for i in range(8)] + [0x7F, 0xFC, 0xFD]
+    random.shuffle(beasts)
+
+    # Replace 2/16 moves that are duplicated from other dances
+    spells = get_ranked_spells(sourcefile)
+    spells = [s for s in spells if s.spellid >= 0x36]
+    half = len(spells) / 2
+
+    other = []
+    for i in range(8):
+        index = random.randint(0, half) + random.randint(0, half)
+        other.append(spells[index].spellid)
+
+    dances = geo[:16] + other[:8] + beasts[:8]
+    random.shuffle(dances)
+
+    Dancesub = Substitution()
+    Dancesub.bytestring = dances
+    Dancesub.set_location(0x0FFE80)
+    Dancesub.write(outfile)
+
+    dance_names = ["Wind Song", "Forest Nocturne", "Desert Aria", "Love Sonata", "Earth Blues", "Water Rondo", "Dusk Requium", "Snowman Jazz"]
+
+    for i, dance in enumerate(dance_names):
+        from skillrandomizer import spellnames;
+        dance_names = [spellnames[dances[i*4 + j]] for j in range(4)]
+        dancestr = "%s:\n\t7/16 %s,\t6/16 %4s,\t2/16 %s,\t1/16 %s" % (dance, dance_names[0], dance_names[1], dance_names[2], dance_names[3])
+        log(dancestr, "dances")
+
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
 
@@ -5502,6 +5542,7 @@ p   Randomize the palettes of spells and weapon animations.
 d   Randomize final dungeon.
 a   Organize rages alphabetically (default)
 h   Organize rages by highest level first
+g   Randomize dances
 k   Randomize the clock in Zozo
 -   Use all flags EXCEPT the ones listed'''
 
@@ -5898,6 +5939,11 @@ k   Randomize the clock in Zozo
 
     if 'k' in flags:
         manage_clock()
+
+    if 'g' in flags:
+        if 0x13 not in changed_commands:
+            manage_dances()
+
     reseed()
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----

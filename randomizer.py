@@ -1,4 +1,4 @@
-from time import time, sleep
+from time import time, sleep, gmtime
 from sys import argv
 from shutil import copyfile
 import os
@@ -469,13 +469,18 @@ class WindowBlock():
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.palette = []
-        for i in xrange(0x8):
-            color = read_multi(f, length=2)
-            blue = (color & 0x7c00) >> 10
-            green = (color & 0x03e0) >> 5
-            red = color & 0x001f
-            self.negabit = color & 0x8000
-            self.palette.append((red, green, blue))
+        if 'christmas' in activated_codes:
+            self.palette = [(0x1c, 0x02, 0x04)] * 2 + [(0x19, 0x00, 0x06)] * 2 + [(0x03, 0x0d, 0x07)] * 2 + [(0x18,0x18,0x18)] + [(0x04, 0x13, 0x0a)]
+        elif 'halloween' in activated_codes:
+            self.palette = [(0x04, 0x0d, 0x15)] * 2 + [(0x00, 0x00, 0x00)] + [(0x0b, 0x1d, 0x15)] + [(0x00,0x11,0x00)] + [(0x1e, 0x00, 0x00)] + [(0x1d, 0x1c, 0x00)] + [(0x1c, 0x1f, 0x1b)]
+        else:
+            for i in xrange(0x8):
+                color = read_multi(f, length=2)
+                blue = (color & 0x7c00) >> 10
+                green = (color & 0x03e0) >> 5
+                red = color & 0x001f
+                self.negabit = color & 0x8000
+                self.palette.append((red, green, blue))
         f.close()
 
     def write_data(self, fout):
@@ -485,6 +490,8 @@ class WindowBlock():
             write_multi(fout, color, length=2)
 
     def mutate(self):
+        if 'halloween' in activated_codes:
+            return
         def cluster_colors(colors):
             def distance(cluster, value):
                 average = sum([sum(c) for (i, c) in cluster]) / len(cluster)
@@ -517,7 +524,10 @@ class WindowBlock():
             degree = random.randint(-75, 75)
             darken = random.uniform(prevdarken, min(prevdarken*1.1, 1.0))
             darkener = lambda c: int(round(c * darken))
-            hueswap = generate_swapfunc()
+            if 'christmas' in activated_codes:
+                hueswap = lambda w: w
+            else:
+                hueswap = generate_swapfunc()
             for i, cs in sorted(cluster, key=lambda (i, c): sum(c)):
                 newcs = shift_middle(cs, degree, ungray=True)
                 newcs = map(darkener, newcs)
@@ -1817,7 +1827,7 @@ def manage_monster_appearance(monsters, preserve_graphics=False):
     return mgs
 
 
-def recolor_character_palette(pointer, palette=None, flesh=False, middle=True):
+def recolor_character_palette(pointer, palette=None, flesh=False, middle=True, santa=False):
     fout.seek(pointer)
     if palette is None:
         palette = [read_multi(fout, length=2) for _ in xrange(16)]
@@ -1825,6 +1835,9 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True):
             palette[:2], palette[2:4], palette[4:6], palette[6:8],
             palette[8:10], palette[10:12], palette[12:])
         new_palette = []
+        def components_to_color((red, green, blue)):
+            return red | (green << 5) | (blue << 10)
+
         if not flesh:
             for piece in (outline, eyes, hair, skintone, outfit1, outfit2, NPC):
                 transformer = get_palette_transformer(middle=middle)
@@ -1832,6 +1845,26 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True):
                 piece = transformer(piece)
                 new_palette += piece
             new_palette[6:8] = skintone
+            if 'christmas' in activated_codes:
+                if santa:
+                    # color kefka's palette to make him look santa-ish
+                    new_palette = palette
+                    new_palette[4] = components_to_color((0x1f, 0x1f, 0x1f)) #0x7fff
+                    new_palette[8] = components_to_color((0x1f, 0x1f, 0x1c)) #0x73ff
+                    new_palette[9] = components_to_color((0x00, 0x07, 0x00)) #0x00e0
+                    new_palette[11] = components_to_color((0x1c, 0x02, 0x04)) #0x105c
+                else:
+                    # give them red & green outfits
+                    red = [components_to_color((0x19, 0x00, 0x05)), components_to_color((0x1c, 0x02, 0x04)) ]
+                    green = [components_to_color((0x07, 0x12, 0x0b)), components_to_color((0x03, 0x0d, 0x07))]
+
+                    random.shuffle(red)
+                    random.shuffle(green)
+                    outfit = [red, green]
+                    random.shuffle(outfit)
+                    new_palette[8:10] = outfit[0]
+                    new_palette[10:12] = outfit[1]
+
         else:
             transformer = get_palette_transformer(middle=middle)
             new_palette = transformer(palette)
@@ -1883,6 +1916,8 @@ def manage_character_appearance(preserve_graphics=False):
     sprite_swap_mode = 'spriteswap' in activated_codes
     sprite_swap_mode = 'makeover' in activated_codes
     moogle_mode = 'kupokupo' in activated_codes
+    ghost_mode = 'halloween' in activated_codes
+    christmas_mode = 'christmas' in activated_codes
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -1894,8 +1929,12 @@ def manage_character_appearance(preserve_graphics=False):
 
     npcs = get_npcs()
 
-    if wild or tina_mode or sabin_mode or soldier_mode:
-        char_ids = range(0, 0x16)
+    if (wild or tina_mode or sabin_mode
+            or ghost_mode or christmas_mode or soldier_mode):
+        if christmas_mode:
+            char_ids = range(0, 0x15) # don't replace kefka
+        else:
+            char_ids = range(0, 0x16)
     else:
         char_ids = range(0, 0x0E)
 
@@ -1920,6 +1959,8 @@ def manage_character_appearance(preserve_graphics=False):
         change_to[0x0A] = mog
         change_to[0x12] = esper_terra
         change_to[0x0F] = imp
+    elif ghost_mode:
+        change_to = dict(zip(char_ids, [0x14] * 100))
     else:
         female = [0, 0x06, 0x08]
         female += [c for c in [0x03, 0x0A, 0x0C, 0x0D, 0x0E, 0x0F, 0x14] if
@@ -2162,7 +2203,7 @@ def manage_character_appearance(preserve_graphics=False):
     for i in xrange(6):
         pointer = 0x268000 + (i*0x20)
         palette = recolor_character_palette(pointer, palette=None,
-                                            flesh=(i == 5))
+                                            flesh=(i == 5), santa=(christmas_mode and i==3))
         pointer = 0x2D6300 + (i*0x20)
         recolor_character_palette(pointer, palette=palette)
 
@@ -2625,13 +2666,13 @@ def manage_chests():
     locations = get_locations(sourcefile)
     locations = sorted(locations, key=lambda l: l.rank())
     for l in locations:
-        # if the Zozo clock is randomized, upgrade the chest from chain saw to pearl lance before mutating 
+        # if the Zozo clock is randomized, upgrade the chest from chain saw to pearl lance before mutating
         if 'k' in flags:
             if l.locid in [221,225,226]:
                 for c in l.chests:
                     if c.contenttype == 0x40 and c.contents == 166:
                         c.contents = 33
-                        
+
         l.mutate_chests()
     locations = sorted(locations, key=lambda l: l.locid)
 
@@ -3165,7 +3206,6 @@ def get_namelocdict():
             namelocdict[encounter] = name
 
     return namelocdict
-
 
 def manage_colorize_dungeons(locations=None, freespaces=None):
     locations = locations or get_locations()
@@ -5359,6 +5399,30 @@ def manage_ancient():
     final_cut.bytestring += [0xB2, 0x64, 0x13, 0x00]
     final_cut.write(fout)
 
+def manage_santa():
+    Santasub = Substitution()
+    Santasub.bytestring = [0x32, 0x3A, 0x47, 0x4D, 0x3A]
+    for location in [0xD1526, 0xD158D, 0xD16AB, 0xD1AA9, 0xD3F5F, 0xD51C0, 0xD52D0, 0xD5413, 0xD5B03, 0xD8F60, 0xD9260, 0xD92B0, 0xD92DB, 0xD9334, 0xD9B33, 0xDDC27, 0xDDD10, 0xDDD5E, 0xDE650, 0xDE780, 0xDF79C, 0xDF7CF, 0xDF82A, 0xE0B56, 0xE0C10, 0xE0C88, 0xE0FD0, 0xE10D2, 0xE114D, 0xE1197, 0xE1A70, 0xEAB8E, 0xE234B, 0xE2480, 0xE24EB, 0xE256B, 0xE2E3C, 0xE2EA9, 0xE4896, 0xE4915, 0xE4971, 0xE4BBC, 0xE5282, 0xE5656, 0xE56D6, 0xE56EF, 0xE6059, 0xE607A, 0xE6151, 0xE6296, 0xE62E7, 0xE651A, 0xE65AE, 0xE6601, 0xE68F2, 0xE6A54, 0xE6A7E, 0xE6B38, 0xE6B7E, 0xE7579, 0xE7B49, 0xE8160, 0xE8239, 0xE82A3, 0xE8755, 0xE8C67, 0xE91AF, 0xE9707, 0xE9980, 0xE9DFB, 0xEA8AB, 0xEDBA7, 0xEE0E6, 0xEE5FE, 0xEE755] :
+        Santasub.set_location(location)
+        Santasub.write(outfile)
+
+    SANTAsub = Substitution()
+    SANTAsub.bytestring = [0x32, 0x20, 0x2D, 0x33, 0x20]
+    for location in [0xD06B6, 0xD153A, 0xD1594, 0xD15BB, 0xD1600, 0xD163D, 0xD16D9, 0xD1756, 0xD17D3, 0xD17FF, 0xD1ABE, 0xD1AF2, 0xD1B51, 0xD1B83, 0xD1C4A, 0xD1C5F, 0xD53D8, 0xD542F, 0xD585B, 0xD58C3, 0xD592A, 0xD5957, 0xD5978, 0xD59A6, 0xD5A05, 0xD5A29, 0xD5A4B, 0xD5A6B, 0xD5A86, 0xD5ACA, 0xD5B17, 0xD8F2E, 0xD8F83, 0xD8FB5, 0xD8FC2, 0xD9203, 0xD9239, 0xD93B3, 0xDE115, 0xDE170, 0xDE1A6, 0xDE45F, 0xDE48A, 0xDE4BC, 0xDE535, 0xDE582, 0xDE58E, 0xDE7C9, 0xDE7FC, 0xE09C9, 0xE0A3E, 0xE10FF, 0xE1128, 0xE113D, 0xE47E8, 0xE48AB, 0xE491F, 0xE4998, 0xE49BE, 0xE49E2, 0xE4A2C, 0xE4AA0, 0xE4AC2, 0xE4AE8, 0xE4B2B, 0xE4B50, 0xE549E, 0xE54C4, 0xE5542, 0xE5550, 0xE5560, 0xE55C2, 0xE55FC, 0xE5623, 0xE569B, 0xE571A, 0xE572B, 0xE57A9, 0xEE23D, 0xEE261, 0xEE28D, 0xEE2D7, 0xEE3ED, 0xEE591, 0xEE5D3, 0xEE621, 0xEE656, 0xEE6B2, 0xEE710, 0xEE75C, 0xEF3D7]:
+        SANTAsub.set_location(location)
+        SANTAsub.write(outfile)
+
+    BattleSantasub = Substitution()
+    BattleSantasub.bytestring = [0x92, 0x9A, 0xA7, 0xAD, 0x9A]
+    for location in [0xFCB54, 0xFCBF4, 0xFCD34, 0x10D9D5, 0x10DF9E, 0x10E0C1, 0x10E10E, 0x10E602, 0x10E8EE, 0x10F41A, 0x10F5DD, 0x10F7A7, 0x10F8FA]:
+        BattleSantasub.set_location(location)
+        BattleSantasub.write(outfile)
+
+    BattleSANTAsub = Substitution()
+    BattleSANTAsub.bytestring = [0x92, 0x80, 0x8D, 0x93, 0x80]
+    for location in [0x479B6, 0x479BC, 0x479C2, 0x479C8, 0x479CE, 0x479D4, 0x479DA, 0x10D7A0, 0x10D9C0, 0x10D9E6, 0x10DEF8, 0x10DF0C, 0x10DF29, 0x10DF67, 0x10DF82, 0x10DFB9, 0x10E034, 0x10E072, 0x10E0C9, 0x10E5BD, 0x10E61C, 0x10E748, 0x10E82E, 0x10E903, 0x10E978, 0x10F375, 0x10F3C1, 0x10F423, 0x10F5F4, 0x10F7E1, 0x10F887, 0x10F920, 0x10F942, 0x10F959, 0x10F98B, 0x10F9AC, 0x10F9D7, 0x10F9E6, 0x10FB6B]:
+        BattleSANTAsub.set_location(location)
+        BattleSANTAsub.write(outfile)
 
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
@@ -5545,6 +5609,14 @@ k   Randomize the clock in Zozo
         activated_codes.add('speedcave')
     if 'speedcave' in activated_codes:
         activated_codes.add('ancientcave')
+
+    tm = gmtime(seed)
+    if tm.tm_mon == 12 and (tm.tm_mday == 24 or tm.tm_mday == 25):
+        activated_codes.add('christmas')
+        s += "CHRISTMAS MODE ACTIVATED\n"
+    elif tm.tm_mon == 10 and tm.tm_mday == 31:
+        activated_codes.add('halloween')
+        s += "ALL HALLOWS EVE MODE ACTIVATED\n"
 
     print s.strip()
 
@@ -5779,7 +5851,7 @@ k   Randomize the clock in Zozo
             manage_blitz()
     reseed()
 
-    if 'n' in flags:
+    if 'n' in flags or 'christmas' in activated_codes or 'halloween' in activated_codes:
         for i in range(8):
             w = WindowBlock(i)
             w.read_data(sourcefile)
@@ -5869,6 +5941,9 @@ k   Randomize the clock in Zozo
     for item in get_ranked_items(allow_banned=True):
         if item.banned:
             assert not dummy_item(item)
+
+    if 'christmas' in activated_codes:
+        manage_santa()
 
     rewrite_title(text="FF6 BC %s" % seed)
     fout.close()

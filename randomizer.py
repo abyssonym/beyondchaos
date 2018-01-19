@@ -5633,6 +5633,16 @@ h   Organize rages by highest level first
             manage_blitz()
     reseed()
 
+    if 'halloween' in activated_codes:
+        demon_chocobo_sub = Substitution()
+        f = open(sourcefile, 'r+b')
+        f.seek(0x2d0000 + 896 * 7)
+        demon_chocobo_sub.bytestring = map(ord, f.read(896))
+        for i in range(7):
+            demon_chocobo_sub.set_location(0x2d0000 + 896 * i)
+            demon_chocobo_sub.write(outfile)
+        f.close()
+        
     if 'n' in flags or 'christmas' in activated_codes or 'halloween' in activated_codes:
         for i in range(8):
             w = WindowBlock(i)

@@ -5440,7 +5440,7 @@ h   Organize rages by highest level first
     reseed()
 
     if 'c' in flags or 's' in flags or (
-            set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
+            set(['partyparty', 'bravenudeworld', 'suplexwrecks', 'quikdraw']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
     reseed()
 

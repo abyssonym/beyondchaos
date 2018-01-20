@@ -5723,6 +5723,7 @@ k   Randomize the clock in Zozo
 
     if 'c' in flags or 's' in flags or (
             set(['partyparty', 'bravenudeworld', 'suplexwrecks',
+                 'christmas', 'halloween',
                  'kupokupo', 'quikdraw']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
     reseed()
@@ -5860,7 +5861,7 @@ k   Randomize the clock in Zozo
             demon_chocobo_sub.set_location(0x2d0000 + 896 * i)
             demon_chocobo_sub.write(outfile)
         f.close()
-        
+
     if 'n' in flags or 'christmas' in activated_codes or 'halloween' in activated_codes:
         for i in range(8):
             w = WindowBlock(i)

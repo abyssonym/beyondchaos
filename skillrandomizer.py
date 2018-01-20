@@ -563,12 +563,12 @@ class MultipleSpellSub(Substitution):
             if self.count <= 3:
                 return ((self.count - 1) * 9) + 4
             else:
-                return 17
+                return 20
         else:
             if self.count <= 3:
                 return ((self.count - 1) * 5) + 4
             else:
-                return 13
+                return 16
         
     def set_count(self, count):
         self.count = count
@@ -592,12 +592,12 @@ class MultipleSpellSub(Substitution):
             if self.count <= 3:
                 self.bytestring = [0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2] * (self.count - 1) + [0x20, low, high]
             else:
-                self.bytestring = [0xA9, self.count, 0x48, 0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2, 0x68, 0x3A, 0xD0, 0xF2]
+                self.bytestring = [0xA9, self.count - 1, 0x48, 0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2, 0x68, 0x3A, 0xD0, 0xF2, 0x20, low, high]
         else:
             if self.count <= 3:
                 self.bytestring = [0x5A, 0x20, low, high, 0x7A] * (self.count - 1) + [0x20, low, high]
             else:
-                self.bytestring = [0xA9, self.count, 0x48, 0x5A, 0x20, low, high, 0x7A, 0x68, 0x3A, 0xD0, 0xF6]
+                self.bytestring = [0xA9, self.count - 1, 0x48, 0x5A, 0x20, low, high, 0x7A, 0x68, 0x3A, 0xD0, 0xF6, 0x20, low, high]
         self.bytestring += [0x60]
         self.bytestring += self.spellsub.bytestring
 

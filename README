@@ -39,6 +39,7 @@ Flags:
     d   Randomize final dungeon.
     a   Organize rages alphabetically (default)
     h   Organize rages by highest level first
+    g   Randomize dances
     k   Randomize the clock in Zozo
 
 Output rom file:

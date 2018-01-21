@@ -1985,15 +1985,17 @@ def manage_character_appearance(preserve_graphics=False):
             if name in femalenames:
                 femalenames.remove(name)
 
-            name = name.upper()
             names.append(name)
     elif tina_mode:
-        names = ["TINA"] * 14
+        names = ["Tina"] * 14
     elif sabin_mode:
-        names = ["TEABIN", "LOABIN", "CYABIN", "SHABIN", "EDABIN", "SABIN",
-                 "CEABIN", "STABIN", "REABIN", "SEABIN", "MOABIN", "GAUBIN",
-                 "GOABIN", "UMABIN"]
+        names = ["Teabin", "Loabin", "Cyabin", "Shabin", "Edabin", "Sabin",
+                 "Ceabin", "Stabin", "Reabin", "Seabin", "Moabin", "Gaubin",
+                 "Goabin", "Umabin"]
 
+    if 'capslockoff' not in activated_codes:
+        names = [name.upper() for name in names]
+                 
     for c in characters:
         if c.id < 14:
             c.newname = names[c.id]
@@ -5322,6 +5324,7 @@ h   Organize rages by highest level first
     secret_codes['speedcave'] = "FAST CHAOS TOWER MODE"
     secret_codes['racecave'] = "EXTRA FAST CHAOS TOWER MODE"
     secret_codes['metronome'] = "R-CHAOS MODE"
+    secret_codes['capslockoff'] = "Mixed Case Names Mode"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

@@ -335,7 +335,6 @@ def get_spellsets(spells=None):
     spellsets['Chaos'] = ('skill (including broken and glitchy skills)', [])
     if wildspells is None:
         wildspells = random.sample(spells,8)
-        print [s.spellid for s in wildspells]
     spellsets['Wild'] = ('random set of spells', wildspells)
     spellsets['Magic'] = ('magic spell', range(0, 0x36))
     spellsets['Black'] = ('black magic spell', range(0, 0x18))

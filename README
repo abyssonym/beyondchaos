@@ -39,6 +39,7 @@ Flags:
     d   Randomize final dungeon.
     a   Organize rages alphabetically (default)
     h   Organize rages by highest level first
+    k   Randomize the clock in Zozo
 
 Output rom file:
     The randomizer generates two files, a patched rom file, and a mini-FAQ. Both files will have the seed value in their name. To play the game, load the patched rom file in your emulator. The mini-FAQ is a text file that mainly includes information about where to get items; colosseum rewards, monster steals and drops, shop info, and monster rages are all included.

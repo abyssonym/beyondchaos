@@ -2054,20 +2054,22 @@ def manage_character_appearance(preserve_graphics=False):
             if name in femalenames:
                 femalenames.remove(name)
 
-            name = name.upper()
             names.append(name)
     elif tina_mode:
-        names = ["TINA"] * 14
+        names = ["Tina"] * 14
     elif sabin_mode:
-        names = ["TEABIN", "LOABIN", "CYABIN", "SHABIN", "EDABIN", "SABIN",
-                 "CEABIN", "STABIN", "REABIN", "SEABIN", "MOABIN", "GAUBIN",
-                 "GOABIN", "UMABIN"]
+        names = ["Teabin", "Loabin", "Cyabin", "Shabin", "Edabin", "Sabin",
+                 "Ceabin", "Stabin", "Reabin", "Seabin", "Moabin", "Gaubin",
+                 "Goabin", "Umabin"]
     elif moogle_mode:
-        names = ["KUMOP", "KUPO", "KUPEK", "KUPOP", "KUMAMA", "KUKU",
-                 "KUTAN", "KUPAN", "KUSHU", "KURIN", "MOG", "KURU",
-                 "KAMOG", "KUMARO", "BANON", "LEO", "?????", "?????",
-                 "CYAN", "SHADOW", "EDGAR", "SABIN", "CELES", "STRAGO",
-                 "RELM", "SETZER", "GAU", "GOGO"]
+        names = ["Kumop", "Kupo", "Kupek", "Kupop", "Kumama", "Kuku",
+                 "Kutan", "Kupan", "Kushu", "Kurin", "Mog", "Kuru",
+                 "Kamog", "Kumaro", "Banon", "Leo", "?????", "?????",
+                 "Cyan", "Shadow", "Edgar", "Sabin", "Celes", "Strago",
+                 "Relm", "Setzer", "Gau", "Gogo"]
+
+    if 'capslockoff' not in activated_codes:
+        names = [name.upper() for name in names]
 
     for c in characters:
         if c.id < 14:
@@ -5599,6 +5601,7 @@ k   Randomize the clock in Zozo
     secret_codes['spriteswap'] = "SPRITE SWAP MODE"
     secret_codes['makeover'] = "SPRITE REPLACEMENT MODE"
     secret_codes['kupokupo'] = "MOOGLE MODE"
+    secret_codes['capslockoff'] = "Mixed Case Names Mode"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

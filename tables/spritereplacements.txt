@@ -1,0 +1,4 @@
+badass-ct-robo.bin,Robo,none
+badass-earthbound-ness.bin,Ness,male
+badass-metroid-samus-zero.bin,Samus,female
+metroidquest-ec-dark-cecil.bin,Cecil,male

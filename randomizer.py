@@ -8,7 +8,7 @@ from utils import (ESPER_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
-                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
+                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -1880,6 +1880,7 @@ def manage_character_appearance(preserve_graphics=False):
     sabin_mode = 'suplexwrecks' in activated_codes
     tina_mode = 'bravenudeworld' in activated_codes
     soldier_mode = 'quikdraw' in activated_codes
+    sprite_swap_mode = 'spriteswap' in activated_codes
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -1920,6 +1921,31 @@ def manage_character_appearance(preserve_graphics=False):
             change_to = dict(zip(sorted(male), male) +
                              zip(sorted(female), female))
 
+    if sprite_swap_mode and not preserve_graphics:
+        class SpriteReplacement:
+            def __init__(self, file, name, gender):
+                self.file = file
+                self.name = name
+                self.gender = gender
+        f = open(SPRITE_REPLACEMENT_TABLE)
+        replace_candidates = set(SpriteReplacement(*line.strip().split(',')) for line in f.readlines())
+        f.close()
+
+        num_to_replace = min(len(replace_candidates), random.randint(3,6))
+        replacements = random.sample(replace_candidates, num_to_replace)
+
+        if wild:
+            swap_to = dict(zip(random.sample(char_ids, num_to_replace),replacements))
+        else:
+            female_replacements = [s for s in replacements if s.gender == "female"]
+            male_replacements = [s for s in replacements if s.gender == "male"]
+            none_replacements = [s for s in replacements if s.gender == "none"]
+
+            swap_to = dict(zip(random.sample(female, len(female_replacements)),female_replacements))
+            swap_to.update(dict(zip(random.sample(male, len(male_replacements)), male_replacements)))
+            not_already_swapped = [c for c in char_ids if c not in swap_to]
+            swap_to.update(dict(zip(random.sample(not_already_swapped, len(none_replacements)), none_replacements)))
+
     nameiddict = {
         0: "Terra",
         1: "Locke",
@@ -1944,6 +1970,8 @@ def manage_character_appearance(preserve_graphics=False):
         0x14: "Ghost",
         0x15: "Kefka"}
 
+    for a in swap_to:
+        print nameiddict[a], swap_to[a].name
     names = []
     if not tina_mode and not sabin_mode:
         f = open(MALE_NAMES_TABLE)
@@ -1983,7 +2011,10 @@ def manage_character_appearance(preserve_graphics=False):
             c.newname = names[c.id]
             c.original_appearance = nameiddict[c.id]
             if not preserve_graphics:
-                c.new_appearance = nameiddict[change_to[c.id]]
+                if sprite_swap_mode and c.id in swap_to:
+                    c.new_appearance = swap_to[c.id].name
+                else:
+                    c.new_appearance = nameiddict[change_to[c.id]]
             else:
                 c.new_appearance = c.original_appearance
 
@@ -2020,7 +2051,7 @@ def manage_character_appearance(preserve_graphics=False):
         new = change_to[c]
         portrait = char_portraits[new]
         portrait_palette = char_portrait_palettes[new]
-        if wild and portrait == 0 and change_to[c] != 0:
+        if (wild and portrait == 0 and change_to[c] != 0) or (sprite_swap_mode and c in swap_to):
             portrait = char_portraits[0xE]
             portrait_palette = char_portrait_palettes[0xE]
         fout.seek(0x36F1B + (2*c))
@@ -2031,7 +2062,14 @@ def manage_character_appearance(preserve_graphics=False):
             fout.seek(spointers[c])
             fout.write(sprites[0xE][:ssizes[c]])
         fout.seek(spointers[c])
-        newsprite = sprites[change_to[c]]
+        if sprite_swap_mode and c in swap_to:
+            from os import path
+            g = open(path.join("sprites", swap_to[c].file), "rb")
+            newsprite = g.read(ssizes[c])
+            g.close()
+            # the .bins in the sprite db are padded with 0s
+        else:
+            newsprite = sprites[change_to[c]]
         newsprite = newsprite[:ssizes[c]]
         fout.write(newsprite)
 
@@ -5264,6 +5302,7 @@ h   Organize rages by highest level first
     secret_codes['racecave'] = "EXTRA FAST CHAOS TOWER MODE"
     secret_codes['metronome'] = "R-CHAOS MODE"
     secret_codes['quikdraw'] = "QUIKDRAW MODE"
+    secret_codes['spriteswap'] = "SPRITE SWAP MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -5625,7 +5664,7 @@ h   Organize rages by highest level first
 
 if __name__ == "__main__":
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

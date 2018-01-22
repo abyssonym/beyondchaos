@@ -1911,6 +1911,7 @@ def manage_character_appearance(preserve_graphics=False):
             esper_terra = random.choice([0x0F, 0x12, 0x14])
         else:
             mog = random.choice([0,1])
+            esper_terra = 0x12
         # all characters are moogles except Mog and Esper Terra
         change_to = dict(zip(char_ids, [0x0A] * 10 + [mog] + [0x0A] * 7 + [esper_terra] + [0x0A] * 80))
     else:

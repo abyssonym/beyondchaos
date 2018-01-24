@@ -562,12 +562,20 @@ class RandomSpellSub(Substitution):
 class MultipleSpellSub(Substitution):
     @property
     def size(self):
-        if isinstance(self.spellsub, RandomSpellSub):
-            overhead = ((self.count - 1) * 9) + 4
-        else:
-            overhead = ((self.count - 1) * 5) + 4
-        return self.spellsub.size + overhead
+        return self.spellsub.size + self.get_overhead()
 
+    def get_overhead(self):
+        if isinstance(self.spellsub, RandomSpellSub):
+            if self.count <= 3:
+                return ((self.count - 1) * 9) + 4
+            else:
+                return 20
+        else:
+            if self.count <= 3:
+                return ((self.count - 1) * 5) + 4
+            else:
+                return 16
+        
     def set_count(self, count):
         self.count = count
 
@@ -581,18 +589,21 @@ class MultipleSpellSub(Substitution):
             self.spells = self.spellsub.spells
 
     def generate_bytestring(self):
-        if isinstance(self.spellsub, RandomSpellSub):
-            subpointer = self.location + ((self.count-1) * 9) + 4
-        else:
-            subpointer = self.location + ((self.count-1) * 5) + 4
+        subpointer = self.location + self.get_overhead()
         self.spellsub.set_location(subpointer)
         if not hasattr(self.spellsub, "bytestring"):
             self.spellsub.generate_bytestring()
         high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
         if isinstance(self.spellsub, RandomSpellSub):
-            self.bytestring = [0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2] * (self.count - 1) + [0x20, low, high]
+            if self.count <= 3:
+                self.bytestring = [0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2] * (self.count - 1) + [0x20, low, high]
+            else:
+                self.bytestring = [0xA9, self.count - 1, 0x48, 0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2, 0x68, 0x3A, 0xD0, 0xF2, 0x20, low, high]
         else:
-            self.bytestring = [0x5A, 0x20, low, high, 0x7A] * (self.count - 1) + [0x20, low, high]
+            if self.count <= 3:
+                self.bytestring = [0x5A, 0x20, low, high, 0x7A] * (self.count - 1) + [0x20, low, high]
+            else:
+                self.bytestring = [0xA9, self.count - 1, 0x48, 0x5A, 0x20, low, high, 0x7A, 0x68, 0x3A, 0xD0, 0xF6, 0x20, low, high]
         self.bytestring += [0x60]
         self.bytestring += self.spellsub.bytestring
 

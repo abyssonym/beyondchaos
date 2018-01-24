@@ -1906,14 +1906,20 @@ def manage_character_appearance(preserve_graphics=False):
     elif soldier_mode:
         change_to = dict(zip(char_ids, [0x0e] * 100))
     elif moogle_mode:
-        if wild: # make mog terra, locke, or npc
-            mog = random.choice([0x00, 0x01, 0x0E, 0x10, 0x11, 0x13, 0x15])
-            esper_terra = random.choice([0x0F, 0x12, 0x14])
+        # all characters are moogles except Mog, Imp, and Esper Terra
+        if wild:
+            # make mog human
+            mog = random.choice(range(0, 0x0A) + range(0x0B, 0x0F) +[0x10, 0x11, 0x13, 0x15])
+            #esper terra and imp neither human nor moogle
+            esper_terra, imp  = random.sample([0x0F, 0x12, 0x14], 2)
         else:
-            mog = random.choice([0,1])
+            mog = random.choice(range(0, 0x0A) + range(0x0B, 0x0E))
             esper_terra = 0x12
-        # all characters are moogles except Mog and Esper Terra
-        change_to = dict(zip(char_ids, [0x0A] * 10 + [mog] + [0x0A] * 7 + [esper_terra] + [0x0A] * 80))
+            imp = 0x0F
+        change_to = dict(zip(char_ids, [0x0A] * 100))
+        change_to[0x0A] = mog
+        change_to[0x12] = esper_terra
+        change_to[0x0F] = imp
     else:
         female = [0, 0x06, 0x08]
         female += [c for c in [0x03, 0x0A, 0x0C, 0x0D, 0x0E, 0x0F, 0x14] if

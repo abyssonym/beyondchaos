@@ -5432,8 +5432,8 @@ def manage_dances():
     dances = map(ord, f.read(32))
     f.close()
 
-    # Shuffle the geos, plus Fire Dance, Pearl Wind, Lullaby, Acid Rain, and N. Cross because why not
-    geo = [dances[i*4] for i in range(8)] + [dances[i*4+1] for i in range(8)] + [0x60, 0x93, 0xa8, 0xa9, 0xc5]
+    # Shuffle the geos, plus Fire Dance, Pearl Wind, Lullaby, Acid Rain, and Absolute 0 because why not
+    geo = [dances[i*4] for i in range(8)] + [dances[i*4+1] for i in range(8)] + [0x60, 0x93, 0xA8, 0xA9, 0xBB]
     random.shuffle(geo)
 
     # Shuffle 1/16 beasts, plus chocobop, takedown, and wild fang, since they seem on theme
@@ -5442,7 +5442,7 @@ def manage_dances():
 
     # Replace 2/16 moves that are duplicated from other dances
     spells = get_ranked_spells(sourcefile)
-    spells = [s for s in spells if s.spellid >= 0x36]
+    spells = [s for s in spells if s.spellid >= 0x36 and s.spellid not in geo and s.spellid not in beasts]
     half = len(spells) / 2
 
     other = []

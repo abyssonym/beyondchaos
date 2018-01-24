@@ -673,7 +673,7 @@ class MultipleSpellSub(MultiSpellSubMixin):
                 return ((self.count - 1) * 5) + 4
             else:
                 return 16
-        
+
     def set_count(self, count):
         self.count = count
 

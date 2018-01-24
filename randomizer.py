@@ -5447,7 +5447,10 @@ def manage_dances():
 
     other = []
     for i in range(8):
-        index = random.randint(0, half) + random.randint(0, half)
+        while True:
+            index = random.randint(0, half) + random.randint(0, half)
+            if index not in other:
+                break
         other.append(spells[index].spellid)
 
     dances = geo[:16] + other[:8] + beasts[:8]

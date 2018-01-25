@@ -4817,6 +4817,16 @@ def manage_ancient():
         leaders = random.sample(candidates, 3)
         subptr = pointer - 0xa0000
         leader_sub = Substitution()
+
+        # makes switching impossible and makes row change instant
+        # could freeze the game d+pad and A on same frame tho
+        leader_sub.set_location(0x324b7)
+        leader_sub.bytestring = [0xEA, 0xEA, 0xEA]
+        leader_sub.write(outfile)
+        leader_sub.set_location(0x32473)
+        leader_sub.bytestring = [0xEA, 0xEA]
+        leader_sub.write(outfile)
+
         leader_sub.set_location(0xa02da)
         leader_sub.bytestring = [
             0xB2, subptr & 0xFF, (subptr >> 8) & 0xFF, subptr >> 16]

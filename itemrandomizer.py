@@ -385,6 +385,9 @@ class ItemBlock:
             self.features['power'] = self.features['power'] + random.randint(0, diff) + random.randint(0, diff)
             self.features['power'] = int(min(0xFF, max(0, self.features['power'])))
 
+            if "Dice" in self.name:
+                return
+
             diff = min(self.features['hitmdef'], 0xFF-self.features['hitmdef'])
             diff = diff / 3
             self.features['hitmdef'] = self.features['hitmdef'] - diff

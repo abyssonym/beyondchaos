@@ -701,13 +701,7 @@ def randomize_slots(filename, fout, pointer):
             fout.write(chr(spell.spellid))
 
 
-def manage_commands(commands):
-    characters = get_characters()
-
-    alrs = AutoLearnRageSub(require_gau=False)
-    alrs.set_location(0x23b73)
-    alrs.write(fout)
-
+def auto_recruit_gau():
     args = AutoRecruitGauSub()
     args.set_location(0xcfe1a)
     args.write(fout)
@@ -716,6 +710,14 @@ def manage_commands(commands):
     recruit_gau_sub.bytestring = [0x89, 0xFF]
     recruit_gau_sub.set_location(0x24856)
     recruit_gau_sub.write(fout)
+
+
+def manage_commands(commands):
+    characters = get_characters()
+
+    alrs = AutoLearnRageSub(require_gau=False)
+    alrs.set_location(0x23b73)
+    alrs.write(fout)
 
     learn_lore_sub = Substitution()
     learn_lore_sub.bytestring = [0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00,
@@ -5826,6 +5828,9 @@ k   Randomize the clock in Zozo
 
     if 'w' in flags and 'o' not in flags:
         flags += 'o'
+
+    if 'o' in flags or 'w' in flags or 't' in flags:
+        auto_recruit_gau()
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         manage_commands(commands)

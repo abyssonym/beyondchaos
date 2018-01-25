@@ -1125,7 +1125,7 @@ def manage_commands_new(commands):
                 if random.choice([True, False]):
                     nopowers = [s for s in myspells if not s.power]
                     powers = [s for s in myspells if s.power]
-                    myspells = nopowers + powers
+                    #myspells = nopowers + powers
                 autotarget = [s for s in myspells if s.target_auto]
                 noauto = [s for s in myspells if not s.target_auto]
                 autotarget_warning = (0 < len(autotarget) < len(myspells))

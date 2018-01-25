@@ -3562,7 +3562,12 @@ def manage_encounter_rate():
     bangle = 0.5
     moogle = 0.01
     normal = [base, base*bangle, base*moogle, base*bangle*moogle]
-    unaffected = [base, base, base, base]
+
+    half = base / 2
+    quarter = base / 4
+    unaffected = [base, half+quarter+(quarter*bangle),
+                  half+quarter+(quarter*moogle),
+                  half + (quarter*bangle) + (quarter*moogle)]
 
     sbase = base*2.5
     strong = [sbase, sbase*bangle/2, sbase*moogle/2, sbase*bangle*moogle/4]
@@ -3570,7 +3575,7 @@ def manage_encounter_rate():
     wbase = base*1.5
     half = wbase/2
     weak = [wbase, half+(half*bangle), half+(half*moogle),
-            half+(half*bangle*moogle)]
+            (half*bangle)+(half*moogle)]
 
     dungeon_rates = zip(normal, strong, weak, unaffected)
     dungeon_rates = [i for sublist in dungeon_rates for i in sublist]

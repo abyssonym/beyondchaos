@@ -1160,6 +1160,9 @@ def manage_commands_new(commands):
                         and random.randint(1, 30) == 30):
                     c.targeting = 0xC0
 
+                if c.targeting & 1:
+                    c.targeting |= 0x20
+
                 c.write_properties(outfile)
 
                 if autotarget_warning and targeting_conflict:

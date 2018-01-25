@@ -552,6 +552,52 @@ class RandomSpellSub(Substitution):
         return "Use a random {0}.\n{1}".format(self.spells_description,
                                                 self.spells_string)
 
+
+class ComboSpellSub(Substitution):
+    def __init__(self, spells):
+        self.spells = spells
+        self.spellsubs = []
+        self.random_order = random.choice([True, False, False])
+        for s in self.spells:
+            self.spellsubs.append(SpellSub(spellid=s.spellid))
+
+    @property
+    def size(self):
+        return sum([s.size for s in self.spellsubs]) + self.get_overhead()
+
+    def get_overhead(self):
+        return (5 * len(self.spellsubs)) + 1
+
+    def generate_bytestring(self):
+        subpointer = self.location + self.get_overhead()
+
+        offset = 0
+        self.bytestring = []
+        for s in self.spellsubs:
+            spointer = subpointer + offset
+            s.set_location(spointer)
+            low = spointer & 0xFF
+            high = (spointer >> 8) & 0xFF
+            offset += len(s.bytestring)
+            self.bytestring += [
+                0x5A,
+                0x20, low, high,
+                0x7A,
+                ]
+        self.bytestring.append(0x60)
+        assert len(self.bytestring) == self.get_overhead()
+
+    def write(self, filename):
+        super(ComboSpellSub, self).write(filename)
+        for s in self.spellsubs:
+            s.write(filename)
+
+    def __repr__(self):
+        return "Use the combo {0}.".format(
+            " + ".join([s.name for s in self.spells]))
+
+
+
 class MultiSpellSubMixin(Substitution):
     @property
     def size(self):
@@ -560,11 +606,19 @@ class MultiSpellSubMixin(Substitution):
     def set_spells(self, spells):
         if isinstance(spells, int):
             self.spellsub = SpellSub(spellid=spells)
-        else:
+        elif isinstance(spells, list) or isinstance(spells, set):
             self.spellsub = RandomSpellSub()
             self.spellsub.set_spells(spells)
             self.name = self.spellsub.name
             self.spells = self.spellsub.spells
+        else:
+            self.spellsub = spells
+            self.name = self.spellsub.name
+            self.spells = self.spellsub.spells
+
+    def write(self, filename):
+        self.spellsub.write(filename)
+        super(MultiSpellSubMixin, self).write(filename)
 
 
 class ChainSpellSub(MultiSpellSubMixin):
@@ -599,6 +653,9 @@ class ChainSpellSub(MultiSpellSubMixin):
             return "??? times, use a random {0}.\n{1}".format(
                 self.spellsub.spells_description,
                 self.spellsub.spells_string)
+        elif isinstance(self.spellsub, ComboSpellSub):
+            return "??? times, use the combo {0}.".format(
+                " + ".join([s.name for s in self.spellsub.spells]))
         else:
             return "??? times, use the skill '{0}'".format(
                 spellnames[self.spellsub.spellid])
@@ -644,6 +701,10 @@ class MultipleSpellSub(MultiSpellSubMixin):
             return "{0} times, use a random {1}.\n{2}".format(
                 self.count, self.spellsub.spells_description,
                 self.spellsub.spells_string)
+        elif isinstance(self.spellsub, ComboSpellSub):
+            return "{0} times, use the combo {1}.".format(
+                self.count,
+                " + ".join([s.name for s in self.spellsub.spells]))
         else:
             return "{0} times, use the skill '{1}'".format(
                 self.count, spellnames[self.spellsub.spellid])

@@ -14,7 +14,7 @@ from utils import (ESPER_TABLE,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes,
                    mutate_index, utilrandom as random)
-from skillrandomizer import (SpellBlock, CommandBlock, SpellSub,
+from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              RandomSpellSub, MultipleSpellSub, ChainSpellSub,
                              get_ranked_spells, get_spell)
 from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
@@ -964,26 +964,43 @@ def manage_commands_new(commands):
                     continue
 
         changed_commands.add(c.id)
-        random_skill = random.choice([True, False])
+        x = random.randint(1, 3)
+        if x <= 1:
+            random_skill = False
+            combo_skill = False
+        elif x <= 2:
+            random_skill = True
+            combo_skill = False
+        else:
+            random_skill = False
+            combo_skill = True
+
+        if "allcombos" in activated_codes:
+            random_skill = False
+            combo_skill = True
+
         POWER_LEVEL = 130
         scount = 1
-        while random.randint(1, 4) == 4:
+        while random.randint(1, 5) == 5:
             scount += 1
         scount = min(scount, 9)
+        if "endless9" in activated_codes:
+            scount = 9
+
+        def get_random_power():
+            basepower = POWER_LEVEL / 2
+            power = basepower + random.randint(0, basepower)
+            while True:
+                power += random.randint(0, basepower)
+                if random.choice([True, False]):
+                    break
+            return power
 
         while True:
-            if random_skill:
-                power = 10000
-            else:
-                basepower = POWER_LEVEL / 2
-                power = basepower + random.randint(0, basepower)
-                while True:
-                    power += random.randint(0, basepower)
-                    if random.choice([True, False]):
-                        break
-
             c.read_properties(sourcefile)
-            if not random_skill:
+            if not (random_skill or combo_skill):
+                power = get_random_power()
+
                 def spell_is_valid(s):
                     if not s.valid:
                         return False
@@ -1022,12 +1039,8 @@ def manage_commands_new(commands):
                 c.unset_retarget(fout)
                 c.write_properties(fout)
 
-                if "endless9" in activated_codes:
-                    scount = 10
-
                 if scount == 1 or multibanned(sb.spellid):
                     s = SpellSub(spellid=sb.spellid)
-                    scount = 1
                 else:
                     if scount >= 4 or random.choice([True, False]):
                         s = MultipleSpellSub()
@@ -1039,13 +1052,11 @@ def manage_commands_new(commands):
 
                 newname = sb.name
             elif random_skill:
+                power = 10000
                 c.properties = 3
                 c.set_retarget(fout)
                 valid_spells = [v for v in all_spells if
                                 v.spellid <= 0xED and v.valid]
-
-                if "endless9" in activated_codes:
-                    scount = 9
 
                 if scount == 1:
                     s = RandomSpellSub()
@@ -1085,6 +1096,97 @@ def manage_commands_new(commands):
 
                 c.write_properties(fout)
                 newname = s.name
+            elif combo_skill:
+                def spell_is_valid(s, p):
+                    if not s.valid:
+                        return False
+                    if multibanned(s.spellid):
+                        return False
+                    return s.rank() <= p
+
+                myspells = []
+                while len(myspells) < 2:
+                    power = get_random_power()
+                    valid_spells = [s for s in all_spells
+                                    if spell_is_valid(s, power)
+                                    and s not in myspells]
+                    if not valid_spells:
+                        continue
+                    myspells.append(random.choice(valid_spells))
+                    targeting_conflict = (len(set([s.targeting & 0x40
+                                                   for s in myspells])) > 1)
+                    if targeting_conflict and all([s.targeting & 0x10
+                                                   for s in myspells]):
+                        myspells = []
+
+                c.unset_retarget(outfile)
+                if random.choice([True, False]):
+                    nopowers = [s for s in myspells if not s.power]
+                    powers = [s for s in myspells if s.power]
+                    myspells = nopowers + powers
+                autotarget = [s for s in myspells if s.target_auto]
+                noauto = [s for s in myspells if not s.target_auto]
+                autotarget_warning = (0 < len(autotarget) < len(myspells))
+                if targeting_conflict:
+                    myspells = noauto + autotarget
+                s = ComboSpellSub(myspells)
+
+                c.properties = 3
+                c.targeting = 0
+                for mask in [0x01, 0x20, 0x40]:
+                    for s1 in s.spells:
+                        if s1.targeting & mask:
+                            c.targeting |= mask
+                            break
+
+                if all(s1.targeting & 0x08 for s1 in s.spells):
+                    c.targeting |= 0x08
+                if not targeting_conflict:
+                    if all(s1.targeting & 0x04 for s1 in s.spells):
+                        c.targeting |= 0x04
+                    if all(s1.targeting & 0x02 for s1 in s.spells):
+                        c.targeting |= 0x02
+                if (c.targeting & 0x20 and not c.targeting & 1
+                        and (targeting_conflict or not c.targeting & 2)):
+                    if random.choice([True, True, False]):
+                        c.targeting |= 1
+                    else:
+                        c.targeting = 0x04
+                c.targeting = c.targeting & (0xFF ^ 0x10)  # never autotarget
+
+                if (c.targeting & 1 and not c.targeting & 0x0a
+                        and random.randint(1, 30) == 30):
+                    c.targeting = 0xC0
+
+                c.write_properties(outfile)
+
+                if autotarget_warning and targeting_conflict:
+                    scount = 1
+                s.name = ""
+                if scount >= 2:
+                    if scount >= 4 or random.choice([True, False]):
+                        new_s = MultipleSpellSub()
+                        new_s.set_spells(s)
+                        new_s.set_count(scount)
+                    else:
+                        new_s = ChainSpellSub()
+                        new_s.set_spells(s)
+                    s = new_s
+
+                if (isinstance(s, MultipleSpellSub) or
+                        isinstance(s, ChainSpellSub)):
+                    namelengths = [3, 2]
+                else:
+                    namelengths = [4, 3]
+                random.shuffle(namelengths)
+                names = [s1.name for s1 in s.spells]
+                names = [n.replace('-', '') for n in names]
+                names = [n.replace('.', '') for n in names]
+                names = [n.replace(' ', '') for n in names]
+                newname = names[0][:namelengths[0]]
+                newname += names[1][:(sum(namelengths)-len(newname))]
+            else:
+                assert False
             break
 
         myfs = get_appropriate_freespace(freespaces, s.size)
@@ -5663,6 +5765,7 @@ k   Randomize the clock in Zozo
     secret_codes['kupokupo'] = "MOOGLE MODE"
     secret_codes['capslockoff'] = "Mixed Case Names Mode"
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
+    secret_codes['allcombos'] = "ALL COMBOS MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

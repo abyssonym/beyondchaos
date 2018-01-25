@@ -4469,8 +4469,7 @@ def manage_ancient():
 
     characters = get_characters()
     gau = [c for c in characters if c.id == 11][0]
-    if gau.battle_commands[1] in [0x11, None]:
-        gau.battle_commands[0] = 0x10
+    if 'w' not in flags and gau.battle_commands[1] in [0x11, None]:
         gau.battle_commands[1] = 0xFF
         gau.write_battle_commands(fout)
 
@@ -5841,9 +5840,6 @@ k   Randomize the clock in Zozo
 
     if not flags.strip():
         flags = allFlags
-
-    if 'w' in flags and 'o' not in flags:
-        flags += 'o'
 
     if 'o' in flags or 'w' in flags or 't' in flags:
         auto_recruit_gau()

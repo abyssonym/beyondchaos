@@ -552,12 +552,59 @@ class RandomSpellSub(Substitution):
         return "Use a random {0}.\n{1}".format(self.spells_description,
                                                 self.spells_string)
 
-
-class MultipleSpellSub(Substitution):
+class MultiSpellSubMixin(Substitution):
     @property
     def size(self):
         return self.spellsub.size + self.get_overhead()
 
+    def set_spells(self, spells):
+        if isinstance(spells, int):
+            self.spellsub = SpellSub(spellid=spells)
+        else:
+            self.spellsub = RandomSpellSub()
+            self.spellsub.set_spells(spells)
+            self.name = self.spellsub.name
+            self.spells = self.spellsub.spells
+
+
+class ChainSpellSub(MultiSpellSubMixin):
+    def get_overhead(self):
+        return 15
+
+    def generate_bytestring(self):
+        subpointer = self.location + self.get_overhead()
+        self.spellsub.set_location(subpointer)
+        if not hasattr(self.spellsub, "bytestring"):
+            self.spellsub.generate_bytestring()
+        high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
+
+        self.bytestring = [
+            0x5A,                           # PHY
+            0x20, low, high,                # call spell sub
+            0x7A,                           # PLY
+            0x20, 0x5A, 0x4B,               # get random number
+            0x29, 0x01,                     # AND the result
+            0xC9, 0x00,                     # CMP #0
+            0xD0, None,                     # BNE start of bytestring
+            ]
+        length = len(self.bytestring)
+        self.bytestring[-1] = (0x100 - length)
+        assert None not in self.bytestring
+        self.bytestring += [0x60]
+        assert len(self.bytestring) == self.get_overhead()
+        self.bytestring += self.spellsub.bytestring
+
+    def __repr__(self):
+        if isinstance(self.spellsub, RandomSpellSub):
+            return "??? times, use a random {0}.\n{1}".format(
+                self.spellsub.spells_description,
+                self.spellsub.spells_string)
+        else:
+            return "??? times, use the skill '{0}'".format(
+                spellnames[self.spellsub.spellid])
+
+
+class MultipleSpellSub(MultiSpellSubMixin):
     def get_overhead(self):
         if isinstance(self.spellsub, RandomSpellSub):
             if self.count <= 3:
@@ -572,15 +619,6 @@ class MultipleSpellSub(Substitution):
         
     def set_count(self, count):
         self.count = count
-
-    def set_spells(self, spells):
-        if isinstance(spells, int):
-            self.spellsub = SpellSub(spellid=spells)
-        else:
-            self.spellsub = RandomSpellSub()
-            self.spellsub.set_spells(spells)
-            self.name = self.spellsub.name
-            self.spells = self.spellsub.spells
 
     def generate_bytestring(self):
         subpointer = self.location + self.get_overhead()

@@ -15,7 +15,7 @@ from utils import (ESPER_TABLE,
                    battlebg_palettes,
                    mutate_index, utilrandom as random)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub,
-                             RandomSpellSub, MultipleSpellSub,
+                             RandomSpellSub, MultipleSpellSub, ChainSpellSub,
                              get_ranked_spells, get_spell)
 from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                get_metamorphs, get_ranked_monsters,
@@ -954,18 +954,20 @@ def manage_commands_new(commands):
     for c in commands.values():
         if c.name in NEVER_REPLACE:
             continue
-        elif c.name in RESTRICTED_REPLACE and random.choice([True, False]):
-            continue
 
-        if c.name not in ALWAYS_REPLACE:
-            if random.randint(1, 100) > 50:
+        if "replaceeverything" not in activated_codes:
+            if c.name in RESTRICTED_REPLACE and random.choice([True, False]):
                 continue
+
+            if c.name not in ALWAYS_REPLACE:
+                if random.randint(1, 100) > 50:
+                    continue
 
         changed_commands.add(c.id)
         random_skill = random.choice([True, False])
         POWER_LEVEL = 130
         scount = 1
-        while random.randint(1, 7) == 7:
+        while random.randint(1, 4) == 4:
             scount += 1
         scount = min(scount, 9)
 
@@ -1023,14 +1025,17 @@ def manage_commands_new(commands):
                 if "endless9" in activated_codes:
                     scount = 10
 
-                if scount < 3 or multibanned(sb.spellid):
+                if scount == 1 or multibanned(sb.spellid):
                     s = SpellSub(spellid=sb.spellid)
                     scount = 1
                 else:
-                    scount -= 1
-                    s = MultipleSpellSub()
-                    s.set_spells(sb.spellid)
-                    s.set_count(scount)
+                    if scount >= 4 or random.choice([True, False]):
+                        s = MultipleSpellSub()
+                        s.set_spells(sb.spellid)
+                        s.set_count(scount)
+                    else:
+                        s = ChainSpellSub()
+                        s.set_spells(sb.spellid)
 
                 newname = sb.name
             elif random_skill:
@@ -1046,8 +1051,11 @@ def manage_commands_new(commands):
                     s = RandomSpellSub()
                 else:
                     valid_spells = multibanned(valid_spells)
-                    s = MultipleSpellSub()
-                    s.set_count(scount)
+                    if scount >= 4 or random.choice([True, False]):
+                        s = MultipleSpellSub()
+                        s.set_count(scount)
+                    else:
+                        s = ChainSpellSub()
 
                 try:
                     s.set_spells(valid_spells)
@@ -1100,6 +1108,9 @@ def manage_commands_new(commands):
                 newname = "W-%s" % newname
             else:
                 newname = "%sx%s" % (s.count, newname)
+        elif isinstance(s, ChainSpellSub):
+            newname = "?-%s" % newname
+
         c.newname(newname, fout)
         c.unsetmenu(fout)
         c.allow_while_confused(fout)
@@ -5651,6 +5662,7 @@ k   Randomize the clock in Zozo
     secret_codes['makeover'] = "SPRITE REPLACEMENT MODE"
     secret_codes['kupokupo'] = "MOOGLE MODE"
     secret_codes['capslockoff'] = "Mixed Case Names Mode"
+    secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

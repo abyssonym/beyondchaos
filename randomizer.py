@@ -1035,6 +1035,9 @@ def manage_commands_new(commands):
                 if sb.spellid in [0x2B]:  # quick
                     c.targeting = random.choice([0x2, 0x2A, 0xC0, 0x1])
 
+                if c.targeting & 3 == 3:
+                    c.targeting ^= 2  # allow targeting either side
+
                 c.properties = 3
                 if sb.spellid in [0x23, 0xA3]:
                     c.properties |= 0x4  # enable while imped
@@ -1099,11 +1102,27 @@ def manage_commands_new(commands):
                 c.write_properties(fout)
                 newname = s.name
             elif combo_skill:
+                ALWAYS_FIRST = []
+                ALWAYS_LAST = [
+                    "Palidor", "Quadra Slam", "Quadra Slice", "Spiraler",
+                    "Pep Up", "Exploder",
+                    ]
+                WEIGHTED_FIRST = [
+                    "Life", "Life 2",
+                    ]
+                WEIGHTED_LAST = [
+                    "ChokeSmoke",
+                    ]
+                for mylist in [ALWAYS_FIRST, ALWAYS_LAST,
+                               WEIGHTED_FIRST, WEIGHTED_LAST]:
+                    assert (len([s for s in all_spells if s.name in mylist])
+                            == len(mylist))
+
                 def spell_is_valid(s, p):
                     if not s.valid:
                         return False
-                    if multibanned(s.spellid):
-                        return False
+                    #if multibanned(s.spellid):
+                    #    return False
                     return s.rank() <= p
 
                 myspells = []
@@ -1117,74 +1136,104 @@ def manage_commands_new(commands):
                     myspells.append(random.choice(valid_spells))
                     targeting_conflict = (len(set([s.targeting & 0x40
                                                    for s in myspells])) > 1)
+                    names = set([s.name for s in myspells])
+                    if (len(names & set(ALWAYS_FIRST)) == 2
+                            or len(names & set(ALWAYS_LAST)) == 2):
+                        myspells = []
                     if targeting_conflict and all([s.targeting & 0x10
                                                    for s in myspells]):
                         myspells = []
 
                 c.unset_retarget(outfile)
-                if random.choice([True, False]):
-                    nopowers = [s for s in myspells if not s.power]
-                    powers = [s for s in myspells if s.power]
-                    #myspells = nopowers + powers
+                #if random.choice([True, False]):
+                #    nopowers = [s for s in myspells if not s.power]
+                #    powers = [s for s in myspells if s.power]
+                #    myspells = nopowers + powers
+                for s in list(myspells):
+                    if (s.name in WEIGHTED_FIRST
+                            and random.choice([True, False])):
+                        myspells.remove(s)
+                        myspells.insert(0, s)
+                    if ((s.name in WEIGHTED_LAST
+                                or s.target_auto or s.randomize_target
+                                or s.retargetdead or not s.target_group)
+                            and random.choice([True, False])):
+                        myspells.remove(s)
+                        myspells.append(s)
+
                 autotarget = [s for s in myspells if s.target_auto]
                 noauto = [s for s in myspells if not s.target_auto]
                 autotarget_warning = (0 < len(autotarget) < len(myspells))
                 if targeting_conflict:
                     myspells = noauto + autotarget
-                s = ComboSpellSub(myspells)
+                for s in list(myspells):
+                    if s.name in ALWAYS_FIRST:
+                        myspells.remove(s)
+                        myspells.insert(0, s)
+                    if s.name in ALWAYS_LAST:
+                        myspells.remove(s)
+                        myspells.append(s)
+                css = ComboSpellSub(myspells)
 
                 c.properties = 3
                 c.targeting = 0
                 for mask in [0x01, 0x20, 0x40]:
-                    for s1 in s.spells:
-                        if s1.targeting & mask:
+                    for s in css.spells:
+                        if s.targeting & mask:
                             c.targeting |= mask
                             break
 
-                if all(s1.targeting & 0x08 for s1 in s.spells):
-                    c.targeting |= 0x08
-                if not targeting_conflict:
-                    if all(s1.targeting & 0x04 for s1 in s.spells):
-                        c.targeting |= 0x04
-                    if all(s1.targeting & 0x02 for s1 in s.spells):
-                        c.targeting |= 0x02
-                if (c.targeting & 0x20 and not c.targeting & 1
-                        and (targeting_conflict or not c.targeting & 2)):
-                    if random.choice([True, True, False]):
-                        c.targeting |= 1
-                    else:
-                        c.targeting = 0x04
-                c.targeting = c.targeting & (0xFF ^ 0x10)  # never autotarget
+                if css.spells[0].targeting & 0x40 == c.targeting & 0x40:
+                    c.targeting |= (css.spells[0].targeting & 0x4)
 
-                if (c.targeting & 1 and not c.targeting & 0x0a
+                if (all(s.targeting & 0x08 for s in css.spells)
+                        or c.targeting & 0x24 == 0x24):
+                    c.targeting |= 0x08
+
+                if (all(s.targeting & 0x02 for s in css.spells)
+                        and not targeting_conflict):
+                    c.targeting |= 0x02
+
+                if targeting_conflict and c.targeting & 0x20:
+                    c.targeting |= 1
+
+                if targeting_conflict and random.randint(1, 10) == 10:
+                    c.targeting = 0x04
+
+                if (c.targeting & 1 and not c.targeting & 8
                         and random.randint(1, 30) == 30):
                     c.targeting = 0xC0
 
                 if c.targeting & 1:
-                    c.targeting |= 0x20
+                    c.targeting |= 0x20  # allow multi-targeting
 
+                if c.targeting & 3 == 3:
+                    c.targeting ^= 2  # allow targeting either side
+
+                c.targeting = c.targeting & (0xFF ^ 0x10)  # never autotarget
                 c.write_properties(outfile)
 
+                scount = max(1, scount-1)
                 if autotarget_warning and targeting_conflict:
                     scount = 1
-                s.name = ""
+                css.name = ""
                 if scount >= 2:
                     if scount >= 4 or random.choice([True, False]):
                         new_s = MultipleSpellSub()
-                        new_s.set_spells(s)
+                        new_s.set_spells(css)
                         new_s.set_count(scount)
                     else:
                         new_s = ChainSpellSub()
-                        new_s.set_spells(s)
-                    s = new_s
+                        new_s.set_spells(css)
+                    css = new_s
 
-                if (isinstance(s, MultipleSpellSub) or
-                        isinstance(s, ChainSpellSub)):
+                if (isinstance(css, MultipleSpellSub) or
+                        isinstance(css, ChainSpellSub)):
                     namelengths = [3, 2]
                 else:
                     namelengths = [4, 3]
                 random.shuffle(namelengths)
-                names = [s1.name for s1 in s.spells]
+                names = [s.name for s in css.spells]
                 names = [n.replace('-', '') for n in names]
                 names = [n.replace('.', '') for n in names]
                 names = [n.replace(' ', '') for n in names]
@@ -1193,6 +1242,8 @@ def manage_commands_new(commands):
                         namelengths = list(reversed(namelengths))
                 newname = names[0][:namelengths[0]]
                 newname += names[1][:namelengths[1]]
+
+                s = css
             else:
                 assert False
             break

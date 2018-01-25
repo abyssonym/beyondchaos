@@ -1185,8 +1185,11 @@ def manage_commands_new(commands):
                 names = [n.replace('-', '') for n in names]
                 names = [n.replace('.', '') for n in names]
                 names = [n.replace(' ', '') for n in names]
+                for i in xrange(2):
+                    if len(names[i]) < namelengths[i]:
+                        namelengths = list(reversed(namelengths))
                 newname = names[0][:namelengths[0]]
-                newname += names[1][:(sum(namelengths)-len(newname))]
+                newname += names[1][:namelengths[1]]
             else:
                 assert False
             break

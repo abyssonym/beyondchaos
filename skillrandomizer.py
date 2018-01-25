@@ -566,19 +566,24 @@ class ComboSpellSub(Substitution):
         return sum([s.size for s in self.spellsubs]) + self.get_overhead()
 
     def get_overhead(self):
-        return (5 * len(self.spellsubs)) + 1
+        return (9 * len(self.spellsubs)) + 1 - 4
 
     def generate_bytestring(self):
         subpointer = self.location + self.get_overhead()
 
         offset = 0
         self.bytestring = []
-        for s in self.spellsubs:
+        for (i, s) in enumerate(self.spellsubs):
             spointer = subpointer + offset
             s.set_location(spointer)
             low = spointer & 0xFF
             high = (spointer >> 8) & 0xFF
             offset += len(s.bytestring)
+            if i > 0:
+                self.bytestring += [
+                    0xA9, 0x01,
+                    0x04, 0xB2,
+                    ]
             self.bytestring += [
                 0x5A,
                 0x20, low, high,

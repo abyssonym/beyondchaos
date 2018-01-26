@@ -688,6 +688,7 @@ def randomize_slots(filename, pointer):
         spell = spells[index]
         return spell
 
+    slotNames = ["JokerDoom", "JokerDoom", "Dragons", "Bars", "Airships", "Chocobos", "Gems", "Fail"]
     used = []
     f = open(filename, 'r+b')
     for i in xrange(1, 8):
@@ -696,6 +697,9 @@ def randomize_slots(filename, pointer):
             if spell is None or spell.spellid not in used:
                 break
         if spell:
+            from skillrandomizer import spellnames;
+            slotString = "%s: %s" % (slotNames[i], spellnames[spell.spellid])
+            log(slotString,"slots")
             used.append(spell.spellid)
             f.seek(pointer+i)
             f.write(chr(spell.spellid))

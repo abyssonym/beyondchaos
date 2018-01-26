@@ -570,6 +570,10 @@ class ItemBlock:
                 # Merit Award and Offering
                 bl += 1000
 
+            if self.features['specialaction'] & 0xf0 == 0xa0:
+                # Valiant Knife
+                bl += 1000
+
             if self.features['special3'] & 0x08:
                 bl += 300
 

@@ -1898,6 +1898,7 @@ def manage_character_appearance(preserve_graphics=False):
     wild = 'partyparty' in activated_codes
     sabin_mode = 'suplexwrecks' in activated_codes
     tina_mode = 'bravenudeworld' in activated_codes
+    soldier_mode = 'quikdraw' in activated_codes
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -1909,7 +1910,7 @@ def manage_character_appearance(preserve_graphics=False):
 
     npcs = get_npcs()
 
-    if wild or tina_mode or sabin_mode:
+    if wild or tina_mode or sabin_mode or soldier_mode:
         char_ids = range(0, 0x16)
     else:
         char_ids = range(0, 0x0E)
@@ -1918,6 +1919,8 @@ def manage_character_appearance(preserve_graphics=False):
         change_to = dict(zip(char_ids, [0x12] * 100))
     elif sabin_mode:
         change_to = dict(zip(char_ids, [0x05] * 100))
+    elif soldier_mode:
+        change_to = dict(zip(char_ids, [0x0e] * 100))
     else:
         female = [0, 0x06, 0x08]
         female += [c for c in [0x03, 0x0A, 0x0C, 0x0D, 0x0E, 0x0F, 0x14] if
@@ -1970,7 +1973,7 @@ def manage_character_appearance(preserve_graphics=False):
         f.close()
         for c in range(14):
             choose_male = False
-            if wild:
+            if wild or soldier_mode:
                 choose_male = random.choice([True, False])
             elif change_to[c] in male:
                 choose_male = True
@@ -5153,7 +5156,7 @@ def manage_ancient():
 
 
 def randomize():
-    global outfile, sourcefile, flags, seed
+    global outfile, sourcefile, flags, seed, ALWAYS_REPLACE
 
     args = list(argv)
     if TEST_ON:
@@ -5322,6 +5325,7 @@ h   Organize rages by highest level first
     secret_codes['speedcave'] = "FAST CHAOS TOWER MODE"
     secret_codes['racecave'] = "EXTRA FAST CHAOS TOWER MODE"
     secret_codes['metronome'] = "R-CHAOS MODE"
+    secret_codes['quikdraw'] = "QUIKDRAW MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -5375,6 +5379,8 @@ h   Organize rages by highest level first
 
     spells = get_ranked_spells(sourcefile)
     if 'w' in flags and 'suplexwrecks' not in activated_codes:
+        if 'quikdraw' in activated_codes:
+            ALWAYS_REPLACE += ["rage"]
         _, freespaces = manage_commands_new(commands)
     reseed()
 
@@ -5434,7 +5440,7 @@ h   Organize rages by highest level first
     reseed()
 
     if 'c' in flags or 's' in flags or (
-            set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
+            set(['partyparty', 'bravenudeworld', 'suplexwrecks', 'quikdraw']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
     reseed()
 

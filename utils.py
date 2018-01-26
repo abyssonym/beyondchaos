@@ -154,16 +154,30 @@ utilrandom = random.Random()
 utran = utilrandom
 random = utilrandom
 
+RANDOM_MULTIPLIER = 1
 
-def mutate_index(index, length, continuation=None,
-                 basic_range=None, extended_range=None):
+def set_randomness_multiplier(multiplier):
+    global RANDOM_MULTIPLIER
+    RANDOM_MULTIPLIER = multiplier
+
+
+def mutate_index(index, length, continuation=None, basic_range=None,
+                 extended_range=None, disregard_multiplier=False):
     if length == 0:
         return None
 
     highest = length - 1
+    if RANDOM_MULTIPLIER is None and not disregard_multiplier:
+        return utran.randint(0, highest)
+
     continuation = continuation or [True, False]
     basic_range = basic_range or (-3, 3)
     extended_range = extended_range or (-1, 1)
+    if not disregard_multiplier:
+        basic_range = tuple(int(round(RANDOM_MULTIPLIER*v))
+                            for v in basic_range)
+        extended_range = tuple(int(round(RANDOM_MULTIPLIER*v))
+                               for v in extended_range)
 
     index += utran.randint(*basic_range)
     index = max(0, min(index, highest))

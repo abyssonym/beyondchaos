@@ -1696,7 +1696,7 @@ def shuffle_monsters(monsters):
         def get_swap_index(to_swap):
             to_swap = mutate_index(index, len(candidates),
                                    [False, False, True],
-                                   (-5, 5), (-3, 3))
+                                   (-5, 5), (-3, 3), disregard_multiplier=True)
             return to_swap
 
         if m.is_boss and random.randint(1, 100) != 100:

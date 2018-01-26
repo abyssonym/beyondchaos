@@ -12,7 +12,7 @@ from utils import (ESPER_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
-                   battlebg_palettes,
+                   battlebg_palettes, set_randomness_multiplier,
                    mutate_index, utilrandom as random)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              RandomSpellSub, MultipleSpellSub, ChainSpellSub,
@@ -5839,6 +5839,7 @@ k   Randomize the clock in Zozo
     secret_codes['capslockoff'] = "Mixed Case Names Mode"
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
+    secret_codes['randomboost'] = "RANDOM BOOST MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -5859,6 +5860,16 @@ k   Randomize the clock in Zozo
         s += "ALL HALLOWS EVE MODE ACTIVATED\n"
 
     print s.strip()
+
+    if 'randomboost' in activated_codes:
+        x = raw_input("Please enter a randomness multiplier value: ")
+        try:
+            multiplier = float(x)
+            if multiplier <= 0:
+                multiplier = None
+        except:
+            multiplier = None
+        set_randomness_multiplier(multiplier)
 
     if 'cutscenes' in activated_codes:
         print "NOTICE: You have selected CUTSCENE SKIPS."

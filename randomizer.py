@@ -2584,6 +2584,13 @@ def manage_chests():
     locations = get_locations(sourcefile)
     locations = sorted(locations, key=lambda l: l.rank())
     for l in locations:
+        # if the Zozo clock is randomized, upgrade the chest from chain saw to pearl lance before mutating 
+        if 'k' in flags:
+            if l.locid in [221,225,226]:
+                for c in l.chests:
+                    if c.contenttype == 0x40 and c.contents == 166:
+                        c.contents = 33
+                        
         l.mutate_chests()
     locations = sorted(locations, key=lambda l: l.locid)
 

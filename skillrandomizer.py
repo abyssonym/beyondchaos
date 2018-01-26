@@ -334,14 +334,19 @@ class SpellSub(Substitution):
     def __repr__(self):
         return "Use the skill '{0}'".format(spellnames[self.spellid])
 
+wildspells = None
 
 def get_spellsets(spells=None):
     """Create various thematic groups of spells."""
+    global wildspells
     spellsets = {}
     spellset_bans = []
     spells = [s for s in spells if s.spellid not in spellset_bans]
     # Each spellset is a tuple of (description, spell list)
     spellsets['Chaos'] = ('skill (including broken and glitchy skills)', [])
+    if wildspells is None:
+        wildspells = random.sample(spells,8)
+    spellsets['Wild'] = ('random set of spells', wildspells)
     spellsets['Magic'] = ('magic spell', range(0, 0x36))
     spellsets['Black'] = ('black magic spell', range(0, 0x18))
     spellsets['White'] = ('white magic spell', range(0x2D, 0x36))
@@ -499,7 +504,7 @@ class RandomSpellSub(Substitution):
         self.name = spellclass
         desc, spellset = spellsets[spellclass]
         self.spells_description = desc
-        if spellclass.lower() in ["wild", "chaos"]:
+        if spellclass.lower() in ["chaos"]:
             self.wild = True
             self.spells = []
             return

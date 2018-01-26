@@ -1898,6 +1898,7 @@ def manage_character_appearance(preserve_graphics=False):
     wild = 'partyparty' in activated_codes
     sabin_mode = 'suplexwrecks' in activated_codes
     tina_mode = 'bravenudeworld' in activated_codes
+    moogle_mode = 'kupokupo' in activated_codes
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -1918,6 +1919,21 @@ def manage_character_appearance(preserve_graphics=False):
         change_to = dict(zip(char_ids, [0x12] * 100))
     elif sabin_mode:
         change_to = dict(zip(char_ids, [0x05] * 100))
+    elif moogle_mode:
+        # all characters are moogles except Mog, Imp, and Esper Terra
+        if wild:
+            # make mog human
+            mog = random.choice(range(0, 0x0A) + range(0x0B, 0x0F) +[0x10, 0x11, 0x13, 0x15])
+            #esper terra and imp neither human nor moogle
+            esper_terra, imp  = random.sample([0x0F, 0x12, 0x14], 2)
+        else:
+            mog = random.choice(range(0, 0x0A) + range(0x0B, 0x0E))
+            esper_terra = 0x12
+            imp = 0x0F
+        change_to = dict(zip(char_ids, [0x0A] * 100))
+        change_to[0x0A] = mog
+        change_to[0x12] = esper_terra
+        change_to[0x0F] = imp
     else:
         female = [0, 0x06, 0x08]
         female += [c for c in [0x03, 0x0A, 0x0C, 0x0D, 0x0E, 0x0F, 0x14] if
@@ -1961,7 +1977,7 @@ def manage_character_appearance(preserve_graphics=False):
         0x15: "Kefka"}
 
     names = []
-    if not tina_mode and not sabin_mode:
+    if not tina_mode and not sabin_mode and not moogle_mode:
         f = open(MALE_NAMES_TABLE)
         malenames = sorted(set([line.strip() for line in f.readlines()]))
         f.close()
@@ -1993,6 +2009,12 @@ def manage_character_appearance(preserve_graphics=False):
         names = ["TEABIN", "LOABIN", "CYABIN", "SHABIN", "EDABIN", "SABIN",
                  "CEABIN", "STABIN", "REABIN", "SEABIN", "MOABIN", "GAUBIN",
                  "GOABIN", "UMABIN"]
+    elif moogle_mode:
+        names = ["KUMOP", "KUPO", "KUPEK", "KUPOP", "KUMAMA", "KUKU",
+                 "KUTAN", "KUPAN", "KUSHU", "KURIN", "MOG", "KURU",
+                 "KAMOG", "KUMARO", "BANON", "LEO", "?????", "?????",
+                 "CYAN", "SHADOW", "EDGAR", "SABIN", "CELES", "STRAGO",
+                 "RELM", "SETZER", "GAU", "GOGO"]
 
     for c in characters:
         if c.id < 14:
@@ -5322,6 +5344,7 @@ h   Organize rages by highest level first
     secret_codes['speedcave'] = "FAST CHAOS TOWER MODE"
     secret_codes['racecave'] = "EXTRA FAST CHAOS TOWER MODE"
     secret_codes['metronome'] = "R-CHAOS MODE"
+    secret_codes['kupokupo'] = "MOOGLE MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -5434,7 +5457,7 @@ h   Organize rages by highest level first
     reseed()
 
     if 'c' in flags or 's' in flags or (
-            set(['partyparty', 'bravenudeworld', 'suplexwrecks']) & activated_codes):
+            set(['partyparty', 'bravenudeworld', 'suplexwrecks', 'kupokupo']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
     reseed()
 

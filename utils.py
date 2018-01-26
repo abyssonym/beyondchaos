@@ -45,6 +45,7 @@ LOCATION_MAPS_TABLE = path.join(tblpath, "locationmaps.txt")
 WOB_TREASURE_TABLE = path.join(tblpath, "wobonlytreasure.txt")
 WOR_ITEMS_TABLE = path.join(tblpath, "worstartingitems.txt")
 WOB_EVENTS_TABLE = path.join(tblpath, "wobeventbits.txt")
+SPRITE_REPLACEMENT_TABLE = path.join(tblpath, "spritereplacements.txt")
 
 
 class Substitution(object):

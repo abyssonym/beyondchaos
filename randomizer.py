@@ -8,7 +8,7 @@ from utils import (ESPER_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
-                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
+                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -1898,6 +1898,7 @@ def manage_character_appearance(preserve_graphics=False):
     wild = 'partyparty' in activated_codes
     sabin_mode = 'suplexwrecks' in activated_codes
     tina_mode = 'bravenudeworld' in activated_codes
+    sprite_swap_mode = 'makeover' in activated_codes
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -1935,6 +1936,32 @@ def manage_character_appearance(preserve_graphics=False):
             random.shuffle(male)
             change_to = dict(zip(sorted(male), male) +
                              zip(sorted(female), female))
+    
+    if sprite_swap_mode and not preserve_graphics:
+        class SpriteReplacement:
+            def __init__(self, file, name, gender, riding=None):
+                self.file = file.strip()
+                self.name = name.strip()
+                self.gender = gender.strip().lower()
+                self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
+        f = open(SPRITE_REPLACEMENT_TABLE)
+        replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
+        f.close()
+
+        num_to_replace = min(len(replace_candidates), random.randint(4,8))
+        replacements = random.sample(replace_candidates, num_to_replace)
+        
+        if wild:
+            swap_to = dict(zip(random.sample(char_ids, num_to_replace),replacements))
+        else:
+            female_replacements = [s for s in replacements if s.gender == "female"]
+            male_replacements = [s for s in replacements if s.gender == "male"]
+            neutral_replacements = [s for s in replacements if s.gender != "male" and s.gender != "female"]
+        
+            swap_to = dict(zip(random.sample(female, len(female_replacements)),female_replacements))
+            swap_to.update(dict(zip(random.sample(male, len(male_replacements)), male_replacements)))
+            not_already_swapped = [c for c in char_ids if c not in swap_to]
+            swap_to.update(dict(zip(random.sample(not_already_swapped, len(neutral_replacements)), neutral_replacements)))
 
     nameiddict = {
         0: "Terra",
@@ -1959,7 +1986,7 @@ def manage_character_appearance(preserve_graphics=False):
         0x13: "Merchant",
         0x14: "Ghost",
         0x15: "Kefka"}
-
+    
     names = []
     if not tina_mode and not sabin_mode:
         f = open(MALE_NAMES_TABLE)
@@ -1999,7 +2026,10 @@ def manage_character_appearance(preserve_graphics=False):
             c.newname = names[c.id]
             c.original_appearance = nameiddict[c.id]
             if not preserve_graphics:
-                c.new_appearance = nameiddict[change_to[c.id]]
+                if sprite_swap_mode and c.id in swap_to:
+                    c.new_appearance = swap_to[c.id].name
+                else:
+                    c.new_appearance = nameiddict[change_to[c.id]]
             else:
                 c.new_appearance = c.original_appearance
 
@@ -2010,6 +2040,11 @@ def manage_character_appearance(preserve_graphics=False):
         f.seek(0x478C0 + (6*c))
         f.write("".join(map(chr, name)))
     f.close()
+
+    removeSoldier = False
+    if sprite_swap_mode and 0xE not in char_ids:
+        char_ids.append(0xE)
+        removeSoldier = True
 
     ssizes = ([0x16A0] * 0x10) + ([0x1560] * 6)
     spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in char_ids])
@@ -2034,22 +2069,38 @@ def manage_character_appearance(preserve_graphics=False):
         char_portraits[0x12] = char_portraits[0]
         char_portrait_palettes[0x12] = char_portrait_palettes[0]
 
+    if removeSoldier:
+        char_ids.remove(0xE)
+        
     for c in char_ids:
         new = change_to[c]
         portrait = char_portraits[new]
         portrait_palette = char_portrait_palettes[new]
-        if wild and portrait == 0 and change_to[c] != 0:
+        if (wild and portrait == 0 and change_to[c] != 0) or (sprite_swap_mode and c in swap_to):
             portrait = char_portraits[0xE]
             portrait_palette = char_portrait_palettes[0xE]
         f.seek(0x36F1B + (2*c))
         write_multi(f, portrait, length=2)
         f.seek(0x36F00 + c)
         f.write(portrait_palette)
-        if wild:
+        if wild or sprite_swap_mode:
             f.seek(spointers[c])
             f.write(sprites[0xE][:ssizes[c]])
         f.seek(spointers[c])
-        newsprite = sprites[change_to[c]]
+        if sprite_swap_mode and c in swap_to:
+            from os import path
+            try:
+                g = open(path.join("sprites", swap_to[c].file), "rb")
+            except IOError:
+                newsprite = sprites[change_to[c]]
+                for ch in characters:
+                    if ch.id == c:
+                        ch.new_appearance = nameiddict[change_to[c]]
+            else:
+                newsprite = g.read(min(ssizes[c], swap_to[c].size))
+                g.close()
+        else:
+            newsprite = sprites[change_to[c]]
         newsprite = newsprite[:ssizes[c]]
         f.write(newsprite)
     f.close()
@@ -5322,6 +5373,7 @@ h   Organize rages by highest level first
     secret_codes['speedcave'] = "FAST CHAOS TOWER MODE"
     secret_codes['racecave'] = "EXTRA FAST CHAOS TOWER MODE"
     secret_codes['metronome'] = "R-CHAOS MODE"
+    secret_codes['makeover'] = "SPRITE REPLACEMENT MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -5679,7 +5731,7 @@ h   Organize rages by highest level first
 
 if __name__ == "__main__":
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

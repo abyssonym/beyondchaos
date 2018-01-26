@@ -1881,6 +1881,7 @@ def manage_character_appearance(preserve_graphics=False):
     tina_mode = 'bravenudeworld' in activated_codes
     soldier_mode = 'quikdraw' in activated_codes
     sprite_swap_mode = 'spriteswap' in activated_codes
+    sprite_swap_mode = 'makeover' in activated_codes
     charpal_options = {}
     for line in open(CHARACTER_PALETTE_TABLE):
         if line[0] == '#':
@@ -1923,15 +1924,16 @@ def manage_character_appearance(preserve_graphics=False):
 
     if sprite_swap_mode and not preserve_graphics:
         class SpriteReplacement:
-            def __init__(self, file, name, gender):
-                self.file = file
-                self.name = name
-                self.gender = gender
+            def __init__(self, file, name, gender, riding=None):
+                self.file = file.strip()
+                self.name = name.strip()
+                self.gender = gender.strip().lower()
+                self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
         f = open(SPRITE_REPLACEMENT_TABLE)
-        replace_candidates = set(SpriteReplacement(*line.strip().split(',')) for line in f.readlines())
+        replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
         f.close()
 
-        num_to_replace = min(len(replace_candidates), random.randint(3,6))
+        num_to_replace = min(len(replace_candidates), random.randint(4,8))
         replacements = random.sample(replace_candidates, num_to_replace)
 
         if wild:
@@ -1939,12 +1941,12 @@ def manage_character_appearance(preserve_graphics=False):
         else:
             female_replacements = [s for s in replacements if s.gender == "female"]
             male_replacements = [s for s in replacements if s.gender == "male"]
-            none_replacements = [s for s in replacements if s.gender == "none"]
+            neutral_replacements = [s for s in replacements if s.gender != "male" and s.gender != "female"]
 
             swap_to = dict(zip(random.sample(female, len(female_replacements)),female_replacements))
             swap_to.update(dict(zip(random.sample(male, len(male_replacements)), male_replacements)))
             not_already_swapped = [c for c in char_ids if c not in swap_to]
-            swap_to.update(dict(zip(random.sample(not_already_swapped, len(none_replacements)), none_replacements)))
+            swap_to.update(dict(zip(random.sample(not_already_swapped, len(neutral_replacements)), neutral_replacements)))
 
     nameiddict = {
         0: "Terra",
@@ -1969,9 +1971,6 @@ def manage_character_appearance(preserve_graphics=False):
         0x13: "Merchant",
         0x14: "Ghost",
         0x15: "Kefka"}
-
-    for a in swap_to:
-        print nameiddict[a], swap_to[a].name
     names = []
     if not tina_mode and not sabin_mode:
         f = open(MALE_NAMES_TABLE)
@@ -2024,6 +2023,11 @@ def manage_character_appearance(preserve_graphics=False):
         fout.seek(0x478C0 + (6*c))
         fout.write("".join(map(chr, name)))
 
+    removeSoldier = False
+    if sprite_swap_mode and 0xE not in char_ids:
+        char_ids.append(0xE)
+        removeSoldier = True
+
     ssizes = ([0x16A0] * 0x10) + ([0x1560] * 6)
     spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in char_ids])
     ssizes = dict(zip(char_ids, ssizes))
@@ -2047,6 +2051,9 @@ def manage_character_appearance(preserve_graphics=False):
         char_portraits[0x12] = char_portraits[0]
         char_portrait_palettes[0x12] = char_portrait_palettes[0]
 
+    if removeSoldier:
+        char_ids.remove(0xE)
+
     for c in char_ids:
         new = change_to[c]
         portrait = char_portraits[new]
@@ -2064,10 +2071,16 @@ def manage_character_appearance(preserve_graphics=False):
         fout.seek(spointers[c])
         if sprite_swap_mode and c in swap_to:
             from os import path
-            g = open(path.join("sprites", swap_to[c].file), "rb")
-            newsprite = g.read(ssizes[c])
-            g.close()
-            # the .bins in the sprite db are padded with 0s
+            try:
+                g = open(path.join("sprites", swap_to[c].file), "rb")
+            except IOError:
+                newsprite = sprites[change_to[c]]
+                for ch in characters:
+                    if ch.id == c:
+                        ch.new_appearance = nameiddict[change_to[c]]
+            else:
+                newsprite = g.read(min(ssizes[c], swap_to[c].size))
+                g.close()
         else:
             newsprite = sprites[change_to[c]]
         newsprite = newsprite[:ssizes[c]]
@@ -5303,6 +5316,7 @@ h   Organize rages by highest level first
     secret_codes['metronome'] = "R-CHAOS MODE"
     secret_codes['quikdraw'] = "QUIKDRAW MODE"
     secret_codes['spriteswap'] = "SPRITE SWAP MODE"
+    secret_codes['makeover'] = "SPRITE REPLACEMENT MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

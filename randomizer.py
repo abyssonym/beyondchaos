@@ -2242,6 +2242,10 @@ def manage_character_appearance(preserve_graphics=False):
                  "Cyan", "Shadow", "Edgar", "Sabin", "Celes", "Strago",
                  "Relm", "Setzer", "Gau", "Gogo"]
 
+    umaro_name = names[13]
+    for umaro_id in [0x10f, 0x110]:
+        change_enemy_name(fout, umaro_id, umaro_name)
+
     if 'capslockoff' not in activated_codes:
         names = [name.upper() for name in names]
 

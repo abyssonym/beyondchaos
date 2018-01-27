@@ -1,5 +1,5 @@
 from time import time, sleep, gmtime
-from sys import argv
+from sys import argv, exit
 from shutil import copyfile
 import os
 from hashlib import md5
@@ -34,9 +34,9 @@ from towerrandomizer import randomize_tower
 from decompress import Decompressor
 
 
-VERSION = "62"
+VERSION = "63"
 BETA = False
-VERSION_ROMAN = "LXII"
+VERSION_ROMAN = "LXIII"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False

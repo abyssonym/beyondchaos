@@ -910,7 +910,7 @@ def manage_tempchar_commands():
     banned = set([0x0, 0x1, 0x2, 0x17, 0xFF])
     # Guest characters with Lore command will have an empty list, so make sure they don't have it.
     if 0xC not in changed_commands:
-        banned.update(0xC)
+        banned.add(0xC)
     for i, pool in zip(range(0xE, 0x1C), pools):
         pool = sorted([c for c in pool if c and c not in banned])
         a, b = tuple(random.sample(pool, 2))

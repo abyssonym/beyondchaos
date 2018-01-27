@@ -5469,7 +5469,11 @@ def manage_dances():
     for i, dance in enumerate(dance_names):
         from skillrandomizer import spellnames;
         dance_names = [spellnames[dances[i*4 + j]] for j in range(4)]
-        dancestr = "%s:\n\t7/16 %s,\t6/16 %4s,\t2/16 %s,\t1/16 %s" % (dance, dance_names[0], dance_names[1], dance_names[2], dance_names[3])
+        dancestr = "%s:\n  " % dance
+        frequencies = [7, 6, 2, 1]
+        for frequency, dance_name in zip(frequencies, dance_names):
+            dancestr += "{0}/16 {1:<12} ".format(frequency, dance_name)
+        dancestr = dancestr.rstrip()
         log(dancestr, "dances")
 
 def randomize():

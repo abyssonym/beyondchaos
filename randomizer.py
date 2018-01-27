@@ -1916,7 +1916,6 @@ def manage_character_appearance(preserve_graphics=False):
     sabin_mode = 'suplexwrecks' in activated_codes
     tina_mode = 'bravenudeworld' in activated_codes
     soldier_mode = 'quikdraw' in activated_codes
-    sprite_swap_mode = 'spriteswap' in activated_codes
     sprite_swap_mode = 'makeover' in activated_codes
     moogle_mode = 'kupokupo' in activated_codes
     ghost_mode = 'halloween' in activated_codes
@@ -5649,7 +5648,6 @@ k   Randomize the clock in Zozo
     secret_codes['racecave'] = "EXTRA FAST CHAOS TOWER MODE"
     secret_codes['metronome'] = "R-CHAOS MODE"
     secret_codes['quikdraw'] = "QUIKDRAW MODE"
-    secret_codes['spriteswap'] = "SPRITE SWAP MODE"
     secret_codes['makeover'] = "SPRITE REPLACEMENT MODE"
     secret_codes['kupokupo'] = "MOOGLE MODE"
     secret_codes['capslockoff'] = "Mixed Case Names Mode"
@@ -6046,7 +6044,7 @@ k   Randomize the clock in Zozo
 
 if __name__ == "__main__":
     args = list(argv)
-    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

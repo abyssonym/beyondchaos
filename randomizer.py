@@ -5867,7 +5867,8 @@ k   Randomize the clock in Zozo
     print s.strip()
 
     if 'randomboost' in activated_codes:
-        x = raw_input("Please enter a randomness multiplier value: ")
+        x = raw_input("Please enter a randomness "
+                      "multiplier value (blank for tierless): ")
         try:
             multiplier = float(x)
             if multiplier <= 0:

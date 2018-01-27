@@ -1961,8 +1961,6 @@ def manage_character_appearance(preserve_graphics=False):
         change_to[0x0A] = mog
         change_to[0x12] = esper_terra
         change_to[0x0F] = imp
-    elif ghost_mode:
-        change_to = dict(zip(char_ids, [0x14] * 100))
     else:
         female = [0, 0x06, 0x08]
         female += [c for c in [0x03, 0x0A, 0x0C, 0x0D, 0x0E, 0x0F, 0x14] if
@@ -1975,6 +1973,8 @@ def manage_character_appearance(preserve_graphics=False):
             change_to = list(char_ids)
             random.shuffle(change_to)
             change_to = dict(zip(char_ids, change_to))
+        elif ghost_mode:
+            change_to = dict(zip(char_ids, [0x14] * 100))
         else:
             random.shuffle(female)
             random.shuffle(male)

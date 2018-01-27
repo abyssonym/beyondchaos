@@ -64,7 +64,7 @@ magstam             77
 speedvigor          77
 fieldeffect         DD
 statboost1          09
-statboost2          90
+statboost2          98
 statusacquire2      08
 statusacquire3      42
 special2            06
@@ -82,11 +82,14 @@ equippable          3fff
 breakeffect         3E
 targeting           6E
 fieldeffect         5E
-statboost2          11
+statboost2          19
+statusprotect1      80
 statusacquire2      04
 statusacquire3      01
+special1            03
 special2            07
 special3            18
+otherproperties     01
 power               58
 hitmdef             02
 mblockevade         55
@@ -142,6 +145,7 @@ learnrate           01
 targeting           41
 fieldeffect         01
 statboost1          42
+statboost2          04
 elemabsorbs         02
 elemweaks           0a
 elemnulls           25
@@ -160,7 +164,7 @@ learnrate           01
 targeting           41
 fieldeffect         5D
 statboost1          02
-statboost2          20
+statboost2          24
 special2            40
 special3            10
 elemabsorbs         04
@@ -178,22 +182,13 @@ learnspell          09
 learnrate           01
 targeting           41
 statboost1          44
-statboost2          80
+statboost2          84
 speedvigor          07
 elemabsorbs         01
 elemweaks           01
 elemnulls           06
 name_icon           e7
 name_text           White Lotus
-
-! Senzu Beans
-price               2
-itemtype            25
-breakeffect         31
-targeting           01
-equippable          00
-name_icon           df
-name_text           Senzu Beans
 
 ! OOO
 price               02
@@ -260,9 +255,12 @@ speedvigor          70
 fieldeffect         DD
 statboost1          48
 statboost2          3F
+statusprotect1      80
 statusacquire2      04
 statusacquire3      6a
+special1            83
 special2            46
+otherproperties     01
 power               4e
 hitmdef             37
 mblockevade         55
@@ -282,6 +280,7 @@ targeting           29
 specialaction       06
 power               50
 statusacquire3      84
+statboost2          08
 special2            40
 special3            03
 hitmdef             FF
@@ -293,10 +292,11 @@ name_text           Rose Shield
 price               2
 itemtype            23
 equippable          141
+breakeffect         37
 specialaction       06
 statusacquire3      0a
 statboost1          91
-statboost2          80
+statboost2          84
 special1            80
 special2            07
 special3            10
@@ -319,11 +319,13 @@ learnrate           05
 targeting           02
 fieldeffect         5C
 statboost2          0F
+statusprotect1      80
 statusacquire2      55
 statusacquire3      09
 special1            7F
 special2            FA
 special3            FF
+otherproperties     01
 power               0
 hitmdef             0
 mblockevade         0
@@ -332,7 +334,7 @@ name_text           KingOfGames
 
 ! Murderface
 price               2
-itemtype            24
+itemtype            4
 equippable          3FFF
 statboost1          01
 statboost2          91
@@ -349,10 +351,10 @@ name_text           Murderface
 
 ! Neku Phones
 price               2
-itemtype            24
+itemtype            4
 equippable          3FFF
 statboost1          42
-statboost2          20
+statboost2          24
 special2            04
 power               0
 hitmdef             0
@@ -363,13 +365,14 @@ name_text           Neku Phones
 
 ! No.21 Wings
 price               2
-itemtype            22
+itemtype            2
 equippable          3FFF
 statusprotect1      80
 statboost1          10
 statusacquire3      05
 special1            80
 power               3a
+hitmdef             34
 mblockevade         AA
 speedvigor          f0
 name_icon           e4
@@ -383,12 +386,112 @@ breakeffect         23
 learnspell          1E
 learnrate           05
 targeting           c0
+statboost2          0c
 statusacquire2      04
 special1            7C
 special2            FA
 special3            18
-power               19
-hitmdef             21
+power               13
+hitmdef             15
 mblockevade         0
 name_icon           e3
 name_text           Scenes Hat
+
+! Contessa
+price               2
+itemtype            4
+equippable          141
+targeting           02
+fieldeffect         03
+statboost2          19
+statusacquire2      04
+statusacquire3      08
+special1            83
+special2            46
+power               ff
+hitmdef             ff
+mblockevade         55
+name_icon           e3
+name_text           Contessa
+
+! Behaim Watch
+price               2
+itemtype            25
+breakeffect         2B
+targeting           01
+equippable          00
+name_icon           df
+name_text           Behaim Watch
+
+! Wyvern Drug
+price               2
+itemtype            5
+equippable          3fff
+magstam             7f
+speedvigor          7f
+fieldeffect         01
+statboost1          42
+statboost2          21
+statusprotect1      04
+statusprotect2      10
+statusacquire2      61
+special1            81
+special2            46
+special3            18
+elemnulls           08
+mblockevade         55
+name_icon           e7
+name_text           Wyvern Drug
+
+! Mary Ribbon
+price               2
+itemtype            4
+equippable          141
+speedvigor          77
+fieldeffect         01
+statboost1          01
+statboost2          80
+statusprotect1      01
+statusprotect2      80
+special1            83
+special2            57
+special3            0b
+mblockevade         55
+name_icon           e3
+name_text           Mary Ribbon
+
+! Laylania
+price               2
+itemtype            22
+equippable          141
+breakeffect         39
+targeting           6e
+magstam             70
+statboost1          42
+statboost2          4c
+statusprotect2      08
+power               2f
+hitmdef             23
+elemabsorbs         F1
+elemnulls           06
+name_icon           e4
+name_text           Laylania
+
+! Page Jacket
+price               2
+itemtype            2
+equippable          3FFF
+speedvigor          30
+fieldeffect         80
+statboost1          08
+statusprotect1      67
+statusprotect2      88
+statusacquire2      01
+special2            40
+special3            80
+otherproperties     01
+power               37
+hitmdef             55
+elemabsorbs         20
+name_icon           e4
+name_text           Page Jacket

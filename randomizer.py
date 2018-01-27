@@ -843,7 +843,7 @@ def manage_commands(commands):
             c.set_battle_command(1, command_id=0x1D)
             c.set_battle_command(2, command_id=2)
             c.set_battle_command(3, command_id=1)
-            c.write_battle_commands(outfile)
+            c.write_battle_commands(fout)
             continue
 
         if 'collateraldamage' in activated_codes:
@@ -1144,7 +1144,7 @@ def manage_commands_new(commands):
                                                    for s in myspells]):
                         myspells = []
 
-                c.unset_retarget(outfile)
+                c.unset_retarget(fout)
                 #if random.choice([True, False]):
                 #    nopowers = [s for s in myspells if not s.power]
                 #    powers = [s for s in myspells if s.power]
@@ -1211,7 +1211,7 @@ def manage_commands_new(commands):
                     c.targeting ^= 2  # allow targeting either side
 
                 c.targeting = c.targeting & (0xFF ^ 0x10)  # never autotarget
-                c.write_properties(outfile)
+                c.write_properties(fout)
 
                 scount = max(1, scount-1)
                 if autotarget_warning and targeting_conflict:
@@ -1297,7 +1297,7 @@ def manage_commands_new(commands):
             s = RandomSpellSub()
             magitek.newname("R-Chaos", outfile)
             s.set_spells([], [], "Chaos")
-        magitek.write_properties(outfile)
+        magitek.write_properties(fout)
         magitek.unsetmenu(outfile)
         magitek.allow_while_confused(outfile)
         magitek.allow_while_berserk(outfile)
@@ -1306,7 +1306,7 @@ def manage_commands_new(commands):
         s.set_location(myfs.start)
         if not hasattr(s, "bytestring") or not s.bytestring:
             s.generate_bytestring()
-        s.write(outfile)
+        s.write(fout)
         magitek.setpointer(s.location, outfile)
         freespaces = determine_new_freespaces(freespaces, myfs, s.size)
 
@@ -4309,19 +4309,19 @@ def manage_clock():
     hour_sub.bytestring = [0xE4, 0x96, 0x00] * 6
     hour_sub.bytestring[hour*3] = 0xE2
     hour_sub.set_location(0xA96CF)
-    hour_sub.write(outfile)
+    hour_sub.write(fout)
 
     minute_sub = Substitution()
     minute_sub.bytestring = [0xFA, 0x96, 0x00] * 5
     minute_sub.bytestring[minute*3] = 0xF8
     minute_sub.set_location(0xA96E8)
-    minute_sub.write(outfile)
+    minute_sub.write(fout)
 
     second_sub = Substitution()
     second_sub.bytestring = [0x16, 0x97, 0x00] * 5
     second_sub.bytestring[second*3] = 0x0E
     second_sub.set_location(0xA96FE)
-    second_sub.write(outfile)
+    second_sub.write(fout)
 
     clockstr = "%d:%02d:%02d" % ((hour+1)*2, (minute+1) * 10, (second+1) * 10)
     log(clockstr, section="zozo clock")
@@ -4347,7 +4347,7 @@ def manage_clock():
     hour_text_sub = Substitution()
     hour_text_sub.bytestring = hour_strings
     hour_text_sub.set_location(start)
-    hour_text_sub.write(outfile)
+    hour_text_sub.write(fout)
 
     ptr_start = 0xCE602
     ptr_index = 0x416
@@ -4383,7 +4383,7 @@ def manage_clock():
             minute_text_sub.bytestring = [0x81, 0x3E, 0x47] # ' t', 'e', 'n'
 
         minute_text_sub.set_location(0xDB035)
-        minute_text_sub.write(outfile)
+        minute_text_sub.write(fout)
 
 
     wrong_seconds = [0, 1, 2, 3, 4]
@@ -4399,7 +4399,7 @@ def manage_clock():
         second_text_sub0 = Substitution()
         second_text_sub0.bytestring = [0xBB, 0xAF, 0x86, 0x83, 0x8F, 0x7F, 0x57, 0x54, 0x5E, 0x00] # ' l', 'es', 's ' 'th', 'an', ' ', '3', '0', '!', '\0'
         second_text_sub0.set_location(0xDAEE4)
-        second_text_sub0.write(outfile)
+        second_text_sub0.write(fout)
 
     elif 0 in double_clue and 2 in double_clue:
         # Change to "The seconds? They're a factor of 30!".
@@ -4407,7 +4407,7 @@ def manage_clock():
         second_text_sub0 = Substitution()
         second_text_sub0.bytestring = [0x88, 0xAB, 0xEE, 0x96, 0x93, 0xD8, 0x7F, 0x57, 0x54, 0x5E, 0x00] # ' a', ' f', 'ac', 'to', 'r ', 'of', ' ', '3', '0', '!', '\0',
         second_text_sub0.set_location(0xDAEE4)
-        second_text_sub0.write(outfile)
+        second_text_sub0.write(fout)
 
     elif 0 in double_clue and 3 in double_clue:
         # Change to "The seconds are 10 modulo 30.".
@@ -4415,21 +4415,21 @@ def manage_clock():
         second_text_sub0 = Substitution()
         second_text_sub0.bytestring = [0x88, 0x89, 0x7F, 0x55, 0x54, 0x9C, 0x48, 0x3D, 0x4E, 0xEA, 0x7F, 0x57, 0x54, 0x65, 0x00] # ' a', 're', ' ', '1', '0', ' m', 'o', 'd', 'u', 'lo',  ' ', '3', '0', '.', '\0',
         second_text_sub0.set_location(0xDAEDD)
-        second_text_sub0.write(outfile)
+        second_text_sub0.write(fout)
 
     elif 0 in double_clue and 4 in double_clue:
         # Change to "The second hand's pointin' a bit upward." (i.e., 10 or 50)
         second_text_sub0 = Substitution()
         second_text_sub0.bytestring = [0x91, 0x8F, 0x3D, 0xB4, 0x7F, 0x49, 0x48, 0x8A, 0xE8, 0xE2, 0x88, 0xA1, 0xA5, 0xF1, 0x49, 0x50, 0x3A, 0x4B, 0x3D, 0x65] # ' h', 'an', 'd', '\'s', ' ', 'p', 'o', 'in', 'ti', 'n\'', '_a', '_b', 'it', ' u', 'p' 'w', 'a', 'r', 'd', '.'
         second_text_sub0.set_location(0xDAEDC)
-        second_text_sub0.write(outfile)
+        second_text_sub0.write(fout)
 
     elif 1 in double_clue and 2 in double_clue:
         # Change to "The seconds? They're around 25!".
         second_text_sub0 = Substitution()
         second_text_sub0.bytestring = [0x88, 0xCA, 0x4E, 0xB5, 0x7F, 0x56, 0x59, 0x5E, 0x00] # ' a', 'ro', 'u', 'nd', ' ', '2', '5', '!', '\0',
         second_text_sub0.set_location(0xDAEE4)
-        second_text_sub0.write(outfile)
+        second_text_sub0.write(fout)
 
     #elif 1 in double_clue and 3 in double_clue:
         # Leave the clue as "The seconds? They're divisible by 20!".
@@ -4440,35 +4440,35 @@ def manage_clock():
         second_text_sub0 = Substitution()
         second_text_sub0.bytestring = [0x88, 0x89, 0x7F, 0x56, 0x54, 0x9C, 0x48, 0x3D, 0x4E, 0xEA, 0x7F, 0x57, 0x54, 0x65, 0x00] # ' a', 're', ' ', '2', '0', ' m', 'o', 'd', 'u', 'lo',  ' ', '3', '0', '.', '\0',
         second_text_sub0.set_location(0xDAEDD)
-        second_text_sub0.write(outfile)
+        second_text_sub0.write(fout)
 
     elif 2 in double_clue and 3 in double_clue:
         # Change to "The seconds? They're around 35!".
         second_text_sub0 = Substitution()
         second_text_sub0.bytestring = [0x88, 0xCA, 0x4e, 0xB5, 0x7F, 0x57, 0x59, 0x5E, 0x00] # ' a', 'ro', 'u', 'nd', ' ', '3', '5', '!', '\0',
         second_text_sub0.set_location(0xDAEE4)
-        second_text_sub0.write(outfile)
+        second_text_sub0.write(fout)
 
     elif 2 in double_clue and 4 in double_clue:
         # Change to "The seconds are an odd prime times 10!".
         second_text_sub0 = Substitution()
         second_text_sub0.bytestring = [0x88, 0x89, 0x88, 0x94, 0x48, 0x3D, 0x8C, 0x49, 0xCC, 0xA2, 0x81, 0x42, 0xA2, 0x86, 0x55, 0x54, 0x5E, 0x00] # ' a', 're', ' a', 'n ', 'o', 'd', 'd ', 'p', 'ri', 'me', ' t', 'i', 'me', 's ', '1', '0', '!'
         second_text_sub0.set_location(0xDAEDD)
-        second_text_sub0.write(outfile)
+        second_text_sub0.write(fout)
 
     elif 3 in double_clue and 4 in double_clue:
         # Change to "The seconds? They're greater than 30!".
         second_text_sub0 = Substitution()
         second_text_sub0.bytestring = [0xC6, 0x89, 0x95, 0x87, 0x81, 0x9B, 0x94, 0x57, 0x54, 0x5E, 0x00] # ' g', 're', 'at', 'er', ' t', 'ha', 'n', '3', '0', '!', '\0',
         second_text_sub0.set_location(0xDAEE4)
-        second_text_sub0.write(outfile)
+        second_text_sub0.write(fout)
 
 
     # Change text that says 'Clock's second hand's pointin' at 30'
     second_text_sub1 = Substitution()
     second_text_sub1.bytestring = [0x55 + wrong_seconds[0]]
     second_text_sub1.set_location(0xDAEA4)
-    second_text_sub1.write(outfile)
+    second_text_sub1.write(fout)
 
     if wrong_seconds[1] != 1:
         # Change clue that says "The second hand of my watch is pointing at four."
@@ -4483,7 +4483,7 @@ def manage_clock():
         else:
             second_text_sub2.bytestring = [0x81, 0x3E, 0x47] #' t', 'e', 'n'
         second_text_sub2.set_location(0xDAF63)
-        second_text_sub2.write(outfile)
+        second_text_sub2.write(fout)
 
 def manage_ancient():
     change_battle_commands = [41, 42, 43]
@@ -4878,10 +4878,10 @@ def manage_ancient():
         # could freeze the game d+pad and A on same frame tho
         leader_sub.set_location(0x324b7)
         leader_sub.bytestring = [0xEA, 0xEA, 0xEA]
-        leader_sub.write(outfile)
+        leader_sub.write(fout)
         leader_sub.set_location(0x32473)
         leader_sub.bytestring = [0xEA, 0xEA]
-        leader_sub.write(outfile)
+        leader_sub.write(fout)
 
         leader_sub.set_location(0xa02da)
         leader_sub.bytestring = [
@@ -5594,25 +5594,25 @@ def manage_santa():
     Santasub.bytestring = [0x32, 0x3A, 0x47, 0x4D, 0x3A]
     for location in [0xD1526, 0xD158D, 0xD16AB, 0xD1AA9, 0xD3F5F, 0xD51C0, 0xD52D0, 0xD5413, 0xD5B03, 0xD8F60, 0xD9260, 0xD92B0, 0xD92DB, 0xD9334, 0xD9B33, 0xDDC27, 0xDDD10, 0xDDD5E, 0xDE650, 0xDE780, 0xDF79C, 0xDF7CF, 0xDF82A, 0xE0B56, 0xE0C10, 0xE0C88, 0xE0FD0, 0xE10D2, 0xE114D, 0xE1197, 0xE1A70, 0xEAB8E, 0xE234B, 0xE2480, 0xE24EB, 0xE256B, 0xE2E3C, 0xE2EA9, 0xE4896, 0xE4915, 0xE4971, 0xE4BBC, 0xE5282, 0xE5656, 0xE56D6, 0xE56EF, 0xE6059, 0xE607A, 0xE6151, 0xE6296, 0xE62E7, 0xE651A, 0xE65AE, 0xE6601, 0xE68F2, 0xE6A54, 0xE6A7E, 0xE6B38, 0xE6B7E, 0xE7579, 0xE7B49, 0xE8160, 0xE8239, 0xE82A3, 0xE8755, 0xE8C67, 0xE91AF, 0xE9707, 0xE9980, 0xE9DFB, 0xEA8AB, 0xEDBA7, 0xEE0E6, 0xEE5FE, 0xEE755] :
         Santasub.set_location(location)
-        Santasub.write(outfile)
+        Santasub.write(fout)
 
     SANTAsub = Substitution()
     SANTAsub.bytestring = [0x32, 0x20, 0x2D, 0x33, 0x20]
     for location in [0xD06B6, 0xD153A, 0xD1594, 0xD15BB, 0xD1600, 0xD163D, 0xD16D9, 0xD1756, 0xD17D3, 0xD17FF, 0xD1ABE, 0xD1AF2, 0xD1B51, 0xD1B83, 0xD1C4A, 0xD1C5F, 0xD53D8, 0xD542F, 0xD585B, 0xD58C3, 0xD592A, 0xD5957, 0xD5978, 0xD59A6, 0xD5A05, 0xD5A29, 0xD5A4B, 0xD5A6B, 0xD5A86, 0xD5ACA, 0xD5B17, 0xD8F2E, 0xD8F83, 0xD8FB5, 0xD8FC2, 0xD9203, 0xD9239, 0xD93B3, 0xDE115, 0xDE170, 0xDE1A6, 0xDE45F, 0xDE48A, 0xDE4BC, 0xDE535, 0xDE582, 0xDE58E, 0xDE7C9, 0xDE7FC, 0xE09C9, 0xE0A3E, 0xE10FF, 0xE1128, 0xE113D, 0xE47E8, 0xE48AB, 0xE491F, 0xE4998, 0xE49BE, 0xE49E2, 0xE4A2C, 0xE4AA0, 0xE4AC2, 0xE4AE8, 0xE4B2B, 0xE4B50, 0xE549E, 0xE54C4, 0xE5542, 0xE5550, 0xE5560, 0xE55C2, 0xE55FC, 0xE5623, 0xE569B, 0xE571A, 0xE572B, 0xE57A9, 0xEE23D, 0xEE261, 0xEE28D, 0xEE2D7, 0xEE3ED, 0xEE591, 0xEE5D3, 0xEE621, 0xEE656, 0xEE6B2, 0xEE710, 0xEE75C, 0xEF3D7]:
         SANTAsub.set_location(location)
-        SANTAsub.write(outfile)
+        SANTAsub.write(fout)
 
     BattleSantasub = Substitution()
     BattleSantasub.bytestring = [0x92, 0x9A, 0xA7, 0xAD, 0x9A]
     for location in [0xFCB54, 0xFCBF4, 0xFCD34, 0x10D9D5, 0x10DF9E, 0x10E0C1, 0x10E10E, 0x10E602, 0x10E8EE, 0x10F41A, 0x10F5DD, 0x10F7A7, 0x10F8FA]:
         BattleSantasub.set_location(location)
-        BattleSantasub.write(outfile)
+        BattleSantasub.write(fout)
 
     BattleSANTAsub = Substitution()
     BattleSANTAsub.bytestring = [0x92, 0x80, 0x8D, 0x93, 0x80]
     for location in [0x479B6, 0x479BC, 0x479C2, 0x479C8, 0x479CE, 0x479D4, 0x479DA, 0x10D7A0, 0x10D9C0, 0x10D9E6, 0x10DEF8, 0x10DF0C, 0x10DF29, 0x10DF67, 0x10DF82, 0x10DFB9, 0x10E034, 0x10E072, 0x10E0C9, 0x10E5BD, 0x10E61C, 0x10E748, 0x10E82E, 0x10E903, 0x10E978, 0x10F375, 0x10F3C1, 0x10F423, 0x10F5F4, 0x10F7E1, 0x10F887, 0x10F920, 0x10F942, 0x10F959, 0x10F98B, 0x10F9AC, 0x10F9D7, 0x10F9E6, 0x10FB6B]:
         BattleSANTAsub.set_location(location)
-        BattleSANTAsub.write(outfile)
+        BattleSANTAsub.write(fout)
 
 def manage_dances():
     f = open(sourcefile, 'r+b')
@@ -5647,7 +5647,7 @@ def manage_dances():
     Dancesub = Substitution()
     Dancesub.bytestring = dances
     Dancesub.set_location(0x0FFE80)
-    Dancesub.write(outfile)
+    Dancesub.write(fout)
 
     dance_names = ["Wind Song", "Forest Nocturne", "Desert Aria", "Love Sonata", "Earth Blues", "Water Rondo", "Dusk Requium", "Snowman Jazz"]
 
@@ -6105,13 +6105,11 @@ k   Randomize the clock in Zozo
 
     if 'halloween' in activated_codes:
         demon_chocobo_sub = Substitution()
-        f = open(sourcefile, 'r+b')
-        f.seek(0x2d0000 + 896 * 7)
-        demon_chocobo_sub.bytestring = map(ord, f.read(896))
+        fout.seek(0x2d0000 + 896 * 7)
+        demon_chocobo_sub.bytestring = map(ord, fout.read(896))
         for i in range(7):
             demon_chocobo_sub.set_location(0x2d0000 + 896 * i)
-            demon_chocobo_sub.write(outfile)
-        f.close()
+            demon_chocobo_sub.write(fout)
 
     if 'n' in flags or 'christmas' in activated_codes or 'halloween' in activated_codes:
         for i in range(8):

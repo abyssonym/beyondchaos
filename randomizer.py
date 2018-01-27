@@ -4529,8 +4529,9 @@ def manage_ancient():
         gau.write_battle_commands(fout)
 
     to_dummy = [get_item(0xF6), get_item(0xF7)]
-    name = [0xFF] + name_to_bytes("Pebble", 12)
-    for item in to_dummy:
+    dummy_names = ["Pebble", "Tissue"]
+    for dummy_name, item in zip(dummy_names, to_dummy):
+        name = [0xFF] + name_to_bytes(dummy_name, 12)
         item.dataname = name
         item.price = 4
         item.itemtype = 6

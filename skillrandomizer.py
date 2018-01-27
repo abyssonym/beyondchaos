@@ -628,7 +628,7 @@ class MultiSpellSubMixin(Substitution):
 
 class ChainSpellSub(MultiSpellSubMixin):
     def get_overhead(self):
-        return 15
+        return 19
 
     def generate_bytestring(self):
         subpointer = self.location + self.get_overhead()
@@ -638,6 +638,8 @@ class ChainSpellSub(MultiSpellSubMixin):
         high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
 
         self.bytestring = [
+            0xA9, 0x01,
+            0x04, 0xB2,
             0x5A,                           # PHY
             0x20, low, high,                # call spell sub
             0x7A,                           # PLY

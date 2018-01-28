@@ -1214,7 +1214,8 @@ def manage_commands_new(commands):
                 c.write_properties(fout)
 
                 scount = max(1, scount-1)
-                if autotarget_warning and targeting_conflict:
+                if ((autotarget_warning and targeting_conflict)
+                        or len(css.spells) != len(multibanned(css.spells))):
                     scount = 1
                 css.name = ""
                 if scount >= 2:

@@ -1214,8 +1214,7 @@ def manage_commands_new(commands):
                 c.write_properties(fout)
 
                 scount = max(1, scount-1)
-                if ((autotarget_warning and targeting_conflict)
-                        or len(css.spells) != len(multibanned(css.spells))):
+                if autotarget_warning and targeting_conflict:
                     scount = 1
                 css.name = ""
                 if scount >= 2:
@@ -1226,7 +1225,8 @@ def manage_commands_new(commands):
                     else:
                         new_s = ChainSpellSub()
                         new_s.set_spells(css)
-                    css = new_s
+                    if len(css.spells) == len(multibanned(css.spells)):
+                        css = new_s
 
                 if (isinstance(css, MultipleSpellSub) or
                         isinstance(css, ChainSpellSub)):

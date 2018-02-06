@@ -3676,12 +3676,10 @@ def manage_tower():
 
 
 def create_dimensional_vortex():
-    entrancesets = []
+    entrancesets = [l.entrance_set for l in get_locations()]
     entrances = []
-    for i in xrange(512):
-        e = EntranceSet(i)
+    for e in entrancesets:
         e.read_data(sourcefile)
-        entrancesets.append(e)
         entrances.extend(e.entrances)
 
     entrances = sorted(set(entrances))
@@ -3706,8 +3704,16 @@ def create_dimensional_vortex():
 
     entrancesets = entrancesets[:0x19F]
     nextpointer = 0x1FBB00 + (len(entrancesets) * 2)
+    longnextpointer = 0x2DF480 + (len(entrancesets) * 2) + 2
+    total = 0
     for e in entrancesets:
-        nextpointer = e.write_data(fout, nextpointer)
+        total += len(e.entrances)
+        nextpointer, longnextpointer = e.write_data(fout, nextpointer,
+                                                    longnextpointer)
+    fout.seek(e.pointer + 2)
+    write_multi(fout, (nextpointer - 0x1fbb00), length=2)
+    fout.seek(e.longpointer + 2)
+    write_multi(fout, (longnextpointer - 0x2df480), length=2)
 
 
 def change_enemy_name(fout, enemy_id, name):

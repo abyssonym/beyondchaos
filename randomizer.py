@@ -2154,7 +2154,7 @@ def manage_character_appearance(preserve_graphics=False):
             change_to = dict(zip(sorted(male), male) +
                              zip(sorted(female), female))
 
-    if sprite_swap_mode and not preserve_graphics:
+    if sprite_swap_mode:
         class SpriteReplacement:
             def __init__(self, file, name, gender, riding=None):
                 self.file = file.strip()
@@ -2254,11 +2254,10 @@ def manage_character_appearance(preserve_graphics=False):
         if c.id < 14:
             c.newname = names[c.id]
             c.original_appearance = nameiddict[c.id]
-            if not preserve_graphics:
-                if sprite_swap_mode and c.id in swap_to:
-                    c.new_appearance = swap_to[c.id].name
-                else:
-                    c.new_appearance = nameiddict[change_to[c.id]]
+            if sprite_swap_mode and c.id in swap_to:
+                c.new_appearance = swap_to[c.id].name
+            elif not preserve_graphics:
+                c.new_appearance = nameiddict[change_to[c.id]]
             else:
                 c.new_appearance = c.original_appearance
 

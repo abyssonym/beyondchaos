@@ -2450,7 +2450,7 @@ def manage_items(items, changed_commands=None):
     set_item_changed_commands(changed_commands)
 
     for i in items:
-        i.mutate(always_break=always_break)
+        i.mutate(always_break=always_break, extra_effects="masseffect" in activated_codes)
         i.unrestrict()
         i.write_stats(fout)
 
@@ -5846,6 +5846,7 @@ k   Randomize the clock in Zozo
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
+    secret_codes['masseffect'] = "WILD EQUIPMENT EFFECT MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

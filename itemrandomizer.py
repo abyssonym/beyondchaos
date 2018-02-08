@@ -470,7 +470,7 @@ class ItemBlock:
 
         self.price = min(self.price, 65000)
 
-    def mutate(self, always_break=False):
+    def mutate(self, always_break=False, extra_effects=False):
         global changed_commands
         self.mutate_stats()
         self.mutate_price()
@@ -501,6 +501,15 @@ class ItemBlock:
         if not self.heavy and random.randint(1, 20) == 20:
             self.heavy = True
 
+        if extra_effects:
+            if random.randint(1,3) == 3:
+                self.mutate_special_action()
+            
+            if random.randint(1, 2) == 2:
+                self.mutate_feature()
+            while random.randint(1, 3) == 3:
+                self.mutate_feature()
+            
     def rank(self):
         if hasattr(self, "_rank"):
             return self._rank

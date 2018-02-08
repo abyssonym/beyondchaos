@@ -1673,6 +1673,11 @@ def manage_skips():
     narshe_skip_sub.bytestring = [0xB2, address & 0xFF, (address >> 8) & 0xFF, address >> 16]
     narshe_skip_sub.set_location(0xAADC4)
     narshe_skip_sub.write(fout)
+    
+    other_flashback_sub = Substitution()
+    other_flashback_sub.set_location(0xCA43A)
+    other_flashback_sub.bytestring = [0xC0, 0x27, 0x01, 0x15, 0xA6, 0x02]
+    other_flashback_sub.write(fout)
 
 
 def activate_airship_mode(freespaces):

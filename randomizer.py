@@ -8,7 +8,7 @@ from utils import (ESPER_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
-                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE,
+                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE, MOOGLE_NAMES_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -2242,6 +2242,39 @@ def manage_character_appearance(preserve_graphics=False):
                  "Kamog", "Kumaro", "Banon", "Leo", "?????", "?????",
                  "Cyan", "Shadow", "Edgar", "Sabin", "Celes", "Strago",
                  "Relm", "Setzer", "Gau", "Gogo"]
+        
+        gba_moogle_names = ["Moglin", "Mogret", "Moggie", "Molulu", "Moghan",
+                            "Moguel", "Mogsy", "Mogwin", "Mog", "Mugmug", "Cosmog"]
+        
+        random_name_ids = []
+        
+        # Terra, Locke, and Umaro get a specific name, or a random moogle name from another ff game
+        for moogle_id in [0,1,13]:
+            if random.choice([True, True, False]):
+                random_name_ids.append(moogle_id)
+        # Other party members get either the name of their counterpart from snes or gba, or moogle name from another ff game
+        for moogle_id in range(2,10) + range(11,13):
+            chance = random.randint(1,4)
+            if chance == 2:
+                names[moogle_id] = gba_moogle_names[moogle_id - 2]
+            elif chance != 1:
+                random_name_ids.append(moogle_id)
+        
+        f = open(MOOGLE_NAMES_TABLE)
+        mooglenames = sorted(set([line.strip() for line in f.readlines()]))
+        f.close()
+        
+        random_moogle_names = random.sample(mooglenames, len(random_name_ids))
+        for index, id in enumerate(random_name_ids):
+            names[id] = random_moogle_names[index]
+            
+        # Human Mog gets a human name, maybe
+        if random.choice([True, True, False]):
+            f = open(MALE_NAMES_TABLE)
+            malenames = sorted(set([line.strip() for line in f.readlines()]))
+            f.close()
+            
+            names[10] = random.choice(malenames)
 
     umaro_name = names[13]
     for umaro_id in [0x10f, 0x110]:

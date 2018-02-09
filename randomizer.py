@@ -5846,7 +5846,7 @@ k   Randomize the clock in Zozo
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
-    secret_codes['esperallocator'] = "RESTRICED ESPERS MODE"
+    secret_codes['dancingmaduin'] = "RESTRICED ESPERS MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -5995,7 +5995,7 @@ k   Randomize the clock in Zozo
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
     if 'e' in flags:
         manage_espers(esperrage_spaces)
-    if 'esperallocator' in activated_codes:
+    if 'dancingmaduin' in activated_codes:
         allocate_espers('ancientcave' in activated_codes, fout)
     reseed()
 

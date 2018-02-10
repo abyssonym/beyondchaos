@@ -1,10 +1,10 @@
-badass-earthbound-ness.bin,Ness,male,true
-badass-mario-mario.bin,Mario,male,true
-badass-metroid-samus-zero.bin,Samus,female,true
-dr-blank-ff5-faris.bin,Faris,female,true
-matthew50-ff-white-mage.bin,White Mage,neutral,false
-metroidquest-ec-dark-cecil.bin,Cecil,male,true
-sutebenukun-ff4-tellah.bin,Tellah,male,true
-sutebenukun-ff7-aerith.bin,Aerith,female,false
-zeemis-red-mage.bin,Red Mage,neutral,false
-zeemis-ff4-kain.bin,Kain,male,true
+badass-earthbound-ness.bin,Ness,male,true,1
+badass-mario-mario.bin,Mario,male,true,2
+badass-metroid-samus-zero.bin,Samus,female,true,0
+dr-blank-ff5-faris.bin,Faris,female,true,6
+matthew50-ff-white-mage.bin,White Mage,neutral,false,18
+metroidquest-ec-dark-cecil.bin,Cecil,male,true,4,metroidquest-ec-dark-cecil-portrait.bin,metroidquest-ec-dark-cecil-portrait.pal
+sutebenukun-ff4-tellah.bin,Tellah,male,true,7
+sutebenukun-ff7-aerith.bin,Aerith,female,false,16
+zeemis-red-mage.bin,Red Mage,neutral,false,9
+zeemis-ff4-kain.bin,Kain,male,true,5

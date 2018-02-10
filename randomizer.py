@@ -2324,6 +2324,9 @@ def manage_character_appearance(preserve_graphics=False):
                         ch.new_appearance = nameiddict[change_to[c]]
             else:
                 newsprite = g.read(min(ssizes[c], swap_to[c].size))
+                # if it doesn't have riding sprites, it probably doesn't have a death sprite either
+                if swap_to[c].size < 0x16A0:
+                    newsprite = newsprite[:0xAE0] + sprites[0xE][0xAE0:0xBA0] + newsprite[0xBA0:]
                 g.close()
         else:
             newsprite = sprites[change_to[c]]

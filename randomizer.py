@@ -5846,7 +5846,7 @@ k   Randomize the clock in Zozo
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
-    secret_codes['dancingmaduin'] = "RESTRICED ESPERS MODE"
+    secret_codes['dancingmaduin'] = "RESTRICTED ESPERS MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

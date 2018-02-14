@@ -6166,12 +6166,14 @@ k   Randomize the clock in Zozo
     if 'u' in flags or 'q' in flags:
         manage_equip_umaro(event_freespaces)
 
-    if 'easymodo' in activated_codes or 'llg' in activated_codes:
+    if 'easymodo' in activated_codes or 'llg' in activated_codes or 'dearestmolulu' in activated_codes:
         for m in monsters:
             if 'easymodo' in activated_codes:
                 m.stats['hp'] = 1
             if 'llg' in activated_codes:
                 m.stats['xp'] = 0
+            elif 'dearestmolulu' in activated_codes:
+                m.stats['xp'] = min(0xFFFF, 3 * m.stats['xp'])
             m.write_stats(fout)
 
     if 'naturalmagic' in activated_codes or 'naturalstats' in activated_codes:

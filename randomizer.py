@@ -2156,14 +2156,17 @@ def manage_character_appearance(preserve_graphics=False):
 
     if sprite_swap_mode:
         class SpriteReplacement:
-            def __init__(self, file, name, gender, riding=None, fallback_portrait=0xE, portrait_file=None, portrait_palette_file=None):
+            def __init__(self, file, name, gender, riding=None, fallback_portrait_id=0xE, portrait_file=None, portrait_palette_file=None):
                 self.file = file.strip()
                 self.name = name.strip()
                 self.gender = gender.strip().lower()
                 self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
-                self.fallback_portrait = int(fallback_portrait)
+                self.fallback_portrait_id = int(fallback_portrait_id)
                 self.portrait_file = portrait_file if portrait_palette_file else None
                 self.portrait_palette_file = portrait_palette_file if portrait_file else None
+            
+            def has_custom_portrait(self):
+                return self.portrait_file is not None and self.portrait_palette_file is not None
               
         f = open(SPRITE_REPLACEMENT_TABLE)
         replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
@@ -2298,52 +2301,83 @@ def manage_character_appearance(preserve_graphics=False):
         char_portraits[0x12] = char_portraits[0]
         char_portrait_palettes[0x12] = char_portrait_palettes[0]
     
-    portraits = []
-    portrait_palettes = []
+    portrait_data = []
+    portrait_palette_data = []
     
     fout.seek(0x2D1D00)
     
     for i in range(19):
-        portraits.append(fout.read(0x320))
+        portrait_data.append(fout.read(0x320))
         
     fout.seek(0x2D5860)
     for i in range(19):
-        portrait_palettes.append(fout.read(0x20))
+        portrait_palette_data.append(fout.read(0x20))
 
+    used_portrait_ids = set()
+
+    if sprite_swap_mode:
+        for c in char_ids:
+            new = change_to[c]
+            portrait = char_portraits[new]
+            if c not in swap_to:
+                if portrait == 0 and wild and change_to[c] != 0:
+                    used_portrait_ids.add(0xE)
+                else:
+                    used_portrait_ids.add(change_to[c])
+            elif not swap_to[c].has_custom_portrait():
+                used_portrait_ids.add(swap_to[c].fallback_portrait_id)
+        
+        if not wild:
+            for i in range(0xE,0x13):
+                used_portrait_ids.add(i)
+    
+    free_portrait_ids = list(set(range(19)) - used_portrait_ids)
+    
+    print used_portrait_ids
+    print free_portrait_ids
+    
     for c in char_ids:
         new = change_to[c]
         portrait = char_portraits[new]
         portrait_palette = char_portrait_palettes[new]
         
         if sprite_swap_mode and c in swap_to:
-            fallback_portrait = swap_to[c].fallback_portrait
-            if fallback_portrait < 0 or fallback_portrait > 18:
-                fallback_portrait = 0xE
-            if swap_to[c].portrait_file is None or swap_to[c].portrait_palette_file is None:
-                new_portrait = portraits[fallback_portrait]
-                new_portrait_palette = portrait_palettes[fallback_portrait]
-            else:
+            use_fallback = True
+            fallback_portrait_id = swap_to[c].fallback_portrait_id
+            if fallback_portrait_id < 0 or fallback_portrait_id > 18:
+                fallback_portrait_id = 0xE
+
+            portrait = fallback_portrait_id * 0x320
+            portrait_palette = chr(fallback_portrait_id)
+            new_portrait_data = portrait_data[fallback_portrait_id]
+            new_portrait_palette_data = portrait_palette_data[fallback_portrait_id]
+            
+            if swap_to[c].has_custom_portrait():
+                use_fallback = False
+
                 try:
                     g = open(os.path.join("sprites", swap_to[c].portrait_file), "rb")
+                    h = open(os.path.join("sprites", swap_to[c].portrait_palette_file), "rb")
                 except IOError:
-                    new_portrait = portraits[fallback_portrait]
-                    new_portrait_palette = portrait_palettes[fallback_portrait]
+                    use_fallback = True
                 else:
-                    try:
-                        h = open(os.path.join("sprites", swap_to[c].portrait_palette_file), "rb")
-                    except:
-                        new_portrait = portraits[fallback_portrait]
-                        new_portrait_palette = portrait_palettes[fallback_portrait]
-                    else:
-                        new_portrait = g.read(0x320)
-                        new_portrait_palette = h.read(0x20)
-                        h.close()
+                    new_portrait_data = g.read(0x320)
+                    new_portrait_palette_data = h.read(0x20)
+                    h.close()
                     g.close()
+            else:
+                print "using fallback portrait %i (%i) for character %i" %(fallback_portrait_id, portrait, c)
                 
-            fout.seek(0x2D1D00 + portrait)
-            fout.write(new_portrait)
-            fout.seek(0x2D5860 + ord(portrait_palette) * 0x20)
-            fout.write(new_portrait_palette)
+            if not use_fallback or fallback_portrait_id not in used_portrait_ids:
+                portrait_id = free_portrait_ids[0]
+                portrait = portrait_id * 0x320
+                portrait_palette = chr(portrait_id)
+                free_portrait_ids.remove(free_portrait_ids[0])
+                fout.seek(0x2D1D00 + portrait)
+                fout.write(new_portrait_data)
+                fout.seek(0x2D5860 + ord(portrait_palette) * 0x20)
+                fout.write(new_portrait_palette_data)
+                print "overwriting portrait %i with %s" %(portrait_id, fallback_portrait_id if use_fallback else swap_to[c].portrait_file)
         
         elif portrait == 0 and wild and change_to[c] != 0:
             portrait = char_portraits[0xE]

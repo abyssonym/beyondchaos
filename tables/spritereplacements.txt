@@ -7,4 +7,4 @@ metroidquest-ec-dark-cecil.bin,Cecil,male,true,4,metroidquest-ec-dark-cecil-port
 sutebenukun-ff4-tellah.bin,Tellah,male,true,7
 sutebenukun-ff7-aerith.bin,Aerith,female,false,16
 zeemis-red-mage.bin,Red Mage,neutral,false,9
-zeemis-ff4-kain.bin,Kain,male,true,5
+zeemis-ff4-kain.bin,Kain,male,true,5,metroidquest-ec-kain-portrait.bin,metroidquest-ec-kain-portrait.pal

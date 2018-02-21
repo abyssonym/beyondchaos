@@ -1429,8 +1429,8 @@ def manage_natural_magic():
     for i, (level, newspell) in enumerate(candidates[0].natural_magic):
         pointer = address + (2*i)
         fout.seek(pointer)
-        fout.write(chr(level))
         fout.write(chr(newspell.spellid))
+        fout.write(chr(level))
 
     usedspells = random.sample(usedspells, 12)
     for i in xrange(16):
@@ -1441,8 +1441,8 @@ def manage_natural_magic():
     for i, (level, newspell) in enumerate(candidates[1].natural_magic):
         pointer = address + +32 + (2*i)
         fout.seek(pointer)
-        fout.write(chr(level))
         fout.write(chr(newspell.spellid))
+        fout.write(chr(level))
 
     lores = get_ranked_spells(sourcefile, magic_only=False)
     lores = filter(lambda s: 0x8B <= s.spellid <= 0xA2, lores)

@@ -1679,6 +1679,10 @@ def manage_skips():
     other_flashback_sub.bytestring = [0xC0, 0x27, 0x01, 0x15, 0xA6, 0x02]
     other_flashback_sub.write(fout)
 
+    chocobo_sub = Substitution()
+    chocobo_sub.set_location(0xA641E)
+    chocobo_sub.bytestring = [0xB2, 0x0D, 0x65, 0x00, 0xFE]
+    chocobo_sub.write(fout)
 
 def activate_airship_mode(freespaces):
     set_airship_sub = Substitution()

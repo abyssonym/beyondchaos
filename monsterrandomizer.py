@@ -995,6 +995,9 @@ class MonsterBlock:
             index = self.aiscript.index(stealmessage)
             self.aiscript[index] = deathmessage
 
+        if name == 'whelk':
+            self.aiscript = self.aiscript[4:]
+            
         if tutmessage:
             self.aiscript = [a for a in self.aiscript if a != tutmessage]
 

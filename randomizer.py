@@ -3670,8 +3670,8 @@ def manage_tower():
     npc = [n for n in get_npcs() if n.event_addr == 0x233B8][0]
     npc.event_addr = 0x233A6
     narshe_beginner_sub = Substitution()
-    narshe_beginner_sub.bytestring = [0xE5, 0x00]
-    narshe_beginner_sub.set_location(0xC33A7)
+    narshe_beginner_sub.bytestring = [0x4B, 0xE5, 0x00]
+    narshe_beginner_sub.set_location(0xC33A6)
     narshe_beginner_sub.write(fout)
 
 

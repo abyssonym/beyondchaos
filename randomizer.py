@@ -1367,10 +1367,13 @@ def manage_natural_magic():
                   0x17 in c.battle_commands)]
                   
     num_natural_mages = 1
-    if random.randint(0,9) != 9:
-        num_natural_mages = 2
-        while num_natural_mages < len(candidates) and random.choice([True, False]):
-            num_natural_mages += 1
+    if 'supernatural' in activated_codes:
+        num_natural_mages = len(candidates)
+    else:
+        if random.randint(0,9) != 9:
+            num_natural_mages = 2
+            while num_natural_mages < len(candidates) and random.choice([True, False]):
+                num_natural_mages += 1
     
     try:
         candidates = random.sample(candidates, num_natural_mages)
@@ -5841,6 +5844,7 @@ k   Randomize the clock in Zozo
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
+    secret_codes['supernatural'] = "SUPER NATURAL MAGIC MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

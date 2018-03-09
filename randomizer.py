@@ -3684,6 +3684,14 @@ def create_dimensional_vortex():
 
     entrances = sorted(set(entrances))
 
+    # Don't randomize entrances before the moogles
+    for k in entrances:
+        if ( (k.location.locid == 0x1E and k.x == 67) # leave Arvis's house
+        or (k.location.locid == 0x14 and (k.x == 53 or k.x == 26)) # return to Arvis's house or go to the mines
+        or (k.location.locid == 0x32 and k.x == 32) # backtrack out of the mines
+        or (k.location.locid == 0x2A) ): # backtrack out of the room with Terrato while you have Vicks and Wedge
+            entrances.remove(k)
+    
     entrances2 = list(entrances)
     random.shuffle(entrances2)
     for a, b in zip(entrances, entrances2):

@@ -1,10 +1,93 @@
+astaroth-amano-lightwarrior.bin,WarriorOfLight,male,true,16
+astaroth-ff6-atma.bin,Atma,male,true,17
+astaroth-ff7-aerith.bin,Aerith,female,true,16
+astaroth-ff7-tifa.bin,Tifa,female,true,0
+astaroth-ff10-yuna.bin,Yuna,female,true,8
+astaroth-ff12-vaan.bin,Vaan,male,true,11
+astaroth-ff13-lightning.bin,Lightning,female,true,5
+astaroth-ff13-snow.bin,Snow,male,true,9
+astaroth-other-lenneth.bin,Valkyrie,female,true,6
+badass-bof-ryu.bin,Ryu,male,true,1
+badass-ct-cat.bin,Cat,neutral,true,17,badass-ct-cat-portrait.bin
+badass-ct-crono.bin,Crono,male,true,11
+badass-ct-cyrus.bin,Cyrus,male,true,2
+badass-ct-frog.bin,Frog,male,true,15
+badass-ct-robo.bin,Robo,male,true,,badass-ct-robo-portrait.bin
+badass-ct-slash.bin,Slash,male,true,2,badass-ct-slash-portrait.bin
 badass-earthbound-ness.bin,Ness,male,true,1
+badass-ff5-berserker.bin,Berserker,male,true,13,jameswhite89-ff-berserker-portrait.bin
+badass-fft-gafgarion.bin,Gafgarion,male,true
 badass-mario-mario.bin,Mario,male,true,2
-badass-metroid-samus-zero.bin,Samus,female,true,0
+badass-mario-yoshi.bin,Yoshi,neutral,true,15
+badass-megaman-x.bin,MegaMan,male,true
+badass-metroid-samus-zero.bin,Zero Suit Samus,female,true,0
+badass-metorid-samus-suit.bin,Samus,female,true
+badass-other-bubble-dragon.bin,Bub,male,true,15
+badass-soe-boy.bin,Secret of Evermore Boy,male,true,11
+badass-sonic-sonic.bin,Sonic,male,true,10,badass-sonic-sonic-portrait.bin
+christian-ff8-rinoa.bin,Rinoa,female,true
 dr-blank-ff5-faris.bin,Faris,female,true,6
-matthew50-ff-white-mage.bin,White Mage,neutral,false,18
-metroidquest-ec-dark-cecil.bin,Cecil,male,true,4,metroidquest-ec-dark-cecil-portrait.bin,metroidquest-ec-dark-cecil-portrait.pal
+feok-ct-lucca.bin,Lucca,female,true,8
+feok-dq-lenna.bin,Lenna,female,true,0
+feok-ff3-onion-knight.bin,Onion Knight,male,true,16
+feok-ff4-fusoya.bin,FuSoYa,male,true,7
+feok-ff7-vincent.bin,Vincent,male,true,9
+feok-ff7-yuffie.bin,Yuffie,female,true,8
+feok-zelda-link.bin,Link,male,true,1,jameswhite89-other-link-portrait.bin
+fffanatic-ff6-cid.bin,Cid,male,true,3
+jameswhite89-ff-black-mage.bin,Black Mage,neutral,true
+jameswhite89-ff-mini.bin,Mini,neutral,true
+jameswhite89-ff5-boco.bin,Boco,neutral,true
+jameswhite89-ff6-bird.bin,bird,neutral,true,,jameswhite89-ff6-bird-portrait.bin
+jameswhite89-other-fish.bin,Fish,neutral,true,,jameswhite89-ff6-fish-portrait.bin
+jameswhite89-other-real-flea.bin,Flea,neutral,true,,jameswhite89-other-real-flea-portrait.bin
+kugawattan-earthbound-mrsaturn.bin,MrSaturn,male,true,,kugawattan-earthbound-mrsaturn-portrait.bin
+kugawattan-ff5-gilgamesh.bin,Gilgamesh,male,true
+matthew50-ff-white-mage.bin,White Mage,neutral,false,18,sutebenukun-ff-white-mage-portrait.bin
+metroidquest-ec-dark-cecil.bin,Dark Knight Cecil,male,true,4,metroidquest-ec-dark-cecil-portrait.bin
+metroidquest-ec-frog.bin,Froggy,neutral,true,15,metroidquest-ec-frog-portrait.bin
+metroidquest-ec-paladin-cecil.bin,Paladin Cecil,male,true,,metroidquest-ec-paladin-cecil-portrait.bin
+pocoloco-ff6-arvis.bin,Arvis,male,true,7
+pocoloco-ff6-clyde.bin,Clyde,male,true,3
+pocoloco-ff6-cultist.bin,Cultist,neutral,true,12
+pocoloco-ff6-dancer.bin,Dancer,female,true,10
+pocoloco-ff6-daryl.bin,Daryl,female,true,6,unknown-ff6-daryl-portrait.bin
+pocoloco-ff6-dion.bin,Dion,male,true,2
+pocoloco-ff6-draco.bin,Draco,male,true
+pocoloco-ff6-dragon.bin,Dragon,neutral,true
+pocoloco-ff6-fairy.bin,Fairy,female,true
+pocoloco-ff6-figaro-guard.bin,Figaro Guard,male,true
+pocoloco-ff6-gestahl.bin,Gestahl,male,true
+pocoloco-ff6-lone-wolf.bin,Lone Wolf,male,true,1
+pocoloco-ff6-maduin.bin,Maduin,male,true,0
+pocoloco-ff6-narshe-guard.bin,NarsheGuard,male,true
+pocoloco-ff6-returner.bin,Returner,male,true,17
+pocoloco-ff6-scholar.bin,Scholar,male,true,9
+pocoloco-ff6-siegfried.bin,Siegfried,male,true,,pocoloco-ff6-siegfried-portrait.bin
+pocoloco-ff6-thief.bin,Thief,male,true,1
+pocoloco-ff6-ultros.bin,Ultros,male,true,,jameswhite89-ff6-ultros-portrait.bin
+pocoloco-ff8-squall.bin,Squall,male,true,3,jameswhite89-ff8-squall-portrait.bin
+pocoloco-ff9-beatrix.bin,Beatrix,female,true,6,xeblon-beatrix-portrait.bin
+pocoloco-ff9-vivi.bin,Vivi,male,true
+pocoloco-ff10-tidus.bin,Tidus,male,true,11
+royaken-ff7-cloud.bin,Cloud,male,true,4,unknown-ff7-cloud-portrait-1.bin
+sapprentice-ff4-yang.bin,Yang,male,true,5
+sapprentice-ff6-interceptor.bin,Interceptor,neutral,true,3,jameswhite89-ff6-interceptor-portrait.bin
+silvermaine-fft-orlandu.bin,Orlandu,male,true,2
 sutebenukun-ff4-tellah.bin,Tellah,male,true,7
-sutebenukun-ff7-aerith.bin,Aerith,female,false,16
+unknown-ff4-dragoon.bin,Dragoon,male,true,5
+xeblon-ff8-seifer.bin,Seifer,male,true,5,xeblon-seifer-portrait.bin
+xolardark-ff4-pig.bin,Pig,neutral,true,15
 zeemis-red-mage.bin,Red Mage,neutral,false,9
-zeemis-ff4-kain.bin,Kain,male,true,5,metroidquest-ec-kain-portrait.bin,metroidquest-ec-kain-portrait.pal
+zeemis-ff4-kain.bin,Kain,male,true,5,metroidquest-ec-kain-portrait.bin
+zozma-ff4-edward.bin,Edward,male,true,4,sutebenukun-ff4-edward-portrait-2.bin
+zozma-ff6-suit-gau.bin,Gau in a suit,male,true,11
+zozma-ff4-rydia.bin,Rydia,female,true,0,sutebenukun-ff4-rydia-portrait.bin
+zozma-ff6-boy.bin,Boy,male,true,11
+zozma-ff6-chancellor.bin,Chancellor,male,true,4
+zozma-ff6-granny.bin,Grandma,female,true,7
+zozma-ff6-katarin.bin,Katarin,female,true,0
+zozma-ff6-opera-celes.bin,Maria,female,true,6
+zozma-ff6-rachel.bin,Rachel,female,true,6
+zozma-ff6-train-npc.bin,Train Conductor,male,true
+zozma-ff6-vargas.bin,Vargas,male,true,5

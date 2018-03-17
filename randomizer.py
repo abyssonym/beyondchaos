@@ -2860,7 +2860,82 @@ def manage_chests():
     for m in get_monsters():
         m.write_stats(fout)
 
+def manage_event_items():
+    event_item_sub = Substitution()
+    event_item_sub.set_location(0x9934)
+    event_item_sub.bytestring = [0x13, 0xD6, 0x26, 0xD6, 0x71, 0xD6] # pointers to new event commands 6D, 6E, and 6F
+    event_item_sub.write(fout)
 
+    event_item_sub.set_location(0xD613)
+    event_item_sub.bytestring = [0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x83, 0x05, 0x20, 0xFC, 0xAC, 0x20, 0x06, 0x4D, 0xA9, 0x08, 0x85, 0xEB, 0x80, 0x59, # 6D : (1 param) Give item to party and show message "Received <Item>!"
+    0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x02, 0x42, 0xA9, 0x64, 0x8D, 0x03, 0x42, 0xEA, 0xEA, 0xEA, 0xAC, 0x16, 0x42, 0x84, 0x22, 0x64, 0x24, 0xC2, 0x21, 0x98, 0x6D, 0x60, 0x18, 0x8D, 0x60, 0x18, 0x7B, 0xE2, 0x20, 0x6D, 0x62, 0x18, 0x8D, 0x62, 0x18, 0xC9, 0x98, 0x90, 0x13, 0xAE, 0x60, 0x18, 0xE0, 0x7F, 0x96, 0x90, 0x0B, 0xA2, 0x7F, 0x96, 0x8E, 0x60, 0x18, 0xA9, 0x98, 0x8D, 0x62, 0x18, 0x20, 0x06, 0x4D, 0x20, 0xE5, 0x02, 0xA9, 0x10, 0x85, 0xEB, 0x80, 0x0E, # 6E (1 param) Give 100 * param GP to party and show message "Found <N> GP!" (It's 100 * param GP because that's what treasure chests do, but it doesn't need to be.)
+    0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x89, 0x07, 0x20, 0x06, 0x4D, 0xA9, 0x40, 0x85, 0xEB, # 6E : (1 param) Show "Monster-in-a-box!" and start battle with formation from param
+    0x64, 0xEC, 0xA9, 0x00, 0x85, 0xED, 0xA9, 0x02, 0x4C, 0xA3, 0xB1 # Common code used by all three functions. Finishes setting parameters to jump into action B2 (call event subroutine)
+    ]
+    event_item_sub.write(fout)
+    
+    fout.seek(0xC3243)
+    phoenix_events = fout.read(0x3F)
+    fout.seek(0xC324F)
+    event_item_sub.write(fout)
+    
+    class EventItem:
+        def __init__(self, type, contents, pointer, otherbytes, monster=None):
+            self.contenttype = type
+            self.contents = contents
+            self.pointer = pointer
+            self.otherbytes = otherbytes
+            self.monster = monster
+            
+        def mutate_contents(self):
+            from chestrandomizer import ChestBlock
+            c = ChestBlock(0x0, 0x0)
+            c.memid = 0
+            c.contenttype = self.contenttype
+            c.contents = self.contents
+            
+            c.mutate_contents(monster=self.monster)
+            self.contenttype = c.contenttype
+            self.contents = c.contents
+            
+        def write_data(self, fout):
+            content_command_dict = { 0x80 : 0x6E, 0x40: 0x6D, 0x20: 0x6F}
+        
+            event_item_sub = Substitution()
+            event_item_sub.set_location(self.pointer)
+            event_item_sub.bytestring = []
+            
+            if self.contenttype in content_command_dict:
+                event_item_sub.bytestring.append(content_command_dict[self.contenttype])
+                event_item_sub.bytestring.append(self.contents)
+            else:
+                event_item_sub.bytestring.extend([0x45, 0x45]) # Do nothing
+            event_item_sub.bytestring.extend(self.otherbytes)
+            event_item_sub.write(fout)
+    
+    event_items = [
+    EventItem(0x40, 0xAE, 0xB30E5, [0xD4, 0x4D, 0xFE]),
+    EventItem(0x40, 0xAC, 0xB3103, [0xD4, 0x4E, 0xFE]),
+    EventItem(0x40, 0xF4, 0xB3121, [0xD4, 0x4F, 0xFE]),
+    EventItem(0x80, 0x14, 0xB313F, [0xD4, 0x50, 0xFE]),
+    
+    EventItem(0x80, 0x14, 0xB4A84, [0xD4, 0x59, 0x3A, 0xFE]),
+    EventItem(0x40, 0xE8, 0xB4AC4, [0xD4, 0x5A, 0x3A, 0xFE]),
+    EventItem(0x40, 0xEB, 0xB4B03, [0xD4, 0x5B, 0x3A, 0xFE]),
+    EventItem(0x40, 0xF4, 0xB4B42, [0xD4, 0x5C, 0x3A, 0xFE]),
+    
+    EventItem(0x40, 0xEA, 0xC3240, [], False),
+    EventItem(0x40, 0xF0, 0xC3242, [], False),
+    EventItem(0x40, 0xED, 0xC3244, [], False),
+    EventItem(0x40, 0xEE, 0xC3246, [], False),
+    EventItem(0x40, 0x60, 0xC3248, [], False),
+    EventItem(0x40, 0x09, 0xC324A, [0x45, 0x45, 0x45], False),
+    ]
+    
+    for e in event_items:
+        e.mutate_contents()
+        e.write_data(fout)
+    
 def write_all_locations_misc():
     write_all_chests()
     write_all_npcs()
@@ -6088,6 +6163,7 @@ k   Randomize the clock in Zozo
         manage_treasure(monsters, shops=True)
         if 'ancientcave' not in activated_codes:
             manage_chests()
+            manage_event_items()
             for fs in fsets:
                 # write new formation sets for MiaBs
                 fs.write_data(fout)
@@ -6248,7 +6324,7 @@ k   Randomize the clock in Zozo
 
 if __name__ == "__main__":
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

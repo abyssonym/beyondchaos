@@ -5994,9 +5994,9 @@ k   Randomize the clock in Zozo
 
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
     if 'e' in flags:
+        if 'dancingmaduin' in activated_codes:
+            allocate_espers('ancientcave' in activated_codes, get_espers(), get_characters(), fout)
         manage_espers(esperrage_spaces)
-    if 'dancingmaduin' in activated_codes:
-        allocate_espers('ancientcave' in activated_codes, fout)
     reseed()
 
     if flags:

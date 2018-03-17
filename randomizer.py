@@ -2104,8 +2104,7 @@ def manage_character_appearance(preserve_graphics=False):
 
     npcs = get_npcs()
 
-    if (wild or tina_mode or sabin_mode
-            or ghost_mode or christmas_mode or soldier_mode):
+    if (wild or tina_mode or sabin_mode or christmas_mode):
         if christmas_mode:
             char_ids = range(0, 0x15) # don't replace kefka
         else:
@@ -2119,6 +2118,8 @@ def manage_character_appearance(preserve_graphics=False):
         change_to = dict(zip(char_ids, [0x05] * 100))
     elif soldier_mode:
         change_to = dict(zip(char_ids, [0x0e] * 100))
+    elif ghost_mode:
+        change_to = dict(zip(char_ids, [0x14] * 100))
     elif moogle_mode:
         # all characters are moogles except Mog, Imp, and Esper Terra
         if wild:
@@ -2146,8 +2147,6 @@ def manage_character_appearance(preserve_graphics=False):
             change_to = list(char_ids)
             random.shuffle(change_to)
             change_to = dict(zip(char_ids, change_to))
-        elif ghost_mode:
-            change_to = dict(zip(char_ids, [0x14] * 100))
         else:
             random.shuffle(female)
             random.shuffle(male)
@@ -2228,7 +2227,7 @@ def manage_character_appearance(preserve_graphics=False):
         f.close()
         for c in range(14):
             choose_male = False
-            if wild or soldier_mode:
+            if wild or soldier_mode or ghost_mode:
                 choose_male = random.choice([True, False])
             elif change_to[c] in male:
                 choose_male = True
@@ -2281,9 +2280,7 @@ def manage_character_appearance(preserve_graphics=False):
         fout.seek(0x478C0 + (6*c))
         fout.write("".join(map(chr, name)))
 
-    sprite_ids = char_ids
-    if sprite_swap_mode:
-        sprite_ids = range(0x16)
+    sprite_ids = range(0x16)
 
     ssizes = ([0x16A0] * 0x10) + ([0x1560] * 6)
     spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in sprite_ids])
@@ -2322,6 +2319,7 @@ def manage_character_appearance(preserve_graphics=False):
 
     used_portrait_ids = set()
 
+    # get unused portraits so we can overwrite them if needed
     if sprite_swap_mode:
         for c in char_ids:
             new = change_to[c]
@@ -2340,9 +2338,6 @@ def manage_character_appearance(preserve_graphics=False):
                 used_portrait_ids.add(i)
     
     free_portrait_ids = list(set(range(19)) - used_portrait_ids)
-    
-    print used_portrait_ids
-    print free_portrait_ids
     
     for c in char_ids:
         new = change_to[c]

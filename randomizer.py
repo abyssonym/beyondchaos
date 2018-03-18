@@ -2879,13 +2879,20 @@ def manage_event_items():
     fout.seek(0xC324F)
     event_item_sub.write(fout)
     
+    # End some text boxes early so they don't show the item.
+    event_item_sub.bytestring = [0x00]
+    for location in [0xD3376, 0xD345C, 0xD848D, 0xE14A7, 0xE291E, 0xE299F]:
+        event_item_sub.set_location(location)
+        event_item_sub.write(fout)
+    
     class EventItem:
-        def __init__(self, type, contents, pointer, otherbytes, monster=None):
+        def __init__(self, type, contents, pointer, otherbytes, monster=None, text=True):
             self.contenttype = type
             self.contents = contents
             self.pointer = pointer
             self.otherbytes = otherbytes
-            self.monster = monster
+            self.monster = False if not text else monster
+            self.text = text
             
         def mutate_contents(self):
             from chestrandomizer import ChestBlock
@@ -2895,6 +2902,14 @@ def manage_event_items():
             c.contents = self.contents
             
             c.mutate_contents(monster=self.monster)
+            # If we can't show text, we don't want it to be GP,
+            # because that event takes 3 bytes instead of 2,
+            # and I'd have to rearrange or remove stuff to fit it.
+            # So just make sure it's an item.
+            if not self.text
+                while c.contenttype != 0x40
+                    c.mutate_contents(monster=False)
+                        
             self.contenttype = c.contenttype
             self.contents = c.contents
             
@@ -2914,22 +2929,57 @@ def manage_event_items():
             event_item_sub.write(fout)
     
     event_items = [
+    # Figaro Castle
+    EventItem(0x40, 0xAA, 0xA66B4, [], monster=False, text=False),
+    
+    # Returners' Hideout
+    EventItem(0x40, 0xD1, 0xAFFD2, [], monster=False),
+    EventItem(0x40, 0xD1, 0xAF975, [], monster=False),
+    EventItem(0x40, 0xD0, 0xAFB0B, [], monster=False),
+    EventItem(0x40, 0xD0, 0xAFB73, [], monster=False),
+    
+    # Mobliz
+    EventItem(0x40, 0xE5, 0xC6883, [], monster=False), # need to edit message $030E
+    
+    # Crescent Mountain
+    EventItem(0x40, 0xE8, 0xBC432, [0x45, 0x45, 0x45], monster=False),
+    
+    # Narshe
+    EventItem(0x40, 0xF6, 0xCA00A, [], monster=False, text=False),
+    EventItem(0x40, 0xF6, 0xCA00C, [], monster=False, text=False),
+    EventItem(0x40, 0xCD, 0xCD594, [], monster=False),
+    EventItem(0x40, 0x1B, 0xC0B67, [], monster=False),
+    EventItem(0x40, 0x66, 0xC0B80, [0x45, 0xD0, 0xB8, 0x45, 0x45], monster=False),
+    
+    # Cave to the Sealed Gate
     EventItem(0x40, 0xAE, 0xB30E5, [0xD4, 0x4D, 0xFE]),
     EventItem(0x40, 0xAC, 0xB3103, [0xD4, 0x4E, 0xFE]),
-    EventItem(0x40, 0xF4, 0xB3121, [0xD4, 0x4F, 0xFE]),
-    EventItem(0x80, 0x14, 0xB313F, [0xD4, 0x50, 0xFE]),
+    EventItem(0x40, 0xF5, 0xB3121, [0xD4, 0x4F, 0xFE]), # in vanilla: says Remedy, gives Soft. Changed to give Remedy.
+    EventItem(0x80, 0x14, 0xB313F, [0xD4, 0x50, 0xFE]), # in vanilla: says 2000 GP, gives 293 GP. Changed to give 2000 GP.
     
-    EventItem(0x80, 0x14, 0xB4A84, [0xD4, 0x59, 0x3A, 0xFE]),
-    EventItem(0x40, 0xE8, 0xB4AC4, [0xD4, 0x5A, 0x3A, 0xFE]),
-    EventItem(0x40, 0xEB, 0xB4B03, [0xD4, 0x5B, 0x3A, 0xFE]),
-    EventItem(0x40, 0xF4, 0xB4B42, [0xD4, 0x5C, 0x3A, 0xFE]),
+    # Vector (Imperial Banquet)
+    EventItem(0x40, 0xE5, 0xC9257, [], monster=False),
+    EventItem(0x40, 0xDF, 0xC926C, [], monster=False),
     
-    EventItem(0x40, 0xEA, 0xC3240, [], False),
-    EventItem(0x40, 0xF0, 0xC3242, [], False),
-    EventItem(0x40, 0xED, 0xC3244, [], False),
-    EventItem(0x40, 0xEE, 0xC3246, [], False),
-    EventItem(0x40, 0x60, 0xC3248, [], False),
-    EventItem(0x40, 0x09, 0xC324A, [0x45, 0x45, 0x45], False),
+    # Owzer's Mansion
+    EventItem(0x80, 0x14, 0xB4A84, [0xD4, 0x59, 0x3A, 0xFE]), # in vanilla: says 2000 GP, gives 293 GP. Changed to give 2000 GP.
+    EventItem(0x40, 0xE9, 0xB4AC4, [0xD4, 0x5A, 0x3A, 0xFE]), # in vanilla: says Potion, gives Tonic. Changed to give Potion.
+    EventItem(0x40, 0xEC, 0xB4B03, [0xD4, 0x5B, 0x3A, 0xFE]), # in vanilla: says Ether, gives Tincture. Changed to give Ether.
+    EventItem(0x40, 0xF4, 0xB4B42, [0xD4, 0x5C, 0x3A, 0xFE]), # in vanilla: says Remedy, gives Soft. Changed to give Remedy.
+    
+    # Doma (after Cyan's dream)
+    EventItem(0x40, 0x30, 0xB99F4, [], monster=False), # should suppress message?
+    
+    # The Treasures of the Phoenix Cave!
+    EventItem(0x40, 0xEA, 0xC3240, [], monster=False),
+    EventItem(0x40, 0xF0, 0xC3242, [], monster=False),
+    EventItem(0x40, 0xED, 0xC3244, [], monster=False),
+    EventItem(0x40, 0xEE, 0xC3246, [], monster=False),
+    EventItem(0x40, 0x60, 0xC3248, [], monster=False),
+    EventItem(0x40, 0x09, 0xC324A, [0x45, 0x45, 0x45], monster=False),
+    
+    # White Dragon
+    EventItem(0x40, 0x21, 0xC5598, [0x45, 0x45, 0x45], monster=False),
     ]
     
     for e in event_items:

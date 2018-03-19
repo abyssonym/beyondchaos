@@ -63,11 +63,20 @@ def allocate_espers(ancient_cave, espers, characters, fout):
     
     characters = [c for c in characters if c.id in char_ids]
     
-    chars_for_esper = [[random.choice(char_ids)] for e in espers]
-    
+    chars_for_esper = []
+    for e in espers:
+        num_users = 1
+        if random.randint(1,10) > 10:
+            num_users += 1
+            while num_users < 15 and random.choice([True, False]):
+                num_users += 1
+        print num_users
+        users = random.sample(characters, num_users)
+        chars_for_esper.append([c.id for c in users])
+
     if not ancient_cave:
-        chars_for_esper[12] = chars_for_esper[11]   # make Odin and Raiden equippable by the same person
-    
+        chars_for_esper[12] = chars_for_esper[11]   # make Odin and Raiden equippable by the same person/people
+        
     char_mask_for_esper = [ 
         reduce( lambda x, y: x | y,
                 [1 << char_id for char_id in chars_for_esper[e.id]]

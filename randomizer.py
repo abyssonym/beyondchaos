@@ -2906,8 +2906,8 @@ def manage_event_items():
             # because that event takes 3 bytes instead of 2,
             # and I'd have to rearrange or remove stuff to fit it.
             # So just make sure it's an item.
-            if not self.text
-                while c.contenttype != 0x40
+            if not self.text:
+                while c.contenttype != 0x40:
                     c.mutate_contents(monster=False)
                         
             self.contenttype = c.contenttype
@@ -2921,7 +2921,10 @@ def manage_event_items():
             event_item_sub.bytestring = []
             
             if self.contenttype in content_command_dict:
-                event_item_sub.bytestring.append(content_command_dict[self.contenttype])
+                if not self.text:
+                    event_item_sub.bytestring.append(0x80)
+                else:
+                    event_item_sub.bytestring.append(content_command_dict[self.contenttype])
                 event_item_sub.bytestring.append(self.contents)
             else:
                 event_item_sub.bytestring.extend([0x45, 0x45]) # Do nothing
@@ -2929,6 +2932,11 @@ def manage_event_items():
             event_item_sub.write(fout)
     
     event_items = [
+    # Narshe WoB
+    EventItem(0x40, 0xF6, 0xCA00A, [], monster=False, text=False),
+    EventItem(0x40, 0xF6, 0xCA00C, [], monster=False, text=False),
+    EventItem(0x40, 0xCD, 0xCD59E, [], monster=False),
+    
     # Figaro Castle
     EventItem(0x40, 0xAA, 0xA66B4, [], monster=False, text=False),
     
@@ -2939,17 +2947,10 @@ def manage_event_items():
     EventItem(0x40, 0xD0, 0xAFB73, [], monster=False),
     
     # Mobliz
-    EventItem(0x40, 0xE5, 0xC6883, [], monster=False), # need to edit message $030E
+    EventItem(0x40, 0xE5, 0xC6883, [], monster=False),
     
     # Crescent Mountain
     EventItem(0x40, 0xE8, 0xBC432, [0x45, 0x45, 0x45], monster=False),
-    
-    # Narshe
-    EventItem(0x40, 0xF6, 0xCA00A, [], monster=False, text=False),
-    EventItem(0x40, 0xF6, 0xCA00C, [], monster=False, text=False),
-    EventItem(0x40, 0xCD, 0xCD594, [], monster=False),
-    EventItem(0x40, 0x1B, 0xC0B67, [], monster=False),
-    EventItem(0x40, 0x66, 0xC0B80, [0x45, 0xD0, 0xB8, 0x45, 0x45], monster=False),
     
     # Cave to the Sealed Gate
     EventItem(0x40, 0xAE, 0xB30E5, [0xD4, 0x4D, 0xFE]),
@@ -2967,8 +2968,8 @@ def manage_event_items():
     EventItem(0x40, 0xEC, 0xB4B03, [0xD4, 0x5B, 0x3A, 0xFE]), # in vanilla: says Ether, gives Tincture. Changed to give Ether.
     EventItem(0x40, 0xF4, 0xB4B42, [0xD4, 0x5C, 0x3A, 0xFE]), # in vanilla: says Remedy, gives Soft. Changed to give Remedy.
     
-    # Doma (after Cyan's dream)
-    EventItem(0x40, 0x30, 0xB99F4, [], monster=False), # should suppress message?
+    # Doma Castle
+    EventItem(0x40, 0x30, 0xB99F4, [], monster=False, text=False),
     
     # The Treasures of the Phoenix Cave!
     EventItem(0x40, 0xEA, 0xC3240, [], monster=False),
@@ -2978,7 +2979,11 @@ def manage_event_items():
     EventItem(0x40, 0x60, 0xC3248, [], monster=False),
     EventItem(0x40, 0x09, 0xC324A, [0x45, 0x45, 0x45], monster=False),
     
-    # White Dragon
+    # Narshe WoR
+    EventItem(0x40, 0x1B, 0xC0B67, [], monster=False),
+    EventItem(0x40, 0x66, 0xC0B80, [0x45, 0xD0, 0xB8, 0x45, 0x45], monster=False),
+    
+    # Fanatics' Tower
     EventItem(0x40, 0x21, 0xC5598, [0x45, 0x45, 0x45], monster=False),
     ]
     

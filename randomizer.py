@@ -31,7 +31,7 @@ from formationrandomizer import (get_formations, get_fsets,
 from locationrandomizer import (EntranceSet,
                                 get_locations, get_location, get_zones)
 from towerrandomizer import randomize_tower
-from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names)
+from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 
 
@@ -2524,7 +2524,7 @@ def manage_equipment(items):
 
 
 def manage_reorder_rages(freespaces, by_level=False):
-    pointer = 0x301402
+    pointer = 0x301416
 
     monsters = get_monsters()
     monsters = sorted(monsters, key=lambda m: m.display_name)
@@ -6226,6 +6226,7 @@ k   Randomize the clock in Zozo
     improve_rage_menu(fout)
     improve_item_display(fout)
     improve_gogo_status_menu(fout)
+    improve_dance_menu(fout)
 
     rewrite_title(text="FF6 BC %s" % seed)
     fout.close()

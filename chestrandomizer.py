@@ -1,4 +1,4 @@
-from utils import read_multi, write_multi, mutate_index, utilrandom as random
+from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution
 from itemrandomizer import get_ranked_items, get_item
 from formationrandomizer import get_formations, get_fsets
 
@@ -414,3 +414,168 @@ class ChestBlock:
 
         assert self.contents <= 0xFF
         self.value = value
+
+event_mem_id = 281
+multiple_event_items = []
+class EventItem:
+    def __init__(self, type, contents, pointer, otherbytes, monster=None, text=True, multiple=False):
+        global event_mem_id
+        self.contenttype = type
+        self.contents = contents
+        self.pointer = pointer
+        self.otherbytes = otherbytes
+        self.monster = False if not text else monster
+        self.text = text
+        self.mem_id = event_mem_id
+        if multiple:
+            multiple_event_items.append(self.mem_id)
+        else:
+            event_mem_id += 1
+
+    @property
+    def description(self):
+        c = ChestBlock(0x0, 0x0)
+        c.memid = self.mem_id
+        c.contenttype = self.contenttype
+        c.contents = self.contents
+        desc = c.description
+        if self.mem_id in multiple_event_items:
+            desc = "*%s" % desc
+        return desc
+    
+    def mutate_contents(self):
+        from chestrandomizer import ChestBlock
+        c = ChestBlock(0x0, 0x0)
+        c.memid = 0
+        c.contenttype = self.contenttype
+        c.contents = self.contents
+        
+        c.mutate_contents(monster=self.monster)
+        # If we can't show text, we don't want it to be GP,
+        # because that event takes 3 bytes instead of 2,
+        # and I'd have to rearrange or remove stuff to fit it.
+        # So just make sure it's an item.
+        if not self.text:
+            while c.contenttype != 0x40:
+                c.mutate_contents(monster=False)
+                    
+        self.contenttype = c.contenttype
+        self.contents = c.contents
+        
+    def write_data(self, fout):
+        content_command_dict = { 0x80 : 0x6E, 0x40: 0x6D, 0x20: 0x6F}
+    
+        event_item_sub = Substitution()
+        event_item_sub.set_location(self.pointer)
+        event_item_sub.bytestring = []
+        
+        if self.contenttype in content_command_dict:
+            if not self.text:
+                event_item_sub.bytestring.append(0x80)
+            else:
+                event_item_sub.bytestring.append(content_command_dict[self.contenttype])
+            event_item_sub.bytestring.append(self.contents)
+        else:
+            event_item_sub.bytestring.extend([0x45, 0x45]) # Do nothing
+        event_item_sub.bytestring.extend(self.otherbytes)
+        event_item_sub.write(fout)
+
+event_items_dict ={ "Narshe (WoB)" : [
+    EventItem(0x40, 0xF6, 0xCA00A, [], monster=False, text=False),
+    EventItem(0x40, 0xF6, 0xCA00C, [], monster=False, text=False),
+    EventItem(0x40, 0xCD, 0xCD59E, [], monster=False),
+    ],
+    
+    "Figaro Castle":[
+    EventItem(0x40, 0xAA, 0xA66B4, [], monster=False, text=False),
+    ],
+    
+    "Returner's Hideout" : [
+    EventItem(0x40, 0xD1, 0xAFFD2, [], monster=False, multiple=True),
+    EventItem(0x40, 0xD1, 0xAF975, [], monster=False),
+    EventItem(0x40, 0xD0, 0xAFB0B, [], monster=False, multiple=True),
+    EventItem(0x40, 0xD0, 0xAFB73, [], monster=False),
+    ],
+    
+    "Mobliz (WoB)" : [
+    EventItem(0x40, 0xE5, 0xC6883, [], monster=False),
+    ],
+    
+    "Crescent Mountain" : [
+    EventItem(0x40, 0xE8, 0xBC432, [0x45, 0x45, 0x45], monster=False),
+    ],
+    
+    "Sealed Gate" : [
+    EventItem(0x40, 0xAE, 0xB30E5, [0xD4, 0x4D, 0xFE]),
+    EventItem(0x40, 0xAC, 0xB3103, [0xD4, 0x4E, 0xFE]),
+    EventItem(0x40, 0xF5, 0xB3121, [0xD4, 0x4F, 0xFE]), # in vanilla: says Remedy, gives Soft. Changed to give Remedy.
+    EventItem(0x80, 0x14, 0xB313F, [0xD4, 0x50, 0xFE]), # in vanilla: says 2000 GP, gives 293 GP. Changed to give 2000 GP.
+    ],
+    
+    "Vector" : [
+    EventItem(0x40, 0xE5, 0xC9257, [], monster=False),
+    EventItem(0x40, 0xDF, 0xC926C, [], monster=False),
+    ],
+    
+    "Owzer's Mansion" : [
+    EventItem(0x80, 0x14, 0xB4A84, [0xD4, 0x59, 0x3A, 0xFE]), # in vanilla: says 2000 GP, gives 293 GP. Changed to give 2000 GP.
+    EventItem(0x40, 0xE9, 0xB4AC4, [0xD4, 0x5A, 0x3A, 0xFE]), # in vanilla: says Potion, gives Tonic. Changed to give Potion.
+    EventItem(0x40, 0xEC, 0xB4B03, [0xD4, 0x5B, 0x3A, 0xFE]), # in vanilla: says Ether, gives Tincture. Changed to give Ether.
+    EventItem(0x40, 0xF4, 0xB4B42, [0xD4, 0x5C, 0x3A, 0xFE]), # in vanilla: says Remedy, gives Soft. Changed to give Remedy.
+    ],
+    
+    "Doma Castle" : [
+    EventItem(0x40, 0x30, 0xB99F4, [], monster=False, text=False),
+    ],
+    
+    "Kohlingen" : [
+    EventItem(0x40, 0xEA, 0xC3240, [], monster=False),
+    EventItem(0x40, 0xF0, 0xC3242, [], monster=False),
+    EventItem(0x40, 0xED, 0xC3244, [], monster=False),
+    EventItem(0x40, 0xEE, 0xC3246, [], monster=False),
+    EventItem(0x40, 0x60, 0xC3248, [], monster=False),
+    EventItem(0x40, 0x09, 0xC324A, [0x45, 0x45, 0x45], monster=False),
+    ],
+    
+    "Narshe (WoR)" : [
+    EventItem(0x40, 0x1B, 0xC0B67, [], monster=False),
+    EventItem(0x40, 0x66, 0xC0B80, [0x45, 0xD0, 0xB8, 0x45, 0x45], monster=False),
+    ],
+    
+    "Fanatics Tower" : [
+    EventItem(0x40, 0x21, 0xC5598, [0x45, 0x45, 0x45], monster=False),
+    ]
+    }
+
+def get_event_items():
+    return event_items_dict
+    
+def mutate_event_items(fout):
+    event_item_sub = Substitution()
+    event_item_sub.set_location(0x9934)
+    event_item_sub.bytestring = [0x13, 0xD6, 0x26, 0xD6, 0x71, 0xD6] # pointers to new event commands 6D, 6E, and 6F
+    event_item_sub.write(fout)
+
+    event_item_sub.set_location(0xD613)
+    event_item_sub.bytestring = [0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x83, 0x05, 0x20, 0xFC, 0xAC, 0x20, 0x06, 0x4D, 0xA9, 0x08, 0x85, 0xEB, 0x80, 0x59, # 6D : (1 param) Give item to party and show message "Received <Item>!"
+    0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x02, 0x42, 0xA9, 0x64, 0x8D, 0x03, 0x42, 0xEA, 0xEA, 0xEA, 0xAC, 0x16, 0x42, 0x84, 0x22, 0x64, 0x24, 0xC2, 0x21, 0x98, 0x6D, 0x60, 0x18, 0x8D, 0x60, 0x18, 0x7B, 0xE2, 0x20, 0x6D, 0x62, 0x18, 0x8D, 0x62, 0x18, 0xC9, 0x98, 0x90, 0x13, 0xAE, 0x60, 0x18, 0xE0, 0x7F, 0x96, 0x90, 0x0B, 0xA2, 0x7F, 0x96, 0x8E, 0x60, 0x18, 0xA9, 0x98, 0x8D, 0x62, 0x18, 0x20, 0x06, 0x4D, 0x20, 0xE5, 0x02, 0xA9, 0x10, 0x85, 0xEB, 0x80, 0x0E, # 6E (1 param) Give 100 * param GP to party and show message "Found <N> GP!" (It's 100 * param GP because that's what treasure chests do, but it doesn't need to be.)
+    0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x89, 0x07, 0x20, 0x06, 0x4D, 0xA9, 0x40, 0x85, 0xEB, # 6E : (1 param) Show "Monster-in-a-box!" and start battle with formation from param
+    0x64, 0xEC, 0xA9, 0x00, 0x85, 0xED, 0xA9, 0x02, 0x4C, 0xA3, 0xB1 # Common code used by all three functions. Finishes setting parameters to jump into action B2 (call event subroutine)
+    ]
+    event_item_sub.write(fout)
+    
+    fout.seek(0xC3243)
+    phoenix_events = fout.read(0x3F)
+    fout.seek(0xC324F)
+    event_item_sub.write(fout)
+    
+    # End some text boxes early so they don't show the item.
+    event_item_sub.bytestring = [0x00]
+    for location in [0xD3376, 0xD345C, 0xD848D, 0xE14A7, 0xE291E, 0xE299F]:
+        event_item_sub.set_location(location)
+        event_item_sub.write(fout)
+
+    for location in event_items_dict:
+        for e in event_items_dict[location]:
+            e.mutate_contents()
+            e.write_data(fout)

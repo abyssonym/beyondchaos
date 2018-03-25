@@ -1749,7 +1749,7 @@ def activate_airship_mode(freespaces):
     set_airship_sub.write(fout)
 
     # Daryl is not such an airship hog
-    set_airship_sub.bytestring = [0x32, 0xF5]
+    set_airship_sub.bytestring = [0x6E, 0xF5]
     set_airship_sub.set_location(0x41F41)
     set_airship_sub.write(fout)
 
@@ -5894,9 +5894,6 @@ k   Randomize the clock in Zozo
         'Please be patient and wait for "randomization successful" to appear.')
 
     fout = open(outfile, "r+b")
-    event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
-    if 'airship' in activated_codes:
-        event_freespaces = activate_airship_mode(event_freespaces)
 
     allFlags = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -6163,6 +6160,12 @@ k   Randomize the clock in Zozo
     for fs in fsets:
         fs.write_data(fout)
 
+    # This needs to be after write_all_locations_misc()
+    # so the changes to Daryl don't get stomped.
+    event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
+    if 'airship' in activated_codes:
+        event_freespaces = activate_airship_mode(event_freespaces)
+        
     if 'u' in flags or 'q' in flags:
         manage_equip_umaro(event_freespaces)
 

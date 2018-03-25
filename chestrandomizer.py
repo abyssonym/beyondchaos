@@ -431,6 +431,7 @@ class EventItem:
             multiple_event_items.append(self.mem_id)
         else:
             event_mem_id += 1
+        self.multiple = multiple
 
     @property
     def description(self):
@@ -480,6 +481,7 @@ class EventItem:
         event_item_sub.bytestring.extend(self.otherbytes)
         event_item_sub.write(fout)
 
+# TODO: Maybe this should be in a text file
 event_items_dict ={ "Narshe (WoB)" : [
     EventItem(0x40, 0xF6, 0xCA00A, [], monster=False, text=False),
     EventItem(0x40, 0xF6, 0xCA00C, [], monster=False, text=False),
@@ -491,10 +493,11 @@ event_items_dict ={ "Narshe (WoB)" : [
     ],
     
     "Returner's Hideout" : [
+    
+    EventItem(0x40, 0xD0, 0xAFB0B, [], monster=False, multiple=True),
+    EventItem(0x40, 0xD0, 0xAFB73, [], monster=False, multiple=True),
     EventItem(0x40, 0xD1, 0xAFFD2, [], monster=False, multiple=True),
     EventItem(0x40, 0xD1, 0xAF975, [], monster=False),
-    EventItem(0x40, 0xD0, 0xAFB0B, [], monster=False, multiple=True),
-    EventItem(0x40, 0xD0, 0xAFB73, [], monster=False),
     ],
     
     "Mobliz (WoB)" : [

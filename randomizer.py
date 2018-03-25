@@ -4262,6 +4262,14 @@ def manage_wor():
     for t in wobtreasures:
         wor_sub.bytestring += [0x80, t]
 
+    # give WoB event items
+    event_items = get_event_items()
+    for l in event_items:
+        if l.upper() in wobtreasurelocs + ["FIGARO CASTLE"]:
+            for e in event_items[l]:
+                if e.contenttype == 0x40 and not e.multiple:
+                    wor_sub.bytestring += [0x80, e.contents]
+        
     # give the player a basic set of items.  These items are intended to
     # reflect the items a player would probably have by the time they get this
     # far, so that they aren't missing basic supplies they would have in almost any seed.

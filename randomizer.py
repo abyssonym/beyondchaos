@@ -1681,7 +1681,7 @@ def manage_skips():
 
     chocobo_sub = Substitution()
     chocobo_sub.set_location(0xA641E)
-    chocobo_sub.bytestring = [0xB2, 0x0D, 0x65, 0x00, 0xFE]
+    chocobo_sub.bytestring = [0xF0, 0x05, 0xB2, 0x0D, 0x65, 0x00, 0xFE]
     chocobo_sub.write(fout)
 
     tintinabar_sub = Substitution()

@@ -4,9 +4,11 @@ import random
 
 try:
     from sys import _MEIPASS
+    MEI = True
     tblpath = path.join(_MEIPASS, "tables")
 except ImportError:
     tblpath = "tables"
+    MEI = False
 
 ENEMY_TABLE = path.join(tblpath, "enemycodes.txt")
 ITEM_TABLE = path.join(tblpath, "itemcodes.txt")
@@ -26,8 +28,6 @@ LOCATION_PALETTE_TABLE = path.join(tblpath, "locationpaletteswaps.txt")
 BATTLE_BG_PALETTE_TABLE = path.join(tblpath, "battlebgpalettes.txt")
 CHARACTER_PALETTE_TABLE = path.join(tblpath, "charpaloptions.txt")
 EVENT_PALETTE_TABLE = path.join(tblpath, "eventpalettes.txt")
-MALE_NAMES_TABLE = path.join(tblpath, "malenames.txt")
-FEMALE_NAMES_TABLE = path.join(tblpath, "femalenames.txt")
 MAP_NAMES_TABLE = path.join(tblpath, "mapnames.txt")
 USED_LOCATIONS_TABLE = path.join(tblpath, "usedlocs.txt")
 UNUSED_LOCATIONS_TABLE = path.join(tblpath, "unusedlocs.txt")
@@ -45,8 +45,21 @@ LOCATION_MAPS_TABLE = path.join(tblpath, "locationmaps.txt")
 WOB_TREASURE_TABLE = path.join(tblpath, "wobonlytreasure.txt")
 WOR_ITEMS_TABLE = path.join(tblpath, "worstartingitems.txt")
 WOB_EVENTS_TABLE = path.join(tblpath, "wobeventbits.txt")
-SPRITE_REPLACEMENT_TABLE = path.join(tblpath, "spritereplacements.txt")
 
+custom_path = "custom"
+MALE_NAMES_TABLE = path.join(custom_path, "malenames.txt")
+FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
+SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
+
+def open_mei_fallback(filename, mode='r'):
+    if not MEI:
+        return open(filename, mode)
+    
+    try:
+        f = open(filename, mode)
+    except IOError:
+        f = open(path.join(_MEIPASS, filename), mode)
+    return f
 
 class Substitution(object):
     location = None

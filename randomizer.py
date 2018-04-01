@@ -13,7 +13,7 @@ from utils import (ESPER_TABLE,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes, set_randomness_multiplier,
-                   mutate_index, utilrandom as random)
+                   mutate_index, utilrandom as random, open_mei_fallback)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              RandomSpellSub, MultipleSpellSub, ChainSpellSub,
                              get_ranked_spells, get_spell)
@@ -2161,7 +2161,7 @@ def manage_character_appearance(preserve_graphics=False):
                 self.name = name.strip()
                 self.gender = gender.strip().lower()
                 self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
-        f = open(SPRITE_REPLACEMENT_TABLE)
+        f = open_mei_fallback(SPRITE_REPLACEMENT_TABLE)
         replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
         f.close()
 
@@ -2206,10 +2206,10 @@ def manage_character_appearance(preserve_graphics=False):
 
     names = []
     if not tina_mode and not sabin_mode and not moogle_mode:
-        f = open(MALE_NAMES_TABLE)
+        f = open_mei_fallback(MALE_NAMES_TABLE)
         malenames = sorted(set([line.strip() for line in f.readlines()]))
         f.close()
-        f = open(FEMALE_NAMES_TABLE)
+        f = open_mei_fallback(FEMALE_NAMES_TABLE)
         femalenames = sorted(set([line.strip() for line in f.readlines()]))
         f.close()
         for c in range(14):
@@ -2317,7 +2317,7 @@ def manage_character_appearance(preserve_graphics=False):
         if sprite_swap_mode and c in swap_to:
             from os import path
             try:
-                g = open(path.join("sprites", swap_to[c].file), "rb")
+                g = open_mei_fallback(path.join("custom", "sprites", swap_to[c].file), "rb")
             except IOError:
                 newsprite = sprites[change_to[c]]
                 for ch in characters:

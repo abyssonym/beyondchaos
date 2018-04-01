@@ -3674,7 +3674,7 @@ def manage_tower():
     narshe_beginner_sub.set_location(0xC33A7)
     narshe_beginner_sub.write(fout)
 
-def manage_recruit_events():
+def manage_strange_events():
     shadow_recruit_sub = Substitution();
     shadow_recruit_sub.set_location(0xB0A9F)
     shadow_recruit_sub.bytestring = [0x42, 0x31] # hide party member in slot 0
@@ -3699,6 +3699,12 @@ def manage_recruit_events():
     0xFE #return
     ]
     shadow_recruit_sub.write(fout)
+    
+    # Always remove the boxes in Mobliz basement
+    mobliz_box_sub = Substitution()
+    mobliz_box_sub.set_location(0xC50EE)
+    mobliz_box_sub.bytestring = [0xC0, 0x27, 0x81, 0xB3, 0x5E, 0x00]
+    mobliz_box_sub.write(fout)    
 
 def create_dimensional_vortex():
     entrancesets = [l.entrance_set for l in get_locations()]
@@ -3719,6 +3725,9 @@ def create_dimensional_vortex():
         or (k.location.locid == 0x137 or k.dest & 0x1FF == 0x137) # collapsing house
         or (k.location.locid == 0x180 and k.x == 29) # weird out-of-bounds entrance in the sealed gate cave
         or (k.location.locid == 0x3B and k.dest & 0x1FF == 0x3A) # Figaro interior to throne room
+        or (k.location.locid == 0x19A and k.dest & 0x1FF == 0x19A) # Kefka's Tower factory room (bottom level) conveyor/pipe
+        #or (k.location.locid == 0x16B)
+        #or (k.dest & 0x1FF == 0x16B)
         ): 
             entrances.remove(k)
     
@@ -6186,7 +6195,7 @@ k   Randomize the clock in Zozo
 
     if 'strangejourney' in activated_codes:
         create_dimensional_vortex()
-         manage_recruit_events()
+        manage_strange_events()
     reseed()
 
     if 'worringtriad' in activated_codes:

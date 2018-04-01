@@ -5667,6 +5667,10 @@ def manage_dances():
         dancestr = dancestr.rstrip()
         log(dancestr, "dances")
 
+def nerf_paladin_shield():
+    paladin_shield = get_item(0x67)
+    paladin_shield.mutate_learning()
+        
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
 
@@ -5997,6 +6001,7 @@ k   Randomize the clock in Zozo
         if 'dancingmaduin' in activated_codes:
             allocate_espers('ancientcave' in activated_codes, get_espers(), get_characters(), fout)
         manage_espers(esperrage_spaces)
+        nerf_paladin_shield()
     reseed()
 
     if flags:

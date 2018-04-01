@@ -8,7 +8,7 @@ from utils import (ESPER_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
-                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE,
+                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE, RIDING_SPRITE_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -2165,11 +2165,10 @@ def manage_character_appearance(preserve_graphics=False):
                 self.fallback_portrait_id = int(fallback_portrait_id)
                 self.portrait_filename = portrait_filename
                 self.portrait_palette_filename = portrait_filename
-                if self.portrait_palette_filename:
+                if self.portrait_palette_filename and self.portrait_palette_filename:
                     if self.portrait_palette_filename[-4:] == ".bin":
                         self.portrait_palette_filename = self.portrait_palette_filename[:-4]
                     self.portrait_palette_filename = self.portrait_palette_filename + ".pal"
-                    print self.portrait_palette_filename
             
             def has_custom_portrait(self):
                 return self.portrait_filename is not None and self.portrait_palette_filename is not None
@@ -2290,6 +2289,23 @@ def manage_character_appearance(preserve_graphics=False):
     char_portrait_palettes = {}
     sprites = {}
 
+    riding_sprites = {}
+    try:
+        f = open(RIDING_SPRITE_TABLE, "rb")
+    except IOError:
+        pass
+    else:
+        for line in f.readlines():
+            id, filename = line.strip().split(',', 1)
+            try:
+                g = open(os.path.join("sprites", filename), "rb")
+            except IOError:
+                continue
+
+            riding_sprites[int(id)] = g.read(0x140)
+            g.close()
+        f.close()
+
     for c in sprite_ids:
         fout.seek(0x36F1B + (2*c))
         portrait = read_multi(fout, length=2)
@@ -2299,6 +2315,9 @@ def manage_character_appearance(preserve_graphics=False):
         char_portrait_palettes[c] = portrait_palette
         fout.seek(spointers[c])
         sprite = fout.read(ssizes[c])
+
+        if c in riding_sprites:
+            sprite = sprite[:0x1560] + riding_sprites[c]
         sprites[c] = sprite
 
     if tina_mode:
@@ -2363,14 +2382,13 @@ def manage_character_appearance(preserve_graphics=False):
                     h = open(os.path.join("sprites", swap_to[c].portrait_palette_filename), "rb")
                 except IOError:
                     use_fallback = True
+                    print "failed to load portrait %s for %s, using fallback" %(swap_to[c].portrait_filename, swap_to[c].name)
                 else:
                     new_portrait_data = g.read(0x320)
                     new_portrait_palette_data = h.read(0x20)
                     h.close()
                     g.close()
-            else:
-                print "using fallback portrait %i (%i) for character %i" %(fallback_portrait_id, portrait, c)
-                
+
             if not use_fallback or fallback_portrait_id not in used_portrait_ids:
                 portrait_id = free_portrait_ids[0]
                 portrait = portrait_id * 0x320
@@ -2380,7 +2398,6 @@ def manage_character_appearance(preserve_graphics=False):
                 fout.write(new_portrait_data)
                 fout.seek(0x2D5860 + ord(portrait_palette) * 0x20)
                 fout.write(new_portrait_palette_data)
-                print "overwriting portrait %i with %s for character %i" %(portrait_id, fallback_portrait_id if use_fallback else swap_to[c].portrait_filename, c)
         
         elif portrait == 0 and wild and change_to[c] != 0:
             portrait = char_portraits[0xE]

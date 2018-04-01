@@ -3704,7 +3704,14 @@ def manage_strange_events():
     mobliz_box_sub = Substitution()
     mobliz_box_sub.set_location(0xC50EE)
     mobliz_box_sub.bytestring = [0xC0, 0x27, 0x81, 0xB3, 0x5E, 0x00]
-    mobliz_box_sub.write(fout)    
+    mobliz_box_sub.write(fout)
+    
+    # Always show the door in Fanatics Tower level 1,
+    # and don't change commands.
+    fanatics_sub = Substitution()
+    fanatics_sub.set_location(0xC5173)
+    fanatics_sub.bytestring = [0x45, 0x45, 0xC0, 0x27, 0x81, 0xB3, 0x5E, 0x00]
+    fanatics_sub.write(fout)
 
 def create_dimensional_vortex():
     entrancesets = [l.entrance_set for l in get_locations()]
@@ -3726,8 +3733,6 @@ def create_dimensional_vortex():
         or (k.location.locid == 0x180 and k.x == 29) # weird out-of-bounds entrance in the sealed gate cave
         or (k.location.locid == 0x3B and k.dest & 0x1FF == 0x3A) # Figaro interior to throne room
         or (k.location.locid == 0x19A and k.dest & 0x1FF == 0x19A) # Kefka's Tower factory room (bottom level) conveyor/pipe
-        #or (k.location.locid == 0x16B)
-        #or (k.dest & 0x1FF == 0x16B)
         ): 
             entrances.remove(k)
     

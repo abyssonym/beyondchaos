@@ -2299,7 +2299,7 @@ def manage_character_appearance(preserve_graphics=False):
         for line in f.readlines():
             id, filename = line.strip().split(',', 1)
             try:
-                g = open(os.path.join("sprites", filename), "rb")
+                g = open_mei_fallback(os.path.join("sprites", filename), "rb")
             except IOError:
                 continue
 
@@ -2379,8 +2379,8 @@ def manage_character_appearance(preserve_graphics=False):
                 use_fallback = False
 
                 try:
-                    g = open(os.path.join("sprites", swap_to[c].portrait_filename), "rb")
-                    h = open(os.path.join("sprites", swap_to[c].portrait_palette_filename), "rb")
+                    g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].portrait_filename), "rb")
+                    h = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].portrait_palette_filename), "rb")
                 except IOError:
                     use_fallback = True
                     print "failed to load portrait %s for %s, using fallback" %(swap_to[c].portrait_filename, swap_to[c].name)
@@ -2415,7 +2415,7 @@ def manage_character_appearance(preserve_graphics=False):
  
         if sprite_swap_mode and c in swap_to:
             try:
-                g = open_mei_fallback(path.join("custom", "sprites", swap_to[c].file), "rb")
+                g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].file), "rb")
             except IOError:
                 newsprite = sprites[change_to[c]]
                 for ch in characters:
@@ -6349,7 +6349,7 @@ k   Randomize the clock in Zozo
 
 if __name__ == "__main__":
     args = list(argv)
-    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

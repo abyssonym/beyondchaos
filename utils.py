@@ -45,6 +45,7 @@ LOCATION_MAPS_TABLE = path.join(tblpath, "locationmaps.txt")
 WOB_TREASURE_TABLE = path.join(tblpath, "wobonlytreasure.txt")
 WOR_ITEMS_TABLE = path.join(tblpath, "worstartingitems.txt")
 WOB_EVENTS_TABLE = path.join(tblpath, "wobeventbits.txt")
+RIDING_SPRITE_TABLE = path.join(tblpath, "ridingsprites.txt")
 
 custom_path = "custom"
 MALE_NAMES_TABLE = path.join(custom_path, "malenames.txt")

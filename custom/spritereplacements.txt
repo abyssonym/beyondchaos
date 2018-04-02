@@ -1,10 +1,112 @@
-badass-earthbound-ness.bin,Ness,male,true
-badass-mario-mario.bin,Mario,male,true
-badass-metroid-samus-zero.bin,Samus,female,true
-dr-blank-ff5-faris.bin,Faris,female,true
-matthew50-ff-white-mage.bin,White Mage,neutral,false
-metroidquest-ec-dark-cecil.bin,Cecil,male,true
-sutebenukun-ff4-tellah.bin,Tellah,male,true
-sutebenukun-ff7-aerith.bin,Aerith,female,false
-zeemis-red-mage.bin,Red Mage,neutral,false
-zeemis-ff4-kain.bin,Kain,male,true
+ness.bin,Ness,male,true,1
+mario.bin,Mario,male,true,2
+samus-zero.bin,Samus,female,true,0
+RedMage.bin,Red Mage,neutral,true,9
+Draco.bin,Draco,male,true,2,draco-portrait.bin
+Daryl.bin,Daryl,female,true,6,daryl-portrait.bin
+Clyde.bin,Clyde,male,true,3
+LoneWolf.bin,Lone Wolf,male,true,1
+Cid.bin,Cid,male,true,3
+OperaCeles.bin,Maria,female,true,6
+Rachel.bin,Rachel,female,true,6
+Thief.bin,Thief,male,true,1
+Maduin.bin,Maduin,male,true,0
+Siegfried.bin,Siegfried,male,true,,siegfried-portrait.bin
+Tifa.bin,Tifa,female,true,0
+Frog.bin,Frog,male,true,25
+Returner.bin,Returner,male,true,17,returner-portrait.bin
+Dancer.bin,Dancer,female,true,10
+FuSoYa.bin,FuSoYa,male,true,7
+Gaffgarion.bin,Gaffgarion,male,true
+Lightning.bin,Lightning,female,true,5
+Crono.bin,Crono,male,true,11
+Beatrix.bin,Beatrix,female,true,6,beatrix-portrait.bin
+BlackMage.bin,Black Mage,male,true,12,black-mage-portrait.bin
+Gilgamesh.bin,Gilgamesh,male,true
+MegaMan.bin,MegaMan,male,true
+Robo.bin,Robo,male,true,,robo-portrait.bin
+GauSuit.bin,Gau in a suit,male,true,11
+Scholar.bin,Scholar,male,true,9
+Arvis.bin,Arvis,male,true,7
+Boy.bin,Boy,male,true,11
+Chancellor.bin,Chancellor,male,true,4
+Lenna.bin,Lenna,female,true,0
+Lucca.bin,Lucca,female,true,8
+Vincent.bin,Vincent,male,true,9,vincent-portrait.bin
+Yuffie.bin,Yuffie,female,true,8
+Atma.bin,Atma,male,true,17
+Berserker.bin,Berserker,male,true,13,berserker-portrait.bin
+Bird.bin,bird,neutral,true,,bird-portrait.bin
+Froggy.bin,Froggy,neutral,true,15,frog-portrait.bin
+Ultros.bin,Ultros,male,true,,ultros-portrait.bin
+Vargas.bin,Vargas,male,true,5
+Cyrus.bin,Cyrus,male,true,2
+SoEBoy.bin,Boy (Secret of Evermore),male,true,11
+Vivi.bin,Vivi,male,true,12,black-mage-portrait.bin
+Valkyrie.bin,Valkyrie,female,true,6
+Chocobo.bin,Chocobo,neutral,true
+Slash.bin,Slash,male,true,2,slash-portrait.bin
+Fish.bin,Fish,neutral,true,,fish-portrait.bin
+BofRyu.bin,Ryu (Breath of Fire),male,true,1
+BubbleDragon.bin,Bub,male,true,15
+Bug.bin,Bug,neutral,true,,real-flea-portrait.bin
+Cat.bin,Cat,neutral,true,17,cat-portrait.bin
+Dragon.bin,Dragon,neutral,true
+Fairy.bin,Fairy,female,true
+FigaroGuard.bin,Figaro Guard,male,true
+NarsheGuard.bin,Narshe Guard,male,true
+Grandma.bin,Grandma,female,true,7
+Katarin.bin,Katarin,female,true,0
+Link.bin,Link,male,true,1,link-portrait.bin
+Mini.bin,Mini,neutral,true
+MrSaturn.bin,Mr Saturn,male,true,,mrsaturn-portrait.bin
+OnionKnight.bin,Onion Knight,male,true,16
+Pig.bin,Pig,male,true,15
+Samus.bin,Samus,female,true
+Snow.bin,Snow,male,true,9
+Sonic.bin,Sonic,male,true,10,sonic-portrait.bin
+TrainConductor.bin,Train Conductor,male,true
+Yoshi.bin,Yoshi,neutral,true,15
+Yuna.bin,Yuna,female,true,8
+Reno.bin,Reno,male,true,1,reno-portrait.bin
+Elena.bin,Elena,female,true,0
+Rude.bin,Rude,male,true,3
+Magus.bin,Magus,male,true,9
+Potato.bin,Potato,neutral,true
+Cultist.bin,Cultist,male,true,12
+Ramza.bin,Ramza,male,true
+Interceptor.bin,Interceptor,male,true,3,interceptor-portrait.bin
+Aerith.bin,Aerith,female,true,16
+Gestahl.bin,Gestahl,male,true,7,gestahl-portrait.bin
+Squall.bin,Squall,male,true,3,squall-portrait.bin
+Seifer.bin,Seifer,male,true,5,seifer-portrait.bin
+Kain.bin,Kain,male,true,5,kain-portrait.bin
+WhiteMage.bin,White Mage,neutral,true,18,white-mage-portrait.bin
+Faris.bin,Faris,neutral,true,6
+DKCecil.bin,Dark Knight Cecil,male,true,4,dark-cecil-portrait.bin
+Cloud.bin,Cloud,male,true,4,cloud-portrait.bin
+PaladinCecil.bin,Paladin Cecil,male,true,,paladin-cecil-portrait.bin
+Edward.bin,Edward,male,true,4,edward-portrait.bin
+Rydia.bin,Rydia,female,true,0,rydia-portrait.bin
+Orlandu.bin,Orlandu,male,true,2
+Baby.bin,Baby,neutral,true,8
+Bowser.bin,Bowser,male,true,15,bowser-portrait.bin
+Chupon.bin,Chupon,neutral,true,15
+Edge.bin,Edge,male,true,3
+Golbez.bin,Golbez,male,true,4
+HolyDragoon.bin,Holy Dragoon,male,true,5
+Kelgar.bin,Kelgar,male,true
+Lady.bin,Lady,female,true,6
+MogFFIX.bin,Mog FFIX,neutral,true,10
+Tinymoogle.bin,Tiny Moogle,neutral,true,10
+LTTP.bin,Link LTTP,male,true,1,link-portrait.bin
+RelmAdult.bin,Relm Adult,female,true,8
+Sephiroth.bin,Sephiroth,male,true
+Steiner.bin,Steiner,male,true,2
+Zidane.bin,Zidane,male,true,1
+Tellah.bin,Tellah,male,true,7
+WarriorOfLight.bin,Warrior of Light,male,true,16
+Rosa.bin,Rosa,female,true,6
+Bartz.bin,Bartz,male,true,1,bartz-portrait.bin
+Dogstahl.bin,Dogstahl,neutral,true,7,gestahl-portrait.bin
+RetroPikachu.bin,Retro Pikachu,neutral,true

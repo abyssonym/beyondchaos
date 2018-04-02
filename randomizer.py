@@ -8,7 +8,7 @@ from utils import (ESPER_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
-                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE,
+                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE, RIDING_SPRITE_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -2104,8 +2104,7 @@ def manage_character_appearance(preserve_graphics=False):
 
     npcs = get_npcs()
 
-    if (wild or tina_mode or sabin_mode
-            or ghost_mode or christmas_mode or soldier_mode):
+    if (wild or tina_mode or sabin_mode or christmas_mode):
         if christmas_mode:
             char_ids = range(0, 0x15) # don't replace kefka
         else:
@@ -2119,6 +2118,8 @@ def manage_character_appearance(preserve_graphics=False):
         change_to = dict(zip(char_ids, [0x05] * 100))
     elif soldier_mode:
         change_to = dict(zip(char_ids, [0x0e] * 100))
+    elif ghost_mode:
+        change_to = dict(zip(char_ids, [0x14] * 100))
     elif moogle_mode:
         # all characters are moogles except Mog, Imp, and Esper Terra
         if wild:
@@ -2146,21 +2147,33 @@ def manage_character_appearance(preserve_graphics=False):
             change_to = list(char_ids)
             random.shuffle(change_to)
             change_to = dict(zip(char_ids, change_to))
-        elif ghost_mode:
-            change_to = dict(zip(char_ids, [0x14] * 100))
         else:
             random.shuffle(female)
             random.shuffle(male)
             change_to = dict(zip(sorted(male), male) +
                              zip(sorted(female), female))
 
-    if sprite_swap_mode and not preserve_graphics:
+    if sprite_swap_mode:
         class SpriteReplacement:
-            def __init__(self, file, name, gender, riding=None):
+            def __init__(self, file, name, gender, riding=None, fallback_portrait_id=0xE, portrait_filename=None):
                 self.file = file.strip()
                 self.name = name.strip()
                 self.gender = gender.strip().lower()
                 self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
+
+                if fallback_portrait_id == '':
+                    fallback_portrait_id = 0xE
+                self.fallback_portrait_id = int(fallback_portrait_id)
+                self.portrait_filename = portrait_filename
+                self.portrait_palette_filename = portrait_filename
+                if self.portrait_palette_filename and self.portrait_palette_filename:
+                    if self.portrait_palette_filename[-4:] == ".bin":
+                        self.portrait_palette_filename = self.portrait_palette_filename[:-4]
+                    self.portrait_palette_filename = self.portrait_palette_filename + ".pal"
+            
+            def has_custom_portrait(self):
+                return self.portrait_filename is not None and self.portrait_palette_filename is not None
+              
         f = open_mei_fallback(SPRITE_REPLACEMENT_TABLE)
         replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
         f.close()
@@ -2214,7 +2227,7 @@ def manage_character_appearance(preserve_graphics=False):
         f.close()
         for c in range(14):
             choose_male = False
-            if wild or soldier_mode:
+            if wild or soldier_mode or ghost_mode:
                 choose_male = random.choice([True, False])
             elif change_to[c] in male:
                 choose_male = True
@@ -2254,11 +2267,10 @@ def manage_character_appearance(preserve_graphics=False):
         if c.id < 14:
             c.newname = names[c.id]
             c.original_appearance = nameiddict[c.id]
-            if not preserve_graphics:
-                if sprite_swap_mode and c.id in swap_to:
-                    c.new_appearance = swap_to[c.id].name
-                else:
-                    c.new_appearance = nameiddict[change_to[c.id]]
+            if sprite_swap_mode and c.id in swap_to:
+                c.new_appearance = swap_to[c.id].name
+            elif not preserve_graphics:
+                c.new_appearance = nameiddict[change_to[c.id]]
             else:
                 c.new_appearance = c.original_appearance
 
@@ -2268,20 +2280,34 @@ def manage_character_appearance(preserve_graphics=False):
         fout.seek(0x478C0 + (6*c))
         fout.write("".join(map(chr, name)))
 
-    removeSoldier = False
-    if sprite_swap_mode and 0xE not in char_ids:
-        char_ids.append(0xE)
-        removeSoldier = True
+    sprite_ids = range(0x16)
 
     ssizes = ([0x16A0] * 0x10) + ([0x1560] * 6)
-    spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in char_ids])
-    ssizes = dict(zip(char_ids, ssizes))
+    spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in sprite_ids])
+    ssizes = dict(zip(sprite_ids, ssizes))
 
     char_portraits = {}
     char_portrait_palettes = {}
     sprites = {}
 
-    for c in char_ids:
+    riding_sprites = {}
+    try:
+        f = open(RIDING_SPRITE_TABLE, "rb")
+    except IOError:
+        pass
+    else:
+        for line in f.readlines():
+            id, filename = line.strip().split(',', 1)
+            try:
+                g = open(os.path.join("sprites", filename), "rb")
+            except IOError:
+                continue
+
+            riding_sprites[int(id)] = g.read(0x140)
+            g.close()
+        f.close()
+
+    for c in sprite_ids:
         fout.seek(0x36F1B + (2*c))
         portrait = read_multi(fout, length=2)
         char_portraits[c] = portrait
@@ -2290,32 +2316,104 @@ def manage_character_appearance(preserve_graphics=False):
         char_portrait_palettes[c] = portrait_palette
         fout.seek(spointers[c])
         sprite = fout.read(ssizes[c])
+
+        if c in riding_sprites:
+            sprite = sprite[:0x1560] + riding_sprites[c]
         sprites[c] = sprite
 
     if tina_mode:
         char_portraits[0x12] = char_portraits[0]
         char_portrait_palettes[0x12] = char_portrait_palettes[0]
+    
+    portrait_data = []
+    portrait_palette_data = []
+    
+    fout.seek(0x2D1D00)
+    
+    for i in range(19):
+        portrait_data.append(fout.read(0x320))
+        
+    fout.seek(0x2D5860)
+    for i in range(19):
+        portrait_palette_data.append(fout.read(0x20))
 
-    if removeSoldier:
-        char_ids.remove(0xE)
+    used_portrait_ids = set()
 
+    # get unused portraits so we can overwrite them if needed
+    if sprite_swap_mode:
+        for c in char_ids:
+            new = change_to[c]
+            portrait = char_portraits[new]
+            if c not in swap_to:
+                if portrait == 0 and wild and change_to[c] != 0:
+                    used_portrait_ids.add(0xE)
+                else:
+                    used_portrait_ids.add(change_to[c])
+                    used_portrait_ids.add(change_to[c])
+            elif not swap_to[c].has_custom_portrait():
+                used_portrait_ids.add(swap_to[c].fallback_portrait_id)
+        
+        if not wild:
+            for i in range(0xE,0x13):
+                used_portrait_ids.add(i)
+    
+    free_portrait_ids = list(set(range(19)) - used_portrait_ids)
+    
     for c in char_ids:
         new = change_to[c]
         portrait = char_portraits[new]
         portrait_palette = char_portrait_palettes[new]
-        if (wild and portrait == 0 and change_to[c] != 0) or (sprite_swap_mode and c in swap_to):
+        
+        if sprite_swap_mode and c in swap_to:
+            use_fallback = True
+            fallback_portrait_id = swap_to[c].fallback_portrait_id
+            if fallback_portrait_id < 0 or fallback_portrait_id > 18:
+                fallback_portrait_id = 0xE
+
+            portrait = fallback_portrait_id * 0x320
+            portrait_palette = chr(fallback_portrait_id)
+            new_portrait_data = portrait_data[fallback_portrait_id]
+            new_portrait_palette_data = portrait_palette_data[fallback_portrait_id]
+            
+            if swap_to[c].has_custom_portrait():
+                use_fallback = False
+
+                try:
+                    g = open(os.path.join("sprites", swap_to[c].portrait_filename), "rb")
+                    h = open(os.path.join("sprites", swap_to[c].portrait_palette_filename), "rb")
+                except IOError:
+                    use_fallback = True
+                    print "failed to load portrait %s for %s, using fallback" %(swap_to[c].portrait_filename, swap_to[c].name)
+                else:
+                    new_portrait_data = g.read(0x320)
+                    new_portrait_palette_data = h.read(0x20)
+                    h.close()
+                    g.close()
+
+            if not use_fallback or fallback_portrait_id not in used_portrait_ids:
+                portrait_id = free_portrait_ids[0]
+                portrait = portrait_id * 0x320
+                portrait_palette = chr(portrait_id)
+                free_portrait_ids.remove(free_portrait_ids[0])
+                fout.seek(0x2D1D00 + portrait)
+                fout.write(new_portrait_data)
+                fout.seek(0x2D5860 + ord(portrait_palette) * 0x20)
+                fout.write(new_portrait_palette_data)
+        
+        elif portrait == 0 and wild and change_to[c] != 0:
             portrait = char_portraits[0xE]
             portrait_palette = char_portrait_palettes[0xE]
         fout.seek(0x36F1B + (2*c))
         write_multi(fout, portrait, length=2)
         fout.seek(0x36F00 + c)
         fout.write(portrait_palette)
+        
         if wild:
             fout.seek(spointers[c])
             fout.write(sprites[0xE][:ssizes[c]])
         fout.seek(spointers[c])
+ 
         if sprite_swap_mode and c in swap_to:
-            from os import path
             try:
                 g = open_mei_fallback(path.join("custom", "sprites", swap_to[c].file), "rb")
             except IOError:
@@ -2325,6 +2423,9 @@ def manage_character_appearance(preserve_graphics=False):
                         ch.new_appearance = nameiddict[change_to[c]]
             else:
                 newsprite = g.read(min(ssizes[c], swap_to[c].size))
+                # if it doesn't have riding sprites, it probably doesn't have a death sprite either
+                if swap_to[c].size < 0x16A0:
+                    newsprite = newsprite[:0xAE0] + sprites[0xE][0xAE0:0xBA0] + newsprite[0xBA0:]
                 g.close()
         else:
             newsprite = sprites[change_to[c]]
@@ -6248,7 +6349,7 @@ k   Randomize the clock in Zozo
 
 if __name__ == "__main__":
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

@@ -1,6 +1,6 @@
-badass-earthbound-ness.bin,Ness,male,true,1
-badass-mario-mario.bin,Mario,male,true,2
-badass-metroid-samus-zero.bin,Samus,female,true,0
+ness.bin,Ness,male,true,1
+mario.bin,Mario,male,true,2
+samus-zero.bin,Samus,female,true,0
 RedMage.bin,Red Mage,neutral,true,9
 Draco.bin,Draco,male,true,2,draco-portrait.bin
 Daryl.bin,Daryl,female,true,6,daryl-portrait.bin

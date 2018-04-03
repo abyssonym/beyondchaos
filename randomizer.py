@@ -2178,7 +2178,10 @@ def manage_character_appearance(preserve_graphics=False):
         replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
         f.close()
 
-        num_to_replace = min(len(replace_candidates), random.randint(4,8))
+        replace_min = 8 if not wild else 16
+        replace_max = 12 if not wild else 20
+        
+        num_to_replace = min(len(replace_candidates), random.randint(replace_min,replace_max))
         replacements = random.sample(replace_candidates, num_to_replace)
 
         if wild:

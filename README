@@ -184,6 +184,7 @@ Q: I found a bug!
 A: The best thing to do is open an issue on the Beyond Chaos github page, but if that's too much of a hassle you can also send me a tweet and I might check it out. Note that by this point A LOT of the bugs have been discovered, but if you just want to show it off or something that's cool too.
 
 --- CONTRIBUTORS ---
+    CtrlxZ - fixed up sprites for Beyond Chaos
     subtractionsoup - TONS of features in v62 and v63
     Lockirby2 - The worringtriad code
     glennmatthews - Command descriptions in logfile
@@ -196,7 +197,7 @@ A: The best thing to do is open an issue on the Beyond Chaos github page, but if
     kupofasa - original permadeath runner
     quikdraw7777 - permadeath community leader and pioneer
     tenkarider - romhacker who gave me lots of early feedback, and creator of the Ultimate Czar Dragon hack, FF6 Curse of the Gods, and many other challenges
-    badass, dr blank, matthew50, metroidquest, sutebenukun, and zeemis - additional sprites
+    ff6hacking.com community - additional sprites, see custom/sprites/credits.txt for details
     AND YOU
 
 Like this randomizer? Then check out my other projects! I've made like a billion randomizers!

@@ -3720,10 +3720,10 @@ def create_dimensional_vortex():
         e.read_data(sourcefile)
         entrances.extend(e.entrances)
 
-    entrances = sorted(set(entrances))
+    entrances = sorted(set(entrances), key= lambda x: (x.location.locid, x.entid if (hasattr(x, "entid") and x.entid is not None) else -1))
 
     # Don't randomize certain entrances
-    for k in entrances:
+    def should_be_vanilla(k):
         if ( (k.location.locid == 0x1E and k.x == 67) # leave Arvis's house
         or (k.location.locid == 0x14 and (k.x == 53 or k.x == 26)) # return to Arvis's house or go to the mines
         or (k.location.locid == 0x32 and k.x == 32) # backtrack out of the mines
@@ -3734,7 +3734,34 @@ def create_dimensional_vortex():
         or (k.location.locid == 0x3B and k.dest & 0x1FF == 0x3A) # Figaro interior to throne room
         or (k.location.locid == 0x19A and k.dest & 0x1FF == 0x19A) # Kefka's Tower factory room (bottom level) conveyor/pipe
         ): 
-            entrances.remove(k)
+            return True
+        return False
+
+    entrances = [k for k in entrances if not should_be_vanilla(k)]
+
+    # Make two entrances next to each other (like in the phantom train)
+    # that go to the same place still go to the same place.
+    # Also make matching entrances from different versions of maps
+    # (like Vector pre/post esper attack) go to the same place
+    duplicate_entrance_dict = {}
+    equivalent_map_dict = { 0x154:0x157, 0x155:0x157, 0xFD:0xF2 }
+    
+    for i, c in enumerate(entrances):
+        for d in entrances[i+1:]:
+            c_locid = c.location.locid & 0x1FF
+            d_locid = d.location.locid & 0x1FF
+            if ((c_locid == d_locid
+            or (d_locid in equivalent_map_dict and equivalent_map_dict[d_locid] == c_locid)
+            or (c_locid in equivalent_map_dict and equivalent_map_dict[c_locid] == d_locid))
+            and (c.dest & 0x1FF) == (d.dest & 0x1FF)
+            and c.destx == d.destx and c.desty == d.desty
+            and (abs(c.x - d.x) + abs(c.y - d.y)) <= 3):
+                if c_locid in equivalent_map_dict:
+                    duplicate_entrance_dict[c]=d
+                else:
+                    duplicate_entrance_dict[d]=c
+
+    entrances = [k for k in entrances if k not in equivalent_map_dict]
     
     entrances2 = list(entrances)
     random.shuffle(entrances2)
@@ -3753,6 +3780,10 @@ def create_dimensional_vortex():
         if (b.dest & 0x1FF) == (a.location.locid & 0x1FF):
             continue
         a.dest, a.destx, a.desty = b.dest, b.destx, b.desty
+
+    for r in duplicate_entrance_dict:
+        s = duplicate_entrance_dict[r]
+        r.dest, r.destx, r.desty = s.dest, s.destx, s.desty
 
     entrancesets = entrancesets[:0x19F]
     nextpointer = 0x1FBB00 + (len(entrancesets) * 2)

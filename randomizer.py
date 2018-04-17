@@ -3730,13 +3730,13 @@ def create_dimensional_vortex():
 
     # Don't randomize certain entrances
     def should_be_vanilla(k):
-        if ( (k.location.locid == 0x1E and k.x == 67) # leave Arvis's house
-        or (k.location.locid == 0x14 and (k.x == 53 or k.x == 26)) # return to Arvis's house or go to the mines
-        or (k.location.locid == 0x32 and k.x == 32) # backtrack out of the mines
+        if ( (k.location.locid == 0x1E and k.entid == 1) # leave Arvis's house
+        or (k.location.locid == 0x14 and (k.entid == 10 or k.entid == 14)) # return to Arvis's house or go to the mines
+        or (k.location.locid == 0x32 and k.entid == 3) # backtrack out of the mines
         or (k.location.locid == 0x2A) # backtrack out of the room with Terrato while you have Vicks and Wedge
         or (0xD7 < k.location.locid < 0xDC) # esper world
         or (k.location.locid == 0x137 or k.dest & 0x1FF == 0x137) # collapsing house
-        or (k.location.locid == 0x180 and k.x == 29) # weird out-of-bounds entrance in the sealed gate cave
+        or (k.location.locid == 0x180 and k.entid == 0) # weird out-of-bounds entrance in the sealed gate cave
         or (k.location.locid == 0x3B and k.dest & 0x1FF == 0x3A) # Figaro interior to throne room
         or (k.location.locid == 0x19A and k.dest & 0x1FF == 0x19A) # Kefka's Tower factory room (bottom level) conveyor/pipe
         ): 

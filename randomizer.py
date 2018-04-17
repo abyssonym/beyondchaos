@@ -3712,6 +3712,12 @@ def manage_strange_events():
     fanatics_sub.set_location(0xC5173)
     fanatics_sub.bytestring = [0x45, 0x45, 0xC0, 0x27, 0x81, 0xB3, 0x5E, 0x00]
     fanatics_sub.write(fout)
+    
+    # skip the flashbacks of Daryl, because it's easier than making them work with unexpected parties
+    daryl_cutscene_sub = Substitution()
+    daryl_cutscene_sub.set_location(0xA4365)
+    daryl_cutscene_sub.bytestring = [0xF0, 0x76, 0x6B, 0x01, 0x04, 0x9E, 0x33, 0x01, 0xC0, 0x20, 0xC2, 0x64, 0x00, 0xFA, 0xD2, 0x11, 0x34, 0x10, 0x08, 0x40, 0xB2, 0x43, 0x48, 0x00, 0xFE]
+    daryl_cutscene_sub.write(fout)
 
 def create_dimensional_vortex():
     entrancesets = [l.entrance_set for l in get_locations()]

@@ -495,9 +495,7 @@ event_items_dict ={ "Narshe (WoB)" : [
     "Returner's Hideout" : [
     
     EventItem(0x40, 0xD0, 0xAFB0B, [], monster=False, multiple=True),
-    EventItem(0x40, 0xD0, 0xAFB73, [], monster=False, multiple=True),
-    EventItem(0x40, 0xD1, 0xAFFD2, [], monster=False, multiple=True),
-    EventItem(0x40, 0xD1, 0xAF975, [], monster=False),
+    EventItem(0x40, 0xD1, 0xAFFD2, [], monster=False),
     ],
     
     "Mobliz (WoB)" : [
@@ -550,6 +548,11 @@ event_items_dict ={ "Narshe (WoB)" : [
     ]
     }
 
+duplicate_eventItem_dict = {
+    0xAFB0B : 0xAFB73,  # Gauntlet from Banon
+    0xAFFD2 : 0xAF975   # Genji Glove from returner
+    }
+
 def get_event_items():
     return event_items_dict
     
@@ -582,3 +585,6 @@ def mutate_event_items(fout):
         for e in event_items_dict[location]:
             e.mutate_contents()
             e.write_data(fout)
+            if e.pointer in duplicate_eventItem_dict:
+                e.pointer = duplicate_eventItem_dict[e.pointer]
+                e.write_data(fout)

@@ -591,8 +591,7 @@ class MonsterBlock:
         self.ai = read_multi(f, length=2)
 
         if all_spells is None:
-            all_spells = sorted([SpellBlock(i, filename) for i in xrange(0xFF)],
-                                key=lambda s: s.rank())
+            all_spells = get_ranked_spells(filename)
 
         f.close()
 

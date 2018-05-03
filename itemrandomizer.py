@@ -1,7 +1,7 @@
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,
                    name_to_bytes, utilrandom as random)
-from skillrandomizer import SpellBlock
+from skillrandomizer import SpellBlock, get_ranked_spells
 # future blocks: chests, morphs, shops
 
 ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
@@ -137,8 +137,7 @@ class ItemBlock:
         self.price = read_multi(f, length=2)
 
         if all_spells is None:
-            all_spells = sorted([SpellBlock(i, filename) for i in xrange(0xFF)],
-                                key=lambda s: s.rank())
+            all_spells = get_ranked_spells(filename)
             all_spells = filter(lambda s: s.valid, all_spells)
 
         f.seek(0x2CE408 + (8*self.itemid))
@@ -447,7 +446,10 @@ class ItemBlock:
         mblock = evade_is_screwed_up(mblock)
         self.features['mblockevade'] = evade | (mblock << 4)
 
-    def mutate_price(self, undo_priceless=False):
+    def mutate_price(self, undo_priceless=False, crazy_prices=False):
+        if crazy_prices:
+            self.price = random.randint(30, 1000)
+            return
         if self.price <= 2:
             if undo_priceless:
                 self.price = self.rank()
@@ -470,10 +472,10 @@ class ItemBlock:
 
         self.price = min(self.price, 65000)
 
-    def mutate(self, always_break=False):
+    def mutate(self, always_break=False, crazy_prices=False):
         global changed_commands
         self.mutate_stats()
-        self.mutate_price()
+        self.mutate_price(crazy_prices=crazy_prices)
         broken, learned = False, False
         if always_break:
             self.mutate_break_effect(always_break=True)

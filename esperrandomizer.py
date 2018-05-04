@@ -1,4 +1,4 @@
-from utils import hex2int, utilrandom as random
+from utils import hex2int, int2bytes, Substitution, utilrandom as random
 from skillrandomizer import get_ranked_spells, get_spell
 
 items = None
@@ -60,7 +60,66 @@ def get_candidates(myrank, set_lower=True):
 
     return fresh
 
+def allocate_espers(ancient_cave, espers, characters, fout):
+    char_ids = range(12) + [13] # everyone but Gogo
+    
+    characters = [c for c in characters if c.id in char_ids]
+    
+    chars_for_esper = []
+    for e in espers:
+        num_users = 1
+        if random.randint(1,10) == 10:
+            num_users += 1
+            while num_users < 15 and random.choice([True, False]):
+                num_users += 1
+        users = random.sample(characters, num_users)
+        chars_for_esper.append([c.id for c in users])
 
+    if not ancient_cave:
+        chars_for_esper[12] = chars_for_esper[11]   # make Odin and Raiden equippable by the same person/people
+        
+    char_mask_for_esper = [ 
+        reduce( lambda x, y: x | y,
+                [1 << char_id for char_id in chars_for_esper[e.id]]
+                ) for e in espers
+    ]
+
+    for e in espers:
+        e.chars = ", ".join([c.newname for c in characters if c.id in chars_for_esper[e.id]])
+    
+    # do substitution
+    esper_allocator_sub = Substitution()
+    esper_allocator_sub.set_location(0x31B61)
+    esper_allocator_sub.bytestring = [0x20,0x00,0xF8]
+    esper_allocator_sub.write(fout)
+    
+    esper_allocator_sub.set_location(0x35524)
+    esper_allocator_sub.bytestring = [0x20,0x07,0xF8]
+    esper_allocator_sub.write(fout)
+    
+    esper_allocator_sub.set_location(0x358E1)
+    esper_allocator_sub.write(fout)
+    
+    esper_allocator_sub.set_location(0x359B1)
+    esper_allocator_sub.write(fout)
+    
+    esper_allocator_sub.set_location(0x35593)
+    esper_allocator_sub.bytestring = [0xA9,0x2C]
+    esper_allocator_sub.write(fout)
+    
+    esper_allocator_sub.set_location(0x355B2)
+    esper_allocator_sub.bytestring = [0x20,0x2E,0xF8]
+    esper_allocator_sub.write(fout)
+    
+    esper_allocator_sub.set_location(0x358E8)
+    esper_allocator_sub.bytestring = [0xC9,0x20,0xF0,0x16]
+    esper_allocator_sub.write(fout)
+    
+    esper_allocator_sub.set_location(0x3F800)
+    
+    esper_allocator_sub.bytestring = [0xAA, 0xB5, 0x69, 0x8D, 0xF8, 0x1C, 0x60, 0xDA, 0x08, 0x85, 0xE0, 0x0A, 0xAA, 0xE2, 0x10, 0xDA, 0xAD, 0xF8, 0x1C, 0x0A, 0xAA, 0xC2, 0x20, 0xBF, 0x67, 0x9C, 0xC3, 0xFA, 0x3F, 0x58, 0xF8, 0xC3, 0xF0, 0x05, 0x28, 0xFA, 0x4C, 0x76, 0x55, 0x28, 0xFA, 0xA9, 0x28, 0x4C, 0x95, 0x55, 0xBD, 0x02, 0x16, 0xC9, 0x80, 0xB0, 0x0F, 0xFA, 0xA6, 0x00, 0xBF, 0x4B, 0xF8, 0xC3, 0xF0, 0x07, 0x8D, 0x80, 0x21, 0xE8, 0x80, 0xF4, 0x60, 0x9C, 0x80, 0x21, 0x4C, 0xD9, 0x7F, 0x82, 0x9A, 0xA7, 0xC3, 0xAD, 0xFF, 0x9E, 0xAA, 0xAE, 0xA2, 0xA9, 0xBE, 0x00] + [i for sublist in map(int2bytes, char_mask_for_esper) for i in sublist]
+    esper_allocator_sub.write(fout)
+    
 class EsperBlock:
     def __init__(self, pointer, name, rank):
         self.pointer = hex2int(pointer)
@@ -80,6 +139,9 @@ class EsperBlock:
             s += bonus_strings[self.bonus]
         else:
             s += "None"
+        chars = getattr(self, 'chars', None)
+        if chars:
+            s += "\nEQUIPPED BY: " + chars
         return s
 
     def read_data(self, filename):

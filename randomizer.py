@@ -23,7 +23,7 @@ from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield)
-from esperrandomizer import EsperBlock
+from esperrandomizer import (EsperBlock, allocate_espers)
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
 from formationrandomizer import (get_formations, get_fsets,
@@ -5774,6 +5774,10 @@ def manage_dances():
         dancestr = dancestr.rstrip()
         log(dancestr, "dances")
 
+def nerf_paladin_shield():
+    paladin_shield = get_item(0x67)
+    paladin_shield.mutate_learning()
+        
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
 
@@ -5953,6 +5957,7 @@ k   Randomize the clock in Zozo
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
+    secret_codes['dancingmaduin'] = "RESTRICTED ESPERS MODE"
     secret_codes['madworld'] = "TIERS FOR FEARS MODE"
     s = ""
     for code, text in secret_codes.items():
@@ -6105,7 +6110,10 @@ k   Randomize the clock in Zozo
 
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
     if 'e' in flags:
+        if 'dancingmaduin' in activated_codes:
+            allocate_espers('ancientcave' in activated_codes, get_espers(), get_characters(), fout)
         manage_espers(esperrage_spaces)
+        nerf_paladin_shield()
     reseed()
 
     if flags:

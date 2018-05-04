@@ -5988,6 +5988,8 @@ k   Randomize the clock in Zozo
     elif 'madworld' in activated_codes:
         set_randomness_multiplier(None)
 
+    fout = open(outfile, "r+b")
+
     if 'cutscenes' in activated_codes:
         print "NOTICE: You have selected CUTSCENE SKIPS."
         print "This feature has proven to be unstable with strange effects."
@@ -6003,7 +6005,6 @@ k   Randomize the clock in Zozo
         "The randomization is very thorough, so it may take some time.\n"
         'Please be patient and wait for "randomization successful" to appear.')
 
-    fout = open(outfile, "r+b")
     event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
     if 'airship' in activated_codes:
         event_freespaces = activate_airship_mode(event_freespaces)

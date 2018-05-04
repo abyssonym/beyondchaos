@@ -357,8 +357,8 @@ class CharacterBlock:
             s += "\n"
         if self.natural_magic is not None:
             s += "Has natural magic.\n"
-            #for level, spell in self.natural_magic:
-            #    s += "  LV %s - %s\n" % (level, spell.name)
+            for level, spell in self.natural_magic:
+                s += "  LV %s - %s\n" % (level, spell.name)
         return s.strip()
 
     def get_notable_equips(self):
@@ -1370,33 +1370,36 @@ def manage_suplex(commands, monsters):
 
 def manage_natural_magic():
     characters = get_characters()
-    candidates = [c for c in characters if 0x02 in c.battle_commands or
-                  0x17 in c.battle_commands]
+    candidates = [c for c in characters if c.id < 12 and (0x02 in c.battle_commands or
+                  0x17 in c.battle_commands)]
+                  
+    num_natural_mages = 1
+    if 'supernatural' in activated_codes:
+        num_natural_mages = len(candidates)
+    else:
+        if random.randint(0,9) != 9:
+            num_natural_mages = 2
+            while num_natural_mages < len(candidates) and random.choice([True, False]):
+                num_natural_mages += 1
+    
     try:
-        candidates = random.sample(candidates, 2)
+        candidates = random.sample(candidates, num_natural_mages)
     except ValueError:
         return
+    
     natmag_learn_sub = Substitution()
-    natmag_learn_sub.bytestring = [0xC9, candidates[0].id]
-    natmag_learn_sub.set_location(0x261B9)
+    natmag_learn_sub.set_location(0xa182)
+    natmag_learn_sub.bytestring = [0x22, 0x61, 0x08, 0xF0]
     natmag_learn_sub.write(fout)
-    natmag_learn_sub.set_location(0xA182)
+   
+    natmag_learn_sub.set_location(0x261b6)
+    natmag_learn_sub.bytestring = [0x22, 0x39, 0x08, 0xF0] + [0xEA] * 10
     natmag_learn_sub.write(fout)
-    address = 0x1A6E + (54 * candidates[0].id)
-    natmag_learn_sub.bytestring = [0x99, address & 0xFF, address >> 8]
-    natmag_learn_sub.set_location(0xA1AB)
+    
+    natmag_learn_sub.set_location(0x300839)
+    natmag_learn_sub.bytestring = [0xC9, 0x0C, 0xB0, 0x23, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0xEB, 0x48, 0x85, 0x0B, 0xAE, 0xF4, 0x00, 0x86, 0x09, 0x7B, 0xEB, 0xA9, 0x80, 0x85, 0x0C, 0x22, 0x99, 0x08, 0xF0, 0x68, 0xEB, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xC9, 0x0C, 0xB0, 0xFB, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0x8D, 0x02, 0x42, 0xA9, 0x36, 0x8D, 0x03, 0x42, 0xB9, 0x08, 0x16, 0x85, 0x0B, 0xC2, 0x20, 0xAD, 0x16, 0x42, 0x18, 0x69, 0x6E, 0x1A, 0x85, 0x09, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xA9, 0xFF, 0x85, 0x0C, 0x22, 0x99, 0x08, 0xF0, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xA0, 0x10, 0x00, 0xA5, 0x08, 0xC2, 0x20, 0x29, 0xFF, 0x00, 0xEB, 0x4A, 0x4A, 0x4A, 0xAA, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xBF, 0xCF, 0x08, 0xF0, 0xC5, 0x0B, 0xF0, 0x02, 0xB0, 0x16, 0x5A, 0xBF, 0xCE, 0x08, 0xF0, 0xA8, 0xB1, 0x09, 0xC9, 0xFF, 0xF0, 0x04, 0xA5, 0x0C, 0x91, 0x09, 0x7A, 0xE8, 0xE8, 0x88, 0xD0, 0xE0, 0x6B] + [0xFF] * 16 * 12
     natmag_learn_sub.write(fout)
-
-    natmag_learn_sub.bytestring = [0xC9, candidates[1].id]
-    natmag_learn_sub.set_location(0x261C0)
-    natmag_learn_sub.write(fout)
-    natmag_learn_sub.set_location(0xA186)
-    natmag_learn_sub.write(fout)
-    address = 0x1A6E + (54 * candidates[1].id)
-    natmag_learn_sub.bytestring = [0x99, address & 0xFF, address >> 8]
-    natmag_learn_sub.set_location(0xA1CD)
-    natmag_learn_sub.write(fout)
-
+    
     spells = get_ranked_spells(sourcefile, magic_only=True)
     spellids = [s.spellid for s in spells]
     address = 0x2CE3C0
@@ -1425,31 +1428,20 @@ def manage_natural_magic():
         used.append(newspell)
         return get_spell(newspell), level
 
-    candidates[0].natural_magic = []
-    candidates[1].natural_magic = []
     usedspells = []
-    for i in xrange(16):
-        pointer = address + (2*i)
-        newspell, level = mutate_spell(pointer, usedspells)
-        candidates[0].natural_magic.append((level, newspell))
-    candidates[0].natural_magic = sorted(candidates[0].natural_magic)
-    for i, (level, newspell) in enumerate(candidates[0].natural_magic):
-        pointer = address + (2*i)
-        fout.seek(pointer)
-        fout.write(chr(level))
-        fout.write(chr(newspell.spellid))
-
-    usedspells = random.sample(usedspells, 12)
-    for i in xrange(16):
-        pointer = address + 32 + (2*i)
-        newspell, level = mutate_spell(pointer, usedspells)
-        candidates[1].natural_magic.append((level, newspell))
-    candidates[1].natural_magic = sorted(candidates[1].natural_magic)
-    for i, (level, newspell) in enumerate(candidates[1].natural_magic):
-        pointer = address + +32 + (2*i)
-        fout.seek(pointer)
-        fout.write(chr(level))
-        fout.write(chr(newspell.spellid))
+    for candidate in candidates:
+        candidate.natural_magic = []
+        for i in xrange(16):
+            pointer = address + random.choice([0,32]) + (2*i)
+            newspell, level = mutate_spell(pointer, usedspells)
+            candidate.natural_magic.append((level, newspell))
+        candidate.natural_magic = sorted(candidate.natural_magic)
+        for i, (level, newspell) in enumerate(candidate.natural_magic):
+            pointer = 0x3008ce + candidate.id * 32 + (2*i)
+            fout.seek(pointer)
+            fout.write(chr(newspell.spellid))
+            fout.write(chr(level))
+        usedspells = random.sample(usedspells, 12)
 
     lores = get_ranked_spells(sourcefile, magic_only=False)
     lores = filter(lambda s: 0x8B <= s.spellid <= 0xA2, lores)
@@ -6059,6 +6051,7 @@ k   Randomize the clock in Zozo
     secret_codes['dancingmaduin'] = "RESTRICTED ESPERS MODE"
     secret_codes['masseffect'] = "WILD EQUIPMENT EFFECT MODE"
     secret_codes['madworld'] = "TIERS FOR FEARS MODE"
+    secret_codes['supernatural'] = "SUPER NATURAL MAGIC MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

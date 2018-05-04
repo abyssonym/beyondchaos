@@ -5812,6 +5812,31 @@ def manage_santa():
         BattleSANTAsub.set_location(location)
         BattleSANTAsub.write(fout)
 
+def manage_spookiness():
+    n_o_e_s_c_a_p_e_sub = Substitution()
+    n_o_e_s_c_a_p_e_sub.bytestring = [0x4B, 0xAE, 0x42]
+    for location in [0xCA1C8, 0xCA296, 0xA89BF, 0xB1963,0xB198B]:
+        n_o_e_s_c_a_p_e_sub.set_location(location)
+        n_o_e_s_c_a_p_e_sub.write(fout)
+        
+    n_o_e_s_c_a_p_e_bottom_sub = Substitution()
+    n_o_e_s_c_a_p_e_bottom_sub.bytestring = [0x4B, 0xAE, 0xC2]
+    for location in [0xA6325]:
+        n_o_e_s_c_a_p_e_bottom_sub.set_location(location)
+        n_o_e_s_c_a_p_e_bottom_sub.write(fout)
+        
+    nowhere_to_run_sub = Substitution()
+    nowhere_to_run_sub.bytestring = [0x4B, 0xB3, 0x42]
+    for location in [0xCA215, 0xCA270, 0xB19B5, 0xB19F0, 0xC8293]:
+        nowhere_to_run_sub.set_location(location)
+        nowhere_to_run_sub.write(fout)
+        
+    nowhere_to_run_bottom_sub = Substitution()
+    nowhere_to_run_bottom_sub.bytestring = [0x4B, 0xB3, 0xC2]
+    for location in [0xCA2F0, 0xCA7EE]:
+        nowhere_to_run_bottom_sub.set_location(location)
+        nowhere_to_run_bottom_sub.write(fout)
+        
 def manage_dances():
     f = open(sourcefile, 'r+b')
     f.seek(0x0FFE80)
@@ -6439,6 +6464,8 @@ k   Randomize the clock in Zozo
 
     if 'christmas' in activated_codes:
         manage_santa()
+    elif 'halloween' in activated_codes:
+        manage_spookiness()
 
     improve_rage_menu(fout)
     improve_item_display(fout)

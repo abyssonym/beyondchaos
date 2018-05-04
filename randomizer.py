@@ -37,9 +37,9 @@ from menufeatures import (improve_item_display, improve_gogo_status_menu, improv
 from decompress import Decompressor
 
 
-VERSION = "63"
-BETA = False
-VERSION_ROMAN = "LXIII"
+VERSION = "64"
+BETA = True
+VERSION_ROMAN = "LXIV"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False

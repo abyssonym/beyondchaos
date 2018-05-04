@@ -2640,9 +2640,10 @@ def manage_items(items, changed_commands=None):
     always_break = True if "collateraldamage" in activated_codes else False
     crazy_prices = True if "madworld" in activated_codes else False
     set_item_changed_commands(changed_commands)
+    extra_effects= True if "masseffect" in activated_codes else False
 
     for i in items:
-        i.mutate(always_break=always_break, crazy_prices=crazy_prices)
+        i.mutate(always_break=always_break, crazy_prices=crazy_prices, extra_effects=extra_effects)
         i.unrestrict()
         i.write_stats(fout)
 
@@ -6056,6 +6057,7 @@ k   Randomize the clock in Zozo
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
     secret_codes['dancingmaduin'] = "RESTRICTED ESPERS MODE"
+    secret_codes['masseffect'] = "WILD EQUIPMENT EFFECT MODE"
     secret_codes['madworld'] = "TIERS FOR FEARS MODE"
     s = ""
     for code, text in secret_codes.items():

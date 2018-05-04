@@ -51,6 +51,7 @@ custom_path = "custom"
 MALE_NAMES_TABLE = path.join(custom_path, "malenames.txt")
 FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
 SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
+MOOGLE_NAMES_TABLE = path.join(custom_path, "mooglenames.txt")
 
 def open_mei_fallback(filename, mode='r'):
     if not MEI:

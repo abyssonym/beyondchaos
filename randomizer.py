@@ -6206,6 +6206,7 @@ k   Randomize the clock in Zozo
         set_randomness_multiplier(None)
 
     fout = open(outfile, "r+b")
+    expand_rom()
 
     if 'cutscenes' in activated_codes:
         print "NOTICE: You have selected CUTSCENE SKIPS."

@@ -951,7 +951,7 @@ def manage_commands_new(commands):
     valid = set(list(commands))
     valid = sorted(valid - set(["row", "def"]))
     used = []
-    all_spells = [SpellBlock(i, sourcefile) for i in xrange(0xFF)]
+    all_spells = get_ranked_spells(sourcefile)
     randomskill_names = set([])
     for c in commands.values():
         if c.name in NEVER_REPLACE:
@@ -2551,10 +2551,11 @@ def manage_colorize_animations():
 def manage_items(items, changed_commands=None):
     from itemrandomizer import set_item_changed_commands
     always_break = True if "collateraldamage" in activated_codes else False
+    crazy_prices = True if "madworld" in activated_codes else False
     set_item_changed_commands(changed_commands)
 
     for i in items:
-        i.mutate(always_break=always_break)
+        i.mutate(always_break=always_break, crazy_prices=crazy_prices)
         i.unrestrict()
         i.write_stats(fout)
 
@@ -3463,8 +3464,9 @@ def get_shops():
 def manage_shops():
     buyables = set([])
     descriptions = []
+    crazy_shops = "madworld" in activated_codes
     for s in get_shops():
-        s.mutate_items(fout)
+        s.mutate_items(fout, crazy_shops)
         s.mutate_misc()
         s.write_data(fout)
         buyables |= set(s.items)
@@ -5950,6 +5952,7 @@ k   Randomize the clock in Zozo
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
+    secret_codes['madworld'] = "TIERS FOR FEARS MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -5981,6 +5984,8 @@ k   Randomize the clock in Zozo
         except:
             multiplier = None
         set_randomness_multiplier(multiplier)
+    elif 'madworld' in activated_codes:
+        set_randomness_multiplier(None)
 
     if 'cutscenes' in activated_codes:
         print "NOTICE: You have selected CUTSCENE SKIPS."
@@ -6022,6 +6027,11 @@ k   Randomize the clock in Zozo
     reseed()
 
     spells = get_ranked_spells(sourcefile)
+    if 'madworld' in activated_codes:
+        random.shuffle(spells)
+        for i, s in enumerate(spells):
+            s._rank = i+1
+            s.valid = True
     if 'w' in flags and 'suplexwrecks' not in activated_codes:
         if 'quikdraw' in activated_codes:
             ALWAYS_REPLACE += ["rage"]

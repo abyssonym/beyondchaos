@@ -6599,7 +6599,7 @@ k   Randomize the clock in Zozo
 
 if __name__ == "__main__":
     args = list(argv)
-    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

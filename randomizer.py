@@ -33,6 +33,7 @@ from locationrandomizer import (EntranceSet,
                                 get_locations, get_location, get_zones)
 from chestrandomizer import mutate_event_items, get_event_items
 from towerrandomizer import randomize_tower
+from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 
 
@@ -196,8 +197,7 @@ def rewrite_checksum(filename=None):
         filename = outfile
     MEGABIT = 0x20000
     f = open(filename, 'r+b')
-    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in xrange(24)]
-    subsums += subsums[-8:]
+    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in xrange(32)]
     checksum = sum(subsums) & 0xFFFF
     f.seek(0xFFDE)
     write_multi(f, checksum, length=2)
@@ -2716,9 +2716,7 @@ def manage_equipment(items):
 
 
 def manage_reorder_rages(freespaces, by_level=False):
-    myfs = get_appropriate_freespace(freespaces, 0x100)
-    pointer = myfs.start
-    freespaces = determine_new_freespaces(freespaces, myfs, 0x100)
+    pointer = 0x301416
 
     monsters = get_monsters()
     monsters = sorted(monsters, key=lambda m: m.display_name)
@@ -5872,8 +5870,14 @@ def nerf_paladin_shield():
     paladin_shield = get_item(0x67)
     paladin_shield.mutate_learning()
         
+def expand_rom():
+    expand_sub = Substitution()
+    expand_sub.set_location(0x300000)
+    expand_sub.bytestring = [0x00] * 0x100000
+    expand_sub.write(fout)
+
 def randomize():
-    global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
+    global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE, NEVER_REPLACE
 
     args = list(argv)
     if TEST_ON:
@@ -6195,6 +6199,7 @@ k   Randomize the clock in Zozo
                  'christmas', 'halloween',
                  'kupokupo', 'quikdraw']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
+        show_original_names(fout)
     reseed()
 
     if 'q' in flags:
@@ -6439,6 +6444,11 @@ k   Randomize the clock in Zozo
 
     if 'christmas' in activated_codes:
         manage_santa()
+
+    improve_rage_menu(fout)
+    improve_item_display(fout)
+    improve_gogo_status_menu(fout)
+    improve_dance_menu(fout)
 
     rewrite_title(text="FF6 BC %s" % seed)
     fout.close()

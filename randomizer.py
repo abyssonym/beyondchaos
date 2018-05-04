@@ -3058,7 +3058,7 @@ def manage_blitz():
         newlength = min(newlength, 10)
 
         newcmd = []
-        used_cmds = []
+        used_cmds = [[0xE, 0xA, 0xE]]
         while True:
             prev = newcmd[-1] if newcmd else None
             pprev = newcmd[-2] if len(newcmd) > 1 else None

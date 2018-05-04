@@ -30,6 +30,7 @@ from formationrandomizer import (get_formations, get_fsets,
                                  get_formation, get_fset)
 from locationrandomizer import (EntranceSet,
                                 get_locations, get_location, get_zones)
+from chestrandomizer import mutate_event_items, get_event_items
 from towerrandomizer import randomize_tower
 from decompress import Decompressor
 
@@ -128,12 +129,17 @@ def get_logstring(ordering=None):
 
 def log_chests():
     areachests = {}
+    event_items = get_event_items()
     for l in get_locations():
         if not l.chests:
             continue
         if l.area_name not in areachests:
             areachests[l.area_name] = ""
         areachests[l.area_name] += l.chest_contents + "\n"
+    for area_name in event_items:
+        if area_name not in areachests:
+            areachests[area_name] = ""
+        areachests[area_name] += "\n".join([e.description for e in event_items[area_name]])
     for area_name in sorted(areachests):
         chests = areachests[area_name]
         chests = "\n".join(sorted(chests.strip().split("\n")))
@@ -2964,8 +2970,7 @@ def manage_chests():
 
     for m in get_monsters():
         m.write_stats(fout)
-
-
+    
 def write_all_locations_misc():
     write_all_chests()
     write_all_npcs()
@@ -4364,6 +4369,14 @@ def manage_wor():
     for t in wobtreasures:
         wor_sub.bytestring += [0x80, t]
 
+    # give WoB event items
+    event_items = get_event_items()
+    for l in event_items:
+        if l.upper() in wobtreasurelocs + ["FIGARO CASTLE"]:
+            for e in event_items[l]:
+                if e.contenttype == 0x40 and not e.multiple:
+                    wor_sub.bytestring += [0x80, e.contents]
+        
     # give the player a basic set of items.  These items are intended to
     # reflect the items a player would probably have by the time they get this
     # far, so that they aren't missing basic supplies they would have in almost any seed.
@@ -6208,6 +6221,7 @@ k   Randomize the clock in Zozo
         manage_treasure(monsters, shops=True)
         if 'ancientcave' not in activated_codes:
             manage_chests()
+            mutate_event_items(fout)
             for fs in fsets:
                 # write new formation sets for MiaBs
                 fs.write_data(fout)
@@ -6374,7 +6388,7 @@ k   Randomize the clock in Zozo
 
 if __name__ == "__main__":
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

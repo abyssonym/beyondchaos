@@ -3320,13 +3320,14 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
         ue.set_relative_ai(pointer)
         freespaces = determine_new_freespaces(freespaces, myfs, ue.aiscriptsize)
 
+        itembreaker = 'collateraldamage' in activated_codes
         ue.auxloc = "Missing (Boss)"
-        ue.mutate_ai(change_skillset=True)
-        ue.mutate_ai(change_skillset=True)
+        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker)
+        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker)
 
-        ue.mutate(change_skillset=True)
+        ue.mutate(change_skillset=True, itembreaker=itembreaker)
         if random.choice([True, False]):
-            ue.mutate(change_skillset=True)
+            ue.mutate(change_skillset=True, itembreaker=itembreaker)
         ue.treasure_boost()
         ue.graphics.mutate_palette()
         name = randomize_enemy_name(fout, ue.id)

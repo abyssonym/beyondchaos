@@ -13,7 +13,7 @@ Thief.bin,Thief,male,true,1
 Maduin.bin,Maduin,male,true,0
 Siegfried.bin,Siegfried,male,true,,siegfried-portrait.bin
 Tifa.bin,Tifa,female,true,0
-Frog.bin,Frog,male,true,25
+Frog.bin,Frog,male,true,15
 Returner.bin,Returner,male,true,17,returner-portrait.bin
 Dancer.bin,Dancer,female,true,10
 FuSoYa.bin,FuSoYa,male,true,7

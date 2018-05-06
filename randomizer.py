@@ -1437,7 +1437,7 @@ def manage_natural_magic():
             candidate.natural_magic.append((level, newspell))
         candidate.natural_magic = sorted(candidate.natural_magic)
         for i, (level, newspell) in enumerate(candidate.natural_magic):
-            pointer = 0x3008ce + candidate.id * 32 + (2*i)
+            pointer = 0x3008e0 + candidate.id * 32 + (2*i)
             fout.seek(pointer)
             fout.write(chr(newspell.spellid))
             fout.write(chr(level))

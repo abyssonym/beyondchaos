@@ -59,7 +59,7 @@ Grandma.bin,Grandma,female,true,7
 Katarin.bin,Katarin,female,true,0
 Link.bin,Link,male,true,1,link-portrait.bin
 Mini.bin,Mini,neutral,true
-MrSaturn.bin,Mr Saturn,male,true,,mrsaturn-portrait.bin
+MrSaturn.bin,Mr Saturn,male,true,,mr-saturn-portrait.bin
 OnionKnight.bin,Onion Knight,male,true,16
 Pig.bin,Pig,male,true,15
 Samus.bin,Samus,female,true

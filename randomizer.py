@@ -2302,7 +2302,7 @@ def manage_character_appearance(preserve_graphics=False):
         for line in f.readlines():
             id, filename = line.strip().split(',', 1)
             try:
-                g = open_mei_fallback(os.path.join("sprites", filename), "rb")
+                g = open_mei_fallback(os.path.join("custom", "sprites", filename), "rb")
             except IOError:
                 continue
 

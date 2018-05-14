@@ -2419,34 +2419,61 @@ def manage_character_appearance(preserve_graphics=False):
     for i in range(19):
         portrait_palette_data.append(fout.read(0x20))
 
-    used_portrait_ids = set()
-
     # get unused portraits so we can overwrite them if needed
     if sprite_swap_mode:
-        for c in char_ids:
-            new = change_to[c]
-            portrait = char_portraits[new]
-            if c not in swap_to:
-                if portrait == 0 and wild and change_to[c] != 0:
+        def reserve_portrait_id(used_portrait_ids, new, swap, portrait):
+            if swap == None:
+                if portrait == 0 and wild and new != 0:
                     used_portrait_ids.add(0xE)
                 else:
-                    used_portrait_ids.add(change_to[c])
-                    used_portrait_ids.add(change_to[c])
-            elif not swap_to[c].has_custom_portrait():
-                used_portrait_ids.add(swap_to[c].fallback_portrait_id)
-        
+                    used_portrait_ids.add(new)
+            elif not swap.has_custom_portrait():
+                used_portrait_ids.add(swap.fallback_portrait_id)
+            else:
+                return 1
+            return 0
+
+        needed = 0
+        used_portrait_ids = set()
+        for c in char_ids:
+            # skip characters who don't have their own portraits
+            if (char_portraits[c] == 0 and c != 0) or c == 0x13:
+                continue
+            new = change_to[c]
+            portrait = char_portraits[new]
+            swap = swap_to[c] if c in swap_to else None
+            needed += reserve_portrait_id(used_portrait_ids, new, swap, portrait)
+            
         if not wild:
             for i in range(0xE,0x13):
                 used_portrait_ids.add(i)
     
-    free_portrait_ids = list(set(range(19)) - used_portrait_ids)
+        # Merchant normally uses the same portrait as soldier.
+        # If we have a free slot because some others happen to be sharing, use the portrait for the merchant sprite.
+        # If not, we have to use the same one as the soldier.
+        merchant = False
+        if wild and needed < 19 - len(used_portrait_ids):
+            c = 0x13
+            new = change_to[c]
+            portrait = char_portraits[new]
+            swap = swap_to[c] if c in swap_to else None
+            merchant = reserve_portrait_id(used_portrait_ids, new, swap, portrait)
+            
+        free_portrait_ids = list(set(range(19)) - used_portrait_ids)
     
     for c in char_ids:
         new = change_to[c]
         portrait = char_portraits[new]
         portrait_palette = char_portrait_palettes[new]
-        
-        if sprite_swap_mode and c in swap_to:
+    
+        if c == 0x13 and sprite_swap_mode and not merchant:
+            new_soldier = change_to[0xE]
+            portrait = char_portraits[new_soldier]
+            portrait_palette = char_portrait_palettes[new_soldier]
+        elif (char_portraits[c] == 0 and c != 0):
+            portrait = char_portraits[0xE]
+            portrait_palette = char_portrait_palettes[0xE]
+        elif sprite_swap_mode and c in swap_to:
             use_fallback = True
             fallback_portrait_id = swap_to[c].fallback_portrait_id
             if fallback_portrait_id < 0 or fallback_portrait_id > 18:

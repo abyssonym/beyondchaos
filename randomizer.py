@@ -5150,7 +5150,7 @@ def manage_ancient():
                     and f.get_music() != 0]):
                 return False
         best_drop = formation.get_best_drop()
-        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000):
+        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or "madworld" in activated_codes):
             return True
         return False
 

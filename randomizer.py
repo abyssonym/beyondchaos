@@ -1545,9 +1545,9 @@ def manage_umaro(commands):
                   0x17 not in c.battle_commands]
 
     if not candidates:
-        umaro_risk = random.choice(characters)
-    else:
-        umaro_risk = random.choice(candidates)
+        candidates = [c for c in characters if c.id <= 13 and
+                  c.id != 12]
+    umaro_risk = random.choice(candidates)
     if 0xFF in umaro_risk.battle_commands:
         battle_commands = []
         battle_commands.append(0)

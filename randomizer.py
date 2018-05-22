@@ -1288,27 +1288,27 @@ def manage_commands_new(commands):
         magitek = [c for c in commands.values() if c.name == "magitek"][0]
         magitek.read_properties(sourcefile)
         magitek.targeting = 0x04
-        magitek.set_retarget(outfile)
+        magitek.set_retarget(fout)
         if "endless9" in activated_codes:
             s = MultipleSpellSub()
             s.set_count(9)
-            magitek.newname("9xChaos", outfile)
+            magitek.newname("9xChaos", fout)
             s.set_spells([])
         else:
             s = RandomSpellSub()
-            magitek.newname("R-Chaos", outfile)
+            magitek.newname("R-Chaos", fout)
             s.set_spells([], [], "Chaos")
         magitek.write_properties(fout)
-        magitek.unsetmenu(outfile)
-        magitek.allow_while_confused(outfile)
-        magitek.allow_while_berserk(outfile)
+        magitek.unsetmenu(fout)
+        magitek.allow_while_confused(fout)
+        magitek.allow_while_berserk(fout)
 
         myfs = get_appropriate_freespace(freespaces, s.size)
         s.set_location(myfs.start)
         if not hasattr(s, "bytestring") or not s.bytestring:
             s.generate_bytestring()
         s.write(fout)
-        magitek.setpointer(s.location, outfile)
+        magitek.setpointer(s.location, fout)
         freespaces = determine_new_freespaces(freespaces, myfs, s.size)
 
     gogo_enable_all_sub = Substitution()

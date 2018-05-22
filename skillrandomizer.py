@@ -499,7 +499,7 @@ class RandomSpellSub(Substitution):
         self.name = spellclass
         desc, spellset = spellsets[spellclass]
         self.spells_description = desc
-        if spellclass.lower() in ["chaos"]:
+        if spellclass.lower() in ["chaos"] or len(valid_spells) == 0:
             self.wild = True
             self.spells = []
             return

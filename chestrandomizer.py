@@ -573,7 +573,7 @@ def mutate_event_items(fout):
     fout.seek(0xC3243)
     phoenix_events = fout.read(0x3F)
     fout.seek(0xC324F)
-    event_item_sub.write(fout)
+    fout.write(phoenix_events)
     
     # End some text boxes early so they don't show the item.
     event_item_sub.bytestring = [0x00]

@@ -2267,7 +2267,7 @@ def manage_character_appearance(preserve_graphics=False):
                 random_name_ids.append(moogle_id)
         
         f = open(MOOGLE_NAMES_TABLE)
-        mooglenames = sorted(set([line.strip() for line in f.readlines()]))
+        mooglenames = sorted(set(sanitizeNames([line.strip() for line in f.readlines()])))
         f.close()
         
         random_moogle_names = random.sample(mooglenames, len(random_name_ids))
@@ -2277,7 +2277,7 @@ def manage_character_appearance(preserve_graphics=False):
         # Human Mog gets a human name, maybe
         if random.choice([True, True, False]):
             f = open(MALE_NAMES_TABLE)
-            malenames = sorted(set([line.strip() for line in f.readlines()]))
+            malenames = sorted(set(sanitizeNames([line.strip() for line in f.readlines()])))
             f.close()
             
             names[10] = random.choice(malenames)

@@ -2205,12 +2205,18 @@ def manage_character_appearance(preserve_graphics=False):
         0x15: "Kefka"}
 
     names = []
+
+    def sanitizeNames(names):
+        delchars = ''.join(c for c in map(chr, range(256)) if not c.isalnum() and c not in "!?/:\"'-.")
+        names = [name.translate(None, delchars) for name in names]
+        return [name[:6] for name in names if name != ""]
+
     if not tina_mode and not sabin_mode and not moogle_mode:
         f = open(MALE_NAMES_TABLE)
-        malenames = sorted(set([line.strip() for line in f.readlines()]))
+        malenames = sorted(set(sanitizeNames([line.strip() for line in f.readlines()])))
         f.close()
         f = open(FEMALE_NAMES_TABLE)
-        femalenames = sorted(set([line.strip() for line in f.readlines()]))
+        femalenames = sorted(set(sanitizeNames([line.strip() for line in f.readlines()])))
         f.close()
         for c in range(14):
             choose_male = False

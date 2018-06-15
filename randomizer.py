@@ -2082,6 +2082,97 @@ def get_npc_palettes():
         palettes[k] = sorted(v)
     return palettes
 
+nameiddict = {
+    0: "Terra",
+    1: "Locke",
+    2: "Cyan",
+    3: "Shadow",
+    4: "Edgar",
+    5: "Sabin",
+    6: "Celes",
+    7: "Strago",
+    8: "Relm",
+    9: "Setzer",
+    0xa: "Mog",
+    0xb: "Gau",
+    0xc: "Gogo",
+    0xd: "Umaro",
+    0xe: "Trooper",
+    0xf: "Imp",
+    0x10: "Leo",
+    0x11: "Banon",
+    0x12: "Esper Terra",
+    0x13: "Merchant",
+    0x14: "Ghost",
+    0x15: "Kefka"}
+
+
+def manage_character_names(change_to, male):
+    characters = get_characters()
+    wild = 'partyparty' in activated_codes
+    sabin_mode = 'suplexwrecks' in activated_codes
+    tina_mode = 'bravenudeworld' in activated_codes
+    soldier_mode = 'quikdraw' in activated_codes
+    moogle_mode = 'kupokupo' in activated_codes
+    ghost_mode = 'halloween' in activated_codes
+
+    names = []
+    if tina_mode:
+        names = ["Tina"] * 14
+    elif sabin_mode:
+        names = ["Teabin", "Loabin", "Cyabin", "Shabin", "Edabin", "Sabin",
+                 "Ceabin", "Stabin", "Reabin", "Seabin", "Moabin", "Gaubin",
+                 "Goabin", "Umabin"]
+    elif moogle_mode:
+        names = ["Kumop", "Kupo", "Kupek", "Kupop", "Kumama", "Kuku",
+                 "Kutan", "Kupan", "Kushu", "Kurin", "Mog", "Kuru",
+                 "Kamog", "Kumaro", "Banon", "Leo", "?????", "?????",
+                 "Cyan", "Shadow", "Edgar", "Sabin", "Celes", "Strago",
+                 "Relm", "Setzer", "Gau", "Gogo"]
+    else:
+        f = open_mei_fallback(MALE_NAMES_TABLE)
+        malenames = sorted(set([line.strip() for line in f.readlines()]))
+        f.close()
+        f = open_mei_fallback(FEMALE_NAMES_TABLE)
+        femalenames = sorted(set([line.strip() for line in f.readlines()]))
+        f.close()
+        for c in range(14):
+            choose_male = False
+            if wild or soldier_mode or ghost_mode:
+                choose_male = random.choice([True, False])
+            elif change_to[c] in male:
+                choose_male = True
+
+            if choose_male:
+                name = random.choice(malenames)
+            else:
+                name = random.choice(femalenames)
+
+            if name in malenames:
+                malenames.remove(name)
+            if name in femalenames:
+                femalenames.remove(name)
+
+            names.append(name)
+
+    umaro_name = names[13]
+    for umaro_id in [0x10f, 0x110]:
+        change_enemy_name(fout, umaro_id, umaro_name)
+
+    if 'capslockoff' not in activated_codes:
+        names = [name.upper() for name in names]
+        
+    for c in characters:
+        if c.id < 14:
+            c.newname = names[c.id]
+            c.original_appearance = nameiddict[c.id]
+
+    for c, name in enumerate(names):
+        name = name_to_bytes(name, 6)
+        assert len(name) == 6
+        fout.seek(0x478C0 + (6*c))
+        fout.write("".join(map(chr, name)))
+
 
 def manage_character_appearance(preserve_graphics=False):
     characters = get_characters()
@@ -2093,16 +2184,6 @@ def manage_character_appearance(preserve_graphics=False):
     moogle_mode = 'kupokupo' in activated_codes
     ghost_mode = 'halloween' in activated_codes
     christmas_mode = 'christmas' in activated_codes
-    charpal_options = {}
-    for line in open(CHARACTER_PALETTE_TABLE):
-        if line[0] == '#':
-            continue
-        charid, palettes = tuple(line.strip().split(':'))
-        palettes = map(hex2int, palettes.split(','))
-        charid = hex2int(charid)
-        charpal_options[charid] = palettes
-
-    npcs = get_npcs()
 
     if (wild or tina_mode or sabin_mode or christmas_mode):
         if christmas_mode:
@@ -2112,6 +2193,7 @@ def manage_character_appearance(preserve_graphics=False):
     else:
         char_ids = range(0, 0x0E)
 
+    male = None
     if tina_mode:
         change_to = dict(zip(char_ids, [0x12] * 100))
     elif sabin_mode:
@@ -2152,6 +2234,8 @@ def manage_character_appearance(preserve_graphics=False):
             random.shuffle(male)
             change_to = dict(zip(sorted(male), male) +
                              zip(sorted(female), female))
+
+    manage_character_names(change_to, male)
 
     if sprite_swap_mode:
         class SpriteReplacement:
@@ -2196,92 +2280,14 @@ def manage_character_appearance(preserve_graphics=False):
             not_already_swapped = [c for c in char_ids if c not in swap_to]
             swap_to.update(dict(zip(random.sample(not_already_swapped, len(neutral_replacements)), neutral_replacements)))
 
-    nameiddict = {
-        0: "Terra",
-        1: "Locke",
-        2: "Cyan",
-        3: "Shadow",
-        4: "Edgar",
-        5: "Sabin",
-        6: "Celes",
-        7: "Strago",
-        8: "Relm",
-        9: "Setzer",
-        0xa: "Mog",
-        0xb: "Gau",
-        0xc: "Gogo",
-        0xd: "Umaro",
-        0xe: "Trooper",
-        0xf: "Imp",
-        0x10: "Leo",
-        0x11: "Banon",
-        0x12: "Esper Terra",
-        0x13: "Merchant",
-        0x14: "Ghost",
-        0x15: "Kefka"}
-
-    names = []
-    if not tina_mode and not sabin_mode and not moogle_mode:
-        f = open_mei_fallback(MALE_NAMES_TABLE)
-        malenames = sorted(set([line.strip() for line in f.readlines()]))
-        f.close()
-        f = open_mei_fallback(FEMALE_NAMES_TABLE)
-        femalenames = sorted(set([line.strip() for line in f.readlines()]))
-        f.close()
-        for c in range(14):
-            choose_male = False
-            if wild or soldier_mode or ghost_mode:
-                choose_male = random.choice([True, False])
-            elif change_to[c] in male:
-                choose_male = True
-
-            if choose_male:
-                name = random.choice(malenames)
-            else:
-                name = random.choice(femalenames)
-
-            if name in malenames:
-                malenames.remove(name)
-            if name in femalenames:
-                femalenames.remove(name)
-
-            names.append(name)
-    elif tina_mode:
-        names = ["Tina"] * 14
-    elif sabin_mode:
-        names = ["Teabin", "Loabin", "Cyabin", "Shabin", "Edabin", "Sabin",
-                 "Ceabin", "Stabin", "Reabin", "Seabin", "Moabin", "Gaubin",
-                 "Goabin", "Umabin"]
-    elif moogle_mode:
-        names = ["Kumop", "Kupo", "Kupek", "Kupop", "Kumama", "Kuku",
-                 "Kutan", "Kupan", "Kushu", "Kurin", "Mog", "Kuru",
-                 "Kamog", "Kumaro", "Banon", "Leo", "?????", "?????",
-                 "Cyan", "Shadow", "Edgar", "Sabin", "Celes", "Strago",
-                 "Relm", "Setzer", "Gau", "Gogo"]
-
-    umaro_name = names[13]
-    for umaro_id in [0x10f, 0x110]:
-        change_enemy_name(fout, umaro_id, umaro_name)
-
-    if 'capslockoff' not in activated_codes:
-        names = [name.upper() for name in names]
-
     for c in characters:
         if c.id < 14:
-            c.newname = names[c.id]
-            c.original_appearance = nameiddict[c.id]
             if sprite_swap_mode and c.id in swap_to:
                 c.new_appearance = swap_to[c.id].name
             elif not preserve_graphics:
                 c.new_appearance = nameiddict[change_to[c.id]]
             else:
                 c.new_appearance = c.original_appearance
-
-    for c, name in enumerate(names):
-        name = name_to_bytes(name, 6)
-        assert len(name) == 6
-        fout.seek(0x478C0 + (6*c))
-        fout.write("".join(map(chr, name)))
 
     sprite_ids = range(0x16)
 
@@ -2462,6 +2468,24 @@ def manage_character_appearance(preserve_graphics=False):
         newsprite = newsprite[:ssizes[c]]
         fout.write(newsprite)
 
+    manage_palettes(change_to, char_ids)
+
+
+def manage_palettes(change_to, char_ids):
+    sabin_mode = 'suplexwrecks' in activated_codes
+    tina_mode = 'bravenudeworld' in activated_codes
+    christmas_mode = 'christmas' in activated_codes
+    characters = get_characters()
+    npcs = get_npcs()
+    charpal_options = {}
+    for line in open(CHARACTER_PALETTE_TABLE):
+        if line[0] == '#':
+            continue
+        charid, palettes = tuple(line.strip().split(':'))
+        palettes = map(hex2int, palettes.split(','))
+        charid = hex2int(charid)
+        charpal_options[charid] = palettes
+        
     palette_change_to = {}
     for npc in npcs:
         if npc.graphics not in charpal_options:

@@ -195,8 +195,7 @@ def rewrite_checksum(filename=None):
         filename = outfile
     MEGABIT = 0x20000
     f = open(filename, 'r+b')
-    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in xrange(24)]
-    subsums += subsums[-8:]
+    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in xrange(32)]
     checksum = sum(subsums) & 0xFFFF
     f.seek(0xFFDE)
     write_multi(f, checksum, length=2)
@@ -3959,6 +3958,58 @@ def manage_auction_house():
             write_multi(fout, dest, 2)
             pointer += 3
 
+    auction_items = [(0xbc, 0xB4EF1, 0xB5012, 0x0A45, 500), # Cherub Down
+                     (0xbd, 0xB547B, 0xB55A4, 0x0A47, 1500), # Cure Ring
+                     (0xc9, 0xB55D5, 0xB56FF, 0x0A49, 3000), # Hero Ring
+                     (0xc0, 0xB5BAD, 0xB5C9F, 0x0A4B, 3000), # Zephyr Cape
+                    ]
+    items = get_ranked_items()
+    itemids = [i.itemid for i in items]
+    for i, auction_item in enumerate(auction_items):
+        try:
+            index = itemids.index(auction_item[0])
+        except ValueError:
+            index = 0
+        index = mutate_index(index, len(items), [False, True],
+                                 (-3, 3), (-2, 2))
+        item = items[index]
+        auction_sub = Substitution()
+        auction_sub.set_location(auction_item[2])
+        auction_sub.bytestring = [0x6d, item.itemid, 0x45, 0x45, 0x45]
+        auction_sub.write(fout)
+        
+        addr = 0x302000 + i * 6
+        auction_sub.set_location(addr)
+        auction_sub.bytestring = [0x66, auction_item[3] & 0xff, (auction_item[3] & 0xff00) >> 8, item.itemid, # Show text 0x0A4B with item e.contents
+                0x94, # Pause 60 frames
+                0xFE] # return
+        auction_sub.write(fout)
+        
+        addr -= 0xA0000
+        addr_lo = addr & 0xff
+        addr_mid = (addr & 0xff00) >> 8
+        addr_hi = (addr & 0xff0000) >> 16
+        auction_sub.set_location(auction_item[1])
+        auction_sub.bytestring = [0xB2, addr_lo, addr_mid, addr_hi]
+        auction_sub.write(fout)
+        
+        table = {"0": 0x54, "1": 0x55, "2": 0x56, "3": 0x57, "4": 0x58, "5": 0x59, "6": 0x5A, "7": 0x5B, "8": 0x5C, "9": 0x5D }
+        fout.seek(0xCE600)
+        next_bank_index = read_multi(fout)
+        opening_bid = str(auction_item[4])
+        fout.seek(0xCE602 + 2 * auction_item[3])
+        dialog_ptr = read_multi(fout)
+        auction_sub.set_location(0xD0000 if auction_item < next_bank_index else 0xE0000 + dialog_ptr)
+        auction_sub.bytestring = [0x01, 0x14, 0x08, 0x73, 0x1A, 0x62, 0x5E, 0x13, # "<LF>        \"<I>\"!<P>"
+        0x01, 0x23, 0x48, 0xB8, 0x91, 0xA8, 0x93  # "<LF>Do I hear "  
+        ] + map(lambda x: table[x], opening_bid) + [  # auction_item[4]
+        0x7F, 0x26, 0x2F, 0x5F, 0x5E, 0x00] #  " GP?!"
+        auction_sub.write(fout)
+
+    auction_sub = Substitution()
+    auction_sub.set_location(0xB4E47)
+    auction_sub.bytestring = [0x45] * 12
+    auction_sub.write(fout)
 
 def manage_bingo():
     target_score = 200.0
@@ -5680,6 +5731,14 @@ def manage_dances():
         dancestr = dancestr.rstrip()
         log(dancestr, "dances")
 
+
+def expand_rom():
+    expand_sub = Substitution()
+    expand_sub.set_location(0x300000)
+    expand_sub.bytestring = [0x00] * 0x100000
+    expand_sub.write(fout)
+
+
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
 
@@ -5907,6 +5966,7 @@ k   Randomize the clock in Zozo
         'Please be patient and wait for "randomization successful" to appear.')
 
     fout = open(outfile, "r+b")
+    expand_rom()
     event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
     if 'airship' in activated_codes:
         event_freespaces = activate_airship_mode(event_freespaces)

@@ -604,7 +604,6 @@ def mutate_event_items(fout):
                 e.pointer = duplicate_eventItem_dict[e.pointer]
                 e.write_data(fout)
             elif e.pointer == 0xCD59E:
-                print e.contents
                 event_item_sub.bytestring = [0x94, # Pause 60 frames
                 0x66, 0xE5, 0xC6] + [e.contents] + [ # Show text 0x06E5 at bottom, no text box, with item e.contents
                 0xFE] # return

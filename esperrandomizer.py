@@ -68,7 +68,7 @@ def allocate_espers(ancient_cave, espers, characters, fout):
         num_users = 1
         if random.randint(1,10) == 10:
             num_users += 1
-            while num_users < 15 and random.choice([True, False]):
+            while num_users < 15 and random.choice([True, False, False]):
                 num_users += 1
         users = random.sample(characters, num_users)
         chars_for_esper.append([c.id for c in users])

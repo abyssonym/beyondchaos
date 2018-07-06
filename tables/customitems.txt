@@ -15,6 +15,7 @@ weapon_animation    2c 2c 2d 0 34 0 a4 0
 name_icon           d9
 name_text           Gades Blade
 description         Sword of the evil Gades
+tier                low
 
 ! Dekar Blade
 price               3a98
@@ -30,6 +31,7 @@ weapon_animation    20 20 22 0 33 0 a8 0
 name_icon           df
 name_text           Dekar Blade
 description         Dekar's powerful sword
+tier                low
 
 ! Dragon Slave
 price               2
@@ -51,6 +53,7 @@ elemweaks           01
 name_icon           e7
 name_text           Dragon Slave
 description         Darkness beyond twilight...
+tier                high
 
 ! Demonica
 price               fde8
@@ -74,6 +77,7 @@ hitmdef             50
 mblockevade         12
 name_icon           e4
 name_text           Demonica
+tier                high
 
 ! FluoriteDice
 price               4570
@@ -97,6 +101,7 @@ specialaction       90
 weapon_animation    12 12 00 b 00 81 5b 0
 name_icon           e0
 name_text           FluoriteDice
+tier                high
 
 ! SORD.....
 price               0
@@ -120,6 +125,7 @@ specialaction       50
 weapon_animation    61 61 b4 0 99 0 08,34,63,81,97,b8,b9,bf,f1 0
 name_icon           d9
 name_text           SORD.....
+tier                low
 
 ! Death Note
 price               2
@@ -134,6 +140,7 @@ elemweaks           20
 statusacquire2      01
 name_icon           e7
 name_text           Death Note
+tier                low
 
 ! White Lily
 price               2
@@ -153,6 +160,7 @@ mblockevade         66
 statusacquire2      41
 name_icon           e7
 name_text           White Lily
+tier                low
 
 ! White Clover
 price               2
@@ -172,6 +180,7 @@ elemweaks           04
 elemnulls           03
 name_icon           e7
 name_text           White Clover
+tier                low
 
 ! White Lotus
 price               2
@@ -189,6 +198,7 @@ elemweaks           01
 elemnulls           06
 name_icon           e7
 name_text           White Lotus
+tier                low
 
 ! OOO
 price               02
@@ -210,6 +220,7 @@ hitmdef             26
 mblockevade         23
 name_icon           e4
 name_text           OOO
+tier                high
 
 ! Portal Gun
 price               2
@@ -225,6 +236,7 @@ special2            02
 weapon_animation    15 15 1f 34 78 81 a3 0
 name_icon           e5
 name_text           Portal Gun
+tier                low
 
 ! Angel Arm
 price               2
@@ -240,6 +252,7 @@ elements            20
 weapon_animation    15 15 29 34 33 82 19 0
 name_icon           df
 name_text           Angel Arm
+tier                high
 
 ! Red Duster
 price               2
@@ -268,6 +281,7 @@ elemnulls           20
 elements            d8
 name_icon           e4
 name_text           Red Duster
+tier                high
 
 ! Rose Shield
 price               2
@@ -287,6 +301,7 @@ hitmdef             FF
 mblockevade         51
 name_icon           e2
 name_text           Rose Shield
+tier                high
 
 ! Ukyo Spatula
 price               2
@@ -308,6 +323,7 @@ magstam             07
 speedvigor          77
 name_icon           e2
 name_text           Ukyo Spatula
+tier                high
 
 ! KingOfGames
 price               2
@@ -331,6 +347,7 @@ hitmdef             0
 mblockevade         0
 name_icon           e3
 name_text           KingOfGames
+tier                high
 
 ! Murderface
 price               2
@@ -348,6 +365,7 @@ hitmdef             0
 mblockevade         0
 name_icon           e3
 name_text           Murderface
+tier                low
 
 ! Neku Phones
 price               2
@@ -362,6 +380,7 @@ mblockevade         50
 speedvigor          70
 name_icon           e3
 name_text           Neku Phones
+tier                high
 
 ! No.21 Wings
 price               2
@@ -377,6 +396,7 @@ mblockevade         AA
 speedvigor          f0
 name_icon           e4
 name_text           No.21 Wings
+tier                high
 
 ! Scenes Hat
 price               2
@@ -396,6 +416,7 @@ hitmdef             15
 mblockevade         0
 name_icon           e3
 name_text           Scenes Hat
+tier                high
 
 ! Contessa
 price               2
@@ -413,6 +434,7 @@ hitmdef             ff
 mblockevade         55
 name_icon           e3
 name_text           Contessa
+tier                high
 
 ! Behaim Watch
 price               2
@@ -422,6 +444,7 @@ targeting           01
 equippable          00
 name_icon           df
 name_text           Behaim Watch
+tier                high
 
 ! Wyvern Drug
 price               2
@@ -442,6 +465,7 @@ elemnulls           08
 mblockevade         55
 name_icon           e7
 name_text           Wyvern Drug
+tier                high
 
 ! Mary Ribbon
 price               2
@@ -459,6 +483,7 @@ special3            0b
 mblockevade         55
 name_icon           e3
 name_text           Mary Ribbon
+tier                high
 
 ! Laylania
 price               2
@@ -476,6 +501,7 @@ elemabsorbs         F1
 elemnulls           06
 name_icon           e4
 name_text           Laylania
+tier                high
 
 ! Page Jacket
 price               2
@@ -495,3 +521,4 @@ hitmdef             55
 elemabsorbs         20
 name_icon           e4
 name_text           Page Jacket
+tier                low

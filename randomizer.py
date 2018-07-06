@@ -2174,6 +2174,106 @@ def manage_character_names(change_to, male):
         fout.write("".join(map(chr, name)))
 
 
+def get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits):
+    # get unused portraits so we can overwrite them if needed
+    sprite_swap_mode = 'makeover' in activated_codes
+    wild = 'partyparty' in activated_codes
+    if not sprite_swap_mode:
+        return [], False
+
+    def reserve_portrait_id(used_portrait_ids, new, swap, portrait):
+        if swap == None:
+            if portrait == 0 and wild and new != 0:
+                used_portrait_ids.add(0xE)
+            else:
+                used_portrait_ids.add(new)
+        elif not swap.has_custom_portrait():
+            used_portrait_ids.add(swap.fallback_portrait_id)
+        else:
+            return 1
+        return 0
+
+    needed = 0
+    used_portrait_ids = set()
+    for c in char_ids:
+        # skip characters who don't have their own portraits
+        if (char_portraits[c] == 0 and c != 0) or c == 0x13:
+            continue
+        new = change_to[c]
+        portrait = char_portraits[new]
+        swap = swap_to[c] if c in swap_to else None
+        needed += reserve_portrait_id(used_portrait_ids, new, swap, portrait)
+            
+    if not wild:
+        for i in range(0xE,0x13):
+            used_portrait_ids.add(i)
+    
+    # Merchant normally uses the same portrait as soldier.
+    # If we have a free slot because some others happen to be sharing, use the portrait for the merchant sprite.
+    # If not, we have to use the same one as the soldier.
+    merchant = False
+    if wild and needed < 19 - len(used_portrait_ids):
+        c = 0x13
+        new = change_to[c]
+        portrait = char_portraits[new]
+        swap = swap_to[c] if c in swap_to else None
+        merchant = reserve_portrait_id(used_portrait_ids, new, swap, portrait)
+            
+    free_portrait_ids = list(set(range(19)) - used_portrait_ids)
+    return free_portrait_ids, merchant
+
+
+def get_sprite_swaps(char_ids, male, female):
+    sprite_swap_mode = 'makeover' in activated_codes
+    wild = 'partyparty' in activated_codes
+    if not sprite_swap_mode:
+        return []
+
+    class SpriteReplacement:
+        def __init__(self, file, name, gender, riding=None, fallback_portrait_id=0xE, portrait_filename=None):
+            self.file = file.strip()
+            self.name = name.strip()
+            self.gender = gender.strip().lower()
+            self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
+
+            if fallback_portrait_id == '':
+                fallback_portrait_id = 0xE
+            self.fallback_portrait_id = int(fallback_portrait_id)
+            self.portrait_filename = portrait_filename
+            self.portrait_palette_filename = portrait_filename
+            if self.portrait_palette_filename and self.portrait_palette_filename:
+                if self.portrait_palette_filename[-4:] == ".bin":
+                    self.portrait_palette_filename = self.portrait_palette_filename[:-4]
+                self.portrait_palette_filename = self.portrait_palette_filename + ".pal"
+            
+        def has_custom_portrait(self):
+            return self.portrait_filename is not None and self.portrait_palette_filename is not None
+              
+    f = open_mei_fallback(SPRITE_REPLACEMENT_TABLE)
+    replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
+    f.close()
+
+    replace_min = 8 if not wild else 16
+    replace_max = 12 if not wild else 20
+        
+    num_to_replace = min(len(replace_candidates), random.randint(replace_min,replace_max))
+    replacements = random.sample(replace_candidates, num_to_replace)
+
+    if wild:
+        swap_to = dict(zip(random.sample(char_ids, num_to_replace),replacements))
+    else:
+        female_replacements = [s for s in replacements if s.gender == "female"]
+        male_replacements = [s for s in replacements if s.gender == "male"]
+        neutral_replacements = [s for s in replacements if s.gender != "male" and s.gender != "female"]
+
+        swap_to = dict(zip(random.sample(female, len(female_replacements)),female_replacements))
+        swap_to.update(dict(zip(random.sample(male, len(male_replacements)), male_replacements)))
+        not_already_swapped = [c for c in char_ids if c not in swap_to]
+        swap_to.update(dict(zip(random.sample(not_already_swapped, len(neutral_replacements)), neutral_replacements)))
+
+    return swap_to
+
+
 def manage_character_appearance(preserve_graphics=False):
     characters = get_characters()
     wild = 'partyparty' in activated_codes
@@ -2194,6 +2294,7 @@ def manage_character_appearance(preserve_graphics=False):
         char_ids = range(0, 0x0E)
 
     male = None
+    female = None
     if tina_mode:
         change_to = dict(zip(char_ids, [0x12] * 100))
     elif sabin_mode:
@@ -2237,48 +2338,7 @@ def manage_character_appearance(preserve_graphics=False):
 
     manage_character_names(change_to, male)
 
-    if sprite_swap_mode:
-        class SpriteReplacement:
-            def __init__(self, file, name, gender, riding=None, fallback_portrait_id=0xE, portrait_filename=None):
-                self.file = file.strip()
-                self.name = name.strip()
-                self.gender = gender.strip().lower()
-                self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
-
-                if fallback_portrait_id == '':
-                    fallback_portrait_id = 0xE
-                self.fallback_portrait_id = int(fallback_portrait_id)
-                self.portrait_filename = portrait_filename
-                self.portrait_palette_filename = portrait_filename
-                if self.portrait_palette_filename and self.portrait_palette_filename:
-                    if self.portrait_palette_filename[-4:] == ".bin":
-                        self.portrait_palette_filename = self.portrait_palette_filename[:-4]
-                    self.portrait_palette_filename = self.portrait_palette_filename + ".pal"
-            
-            def has_custom_portrait(self):
-                return self.portrait_filename is not None and self.portrait_palette_filename is not None
-              
-        f = open_mei_fallback(SPRITE_REPLACEMENT_TABLE)
-        replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
-        f.close()
-
-        replace_min = 8 if not wild else 16
-        replace_max = 12 if not wild else 20
-        
-        num_to_replace = min(len(replace_candidates), random.randint(replace_min,replace_max))
-        replacements = random.sample(replace_candidates, num_to_replace)
-
-        if wild:
-            swap_to = dict(zip(random.sample(char_ids, num_to_replace),replacements))
-        else:
-            female_replacements = [s for s in replacements if s.gender == "female"]
-            male_replacements = [s for s in replacements if s.gender == "male"]
-            neutral_replacements = [s for s in replacements if s.gender != "male" and s.gender != "female"]
-
-            swap_to = dict(zip(random.sample(female, len(female_replacements)),female_replacements))
-            swap_to.update(dict(zip(random.sample(male, len(male_replacements)), male_replacements)))
-            not_already_swapped = [c for c in char_ids if c not in swap_to]
-            swap_to.update(dict(zip(random.sample(not_already_swapped, len(neutral_replacements)), neutral_replacements)))
+    swap_to = get_sprite_swaps(char_ids, male, female)
 
     for c in characters:
         if c.id < 14:
@@ -2346,47 +2406,7 @@ def manage_character_appearance(preserve_graphics=False):
     for i in range(19):
         portrait_palette_data.append(fout.read(0x20))
 
-    # get unused portraits so we can overwrite them if needed
-    if sprite_swap_mode:
-        def reserve_portrait_id(used_portrait_ids, new, swap, portrait):
-            if swap == None:
-                if portrait == 0 and wild and new != 0:
-                    used_portrait_ids.add(0xE)
-                else:
-                    used_portrait_ids.add(new)
-            elif not swap.has_custom_portrait():
-                used_portrait_ids.add(swap.fallback_portrait_id)
-            else:
-                return 1
-            return 0
-
-        needed = 0
-        used_portrait_ids = set()
-        for c in char_ids:
-            # skip characters who don't have their own portraits
-            if (char_portraits[c] == 0 and c != 0) or c == 0x13:
-                continue
-            new = change_to[c]
-            portrait = char_portraits[new]
-            swap = swap_to[c] if c in swap_to else None
-            needed += reserve_portrait_id(used_portrait_ids, new, swap, portrait)
-            
-        if not wild:
-            for i in range(0xE,0x13):
-                used_portrait_ids.add(i)
-    
-        # Merchant normally uses the same portrait as soldier.
-        # If we have a free slot because some others happen to be sharing, use the portrait for the merchant sprite.
-        # If not, we have to use the same one as the soldier.
-        merchant = False
-        if wild and needed < 19 - len(used_portrait_ids):
-            c = 0x13
-            new = change_to[c]
-            portrait = char_portraits[new]
-            swap = swap_to[c] if c in swap_to else None
-            merchant = reserve_portrait_id(used_portrait_ids, new, swap, portrait)
-            
-        free_portrait_ids = list(set(range(19)) - used_portrait_ids)
+    free_portrait_ids, merchant = get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits)
     
     for c in char_ids:
         new = change_to[c]
@@ -2426,7 +2446,7 @@ def manage_character_appearance(preserve_graphics=False):
                     h.close()
                     g.close()
 
-            if not use_fallback or fallback_portrait_id not in used_portrait_ids:
+            if not use_fallback or fallback_portrait_id in free_portrait_ids:
                 portrait_id = free_portrait_ids[0]
                 portrait = portrait_id * 0x320
                 portrait_palette = chr(portrait_id)

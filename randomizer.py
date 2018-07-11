@@ -189,8 +189,7 @@ def rewrite_checksum(filename=None):
         filename = outfile
     MEGABIT = 0x20000
     f = open(filename, 'r+b')
-    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in xrange(24)]
-    subsums += subsums[-8:]
+    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in xrange(32)]
     checksum = sum(subsums) & 0xFFFF
     f.seek(0xFFDE)
     write_multi(f, checksum, length=2)
@@ -2445,12 +2444,14 @@ def manage_colorize_animations():
 
 
 def manage_items(items, changed_commands=None):
-    from itemrandomizer import set_item_changed_commands
+    from itemrandomizer import (set_item_changed_commands, extend_item_breaks)
     always_break = True if "collateraldamage" in activated_codes else False
+    wild_breaks = True if "electricboogaloo" in activated_codes else False
     set_item_changed_commands(changed_commands)
+    extend_item_breaks(fout)
 
     for i in items:
-        i.mutate(always_break=always_break)
+        i.mutate(always_break=always_break, wild_breaks=wild_breaks)
         i.unrestrict()
         i.write_stats(fout)
 
@@ -5667,6 +5668,14 @@ def manage_dances():
         dancestr = dancestr.rstrip()
         log(dancestr, "dances")
 
+
+def expand_rom():
+    expand_sub = Substitution()
+    expand_sub.set_location(0x300000)
+    expand_sub.bytestring = [0x00] * 0x100000
+    expand_sub.write(fout)
+
+
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
 
@@ -5894,6 +5903,7 @@ k   Randomize the clock in Zozo
         'Please be patient and wait for "randomization successful" to appear.')
 
     fout = open(outfile, "r+b")
+    expand_rom()
     event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
     if 'airship' in activated_codes:
         event_freespaces = activate_airship_mode(event_freespaces)

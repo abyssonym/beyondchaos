@@ -5855,6 +5855,7 @@ k   Randomize the clock in Zozo
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
+    secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

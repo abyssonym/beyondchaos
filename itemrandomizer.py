@@ -332,9 +332,11 @@ class ItemBlock:
         if not success:
             return
 
-        # swdtechs, blitzes, and slots spells don't seem to work correctly
-        # with procs, but they work with breaks
-        no_proc_ids = range(0x55, 0x66) + range(0x7F, 0x82) + [0xFE]
+        # swdtechs, blitzes, superball, and slots don't seem to work 
+        # correctly with procs, but they work with breaks.
+        # (Mostly they just play the wrong animation, but a couple
+        # softlock.)
+        no_proc_ids = range(0x55, 0x66) + range(0x7D, 0x82)
         self.features['breakeffect'] = spell.spellid
         if not self.is_weapon or random.randint(1, 2) == 2 or always_break or spell.spellid in no_proc_ids:
             # always make armors usable in battle; weapons, only sometimes

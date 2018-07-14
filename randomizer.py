@@ -31,6 +31,7 @@ from formationrandomizer import (get_formations, get_fsets,
 from locationrandomizer import (EntranceSet,
                                 get_locations, get_location, get_zones)
 from towerrandomizer import randomize_tower
+from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 
 
@@ -2525,9 +2526,7 @@ def manage_equipment(items):
 
 
 def manage_reorder_rages(freespaces, by_level=False):
-    myfs = get_appropriate_freespace(freespaces, 0x100)
-    pointer = myfs.start
-    freespaces = determine_new_freespaces(freespaces, myfs, 0x100)
+    pointer = 0x301416
 
     monsters = get_monsters()
     monsters = sorted(monsters, key=lambda m: m.display_name)
@@ -2541,7 +2540,7 @@ def manage_reorder_rages(freespaces, by_level=False):
     reordered_rages_sub.bytestring = monster_order
     reordered_rages_sub.set_location(pointer)
     reordered_rages_sub.write(fout)
-    hirage, lorage = (pointer >> 8) & 0xFF, pointer & 0xFF
+    hirage, midrage, lorage = ((pointer >> 16) & 0x3F) + 0xC0, (pointer >> 8) & 0xFF, pointer & 0xFF
 
     rage_reorder_sub = Substitution()
     rage_reorder_sub.bytestring = [
@@ -2549,13 +2548,13 @@ def manage_reorder_rages(freespaces, by_level=False):
         0xA8,               # TAY
         # main loop
         # get learned rages byte, store in EE
-        0xBB, 0xBF, lorage, hirage, 0xC2,
+        0xBB, 0xBF, lorage, midrage, hirage,
         0x4A, 0x4A, 0x4A,   # LSR x3
         0xAA,               # TAX
         0xBD, 0x2C, 0x1D,   # LDA $1D2C,X (get rage byte)
         0x85, 0xEE,         # STA $EE
         # get bitmask for learned rage
-        0xBB, 0xBF, lorage, hirage, 0xC2,
+        0xBB, 0xBF, lorage, midrage, hirage,
         0x29, 0x07,         # AND #$07 get bottom three bits
         0xC9, 0x00,         # CMP #$00
         0xF0, 0x05,         # BEQ 5 bytes forward
@@ -2571,7 +2570,7 @@ def manage_reorder_rages(freespaces, by_level=False):
         #0xEA, 0xEA,
         # add rage to battle menu
         0xEE, 0x9A, 0x3A,   # INC $3A9A (number of rages known)
-        0xBB, 0xBF, lorage, hirage, 0xC2,     # get rage
+        0xBB, 0xBF, lorage, midrage, hirage,     # get rage
         0x8F, 0x80, 0x21, 0x00,         # STA $002180 (store rage in menu)
         # check to terminate loop
         0xC8,               # INY (advance to next enemy)
@@ -5677,7 +5676,7 @@ def expand_rom():
 
 
 def randomize():
-    global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
+    global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE, NEVER_REPLACE
 
     args = list(argv)
     if TEST_ON:
@@ -5995,6 +5994,7 @@ k   Randomize the clock in Zozo
                  'christmas', 'halloween',
                  'kupokupo', 'quikdraw']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
+        show_original_names(fout)
     reseed()
 
     if 'q' in flags:
@@ -6227,6 +6227,11 @@ k   Randomize the clock in Zozo
 
     if 'christmas' in activated_codes:
         manage_santa()
+
+    improve_rage_menu(fout)
+    improve_item_display(fout)
+    improve_gogo_status_menu(fout)
+    improve_dance_menu(fout)
 
     rewrite_title(text="FF6 BC %s" % seed)
     fout.close()

@@ -92,7 +92,7 @@ def extend_item_breaks(fout):
     break_sub.bytestring = [0x22, 0x13, 0x30, 0xF0]
     break_sub.write(fout)
     
-    break_sub.set_location(0x22735)
+    break_sub.set_location(0x2274B)
     break_sub.bytestring = [0xAD, 0x10, 0x34, 0xEA, 0xEA]
     break_sub.write(fout)
     
@@ -100,7 +100,7 @@ def extend_item_breaks(fout):
     break_sub.bytestring = [0x22, 0x00, 0x30, 0xF0, 0xEA, 0xEA]
     break_sub.write(fout)
     
-    break_sub.set_location(0x22658)
+    break_sub.set_location(0x23658)
     break_sub.bytestring = [0xAD, 0x7E, 0x3A]
     break_sub.write(fout)
     

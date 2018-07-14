@@ -1,6 +1,7 @@
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,
-                   name_to_bytes, utilrandom as random)
+                   name_to_bytes, utilrandom as random,
+                   Substitution)
 from skillrandomizer import SpellBlock
 # future blocks: chests, morphs, shops
 
@@ -511,7 +512,7 @@ class ItemBlock:
         self.mutate_price()
         broken, learned = False, False
         if always_break:
-            self.mutate_break_effect(always_break=True, wild_breaks)
+            self.mutate_break_effect(always_break=True, wild_breaks=wild_breaks)
             broken = True
         for command, itemids in break_unused_dict.items():
             if command in changed_commands and self.itemid in itemids:

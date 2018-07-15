@@ -516,7 +516,7 @@ class ItemBlock:
             broken = True
         for command, itemids in break_unused_dict.items():
             if command in changed_commands and self.itemid in itemids:
-                self.mutate_break_effect(wild_breaks)
+                self.mutate_break_effect(wild_breaks=wild_breaks)
                 broken = True
         if self.itemid == 0xE6:
             self.mutate_learning()
@@ -528,7 +528,7 @@ class ItemBlock:
             if 10 <= x < 20 and not learned:
                 self.mutate_learning()
             if 20 <= x < 50 and not broken:
-                self.mutate_break_effect(wild_breaks)
+                self.mutate_break_effect(wild_breaks=wild_breaks)
                 broken = True
             if 50 <= x < 80:
                 self.mutate_elements()

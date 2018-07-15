@@ -147,8 +147,8 @@ def log_break_learn_items():
     breakable = [i for i in items if not i.is_consumable and i.itemtype & 0x20]
     s = "BREAKABLE ITEMS\n"
     for i in breakable:
-        spell = get_spell(i.features['breakeffect'] & 0x3F)
-        indestructible = not i.features['breakeffect'] & 0x80
+        spell = get_spell(i.features['breakeffect'])
+        indestructible = not i.features['otherproperties'] & 0x08
         s2 = "{0:13}  {1}".format(i.name + ":", spell.name)
         if indestructible:
             s2 += " (indestructible)"

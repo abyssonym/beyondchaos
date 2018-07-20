@@ -8,7 +8,9 @@ from utils import (ESPER_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
-                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE,
+                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
+				   SPRITE_REPLACEMENT_TABLE, SKIP_EVENTS_TABLE,
+                   SKIP_EVENT_PALETTES_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -229,13 +231,20 @@ class AutoLearnRageSub(Substitution):
 class AutoRecruitGauSub(Substitution):
     @property
     def bytestring(self):
-        return [0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
+        if 'notawaiter' in activated_codes:
+            return [0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
+        else:
+            return [0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
 
     def write(self, filename):
         sub_addr = self.location - 0xa0000
         call_recruit_sub = Substitution()
         call_recruit_sub.bytestring = [0xB2] + int2bytes(sub_addr, length=3)
-        call_recruit_sub.set_location(0xBC19C)
+        if 'notawaiter' in activated_codes:
+            call_recruit_sub.bytestring.append(0xFE)
+            call_recruit_sub.set_location(0xBC0A4)
+        else:
+            call_recruit_sub.set_location(0xBC19C)
         call_recruit_sub.write(filename)
         gau_stays_wor_sub = Substitution()
         gau_stays_wor_sub.bytestring = [0xD4, 0xFB]
@@ -1614,7 +1623,34 @@ def manage_sprint():
     autosprint.bytestring = [0x80, 0x00]
     autosprint.write(fout)
 
+def lk2_manage_skips():
+    characters = get_characters();
+    state = "Replacing Event Code"
+    
+    for line in open(SKIP_EVENTS_TABLE):
+        split_line = line.strip().split(' ')
 
+        event_skip_sub = Substitution()
+        event_skip_sub.bytestring = []
+        for byte in split_line[1:]:
+            event_skip_sub.bytestring.append(int(byte, 16))
+        event_skip_sub.set_location(int(split_line[0], 16))
+        event_skip_sub.write(fout)
+        
+    for line in open(SKIP_EVENT_PALETTES_TABLE):
+        split_line = line.strip().split(' ')
+    
+        for character in characters:
+            if character.id == int(split_line[1], 16):
+                palette_correct_sub = Substitution()
+                palette_correct_sub.bytestring = [character.palette]
+                palette_correct_sub.set_location(int(split_line[0], 16))
+                palette_correct_sub.write(fout)
+    
+    # We overwrote the Gau recruition code, so call it again
+    if 'o' in flags or 'w' in flags or 't' in flags:
+        auto_recruit_gau()
+            
 def manage_skips():
     flashback_skip_sub = Substitution()
     flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
@@ -5846,6 +5882,7 @@ k   Randomize the clock in Zozo
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
+    secret_codes['notawaiter'] = "ALTERNATE CUTSCENE SKIPS"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -5878,6 +5915,13 @@ k   Randomize the clock in Zozo
             multiplier = None
         set_randomness_multiplier(multiplier)
 
+    print (
+        "\nNow beginning randomization.\n"
+        "The randomization is very thorough, so it may take some time.\n"
+        'Please be patient and wait for "randomization successful" to appear.')
+
+    fout = open(outfile, "r+b")
+    
     if 'cutscenes' in activated_codes:
         print "NOTICE: You have selected CUTSCENE SKIPS."
         print "This feature has proven to be unstable with strange effects."
@@ -5887,13 +5931,7 @@ k   Randomize the clock in Zozo
         else:
             print "Cutscenes will NOT be skipped."
         print
-
-    print (
-        "\nNow beginning randomization.\n"
-        "The randomization is very thorough, so it may take some time.\n"
-        'Please be patient and wait for "randomization successful" to appear.')
-
-    fout = open(outfile, "r+b")
+    
     event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
     if 'airship' in activated_codes:
         event_freespaces = activate_airship_mode(event_freespaces)
@@ -6143,6 +6181,11 @@ k   Randomize the clock in Zozo
 
     if 'strangejourney' in activated_codes:
         create_dimensional_vortex()
+    reseed()
+    
+    if 'notawaiter' in activated_codes:
+        print "Cutscenes are currently skipped up to Kefka @ Narshe"
+        lk2_manage_skips()
     reseed()
 
     if 'worringtriad' in activated_codes:

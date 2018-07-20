@@ -151,11 +151,14 @@ class ItemBlock:
     def ban(self):
         self.banned = True
 
-    def become_another(self, customdict=None):
+    def become_another(self, customdict=None, tier=None):
         customs = get_custom_items()
         if customdict is None:
-            customdict = random.choice(
-                [customs[key] for key in sorted(customs)])
+            if tier is None:
+                candidates = [customs[key] for key in sorted(customs)]
+            else:
+                candidates = [customs[key] for key in sorted(customs) if customs[key]["tier"] == tier]
+            customdict = random.choice(candidates)
 
         for key in self.features:
             self.features[key] = 0
@@ -180,6 +183,8 @@ class ItemBlock:
             if key == "name_text":
                 name = name + name_to_bytes(value, 12)
             elif key == "description":
+                pass
+            elif key == "tier":
                 pass
             else:
                 value = convert_value(value)

@@ -6420,6 +6420,11 @@ k   Randomize the clock in Zozo
             dirk.write_stats(fout)
             dummy_item(dirk)
             assert not dummy_item(dirk)
+    if 'm' in flags and 't' in flags and 'q' in flags:
+        if random.randint(1, 10) != 10:
+            rename_card = get_item(231)
+            rename_card.become_another(tier="low")
+            rename_card.write_stats(fout)
     reseed()
 
     items = get_ranked_items()

@@ -23,7 +23,7 @@ from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                shuffle_monsters, get_monster, read_ai_table)
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
-                            reset_cursed_shield)
+                            reset_cursed_shield, unhack_tintinabar)
 from esperrandomizer import (EsperBlock, allocate_espers)
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
@@ -2718,6 +2718,7 @@ def manage_items(items, changed_commands=None):
     crazy_prices = True if "madworld" in activated_codes else False
     set_item_changed_commands(changed_commands)
     extra_effects= True if "masseffect" in activated_codes else False
+    unhack_tintinabar(fout)
 
     for i in items:
         i.mutate(always_break=always_break, crazy_prices=crazy_prices, extra_effects=extra_effects)

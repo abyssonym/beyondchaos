@@ -2276,17 +2276,17 @@ def manage_character_appearance(preserve_graphics=False):
 
     names = []
 
-    def sanitizeNames(names):
+    def sanitize_names(names):
         delchars = ''.join(c for c in map(chr, range(256)) if not c.isalnum() and c not in "!?/:\"'-.")
         names = [name.translate(None, delchars) for name in names]
         return [name[:6] for name in names if name != ""]
 
     if not tina_mode and not sabin_mode and not moogle_mode:
         f = open_mei_fallback(MALE_NAMES_TABLE)
-        malenames = sorted(set(sanitizeNames([line.strip() for line in f.readlines()])))
+        malenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
         f.close()
         f = open_mei_fallback(FEMALE_NAMES_TABLE)
-        femalenames = sorted(set(sanitizeNames([line.strip() for line in f.readlines()])))
+        femalenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
         f.close()
         for c in range(14):
             choose_male = False
@@ -2337,7 +2337,7 @@ def manage_character_appearance(preserve_graphics=False):
                 random_name_ids.append(moogle_id)
         
         f = open(MOOGLE_NAMES_TABLE)
-        mooglenames = sorted(set(sanitizeNames([line.strip() for line in f.readlines()])))
+        mooglenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
         f.close()
         
         random_moogle_names = random.sample(mooglenames, len(random_name_ids))
@@ -2347,7 +2347,7 @@ def manage_character_appearance(preserve_graphics=False):
         # Human Mog gets a human name, maybe
         if random.choice([True, True, False]):
             f = open(MALE_NAMES_TABLE)
-            malenames = sorted(set(sanitizeNames([line.strip() for line in f.readlines()])))
+            malenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
             f.close()
             
             names[10] = random.choice(malenames)

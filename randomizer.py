@@ -154,8 +154,8 @@ def log_break_learn_items():
     breakable = [i for i in items if not i.is_consumable and i.itemtype & 0x20]
     s = "BREAKABLE ITEMS\n"
     for i in breakable:
-        spell = get_spell(i.features['breakeffect'] & 0x3F)
-        indestructible = not i.features['breakeffect'] & 0x80
+        spell = get_spell(i.features['breakeffect'])
+        indestructible = not i.features['otherproperties'] & 0x08
         s2 = "{0:13}  {1}".format(i.name + ":", spell.name)
         if indestructible:
             s2 += " (indestructible)"
@@ -2713,15 +2713,18 @@ def manage_colorize_animations():
 
 
 def manage_items(items, changed_commands=None):
-    from itemrandomizer import set_item_changed_commands
+    from itemrandomizer import (set_item_changed_commands, extend_item_breaks)
     always_break = True if "collateraldamage" in activated_codes else False
     crazy_prices = True if "madworld" in activated_codes else False
-    set_item_changed_commands(changed_commands)
     extra_effects= True if "masseffect" in activated_codes else False
+    wild_breaks = True if "electricboogaloo" in activated_codes else False
+
+    set_item_changed_commands(changed_commands)
     unhack_tintinabar(fout)
+    extend_item_breaks(fout)
 
     for i in items:
-        i.mutate(always_break=always_break, crazy_prices=crazy_prices, extra_effects=extra_effects)
+        i.mutate(always_break=always_break, crazy_prices=crazy_prices, extra_effects=extra_effects, wild_breaks=wild_breaks)
         i.unrestrict()
         i.write_stats(fout)
 
@@ -6312,6 +6315,7 @@ k   Randomize the clock in Zozo
     secret_codes['masseffect'] = "WILD EQUIPMENT EFFECT MODE"
     secret_codes['madworld'] = "TIERS FOR FEARS MODE"
     secret_codes['supernatural'] = "SUPER NATURAL MAGIC MODE"
+    secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

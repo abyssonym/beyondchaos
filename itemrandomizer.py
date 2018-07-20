@@ -1,6 +1,7 @@
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
-                   CUSTOM_ITEMS_TABLE, mutate_index, Substitution,
-                   name_to_bytes, utilrandom as random)
+                   CUSTOM_ITEMS_TABLE, mutate_index,
+                   name_to_bytes, utilrandom as random,
+                   Substitution)
 from skillrandomizer import SpellBlock, get_ranked_spells
 # future blocks: chests, morphs, shops
 
@@ -85,6 +86,29 @@ def bit_mutate(byte, op="on", nochange=0x00):
     return byte
 
 
+def extend_item_breaks(fout):
+    break_sub = Substitution()
+    break_sub.set_location(0x22735)
+    break_sub.bytestring = [0x22, 0x13, 0x30, 0xF0]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x2274B)
+    break_sub.bytestring = [0xAD, 0x10, 0x34, 0xEA, 0xEA]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x229ED)
+    break_sub.bytestring = [0x22, 0x00, 0x30, 0xF0, 0xEA, 0xEA]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x23658)
+    break_sub.bytestring = [0xAD, 0x7E, 0x3A]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x303000)
+    break_sub.bytestring = [0xBD, 0xA4, 0x3B, 0x29, 0x0C, 0x0A, 0x0A, 0x0A, 0x0A, 0x8D, 0x89, 0x3A, 0xBD, 0x34, 0x3D, 0x8D, 0x7E, 0x3A, 0x6B, 0xBF, 0x12, 0x50, 0xD8, 0x8D, 0x10, 0x34, 0xBF, 0x13, 0x50, 0xD8, 0x29, 0x0C, 0x0A, 0x0A, 0x0A, 0x0A, 0x6B]
+    break_sub.write(fout)
+
+
 class ItemBlock:
     def __init__(self, itemid, pointer, name):
         self.itemid = hex2int(itemid)
@@ -133,6 +157,12 @@ class ItemBlock:
 
         stats = map(ord, f.read(len(ITEM_STATS)))
         self.features = dict(zip(ITEM_STATS, stats))
+
+        # move flags for "randomly cast" and "destroy if used"
+        # so breakeffect can use the full range of spells
+        break_flags = self.features["breakeffect"] & 0xC0
+        self.features["otherproperties"] |= break_flags >> 4
+        self.features["breakeffect"] &= ~0xC0
 
         self.price = read_multi(f, length=2)
 
@@ -292,7 +322,7 @@ class ItemBlock:
         self.features[feature] = bit_mutate(self.features[feature], op="on",
                                             nochange=STATPROTECT[feature])
 
-    def mutate_break_effect(self, always_break=False):
+    def mutate_break_effect(self, always_break=False, wild_breaks=False):
         global effects_used
         if self.is_consumable:
             return
@@ -301,8 +331,9 @@ class ItemBlock:
             effects_used = []
 
         success = False
+        max_spellid = 0xFE if wild_breaks else 0x50
         for _ in xrange(100):
-            spell, _ = self.pick_a_spell(custom=lambda x: x.spellid <= 0x3F)
+            spell, _ = self.pick_a_spell(custom=lambda x: x.spellid <= max_spellid)
             if spell.spellid not in effects_used:
                 effects_used.append(spell.spellid)
                 success = True
@@ -311,22 +342,27 @@ class ItemBlock:
         if not success:
             return
 
+        # swdtechs, blitzes, superball, and slots don't seem to work 
+        # correctly with procs, but they work with breaks.
+        # (Mostly they just play the wrong animation, but a couple
+        # softlock.)
+        no_proc_ids = range(0x55, 0x66) + range(0x7D, 0x82)
         self.features['breakeffect'] = spell.spellid
-        if not self.is_weapon or random.randint(1, 2) == 2 or always_break:
+        if not self.is_weapon or random.randint(1, 2) == 2 or always_break or spell.spellid in no_proc_ids:
             # always make armors usable in battle; weapons, only sometimes
             self.itemtype = self.itemtype | 0x20
 
         # flag to break when used as an item
         if random.randint(1, 20) == 20:
-            self.features['breakeffect'] &= 0x7F
+            self.features['otherproperties'] &= 0xF7
         else:
-            self.features['breakeffect'] |= 0x80
+            self.features['otherproperties'] |= 0x08
 
         # flag to set chance to proc a spell
-        if self.is_weapon and (not self.itemtype & 0x20 or random.randint(1, 2) == 2):
-            self.features['breakeffect'] |= 0x40
+        if self.is_weapon and spell.spellid not in no_proc_ids and (not self.itemtype & 0x20 or random.randint(1, 2) == 2):
+            self.features['otherproperties'] |= 0x04
         else:
-            self.features['breakeffect'] &= 0xBF
+            self.features['otherproperties'] &= 0xFB
 
         self.features['targeting'] = spell.targeting & 0xef
 
@@ -482,17 +518,17 @@ class ItemBlock:
 
         self.price = min(self.price, 65000)
 
-    def mutate(self, always_break=False, crazy_prices=False, extra_effects=False):
+    def mutate(self, always_break=False, crazy_prices=False, extra_effects=False, wild_breaks=False):
         global changed_commands
         self.mutate_stats()
         self.mutate_price(crazy_prices=crazy_prices)
         broken, learned = False, False
         if always_break:
-            self.mutate_break_effect(always_break=True)
+            self.mutate_break_effect(always_break=True, wild_breaks=wild_breaks)
             broken = True
         for command, itemids in break_unused_dict.items():
             if command in changed_commands and self.itemid in itemids:
-                self.mutate_break_effect()
+                self.mutate_break_effect(wild_breaks=wild_breaks)
                 broken = True
         if self.itemid == 0xE6:
             self.mutate_learning()
@@ -504,7 +540,7 @@ class ItemBlock:
             if 10 <= x < 20 and not learned:
                 self.mutate_learning()
             if 20 <= x < 50 and not broken:
-                self.mutate_break_effect()
+                self.mutate_break_effect(wild_breaks=wild_breaks)
                 broken = True
             if 50 <= x < 80:
                 self.mutate_elements()

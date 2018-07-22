@@ -480,15 +480,19 @@ class EventItem:
             event_item_sub.bytestring.append(self.contents)
         else:
             event_item_sub.bytestring.extend([0xFD, 0xFD]) # Do nothing
-        event_item_sub.bytestring.extend(self.postfix_bytes)
+        if not cutscene_skip or not self.cutscene_skip_pointer:
+            event_item_sub.bytestring.extend(self.postfix_bytes)
         event_item_sub.write(fout)
 
         duplicate_dict = duplicate_event_item_skip_dict if cutscene_skip else duplicate_event_item_dict
         if self.pointer in duplicate_dict:
-            temp = self.pointer
+            prev_pointer = self.pointer
+            prev_text = self.text
+            self.text = True # There's probably a better way to do this, but makes the returner guy still tell you the item name if you go up to talk to him with cutscene_skip on.
             self.pointer = duplicate_dict[self.pointer]
             self.write_data(fout)
-            self.pointer = temp
+            self.pointer = prev_pointer
+            self.text = prev_text
         elif self.pointer == 0xCD59E:
             event_item_sub.bytestring = [0x94, # Pause 60 frames
             0x66, 0xE5, 0xC6, self.contents,  # Show text 0x06E5 at bottom, no text box, with item self.contents
@@ -541,7 +545,7 @@ event_items_dict ={ "Narshe (WoB)" : [
     ],
     
     "Doma Castle" : [
-    EventItem(0x40, 0x30, 0xB99F4, [], monster=False, text=False),
+    EventItem(0x40, 0x30, 0xB99F4, monster=False, text=False),
     ],
     
     "Kohlingen" : [

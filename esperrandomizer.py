@@ -108,15 +108,16 @@ class EsperBlock:
             fout.write(chr(0xFF))
         fout.write(chr(self.bonus))
 
-    def get_candidates(self, rank, set_lower=True):
+    def get_candidates(self, rank, set_lower=True, allow_quick=False):
         candidates = get_candidates(rank, set_lower=set_lower)
-        quick = [s for s in candidates if s.name == "Quick"]
-        if quick:
-            quick = quick[0]
-            candidates.remove(quick)
+        if not allow_quick:
+            quick = [s for s in candidates if s.name == "Quick"]
+            if quick:
+                quick = quick[0]
+                candidates.remove(quick)
         return candidates
 
-    def generate_spells(self):
+    def generate_spells(self, tierless=False):
         global used
 
         self.spells, self.learnrates = [], []
@@ -126,7 +127,7 @@ class EsperBlock:
         rank = min(rank, max(rankbounds.keys()))
 
         if random.randint(1, 10) != 10:
-            candidates = self.get_candidates(rank)
+            candidates = self.get_candidates(rank, set_lower=not tierless, allow_quick=tierless)
             if candidates:
                 s = random.choice(candidates)
                 self.spells.append(s)
@@ -134,7 +135,7 @@ class EsperBlock:
 
         rank = self.rank
         for _ in xrange(random.randint(0, 2) + random.randint(0, 2)):
-            candidates = self.get_candidates(rank, set_lower=False)
+            candidates = self.get_candidates(rank, set_lower=False, allow_quick=tierless)
             if candidates:
                 s = random.choice(candidates)
                 if s in self.spells:

@@ -6000,8 +6000,8 @@ k   Randomize the clock in Zozo
     if 'e' in flags:
         if 'dancingmaduin' in activated_codes:
             allocate_espers('ancientcave' in activated_codes, get_espers(), get_characters(), fout)
+            nerf_paladin_shield()
         manage_espers(esperrage_spaces)
-        nerf_paladin_shield()
     reseed()
 
     if flags:

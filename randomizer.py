@@ -1648,6 +1648,12 @@ def lk2_manage_skips():
     # We overwrote the Gau recruition code, so call it again
     if 'o' in flags or 'w' in flags or 't' in flags:
         auto_recruit_gau()
+        
+    # We overwrote some of the event items, so write them again
+    if 't' in flags:
+        for area_name, items in get_event_items().iteritems():
+            for e in items:
+                e.write_data(fout, cutscene_skip=True)
             
 def manage_skips():
     flashback_skip_sub = Substitution()

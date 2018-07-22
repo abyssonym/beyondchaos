@@ -6623,7 +6623,7 @@ k   Randomize the clock in Zozo
         manage_treasure(monsters, shops=True)
         if 'ancientcave' not in activated_codes:
             manage_chests()
-            mutate_event_items(fout)
+            mutate_event_items(fout, cutscene_skip='notawaiter' in activated_codes)
             for fs in fsets:
                 # write new formation sets for MiaBs
                 fs.write_data(fout)

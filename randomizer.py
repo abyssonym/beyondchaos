@@ -6389,6 +6389,7 @@ k   Randomize the clock in Zozo
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         manage_commands(commands)
+        improve_gogo_status_menu(fout)
     reseed()
 
     spells = get_ranked_spells(sourcefile)
@@ -6401,6 +6402,7 @@ k   Randomize the clock in Zozo
         if 'quikdraw' in activated_codes:
             ALWAYS_REPLACE += ["rage"]
         _, freespaces = manage_commands_new(commands)
+        improve_gogo_status_menu(fout)
     reseed()
 
     if 'z' in flags:
@@ -6446,11 +6448,13 @@ k   Randomize the clock in Zozo
     items = get_ranked_items()
     if 'i' in flags:
         manage_items(items, changed_commands=changed_commands)
+        improve_item_display(fout)
     reseed()
 
     if 'm' in flags:
         aispaces = manage_final_boss(aispaces)
         monsters = manage_monsters()
+        improve_rage_menu(fout)
     reseed()
 
     if 'm' in flags or 'o' in flags or 'w' in flags:
@@ -6650,6 +6654,7 @@ k   Randomize the clock in Zozo
     if 'g' in flags:
         if 0x13 not in changed_commands:
             manage_dances()
+            improve_dance_menu(fout)
 
     reseed()
 
@@ -6721,11 +6726,6 @@ k   Randomize the clock in Zozo
         manage_santa()
     elif 'halloween' in activated_codes:
         manage_spookiness()
-
-    improve_rage_menu(fout)
-    improve_item_display(fout)
-    improve_gogo_status_menu(fout)
-    improve_dance_menu(fout)
 
     rewrite_title(text="FF6 BC %s" % seed)
     fout.close()

@@ -1645,17 +1645,6 @@ def lk2_manage_skips():
                 palette_correct_sub.set_location(int(split_line[0], 16))
                 palette_correct_sub.write(fout)
     
-    # We overwrote the Gau recruition code, so call it again
-    if 'o' in flags or 'w' in flags or 't' in flags:
-        auto_recruit_gau()
-        
-    # We overwrote some of the event items, so write them again
-    if 't' in flags:
-        for area_name, items in get_event_items().iteritems():
-            for e in items:
-                e.write_data(fout, cutscene_skip=True)
-            
-def manage_skips():
     flashback_skip_sub = Substitution()
     flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
     flashback_skip_sub.set_location(0xAC582)
@@ -1711,36 +1700,7 @@ def manage_skips():
         )
     leo_skip_sub.set_location(0xBF2B5)
     leo_skip_sub.write(fout)
-
-    shadow_leaving_sub = Substitution()
-    shadow_leaving_sub.bytestring = [0xEA] * 2
-    shadow_leaving_sub.set_location(0x2488A)
-    shadow_leaving_sub.write(fout)
-
-    narshe_skip_sub = Substitution()
-    narshe_skip_sub.bytestring = []
-    narshe_skip_sub.bytestring += [0x3E, 0x0D, 0x3D, 0x00, 0x3D, 0x04,
-                                   0x3D, 0x0E, 0x3D, 0x05, 0x3D, 0x02,
-                                   0x3D, 0x0B, 0x3D, 0x01, 0x3D, 0x06]
-    narshe_skip_sub.bytestring += [0xD2, 0xCC, 0xD4, 0xBC]
-    narshe_skip_sub.bytestring += [0x3F, 0x00, 0x01, 0x3F, 0x0D, 0x00]
-    address = 0x2BC44 - len(narshe_skip_sub.bytestring)
-    narshe_skip_sub.set_location(address + 0xA0000)
-    narshe_skip_sub.write(fout)
-    narshe_skip_sub.bytestring = [0xB2, address & 0xFF, (address >> 8) & 0xFF, address >> 16]
-    narshe_skip_sub.set_location(0xAADC4)
-    narshe_skip_sub.write(fout)
-
-    other_flashback_sub = Substitution()
-    other_flashback_sub.set_location(0xCA43A)
-    other_flashback_sub.bytestring = [0xC0, 0x27, 0x01, 0x15, 0xA6, 0x02]
-    other_flashback_sub.write(fout)
-
-    chocobo_sub = Substitution()
-    chocobo_sub.set_location(0xA641E)
-    chocobo_sub.bytestring = [0xF0, 0x05, 0xB2, 0x0D, 0x65, 0x00, 0xFE]
-    chocobo_sub.write(fout)
-
+    
     tintinabar_sub = Substitution()
     tintinabar_sub.set_location(0xC67CF)
     tintinabar_sub.bytestring = [0xC1, 0x7F, 0x02, 0x88, 0x82, 0x74, 0x68, 0x02, 0x4B, 0xFF, 0x02, 0xB6, 0xE2, 0x67, 0x02, 0xB3, 0x5E, 0x00, 0xFE, 0x85, 0xC4, 0x09, 0xC0, 0xBE, 0x81, 0xFF, 0x69, 0x01, 0xD4, 0x88]
@@ -1749,34 +1709,16 @@ def manage_skips():
     tintinabar_sub.set_location(0xD81F1)
     tintinabar_sub.bytestring = [0x25, 0xB0, 0x7F, 0x56, 0x59, 0x54, 0x54, 0x7F, 0x26, 0x2F, 0xAC, 0x8B, 0xB2, 0x8F, 0x8E, 0xA4, 0x8C, 0x56, 0xBB, 0xD0, 0xBA, 0xC8, 0x98, 0xB9, 0x89, 0xFA, 0x4B, 0x3D, 0x98, 0xB9, 0x33, 0x9F, 0x42, 0x3C, 0x98, 0x8F, 0x8C, 0xB9, 0x3B, 0x48, 0x48, 0x44, 0x65, 0x01, 0x15, 0x7F, 0x6B, 0x32, 0x3E, 0xB5, 0x81, 0x85, 0x46, 0x6C, 0x7F, 0x7F, 0x15, 0x7F, 0x6B, 0x25, 0x48, 0x4B, 0x40, 0xD0, 0x97, 0x4D, 0x6C, 0x00 ] #'F', 'or', ' ', '2', '5', '0', '0', ' ', 'G', 'P', ' y', 'ou', ' c', 'an', ' s', 'en', 'd ', '2', ' l', 'et', 'te', 'rs', ', ', 'a ', 're', 'co', 'r', 'd', ', ', 'a ', 'T', 'on', 'i', 'c', ', ', 'an', 'd ', 'a ', 'b', 'o', 'o', 'k', '.', '\n', '<choice>', ' ', '(', 'S', 'e', 'nd', ' t', 'he', 't', ')', ' ', ' ', '<choice>', ' ', '(', 'F', 'o', 'r', 'g', 'et', ' i', 't', ')''\0'
     tintinabar_sub.write(fout)
-    
-    bannon_sub = Substitution()
-    bannon_sub.set_location(0xAF802)
-    bannon_sub.bytestring = [0x4B, 0x1D, 0x01, 0xF2, 0xC0,
-    0xB2, 0xE5, 0xF8, 0x00, 0xFE]
-    bannon_sub.write(fout)
-    
-    camp_sub = Substitution()
-    camp_sub.set_location(0xB0CA9)
-    camp_sub.bytestring = [0xB2, 0x3C, 0x0D, 0x01, 0xFE]
-    camp_sub.write(fout)
 
-    camp_sub = Substitution()
-    camp_sub.set_location(0xB0D6C)
-    camp_sub.bytestring = [0x82]
-    camp_sub.write(fout)
-
-    camp_sub.set_location(0xB0F34)
-    camp_sub.bytestring = [0xD9, 0x09, 0x3E, 0x19, 0x42, 0x19, 0xD9, 0x03, 0xD9, 0x08, 0x3e, 0x13, 0x3e, 0x18, 0xD8, 0x05, 0x3D, 0x15, 0x41, 0x15, 0xD0, 0x2B, 0xFE]
-    camp_sub.write(fout)
-
-    camp_sub.set_location(0xB1057)
-    camp_sub.bytestring = [0xB2, 0x9A, 0x10, 0x01, 0xFE]
-    camp_sub.write(fout)
-    
-    camp_sub.set_location(0xBA155)
-    camp_sub.bytestring = [0xB2, 0x1A, 0xA2, 0x01, 0xFE]
-    camp_sub.write(fout)
+    # We overwrote the Gau recruition code, so call it again
+    if 'o' in flags or 'w' in flags or 't' in flags:
+        auto_recruit_gau()
+        
+    # We overwrote some of the event items, so write them again
+    if 't' in flags:
+        for area_name, items in get_event_items().iteritems():
+            for e in items:
+                e.write_data(fout, cutscene_skip=True)
 
 
 def activate_airship_mode(freespaces):
@@ -6351,7 +6293,6 @@ k   Randomize the clock in Zozo
     flags = flags.lower()
 
     secret_codes['airship'] = "AIRSHIP MODE"
-    secret_codes['cutscenes'] = "CUTSCENE SKIPS"
     secret_codes['partyparty'] = "CRAZY PARTY MODE"
     secret_codes['bravenudeworld'] = "TINA PARTY MODE"
     secret_codes['suplexwrecks'] = "SUPLEX MODE"
@@ -6425,9 +6366,6 @@ k   Randomize the clock in Zozo
 
     fout = open(outfile, "r+b")
     expand_rom()
-
-    if 'cutscenes' in activated_codes:
-        manage_skips()
 
     print (
         "\nNow beginning randomization.\n"

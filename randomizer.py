@@ -1909,6 +1909,7 @@ def manage_monsters():
     randombosses = "randombosses" in activated_codes
     beyondtierless = "beyondtierless" in activated_codes
     madworld = "madworld" in activated_codes
+    change_skillset = True if madworld in activated_codes else None
     final_bosses = (range(0x157, 0x160) + range(0x127, 0x12b) +
                     [0x112, 0x11a, 0x17d])
     for m in monsters:
@@ -1924,18 +1925,18 @@ def manage_monsters():
                     m.increase_enemy_difficulty()
                 m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
             else:
-                m.mutate(itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
             if 0x127 <= m.id < 0x12a or m.id == 0x17d or m.id == 0x11a:
                 # boost statues, Atma, final kefka a second time
                 m.randomize_boost_level()
                 if madworld:
                     m.increase_enemy_difficulty()				
-                m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         else:
             if madworld:
                 m.increase_enemy_difficulty()
-            m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)				
+            m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)				
 
         m.tweak_fanatics()
         m.relevel_specifics()

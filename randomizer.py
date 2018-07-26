@@ -6139,10 +6139,12 @@ def nerf_paladin_shield():
 
 
 def expand_rom():
-    expand_sub = Substitution()
-    expand_sub.set_location(0x300000)
-    expand_sub.bytestring = [0x00] * 0x100000
-    expand_sub.write(fout)
+    fout.seek(0,2)
+    if fout.tell() < 0x400000:
+        expand_sub = Substitution()
+        expand_sub.set_location(fout.tell())
+        expand_sub.bytestring = [0x00] * (0x400000 - fout.tell())
+        expand_sub.write(fout)
 
 
 def randomize():

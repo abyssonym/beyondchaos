@@ -13,14 +13,14 @@ ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
               "hitmdef", "elemabsorbs", "elemnulls", "elemweaks",
               "statusacquire2", "mblockevade", "specialaction"]
 
-STATPROTECT = {"fieldeffect": 0x5c,
+STATPROTECT = {"fieldeffect": 0xdc,
                "statusprotect1": 0x00,
                "statusprotect2": 0x00,
                "statusacquire3": 0x00,
                "statboost1": 0x00,
                "special1": 0x00,
                "statboost2": 0x02,
-               "special2": 0xa8,
+               "special2": 0x28,
                "special3": 0x60,
                "otherproperties": 0xdf,
                "statusacquire2": 0x00}

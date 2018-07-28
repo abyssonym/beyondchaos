@@ -5670,6 +5670,7 @@ def manage_dances():
 def nerf_paladin_shield():
     paladin_shield = get_item(0x67)
     paladin_shield.mutate_learning()
+    paladin_shield.write_stats(fout)
         
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE

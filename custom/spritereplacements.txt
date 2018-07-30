@@ -39,7 +39,7 @@ Delita.bin,Delita,male,true,1,Delita-P.bin
 Dogstahl.bin,Dogstahl,neutral,true,7,dogstahl-p.bin
 DonkeyKong.bin,Donkey Kong,male,true,1,donkeykong-P.bin
 Draco.bin,Draco,male,true,2,draco-portrait.bin
-Dragon.bin,Dragon,neutral,true,1,Dragont-pbin
+Dragon.bin,Dragon,neutral,true,1,Dragont-p.bin
 Edge.bin,Edge,male,true,3,Edge-P.bin
 Edward.bin,Edward,male,true,4,edward-portrait.bin
 Eiko.bin,Eiko,female,true,0,Eiko9-p.bin

@@ -4006,10 +4006,6 @@ def manage_auction_house():
         0x7F, 0x26, 0x2F, 0x5F, 0x5E, 0x00] #  " GP?!"
         auction_sub.write(fout)
 
-    auction_sub = Substitution()
-    auction_sub.set_location(0xB4E47)
-    auction_sub.bytestring = [0x45] * 12
-    auction_sub.write(fout)
 
 def manage_bingo():
     target_score = 200.0

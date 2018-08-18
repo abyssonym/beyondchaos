@@ -8,14 +8,13 @@ from utils import (ESPER_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
-                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
-				   SPRITE_REPLACEMENT_TABLE, SKIP_EVENTS_TABLE,
-                   SKIP_EVENT_PALETTES_TABLE,
+                   WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE, RIDING_SPRITE_TABLE,
+                   MOOGLE_NAMES_TABLE, SKIP_EVENTS_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes, set_randomness_multiplier,
-                   mutate_index, utilrandom as random)
+                   mutate_index, utilrandom as random, open_mei_fallback)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              RandomSpellSub, MultipleSpellSub, ChainSpellSub,
                              get_ranked_spells, get_spell)
@@ -24,21 +23,23 @@ from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                shuffle_monsters, get_monster, read_ai_table)
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
-                            reset_cursed_shield)
-from esperrandomizer import EsperBlock
+                            reset_cursed_shield, unhack_tintinabar)
+from esperrandomizer import (EsperBlock, allocate_espers)
 from shoprandomizer import ShopBlock
 from namerandomizer import generate_name
 from formationrandomizer import (get_formations, get_fsets,
                                  get_formation, get_fset)
 from locationrandomizer import (EntranceSet,
                                 get_locations, get_location, get_zones)
+from chestrandomizer import mutate_event_items, get_event_items
 from towerrandomizer import randomize_tower
+from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 
 
-VERSION = "63"
-BETA = False
-VERSION_ROMAN = "LXIII"
+VERSION = "64"
+BETA = True
+VERSION_ROMAN = "LXIV"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False
@@ -130,12 +131,17 @@ def get_logstring(ordering=None):
 
 def log_chests():
     areachests = {}
+    event_items = get_event_items()
     for l in get_locations():
         if not l.chests:
             continue
         if l.area_name not in areachests:
             areachests[l.area_name] = ""
         areachests[l.area_name] += l.chest_contents + "\n"
+    for area_name in event_items:
+        if area_name not in areachests:
+            areachests[area_name] = ""
+        areachests[area_name] += "\n".join([e.description for e in event_items[area_name]])
     for area_name in sorted(areachests):
         chests = areachests[area_name]
         chests = "\n".join(sorted(chests.strip().split("\n")))
@@ -148,8 +154,8 @@ def log_break_learn_items():
     breakable = [i for i in items if not i.is_consumable and i.itemtype & 0x20]
     s = "BREAKABLE ITEMS\n"
     for i in breakable:
-        spell = get_spell(i.features['breakeffect'] & 0x3F)
-        indestructible = not i.features['breakeffect'] & 0x80
+        spell = get_spell(i.features['breakeffect'])
+        indestructible = not i.features['otherproperties'] & 0x08
         s2 = "{0:13}  {1}".format(i.name + ":", spell.name)
         if indestructible:
             s2 += " (indestructible)"
@@ -191,8 +197,7 @@ def rewrite_checksum(filename=None):
         filename = outfile
     MEGABIT = 0x20000
     f = open(filename, 'r+b')
-    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in xrange(24)]
-    subsums += subsums[-8:]
+    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in xrange(32)]
     checksum = sum(subsums) & 0xFFFF
     f.seek(0xFFDE)
     write_multi(f, checksum, length=2)
@@ -231,20 +236,13 @@ class AutoLearnRageSub(Substitution):
 class AutoRecruitGauSub(Substitution):
     @property
     def bytestring(self):
-        if 'notawaiter' in activated_codes:
-            return [0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
-        else:
-            return [0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
+        return [0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
 
     def write(self, filename):
         sub_addr = self.location - 0xa0000
         call_recruit_sub = Substitution()
         call_recruit_sub.bytestring = [0xB2] + int2bytes(sub_addr, length=3)
-        if 'notawaiter' in activated_codes:
-            call_recruit_sub.bytestring.append(0xFE)
-            call_recruit_sub.set_location(0xBC0A4)
-        else:
-            call_recruit_sub.set_location(0xBC19C)
+        call_recruit_sub.set_location(0xBC19C)
         call_recruit_sub.write(filename)
         gau_stays_wor_sub = Substitution()
         gau_stays_wor_sub.bytestring = [0xD4, 0xFB]
@@ -359,8 +357,8 @@ class CharacterBlock:
             s += "\n"
         if self.natural_magic is not None:
             s += "Has natural magic.\n"
-            #for level, spell in self.natural_magic:
-            #    s += "  LV %s - %s\n" % (level, spell.name)
+            for level, spell in self.natural_magic:
+                s += "  LV %s - %s\n" % (level, spell.name)
         return s.strip()
 
     def get_notable_equips(self):
@@ -960,7 +958,7 @@ def manage_commands_new(commands):
     valid = set(list(commands))
     valid = sorted(valid - set(["row", "def"]))
     used = []
-    all_spells = [SpellBlock(i, sourcefile) for i in xrange(0xFF)]
+    all_spells = get_ranked_spells(sourcefile)
     randomskill_names = set([])
     for c in commands.values():
         if c.name in NEVER_REPLACE:
@@ -1297,27 +1295,27 @@ def manage_commands_new(commands):
         magitek = [c for c in commands.values() if c.name == "magitek"][0]
         magitek.read_properties(sourcefile)
         magitek.targeting = 0x04
-        magitek.set_retarget(outfile)
+        magitek.set_retarget(fout)
         if "endless9" in activated_codes:
             s = MultipleSpellSub()
             s.set_count(9)
-            magitek.newname("9xChaos", outfile)
+            magitek.newname("9xChaos", fout)
             s.set_spells([])
         else:
             s = RandomSpellSub()
-            magitek.newname("R-Chaos", outfile)
+            magitek.newname("R-Chaos", fout)
             s.set_spells([], [], "Chaos")
         magitek.write_properties(fout)
-        magitek.unsetmenu(outfile)
-        magitek.allow_while_confused(outfile)
-        magitek.allow_while_berserk(outfile)
+        magitek.unsetmenu(fout)
+        magitek.allow_while_confused(fout)
+        magitek.allow_while_berserk(fout)
 
         myfs = get_appropriate_freespace(freespaces, s.size)
         s.set_location(myfs.start)
         if not hasattr(s, "bytestring") or not s.bytestring:
             s.generate_bytestring()
         s.write(fout)
-        magitek.setpointer(s.location, outfile)
+        magitek.setpointer(s.location, fout)
         freespaces = determine_new_freespaces(freespaces, myfs, s.size)
 
     gogo_enable_all_sub = Substitution()
@@ -1372,33 +1370,36 @@ def manage_suplex(commands, monsters):
 
 def manage_natural_magic():
     characters = get_characters()
-    candidates = [c for c in characters if 0x02 in c.battle_commands or
-                  0x17 in c.battle_commands]
+    candidates = [c for c in characters if c.id < 12 and (0x02 in c.battle_commands or
+                  0x17 in c.battle_commands)]
+                  
+    num_natural_mages = 1
+    if 'supernatural' in activated_codes:
+        num_natural_mages = len(candidates)
+    else:
+        if random.randint(0,9) != 9:
+            num_natural_mages = 2
+            while num_natural_mages < len(candidates) and random.choice([True, False]):
+                num_natural_mages += 1
+    
     try:
-        candidates = random.sample(candidates, 2)
+        candidates = random.sample(candidates, num_natural_mages)
     except ValueError:
         return
+    
     natmag_learn_sub = Substitution()
-    natmag_learn_sub.bytestring = [0xC9, candidates[0].id]
-    natmag_learn_sub.set_location(0x261B9)
+    natmag_learn_sub.set_location(0xa182)
+    natmag_learn_sub.bytestring = [0x22, 0x73, 0x08, 0xF0] + [0xEA] * 4
     natmag_learn_sub.write(fout)
-    natmag_learn_sub.set_location(0xA182)
+   
+    natmag_learn_sub.set_location(0x261b6)
+    natmag_learn_sub.bytestring = [0x22, 0x4B, 0x08, 0xF0] + [0xEA] * 10
     natmag_learn_sub.write(fout)
-    address = 0x1A6E + (54 * candidates[0].id)
-    natmag_learn_sub.bytestring = [0x99, address & 0xFF, address >> 8]
-    natmag_learn_sub.set_location(0xA1AB)
+    
+    natmag_learn_sub.set_location(0x30084B)
+    natmag_learn_sub.bytestring = [0xC9, 0x0C, 0xB0, 0x23, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0xEB, 0x48, 0x85, 0x0B, 0xAE, 0xF4, 0x00, 0x86, 0x09, 0x7B, 0xEB, 0xA9, 0x80, 0x85, 0x0C, 0x22, 0xAB, 0x08, 0xF0, 0x68, 0xEB, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xC9, 0x0C, 0xB0, 0xFB, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0x8D, 0x02, 0x42, 0xA9, 0x36, 0x8D, 0x03, 0x42, 0xB9, 0x08, 0x16, 0x85, 0x0B, 0xC2, 0x20, 0xAD, 0x16, 0x42, 0x18, 0x69, 0x6E, 0x1A, 0x85, 0x09, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xA9, 0xFF, 0x85, 0x0C, 0x22, 0xAB, 0x08, 0xF0, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xA0, 0x10, 0x00, 0xA5, 0x08, 0xC2, 0x20, 0x29, 0xFF, 0x00, 0xEB, 0x4A, 0x4A, 0x4A, 0xAA, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xBF, 0xE1, 0x08, 0xF0, 0xC5, 0x0B, 0xF0, 0x02, 0xB0, 0x11, 0x5A, 0xBF, 0xE0, 0x08, 0xF0, 0xA8, 0xB1, 0x09, 0xC9, 0xFF, 0xF0, 0x04, 0xA5, 0x0C, 0x91, 0x09, 0x7A, 0xE8, 0xE8, 0x88, 0xD0, 0xE0, 0x6B] + [0xFF] * 2 * 16 * 12
     natmag_learn_sub.write(fout)
-
-    natmag_learn_sub.bytestring = [0xC9, candidates[1].id]
-    natmag_learn_sub.set_location(0x261C0)
-    natmag_learn_sub.write(fout)
-    natmag_learn_sub.set_location(0xA186)
-    natmag_learn_sub.write(fout)
-    address = 0x1A6E + (54 * candidates[1].id)
-    natmag_learn_sub.bytestring = [0x99, address & 0xFF, address >> 8]
-    natmag_learn_sub.set_location(0xA1CD)
-    natmag_learn_sub.write(fout)
-
+    
     spells = get_ranked_spells(sourcefile, magic_only=True)
     spellids = [s.spellid for s in spells]
     address = 0x2CE3C0
@@ -1427,31 +1428,20 @@ def manage_natural_magic():
         used.append(newspell)
         return get_spell(newspell), level
 
-    candidates[0].natural_magic = []
-    candidates[1].natural_magic = []
     usedspells = []
-    for i in xrange(16):
-        pointer = address + (2*i)
-        newspell, level = mutate_spell(pointer, usedspells)
-        candidates[0].natural_magic.append((level, newspell))
-    candidates[0].natural_magic = sorted(candidates[0].natural_magic)
-    for i, (level, newspell) in enumerate(candidates[0].natural_magic):
-        pointer = address + (2*i)
-        fout.seek(pointer)
-        fout.write(chr(level))
-        fout.write(chr(newspell.spellid))
-
-    usedspells = random.sample(usedspells, 12)
-    for i in xrange(16):
-        pointer = address + 32 + (2*i)
-        newspell, level = mutate_spell(pointer, usedspells)
-        candidates[1].natural_magic.append((level, newspell))
-    candidates[1].natural_magic = sorted(candidates[1].natural_magic)
-    for i, (level, newspell) in enumerate(candidates[1].natural_magic):
-        pointer = address + +32 + (2*i)
-        fout.seek(pointer)
-        fout.write(chr(level))
-        fout.write(chr(newspell.spellid))
+    for candidate in candidates:
+        candidate.natural_magic = []
+        for i in xrange(16):
+            pointer = address + random.choice([0,32]) + (2*i)
+            newspell, level = mutate_spell(pointer, usedspells)
+            candidate.natural_magic.append((level, newspell))
+        candidate.natural_magic = sorted(candidate.natural_magic)
+        for i, (level, newspell) in enumerate(candidate.natural_magic):
+            pointer = 0x3008e0 + candidate.id * 32 + (2*i)
+            fout.seek(pointer)
+            fout.write(chr(newspell.spellid))
+            fout.write(chr(level))
+        usedspells = random.sample(usedspells, 12)
 
     lores = get_ranked_spells(sourcefile, magic_only=False)
     lores = filter(lambda s: 0x8B <= s.spellid <= 0xA2, lores)
@@ -1554,9 +1544,9 @@ def manage_umaro(commands):
                   0x17 not in c.battle_commands]
 
     if not candidates:
-        umaro_risk = random.choice(characters)
-    else:
-        umaro_risk = random.choice(candidates)
+        candidates = [c for c in characters if c.id <= 13 and
+                  c.id != 12]
+    umaro_risk = random.choice(candidates)
     if 0xFF in umaro_risk.battle_commands:
         battle_commands = []
         battle_commands.append(0)
@@ -1624,22 +1614,28 @@ def manage_sprint():
     autosprint.write(fout)
 
 def lk2_manage_skips():
+    # To identify if this cutscene skip is active in a ROM, look for the bytestring:
+    # 41 6E 64 53 68 65 61 74 68 57 61 73 54 68 65 72 65 54 6F 6F
+    # at 0xCAAA1
     characters = get_characters();
     state = "Replacing Event Code"
     
-    for line in open(SKIP_EVENTS_TABLE):
-        split_line = line.strip().split(' ')
-
+    def writeToAddress(address, event):
         event_skip_sub = Substitution()
         event_skip_sub.bytestring = []
-        for byte in split_line[1:]:
+        for byte in event:
             event_skip_sub.bytestring.append(int(byte, 16))
-        event_skip_sub.set_location(int(split_line[0], 16))
+        event_skip_sub.set_location(int(address, 16))
         event_skip_sub.write(fout)
         
-    for line in open(SKIP_EVENT_PALETTES_TABLE):
-        split_line = line.strip().split(' ')
-    
+    def handleNormal(split_line): # Replace events that should always be replaced
+        writeToAddress(split_line[0], split_line[1:])
+        
+    def handleGau(split_line): # Replace events that should be replaced if we are auto-recruiting Gau
+        if 'o' in flags or 'w' in flags or 't' in flags:
+            writeToAddress(split_line[0], split_line[1:])
+            
+    def handlePalette(split_line): # Fix palettes so that they are randomized
         for character in characters:
             if character.id == int(split_line[1], 16):
                 palette_correct_sub = Substitution()
@@ -1647,11 +1643,12 @@ def lk2_manage_skips():
                 palette_correct_sub.set_location(int(split_line[0], 16))
                 palette_correct_sub.write(fout)
     
-    # We overwrote the Gau recruition code, so call it again
-    if 'o' in flags or 'w' in flags or 't' in flags:
-        auto_recruit_gau()
-            
-def manage_skips():
+    for line in open(SKIP_EVENTS_TABLE):
+        # If "Foo" precedes a line in skipEvents.txt, call "handleFoo"
+        split_line = line.strip().split(' ')
+        handler = "handle" + split_line[0]
+        locals()[handler](split_line[1:])
+    
     flashback_skip_sub = Substitution()
     flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
     flashback_skip_sub.set_location(0xAC582)
@@ -1659,56 +1656,69 @@ def manage_skips():
 
     boat_skip_sub = Substitution()
     boat_skip_sub.bytestring = (
-        [0x97, 0x5C] +
-        [0xD0, 0x87] +
-        [0x3D, 0x03, 0x3F, 0x03, 0x01] +
-        [0x6B, 0x00, 0x04, 0xE8, 0x96, 0x40, 0xFF]
+        [0x97, 0x5C] +  # Fade to black, wait for fade
+        [0xD0, 0x87] +  # Set event bit 0x87, Saw the scene with Locke and Celes at night in Albrook
+        [0xD0, 0x83] + # Set event bit 0x83, Boarded the ship in Albrook
+        [0xD0, 0x86] +  # Set event bit 0x86, Saw the scene with Terra and Leo at night on the ship to Thamasa
+        [0x3D, 0x03, 0x3F, 0x03, 0x01, 0x45] +    # Create Shadow, add Shadow to party 1, refresh objects
+        [0xD4, 0xE3,  0x77, 0x03, 0xD4, 0xF3] + # Shadow in shop and item menus, level average Shadow, Shadow is available
+        [0x88, 0x03, 0x00, 0x40, 0x8B, 0x03, 0x7F, 0x8C, 0x03, 0x7F] + # Cure status ailments of Shadow, set HP and MP to max
+        [0xB2, 0xBD, 0xCF, 0x00] + # Subroutine that cures status ailments and set hp and mp to max.
+        # clear NPC bits
+        [0xDB, 0x06, 0xDB, 0x07, 0xDB, 0x08, 0xDB, 0x11, 0xDB, 0x13, 0xDB, 0x22, 0xDB, 0x42, 0xDB, 0x65] +
+        [0xB8, 0x4B] + # Shadow won't run
+        [0x6B, 0x00, 0x04, 0xE8, 0x96, 0x40, 0xFF] # Load world map with party near Thamasa, return
         )
     boat_skip_sub.set_location(0xC615A)
     boat_skip_sub.write(fout)
 
     leo_skip_sub = Substitution()
     leo_skip_sub.bytestring = (
-        [0x97, 0x5C] +  # ???
-        # ???
+        [0x97, 0x5C] +  # Fade to black, wait for fade
+        [0xD0, 0x99] + # Set event bit 0x99, Found the Espers at Gathering Place of the Espers
+        [0xB2, 0x2B, 0x2E, 0x01, 0x3F, 0x01, 0x00, 0x3F, 0x00, 0x00, 0x45, 0x3E, 0x01, 0x3E, 0x00, 0x45, 0x40, 0x0E, 0x0F, 0x3D, 0x0E, 0x3F, 0x0E, 0x01, 0x37, 0x0E, 0x10, 0x43, 0x0E, get_character(0x0F).palette, 0x7F, 0x0E, 0x0F, 0x45, 0x3F, 0x08, 0x00, 0x3F, 0x07, 0x00, 0x45, 0x3E, 0x08, 0x3E, 0x07, 0x45, 0xB2, 0xBD, 0xCF, 0x00, 0x47] + # Setup party with Leo
+        [0x6B, 0x55, 0x21, 0x16, 0x16, 0xC0, 0x39, 0x31, 0x05, 0xD5, 0x16, 0x16, 0x28, 0xFF, 0x45, 0x36, 0x1C, 0x36, 0x1B, 0x59, 0x04, 0x92, 0xB2, 0x37, 0x6A, 0x01, 0xB2, 0x09, 0x6A, 0x01] + # Load Thamasa during kefka map
+        [0x40, 0x0F, 0x2C, 0x3D, 0x0F, 0x45, 0x7F, 0x0F, 0x2C, 0x37, 0x0F, 0x15, 0x43, 0x0F, get_character(0x15).palette, 0x88, 0x0F, 0x00, 0x00, 0x8B, 0x0F, 0x7F, 0x8C, 0x0F, 0x7F] + # Put Kefka in party
+        [0x4D, 0x7C, 0x3F] + # Fight
+        [0xB2, 0xA9, 0x5E, 0x00] + # Game over if you lost
+        [0xD0, 0x9B] + # Set event bit 0x9B, Fought Kefka at Thamasa
+        [0xD0, 0x9C] + # Set event bit 0x9C, Leo is buried in Thamasa
+        [0x3D, 0x01, 0x3D, 0x00, 0x45, 0x3F, 0x01, 0x01, 0x3F, 0x00, 0x01, 0x45,0x3F, 0x0E, 0x00, 0x3E, 0x0E, 0x3D, 0x08, 0x3D, 0x07, 0x45, 0x3F, 0x08, 0x01, 0x3F, 0x07, 0x01, 0x45, 0x3C, 0x00, 0x01, 0x07, 0x08, 0x45] + # Set up party as Terra, Locke, Strago, Relm
+        # Clear event bits for party members available
         [0xDB, 0xF7, 0xD5, 0xF2, 0xD5, 0xF3, 0xD5, 0xF4, 0xD5, 0xF5, 0xD5, 0xF9, 0xD5, 0xFB, 0xD5, 0xF6] +
-        [0x77, 0x02, 0x77, 0x03, 0x77, 0x04, 0x77, 0x05, 0x77, 0x09, 0x77, 0x0B, 0x77, 0x06] +  # ???
-        # add people to party
+        # perform level averaging
+        [0x77, 0x02, 0x77, 0x03, 0x77, 0x04, 0x77, 0x05, 0x77, 0x09, 0x77, 0x0B, 0x77, 0x06] +
+        # Set event bits for party members available
         [0xD4, 0xF2, 0xD4, 0xF4, 0xD4, 0xF5, 0xD4, 0xF9, 0xD4, 0xFB, 0xD4, 0xF6] +
-        [0xB2, 0x35, 0x09, 0x02] +  # ???
-        # entering airship triggers cutscene
-        [0xD3, 0xCC] +  # ???
-        [0xD0, 0x9D] +  # activate floating continent cutscene
-        [0xD2, 0xBA] +  # ???
-        [0xDA, 0x5A, 0xDA, 0xD9, 0xDB, 0x20, 0xDA, 0x68] +  # ???
-        [0xD2, 0xB3, 0xD2, 0xB4] +  # ???
-        [0xD0, 0x7A] +  # ???
-        [0xD2, 0x76] +  # airship flyable
-        [0xD2, 0x6F] +  # ???
+        [0xB2, 0x35, 0x09, 0x02] +  # Subroutine to do level averaging for Mog if you have him
+        [0xD3, 0xCC] +  # Clear temp song override
+        [0xD0, 0x9D] +  # set event bit 0x9D Completed the mandatory Thamasa scenario
+        [0xD2, 0xBA] +  # Airship is anchored
+        [0xDA, 0x5A, 0xDA, 0xD9, 0xDB, 0x20, 0xDA, 0x68] +  # NPC event bits
+        [0xD2, 0xB3, 0xD2, 0xB4] +  # Facing left and pressing A?
+        [0xD0, 0x7A] +  # Set event bit 0x7A, The Espers attacked the Blackjack
+        #[0xD2, 0x76] +  # Set event bit 0x176, Serves to ensure that branching always occurs 2 (always remains clear)
+        [0xD2, 0x6F] +  # Set event bit 0x16F, Learned how to operate the airship
         [0x6B, 0x00, 0x04, 0xF9, 0x80, 0x00] +  # load map, place party
-        [0xC7, 0xF9, 0x7F, 0xFF]  # place airship
+        [0xC7, 0xF9, 0x7F, 0xFF]  # place airship, end
         )
     leo_skip_sub.set_location(0xBF2B5)
     leo_skip_sub.write(fout)
+    
+    tintinabar_sub = Substitution()
+    tintinabar_sub.set_location(0xC67CF)
+    tintinabar_sub.bytestring = [0xC1, 0x7F, 0x02, 0x88, 0x82, 0x74, 0x68, 0x02, 0x4B, 0xFF, 0x02, 0xB6, 0xE2, 0x67, 0x02, 0xB3, 0x5E, 0x00, 0xFE, 0x85, 0xC4, 0x09, 0xC0, 0xBE, 0x81, 0xFF, 0x69, 0x01, 0xD4, 0x88]
+    tintinabar_sub.write(fout)
 
-    shadow_leaving_sub = Substitution()
-    shadow_leaving_sub.bytestring = [0xEA] * 2
-    shadow_leaving_sub.set_location(0x2488A)
-    shadow_leaving_sub.write(fout)
-
-    narshe_skip_sub = Substitution()
-    narshe_skip_sub.bytestring = []
-    narshe_skip_sub.bytestring += [0x3E, 0x0D, 0x3D, 0x00, 0x3D, 0x04,
-                                   0x3D, 0x0E, 0x3D, 0x05, 0x3D, 0x02,
-                                   0x3D, 0x0B, 0x3D, 0x01, 0x3D, 0x06]
-    narshe_skip_sub.bytestring += [0xD2, 0xCC, 0xD4, 0xBC]
-    narshe_skip_sub.bytestring += [0x3F, 0x00, 0x01, 0x3F, 0x0D, 0x00]
-    address = 0x2BC44 - len(narshe_skip_sub.bytestring)
-    narshe_skip_sub.set_location(address + 0xA0000)
-    narshe_skip_sub.write(fout)
-    narshe_skip_sub.bytestring = [0xB2, address & 0xFF, (address >> 8) & 0xFF, address >> 16]
-    narshe_skip_sub.set_location(0xAADC4)
-    narshe_skip_sub.write(fout)
+    tintinabar_sub.set_location(0xD81F1)
+    tintinabar_sub.bytestring = [0x25, 0xB0, 0x7F, 0x56, 0x59, 0x54, 0x54, 0x7F, 0x26, 0x2F, 0xAC, 0x8B, 0xB2, 0x8F, 0x8E, 0xA4, 0x8C, 0x56, 0xBB, 0xD0, 0xBA, 0xC8, 0x98, 0xB9, 0x89, 0xFA, 0x4B, 0x3D, 0x98, 0xB9, 0x33, 0x9F, 0x42, 0x3C, 0x98, 0x8F, 0x8C, 0xB9, 0x3B, 0x48, 0x48, 0x44, 0x65, 0x01, 0x15, 0x7F, 0x6B, 0x32, 0x3E, 0xB5, 0x81, 0x85, 0x46, 0x6C, 0x7F, 0x7F, 0x15, 0x7F, 0x6B, 0x25, 0x48, 0x4B, 0x40, 0xD0, 0x97, 0x4D, 0x6C, 0x00 ] #'F', 'or', ' ', '2', '5', '0', '0', ' ', 'G', 'P', ' y', 'ou', ' c', 'an', ' s', 'en', 'd ', '2', ' l', 'et', 'te', 'rs', ', ', 'a ', 're', 'co', 'r', 'd', ', ', 'a ', 'T', 'on', 'i', 'c', ', ', 'an', 'd ', 'a ', 'b', 'o', 'o', 'k', '.', '\n', '<choice>', ' ', '(', 'S', 'e', 'nd', ' t', 'he', 't', ')', ' ', ' ', '<choice>', ' ', '(', 'F', 'o', 'r', 'g', 'et', ' i', 't', ')''\0'
+    tintinabar_sub.write(fout)
+        
+    # We overwrote some of the event items, so write them again
+    if 't' in flags:
+        for area_name, items in get_event_items().iteritems():
+            for e in items:
+                e.write_data(fout, cutscene_skip=True)
 
 
 def activate_airship_mode(freespaces):
@@ -1785,7 +1795,7 @@ def activate_airship_mode(freespaces):
     set_airship_sub.write(fout)
 
     # Daryl is not such an airship hog
-    set_airship_sub.bytestring = [0x32, 0xF5]
+    set_airship_sub.bytestring = [0x6E, 0xF5]
     set_airship_sub.set_location(0x41F41)
     set_airship_sub.write(fout)
 
@@ -1942,25 +1952,38 @@ def manage_final_boss(freespaces):
 def manage_monsters():
     monsters = get_monsters(sourcefile)
     itembreaker = "collateraldamage" in activated_codes
+    randombosses = "randombosses" in activated_codes
+    beyondtierless = "beyondtierless" in activated_codes
+    madworld = "madworld" in activated_codes
+    change_skillset = True if madworld in activated_codes else None
     final_bosses = (range(0x157, 0x160) + range(0x127, 0x12b) +
                     [0x112, 0x11a, 0x17d])
     for m in monsters:
+        if "zone eater" in m.name.lower():
+            continue
         if not m.name.strip('_') and not m.display_name.strip('_'):
             continue
         if m.id in final_bosses:
             if 0x157 <= m.id < 0x160 or m.id == 0x17d:
                 # deep randomize three tiers, Atma
                 m.randomize_boost_level()
-                m.mutate(change_skillset=True, itembreaker=itembreaker)
+                if madworld:
+                    m.increase_enemy_difficulty()
+                m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
             else:
-                m.mutate(itembreaker=itembreaker)
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
             if 0x127 <= m.id < 0x12a or m.id == 0x17d or m.id == 0x11a:
                 # boost statues, Atma, final kefka a second time
                 m.randomize_boost_level()
-                m.mutate(itembreaker=itembreaker)
+                if madworld:
+                    m.increase_enemy_difficulty()				
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         else:
-            m.mutate(itembreaker=itembreaker)
+            if madworld:
+                m.increase_enemy_difficulty()
+            m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)				
+
         m.tweak_fanatics()
         m.relevel_specifics()
 
@@ -2118,6 +2141,236 @@ def get_npc_palettes():
         palettes[k] = sorted(v)
     return palettes
 
+nameiddict = {
+    0: "Terra",
+    1: "Locke",
+    2: "Cyan",
+    3: "Shadow",
+    4: "Edgar",
+    5: "Sabin",
+    6: "Celes",
+    7: "Strago",
+    8: "Relm",
+    9: "Setzer",
+    0xa: "Mog",
+    0xb: "Gau",
+    0xc: "Gogo",
+    0xd: "Umaro",
+    0xe: "Trooper",
+    0xf: "Imp",
+    0x10: "Leo",
+    0x11: "Banon",
+    0x12: "Esper Terra",
+    0x13: "Merchant",
+    0x14: "Ghost",
+    0x15: "Kefka"}
+
+
+def sanitize_names(names):
+    delchars = ''.join(c for c in map(chr, range(256)) if not c.isalnum() and c not in "!?/:\"'-.")
+    names = [name.translate(None, delchars) for name in names]
+    return [name[:6] for name in names if name != ""]
+
+
+def manage_character_names(change_to, male):
+    characters = get_characters()
+    wild = 'partyparty' in activated_codes
+    sabin_mode = 'suplexwrecks' in activated_codes
+    tina_mode = 'bravenudeworld' in activated_codes
+    soldier_mode = 'quikdraw' in activated_codes
+    moogle_mode = 'kupokupo' in activated_codes
+    ghost_mode = 'halloween' in activated_codes
+
+    names = []
+    if tina_mode:
+        names = ["Tina"] * 14
+    elif sabin_mode:
+        names = ["Teabin", "Loabin", "Cyabin", "Shabin", "Edabin", "Sabin",
+                 "Ceabin", "Stabin", "Reabin", "Seabin", "Moabin", "Gaubin",
+                 "Goabin", "Umabin"]
+    elif moogle_mode:
+        names = ["Kumop", "Kupo", "Kupek", "Kupop", "Kumama", "Kuku",
+                 "Kutan", "Kupan", "Kushu", "Kurin", "Mog", "Kuru",
+                 "Kamog", "Kumaro", "Banon", "Leo", "?????", "?????",
+                 "Cyan", "Shadow", "Edgar", "Sabin", "Celes", "Strago",
+                 "Relm", "Setzer", "Gau", "Gogo"]
+        
+        gba_moogle_names = ["Moglin", "Mogret", "Moggie", "Molulu", "Moghan",
+                            "Moguel", "Mogsy", "Mogwin", "Mog", "Mugmug", "Cosmog"]
+        
+        random_name_ids = []
+        
+        # Terra, Locke, and Umaro get a specific name, or a random moogle name from another ff game
+        for moogle_id in [0,1,13]:
+            if random.choice([True, True, False]):
+                random_name_ids.append(moogle_id)
+        # Other party members get either the name of their counterpart from snes or gba, or moogle name from another ff game
+        for moogle_id in range(2,10) + range(11,13):
+            chance = random.randint(1,4)
+            if chance == 2:
+                names[moogle_id] = gba_moogle_names[moogle_id - 2]
+            elif chance != 1:
+                random_name_ids.append(moogle_id)
+        
+        f = open_mei_fallback(MOOGLE_NAMES_TABLE)
+        mooglenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
+        f.close()
+        
+        random_moogle_names = random.sample(mooglenames, len(random_name_ids))
+        for index, id in enumerate(random_name_ids):
+            names[id] = random_moogle_names[index]
+            
+        # Human Mog gets a human name, maybe
+        if random.choice([True, True, False]):
+            f = open_mei_fallback(MALE_NAMES_TABLE)
+            malenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
+            f.close()
+            
+            names[10] = random.choice(malenames)
+    else:
+        f = open_mei_fallback(MALE_NAMES_TABLE)
+        malenames = sorted(set([line.strip() for line in f.readlines()]))
+        f.close()
+        f = open_mei_fallback(FEMALE_NAMES_TABLE)
+        femalenames = sorted(set([line.strip() for line in f.readlines()]))
+        f.close()
+        for c in range(14):
+            choose_male = False
+            if wild or soldier_mode or ghost_mode:
+                choose_male = random.choice([True, False])
+            elif change_to[c] in male:
+                choose_male = True
+
+            if choose_male:
+                name = random.choice(malenames)
+            else:
+                name = random.choice(femalenames)
+
+            if name in malenames:
+                malenames.remove(name)
+            if name in femalenames:
+                femalenames.remove(name)
+
+            names.append(name)
+
+    umaro_name = names[13]
+    for umaro_id in [0x10f, 0x110]:
+        change_enemy_name(fout, umaro_id, umaro_name)
+
+    if 'capslockoff' not in activated_codes:
+        names = [name.upper() for name in names]
+        
+    for c in characters:
+        if c.id < 14:
+            c.newname = names[c.id]
+            c.original_appearance = nameiddict[c.id]
+
+    for c, name in enumerate(names):
+        name = name_to_bytes(name, 6)
+        assert len(name) == 6
+        fout.seek(0x478C0 + (6*c))
+        fout.write("".join(map(chr, name)))
+
+
+def get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits):
+    # get unused portraits so we can overwrite them if needed
+    sprite_swap_mode = 'makeover' in activated_codes
+    wild = 'partyparty' in activated_codes
+    if not sprite_swap_mode:
+        return [], False
+
+    def reserve_portrait_id(used_portrait_ids, new, swap, portrait):
+        if swap == None:
+            if portrait == 0 and wild and new != 0:
+                used_portrait_ids.add(0xE)
+            else:
+                used_portrait_ids.add(new)
+        elif not swap.has_custom_portrait():
+            used_portrait_ids.add(swap.fallback_portrait_id)
+        else:
+            return 1
+        return 0
+
+    needed = 0
+    used_portrait_ids = set()
+    for c in char_ids:
+        # skip characters who don't have their own portraits
+        if (char_portraits[c] == 0 and c != 0) or c == 0x13:
+            continue
+        new = change_to[c]
+        portrait = char_portraits[new]
+        swap = swap_to[c] if c in swap_to else None
+        needed += reserve_portrait_id(used_portrait_ids, new, swap, portrait)
+            
+    if not wild:
+        for i in range(0xE,0x13):
+            used_portrait_ids.add(i)
+    
+    # Merchant normally uses the same portrait as soldier.
+    # If we have a free slot because some others happen to be sharing, use the portrait for the merchant sprite.
+    # If not, we have to use the same one as the soldier.
+    merchant = False
+    if wild and needed < 19 - len(used_portrait_ids):
+        c = 0x13
+        new = change_to[c]
+        portrait = char_portraits[new]
+        swap = swap_to[c] if c in swap_to else None
+        merchant = reserve_portrait_id(used_portrait_ids, new, swap, portrait)
+            
+    free_portrait_ids = list(set(range(19)) - used_portrait_ids)
+    return free_portrait_ids, merchant
+
+
+def get_sprite_swaps(char_ids, male, female):
+    sprite_swap_mode = 'makeover' in activated_codes
+    wild = 'partyparty' in activated_codes
+    if not sprite_swap_mode:
+        return []
+
+    class SpriteReplacement:
+        def __init__(self, file, name, gender, riding=None, fallback_portrait_id=0xE, portrait_filename=None):
+            self.file = file.strip()
+            self.name = name.strip()
+            self.gender = gender.strip().lower()
+            self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
+
+            if fallback_portrait_id == '':
+                fallback_portrait_id = 0xE
+            self.fallback_portrait_id = int(fallback_portrait_id)
+            self.portrait_filename = portrait_filename
+            self.portrait_palette_filename = portrait_filename
+            if self.portrait_palette_filename and self.portrait_palette_filename:
+                if self.portrait_palette_filename[-4:] == ".bin":
+                    self.portrait_palette_filename = self.portrait_palette_filename[:-4]
+                self.portrait_palette_filename = self.portrait_palette_filename + ".pal"
+            
+        def has_custom_portrait(self):
+            return self.portrait_filename is not None and self.portrait_palette_filename is not None
+              
+    f = open_mei_fallback(SPRITE_REPLACEMENT_TABLE)
+    replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
+    f.close()
+
+    replace_min = 8 if not wild else 16
+    replace_max = 12 if not wild else 20
+        
+    num_to_replace = min(len(replace_candidates), random.randint(replace_min,replace_max))
+    replacements = random.sample(replace_candidates, num_to_replace)
+
+    if wild:
+        swap_to = dict(zip(random.sample(char_ids, num_to_replace),replacements))
+    else:
+        female_replacements = [s for s in replacements if s.gender == "female"]
+        male_replacements = [s for s in replacements if s.gender == "male"]
+        neutral_replacements = [s for s in replacements if s.gender != "male" and s.gender != "female"]
+
+        swap_to = dict(zip(random.sample(female, len(female_replacements)),female_replacements))
+        swap_to.update(dict(zip(random.sample(male, len(male_replacements)), male_replacements)))
+        not_already_swapped = [c for c in char_ids if c not in swap_to]
+        swap_to.update(dict(zip(random.sample(not_already_swapped, len(neutral_replacements)), neutral_replacements)))
+
+    return swap_to
+
 
 def manage_character_appearance(preserve_graphics=False):
     characters = get_characters()
@@ -2129,19 +2382,8 @@ def manage_character_appearance(preserve_graphics=False):
     moogle_mode = 'kupokupo' in activated_codes
     ghost_mode = 'halloween' in activated_codes
     christmas_mode = 'christmas' in activated_codes
-    charpal_options = {}
-    for line in open(CHARACTER_PALETTE_TABLE):
-        if line[0] == '#':
-            continue
-        charid, palettes = tuple(line.strip().split(':'))
-        palettes = map(hex2int, palettes.split(','))
-        charid = hex2int(charid)
-        charpal_options[charid] = palettes
 
-    npcs = get_npcs()
-
-    if (wild or tina_mode or sabin_mode
-            or ghost_mode or christmas_mode or soldier_mode):
+    if (wild or tina_mode or sabin_mode or christmas_mode):
         if christmas_mode:
             char_ids = range(0, 0x15) # don't replace kefka
         else:
@@ -2149,12 +2391,16 @@ def manage_character_appearance(preserve_graphics=False):
     else:
         char_ids = range(0, 0x0E)
 
+    male = None
+    female = None
     if tina_mode:
         change_to = dict(zip(char_ids, [0x12] * 100))
     elif sabin_mode:
         change_to = dict(zip(char_ids, [0x05] * 100))
     elif soldier_mode:
         change_to = dict(zip(char_ids, [0x0e] * 100))
+    elif ghost_mode:
+        change_to = dict(zip(char_ids, [0x14] * 100))
     elif moogle_mode:
         # all characters are moogles except Mog, Imp, and Esper Terra
         if wild:
@@ -2182,142 +2428,53 @@ def manage_character_appearance(preserve_graphics=False):
             change_to = list(char_ids)
             random.shuffle(change_to)
             change_to = dict(zip(char_ids, change_to))
-        elif ghost_mode:
-            change_to = dict(zip(char_ids, [0x14] * 100))
         else:
             random.shuffle(female)
             random.shuffle(male)
             change_to = dict(zip(sorted(male), male) +
                              zip(sorted(female), female))
 
-    if sprite_swap_mode and not preserve_graphics:
-        class SpriteReplacement:
-            def __init__(self, file, name, gender, riding=None):
-                self.file = file.strip()
-                self.name = name.strip()
-                self.gender = gender.strip().lower()
-                self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
-        f = open(SPRITE_REPLACEMENT_TABLE)
-        replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
-        f.close()
+    manage_character_names(change_to, male)
 
-        num_to_replace = min(len(replace_candidates), random.randint(4,8))
-        replacements = random.sample(replace_candidates, num_to_replace)
-
-        if wild:
-            swap_to = dict(zip(random.sample(char_ids, num_to_replace),replacements))
-        else:
-            female_replacements = [s for s in replacements if s.gender == "female"]
-            male_replacements = [s for s in replacements if s.gender == "male"]
-            neutral_replacements = [s for s in replacements if s.gender != "male" and s.gender != "female"]
-
-            swap_to = dict(zip(random.sample(female, len(female_replacements)),female_replacements))
-            swap_to.update(dict(zip(random.sample(male, len(male_replacements)), male_replacements)))
-            not_already_swapped = [c for c in char_ids if c not in swap_to]
-            swap_to.update(dict(zip(random.sample(not_already_swapped, len(neutral_replacements)), neutral_replacements)))
-
-    nameiddict = {
-        0: "Terra",
-        1: "Locke",
-        2: "Cyan",
-        3: "Shadow",
-        4: "Edgar",
-        5: "Sabin",
-        6: "Celes",
-        7: "Strago",
-        8: "Relm",
-        9: "Setzer",
-        0xa: "Mog",
-        0xb: "Gau",
-        0xc: "Gogo",
-        0xd: "Umaro",
-        0xe: "Trooper",
-        0xf: "Imp",
-        0x10: "Leo",
-        0x11: "Banon",
-        0x12: "Esper Terra",
-        0x13: "Merchant",
-        0x14: "Ghost",
-        0x15: "Kefka"}
-
-    names = []
-    if not tina_mode and not sabin_mode and not moogle_mode:
-        f = open(MALE_NAMES_TABLE)
-        malenames = sorted(set([line.strip() for line in f.readlines()]))
-        f.close()
-        f = open(FEMALE_NAMES_TABLE)
-        femalenames = sorted(set([line.strip() for line in f.readlines()]))
-        f.close()
-        for c in range(14):
-            choose_male = False
-            if wild or soldier_mode:
-                choose_male = random.choice([True, False])
-            elif change_to[c] in male:
-                choose_male = True
-
-            if choose_male:
-                name = random.choice(malenames)
-            else:
-                name = random.choice(femalenames)
-
-            if name in malenames:
-                malenames.remove(name)
-            if name in femalenames:
-                femalenames.remove(name)
-
-            names.append(name)
-    elif tina_mode:
-        names = ["Tina"] * 14
-    elif sabin_mode:
-        names = ["Teabin", "Loabin", "Cyabin", "Shabin", "Edabin", "Sabin",
-                 "Ceabin", "Stabin", "Reabin", "Seabin", "Moabin", "Gaubin",
-                 "Goabin", "Umabin"]
-    elif moogle_mode:
-        names = ["Kumop", "Kupo", "Kupek", "Kupop", "Kumama", "Kuku",
-                 "Kutan", "Kupan", "Kushu", "Kurin", "Mog", "Kuru",
-                 "Kamog", "Kumaro", "Banon", "Leo", "?????", "?????",
-                 "Cyan", "Shadow", "Edgar", "Sabin", "Celes", "Strago",
-                 "Relm", "Setzer", "Gau", "Gogo"]
-
-    umaro_name = names[13]
-    for umaro_id in [0x10f, 0x110]:
-        change_enemy_name(fout, umaro_id, umaro_name)
-
-    if 'capslockoff' not in activated_codes:
-        names = [name.upper() for name in names]
+    swap_to = get_sprite_swaps(char_ids, male, female)
 
     for c in characters:
         if c.id < 14:
-            c.newname = names[c.id]
-            c.original_appearance = nameiddict[c.id]
-            if not preserve_graphics:
-                if sprite_swap_mode and c.id in swap_to:
-                    c.new_appearance = swap_to[c.id].name
-                else:
-                    c.new_appearance = nameiddict[change_to[c.id]]
+            if sprite_swap_mode and c.id in swap_to:
+                c.new_appearance = swap_to[c.id].name
+            elif not preserve_graphics:
+                c.new_appearance = nameiddict[change_to[c.id]]
             else:
                 c.new_appearance = c.original_appearance
 
-    for c, name in enumerate(names):
-        name = name_to_bytes(name, 6)
-        assert len(name) == 6
-        fout.seek(0x478C0 + (6*c))
-        fout.write("".join(map(chr, name)))
-
-    removeSoldier = False
-    if sprite_swap_mode and 0xE not in char_ids:
-        char_ids.append(0xE)
-        removeSoldier = True
+    sprite_ids = range(0x16)
 
     ssizes = ([0x16A0] * 0x10) + ([0x1560] * 6)
-    spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in char_ids])
-    ssizes = dict(zip(char_ids, ssizes))
+    spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in sprite_ids])
+    ssizes = dict(zip(sprite_ids, ssizes))
 
     char_portraits = {}
     char_portrait_palettes = {}
     sprites = {}
 
-    for c in char_ids:
+    riding_sprites = {}
+    try:
+        f = open(RIDING_SPRITE_TABLE, "rb")
+    except IOError:
+        pass
+    else:
+        for line in f.readlines():
+            id, filename = line.strip().split(',', 1)
+            try:
+                g = open_mei_fallback(os.path.join("custom", "sprites", filename), "rb")
+            except IOError:
+                continue
+
+            riding_sprites[int(id)] = g.read(0x140)
+            g.close()
+        f.close()
+
+    for c in sprite_ids:
         fout.seek(0x36F1B + (2*c))
         portrait = read_multi(fout, length=2)
         char_portraits[c] = portrait
@@ -2326,34 +2483,93 @@ def manage_character_appearance(preserve_graphics=False):
         char_portrait_palettes[c] = portrait_palette
         fout.seek(spointers[c])
         sprite = fout.read(ssizes[c])
+
+        if c in riding_sprites:
+            sprite = sprite[:0x1560] + riding_sprites[c]
         sprites[c] = sprite
 
     if tina_mode:
         char_portraits[0x12] = char_portraits[0]
         char_portrait_palettes[0x12] = char_portrait_palettes[0]
+    
+    portrait_data = []
+    portrait_palette_data = []
+    
+    fout.seek(0x2D1D00)
+    
+    for i in range(19):
+        portrait_data.append(fout.read(0x320))
+        
+    fout.seek(0x2D5860)
+    for i in range(19):
+        portrait_palette_data.append(fout.read(0x20))
 
-    if removeSoldier:
-        char_ids.remove(0xE)
-
+    free_portrait_ids, merchant = get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits)
+    
     for c in char_ids:
         new = change_to[c]
         portrait = char_portraits[new]
         portrait_palette = char_portrait_palettes[new]
-        if (wild and portrait == 0 and change_to[c] != 0) or (sprite_swap_mode and c in swap_to):
+    
+        if c == 0x13 and sprite_swap_mode and not merchant:
+            new_soldier = change_to[0xE]
+            portrait = char_portraits[new_soldier]
+            portrait_palette = char_portrait_palettes[new_soldier]
+        elif (char_portraits[c] == 0 and c != 0):
+            portrait = char_portraits[0xE]
+            portrait_palette = char_portrait_palettes[0xE]
+        elif sprite_swap_mode and c in swap_to:
+            use_fallback = True
+            fallback_portrait_id = swap_to[c].fallback_portrait_id
+            if fallback_portrait_id < 0 or fallback_portrait_id > 18:
+                fallback_portrait_id = 0xE
+
+            portrait = fallback_portrait_id * 0x320
+            portrait_palette = chr(fallback_portrait_id)
+            new_portrait_data = portrait_data[fallback_portrait_id]
+            new_portrait_palette_data = portrait_palette_data[fallback_portrait_id]
+            
+            if swap_to[c].has_custom_portrait():
+                use_fallback = False
+
+                try:
+                    g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].portrait_filename), "rb")
+                    h = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].portrait_palette_filename), "rb")
+                except IOError:
+                    use_fallback = True
+                    print "failed to load portrait %s for %s, using fallback" %(swap_to[c].portrait_filename, swap_to[c].name)
+                else:
+                    new_portrait_data = g.read(0x320)
+                    new_portrait_palette_data = h.read(0x20)
+                    h.close()
+                    g.close()
+
+            if not use_fallback or fallback_portrait_id in free_portrait_ids:
+                portrait_id = free_portrait_ids[0]
+                portrait = portrait_id * 0x320
+                portrait_palette = chr(portrait_id)
+                free_portrait_ids.remove(free_portrait_ids[0])
+                fout.seek(0x2D1D00 + portrait)
+                fout.write(new_portrait_data)
+                fout.seek(0x2D5860 + ord(portrait_palette) * 0x20)
+                fout.write(new_portrait_palette_data)
+        
+        elif portrait == 0 and wild and change_to[c] != 0:
             portrait = char_portraits[0xE]
             portrait_palette = char_portrait_palettes[0xE]
         fout.seek(0x36F1B + (2*c))
         write_multi(fout, portrait, length=2)
         fout.seek(0x36F00 + c)
         fout.write(portrait_palette)
+        
         if wild:
             fout.seek(spointers[c])
             fout.write(sprites[0xE][:ssizes[c]])
         fout.seek(spointers[c])
+ 
         if sprite_swap_mode and c in swap_to:
-            from os import path
             try:
-                g = open(path.join("sprites", swap_to[c].file), "rb")
+                g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].file), "rb")
             except IOError:
                 newsprite = sprites[change_to[c]]
                 for ch in characters:
@@ -2361,12 +2577,33 @@ def manage_character_appearance(preserve_graphics=False):
                         ch.new_appearance = nameiddict[change_to[c]]
             else:
                 newsprite = g.read(min(ssizes[c], swap_to[c].size))
+                # if it doesn't have riding sprites, it probably doesn't have a death sprite either
+                if swap_to[c].size < 0x16A0:
+                    newsprite = newsprite[:0xAE0] + sprites[0xE][0xAE0:0xBA0] + newsprite[0xBA0:]
                 g.close()
         else:
             newsprite = sprites[change_to[c]]
         newsprite = newsprite[:ssizes[c]]
         fout.write(newsprite)
 
+    manage_palettes(change_to, char_ids)
+
+
+def manage_palettes(change_to, char_ids):
+    sabin_mode = 'suplexwrecks' in activated_codes
+    tina_mode = 'bravenudeworld' in activated_codes
+    christmas_mode = 'christmas' in activated_codes
+    characters = get_characters()
+    npcs = get_npcs()
+    charpal_options = {}
+    for line in open(CHARACTER_PALETTE_TABLE):
+        if line[0] == '#':
+            continue
+        charid, palettes = tuple(line.strip().split(':'))
+        palettes = map(hex2int, palettes.split(','))
+        charid = hex2int(charid)
+        charpal_options[charid] = palettes
+        
     palette_change_to = {}
     for npc in npcs:
         if npc.graphics not in charpal_options:
@@ -2481,12 +2718,18 @@ def manage_colorize_animations():
 
 
 def manage_items(items, changed_commands=None):
-    from itemrandomizer import set_item_changed_commands
+    from itemrandomizer import (set_item_changed_commands, extend_item_breaks)
     always_break = True if "collateraldamage" in activated_codes else False
+    crazy_prices = True if "beyondtierless" in activated_codes else False
+    extra_effects= True if "masseffect" in activated_codes else False
+    wild_breaks = True if "electricboogaloo" in activated_codes else False
+
     set_item_changed_commands(changed_commands)
+    unhack_tintinabar(fout)
+    extend_item_breaks(fout)
 
     for i in items:
-        i.mutate(always_break=always_break)
+        i.mutate(always_break=always_break, crazy_prices=crazy_prices, extra_effects=extra_effects, wild_breaks=wild_breaks)
         i.unrestrict()
         i.write_stats(fout)
 
@@ -2560,9 +2803,7 @@ def manage_equipment(items):
 
 
 def manage_reorder_rages(freespaces, by_level=False):
-    myfs = get_appropriate_freespace(freespaces, 0x100)
-    pointer = myfs.start
-    freespaces = determine_new_freespaces(freespaces, myfs, 0x100)
+    pointer = 0x301416
 
     monsters = get_monsters()
     monsters = sorted(monsters, key=lambda m: m.display_name)
@@ -2576,7 +2817,7 @@ def manage_reorder_rages(freespaces, by_level=False):
     reordered_rages_sub.bytestring = monster_order
     reordered_rages_sub.set_location(pointer)
     reordered_rages_sub.write(fout)
-    hirage, lorage = (pointer >> 8) & 0xFF, pointer & 0xFF
+    hirage, midrage, lorage = ((pointer >> 16) & 0x3F) + 0xC0, (pointer >> 8) & 0xFF, pointer & 0xFF
 
     rage_reorder_sub = Substitution()
     rage_reorder_sub.bytestring = [
@@ -2584,13 +2825,13 @@ def manage_reorder_rages(freespaces, by_level=False):
         0xA8,               # TAY
         # main loop
         # get learned rages byte, store in EE
-        0xBB, 0xBF, lorage, hirage, 0xC2,
+        0xBB, 0xBF, lorage, midrage, hirage,
         0x4A, 0x4A, 0x4A,   # LSR x3
         0xAA,               # TAX
         0xBD, 0x2C, 0x1D,   # LDA $1D2C,X (get rage byte)
         0x85, 0xEE,         # STA $EE
         # get bitmask for learned rage
-        0xBB, 0xBF, lorage, hirage, 0xC2,
+        0xBB, 0xBF, lorage, midrage, hirage,
         0x29, 0x07,         # AND #$07 get bottom three bits
         0xC9, 0x00,         # CMP #$00
         0xF0, 0x05,         # BEQ 5 bytes forward
@@ -2606,7 +2847,7 @@ def manage_reorder_rages(freespaces, by_level=False):
         #0xEA, 0xEA,
         # add rage to battle menu
         0xEE, 0x9A, 0x3A,   # INC $3A9A (number of rages known)
-        0xBB, 0xBF, lorage, hirage, 0xC2,     # get rage
+        0xBB, 0xBF, lorage, midrage, hirage,     # get rage
         0x8F, 0x80, 0x21, 0x00,         # STA $002180 (store rage in menu)
         # check to terminate loop
         0xC8,               # INY (advance to next enemy)
@@ -2779,7 +3020,7 @@ def manage_espers(freespaces):
     espers = get_espers()
     random.shuffle(espers)
     for e in espers:
-        e.generate_spells()
+        e.generate_spells(tierless = "beyondtierless" in activated_codes)
         e.generate_bonus()
 
     bonus_espers = [e for e in espers if e.id in [15, 16]]
@@ -2895,8 +3136,7 @@ def manage_chests():
 
     for m in get_monsters():
         m.write_stats(fout)
-
-
+    
 def write_all_locations_misc():
     write_all_chests()
     write_all_npcs()
@@ -2989,7 +3229,7 @@ def manage_blitz():
         newlength = min(newlength, 10)
 
         newcmd = []
-        used_cmds = []
+        used_cmds = [[0xE, 0xA, 0xE]]
         while True:
             prev = newcmd[-1] if newcmd else None
             pprev = newcmd[-2] if len(newcmd) > 1 else None
@@ -3251,13 +3491,17 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
         ue.set_relative_ai(pointer)
         freespaces = determine_new_freespaces(freespaces, myfs, ue.aiscriptsize)
 
+        itembreaker = 'collateraldamage' in activated_codes
+        randombosses = 'randombosses' in activated_codes
+        beyondtierless = 'beyondtierless' in activated_codes
+        madworld = 'madworld' in activated_codes
         ue.auxloc = "Missing (Boss)"
-        ue.mutate_ai(change_skillset=True)
-        ue.mutate_ai(change_skillset=True)
+        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
 
-        ue.mutate(change_skillset=True)
+        ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
         if random.choice([True, False]):
-            ue.mutate(change_skillset=True)
+            ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
         ue.treasure_boost()
         ue.graphics.mutate_palette()
         name = randomize_enemy_name(fout, ue.id)
@@ -3395,8 +3639,9 @@ def get_shops():
 def manage_shops():
     buyables = set([])
     descriptions = []
+    crazy_shops = "beyondtierless" in activated_codes
     for s in get_shops():
-        s.mutate_items(fout)
+        s.mutate_items(fout, crazy_shops)
         s.mutate_misc()
         s.write_data(fout)
         buyables |= set(s.items)
@@ -3706,22 +3951,105 @@ def manage_tower():
     npc = [n for n in get_npcs() if n.event_addr == 0x233B8][0]
     npc.event_addr = 0x233A6
     narshe_beginner_sub = Substitution()
-    narshe_beginner_sub.bytestring = [0xE5, 0x00]
-    narshe_beginner_sub.set_location(0xC33A7)
+    narshe_beginner_sub.bytestring = [0x4B, 0xE5, 0x00]
+    narshe_beginner_sub.set_location(0xC33A6)
     narshe_beginner_sub.write(fout)
 
+def manage_strange_events():
+    shadow_recruit_sub = Substitution();
+    shadow_recruit_sub.set_location(0xB0A9F)
+    shadow_recruit_sub.bytestring = [0x42, 0x31] # hide party member in slot 0
+    
+    shadow_recruit_sub.write(fout)
+    shadow_recruit_sub.set_location(0xB0A9E)
+    shadow_recruit_sub.bytestring = [0x41, 0x31, # show party member in slot 0
+    0x41, 0x11, # show object 11
+    0x31 # begin queue for party member in slot 0
+    ] 
+    shadow_recruit_sub.write(fout)
+
+    shadow_recruit_sub.set_location(0xB0AD4)
+    shadow_recruit_sub.bytestring = [0xB2, 0x29, 0xFB, 0x05, 0x45] # Call subroutine $CFFB29, refresh objects
+    shadow_recruit_sub.write(fout)
+    
+    shadow_recruit_sub.set_location(0xFFB29)
+    shadow_recruit_sub.bytestring = [0xB2, 0xC1, 0xC5, 0x00, # Call subroutine $CAC5C1 (set CaseWord bit corresponding to number of characters in party)
+    0xC0, 0xA3, 0x81, 0x38, 0xFB, 0x05, #If ($1E80($1A3) [$1EB4, bit 3] is set), branch to $CFFB38
+    0x3D, 0x03, # Create object $03
+    0x3F, 0x03, 0x01, #Assign character $03 (Actor in stot 3) to party 1
+    0xFE #return
+    ]
+    shadow_recruit_sub.write(fout)
+    
+    # Always remove the boxes in Mobliz basement
+    mobliz_box_sub = Substitution()
+    mobliz_box_sub.set_location(0xC50EE)
+    mobliz_box_sub.bytestring = [0xC0, 0x27, 0x81, 0xB3, 0x5E, 0x00]
+    mobliz_box_sub.write(fout)
+    
+    # Always show the door in Fanatics Tower level 1,
+    # and don't change commands.
+    fanatics_sub = Substitution()
+    fanatics_sub.set_location(0xC5173)
+    fanatics_sub.bytestring = [0x45, 0x45, 0xC0, 0x27, 0x81, 0xB3, 0x5E, 0x00]
+    fanatics_sub.write(fout)
+    
+    # skip the flashbacks of Daryl, because it's easier than making them work with unexpected parties
+    daryl_cutscene_sub = Substitution()
+    daryl_cutscene_sub.set_location(0xA4365)
+    daryl_cutscene_sub.bytestring = [0xF0, 0x76, 0x6B, 0x01, 0x04, 0x9E, 0x33, 0x01, 0xC0, 0x20, 0xC2, 0x64, 0x00, 0xFA, 0xD2, 0x11, 0x34, 0x10, 0x08, 0x40, 0xB2, 0x43, 0x48, 0x00, 0xFE]
+    daryl_cutscene_sub.write(fout)
 
 def create_dimensional_vortex():
-    entrancesets = []
+    entrancesets = [l.entrance_set for l in get_locations()]
     entrances = []
-    for i in xrange(512):
-        e = EntranceSet(i)
+    for e in entrancesets:
         e.read_data(sourcefile)
-        entrancesets.append(e)
         entrances.extend(e.entrances)
 
-    entrances = sorted(set(entrances))
+    entrances = sorted(set(entrances), key= lambda x: (x.location.locid, x.entid if (hasattr(x, "entid") and x.entid is not None) else -1))
 
+    # Don't randomize certain entrances
+    def should_be_vanilla(k):
+        if ( (k.location.locid == 0x1E and k.entid == 1) # leave Arvis's house
+        or (k.location.locid == 0x14 and (k.entid == 10 or k.entid == 14)) # return to Arvis's house or go to the mines
+        or (k.location.locid == 0x32 and k.entid == 3) # backtrack out of the mines
+        or (k.location.locid == 0x2A) # backtrack out of the room with Terrato while you have Vicks and Wedge
+        or (0xD7 < k.location.locid < 0xDC) # esper world
+        or (k.location.locid == 0x137 or k.dest & 0x1FF == 0x137) # collapsing house
+        or (k.location.locid == 0x180 and k.entid == 0) # weird out-of-bounds entrance in the sealed gate cave
+        or (k.location.locid == 0x3B and k.dest & 0x1FF == 0x3A) # Figaro interior to throne room
+        or (k.location.locid == 0x19A and k.dest & 0x1FF == 0x19A) # Kefka's Tower factory room (bottom level) conveyor/pipe
+        ): 
+            return True
+        return False
+
+    entrances = [k for k in entrances if not should_be_vanilla(k)]
+
+    # Make two entrances next to each other (like in the phantom train)
+    # that go to the same place still go to the same place.
+    # Also make matching entrances from different versions of maps
+    # (like Vector pre/post esper attack) go to the same place
+    duplicate_entrance_dict = {}
+    equivalent_map_dict = { 0x154:0x157, 0x155:0x157, 0xFD:0xF2 }
+    
+    for i, c in enumerate(entrances):
+        for d in entrances[i+1:]:
+            c_locid = c.location.locid & 0x1FF
+            d_locid = d.location.locid & 0x1FF
+            if ((c_locid == d_locid
+            or (d_locid in equivalent_map_dict and equivalent_map_dict[d_locid] == c_locid)
+            or (c_locid in equivalent_map_dict and equivalent_map_dict[c_locid] == d_locid))
+            and (c.dest & 0x1FF) == (d.dest & 0x1FF)
+            and c.destx == d.destx and c.desty == d.desty
+            and (abs(c.x - d.x) + abs(c.y - d.y)) <= 3):
+                if c_locid in equivalent_map_dict:
+                    duplicate_entrance_dict[c]=d
+                else:
+                    duplicate_entrance_dict[d]=c
+
+    entrances = [k for k in entrances if k not in equivalent_map_dict]
+    
     entrances2 = list(entrances)
     random.shuffle(entrances2)
     for a, b in zip(entrances, entrances2):
@@ -3740,11 +4068,22 @@ def create_dimensional_vortex():
             continue
         a.dest, a.destx, a.desty = b.dest, b.destx, b.desty
 
+    for r in duplicate_entrance_dict:
+        s = duplicate_entrance_dict[r]
+        r.dest, r.destx, r.desty = s.dest, s.destx, s.desty
+
     entrancesets = entrancesets[:0x19F]
     nextpointer = 0x1FBB00 + (len(entrancesets) * 2)
+    longnextpointer = 0x2DF480 + (len(entrancesets) * 2) + 2
+    total = 0
     for e in entrancesets:
-        nextpointer = e.write_data(fout, nextpointer)
-
+        total += len(e.entrances)
+        nextpointer, longnextpointer = e.write_data(fout, nextpointer,
+                                                    longnextpointer)
+    fout.seek(e.pointer + 2)
+    write_multi(fout, (nextpointer - 0x1fbb00), length=2)
+    fout.seek(e.longpointer + 2)
+    write_multi(fout, (longnextpointer - 0x2df480), length=2)
 
 def change_enemy_name(fout, enemy_id, name):
     pointer = 0xFC050 + (enemy_id * 10)
@@ -3990,6 +4329,58 @@ def manage_auction_house():
             write_multi(fout, dest, 2)
             pointer += 3
 
+    auction_items = [(0xbc, 0xB4EF1, 0xB5012, 0x0A45, 500), # Cherub Down
+                     (0xbd, 0xB547B, 0xB55A4, 0x0A47, 1500), # Cure Ring
+                     (0xc9, 0xB55D5, 0xB56FF, 0x0A49, 3000), # Hero Ring
+                     (0xc0, 0xB5BAD, 0xB5C9F, 0x0A4B, 3000), # Zephyr Cape
+                    ]
+    items = get_ranked_items()
+    itemids = [i.itemid for i in items]
+    for i, auction_item in enumerate(auction_items):
+        try:
+            index = itemids.index(auction_item[0])
+        except ValueError:
+            index = 0
+        index = mutate_index(index, len(items), [False, True],
+                                 (-3, 3), (-2, 2))
+        item = items[index]
+        auction_sub = Substitution()
+        auction_sub.set_location(auction_item[2])
+        auction_sub.bytestring = [0x6d, item.itemid, 0x45, 0x45, 0x45]
+        auction_sub.write(fout)
+        
+        addr = 0x302000 + i * 6
+        auction_sub.set_location(addr)
+        auction_sub.bytestring = [0x66, auction_item[3] & 0xff, (auction_item[3] & 0xff00) >> 8, item.itemid, # Show text 0x0A4B with item e.contents
+                0x94, # Pause 60 frames
+                0xFE] # return
+        auction_sub.write(fout)
+        
+        addr -= 0xA0000
+        addr_lo = addr & 0xff
+        addr_mid = (addr & 0xff00) >> 8
+        addr_hi = (addr & 0xff0000) >> 16
+        auction_sub.set_location(auction_item[1])
+        auction_sub.bytestring = [0xB2, addr_lo, addr_mid, addr_hi]
+        auction_sub.write(fout)
+        
+        table = {"0": 0x54, "1": 0x55, "2": 0x56, "3": 0x57, "4": 0x58, "5": 0x59, "6": 0x5A, "7": 0x5B, "8": 0x5C, "9": 0x5D }
+        fout.seek(0xCE600)
+        next_bank_index = read_multi(fout)
+        opening_bid = str(auction_item[4])
+        fout.seek(0xCE602 + 2 * auction_item[3])
+        dialog_ptr = read_multi(fout)
+        auction_sub.set_location(0xD0000 if auction_item < next_bank_index else 0xE0000 + dialog_ptr)
+        auction_sub.bytestring = [0x01, 0x14, 0x08, 0x73, 0x1A, 0x62, 0x5E, 0x13, # "<LF>        \"<I>\"!<P>"
+        0x01, 0x23, 0x48, 0xB8, 0x91, 0xA8, 0x93  # "<LF>Do I hear "  
+        ] + map(lambda x: table[x], opening_bid) + [  # auction_item[4]
+        0x7F, 0x26, 0x2F, 0x5F, 0x5E, 0x00] #  " GP?!"
+        auction_sub.write(fout)
+
+    auction_sub = Substitution()
+    auction_sub.set_location(0xB4E47)
+    auction_sub.bytestring = [0x45] * 12
+    auction_sub.write(fout)
 
 def manage_bingo():
     target_score = 200.0
@@ -4293,6 +4684,14 @@ def manage_wor():
     for t in wobtreasures:
         wor_sub.bytestring += [0x80, t]
 
+    # give WoB event items
+    event_items = get_event_items()
+    for l in event_items:
+        if l.upper() in wobtreasurelocs + ["FIGARO CASTLE"]:
+            for e in event_items[l]:
+                if e.contenttype == 0x40 and not e.multiple:
+                    wor_sub.bytestring += [0x80, e.contents]
+        
     # give the player a basic set of items.  These items are intended to
     # reflect the items a player would probably have by the time they get this
     # far, so that they aren't missing basic supplies they would have in almost any seed.
@@ -4873,7 +5272,7 @@ def manage_ancient():
                     and f.get_music() != 0]):
                 return False
         best_drop = formation.get_best_drop()
-        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000):
+        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or "beyondtierless" in activated_codes):
             return True
         return False
 
@@ -5634,7 +6033,7 @@ def manage_ancient():
 def manage_santa():
     Santasub = Substitution()
     Santasub.bytestring = [0x32, 0x3A, 0x47, 0x4D, 0x3A]
-    for location in [0xD1526, 0xD158D, 0xD16AB, 0xD1AA9, 0xD3F5F, 0xD51C0, 0xD52D0, 0xD5413, 0xD5B03, 0xD8F60, 0xD9260, 0xD92B0, 0xD92DB, 0xD9334, 0xD9B33, 0xDDC27, 0xDDD10, 0xDDD5E, 0xDE650, 0xDE780, 0xDF79C, 0xDF7CF, 0xDF82A, 0xE0B56, 0xE0C10, 0xE0C88, 0xE0FD0, 0xE10D2, 0xE114D, 0xE1197, 0xE1A70, 0xEAB8E, 0xE234B, 0xE2480, 0xE24EB, 0xE256B, 0xE2E3C, 0xE2EA9, 0xE4896, 0xE4915, 0xE4971, 0xE4BBC, 0xE5282, 0xE5656, 0xE56D6, 0xE56EF, 0xE6059, 0xE607A, 0xE6151, 0xE6296, 0xE62E7, 0xE651A, 0xE65AE, 0xE6601, 0xE68F2, 0xE6A54, 0xE6A7E, 0xE6B38, 0xE6B7E, 0xE7579, 0xE7B49, 0xE8160, 0xE8239, 0xE82A3, 0xE8755, 0xE8C67, 0xE91AF, 0xE9707, 0xE9980, 0xE9DFB, 0xEA8AB, 0xEDBA7, 0xEE0E6, 0xEE5FE, 0xEE755] :
+    for location in [0xD1526, 0xD158D, 0xD16AB, 0xD1AA9, 0xD3F5F, 0xD51C1, 0xD52D7, 0xD5413, 0xD5B03, 0xD8F6A, 0xD9265, 0xD92B5, 0xD92DB, 0xD9334, 0xD9B33, 0xDDC27, 0xDDD10, 0xDDD5E, 0xDE654, 0xDE789, 0xDF79C, 0xDF7CF, 0xDF82A, 0xE0B56, 0xE0C1F, 0xE0C88, 0xE0FD6, 0xE10D2, 0xE114D, 0xE1197, 0xE1A75, 0xEAB8E, 0xE234B, 0xE2480, 0xE24EB, 0xE256B, 0xE2E3C, 0xE2EA9, 0xE4896, 0xE4915, 0xE4971, 0xE4BBC, 0xE5282, 0xE5656, 0xE56D6, 0xE56EF, 0xE6059, 0xE607A, 0xE6151, 0xE6296, 0xE62E7, 0xE651A, 0xE65AE, 0xE6601, 0xE68F2, 0xE6A54, 0xE6A7E, 0xE6B38, 0xE6B7E, 0xE7579, 0xE7B49, 0xE8160, 0xE8239, 0xE82A3, 0xE8755, 0xE8C67, 0xE91AF, 0xE9707, 0xE9980, 0xE9DFB, 0xEA8AB, 0xEDBA7, 0xEE0E6, 0xEE5FE, 0xEE755] :
         Santasub.set_location(location)
         Santasub.write(fout)
 
@@ -5656,35 +6055,65 @@ def manage_santa():
         BattleSANTAsub.set_location(location)
         BattleSANTAsub.write(fout)
 
+def manage_spookiness():
+    n_o_e_s_c_a_p_e_sub = Substitution()
+    n_o_e_s_c_a_p_e_sub.bytestring = [0x4B, 0xAE, 0x42]
+    for location in [0xCA1C8, 0xCA296, 0xA89BF, 0xB1963,0xB198B]:
+        n_o_e_s_c_a_p_e_sub.set_location(location)
+        n_o_e_s_c_a_p_e_sub.write(fout)
+        
+    n_o_e_s_c_a_p_e_bottom_sub = Substitution()
+    n_o_e_s_c_a_p_e_bottom_sub.bytestring = [0x4B, 0xAE, 0xC2]
+    for location in [0xA6325]:
+        n_o_e_s_c_a_p_e_bottom_sub.set_location(location)
+        n_o_e_s_c_a_p_e_bottom_sub.write(fout)
+        
+    nowhere_to_run_sub = Substitution()
+    nowhere_to_run_sub.bytestring = [0x4B, 0xB3, 0x42]
+    for location in [0xCA215, 0xCA270, 0xB19B5, 0xB19F0, 0xC8293]:
+        nowhere_to_run_sub.set_location(location)
+        nowhere_to_run_sub.write(fout)
+        
+    nowhere_to_run_bottom_sub = Substitution()
+    nowhere_to_run_bottom_sub.bytestring = [0x4B, 0xB3, 0xC2]
+    for location in [0xCA2F0, 0xCA7EE]:
+        nowhere_to_run_bottom_sub.set_location(location)
+        nowhere_to_run_bottom_sub.write(fout)
+        
 def manage_dances():
-    f = open(sourcefile, 'r+b')
-    f.seek(0x0FFE80)
-    dances = map(ord, f.read(32))
-    f.close()
+    if 'beyondtierless' in activated_codes:
+         spells = get_ranked_spells(sourcefile)
+         dances = random.sample(spells, 32)
+         dances = [s.spellid for s in dances]
+    else:
+        f = open(sourcefile, 'r+b')
+        f.seek(0x0FFE80)
+        dances = map(ord, f.read(32))
+        f.close()
 
-    # Shuffle the geos, plus Fire Dance, Pearl Wind, Lullaby, Acid Rain, and Absolute 0 because why not
-    geo = [dances[i*4] for i in range(8)] + [dances[i*4+1] for i in range(8)] + [0x60, 0x93, 0xA8, 0xA9, 0xBB]
-    random.shuffle(geo)
+        # Shuffle the geos, plus Fire Dance, Pearl Wind, Lullaby, Acid Rain, and Absolute 0 because why not
+        geo = [dances[i*4] for i in range(8)] + [dances[i*4+1] for i in range(8)] + [0x60, 0x93, 0xA8, 0xA9, 0xBB]
+        random.shuffle(geo)
 
-    # Shuffle 1/16 beasts, plus chocobop, takedown, and wild fang, since they seem on theme
-    beasts = [dances[i*4+3] for i in range(8)] + [0x7F, 0xFC, 0xFD]
-    random.shuffle(beasts)
+        # Shuffle 1/16 beasts, plus chocobop, takedown, and wild fang, since they seem on theme
+        beasts = [dances[i*4+3] for i in range(8)] + [0x7F, 0xFC, 0xFD]
+        random.shuffle(beasts)
 
-    # Replace 2/16 moves that are duplicated from other dances
-    spells = get_ranked_spells(sourcefile)
-    spells = [s for s in spells if s.spellid >= 0x36 and s.spellid not in geo and s.spellid not in beasts]
-    half = len(spells) / 2
+        # Replace 2/16 moves that are duplicated from other dances
+        spells = get_ranked_spells(sourcefile)
+        spells = [s for s in spells if s.spellid >= 0x36 and s.spellid not in geo and s.spellid not in beasts]
+        half = len(spells) / 2
 
-    other = []
-    for i in range(8):
-        while True:
-            index = random.randint(0, half) + random.randint(0, half)
-            if index not in other:
-                break
-        other.append(spells[index].spellid)
+        other = []
+        for i in range(8):
+            while True:
+                index = random.randint(0, half) + random.randint(0, half)
+                if index not in other:
+                    break
+            other.append(spells[index].spellid)
 
-    dances = geo[:16] + other[:8] + beasts[:8]
-    random.shuffle(dances)
+        dances = geo[:16] + other[:8] + beasts[:8]
+        random.shuffle(dances)
 
     Dancesub = Substitution()
     Dancesub.bytestring = dances
@@ -5703,8 +6132,22 @@ def manage_dances():
         dancestr = dancestr.rstrip()
         log(dancestr, "dances")
 
+
+def nerf_paladin_shield():
+    paladin_shield = get_item(0x67)
+    paladin_shield.mutate_learning()
+    paladin_shield.write_stats(fout)
+
+
+def expand_rom():
+    expand_sub = Substitution()
+    expand_sub.set_location(0x300000)
+    expand_sub.bytestring = [0x00] * 0x100000
+    expand_sub.write(fout)
+
+
 def randomize():
-    global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
+    global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE, NEVER_REPLACE
 
     args = list(argv)
     if TEST_ON:
@@ -5852,7 +6295,6 @@ k   Randomize the clock in Zozo
     flags = flags.lower()
 
     secret_codes['airship'] = "AIRSHIP MODE"
-    secret_codes['cutscenes'] = "CUTSCENE SKIPS"
     secret_codes['partyparty'] = "CRAZY PARTY MODE"
     secret_codes['bravenudeworld'] = "TINA PARTY MODE"
     secret_codes['suplexwrecks'] = "SUPLEX MODE"
@@ -5882,6 +6324,13 @@ k   Randomize the clock in Zozo
     secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
     secret_codes['allcombos'] = "ALL COMBOS MODE"
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
+    secret_codes['dancingmaduin'] = "RESTRICTED ESPERS MODE"
+    secret_codes['masseffect'] = "WILD EQUIPMENT EFFECT MODE"
+    secret_codes['madworld'] = "EXTREME DIFFICULTY MODE"
+    secret_codes['supernatural'] = "SUPER NATURAL MAGIC MODE"
+    secret_codes['beyondtierless'] = "TIERS FOR FEARS MODE"
+    secret_codes['randombosses'] = "RANDOM BOSSES MODE"
+    secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
     secret_codes['notawaiter'] = "ALTERNATE CUTSCENE SKIPS"
     s = ""
     for code, text in secret_codes.items():
@@ -5914,27 +6363,16 @@ k   Randomize the clock in Zozo
         except:
             multiplier = None
         set_randomness_multiplier(multiplier)
+    elif 'beyondtierless' in activated_codes:
+        set_randomness_multiplier(None)
+
+    fout = open(outfile, "r+b")
+    expand_rom()
 
     print (
         "\nNow beginning randomization.\n"
         "The randomization is very thorough, so it may take some time.\n"
         'Please be patient and wait for "randomization successful" to appear.')
-
-    fout = open(outfile, "r+b")
-    
-    if 'cutscenes' in activated_codes:
-        print "NOTICE: You have selected CUTSCENE SKIPS."
-        print "This feature has proven to be unstable with strange effects."
-        x = raw_input("Would you like to use cutscene skips? (y/n) ")
-        if x and x.lower()[0] == 'y':
-            manage_skips()
-        else:
-            print "Cutscenes will NOT be skipped."
-        print
-    
-    event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
-    if 'airship' in activated_codes:
-        event_freespaces = activate_airship_mode(event_freespaces)
 
     allFlags = 'abcdefghijklmnopqrstuvwxyz'
 
@@ -5953,13 +6391,20 @@ k   Randomize the clock in Zozo
 
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         manage_commands(commands)
+        improve_gogo_status_menu(fout)
     reseed()
 
     spells = get_ranked_spells(sourcefile)
+    if 'beyondtierless' in activated_codes:
+        random.shuffle(spells)
+        for i, s in enumerate(spells):
+            s._rank = i+1
+            s.valid = True
     if 'w' in flags and 'suplexwrecks' not in activated_codes:
         if 'quikdraw' in activated_codes:
             ALWAYS_REPLACE += ["rage"]
         _, freespaces = manage_commands_new(commands)
+        improve_gogo_status_menu(fout)
     reseed()
 
     if 'z' in flags:
@@ -5995,16 +6440,23 @@ k   Randomize the clock in Zozo
             dirk.write_stats(fout)
             dummy_item(dirk)
             assert not dummy_item(dirk)
+    if 'm' in flags and 't' in flags and 'q' in flags:
+        if random.randint(1, 10) != 10:
+            rename_card = get_item(231)
+            rename_card.become_another(tier="low")
+            rename_card.write_stats(fout)
     reseed()
 
     items = get_ranked_items()
     if 'i' in flags:
         manage_items(items, changed_commands=changed_commands)
+        improve_item_display(fout)
     reseed()
 
     if 'm' in flags:
         aispaces = manage_final_boss(aispaces)
         monsters = manage_monsters()
+        improve_rage_menu(fout)
     reseed()
 
     if 'm' in flags or 'o' in flags or 'w' in flags:
@@ -6022,6 +6474,7 @@ k   Randomize the clock in Zozo
                  'christmas', 'halloween',
                  'kupokupo', 'quikdraw']) & activated_codes):
         manage_character_appearance(preserve_graphics=preserve_graphics)
+        show_original_names(fout)
     reseed()
 
     if 'q' in flags:
@@ -6031,6 +6484,9 @@ k   Randomize the clock in Zozo
 
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
     if 'e' in flags:
+        if 'dancingmaduin' in activated_codes:
+            allocate_espers('ancientcave' in activated_codes, get_espers(), get_characters(), fout)
+            nerf_paladin_shield()
         manage_espers(esperrage_spaces)
     reseed()
 
@@ -6126,6 +6582,7 @@ k   Randomize the clock in Zozo
         manage_treasure(monsters, shops=True)
         if 'ancientcave' not in activated_codes:
             manage_chests()
+            mutate_event_items(fout, cutscene_skip='notawaiter' in activated_codes)
             for fs in fsets:
                 # write new formation sets for MiaBs
                 fs.write_data(fout)
@@ -6181,6 +6638,7 @@ k   Randomize the clock in Zozo
 
     if 'strangejourney' in activated_codes:
         create_dimensional_vortex()
+        manage_strange_events()
     reseed()
     
     if 'notawaiter' in activated_codes:
@@ -6198,6 +6656,7 @@ k   Randomize the clock in Zozo
     if 'g' in flags:
         if 0x13 not in changed_commands:
             manage_dances()
+            improve_dance_menu(fout)
 
     reseed()
 
@@ -6206,15 +6665,23 @@ k   Randomize the clock in Zozo
     for fs in fsets:
         fs.write_data(fout)
 
+    # This needs to be after write_all_locations_misc()
+    # so the changes to Daryl don't get stomped.
+    event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
+    if 'airship' in activated_codes:
+        event_freespaces = activate_airship_mode(event_freespaces)
+        
     if 'u' in flags or 'q' in flags:
         manage_equip_umaro(event_freespaces)
 
-    if 'easymodo' in activated_codes or 'llg' in activated_codes:
+    if 'easymodo' in activated_codes or 'llg' in activated_codes or 'dearestmolulu' in activated_codes:
         for m in monsters:
             if 'easymodo' in activated_codes:
                 m.stats['hp'] = 1
             if 'llg' in activated_codes:
                 m.stats['xp'] = 0
+            elif 'dearestmolulu' in activated_codes:
+                m.stats['xp'] = min(0xFFFF, 3 * m.stats['xp'])
             m.write_stats(fout)
 
     if 'naturalmagic' in activated_codes or 'naturalstats' in activated_codes:
@@ -6259,6 +6726,8 @@ k   Randomize the clock in Zozo
 
     if 'christmas' in activated_codes:
         manage_santa()
+    elif 'halloween' in activated_codes:
+        manage_spookiness()
 
     rewrite_title(text="FF6 BC %s" % seed)
     fout.close()

@@ -1,6 +1,6 @@
 FF6 Beyond Chaos Randomizer
-Version:    63
-Date:       January 27, 2018
+Version:    64 BETA
+Date:       May 03, 2018
 URL:        https://github.com/abyssonym/beyondchaos
 Contact:    https://twitter.com/abyssonym
             https://www.twitch.tv/abyssonym
@@ -103,7 +103,6 @@ A: Va gur svany qhatrba, gurer'f n fznyy vagrevbe ebbz jvgu n qbbe cnfg n pbairl
 Q: I heard that there are secret codes. What are they?
 A: I'll give you the codes, but be aware that these are codes that were used during development for testing the randomizer. I make no guarantees about their playability, and it's recommended that you play through the randomizer without codes at least once before you use them. Here they are, as always, in ROT13:
     nvefuvc
-    phgfprarf
     cneglcnegl
     oenirahqrjbeyq
     fhcyrkjerpxf
@@ -128,7 +127,14 @@ A: I'll give you the codes, but be aware that these are codes that were used dur
     ercynprrirelguvat
     nyypbzobf
     enaqbzobbfg
+    qnapvatznqhva
+    znffrssrpg
+    fhcreangheny
+    znqjbeyq
+	ryrpgevpobbtnybb
     abgnjnvgre
+    orlbaqgvreyrff
+    enaqbzobffrf
 
 Q: What level should I be for the final dungeon?
 A: It really depends on your gear and what builds you have access to. I usually end up going there around level 35-40, but it doesn't hurt to have a few absurdly high level characters to tank hits.
@@ -185,9 +191,12 @@ Q: I found a bug!
 A: The best thing to do is open an issue on the Beyond Chaos github page, but if that's too much of a hassle you can also send me a tweet and I might check it out. Note that by this point A LOT of the bugs have been discovered, but if you just want to show it off or something that's cool too.
 
 --- CONTRIBUTORS ---
+    CtrlxZ - fixed up sprites for Beyond Chaos
+    myself086 - new menu features and natural magic expansion
     subtractionsoup - TONS of features in v62 and v63
-    Lockirby2 - The worringtriad code
+    Lockirby2 - The worringtriad and notawaiter codes
     glennmatthews - Command descriptions in logfile
+	DarkSlash - madworld and beyondtierless codes
 
 --- SPECIAL THANKS ---
     cecil188 - OG beyond chaos fan
@@ -197,7 +206,8 @@ A: The best thing to do is open an issue on the Beyond Chaos github page, but if
     kupofasa - original permadeath runner
     quikdraw7777 - permadeath community leader and pioneer
     tenkarider - romhacker who gave me lots of early feedback, and creator of the Ultimate Czar Dragon hack, FF6 Curse of the Gods, and many other challenges
-    badass, dr blank, matthew50, metroidquest, sutebenukun, and zeemis - additional sprites
+    Synchysi - esper restriction patch
+    ff6hacking.com community - additional sprites, see custom/sprites/credits.txt for details
     AND YOU
 
 Like this randomizer? Then check out my other projects! I've made like a billion randomizers!

@@ -1,4 +1,4 @@
-from utils import read_multi, write_multi, mutate_index, utilrandom as random
+from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution
 from itemrandomizer import get_ranked_items, get_item
 from formationrandomizer import get_formations, get_fsets
 
@@ -414,3 +414,224 @@ class ChestBlock:
 
         assert self.contents <= 0xFF
         self.value = value
+
+event_mem_id = 281
+multiple_event_items = []
+class EventItem:
+    def __init__(self, type, contents, pointer, cutscene_skip_pointer=None, postfix_bytes = [], monster=None, text=True, multiple=False):
+        global event_mem_id
+        self.contenttype = type
+        self.contents = contents
+        self.pointer = pointer
+        self.cutscene_skip_pointer = cutscene_skip_pointer
+        self.postfix_bytes = postfix_bytes
+        self.monster = False if not text else monster
+        self.text = text
+        self.mem_id = event_mem_id
+        if multiple:
+            multiple_event_items.append(self.mem_id)
+        else:
+            event_mem_id += 1
+        self.multiple = multiple
+
+    @property
+    def description(self):
+        c = ChestBlock(0x0, 0x0)
+        c.memid = self.mem_id
+        c.contenttype = self.contenttype
+        c.contents = self.contents
+        desc = c.description
+        if self.mem_id in multiple_event_items:
+            desc = "*%s" % desc
+        return desc
+    
+    def mutate_contents(self):
+        from chestrandomizer import ChestBlock
+        c = ChestBlock(0x0, 0x0)
+        c.memid = 0
+        c.contenttype = self.contenttype
+        c.contents = self.contents
+        
+        c.mutate_contents(monster=self.monster)
+        # If we can't show text, we don't want it to be GP,
+        # because that event takes 3 bytes instead of 2,
+        # and I'd have to rearrange or remove stuff to fit it.
+        # So just make sure it's an item.
+        if not self.text:
+            while c.contenttype != 0x40:
+                c.mutate_contents(monster=False)
+                    
+        self.contenttype = c.contenttype
+        self.contents = c.contents
+        
+    def write_data(self, fout, cutscene_skip=False):
+        content_command_dict = { 0x80 : 0x6E, 0x40: 0x6D, 0x20: 0x6F}
+    
+        event_item_sub = Substitution()
+        location = self.cutscene_skip_pointer if cutscene_skip and self.cutscene_skip_pointer else self.pointer
+        event_item_sub.set_location(location)
+        event_item_sub.bytestring = []
+        
+        if self.contenttype in content_command_dict:
+            if not self.text:
+                event_item_sub.bytestring.append(0x80)
+            else:
+                event_item_sub.bytestring.append(content_command_dict[self.contenttype])
+            event_item_sub.bytestring.append(self.contents)
+        else:
+            event_item_sub.bytestring.extend([0xFD, 0xFD]) # Do nothing
+        if not cutscene_skip or not self.cutscene_skip_pointer:
+            event_item_sub.bytestring.extend(self.postfix_bytes)
+        event_item_sub.write(fout)
+
+        duplicate_dict = duplicate_event_item_skip_dict if cutscene_skip else duplicate_event_item_dict
+        if self.pointer in duplicate_dict:
+            prev_pointer = self.pointer
+            prev_text = self.text
+            self.text = True # There's probably a better way to do this, but makes the returner guy still tell you the item name if you go up to talk to him with cutscene_skip on.
+            self.pointer = duplicate_dict[self.pointer]
+            self.write_data(fout)
+            self.pointer = prev_pointer
+            self.text = prev_text
+        elif self.pointer == 0xCD59E:
+            event_item_sub.bytestring = [0x94, # Pause 60 frames
+            0x66, 0xE5, 0xC6, self.contents,  # Show text 0x06E5 at bottom, no text box, with item self.contents
+            0xFE] # return
+            event_item_sub.set_location(0x10CF4A)
+            event_item_sub.write(fout)
+
+# TODO: Maybe this should be in a text file
+event_items_dict ={ "Narshe (WoB)" : [
+    EventItem(0x40, 0xF6, 0xCA00A, cutscene_skip_pointer=0xC9F8B, monster=False, text=False),
+    EventItem(0x40, 0xF6, 0xCA00C, cutscene_skip_pointer=0xC9F8D, monster=False, text=False),
+    EventItem(0x40, 0xCD, 0xCD59E, monster=False),
+    ],
+    
+    "Figaro Castle":[
+    EventItem(0x40, 0xAA, 0xA66B4, cutscene_skip_pointer=0xA6633, monster=False, text=False),
+    ],
+    
+    "Returner's Hideout" : [
+    
+    EventItem(0x40, 0xD0, 0xAFB0B, cutscene_skip_pointer=0xAFAC9, monster=False, multiple=True),
+    EventItem(0x40, 0xD1, 0xAFFD2, cutscene_skip_pointer=0xAFDE7, monster=False),
+    ],
+    
+    "Mobliz (WoB)" : [
+    EventItem(0x40, 0xE5, 0xC6883, monster=False),
+    ],
+    
+    "Crescent Mountain" : [
+    EventItem(0x40, 0xE8, 0xBC432, postfix_bytes=[0x45, 0x45, 0x45], monster=False),
+    ],
+    
+    "Sealed Gate" : [
+    EventItem(0x40, 0xAE, 0xB30E5, postfix_bytes=[0xD4, 0x4D, 0xFE]),
+    EventItem(0x40, 0xAC, 0xB3103, postfix_bytes=[0xD4, 0x4E, 0xFE]),
+    EventItem(0x40, 0xF5, 0xB3121, postfix_bytes=[0xD4, 0x4F, 0xFE]), # in vanilla: says Remedy, gives Soft. Changed to give Remedy.
+    EventItem(0x80, 0x14, 0xB313F, postfix_bytes=[0xD4, 0x50, 0xFE]), # in vanilla: says 2000 GP, gives 293 GP. Changed to give 2000 GP.
+    ],
+    
+    "Vector" : [
+    EventItem(0x40, 0xE5, 0xC9257, monster=False),
+    EventItem(0x40, 0xDF, 0xC926C, monster=False),
+    ],
+    
+    "Owzer's Mansion" : [
+    EventItem(0x80, 0x14, 0xB4A84, postfix_bytes=[0xD4, 0x59, 0x3A, 0xFE]), # in vanilla: says 2000 GP, gives 293 GP. Changed to give 2000 GP.
+    EventItem(0x40, 0xE9, 0xB4AC4, postfix_bytes=[0xD4, 0x5A, 0x3A, 0xFE]), # in vanilla: says Potion, gives Tonic. Changed to give Potion.
+    EventItem(0x40, 0xEC, 0xB4B03, postfix_bytes=[0xD4, 0x5B, 0x3A, 0xFE]), # in vanilla: says Ether, gives Tincture. Changed to give Ether.
+    EventItem(0x40, 0xF4, 0xB4B42, postfix_bytes=[0xD4, 0x5C, 0x3A, 0xFE]), # in vanilla: says Remedy, gives Soft. Changed to give Remedy.
+    ],
+    
+    "Doma Castle" : [
+    EventItem(0x40, 0x30, 0xB99F4, monster=False, text=False),
+    ],
+    
+    "Kohlingen" : [
+    EventItem(0x40, 0xEA, 0xC3240, monster=False),
+    EventItem(0x40, 0xF0, 0xC3242, monster=False),
+    EventItem(0x40, 0xED, 0xC3244, monster=False),
+    EventItem(0x40, 0xEE, 0xC3246, monster=False),
+    EventItem(0x40, 0x60, 0xC3248, monster=False),
+    EventItem(0x40, 0x09, 0xC324A, postfix_bytes=[0xFD, 0xFD, 0xFD], monster=False),
+    ],
+    
+    "Narshe (WoR)" : [
+    EventItem(0x40, 0x1B, 0xC0B67, monster=False),
+    EventItem(0x40, 0x66, 0xC0B80, postfix_bytes=[0xFD, 0xD0, 0xB8, 0xFD, 0xFD], monster=False),
+    ],
+    
+    "Fanatics Tower" : [
+    EventItem(0x40, 0x21, 0xC5598, postfix_bytes=[0xFD, 0xFD, 0xFD], monster=False),
+    ]
+    }
+
+duplicate_event_item_dict = {
+    0xAFB0B : 0xAFB73,  # Gauntlet from Banon
+    0xAFFD2 : 0xAF975   # Genji Glove from returner
+    }
+
+duplicate_event_item_skip_dict = {
+    0xAFFD2 : 0xAF975   # Genji Glove from returner
+    }
+
+def get_event_items():
+    return event_items_dict
+    
+def mutate_event_items(fout, cutscene_skip=False):
+    event_item_sub = Substitution()
+    event_item_sub.set_location(0x9926)
+    event_item_sub.bytestring = [0x8A, 0xD6] # pointer to new event command 66
+    event_item_sub.write(fout)
+    event_item_sub.set_location(0x9934)
+    event_item_sub.bytestring = [0x13, 0xD6, 0x26, 0xD6, 0x71, 0xD6] # pointers to new event commands 6D, 6E, and 6F
+    event_item_sub.write(fout)
+
+    event_item_sub.set_location(0xD613)
+    event_item_sub.bytestring = [
+    # 6D : (2 bytes) Give item to party and show message "Received <Item>!"
+    0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x83, 0x05, 0x20, 0xFC, 0xAC, 0x20, 0x06, 0x4D, 0xA9, 0x08, 0x85, 0xEB, 0x80, 0x59, 
+    
+    # 6E (2 bytes) Give 100 * param GP to party and show message "Found <N> GP!" (It's 100 * param GP because that's what treasure chests do, but it doesn't need to be.)
+    0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x02, 0x42, 0xA9, 0x64, 0x8D, 0x03, 0x42, 0xEA, 0xEA, 0xEA, 0xAC, 0x16, 0x42, 0x84, 0x22, 0x64, 0x24, 0xC2, 0x21, 0x98, 0x6D, 0x60, 0x18, 0x8D, 0x60, 0x18, 0x7B, 0xE2, 0x20, 0x6D, 0x62, 0x18, 0x8D, 0x62, 0x18, 0xC9, 0x98, 0x90, 0x13, 0xAE, 0x60, 0x18, 0xE0, 0x7F, 0x96, 0x90, 0x0B, 0xA2, 0x7F, 0x96, 0x8E, 0x60, 0x18, 0xA9, 0x98, 0x8D, 0x62, 0x18, 0x20, 0x06, 0x4D, 0x20, 0xE5, 0x02, 0xA9, 0x10, 0x85, 0xEB, 0x80, 0x0E, 
+    
+    # 6F : (2 bytes) Show "Monster-in-a-box!" and start battle with formation from param
+    0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x89, 0x07, 0x20, 0x06, 0x4D, 0xA9, 0x40, 0x85, 0xEB, 
+    
+    # Common code used by all three functions. Finishes setting parameters to jump into action B2 (call event subroutine)
+    0x64, 0xEC, 0xA9, 0x00, 0x85, 0xED, 0xA9, 0x02, 0x4C, 0xA3, 0xB1, 
+    
+    # 66 : (4 bytes) Show text $AAAA with item name $BB and wait for button press
+    0xA5, 0xED, 0x85, 0x1A, 0x8D, 0x83, 0x05, 0xA9, 0x01, 0x20, 0x70, 0x9B, 0x4C, 0xBC, 0xA4,
+    ]
+    event_item_sub.write(fout)
+    
+    fout.seek(0xC3243)
+    phoenix_events = fout.read(0x3F)
+    fout.seek(0xC324F)
+    fout.write(phoenix_events)
+    
+    # End some text boxes early so they don't show the item.
+    event_item_sub.bytestring = [0x00]
+    for location in [0xD3376, 0xD345C, 0xD848D, 0xE14A7, 0xE291E, 0xE299F]:
+        event_item_sub.set_location(location)
+        event_item_sub.write(fout)
+
+    # Change Lone Wolf text to say item placeholder instead of gold hairpin
+    event_item_sub.bytestring = [0x1A, 0x62, 0x5E, 0x00]
+    event_item_sub.set_location(0xE1936)
+    event_item_sub.write(fout)
+    
+    # Because it takes up more slightly space
+    # move Lone Wolf talking into a subroutine
+    event_item_sub.bytestring = [0xB2, 0x4A, 0xCF, 0x06]
+    event_item_sub.set_location(0xCD581)
+    event_item_sub.write(fout)
+    
+    for location in event_items_dict:
+        for e in event_items_dict[location]:
+            if cutscene_skip:
+                e.text = False
+            e.mutate_contents()
+            e.write_data(fout, cutscene_skip=cutscene_skip)

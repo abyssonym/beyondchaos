@@ -101,6 +101,8 @@ class SpellBlock:
         self.statuses = statuses
         self.has_status = sum([bin(b).count("1") for b in statuses])
         f.close()
+        
+        self._rank = None
 
     def __cmp__(self, other):
         if other is None:
@@ -137,6 +139,8 @@ class SpellBlock:
         fout.write(chr(self.dmgtype))
 
     def rank(self):
+        if self._rank is not None:
+            return self._rank
         if self.power >= 1 and not self.percentage and not self.draining:
             power = self.power
             baseline = power
@@ -199,8 +203,10 @@ class SpellBlock:
 
         if self.spellid in spellbans:
             baseline += abs(spellbans[self.spellid])
+        
+        self._rank = int(baseline)
 
-        return int(baseline)
+        return self._rank
 
 
 class CommandBlock:
@@ -493,7 +499,7 @@ class RandomSpellSub(Substitution):
         self.name = spellclass
         desc, spellset = spellsets[spellclass]
         self.spells_description = desc
-        if spellclass.lower() in ["chaos"]:
+        if spellclass.lower() in ["chaos"] or len(valid_spells) == 0:
             self.wild = True
             self.spells = []
             return

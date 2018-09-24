@@ -47,7 +47,6 @@ WOR_ITEMS_TABLE = path.join(tblpath, "worstartingitems.txt")
 WOB_EVENTS_TABLE = path.join(tblpath, "wobeventbits.txt")
 SPRITE_REPLACEMENT_TABLE = path.join(tblpath, "spritereplacements.txt")
 SKIP_EVENTS_TABLE = path.join(tblpath, "skipevents.txt")
-SKIP_EVENT_PALETTES_TABLE = path.join(tblpath, "skipeventpalettes.txt")
 
 
 class Substitution(object):

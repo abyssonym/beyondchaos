@@ -10,7 +10,6 @@ from utils import (ESPER_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
                    WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
 				   SPRITE_REPLACEMENT_TABLE, SKIP_EVENTS_TABLE,
-                   SKIP_EVENT_PALETTES_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -231,20 +230,13 @@ class AutoLearnRageSub(Substitution):
 class AutoRecruitGauSub(Substitution):
     @property
     def bytestring(self):
-        if 'notawaiter' in activated_codes:
-            return [0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
-        else:
-            return [0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
+        return [0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
 
     def write(self, filename):
         sub_addr = self.location - 0xa0000
         call_recruit_sub = Substitution()
         call_recruit_sub.bytestring = [0xB2] + int2bytes(sub_addr, length=3)
-        if 'notawaiter' in activated_codes:
-            call_recruit_sub.bytestring.append(0xFE)
-            call_recruit_sub.set_location(0xBC0A4)
-        else:
-            call_recruit_sub.set_location(0xBC19C)
+        call_recruit_sub.set_location(0xBC19C)
         call_recruit_sub.write(filename)
         gau_stays_wor_sub = Substitution()
         gau_stays_wor_sub.bytestring = [0xD4, 0xFB]
@@ -1624,22 +1616,28 @@ def manage_sprint():
     autosprint.write(fout)
 
 def lk2_manage_skips():
+    # To identify if this cutscene skip is active in a ROM, look for the bytestring:
+    # 41 6E 64 53 68 65 61 74 68 57 61 73 54 68 65 72 65 54 6F 6F
+    # at 0xCAAA1
     characters = get_characters();
     state = "Replacing Event Code"
     
-    for line in open(SKIP_EVENTS_TABLE):
-        split_line = line.strip().split(' ')
-
+    def writeToAddress(address, event):
         event_skip_sub = Substitution()
         event_skip_sub.bytestring = []
-        for byte in split_line[1:]:
+        for byte in event:
             event_skip_sub.bytestring.append(int(byte, 16))
-        event_skip_sub.set_location(int(split_line[0], 16))
+        event_skip_sub.set_location(int(address, 16))
         event_skip_sub.write(fout)
         
-    for line in open(SKIP_EVENT_PALETTES_TABLE):
-        split_line = line.strip().split(' ')
-    
+    def handleNormal(split_line): # Replace events that should always be replaced
+        writeToAddress(split_line[0], split_line[1:])
+        
+    def handleGau(split_line): # Replace events that should be replaced if we are auto-recruiting Gau
+        if 'o' in flags or 'w' in flags or 't' in flags:
+            writeToAddress(split_line[0], split_line[1:])
+            
+    def handlePalette(split_line): # Fix palettes so that they are randomized
         for character in characters:
             if character.id == int(split_line[1], 16):
                 palette_correct_sub = Substitution()
@@ -1647,11 +1645,12 @@ def lk2_manage_skips():
                 palette_correct_sub.set_location(int(split_line[0], 16))
                 palette_correct_sub.write(fout)
     
-    # We overwrote the Gau recruition code, so call it again
-    if 'o' in flags or 'w' in flags or 't' in flags:
-        auto_recruit_gau()
-            
-def manage_skips():
+    for line in open(SKIP_EVENTS_TABLE):
+        # If "Foo" precedes a line in skipEvents.txt, call "handleFoo"
+        split_line = line.strip().split(' ')
+        handler = "handle" + split_line[0]
+        locals()[handler](split_line[1:])
+
     flashback_skip_sub = Substitution()
     flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
     flashback_skip_sub.set_location(0xAC582)
@@ -1691,24 +1690,15 @@ def manage_skips():
     leo_skip_sub.set_location(0xBF2B5)
     leo_skip_sub.write(fout)
 
-    shadow_leaving_sub = Substitution()
-    shadow_leaving_sub.bytestring = [0xEA] * 2
-    shadow_leaving_sub.set_location(0x2488A)
-    shadow_leaving_sub.write(fout)
-
-    narshe_skip_sub = Substitution()
-    narshe_skip_sub.bytestring = []
-    narshe_skip_sub.bytestring += [0x3E, 0x0D, 0x3D, 0x00, 0x3D, 0x04,
-                                   0x3D, 0x0E, 0x3D, 0x05, 0x3D, 0x02,
-                                   0x3D, 0x0B, 0x3D, 0x01, 0x3D, 0x06]
-    narshe_skip_sub.bytestring += [0xD2, 0xCC, 0xD4, 0xBC]
-    narshe_skip_sub.bytestring += [0x3F, 0x00, 0x01, 0x3F, 0x0D, 0x00]
-    address = 0x2BC44 - len(narshe_skip_sub.bytestring)
-    narshe_skip_sub.set_location(address + 0xA0000)
-    narshe_skip_sub.write(fout)
-    narshe_skip_sub.bytestring = [0xB2, address & 0xFF, (address >> 8) & 0xFF, address >> 16]
-    narshe_skip_sub.set_location(0xAADC4)
-    narshe_skip_sub.write(fout)
+    tintinabar_sub.set_location(0xD81F1)
+    tintinabar_sub.bytestring = [0x25, 0xB0, 0x7F, 0x56, 0x59, 0x54, 0x54, 0x7F, 0x26, 0x2F, 0xAC, 0x8B, 0xB2, 0x8F, 0x8E, 0xA4, 0x8C, 0x56, 0xBB, 0xD0, 0xBA, 0xC8, 0x98, 0xB9, 0x89, 0xFA, 0x4B, 0x3D, 0x98, 0xB9, 0x33, 0x9F, 0x42, 0x3C, 0x98, 0x8F, 0x8C, 0xB9, 0x3B, 0x48, 0x48, 0x44, 0x65, 0x01, 0x15, 0x7F, 0x6B, 0x32, 0x3E, 0xB5, 0x81, 0x85, 0x46, 0x6C, 0x7F, 0x7F, 0x15, 0x7F, 0x6B, 0x25, 0x48, 0x4B, 0x40, 0xD0, 0x97, 0x4D, 0x6C, 0x00 ] #'F', 'or', ' ', '2', '5', '0', '0', ' ', 'G', 'P', ' y', 'ou', ' c', 'an', ' s', 'en', 'd ', '2', ' l', 'et', 'te', 'rs', ', ', 'a ', 're', 'co', 'r', 'd', ', ', 'a ', 'T', 'on', 'i', 'c', ', ', 'an', 'd ', 'a ', 'b', 'o', 'o', 'k', '.', '\n', '<choice>', ' ', '(', 'S', 'e', 'nd', ' t', 'he', 't', ')', ' ', ' ', '<choice>', ' ', '(', 'F', 'o', 'r', 'g', 'et', ' i', 't', ')''\0'
+    tintinabar_sub.write(fout)
+        
+    # We overwrote some of the event items, so write them again
+    if 't' in flags:
+        for area_name, items in get_event_items().iteritems():
+            for e in items:
+                e.write_data(fout, cutscene_skip=True)
 
 
 def activate_airship_mode(freespaces):

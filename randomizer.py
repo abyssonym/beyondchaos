@@ -6264,7 +6264,7 @@ k   Randomize the clock in Zozo
                 flags = flags[1]
             fullseed = ".%s.%s" % (flags, fullseed)
             print
-    
+
     try:
         version, flags, seed = tuple(fullseed.split('.'))
     except ValueError:

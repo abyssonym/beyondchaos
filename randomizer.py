@@ -6136,10 +6136,12 @@ def nerf_paladin_shield():
 
 
 def expand_rom():
-    expand_sub = Substitution()
-    expand_sub.set_location(0x300000)
-    expand_sub.bytestring = [0x00] * 0x100000
-    expand_sub.write(fout)
+    fout.seek(0,2)
+    if fout.tell() < 0x400000:
+        expand_sub = Substitution()
+        expand_sub.set_location(fout.tell())
+        expand_sub.bytestring = [0x00] * (0x400000 - fout.tell())
+        expand_sub.write(fout)
 
 
 def randomize():
@@ -6220,8 +6222,11 @@ a   Organize rages alphabetically (default)
 h   Organize rages by highest level first
 g   Randomize dances
 k   Randomize the clock in Zozo
+0-9 Shorthand for the text saved under that digit, if any
 -   Use all flags EXCEPT the ones listed'''
 
+    speeddial_opts = {}
+    saveflags = False
     if len(args) > 2:
         fullseed = args[2].strip()
     else:
@@ -6229,9 +6234,31 @@ k   Randomize the clock in Zozo
                              "seed):\n> ").strip()
         print
         if '.' not in fullseed:
+            try:
+                with open('savedflags.txt', 'r') as sff:
+                    savedflags = [l.strip() for l in sff.readlines() if ":" in l]
+                    for line in savedflags:
+                        line = line.split(':')
+                        line[0] = ''.join(c for c in line[0] if c in '0123456789')
+                        speeddial_opts[line[0]] = ''.join(line[1:]).strip()
+            except IOError:
+                pass
+                
             print flaghelptext + "\n"
+            print "Save frequently used flag sets by adding 0: through 9: before the flags."
+            for k, v in sorted(speeddial_opts.items()):
+                print "    %s: %s" % (k, v)
+            print
             flags = raw_input("Please input your desired flags (blank for "
                               "all of them):\n> ").strip()
+            if ":" in flags:
+                flags = flags.split(':')
+                dial = ''.join(c for c in flags[0] if c in '0123456789')
+                if len(dial) == 1:
+                    speeddial_opts[dial] = flags[1]
+                    print '\nSaving flags "%s" in slot %s' % (flags[1], dial)
+                    saveflags = True
+                flags = flags[1]
             fullseed = ".%s.%s" % (flags, fullseed)
             print
 
@@ -6247,6 +6274,14 @@ k   Randomize the clock in Zozo
     seed = seed % (10**10)
     reseed()
 
+    if saveflags:
+        try:
+            with open('savedflags.txt', 'w') as sff:
+                for k, v in speeddial_opts.items():
+                    if v: sff.write("%s: %s" % (k, v) + '\n')
+        except:
+            print "Couldn't save flag string\n"
+    
     if '.' in sourcefile:
         tempname = sourcefile.rsplit('.', 1)
     else:
@@ -6272,6 +6307,16 @@ k   Randomize the clock in Zozo
 
     copyfile(sourcefile, outfile)
 
+    flags = flags.lower()
+    flags = flags.replace('endless9', 'endless~nine~')
+    for d in "0123456789":
+        if d in speeddial_opts:
+            replacement = speeddial_opts[d]
+        else:
+            replacement = ''
+        flags = flags.replace(d, replacement)
+    flags = flags.replace('endless~nine~', 'endless9')
+
     if version and version != VERSION:
         print ("WARNING! Version mismatch! "
                "This seed will not produce the expected result!")
@@ -6287,8 +6332,6 @@ k   Randomize the clock in Zozo
     commands = dict([(c.name, c) for c in commands])
 
     characters = get_characters()
-
-    flags = flags.lower()
 
     secret_codes['airship'] = "AIRSHIP MODE"
     secret_codes['partyparty'] = "CRAZY PARTY MODE"

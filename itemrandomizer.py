@@ -211,8 +211,11 @@ class ItemBlock:
 
         write_multi(fout, self.price, length=2)
 
-        if self.is_weapon:
-            fout.seek(0x2CE408 + (8*self.itemid))
+        if self.is_weapon or (self.itemtype & 0x0f) == 0x01:
+            if self.itemid < 93:
+                fout.seek(0x2CE408 + (8*self.itemid))
+            else:
+                fout.seek(0x303100 + (8*(self.itemid -93)))
             fout.write("".join(map(chr, self.weapon_animation)))
 
         fout.seek(0x12B300 + (13*self.itemid))

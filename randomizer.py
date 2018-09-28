@@ -6484,6 +6484,15 @@ k   Randomize the clock in Zozo
             rename_card = get_item(231)
             rename_card.become_another(tier="low")
             rename_card.write_stats(fout)
+
+            weapon_anim_fix = Substitution()
+            weapon_anim_fix.set_location(0x19DB8)
+            weapon_anim_fix.bytestring = [0x22, 0x80, 0x30, 0xF0]
+            weapon_anim_fix.write(fout)
+
+            weapon_anim_fix.set_location(0x303080)
+            weapon_anim_fix.bytestring = [0xE0, 0xE8, 0x02, 0xB0, 0x05, 0xBF, 0x00, 0xE4, 0xEC, 0x6B, 0xDA, 0xC2, 0x20, 0x8A, 0xE9, 0xF0, 0x02, 0xAA, 0x29, 0xFF, 0x00, 0xE2, 0x20, 0xBF, 0x00, 0x31, 0xF0, 0xFA, 0x6B]
+            weapon_anim_fix.write(fout)
     reseed()
 
     items = get_ranked_items()

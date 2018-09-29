@@ -445,7 +445,7 @@ class EventItem:
             desc = "*%s" % desc
         return desc
     
-    def mutate_contents(self):
+    def mutate_contents(self, cutscene_skip=False):
         from chestrandomizer import ChestBlock
         c = ChestBlock(0x0, 0x0)
         c.memid = 0
@@ -457,7 +457,7 @@ class EventItem:
         # because that event takes 3 bytes instead of 2,
         # and I'd have to rearrange or remove stuff to fit it.
         # So just make sure it's an item.
-        if not self.text:
+        if not self.text or (cutscene_skip and self.cutscene_skip_pointer):
             while c.contenttype != 0x40:
                 c.mutate_contents(monster=False)
                     
@@ -473,7 +473,7 @@ class EventItem:
         event_item_sub.bytestring = []
         
         if self.contenttype in content_command_dict:
-            if not self.text:
+            if not self.text or (cutscene_skip and self.cutscene_skip_pointer):
                 event_item_sub.bytestring.append(0x80)
             else:
                 event_item_sub.bytestring.append(content_command_dict[self.contenttype])
@@ -487,12 +487,9 @@ class EventItem:
         duplicate_dict = duplicate_event_item_skip_dict if cutscene_skip else duplicate_event_item_dict
         if self.pointer in duplicate_dict:
             prev_pointer = self.pointer
-            prev_text = self.text
-            self.text = True # There's probably a better way to do this, but makes the returner guy still tell you the item name if you go up to talk to him with cutscene_skip on.
             self.pointer = duplicate_dict[self.pointer]
             self.write_data(fout)
             self.pointer = prev_pointer
-            self.text = prev_text
         elif self.pointer == 0xCD59E:
             event_item_sub.bytestring = [0x94, # Pause 60 frames
             0x66, 0xE5, 0xC6, self.contents,  # Show text 0x06E5 at bottom, no text box, with item self.contents
@@ -631,7 +628,5 @@ def mutate_event_items(fout, cutscene_skip=False):
     
     for location in event_items_dict:
         for e in event_items_dict[location]:
-            if cutscene_skip:
-                e.text = False
-            e.mutate_contents()
+            e.mutate_contents(cutscene_skip=cutscene_skip)
             e.write_data(fout, cutscene_skip=cutscene_skip)

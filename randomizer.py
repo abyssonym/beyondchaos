@@ -1648,7 +1648,7 @@ def lk2_manage_skips():
         split_line = line.strip().split(' ')
         handler = "handle" + split_line[0]
         locals()[handler](split_line[1:])
-    
+
     flashback_skip_sub = Substitution()
     flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
     flashback_skip_sub.set_location(0xAC582)
@@ -6370,7 +6370,7 @@ k   Randomize the clock in Zozo
     secret_codes['beyondtierless'] = "TIERS FOR FEARS MODE"
     secret_codes['randombosses'] = "RANDOM BOSSES MODE"
     secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
-    secret_codes['notawaiter'] = "ALTERNATE CUTSCENE SKIPS"
+    secret_codes['notawaiter'] = "CUTSCENE SKIPS"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

@@ -1613,12 +1613,11 @@ def manage_sprint():
     autosprint.bytestring = [0x80, 0x00]
     autosprint.write(fout)
 
-def lk2_manage_skips():
+def manage_skips():
     # To identify if this cutscene skip is active in a ROM, look for the bytestring:
     # 41 6E 64 53 68 65 61 74 68 57 61 73 54 68 65 72 65 54 6F 6F
     # at 0xCAAA1
     characters = get_characters();
-    state = "Replacing Event Code"
     
     def writeToAddress(address, event):
         event_skip_sub = Substitution()
@@ -6331,7 +6330,7 @@ k   Randomize the clock in Zozo
     secret_codes['beyondtierless'] = "TIERS FOR FEARS MODE"
     secret_codes['randombosses'] = "RANDOM BOSSES MODE"
     secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
-    secret_codes['notawaiter'] = "ALTERNATE CUTSCENE SKIPS"
+    secret_codes['notawaiter'] = "CUTSCENE SKIPS"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -6643,7 +6642,7 @@ k   Randomize the clock in Zozo
     
     if 'notawaiter' in activated_codes:
         print "Cutscenes are currently skipped up to Kefka @ Narshe"
-        lk2_manage_skips()
+        manage_skips()
     reseed()
 
     if 'worringtriad' in activated_codes:

@@ -512,84 +512,72 @@ class MonsterBlock:
             level += random.randint(0, 1)
         assert self.stats['level'] <= level <= limit
         self.stats['level'] = level
-		
+
     def increase_enemy_difficulty(self, limit=99):
         level = self.stats['level']
         diff = limit - level
-        if self.is_boss and not (self.id in early_bosses):
-            self.stats['hp'] += (self.stats['hp'] * (3/2))
-            self.stats['mpow'] += (self.stats['mpow'] * (3/2))
-            self.stats['attack'] += (self.stats['attack'] * (3/2))
-            self.stats['def'] += (self.stats['def'] * (5/4))
-            self.stats['mdef'] += (self.stats['mdef'] * (5/4))
-            self.stats['speed'] += (self.stats['speed'] * (3/2))
-            if self.stats['evade%'] == 0:
-			    self.stats['evade%'] = level
-            else:
-                self.stats['evade%'] = (self.stats['evade%'] * (5/4))
-            if self.stats['mblock%'] == 0:
-			    self.stats['mblock%'] = level
-            else: 
-		        self.stats['mblock%'] = (self.stats['mblock%'] * (5/4))
+        
+        level_add = diff/2
         if level <=7:
-            level += random.randint(0, diff/16) + random.randint(0, diff/16)
+            level_add = diff/16
         elif level <= 15:
-            level += random.randint(0, diff/8) + random.randint(0, diff/8)
-            self.stats['hp'] += random.randint(100, 250) + random.randint(100, 250)
+            level_add = diff/8
         elif level <=30:
-            level += random.randint(0, diff/4) + random.randint(0, diff/4)
-            self.stats['hp'] += random.randint(750, 1500) + random.randint(750, 1500)
-            self.stats['mpow'] = (self.stats['mpow'] * (5/4))
-            self.stats['attack'] = (self.stats['attack'] * (5/4))
-            self.stats['def'] = (self.stats['def'] * (5/4))
-            self.stats['mdef'] = (self.stats['mdef'] * (5/4))
-            self.stats['speed'] = (self.stats['speed'] * (5/4))
-            if self.stats['evade%'] == 0:
-			    self.stats['evade%'] = level
-            else:
-                self.stats['evade%'] = (self.stats['evade%'] * (5/4))
-            if self.stats['mblock%'] == 0:
-			    self.stats['mblock%'] = level
-            else: 
-		        self.stats['mblock%'] = (self.stats['mblock%'] * (5/4))
-        else:
-            level += random.randint(0, diff/2) + random.randint(0, diff/2) 
-            self.stats['hp'] += random.randint(2500, 5000) + random.randint(2500, 5000)
-            self.stats['mpow'] = (self.stats['mpow'] * (5/4))
-            self.stats['attack'] = (self.stats['attack'] * (5/4))
-            self.stats['def'] = (self.stats['def'] * (5/4))
-            self.stats['mdef'] = (self.stats['mdef'] * (5/4))
-            self.stats['speed'] = (self.stats['speed'] * (5/4))
-            if self.stats['evade%'] == 0:
-			    self.stats['evade%'] = level
-            else:
-                self.stats['evade%'] = (self.stats['evade%'] * (5/4))
-            if self.stats['mblock%'] == 0:
-			    self.stats['mblock%'] = level
-            else: 
-		        self.stats['mblock%'] = (self.stats['mblock%'] * (5/4))
-        if self.stats['hp'] > 65535:
-            self.stats['hp'] = 65535
-        if self.stats['mpow'] > 255:
-            self.stats['mpow'] = 255
-        if self.stats['attack'] > 255:
-            self.stats['attack'] = 255
-        if self.stats['def'] > 255:
-            self.stats['def'] = 255
-        if self.stats['mdef'] > 255:
-            self.stats['mdef'] = 255
-        if self.stats['speed'] > 255:
-            self.stats['speed'] = 255
-        if self.stats['evade%'] > 255:
-            self.stats['evade%'] = 255
-        if self.stats['mblock%'] > 255:
-            self.stats['mblock%'] = 255			
+            level_add = diff/4
+
+        factors = {
+            'mpow': 5/4,
+            'attack': 5/4,
+            'def': 5/4,
+            'mdef': 5/4,
+            'speed': 5/4,
+            'evade%': 5/4,
+            'mblock%': 9/8,
+        }
+
+        hp_add = (750, 1500) if level <= 30 else (2500, 5000)
+        if level <= 15:
+            hp_add = (0, 0) if level <= 7 else (100, 250)
+            factors = {}
+
+        if self.is_boss and self.id not in early_bosses:
+            hp_add = (0, 0)
+            factors = {
+                'hp': 5/2,
+                'mpow': 3/2,
+                'attack': 3/2,
+                'def': 5/4,
+                'mdef': 5/4,
+                'speed': 3/2,
+                'evade%': 4/4,
+                'mblock%': 9/8,
+            }
+
+        for stat in self.stats:
+            self.stats[stat] *= factors.get(stat, 1)
+            
+        if self.stats['evade%'] == 0:
+            self.stats['evade%'] = level/2
+
+        if self.stats['mblock%'] == 0:
+            self.stats['mblock%'] = level/4
+        
+        stat_max = {
+            'hp': 65535,
+            'speed': 235
+        }
+
+        for stat in ['hp', 'mpow', 'attack', 'def', 'mdef', 'speed', 'evade%', 'mblock%']:
+            self.stats[stat] = min(stat_max.get(stat, 255), self.stats[stat])
+
         if diff % 2 == 1:
             level += random.randint(0, 1)
 
-        assert self.stats['level'] <= level <= limit
-        self.stats['level'] = level		
+        level += random.randint(0, level_add) + random.randint(0, level_add)
+        self.stats['level'] = min(level, limit)
 
+        if hp_add[1] > 0 and hp_add[1] > hp_add[0]:
+            self.stats['hp'] += random.randint(*hp_add) + random.randint(*hp_add)
 
     def randomize_special_effect(self, fout):
         attackpointer = 0xFD0D0 + (self.id * 10)
@@ -712,7 +700,7 @@ class MonsterBlock:
         self.stats['mp'] = int(
             round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
 
-    def mutate_ai(self, change_skillset=True, itembreaker=False, randombosses=False, beyondtierless=False, madworld=False):
+    def mutate_ai(self, change_skillset=True, itembreaker=False, randombosses=False, madworld=False, darkworld=False):
         if self.name[:2] == "L." and randombosses == False:
             change_skillset = False
         elif "guardian" in self.name.lower():
@@ -728,7 +716,7 @@ class MonsterBlock:
             e = s1.unreflectable == s2.unreflectable
             f = s1.abort_on_allies == s2.abort_on_allies
             return (a and b and c and d and e and f)
-        if beyondtierless: 
+        if madworld: 
             restricted = []
         else:
             restricted = [0x13, 0x14]		
@@ -1083,6 +1071,9 @@ class MonsterBlock:
             index = self.aiscript.index(stealmessage)
             self.aiscript[index] = deathmessage
 
+        if name == 'whelk':
+            self.aiscript = self.aiscript[4:]
+            
         if tutmessage:
             self.aiscript = [a for a in self.aiscript if a != tutmessage]
 
@@ -1537,12 +1528,12 @@ class MonsterBlock:
     def deadspecial(self):
         return (self.special & 0x3F) in [0x07, 0x10, 0x18]
 
-    def mutate_special(self, madworld=False):
+    def mutate_special(self, darkworld=False):
         if self.goodspecial:
             return
 
         branch = random.randint(1, 10)
-        if madworld:
+        if darkworld:
             branches = [3,5]
         else:
             branches = [7,9]
@@ -1594,7 +1585,7 @@ class MonsterBlock:
 
         self.special = special
 
-    def mutate(self, change_skillset=None, itembreaker=False, randombosses=False, beyondtierless=False, madworld=False):
+    def mutate(self, change_skillset=None, itembreaker=False, randombosses=False, madworld=False, darkworld=False):
         if change_skillset is None:
             change_skillset = randombosses or not (self.is_boss or self.boss_death)
             manual_change = False
@@ -1602,13 +1593,13 @@ class MonsterBlock:
             manual_change = True
         self.mutate_stats()
         self.mutate_misc()
-        if beyondtierless or random.randint(1, 10) > 5:
+        if madworld or random.randint(1, 10) > 5:
             self.mutate_statuses()
-        if beyondtierless or random.randint(1, 10) > 5:
-            self.mutate_affinities(odds=5 if beyondtierless else 10)
-        if beyondtierless or random.randint(1, 10) > 5:
+        if madworld or random.randint(1, 10) > 5:
+            self.mutate_affinities(odds=5 if madworld else 10)
+        if madworld or random.randint(1, 10) > 5:
             # do this before mutate_control
-            self.mutate_special(madworld=madworld)
+            self.mutate_special(darkworld=darkworld)
         if manual_change and change_skillset:
             value = 10
         else:
@@ -1616,10 +1607,10 @@ class MonsterBlock:
         if value > 1:
             if value == 2:
                 self.mutate_ai(change_skillset=False,
-                               itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
             else:
                 self.mutate_ai(change_skillset=change_skillset,
-                               itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
         self.mutate_control()
 
     def swap_ai(self, other):

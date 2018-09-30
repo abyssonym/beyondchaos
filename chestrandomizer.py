@@ -282,7 +282,7 @@ class ChestBlock:
 
     def mutate_contents(self, guideline=None, monster=None,
                         guarantee_miab_treasure=False, enemy_limit=None,
-                        uniqueness=False):
+                        uniqueness=False, crazy_prices=False):
         global used_formations, done_items
 
         if self.do_not_mutate and self.contents is not None:
@@ -389,8 +389,11 @@ class ChestBlock:
         elif 4 <= chance <= 5:
             # gold
             self.set_content_type(0x80)
-            value = value / 2
-            value += (random.randint(0, value) + random.randint(0, value))
+            if crazy_prices:
+                value = random.randint(10, 50)
+            else:
+                value = value / 2
+                value += (random.randint(0, value) + random.randint(0, value))
             self.contents = min(0xFF, max(1, value))
             if self.contents == 0xFF:
                 self.contents -= random.randint(0, 20) + random.randint(0, 20)

@@ -1953,9 +1953,9 @@ def manage_monsters():
     monsters = get_monsters(sourcefile)
     itembreaker = "collateraldamage" in activated_codes
     randombosses = "randombosses" in activated_codes
-    beyondtierless = "beyondtierless" in activated_codes
     madworld = "madworld" in activated_codes
-    change_skillset = True if madworld in activated_codes else None
+    darkworld = "darkworld" in activated_codes
+    change_skillset = True if darkworld in activated_codes else None
     final_bosses = (range(0x157, 0x160) + range(0x127, 0x12b) +
                     [0x112, 0x11a, 0x17d])
     for m in monsters:
@@ -1967,22 +1967,22 @@ def manage_monsters():
             if 0x157 <= m.id < 0x160 or m.id == 0x17d:
                 # deep randomize three tiers, Atma
                 m.randomize_boost_level()
-                if madworld:
+                if darkworld:
                     m.increase_enemy_difficulty()
-                m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
             else:
-                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
             if 0x127 <= m.id < 0x12a or m.id == 0x17d or m.id == 0x11a:
                 # boost statues, Atma, final kefka a second time
                 m.randomize_boost_level()
-                if madworld:
+                if darkworld:
                     m.increase_enemy_difficulty()				
-                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         else:
-            if madworld:
+            if darkworld:
                 m.increase_enemy_difficulty()
-            m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)				
+            m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)				
 
         m.tweak_fanatics()
         m.relevel_specifics()
@@ -2720,7 +2720,7 @@ def manage_colorize_animations():
 def manage_items(items, changed_commands=None):
     from itemrandomizer import (set_item_changed_commands, extend_item_breaks)
     always_break = True if "collateraldamage" in activated_codes else False
-    crazy_prices = True if "beyondtierless" in activated_codes else False
+    crazy_prices = True if "madworld" in activated_codes else False
     extra_effects= True if "masseffect" in activated_codes else False
     wild_breaks = True if "electricboogaloo" in activated_codes else False
 
@@ -3020,7 +3020,7 @@ def manage_espers(freespaces):
     espers = get_espers()
     random.shuffle(espers)
     for e in espers:
-        e.generate_spells(tierless = "beyondtierless" in activated_codes)
+        e.generate_spells(tierless = "madworld" in activated_codes)
         e.generate_bonus()
 
     bonus_espers = [e for e in espers if e.id in [15, 16]]
@@ -3121,6 +3121,7 @@ def manage_treasure(monsters, shops=True):
 
 
 def manage_chests():
+    crazy_prices = True if "madworld" in activated_codes else False
     locations = get_locations(sourcefile)
     locations = sorted(locations, key=lambda l: l.rank())
     for l in locations:
@@ -3131,7 +3132,7 @@ def manage_chests():
                     if c.contenttype == 0x40 and c.contents == 166:
                         c.contents = 33
 
-        l.mutate_chests()
+        l.mutate_chests(crazy_prices=crazy_prices)
     locations = sorted(locations, key=lambda l: l.locid)
 
     for m in get_monsters():
@@ -3493,15 +3494,15 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
 
         itembreaker = 'collateraldamage' in activated_codes
         randombosses = 'randombosses' in activated_codes
-        beyondtierless = 'beyondtierless' in activated_codes
         madworld = 'madworld' in activated_codes
+        darkworld = 'darkworld' in activated_codes
         ue.auxloc = "Missing (Boss)"
-        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
-        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
 
-        ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+        ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
         if random.choice([True, False]):
-            ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+            ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
         ue.treasure_boost()
         ue.graphics.mutate_palette()
         name = randomize_enemy_name(fout, ue.id)
@@ -3639,7 +3640,7 @@ def get_shops():
 def manage_shops():
     buyables = set([])
     descriptions = []
-    crazy_shops = "beyondtierless" in activated_codes
+    crazy_shops = True if "madworld" in activated_codes else False
     for s in get_shops():
         s.mutate_items(fout, crazy_shops)
         s.mutate_misc()
@@ -5268,7 +5269,7 @@ def manage_ancient():
                     and f.get_music() != 0]):
                 return False
         best_drop = formation.get_best_drop()
-        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or "beyondtierless" in activated_codes):
+        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or "madworld" in activated_codes):
             return True
         return False
 
@@ -6077,7 +6078,7 @@ def manage_spookiness():
         nowhere_to_run_bottom_sub.write(fout)
         
 def manage_dances():
-    if 'beyondtierless' in activated_codes:
+    if 'madworld' in activated_codes:
          spells = get_ranked_spells(sourcefile)
          dances = random.sample(spells, 32)
          dances = [s.spellid for s in dances]
@@ -6365,9 +6366,9 @@ k   Randomize the clock in Zozo
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
     secret_codes['dancingmaduin'] = "RESTRICTED ESPERS MODE"
     secret_codes['masseffect'] = "WILD EQUIPMENT EFFECT MODE"
-    secret_codes['madworld'] = "EXTREME DIFFICULTY MODE"
+    secret_codes['darkworld'] = "SLASHER'S DELIGHT MODE"
     secret_codes['supernatural'] = "SUPER NATURAL MAGIC MODE"
-    secret_codes['beyondtierless'] = "TIERS FOR FEARS MODE"
+    secret_codes['madworld'] = "TIERS FOR FEARS MODE"
     secret_codes['randombosses'] = "RANDOM BOSSES MODE"
     secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
     secret_codes['notawaiter'] = "CUTSCENE SKIPS"
@@ -6402,7 +6403,7 @@ k   Randomize the clock in Zozo
         except:
             multiplier = None
         set_randomness_multiplier(multiplier)
-    elif 'beyondtierless' in activated_codes:
+    elif 'madworld' in activated_codes:
         set_randomness_multiplier(None)
 
     fout = open(outfile, "r+b")
@@ -6434,7 +6435,7 @@ k   Randomize the clock in Zozo
     reseed()
 
     spells = get_ranked_spells(sourcefile)
-    if 'beyondtierless' in activated_codes:
+    if 'madworld' in activated_codes:
         random.shuffle(spells)
         for i, s in enumerate(spells):
             s._rank = i+1

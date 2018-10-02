@@ -499,8 +499,8 @@ class EventItem:
 
 # TODO: Maybe this should be in a text file
 event_items_dict ={ "Narshe (WoB)" : [
-    EventItem(0x40, 0xF6, 0xCA00A, cutscene_skip_pointer=0xC9F8B, monster=False, text=False),
-    EventItem(0x40, 0xF6, 0xCA00C, cutscene_skip_pointer=0xC9F8D, monster=False, text=False),
+    EventItem(0x40, 0xF6, 0xCA00A, cutscene_skip_pointer=0xC9F87, monster=False, text=False),
+    EventItem(0x40, 0xF6, 0xCA00C, cutscene_skip_pointer=0xC9F89, monster=False, text=False),
     EventItem(0x40, 0xCD, 0xCD59E, monster=False),
     ],
     

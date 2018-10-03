@@ -443,6 +443,45 @@ class CharacterBlock:
             fout.write("".join(map(chr, stats)))
         for name, value in zip(CHARSTATNAMES[2:], stats):
             self.stats[name] = value
+            
+        fout.seek(self.address + 21)
+        level_run = ord(fout.read(1))
+        run = level_run & 0x03
+        level = (level_run & 0x0C) >> 2
+        run_map = {
+            0: [70, 90, 99, 100],
+            1: [10, 80, 90, 100],
+            2: [10, 20, 90, 100],
+            3: [1, 10, 20, 100]
+        }
+        
+        level_map = {
+            0: [70, 80, 90, 100],  # avg. level + 0
+            1: [10, 80, 90, 100],  # avg. level + 2
+            2: [9,29,99,100],  # avg. level + 5
+            3: [20,29,30,100]   # avg. level - 3
+        }
+
+        if not read_only:
+            run_chance = random.randint(0,99)
+            for i, c_prob in enumerate(run_map[run]):
+                if run_chance < c_prob:
+                    run = i
+                    break
+
+            # Don't randomize Strago and Mog's level average values
+            # if worringtriad is active because they're used to set
+            # the starting level.
+            if ('worringtriad' not in activated_codes or
+               (self.id != 0x07 and self.id != 0x0a)):
+                level_chance = random.randint(0,99)
+                for i, c_prob in enumerate(level_map[level]):
+                    if level_chance < c_prob:
+                        level = i
+                        break
+            fout.seek(self.address + 21)
+            level_run = (level_run & 0xF0) | level << 2 | run
+            fout.write(chr(level_run))
 
     def become_invincible(self, fout):
         fout.seek(self.address + 11)

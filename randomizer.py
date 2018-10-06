@@ -5667,6 +5667,68 @@ def manage_dances():
         dancestr = dancestr.rstrip()
         log(dancestr, "dances")
 
+class WoRRecruitInfo(object):
+    def __init__(self, event_pointers, recruited_bit_pointer, location_npcs):
+        self.event_pointers = event_pointers
+        self.recruited_bit_pointer = recruited_bit_pointer
+        self.location_npcs = location_npcs
+
+    def write_data(self, fout):
+        assert(self.char_id)
+        for event_pointer in self.event_pointers:
+            fout.seek(event_pointer)
+            fout.write(chr(self.char_id))
+        fout.seek(self.recruited_bit_pointer)
+        fout.write(chr(0xf0 + self.char_id))
+        for location_id, npc_id in location_npcs:
+            location = get_location(location_id)
+            npc = location.npcs[npc_id]
+            npc.graphics = self.char_id
+            npc.palette = get_character(self.char_id).palette
+
+def manage_wor_recruitment():
+    candidates = [0x01, 0x02, 0x05, 0x07]
+    recruit_info = [
+        # Phoenix Cave / Locke
+        WoRRecruitInfo([0xc2c48, 0xc2c51, 0xc2c91, 0xc2c9d, 0xc2caf, 0xc2cb8, 0xc2cc5, 0xc2cca, 0xc2cd8, 0xc2ce3, 0xc2ce9, 0xc2cee, 0xc2cf4, 0xc2cfa, 0xc2d0b, 0xc2d33, 0xc2e32, 0xc2e80, 0xc2e86, 0xc2e8b, 0xc2e91, 0xc2ea5, 0xc2eb1, 0xc2ec4, 0xc2f0b, 0xc2fe1, 0xc3102, 0xc3106, 0xc3117, 0xc311d, 0xc3124, 0xc3134, 0xc313d, 0xc3163, 0xc3183, 0xc3185, 0xc3189, 0xc318b, 0xc318e, 0xc3191, 0xc3197, 0xc31c7, 0xc31cb, 0xc31e2, 0xc31e8, 0xc31ed, 0xc31f2, 0xc31f8, 0xc3210, 0xc3215, 0xc312d, 0xc3229, 0xc322f, 0xc3235, 0xc323b, 0xc3244, 0xc324a, 0xc324f, 0xc3258, 0xc326a], 0xc3195, [(0x139, 0)])
+        # Mt. Zozo / Cyan
+        WoRRecruitInfo([0xc429c, 0xc429e, 0xc42a2, 0xc42a4, 0xc42a7, 0xc42aa], 0xc42ad, [(0xb4, 8), (0xb5, 2)])
+        # Collapsing House / Sabin
+        WoRRecruitInfo([0xc5aa8, 0xc5aaa, 0xc5aae, 0xc5ab0, 0xc5ab3, 0xc5ab6], 0xc5aba, [(0x131, 1)]),
+        # Fanatics' Tower / Strago
+        WoRRecruitInfo([0xc5418, 0xc541a, 0xc5420, 0xc5423, 0xc5426], 0xc542a, [(0x16a, 1)])
+    ]
+    
+    for info in recruit_info:
+        candidate = random.choice(candidates)
+        candidates.remove(candidate)
+        info.char_id = candidate
+        info.write_data(fout)
+    #Dialogue 08a7, 08a8, 08a9, 08aa, 08ab, 08ac, 08ad, 08ae, 08b1
+    #Sabin
+    #Event CC5aa8, cc5aaa, cc5aae, cc5ab0 cc5ab3 cc5ab6
+    #Eventbit CC5AB9
+    #map 0x131, npc 1
+
+    #Strago
+    #dialogue 08c2, 08c3,
+    #event cc5418, cc541a, cc5420 cc5423, cc5426
+    #eventbit CC542A
+    #map 0x16a, npc 3
+
+    #Cyan
+    #dialogue *09e8, 09ec, 09f2, 09f9, 09fb, 09fe, 09ff, 0a00, 0a01, 0a02, 0a03, 0a04, 0a05, 0a06, *0a07, 0a08, 0a0b, 0a0c
+    #event cc429c, cc429e, cc42a2, cc42a4, cc42a7, cc42aa,
+    #eventbit cc42ad
+    #map 0xb4, npc 8, 0xb5, npc 2
+    
+    #Locke
+    # dialogue 0a20, 0a21, 0a22, 0a23, 0a24, 0a2a, 0a28, 0a2c, 0a2d, 0a2e, 0a30, 0a31, 0a34, 0a35, 
+    #event c2c48, c2c51, c2c91, c2c9d, c2caf, c2cb8, c2cc5, c2cca, c2cd8, c2ce3, c2ce9, c2cee, c2cf4, c2cfa, c2d0b, c2d33, c2e32, c2e80, c2e86, c2e8b, c2e91, c2ea5, c2eb1, c2ec4, c2f0b, c2fe1, c3102, c3106, c3117, c311d, c3124, c3134, c313d, c3163, c3183, c3185, c3189, c318b, c318e, c3191, c3197, c31c7, c31cb, c31e2, c31e8, c31ed, c31f2, c31f8, c3210, c3215, c312d, c3229, c322f, c3235, c323b, c3244, c324a, c324f, c3258, c326a,
+        # fix for event items
+    #eventbit c3195
+    #map 0x139, npc 0
+
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE
 
@@ -6151,13 +6213,15 @@ k   Randomize the clock in Zozo
 
     if 'k' in flags:
         manage_clock()
+    reseed()
 
     if 'g' in flags:
         if 0x13 not in changed_commands:
             manage_dances()
-
     reseed()
 
+    manage_wor_recruitment()
+    reseed()
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()
     for fs in fsets:

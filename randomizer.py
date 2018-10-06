@@ -2280,10 +2280,10 @@ def manage_character_appearance(preserve_graphics=False):
     sabin_mode = 'suplexwrecks' in activated_codes
     tina_mode = 'bravenudeworld' in activated_codes
     soldier_mode = 'quikdraw' in activated_codes
-    sprite_swap_mode = 'makeover' in activated_codes
     moogle_mode = 'kupokupo' in activated_codes
     ghost_mode = 'halloween' in activated_codes
     christmas_mode = 'christmas' in activated_codes
+    sprite_swap_mode = 'makeover' in activated_codes and not (sabin_mode or tina_mode or soldier_mode or moogle_mode or ghost_mode)
 
     if (wild or tina_mode or sabin_mode or christmas_mode):
         if christmas_mode:

@@ -158,3 +158,7 @@ class ShopBlock:
         items = [i for i in items if i]
         priciest = max(items, key=lambda i: i.price)
         return priciest.price
+
+def buy_owned_breakable_tools(fout):
+    fout.seek(0x3b7f4)
+    fout.write(chr(0x27))

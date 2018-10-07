@@ -24,7 +24,7 @@ from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield)
 from esperrandomizer import EsperBlock
-from shoprandomizer import ShopBlock
+from shoprandomizer import (ShopBlock, buy_owned_breakable_tools)
 from namerandomizer import generate_name
 from formationrandomizer import (get_formations, get_fsets,
                                  get_formation, get_fset)
@@ -3359,6 +3359,7 @@ def get_shops():
 def manage_shops():
     buyables = set([])
     descriptions = []
+    buy_owned_breakable_tools(fout)
     for s in get_shops():
         s.mutate_items(fout)
         s.mutate_misc()

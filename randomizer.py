@@ -783,6 +783,22 @@ def manage_commands(commands):
     eems = EnableEsperMagicSub()
     eems.set_location(0x3F091)
     eems.write(fout)
+    
+    # Let x-magic user use magic menu.
+    enable_xmagic_menu_sub = Substitution()
+    enable_xmagic_menu_sub.bytestring = [0xDF, 0x78, 0x4D, 0xC3, # CMP $C34D78,X
+    0xF0, 0x07, # BEQ 
+    0xE0, 0x01, 0x00, # CPX #$0001
+    0xD0, 0x02, # BNE
+    0xC9, 0x17, # CMP #$17
+    0x6b        # RTL
+    ]
+    enable_xmagic_menu_sub.set_location(0x3F09B)
+    enable_xmagic_menu_sub.write(fout)
+    
+    enable_xmagic_menu_sub.bytestring = [0x22, 0x9B, 0xF0, 0xC3]
+    enable_xmagic_menu_sub.set_location(0x34d56)
+    enable_xmagic_menu_sub.write(fout)
 
     # Prevent Runic, SwdTech, and Capture from being disabled/altered
     protect_battle_commands_sub = Substitution()

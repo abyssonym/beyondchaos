@@ -5668,7 +5668,7 @@ def manage_dances():
         log(dancestr, "dances")
 
 class WoRRecruitInfo(object):
-    def __init__(self, event_pointers, recruited_bit_pointer, location_npcs):
+    def __init__(self, event_pointers, recruited_bit_pointer, location_npcs, prequisite=None):
         self.event_pointers = event_pointers
         self.recruited_bit_pointer = recruited_bit_pointer
         self.location_npcs = location_npcs
@@ -5687,7 +5687,7 @@ class WoRRecruitInfo(object):
             npc.palette = get_character(self.char_id).palette
 
 def manage_wor_recruitment():
-    candidates = [0x01, 0x02, 0x05, 0x07]
+    candidates = [0x01, 0x02, 0x05, 0x07, 0x08]
     recruit_info = [
         # Phoenix Cave / Locke
         WoRRecruitInfo([0xc2c48, 0xc2c51, 0xc2c91, 0xc2c9d, 0xc2caf, 0xc2cb8, 0xc2cc5, 0xc2cca, 0xc2cd8, 0xc2ce3, 0xc2ce9, 0xc2cee, 0xc2cf4, 0xc2cfa, 0xc2d0b, 0xc2d33, 0xc2e32, 0xc2e80, 0xc2e86, 0xc2e8b, 0xc2e91, 0xc2ea5, 0xc2eb1, 0xc2ec4, 0xc2f0b, 0xc2fe1, 0xc3102, 0xc3106, 0xc3117, 0xc311d, 0xc3124, 0xc3134, 0xc313d, 0xc3163, 0xc3183, 0xc3185, 0xc3189, 0xc318b, 0xc318e, 0xc3191, 0xc3197, 0xc31c7, 0xc31cb, 0xc31e2, 0xc31e8, 0xc31ed, 0xc31f2, 0xc31f8, 0xc3210, 0xc3215, 0xc312d, 0xc3229, 0xc322f, 0xc3235, 0xc323b, 0xc3244, 0xc324a, 0xc324f, 0xc3258, 0xc326a], 0xc3195, [(0x139, 0)])
@@ -5696,9 +5696,14 @@ def manage_wor_recruitment():
         # Collapsing House / Sabin
         WoRRecruitInfo([0xc5aa8, 0xc5aaa, 0xc5aae, 0xc5ab0, 0xc5ab3, 0xc5ab6], 0xc5aba, [(0x131, 1)]),
         # Fanatics' Tower / Strago
-        WoRRecruitInfo([0xc5418, 0xc541a, 0xc5420, 0xc5423, 0xc5426], 0xc542a, [(0x16a, 1)])
+        WoRRecruitInfo([0xc5418, 0xc541a, 0xc541e, 0xc5420, 0xc5423, 0xc5426], 0xc542a, [(0x16a, 1)], prerequisite=[0x08])
+        # Owzer's House / Relm
+        WoRRecruitInfo([0xb4e09, 0xb4e0b, 0xb4e0f, 0xb4e11, 0xb4e14, 0xb4e17], 0xb4e1b [(0x161, 3), (0x15d, 21), (0xd0, 3)])
     ]
     
+    restricted_info = [info for info in recruit_info if info.prequisite]
+    unrestricted_info = [info for info in recruit_info if not info.prequisite]
+    recruit_info = restricted_info + unrestricted_info
     for info in recruit_info:
         candidate = random.choice(candidates)
         candidates.remove(candidate)
@@ -5712,7 +5717,7 @@ def manage_wor_recruitment():
 
     #Strago
     #dialogue 08c2, 08c3,
-    #event cc5418, cc541a, cc5420 cc5423, cc5426
+    #event cc5418, cc541a, cc541e, cc5420, cc5423, cc5426
     #eventbit CC542A
     #map 0x16a, npc 3
 
@@ -5728,6 +5733,18 @@ def manage_wor_recruitment():
         # fix for event items
     #eventbit c3195
     #map 0x139, npc 0
+    
+    #Relm
+    #dialogue *0a13, 0a8d, 0a99, 0aa1, 0a9d, 0a9f, 0aa0, 0ac2, 
+    #event b4e09, b4e0b, b4e0f, b4e11, b4e14, b4e17,
+    #eventbit b4e1b
+    #map 161, npc 3, map 15d, npc 21, map 0d0 npc 3
+    
+    #Gau
+    #if 'o' in flags or 'w' in flags or 't' in flags:
+    #eventbit A5325 but not really
+    #else:
+    #exclude gau?
 
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE

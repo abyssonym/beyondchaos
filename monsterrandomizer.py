@@ -1528,7 +1528,7 @@ class MonsterBlock:
     def deadspecial(self):
         return (self.special & 0x3F) in [0x07, 0x10, 0x18]
 
-    def mutate_special(self, darkworld=False):
+    def mutate_special(self, darkworld=False, narshesafe=False):
         if self.goodspecial:
             return
 
@@ -1540,8 +1540,12 @@ class MonsterBlock:
         if branch <= branches[0]:
             # regular special
             valid = set(range(0, 0x0F))
-            valid = [0, 1, 2, 3, 5, 6, 7, 8, 9, 0xb, 0xc, 0xd, 0xe, 0xf,
-                     0x10, 0x12, 0x14, 0x18, 0x19, 0x30, 0x31, 0x80]
+            if narshesafe and not darkworld:
+                valid = [0, 2, 3, 5, 8, 9, 0xb, 0xc, 0xd, 0xe, 0xf,
+                         0x10, 0x12, 0x14, 0x18, 0x30, 0x31, 0x80]
+            else: 
+                valid = [0, 1, 2, 3, 5, 6, 7, 8, 9, 0xb, 0xc, 0xd, 0xe, 0xf,
+                         0x10, 0x12, 0x14, 0x18, 0x19, 0x30, 0x31, 0x80]
             if random.randint(1, 1000) != 1000:
                 valid.remove(0x03)  # Magitek
             if random.randint(1, 5) != 5:
@@ -1599,7 +1603,10 @@ class MonsterBlock:
             self.mutate_affinities(odds=5 if madworld else 10)
         if madworld or random.randint(1, 10) > 5:
             # do this before mutate_control
-            self.mutate_special(darkworld=darkworld)
+            if self.stats['level'] <= 7:
+                 self.mutate_special(darkworld=darkworld, narshesafe=True)
+            else:
+                 self.mutate_special(darkworld=darkworld)
         if manual_change and change_skillset:
             value = 10
         else:

@@ -448,7 +448,7 @@ class ItemBlock:
 
     def mutate_price(self, undo_priceless=False, crazy_prices=False):
         if crazy_prices:
-            self.price = random.randint(30, 1000)
+            self.price = random.randint(20, 500)
             return
         if self.price <= 2:
             if undo_priceless:

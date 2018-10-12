@@ -393,10 +393,7 @@ def get_spellsets(spells=None):
         [s for s in spells if not any(
             [s.target_enemy_default, s.power, s.spellid == 0xA4])])
     spellsets['Drain'] = ('HP- and/or MP-draining skill',
-                          [s for s in spells if s.draining])
-    # Just Rasp, Osmose, and Empowerer - not very exciting
-    spellsets['Mana'] = ('MP-affecting skill',
-                         [s for s in spells if s.concernsmp])
+                          [s for s in spells if s.draining or s.concernsmp])
     # Death Skills.
     # All status-inflicting spells that are blocked by death protection.
     # Plus some specific death spells that ignore death protection:

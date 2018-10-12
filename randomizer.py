@@ -2182,11 +2182,14 @@ def manage_character_names(change_to, male):
 
     names = []
     if tina_mode:
-        names = ["Tina"] * 14
+        names = ["Tina"] * 30 + ["MADUIN"] + ["Tina"] * 3
     elif sabin_mode:
         names = ["Teabin", "Loabin", "Cyabin", "Shabin", "Edabin", "Sabin",
                  "Ceabin", "Stabin", "Reabin", "Seabin", "Moabin", "Gaubin",
-                 "Goabin", "Umabin"]
+                 "Goabin", "Umabin", "Baabin", "Leabin", "??abin", "??abin",
+                 "Kuabin", "Kuabin", "Kuabin", "Kuabin", "Kuabin", "Kuabin",
+                 "Kuabin", "Kuabin", "Kuabin", "Kaabin", "Moabin", "??abin",
+                 "MADUIN", "??abin", "Viabin", "Weabin"]
     elif moogle_mode:
         names = ["Kumop", "Kupo", "Kupek", "Kupop", "Kumama", "Kuku",
                  "Kutan", "Kupan", "Kushu", "Kurin", "Mog", "Kuru",

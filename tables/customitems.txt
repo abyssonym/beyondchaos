@@ -107,7 +107,8 @@ tier                high
 price               0
 itemtype            11
 equippable          3fff
-breakeffect         7F
+breakeffect         3F
+otherproperties     04
 targeting           02
 fieldeffect         00
 statusacquire2      FF
@@ -226,7 +227,8 @@ tier                high
 price               2
 itemtype            11
 equippable          3fff
-breakeffect         52
+breakeffect         12
+otherproperties     04
 targeting           6a
 specialaction       D0
 power               00
@@ -242,7 +244,8 @@ tier                low
 price               2
 itemtype            11
 equippable          3fff
-breakeffect         54
+breakeffect         14
+otherproperties     04
 targeting           6e
 specialaction       75
 power               FF

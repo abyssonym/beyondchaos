@@ -102,7 +102,8 @@ name_text           FluoriteDice
 price               0
 itemtype            11
 equippable          3fff
-breakeffect         7F
+breakeffect         3F
+otherproperties     04
 targeting           02
 fieldeffect         00
 statusacquire2      FF
@@ -215,7 +216,8 @@ name_text           OOO
 price               2
 itemtype            11
 equippable          3fff
-breakeffect         52
+breakeffect         12
+otherproperties     04
 targeting           6a
 specialaction       D0
 power               00
@@ -230,7 +232,8 @@ name_text           Portal Gun
 price               2
 itemtype            11
 equippable          3fff
-breakeffect         54
+breakeffect         14
+otherproperties     04
 targeting           6e
 specialaction       75
 power               FF

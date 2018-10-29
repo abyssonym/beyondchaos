@@ -2804,15 +2804,13 @@ def manage_equipment(items):
     return items
 
 
-def manage_reorder_rages(freespaces, by_level=False):
+def manage_reorder_rages(freespaces):
     pointer = 0x301416
 
     monsters = get_monsters()
     monsters = sorted(monsters, key=lambda m: m.display_name)
     monsters = [m for m in monsters if m.id <= 0xFE]
     assert len(monsters) == 255
-    if by_level:
-        monsters = reversed(sorted(monsters, key=lambda m: m.stats['level']))
     monster_order = [m.id for m in monsters]
 
     reordered_rages_sub = Substitution()
@@ -6221,8 +6219,6 @@ f   Randomize enemy formations.
 s   Swap character graphics around.
 p   Randomize the palettes of spells and weapon animations.
 d   Randomize final dungeon.
-a   Organize rages alphabetically (default)
-h   Organize rages by highest level first
 g   Randomize dances
 k   Randomize the clock in Zozo
 0-9 Shorthand for the text saved under that digit, if any
@@ -6542,9 +6538,7 @@ k   Randomize the clock in Zozo
     reseed()
 
     if flags:
-        by_level = 'h' in flags and 'a' not in flags
-        esperrage_spaces = manage_reorder_rages(esperrage_spaces,
-                                                by_level=by_level)
+        esperrage_spaces = manage_reorder_rages(esperrage_spaces)
 
         titlesub = Substitution()
         titlesub.bytestring = [0xFD] * 4

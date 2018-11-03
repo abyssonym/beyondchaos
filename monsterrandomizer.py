@@ -1562,7 +1562,7 @@ class MonsterBlock:
             valid = [r for r in ranked if r in valid]
             index = int(self.level_rank() * len(valid))
             index = mutate_index(index, len(valid), [False, True],
-                                 (-5, 5), (-3, 3))
+                                 (-5, 5), (-3, 3), disregard_multiplier=True)
             special = valid[index]
             if special == 0x07 or (special not in [0x30, 0x31] and
                                    random.choice([True, False])):

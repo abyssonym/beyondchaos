@@ -1,0 +1,152 @@
+#TITLE Judgment Day
+#ALBUM Final Fantasy VII
+#COMPOSER Nobuo Uematsu
+#ARRANGED Royaken
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x0E
+#WAVE 0x22 -- 0x1A
+#WAVE 0x23 -- 0x1C
+#WAVE 0x24 -- 0x16
+#WAVE 0x25 -- 0x17
+#WAVE 0x26 -- 0x22
+#WAVE 0x27 -- 0x37
+#WAVE 0x28 -- 0x14
+
+
+{1}
+l16t150%v32%x192%b0,70%e1%k1r1  ^1   $1 m16,16,201v100p60@32r8o3[3b^32<df+^32f^32a<c^32>]b^32<df+^32f^32a32  
+@32o6c+r8^c+r8^c+r8^c+r8^  c+r8^c+r8^c+r8^d4  [2er8^er8^er8^er8^  
+]>[3br8^br8^br8^br8^  ]br8^br8^br8^<d4  c+r8^c+r8^c+r8^c+r8^  c+r8^c+r8^c+r8^d4  
+er8^er8^er8^er8^  er8^er8^fr8^fr8^  [4f+r8^f+r8^f+r8^f+r8^  ]>d1  
+^1  c+1  ^1  d1  
+^1  e2d1  ^1  ^1  
+v127,50^1  v127,0^1  ^4^8^^32r32v72c+1  ^1  
+a2g2  f+2g2  a1  ^1  
+f+2e2  d2e2  f+2e2  g2f+2  
+e1  ^1  e1  ^1  
+e1  ^1  f+2e2  d2c+2  
+>b1  ^2^4^8^^32r32  <br8^[9br8^]ar8^ar8^  br8^br8^ar8^ar8^  
+[64br8^]
+;1
+
+l16
+{2}
+l16%e1%k1r1  ^1   $2 m16,16,201@32v100p60o3[4b^32<df+^32f^32a<c^32>]m@32v92o4f1  
+^2^8^^32r32f+8^^32r32  g+1  ^4^8^^32r32f4^8^^32r32  f+1  
+^2^4r1  ^1  f+4f1  
+^2^4f+4  g+1  ^2a2  g+1  
+^2^4r1  ^1  ^2^4b2  
+<c+4d2e4  f+4<c+4>a1  ^2r2  f+2g4a2  
+b4<c+2d1  ^2r1  ^1  
+^1  ^1  c+2>a2  ^4f+4a4b4  
+<c+4d4>b1  ^2<c+2  >a2^4f+4  g+4a4a4b4  
+g1  ^2r1  ^1  g4^8f+8e2  
+^4e4a4g4  a1  ^2^4r4  a4^8g+8f+2  
+^4f+4b4a4  b1  ^1  ^1  
+r2>b4<c+4  d1  ^2d4e4  f+4<c+4>a1  
+b4<c+4d2  >b1  <e8d4c+8d2  >b1  
+^1  ^2r2  b4<c+4d2  >b1  
+^1  ^1  <e8d4c+8>b1  ^1  
+^1  ^1  r1  ^1  
+
+;2
+
+l16
+{3}
+l16%e1%k1v100p60m16,16,201r1  ^1   $3 @33r1  ^2^4o6d8^^32r32  
+c+1  ^2^8^^32r32d8^^32r32  e1  ^4^8^^32r32d4^8^^32r32  
+>b1  ^2^4r1  ^1  <d4c+1  
+^2^4d4  e1  ^2f2  f+1  
+^2^4r1  ^1  ^2^4>b2  
+<c+4d2e4  f+4<c+4>a1  ^2r2  f+2g4a2  
+b4<c+2d1  ^2r1  ^1  
+^1  ^1  c+2>a2  ^4f+4a4b4  
+<c+4d4>b1  ^2<c+2  >a2^4f+4  g+4a4a4b4  
+g1  ^2r1  ^1  g4^8f+8e2  
+^4e4a4g4  a1  ^2^4r4  a4^8g+8f+2  
+^4f+4b4a4  b1  ^1  ^1  
+r2>b4<c+4  d1  ^2d4e4  f+4<c+4>a1  
+b4<c+4d2  >b1  <e8d4c+8d2  >b1  
+^1  ^2r2  b4<c+4d2  >b1  
+^1  ^1  <e8d4c+8>b1  ^1  
+^1  ^1  r1  ^1  
+
+;3
+
+l16
+{4}
+l16%e1%k1v87p60m16,16,201r1  ^1   $4 @33r1  ^2^4o4b8^^32r32  
+g+1  ^2^8^^32r32a8^^32r32  b1  ^4^8^^32r32a4^8^^32r32  
+a1  ^2^4r1  ^1  b4g+1  
+^2^4a4  b1  ^2b2  <d1  
+^2^4r1  ^1  ^2^4>f+2  
+f+4b2b4  <c+4f+4c+1  ^2r2  >b2b4<d2  
+f+4e2d1  ^2r1  ^1  
+^1  ^1  f+2c+2  ^4c+4f+4e4  
+d4g4g1  ^2f+2  c+2^4c+4  c+4f+4e4d4  
+d1  ^2r1  ^1  e4^8c8>g2  
+^4g4<c4>b4  <c1  ^2^4r4  f+4^8c+8>a2  
+^4a4<d4c+4  d1  ^1  ^1  
+r2>f+4f+4  b1  ^2b4b4  <c+4f+4c+1  
+f+4a4b2  g1  g8f+4e8f+2  d1  
+^1  ^2r2  f+4a4b2  g1  
+^1  ^1  g8f+4e8d1  ^1  
+^1  ^1  r1  ^1  
+
+;4
+
+l16
+{5}
+l16%e1%k1v57p60@35o4b8r4^8b8r4^8  b8r2^4^8   $5 o4[9b8r4^8b8r4^8  
+b8r2^4^8  ]br8^brbrbr8^brbr  b8brbr8^br8^brbr  [2ar8^arar]a8ar[2ar8^  
+][2ar]<[2er8^erer]e8erer8  ^er8^erer>[2br8^brb  r]b8brbr8^br8^brb  
+rbr8^brbrbr8^brb  rb8brbr8^br8^brb  rbr8^brbrbr8^brb  rb8brbr8^br8^brb  
+rf+r8^f+rf+rf+r8^f+rf+  rf+8f+rf+r8^f+r8^f+rf+  rgr8^grgrgr8^grg  
+rg8grgr8^gr8^grg  rf+r8^f+rf+rf+r8^f+rf+  rf+8f+rf+r8^f+r8^f+rf+  
+r<er8^ererer8^ere  re8erer8^er8^ere  rer8^ererer8^ere  re8erer8^er8^ere  
+rcr8^crcrcr8^crc  rc8crcr8^cr8^crc  r>fr8^frfrfr8^frf  rf8frfr8^fr8^frf  
+rf+r8^f+rf+rf+r8^f+rf+  rf+8f+rf+r8^f+r8^f+rf+  rgr8^grgrgr8^grg  
+rg8grgr8^gr8^grg  rgr8^grgrgr8^grg  rg8grgr8^gr8^grg  rbr8^brbrbr8^brb  
+rb8brbr8^br8^brb  rar8^ararar8^ara  ra8arar8^ar8^ara  rgr8^grgrgr8^grg  
+rg8grgr8^gr8^grg  rbr8^brbrbr8^brb  rb8brbr8^br8^brb  rbr8^brbrbr8^brb  
+rb8brbr8^br8^brb  rgr8^grgrgr8^grg  rg8grgr8^gr8^grg  rgr8^grgrgr8^grg  
+rg8grgr8^gr8^grg  rar8^ararar8^ara  ra8arar8^ar8^ara  rar8^ararar8^ara  
+ra8arar8^ar8^ara  rbr8^brbrbr8^brb  rb8brbr8^br8^brb  r
+;5
+
+l16
+{6}
+l16%e1%k1v79p60@36o4b2@37f2  
+r2f4@36f+8^^32r32   $6 @36o4b2[9@37f2  r2f4@36f+8^^32r32  b2]@37f2  
+r2f4@36f+8^^32r32  a2@37f2  r2f4@36c+8^^32r32  e2@37f2  
+r2f4@36a8^^32r32  b2[2@37f2  r2f4@36f+8^^32r32  b2]@37f2  
+r2f4@36f+8^^32r32  f+2@37f2  r2f4@36f+8^^32r32  g2@37f2  
+r2f4@36g8^^32r32  f+2@37f2  r2f4@36f+8^^32r32  e2@37f2  
+r2f4@36b8^^32r32  e2@37f2  r2f4@36b8^^32r32  c2@37f2  
+r2f4@36g8^^32r32  f2@37f2  r2f4@36f8^^32r32  f+2@37f2  
+r2f4@36f+8^^32r32  g2@37f2  r2f4@36d8^^32r32  g2@37f2  
+r2f4@36d8^^32r32  b2@37f2  r2f4@36b8^^32r32  a2@37f2  
+r2f4@36a8^^32r32  g2@37f2  r2f4@36g8^^32r32  b2@37f2  
+r2f4@36f+8^^32r32  b2@37f2  r2f4@36f+8^^32r32  g2@37f2  
+r2f4@36d8^^32r32  g2@37f2  r2f4@36d8^^32r32  a2@37f2  
+r2f4@36a8^^32r32  a2@37f2  r2f4@36a8^^32r32  b2@37f2  
+r2f4@36f+8^^32r32  
+;6
+
+l16
+{7}
+l16%e1%k1v83p60@38o5b4^8^^32r32@39f+4^8^^32r4  
+^32f+2^8^^32r32 $7 @38b4  ^8^^32r32@39f+4^8^^32r4^32  f+2^8^^32r32@38b2  
+@39f+4^8^^32r4^32f+2  ^8^^32r32[33@38b4^8^^32r32@39f+4  ^8^^32r4^32f+2  
+^8^^32r32]
+;7
+
+l16
+{8}
+l16%e1%k1v87p60@40o5[4e8^^32r32e^32r32e^32r32] $8 e8^^32r32  
+[3e^32r32e^32r32e8^^32r32]e^32r32e^32r32e4  e^32r32e^32r32[135e8^^32r32e^32r32e^32r32]
+;8
+
+l16

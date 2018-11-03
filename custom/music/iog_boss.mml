@@ -1,0 +1,127 @@
+#TITLE Guardians
+#ALBUM Illusion of Gaia
+#COMPOSER Yasuhiro Kawasaki
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x0E
+#WAVE 0x22 -- 0x16
+
+
+{1}
+l16t166%v25%x192%b0,70%e1%k1 $1 v95p68@32o3d+8c8d8c8d+8c8f+8c8  
+r4g+8r4^8a8r8  d+8c8d8c8d+8c8f+8c8  r4g+8r4^8a8r8  a+1  
+a1  g+1  f+1  r1  
+^4g+2a4  c2g2  ^4g+8d+8g+8d+8a8d+8  a+1  
+a1  g+1  f+1  g+1  
+f+1  c^32dc^32f+^32ed^32c^32dg+^32f+^32ed^32  c^32dc^32f+^32ed^32c^32dg+^32f+^32ed^32  
+c^32dc^32f+^32ed^32c^32dg+^32f+^32ed^32  c^32dc^32f+^32ed^32c^32dg+^32f+^32ed^32  
+c^32dc^32f+^32ed^32c^32dg+^32f+^32ed^32  c^32dc^32f+^32ed^32c^32dg+^32f+^32ed^32  
+d+2a1  ^1  d+1  ^1  
+a1  ^1  d+1  ^1  
+<d+dc>b<c>bag+g+8g8d+8c8  g+8g8d+8c8c^32cr^32f+8^32f+^32  c^32cr^32f+8^32f+^32g+8g8d+8c8  
+g+8g8d+8c8c^32cr^32f+8^32f+^32  c^32cr^32f+8^32f+^32g+8g8d+8c8  
+g+8g8d+8c8g+8g8d+8c8  g+8g8d+8c8g+8g8d+8c8  g+8g8d+8c8c^32cr^32f+8^32f+^32  
+c^32cr^32f+8^32f+^32c^32cr^32f+8^32f+^32  c^32cr^32f+8^32f+^32c^32cr^32f+8^32f+^32  
+c^32cr^32f+8^32f+^32
+;1
+
+l16
+{2}
+l16%e1%k1 $2 v80p68@32o7d+8c8d8c8  
+d+8c8f+8c8c>b<cdd+r8^  d+dd+ff+r8^d+8c8d8c8  d+8c8f+8c8c>b<cdd+r8^  
+d+dd+ff+r8^d8>a+8<c8>a+8  <d8>a+8<c8>a+8<d+8>a8<c8>a8  <d+8>a8<c8>a8<d+8>g+8<c8>a8  
+<d+8>g+8<c8>g+8<d+8>g+8<c8>a8  <d+8>g+8<c8>g+8<d+8c8d8c8  d+8c8f+8c8c>b<cdd+r8^  
+d+dd+ff+r8^d+8c8d8c8  d+8c8f+8c8c>b<cdd+r8^  d+dd+ff+r8^d8>a+8<c8>a+8  
+<d8>a+8<c8>a+8<d+8>a8<c8>a8  <d+8>a8<c8>a8<d+8>g+8<c8>a8  <d+8>g+8<c8>g+8<d+8>g+8<c8>a8  
+<d+8>g+8<c8>g+8<d+8>g+8<c8>a8  <d+8>g+8<c8>g+8<d+8>g+8<c8>a8  <d+8>g+8<c8>g+8c^32dc^32f+^32ed^32  
+c^32dg+^32f+^32ed^32c^32dc^32f+^32ed^32  c^32dg+^32f+^32ed^32c^32dc^32f+^32ed^32  
+c^32dg+^32f+^32ed^32c^32dc^32f+^32ed^32  c^32dg+^32f+^32ed^32c^32dc^32f+^32ed^32  
+c^32dg+^32f+^32ed^32c^32dc^32f+^32ed^32  c^32dg+^32f+^32ed^32d+dd+ff+r8^  
+f+ff+g+a1  ^4c>b<cdd+r8^d+dc>b  <c1  ^4d+dd+ff+r8^f+ff+g+  
+a1  ^4c>b<cdd+r8^d+dc>b  <c1  ^4r2<d+dc>b  
+<c>bag+g+g+ggd+d+ccg+g+gg  d+d+ccc^32cr^32f+8^32f+^32c^32cr^32  
+f+8^32f+^32g+g+ggd+d+ccg+g+gg  d+d+ccc^32cr^32f+8^32f+^32c^32cr^32  
+f+8^32f+^32g+g+ggd+d+ccg+g+gg  d+d+ccg+g+ggd+d+ccg+g+gg  d+d+ccg+g+ggd+d+ccg+g+gg  
+d+d+ccc^32cr^32f+8^32f+^32c^32cr^32  f+8^32f+^32c^32cr^32f+8^32f+^32c^32cr^32  
+f+8^32f+^32c^32cr^32f+8^32f+^32c^32cr^32  f+8^32f+^32
+;2
+
+l16
+{3}
+l16%e1%k1 $3 v88p68@32o5<d+8c8d8c8d+8c8  
+f+8c8c>b<cdd+r8^d+dd+f  f+r8^d+8c8d8c8d+8c8  f+8c8c>b<cdd+r8^d+dd+f  
+f+r8^f8d8d+8d8f8d8  f+8d8g8c+8e8c+8g8c+8  e8c+8g+8c8d+8c8g+8c8  
+d+8c8g+8c8d+8c8g+8c8  d+8c8d+8c8d8c8d+8c8  f+8c8c>b<cdd+r8^d+dd+f  
+f+r8^d+8c8d8c8d+8c8  f+8c8c>b<cdd+r8^d+dd+f  f+r8^f8d8d+8d8f8d8  
+f+8d8g8c+8e8c+8g8c+8  e8c+8g+8c8d+8c8g+8c8  d+8c8g+8c8d+8c8g+8c8  
+d+8c8g+8c8d+8c8g+8c8  d+8c8g+8c8d+8c8g+8c8  d+8c8r1  >e^32f+e^32a+^32g+f+^32e^32f+<c^32>a+^32g+f+^32  
+e^32f+e^32a+^32g+f+^32e^32f+<c^32>a+^32g+f+^32  e^32f+e^32a+^32g+f+^32e^32f+<c^32>a+^32g+f+^32  
+e^32f+e^32a+^32g+f+^32e^32f+<c^32>a+^32g+f+^32  e^32f+e^32a+^32g+f+^32e^32f+<c^32>a+^32g+f+^32  
+d+dd+ff+r8^f+ff+g+a1  ^4c>b<cdd+r8^d+dc>b  <c1  ^4d+dd+ff+r8^f+ff+g+  
+a1  ^4c>b<cdd+r8^d+dc>b  <c1  ^1  
+^4r1  c^32cr^32f+8^32f+^32c^32cr^32f+8^32f+^32  r1  c^32cr^32f+8^32f+^32c^32cr^32f+8^32f+^32  
+g+g+ggd+d+ccg+g+ggd+d+cc  g+g+ggd+d+ccg+g+ggd+d+cc  g+g+ggd+d+ccg+g+ggd+d+cc  
+c^32cr^32f+8^32f+^32c^32cr^32f+8^32f+^32  c^32cr^32f+8^32f+^32c^32cr^32f+8^32f+^32  
+c^32cr^32f+8^32f+^32c^32cr^32f+8^32f+^32  
+;3
+
+l16
+{4}
+l16%e1%k1 $4 v104p50@33o6<d+8c8d8c8d+8c8f+8c8  
+r4c8r4^8c+8r8  d+8c8d8c8d+8c8f+8c8  r4c8r4^8c+8r8  dd>a+a+<cc>a+a+<dd>a+a+<cc>a+a+  
+<d+d+>aa<cc>aa<d+d+>aa<cc>aa  <d+d+>g+g+<cc>aa<d+d+>g+g+<cc>g+g+  
+<d+d+>g+g+<cc>aa<d+d+>g+g+<cc>g+g+  <d+d+ccddccd+d+ccf+f+cc  r4c8r4^8c+8r8  
+cc>ggbbgg<cc>ggbbgg  r4<c8r4^8c+8r8  dd>a+a+<cc>a+a+<dd>a+a+<cc>a+a+  
+<d+d+>aa<cc>aa<d+d+>aa<cc>aa  <d+d+>g+g+<cc>aa<d+d+>g+g+<cc>g+g+  
+<d+d+>g+g+<cc>aa<d+d+>g+g+<cc>g+g+  <d+d+>g+g+<cc>aa<d+d+>g+g+<cc>g+g+  
+<d+d+>g+g+<cc>aa<d+d+>g+g+<cc>g+g+  r1  ^1  ^1  
+<c^32cc^32r8^32c^32c^32cr4^^32  c^32cc^32r8^32c^32c^32cr4^^32  c^32cc^32r8^32cc32c^32cr1  
+^4^^32>d+dd+ff+r8^f+ff+  g+a1  ^4<c>b<cdd+r8^d+dc>b  <c1  
+^4>d+dd+ff+r8^f+ff+g+  a1  ^4<c>b<cdd+r8^d+dc>b  <cr8^c>b<cdd+r8^d+dc>b  
+<cr8^o4g+8g8d+8c8g+8g8  d+8c8o7c^32cr^32>f+8^32f+^32<c^32cr^32  
+>f+8^32f+^32o4g+8g8d+8c8g+8g8  d+8c8o7c^32cr^32>f+8^32f+^32<c^32cr^32  
+>f+8^32f+^32o4g+8g8d+8c8g+8g8  d+8c8g+8g8d+8c8g+8g8  d+8c8g+8g8d+8c8g+8g8  
+d+8c8o7c^32cr^32>f+8^32f+^32<c^32cr^32  >f+8^32f+^32<c^32cr^32>f+8^32f+^32<c^32cr^32  
+>f+8^32f+^32<c^32cr^32>f+8^32f+^32<c^32cr^32  >f+8^32f+^32
+;4
+
+l16
+{5}
+l16%e1%k1 $5 v104p50@33o6>d+8c8d8c8d+8c8  
+f+8c8r4d+8r4^8  d+8r8d+8c8d8c8d+8c8  f+8c8r4d+8r4^8  d+8r8f1  
+c+2a2  <c2>g+2  <d+1  >d+d+ccddccd+d+ccf+f+cc  
+r4d+8r4^8d+8r8  d+d+ccddccd+d+ccf+f+cc  r4d+8r4^8d+8r8  f1  
+c+2a2  <c2>g+2  <d+1  ^4r4c2  
+g+1  r1  ^1  ^1  
+>f+^32f+f+^32r8^32f+^32f+^32f+r4^^32  f+^32f+f+^32r8^32f+^32f+^32f+r4^^32  
+f+^32f+f+^32r8^32f+f+32f+^32f+r1  ^1  ^1  ^1  
+^4^^32d+2>a2  <d+2a1  ^4r4o7c>b<cdd+r8^  d+dc>b<cr8^c>b<cdd+r8^  
+d+dc>b<cr1  ^8^o5c^32cr^32<c8^32c^32>c^32cr^32<c8  ^32c^32r1  >c^32cr^32<c8^32c^32>c^32cr^32<c8^32c^32  
+>g+g+ggd+d+ccg+g+ggd+d+cc  g+g+ggd+d+ccg+g+ggd+d+cc  g+g+ggd+d+ccg+g+ggd+d+cc  
+c^32cr^32<c8^32c^32>c^32cr^32<c8^32c^32  >c^32cr^32<c8^32c^32>c^32cr^32<c8^32c^32  
+>c^32cr^32<c8^32c^32>c^32cr^32<c8^32c^32  
+;5
+
+l16
+{6}
+l16%e1%k1 $6 v120p74@34o5>c8>g8<c8>g8<c8>g8<c8>g8  
+r4g8r4^8g8r8  <c8>g8<c8>g8<c8>g8<c8>g8  r4g8r4^8g8r8  <c4r4>g4r4  
+<c4r4>g4r4  <c4r4>g4r4  <c4r4>gggggggg  r1  
+^4g4r4g4  <c4r1  >g4gggggggg<c8r8  >g8r8<c8r8>g8r8<c8r8  
+>g8r8<c8r8>g8r8<c8r8  >g8r8<c8r8>g8r8<c8r8  >g8r8<c8r8>g8r8<c8c8  
+>g8g8<c8c8>g8g8<c8c8  >g8g8gggggggg<c8^32>g8  ^<c8^32>g8^32<c8^>g8^32<c8^32>g8  
+^<c8^32>g8^32<c8^>g8^32<c8^32>g8  ^<c8^32>g8^32<c8^>g8^32<c^32c>g^32g  
+^32<cc^32>g^32g<c^32c^32>gg^32<c^32c>g^32g  ^32<cc^32>g^32g<c^32c^32>gg^32<c^32c>g^32g  
+^32<cc^32>g32gg32g32gg32g32gg32g32gg32<c8r8>g8  r8<c8r8>g8r8<c>ggg<c8  
+r8c>ggg<c8r8c8r8>g8  r8<c8r8>g8r8<c>ggg<c8  r8c>ggg<c8r8c8r8>g8  
+r8<c8r8>g8r8<c>ggg<c8  r8c>ggg<c8r8c8r8>g8  r8<c8r8>g8r8<c>ggg<c8  
+r8c>ggg<c8r8c>ggg<c8  r8c>ggg<c8r1  ^8>g^32gr^32<c8^32c^32>g^32gr^32<c8  
+^32c^32r1  >g^32gr^32<c8^32c^32>g^32gr^32<c8^32c^32  c8r8>g8r8<c8r8>g8r8  
+<c8c8>g8g8<c8c8>g8g8  <c^32cc^32>g^32gg^32gggggggg  g^32gr^32<c8^32c^32>g^32gr^32<c8^32c^32  
+>g^32gr^32<c8^32c^32>g^32gr^32<c8^32c^32  c^32cc^32>g^32gg^32gggggggg  
+
+;6
+
+l16

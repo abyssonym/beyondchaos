@@ -1,0 +1,174 @@
+#TITLE Orphanage In Flames (Dancing Mad ver.)
+#ALBUM Chrono Cross
+#COMPOSER Yasunori Mitsuda
+#ARRANGED Gi Nattak, adjusted for tierboss by emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~_
+#VARIANT ~! tier1
+#VARIANT ?! tier2
+#VARIANT ?_ tier3
+
+#WAVE 0x20 -- 0x25  #organ
+#WAVE 0x21 -- 0x3B  #organ
+#WAVE 0x22 -- 0x3A  #maria
+#WAVE 0x24 -- 0x14  #snare
+#WAVE 0x25 -- 0x16  #timpani
+#WAVE 0x26 -- 0x12  #cymbal
+#WAVE 0x27 -- 0x24  #bell
+
+{1}
+$4441
+l16t164%v24%x192%b0,70%f0,0%e1v50p62|0o5r1  ^1  ^1  <a+1  
+<c1  ^1  ^1  ^1  
+> $ v80
+c8d8d+8d8 c8d+8d8d+8
+c8d8d+8d8 f8d+8d8c8
+>b8<d8g+8g8f8g8g+8g8  
+>b8<d8g+8g8f8d+8d8>b8  <c8d8d+8d8c8d+8d8d+8  c8d8d+8d8f8d+8d8c8  
+>b8<d8g+8g8f8g8g+8g8  >b8<d8g+8g8f8d+8d8>b8  <c8d8d+8d8c8d+8d8d+8  
+c8d8d+8d8f8d+8d8c8  >b8<d8g+8g8f8g8g+8g8  >b8<d8g+8g8f8d+8d8>b8  
+<c8d8d+8d8c8d+8d8d+8  c8d8d+8d8f8d+8d8c8  >b8<d8g+8g8f8g8g+8g8  
+>b8<d8g+8g8f8d+8d8>b8  <c8>b8a8b8<c8^^32r32c8>b8  a8b8<c8>a8<c8>b8a8b8  
+<c8^^32r32c8>b8a8b8<c8>a8  b8a8g+8a8b8^^32r32b8a8  b8<c8>b8<c8d8c8d8e8  
+d8c8>b8<c8>b8a8b8<c8  >a8a8<c8>a8<d8>a8<e8>a8  <f8>a8<g8>a8<a8f+8d+8c8  
+d+8f+8a8f+8a8b8a8b8  <c1  ^4^8^r>b1  ^4^8^r
+!:91!
+[d8r8c8r8>b8r8a8r8g+8r8a8r8  b8r8a8r8       g+8f+8g+8a8  b8a8b8<c8d8r8e8r8  d8c8>b8<c8
+ d8r8c8r8>b8r8a8r8g+8r8a8r8  b8r8a8r8 j2,11 g+8f+8g+8a8  b8a8b8<c8d8r8e8r8  f8r8e8r8]
+$11
+ <e1  ^2^4^8^r  
+!:91!
+;
+!$91 ;4441!
+
+l16
+{2}
+$4442
+l16%e1v80p62|7o7c2^4^8^r1  
+^1  ^1  ^c2^4^8^  r1  
+^c1  ^2^4^8^r   $ o6
+[4 <c1 r1> b1 r1]
+v50p62|0f+1  ^1  
+^1  r1  ^2a2  ^4d2^4  
+a1  ^1  ^1  a1  
+^2a1  ^2
+v80p62|7
+!:92!
+[4 f1 r1 e1 r1]
+!:92!
+;
+!$92 ;4442!
+
+l16
+{3}
+$4443
+l16%e1v80p62|1o6
+c1 [7^1]
+$ o5
+[4 <c1 ^1> b1 ^1]
+f+1  ^4^8^rd+1  ^4^8^re1  
+^4^8^ra2  ^8^^32r32g2^8^r  d1  ^4^8^rd+1  
+^4^8^re1  ^1  ^1
+!:93!
+[4f1 ^1 e1 ^1]
+!:93!
+;
+!$93 ;4443!
+
+l16
+{4}
+$4444
+l16%e1v80p62|1o5
+c1  
+[7^1]
+$ o4
+[4 <c1 ^1> b1 ^1 ]
+f+1 ^4^8^rd+1  ^4^8^re1  ^4^8^ra2  
+^8^^32r32g2^8^r  d1  ^4^8^rd+1  ^4^8^r
+e1  ^1  ^1
+!:94!
+[4 f1 ^1 e1 ^1]
+!:94!
+;
+!$94 ;4444!
+
+l16
+{5}
+$4445
+l16%e1v50p62|0o5<g1  ^1  
+f1  ^1  ^1  ^1  
+^1  ^1   $ o6v127p62|2>m16,16,201d2^4c4  g2^4c4  
+>b1  r1  <d2^4c4  g2^4c4  
+>b2^4g8^^32r32  <g4^8^rd+rdrcr>br  <d2^8^rc4  g2^4c4  
+>b1  r1  <d2^4c4  g2^4c4  
+>b2^4g8^^32r32  <g4^8^rd+rdrcr>br  <drc8^^32r1  ^8^32v50p62|0d+1  
+^2e1  ^2a2  ^4g2^4  r1  
+^2d+1  ^2<f+1  ^2e1  
+^2
+!:95!
+v127p62|2>d2  ^8^rc8^^32r32>b2  ^8^ra8^^32r32b2  ^8^r<c8^^32r32>b2  
+^8^ra8^^32r32<d2  ^8^rc8^^32r32>b2  ^8^ra8^^32r32b2  ^8^ra8^^32r32<e2  
+^4^8^rd2  ^8^rc8^^32r32>b2  ^8^ra8^^32r32b2  ^8^r<c8^^32r32>b2  
+^8^ra8^^32r32<d2  ^8^rc8^^32r32>b2  ^8^ra8^^32r32mv50p62|0<b1  
+^2^4^8^r  
+!:95!
+;
+!$95 ;4445!
+
+l16
+{6}
+$4446
+l16%e1v80p62|7o5
+<c1 r1  r1  r1  
+ c1 r1  
+v80p62|5o4
+[64c32]
+$ v80p62|7o5
+[4<c1  r1  >b1  r1]
+f+1  ^2v50p62|0<d+1  ^2e1  
+^1  ^4g2^4  >a1  ^2<d+1  
+^2v96p62|5o4
+[96c32]
+!:96!
+v80p62|7<
+[4 f1  r1  e1  r1 ]
+!:96!
+;
+!$96 ;4446!
+
+l16
+{7}
+$4447
+l16%e1v120p62|6o5c+2^4^8^  [7r1]
+^ $ c+1
+[15r1]
+o5v120p62 |6 c+2  ^4^8^
+[8r1]
+^v50p62|0o6d+1  ^2d1 ^2
+!:97!
+o5v120p62|6c+1
+[7r1]
+o5v120p62|6c+1
+[5r1]
+v120p62o5|6c+1
+r1
+!:97!
+;
+!$97 ;4447!
+
+l16
+{8}
+$4448
+l16%e1v50p62|0o5<c1  [7^1]
+$ v120p62|4o5
+[4 d8r4d8r8d8r8dd [3 d8r8d8d8r8d8d8dd ]]
+r1  [8^1]
+v60p64|0o5f+1  ^2d1  
+!:98!
+^2v120p62|4
+[4 d8r4d8r8d8r8dd d8r8d8d8r8d8d8dd j4,81 [d8r8d8d8r8d8d8dd] ] $81
+v85p62|5o4 [64c32]
+!:98!
+;
+!$98 ;4448!

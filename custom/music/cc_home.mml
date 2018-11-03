@@ -1,0 +1,214 @@
+#TITLE The Grasslands of Time ~ Home World
+#ALBUM Chrono Cross
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x44~ /0x1D/ guitar
+#WAVE 0x21 ~0x48~ /0x33/ sitar
+#WAVE 0x22 ~0x6B~ /0x02/ bass
+
+#WAVE 0x27 ~0x85~ /0x3C/ conga 1 (rim)
+#WAVE 0x28 ~0x57~ /0x2E/ conga 2 (middle)
+#WAVE 0x29  0x17         conga 3 (deep)
+#WAVE 0x2A  0x0F         hihat
+#WAVE 0x2B ~0x5F~ /0x2F/ shaker
+#WAVE 0x2C ~0x5E~ /0x23/ cowbell
+
+#def global= t100 %v50 %x224 %b0,70
+
+#def git= |0 p64 v72 %e1 ~o6~ %a14 %y3 %s2 %r14 /o5 m/
+#def sit= |1 p64 ~v80~ %e1 ~o5~ /o4 v104 %r14 %a15 %y7 %s2 m16,18,237/
+#def bas= |2 p64 ~v80~/v80/ %e1 o5
+#def m= %r21
+#def n= %r24
+#def f= %r
+
+#drum "a"=4f |9 v64 p48 %e1 %a
+#drum "b"=4f |9 v127 p48 %e1 %a7
+#drum "c"=5f |9 v127 p48 %e1 %a7
+#drum "d"=~6c+~/5c+/ |C ~v80~/v56/ p40 %e0
+#drum "e"=5d |8 v72 p48 %e0
+#drum "f"=5c |8 v127 p48 %e0 %a6
+
+#drum "h"=5g |A v40 p32 %e0 %r21
+#drum "i"=5g |A v72 p32 %e1 %r
+
+#drum "s"=5f |B v40 p96 %e0 %r28
+#drum "t"=5b |B v40 p96 %e1
+
+#drum "x"=4b |8 v96 p80 %e0
+#drum "y"=5f |8 v96 p80 %e0
+#drum "z"=~5d+~/5g/ |7 v127 p64 ~%e1~/%e0/ ~%r28~/%r30/
+
+##DRUM LAYOUT
+## a bcd e f d  da | -> a bcd e f d hda 
+## sssstssssssstsss|    hsistsishsistsis
+## h i h i h i h i |                    
+## x xy x xx x z xx|    x xyhx xx x z xx
+
+{1}
+'global' l16
+$ 'git' >
+   f+4..<<c4..c8
+ >>g+4..<<c4..c8
+[>>a+4..<<d+2^]
+
+ >>f+4..<<c4..c8
+ >>f4^<<c4..c4
+ >>a+4..<<d+4..d+8
+ d2 'sit' l8 g+a+<d+g+
+ 
+a+2.g+f+ f2c+4.d+16c+16 c.c+.g+1^4.g+4
+a+2.g+a+ <c2c+2>        a+1.            >g+a+<d+g+
+a+2.g+f+ f2c+4.d+16c+16 c.c+.g+1^4.g+4
+a+2.g+a+ <c2c+2>        a+1..           >a+4<
+##25
+[d+.f.f+4>a+<fc+  ^2^>g+. l16 a+<d+g+ l8  a+.a+.g+12g12d+12^4. ^2.j2^>a+<] d+f
+f+2g+2  a+2b4.b  <c+.c+.c12>b12a+12^ ^1d+c+  d+2f+2  g+2f+2  f.d+.f^1.
+;
+
+{2}
+$
+'git' l16
+r8c+4..c+4..
+r8d+4..d+4..
+r8f4..f2^f4..f4..
+
+r8c+4..c+4..
+r8c4..c4..
+r8f4..f4..
+r8>a+4^<<d2^>>
+
+[
+ f+4^<a+2^8^>
+ g+4^<a+2^8^>
+ [a+4^<<c+4..c+4>>]
+ f+4^<a+2^8^>
+ f4^<<c4..c4>>
+ a+4^<a+4..a+4
+ <d4^>g+8<d8.>g+4.>
+]
+##25
+[ 
+ [g+4^<b4^a+4.>]
+ [f4^<g+4^g4.>]
+]
+[b4^<<d+4^>g+4.>]
+[a+4^<<c+4^>f4.>]
+ b4^<<d+4..d+4>>    b4^<b4^g+4.>
+[a+4^<<d+4^>g+4.>]
+;
+
+{3}
+$
+'git' l16
+ r8.g+4..g+4.
+ r8.g+4..g+4.
+ r8.<c4..c2^c4..c4.
+ 
+>r8.g+4..g+4.
+ r8.g+4..g+4g+8
+ r8.g+4..g+4.
+ r8.f4.f8.<d+4>
+
+[
+ r8[c+4^<c8>]
+ r8[d+4^<c8>]
+ r8f4^<d+8>f2^f4^<d+8>f4..
+ r8[c+4^<c8>]
+ r8c4^a+8c4..
+ r8[f4^<d+8>]
+>r8a+2^8<<d+4>
+]
+##25
+[
+ r8d+4^<f+4^>b4.d+4^<f+4^>b4
+ r8c4^<d+4^>g+4.c4^<d+4^>g+4
+]
+ r8e4^<c+4^d+4.>e4^<c+4^d+4>
+ r8d+4^f+4^<c+4.>d+4^f+4^<c+4>
+ r8[f+4..]                      r8e4^a+4^<c+4>
+ r8d+4^a+4^<d+4.>d+4^a+4^<d+4>
+;
+
+{4}
+$
+'git' l16
+ r4ra+4..<c+4
+>r4ra+4..<c+4
+ r4rc+4..c+8g+4..c+4..c+8c8
+ 
+>r4ra+4..<c+4
+>r4..a+2^
+ r4ra+4..a+4
+ r4rg+4^g+4<f8>
+
+[
+ r8.g+4..g+8<c+4>
+ r8.g+4..g+8<c+4>
+<r8.c4..c4g+4^c4..c4c8>
+ r8.g+4..g+8<c+4>
+ r8.g+4..g+4g+8
+ r8.g+4..g+4.
+ r8.f4.f4^<f8>
+]
+##25
+[
+ r8.a+4.d+4^<f+4^>a+4.d+4^<f+8>
+ r8.g4.c4^<d+4^>g4.c4^<d+8>
+]
+ r8.g+4.e4^<c+4^>g+4.e4^<c+8>
+ r8.f4.d+4^f+4^f4.d+4^f+8
+ r8.g+4g+8.g+4g+8              r8.g+4.e4^b8
+ r8.g+4.d+4^a+4^g+4.d+4^a+8
+;
+
+{5}
+$
+'bas' l16
+[3
+ f+8.'m'<c+8>'f'f+<f+4c+8f+8g+8>
+ g+8.'m'<d+8>'f'g+<g+4d+8a+8g+8>
+ a+8.'m'<f8> 'f'a+<a+4 f8<c8c+8>>
+ a+8.'m'<f8> 'f'a+<a+4f8>g+8<d+8>
+ 
+ f+8.'m'<c+8.'f'   f+4c+8>f+8<c+8>
+ f8. 'm'<c8> 'f'f <f4 c8g+8f8>
+ a+8.'m'<f8> 'f'a+<a+4 f8g+8a+8>
+ a+8.'m'<f8> 'f'a+<<d+8d8>a+8f8d+8>
+]
+##25
+[
+ [g+8.'m'<d+8'n'd+'f'g+4 d+8>g+8<d+8>]
+  f8. 'm'<c8 'n'c 'f'f4  c8g8g+8>
+  f8. 'm'<c8 'n'c 'f'f4  g8fc>f8
+] <
+e8. 'm'>b8 'n'b <'f'e4  f+8e8b8
+e8. 'm'>b8 'n'b <'f'e4  b8a+8g+8
+d+8.'m'>a+8'n'a+<'f'd+4 a+8g+8<c+8>
+d+8.'m'>a+8'n'a+<'f'd+4 a+8g+8d+8
+
+>b8.<f+8.b4f+8>b8<f+8
+e8.>b8.<e4b8a+8g+8
+d+8.'m'>a+8'n'a+<'f'd+4 a+8g+8a+8
+d+8.'m'>a+8'n'a+<'f'd+4 a+8g+8d+8
+;
+
+{6}
+$
+l16 "a8bcd8e8f8d8hda8"
+;
+
+{7}
+$
+l16 "hsistsishsistsis"
+;
+
+{8}
+$
+l16
+"x8xyhx8xx8x8z8xx"
+;

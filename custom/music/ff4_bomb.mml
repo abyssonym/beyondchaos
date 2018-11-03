@@ -1,0 +1,79 @@
+#TITLE Ring of Bomb
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED Royaken
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x02
+#WAVE 0x22 -- 0x22
+#WAVE 0x23 -- 0x14
+#WAVE 0x24 -- 0x17
+#WAVE 0x25 -- 0x12
+
+
+{1}
+l16t131%v32%x192%b0,70%e1%k1v92p19@32o5r8 $1 o5c1  f+1  f1  
+d+1  c1  f+1  a1  
+<c1  >c1  f+1  f1  
+d+1  c1  f+1  a1  
+<c1  c1  c2^4<c+4  c8^^32r4^32>c2  
+c2^4>a+4  <c1  c2^4<c+4  c8^^32r4^32>c2  
+c2^4r4  
+;1
+
+l16
+{2}
+l16%e1%k1v86p237@32r8 $2 o4[2g1  <c+1  c1  
+>a+1  g1  <c+1  d+1  
+g1  >]<c1  c2^4<c+4  c8^^32r4^32>c2  
+c2^4>a+4  <c1  c2^4<c+4  c8^^32r4^32>c2  
+c2^4r4  
+;2
+
+l16
+{3}
+l16%e1%k1v76p60@32r8 $3 o4e1  f1  f+1  
+g1  e1  f1  <d+1  
+e1  >d+1  f1  f+1  
+g1  e1  f1  <d+1  
+e1  o3f+1  ^1  ^1  
+^1  f+1  ^1  ^1  
+^2r2  
+;3
+
+l16
+{4}
+l16%e1%k1v76p60@32r8 $4 o4r1  [5^1  ][2f+1  
+g1  r1  [5^1  ]]^1  
+^1  
+;4
+
+l16
+{5}
+l16%e1%k1v87p60@33r8 $5 o6[4c4^^32r32g8<c8>a+8g4  
+f4<f4d32d+^32d+8d+8^^32r32  >d+4^^32r32<c8f4d+4  c+4^8^^32r32>c+4^8^^32r32  
+]c4^^32r32c^32r32c4^^32r32c8  >a+8<c8^^32r32c8c4<c+4  c4r8>c^32r32c4^^32r32c8  
+>a+8<c8^^32r32c8c4a+4  c4^^32r32c^32r32c4^^32r32c8  >a+8<c8^^32r32c8c4<c+4  
+c4r8>c^32r32c4^^32r32c8  >a+8<c8^^32r32c8f8g8a+8<c8  
+;5
+
+l16
+{6}
+l16%e1%k1v127p60@34r8 $6 o5@34[4c4^8c8@35e4^8  
+@34c8c4c8c8@35e8@34c4  c8c4^8c8@35e4^8  @34c8c4c8c8@35e4e8  e8]c4^8c8e4^8  
+@34c8c8c4c8@35e4@34c4  c4^8c8@35e4^8@34c8  c8c4c8@35e8@34c8e8c8  
+c4^8c8@35e4^8@34c8  c8c4c8@35e4@34c4  c4^8c8@35e4^8@34c8  c8c4cc@35e4e8e8  
+
+;6
+
+l16
+{7}
+l16%e1%k1v94p60@36o5r8 $7 [4v83@36o4d+4d+4v94@37<c+4>v83@36d+4  
+d+4d+4d+4d+4  d+4d+4v94@37<c+4>v83@36d+4  d+4d+4d+2  ]d+4d+4v94@37<c+4>v83@36d+4  
+d+4d+4d+4v94@37<c+4  c+4>v83@36d+4v94@37<c+4>v83@36d+4  d+4d+4d+4v94@37<c+4  
+>v83@36d+4d+4v94@37<c+4>v83@36d+4  d+4d+4d+4v94@37<c+4  c+4>v83@36d+4v94@37<c+4>v83@36d+4  
+d+4d+4d+4r4  
+;7
+
+l16

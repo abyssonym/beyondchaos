@@ -1,0 +1,104 @@
+#TITLE Battle 1 ~Believe in Victory~
+#ALBUM Sword of Mana
+#COMPOSER Kenji Ito
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x1B
+#WAVE 0x21 -- 0x0D
+#WAVE 0x22 -- 0x0E
+#WAVE 0x23 -- 0x1C
+#WAVE 0x24 -- 0x22
+#WAVE 0x25 -- 0x14
+#WAVE 0x26 -- 0x0F
+#WAVE 0x27 -- 0x11
+
+
+{1}
+l16t142%v32%x192%b0,70%e1%k1v60p62@32o5<[8bgec>b8<bgec>b8r4  
+<bgec>b8<bgec>bab<ceg  ]r2 $1 o6r1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  bgec>b8<bgec>b8r4  <bgec>b8<bgec>b8r1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^4<bgec>b8<bgec>b8  r4<bgec>b8<bgec>b8  
+r4
+;1
+
+l16
+{2}
+l16%e1%k1v60p54@32o5<[8ec>bge8<ec>bge8  r4<ec>bge8<ec>bged  
+egb<c]r2 $2 o6r1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+ec>bge8<ec>bge8r4  <ec>bge8<ec>bge8r1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^4<ec>bge8<ec>bge8  r4<ec>bge8<ec>bge8  r4
+;2
+
+l16
+{3}
+l16%e1%k1r1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^2 $3 v120p44@33o5a8^<e8^c8  
+g2^4^8f+g  f+8^e8^d8e8^c8^e8  a2^8g4a8  e8^32ff+32g4f+4^8d4  
+^8e4f8e8f8e4  dc>b4a8^<e8^c8g2  ^4^8f+gf+8^e8^d8  e8^c8^e8a2  
+^8g4a8e8^32ff+32g4  f+4^8d4^8e4  f8e8f8e4dc>b4  r1  
+^1  o6c4^8>ba+a4^8ab  <c8>ba+a2g8a8  e4^8ff+g4^8f+f  
+e8ff+g2^4  <c4^8>ba+a4^8ab  <c8>ba+a2g8a8  e4^8ff+g4^8f+f  
+e8ff+g2^4  r1  ^1  
+;3
+
+l16
+{4}
+l16%e1%k1r1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^2 $4 v120p74@34o5e4g4  
+a8^b8^<c8d4c4  >b8^a8^g8a4g4  a8^b8^<c8d4c4  >b8^<c8^>b8a4^8f+4  
+^8g4a4<c8>b4  a8g4e4g4a8  ^b8^<c8d4c4>b8  ^a8^g8a4g4a8  
+^b8^<c8d4c4>b8  ^<c8^>b8a4^8f+4  ^8g4a4<c8>b4  a8g4r1  
+^1  <e2c2  e4c2d4  >b2<c2  
+>b4<c2^4  e2c2  e4c2d4  >b2<c2  
+>b4<c2^4  r1  ^1  
+;4
+
+l16
+{5}
+l16%e1%k1v60p62@35r1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  o4e8a8e8a8e8a8e8a8  
+e8a8e8a8e8a8e8a8  e8a8e8a8e8a8e8a8  e8a8e8a8e8a8a+32ag+32g32f+f32  
+e8a8e8a8e8a8e8a8  e8a8e8a8e8a8e8a8  e8a8e8a8e8a8e8a8  e8a8e8a8e8a8a+32ag+32g32f+f32  
+r2 $5 o4e8a8e8a8  e8a8e8a8e8a8e8a8  e8a8e8a8e8a8e8a8  e8a8e8a8e8a8e8a8  
+e8a8e8a8a8<d8>a8<d8  >a8<d8>a8<d8>d8f8d8f8  d8f8d8f8e8a8e8a8  e8a8e8a8e8a8e8a8  
+e8a8e8a8e8a8e8a8  e8a8e8a8e8a8e8a8  e8a8e8a8a8<d8>a8<d8  >a8<d8>a8<d8>d8f8d8f8  
+d8f8d8f8r1  ^1  >a8<e8>a8<e8>a8<e8>a8<e8  >a8<e8>a8<e8>a8<e8>a8<e8  
+>b8<e8>b8<e8>b8<e8>b8<e8  >b8<e8>b8<e8>b8<e>b8<e>b8  <a8<d8>a8<d8>a8<d8>a8<d8  
+>a8<d8>a8<d8>a8<d8>a8<d8  >b8<e8>b8<e8>b8<e8>b8<e8  >b8<e8>b8<e8>b<de8>b32a+a32g+32gf+32  
+r1  ^4^8^^32f32r2  
+;5
+
+l16
+{6}
+l16%e1%k1v120p64@36o5br8^<@37dr>@36br8^<@37dr>@36b<@37dr8  
+[5>@36br8^<@37dr>@36br8^<@37dr>@36b<@37dr8  ]>@36br8^<@37dr>@36br8^<@37dr>@36b<@37dr2  
+^4^8d32d32r32d32d32d32r32d32[7>@36br8^<@37dr  >@36br8^<@37dr>@36b<@37dr8]dddddd  
+ddddddd32d32r32d32d32d32r32d2  ^32 $6 o5@36br8^<@37dr8^[11>@36br<@37dr>@36b<@37dr8  
+>@36br8^<@37dr8^]>@36br<@37dr>@36b<@37dr8  >@36br8^<@37dr>@36br8^<@37dr>@36b<@37dr8  
+>@36br8^<@37dr>@36br8^<@37drd32d32r32d32d32d32r32d32  >@36br8^<@37dr8^[7>@36br<@37dr>@36b<@37dr8  
+>@36br8^<@37dr8^]>@36br<@37drdddd  >@36br8^<@37dr>@36br8^<@37dr>@36b<@37dr8  
+>@36br8^<@37dr>@36br8^<@37drd32d32r32d32d32d32r32d32  
+;6
+
+l16
+{7}
+l16%e1%k1v60p64@38o5[7@38g+g+@39a+r@38g+g+@39a+r@38g+g+@39a+r@38g+@39a+@38g+@39a+  
+]r1  [8@38g+g+@39a+r@38g+g+@39a+r@38g+g+@39a+r@38g+@39a+@38g+@39a+  
+]r2 $7 [26@38g+g+@39a+r@38g+g+@39a+r  @38g+g+@39a+r@38g+@39a+@38g+@39a+]
+;7
+
+l16

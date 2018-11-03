@@ -1,0 +1,134 @@
+#TITLE Battle on the Big Bridge
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED MetroidQuest
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0B
+#WAVE 0x21 -- 0x0E
+#WAVE 0x22 -- 0x1C
+#WAVE 0x23 -- 0x12
+#WAVE 0x24 -- 0x14
+#WAVE 0x25 -- 0x17
+#WAVE 0x26 -- 0x22
+#WAVE 0x27 -- 0x1E
+#WAVE 0x28 -- 0x0F
+#WAVE 0x29 -- 0x11
+
+
+{1}
+l16t117%x192%b0,70%f0,0%v50v85@34p64%e1o5f1  d+1  c+1  %l1d+2d+6d+12%l0d+24d24c+24>b24a+24a24  
+[2f12f12<f12>f12f12<f12>f12f12g+12a12a+12b12  f12f12<f12>f12f12<f12>f12f12d+12d+12d+12d+12  
+][2<f12f12c6>b6r6b6a+6  r6a+6a6f12f12<f12>f12f12<f12  >f12f12g+12a12a+12b12f12f12<f12>f12f12<f12  
+>f12f12d+12d+12d+12d+12<f12f12c6>b6  r6b6a+6r6a+6a6  r6a6g+6f12f12r12f12g+12f12  
+r12f12g+12f12a+12b12a+12g+12f12d+12f12f12  r12f12g+12g12f12r12r3r3  
+ $1 [2f4<f6c12>a+12g+12f4<f6  c12>a+12<c+12c4>g4a+6<c4  >g+12<d+12>a6g12][2<[16c12][16>g4<d4  
+>b6g4a4b6[16a+12][16f4  <c4>a6f4g4a6  [14g+12][14a+12a+12<c4g4d+6c4  
+>g4<c6>a4<c4d+4  f+4d+6c6[3>g12g12<g12][3r12r2  >[4r6g6][4c6d12d+4g6  
+f6g12a4b6c12c12r12c12  d+12c12r12c12d+12c12f12f+12f12d+12c12>a+12  
+<f4e4d+6c6<c6  >b6a+6[2%l1a3a3  %l0%l1g+3g+3%l0][2f12f12r12f12  
+g+12f12r12f12g+12f12a+12b12a+12g+12f12d+12  
+;1
+
+l16c1  c1  
+{2}
+l16v42@32p55%e1o5[8r1  
+][8r6a+6a6r6a6g+6  r6g+6g6r1  r1  r6a+6a6r6a6g+6  
+r6g+6g6r6g6f+6  c12c12r12c12d+12c12r12c12d+12c12f12f12  f12d+12c12>a+12<c12c12r12c12d+12d12c12r2  
+r4 $2 v32%l1f1  f3%l0%l1e3e3  %l0f3g3%l1f1  f3%l0%l1e3e3  
+%l0v42f24c+24>g+24<f24c+24>g+24<c+24f24g24d+24>a+24<g+24d+24a+24d+24g+24%l1g1  
+g3%l0%l1g1  g3%l0<d4c4>a+6  a+4f4g6%l1a1  
+a3%l0d+6d+12d+6d+12d+2  d+6f6g6g12g6g12%l1g3  g2%l0d+4f+4  a4<c4d+6f+6f12e24d+24  
+d24c+24c24>b24a+24a24g+24g24f+24f24e24d+24g6f6d+6  d6<c6>b24r8a+6b24r8<c24>g+24d+24g+24  
+b24g24d24g24a+24f+24c+24f+24b24r8<d+24c24>g24<c24d24>a+24f24a+24<c24>g+24d+24g+24  
+b24g24d24g24g+24f24c24f24g24d24>b24<d24a24f+24d+24f+24g24d24>b24g24<g12g12  
+r12g12a+12g12r12g12a+12g12<c12c12c12>a+12  g12f12a4g+4g6r6  a+6a6g+6[2v80,32g12a12g12a12g12a12  
+g12a12f+12g+12f+12g+12f+12g+12f+12g+12][2v44c12c12  r12c12d+12c12r12c12d+12c12f12f12f12d+12  
+c12>a+12<
+;2
+
+l16c1  
+{3}
+l16v48@32p35%e1o5[8c24f24g24<c24f24g24<c24f24g24f24c24f24g24<c24>g24f24c24>g24f24c24>g24f24c24>f24  
+<][8<<r6d+6d6r6d6c+6  r6c+6c6>>[2c24f24g24<c24f24g24<c24f24g24f24c24f24  
+g24<c24>g24f24c24>g24f24c24>g24f24c24>f24<][2<<r6d+6d6  r6d6c+6r6c+6c6  
+r6c6>b6f12f12r12f12g+12f12  r12f12g+12f12a+12b12a+48b48a+48a48g+12f12d+12f12f12  
+r12f12g+12g12f12r2r4   $3 v37%l1c1  c3%l0>%l1a+3a+3  %l0g+3a+3<%l1c1  
+c3%l0>%l1a+3a+3  %l0v48g+24f24c+24g+24f24c+24f24g+24a+24g24d+24a+24g24d+24g24a+24<%l1c1  
+c3%l0>%l1b1  b12%l0d48e48f48g48a48b48<d48e48f48g48a48b48a+12a12a+12f12g12f12d12d+12  
+f12e12f12d12d+12c12>a+12<d12%l1c1  c3%l0c6>a+12g+6a+12<%l1c3  c6%l0c6d6d+6d12c6d12  
+%l1d+3d+3%l0r6>a4  <c4d+4f+4a6<c6  d12c+24c24>b24a+24a24g+24g24f+24f24e24d+24d24c+24c24r12>g12b12<d12  
+g12f12d12>b12<g+6g24r8f+6g24r8  g+24d+24c24d+24g24d24>b24<d24f+24c+24>a+24<c+24g24r8<c24>g24d+24g24a+24f24d24f24  
+g+24d+24c24d+24g24d24>b24<d24f24c24>g+24<c24d+24c24>g24<c24d+24c24>a24<c24d24>b24g24d24  
+<c12c12r12c12d+12c12r12c12d+12c12f12f+12  f48f+48f48e48d+12c12>a+12<g+4g4f+6  
+r6d+6d6c+6v80,32[4c12d12][4[4>b12<c+12  ][4[4c12d12][4[4>b12<c+12][4v48f12f12r12f12g+12f12r12f12  
+g+12f12a+12b12a+48b48a+48a48g+12f12d+12
+;3
+
+l16c1  c1  c1  c1  
+
+{4}
+l16v60@39p45%e1o5f1  d+1  c+1  d+1  
+f1  f1  f1  f1  
+r6@32e6d+6r6d+6d6  r6d6c+6@39f1  f1  @32r6e6d+6r6d+6d6  
+r6d6c+6r6c+6c6  @39f12f12r12f12g+12f12r12f12g+12f12a+12b12  a+12g+12f12d+12f12f12r12f12g+12g12f12r2  
+r4 $4 [2%l1f1  f3%l0e3e3  >g+3a+3<][16c12][16[16g12][16[16a+12][16[15f12  
+][15g12[12g+12][12g+6g+6[16c12][16[16a12][16[8g12][8g12r2  r4g6r6g6r6g6  
+r6g6c2r12c24c24  c2r6c12c12r12c12  d+12c12r12c12d+12c12f+12f12f+12d+12c12>a12  
+[4r1  ][4<f12f12r12f12g+12f12r12f12g+12f12a+12b12  a+12g+12f12d+12
+;4
+
+l16c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  
+{8}
+l16v88@36p80%e0o5[7r1  ][7r2r4a24a24a24a24a24a24  @38a12a12r3a12a12r3  
+a12a12r3r1  r3r6@36r4a24a24a24a24a24a24  @38a12a12r3a12a12r3  a12a12r3a12a12r3  
+a12a6a6a6a12r3  r4a12r1  r3 $5 [23a6@36a12@38a6a12@36a6  @38][23@36a3r2a3  
+a3a3a6[2@38a6  @36a12@38a4@36a6][2a12a6@38a6a6  a12@36a6a6a6a6a4  
+a4a6@38a12[2a12@36a12@38][2a24a24a12a12[16a6  ][16a12a6a6a6a12@36a6a6  
+a6a12@38a12
+;5
+
+l16c1  c1  c1  c1  
+c1  c1  c1  
+{7}
+l16v80@35p95%e0o5a1  
+a1  a1  a1  r6[12a3][12a6a3  
+a6a3a6a3  a3a3a3  a3a3a3  a6a3a6a3  
+a6a3a6a6a3  r2a3a3  a3a3r2   $6 [16r1  
+][16[4r6a6][4r1  r3a2r3  a3a6a4a4  a2r3[5a2  
+r6][5r6a3a6
+;6
+
+l16c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+
+{5}
+l16v112@33p67%e1m48,18,239o6[16r1  ][16r6 $7 f12g24r24g+24r24f24r24a+24r24g+24r24g24r24f24r24<c24r24>f12  
+<c+24r24>f12<c24r24>g+6g+12a+24r24e12<c24r24>e12a+24r24g6  g12g+12g12f12g12g+12a+12g+12g12f12g24r24g+24r24  
+f24r24a+24r24g+24r24g24r24f24r24<c24r24>f12<c+24r24>f12<c24r24>g+6  
+g+12a+24r24e12<c24r24>e12a+24r24g6g12g+12a+12<c12  c+12d+12c+12c12c+12%l1d+3d+2  
+%l0c12d12d+6g6%l1f6f1  %l0r6>a+4f4d+6d4  d+4d6c4f4g6  a4<c4d6d+6d12c6  
+d12%l1d+3d+6%l0d+6f6g6  f12d+6f12%l1g6g2  %l0r6a6f+12d+12>a12<c12d12d+6d+6  
+c12f6d+6%l1d6d2  %l0[10r1  ][10>
+;7
+
+l16c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  
+{6}
+l16v72@37p70%e0o4a1  r1  
+r1  r1  f12f24f24[24a12f24f24][24r4a24f24d2  r2f12f24f24[12a12f24f24][12r4  
+a24f24d6r1  r1  [2r12a24a8f24f8d24d24r6][2<[4@41a12@40a24a24][4 $8 [92@41a12@40a24a24  
+][92r1  r1  [4a12@41a12@40a12a12][4r2r4  @37a24a24r12f24f24r12d24d24r4>a24a24a6f24f24  
+f4<r1  r1  r1  r1  
+r12a24a8f24f8d24d24r6
+;8
+
+l16

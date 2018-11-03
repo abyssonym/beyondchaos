@@ -1,0 +1,179 @@
+#TITLE Cross Counter
+#ALBUM Breath of Fire II
+#COMPOSER Yuko Takehara
+#ARRANGED emberling
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 ~0x82~ /0x0A/ brass section
+#WAVE 0x21 ~0x7F~ /0x08/ trumpet
+#WAVE 0x22 ~0x74~ /0x0E/ horn
+#WAVE 0x23 ~0x7D~ /0x33/ lead guitar
+#WAVE 0x24 ~0x6C~ /0x1E/ rhythm guitar
+#WAVE 0x25 0x1C          bass guitar
+
+#WAVE 0x27 0x22          kick
+#WAVE 0x28 0x14          snare
+#WAVE 0x29 ~0x66~ /0x17/ tom
+
+#WAVE 0x2B ~0x5A~ /0x11/ hihat
+#WAVE 0x2C ~0x12~ /0x12/ cymbal
+
+#def global= t178 %v48 %x224 %b00,70
+
+#def 1brass= |1 p13 v70 m22,12,224 o6
+#def 7brass= |0 p18 v90 m21,13,222 o6
+#def 1lead= |3 p122 v70 ~m%a6~/m15,13,232/ o5
+#def 7lead= |3 p70 v87 ~m~/m17,14,224/ o5
+#def 7lead2= |3 p70 v80 ~m~/m17,14,224/ o5
+#def 1rise= ~m%a6~ /|2 m25,15,240/ o5
+#def 5intro= |0 p26 v90 o4
+#def 5brass= |0 p26 v92 o5
+#def 4intro= |2 p34 v90 o4 m32,20,212 ~%y4%s5~
+#def 4hits= o5 m0,20,212 ~%y6~
+#def 4mirror= o6 m %a6 ~%y5~
+#def dist= |4 p117 v100 o5
+#def bass= |5 p64 v75 o5
+#def crash= |C p9 v127 %k5
+#def ride= |B p114 v96 %k0
+#def cx= %r20
+#def cs= %r18
+#def cf= %r
+
+##### LEADS #####
+{3}
+'7brass' l2
+ef+ga
+$
+'7lead' l16
+e1^2.ef+ga l32 b1^1 a<ceg16 r2r16. cdf+a16
+r16.r1 r1^1
+'7lead2' l16
+e1^2.f+gab <e1^2.>bage f2.gab<e %l1 f1 ~m23,9,255~a1~m~ %l0g4.f4.d4
+l4 >b-e-a-g g-fce- d->a+8b8< c1^1
+;
+
+{7}
+r24
+'1brass' l2
+ef+ga
+$
+'1lead' l16
+e1^2.ef+ga l32 b1^1 a<ceg16 r2r16. cdf+a16 r16.r1
+'1rise' l2
+ef+ga
+'1lead' l16
+e1^2.f+gab <e1^2.>bage f2.gab<e %l1 f1 ~m19,7,255~a1~m~ %l0g4.f4.d4
+l4 >b-e-a-g g-fce- d->a+8b8< c1^1
+;
+
+##### BRASS #####
+{5}
+'5intro' l2
+b<def+
+$ [6r1]
+'5brass' l2
+ef+ga
+<[2 l16 err4err4err4 l8 e4.grf+r]
+ [2 l16 arr4arr4arr4 l8 a4.<c>rbr]
+l4
+b-e-a-g g-fce- d->a+8b8< c1^1
+;
+
+{6}
+'4intro' l2
+gab<d>
+[6r1]
+b<def+
+'4hits'
+[2 l16 brr4brr4brr4 l8 b4.<ercr>]<
+[2 l16 frr4frr4frr4 l8 f4.argr]
+'4mirror' l4
+r24
+b-e-a-g g-fce- d->a+8b12
+%a7 g1^1
+;
+
+##### DIST #####
+{2}
+'dist' l8
+[2 eee32r16.e ddd32r16.d]
+$
+[4 eee32r16.e ddd32r16.d]
+[2 ccc32r16.c ddd32r16.d]
+[2 eee32r16.e ddd32r16.d]
+[2 [2 ee32r16.e32r16.]ee32r16. e>b<c>b<d>b<e->b<]
+[2 [2 ff32r16.f32r16.]ff32r16. fcdceceg]
+>a+r2a+32r16.a+a+32r16. bb<cr2c32r16.
+cc32r16.>bb<cc32r16.c32r16.c c32r16.c32r16.cc32r16.[4c32r16.c]
+;
+
+##### BASS #####
+{1}
+'global'
+'bass' l8
+[2 ebebdada]
+$
+[4 ebebdada]
+[2 cgcgdada]
+[2 ebebdada]
+l16
+[2[2e8>erer<]e8>er <e8>erer<e8>bre8<er>e8<]
+[2[2f8>frfr<]f8>fr <f8>frfr<f8cr>f8<fr>f8<]
+l4
+b-e-a-g g-fce- d->b-8b8<
+l16
+c8crcrc8crcrc8cr[4<cr>c8]
+;
+
+##### DRUMS #####
+{4}
+v127 p85 o5 ~%k5~ l8
+|7ff|8g|7fff|8g|7f
+l16 f|9 p109<ccc> p85aaaa p18e-e-e-e- p2>aaaa<
+$
+v127 p85 l8
+|7f4|8g|7f4f|8g4 |7ff|8g|7f4f|8gg
+|7f4|8g|7f4f|8g4 |7ff|8g|7f l16f|9 p119<ccc> p85aa p18e-e-
+p85 l8
+|7f4|8g|7f4f|8g4 |7ff|8g|7f4f|8gg
+|7f4|8g|7f4f|8g4 |7ff|8g|7f l16f|8ggggggg
+l8
+[
+ |7f|8gg|7f|8gg|7f|8g l16
+ |7f|9 p119<cccc> p85aaaa p18e-e-e-e- p2>aaa<
+ p85 l8
+ |7f|8gg|7f|8gg|7f|8g l16
+ |9 p85g- [p119<c> p85a p18e- p85g-] |8ggggggg
+]
+l8
+|7f4f|8f4|7f
+|9 l16 p119<cc> p85aa p18e-e- p2>aa< l8p85
+|7f4f|8f4|7f
+l16 |8[8g]
+l8 |7ff|8g|7f4f|8g|7fff|8g|7f
+l16 f|8ggggggg
+;
+
+##### CYMBALS #####
+{8}
+'crash''cs' o5 l4
+g2g2gggg
+$
+[
+ 'crash''cs' g.
+ 'ride''cf' [6g]g8
+ 'crash''cs' g.
+ 'ride''cf' [5g]r.
+]
+'crash'
+[
+ 'cs' g.g.g 'cf' g1
+ 'cs' g.g. 'cx' [5g]
+]
+'cs' g 'ride''cf' gggg
+'crash''cs' g 'ride''cf' gggg
+'crash''cs' g. 'ride''cf' ggg8
+'crash''cs' gggg
+;

@@ -1,0 +1,128 @@
+#TITLE Overworld
+#ALBUM Zelda II: The Adventure of Link
+#COMPOSER Akito Nakatsuka
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0E
+#WAVE 0x21 -- 0x0D
+#WAVE 0x22 -- 0x14
+
+
+{1}
+l16t151%v32%x192%b0,70%e1%k1v80p0@32o6>a8^32r2a^32a^32aa^32  
+g8^32g^32g8^32r4g^32g^32gg^32  g+8^32g+^32g+8^32r4g+^32g+^32g+g+^32  
+g8eee8eee8eee8e8   $1 o6c4r4^8^32c^32c^32da^32  f8^32d^32f8^32d^32f8^32d^32f8^32d^32  
+c8^32c^32c4r4<c^32cc^32  >a4<c^32cc^32>a4<c^32cc^32  >c4r4^8^32c^32c^32da^32  
+f8^32d^32f8^32d^32f8^32d^32f8^32d^32  c8^32c^32c4r4<c^32cc^32  >a4<c^32cc^32>a4<c^32cc^32  
+o5a+4r4^8^32<c^32d8^32a+^32  <d4c4d4>a4  g8^32g^32f4r8^32f^32d^32fa+^32  
+a8^32a^32ag+aa+a4f4  >a+4r4^8^32<c^32d8^32a+^32  <d4c4d4>a4  g^32gg^32g4r8^32e^32e^32ee^32  
+>g^32gg^32g4r8^32g^32g^32gg^32  a4r2<d4  d8^32d^32c4r2  >a4r2<d4  
+d8^32d^32c4r2  d^32ga+^32<d^32>a+g^32d^32ga+^32<d^32>a+g^32  a+<d>a+<d>a+<d>a+<d>ga+ga+ga+ga+  
+d^32ga+^32<d^32>a+g^32d^32ga+^32<d^32>a+g^32  <c4o6a+8^32g4r^32e4  
+
+;1
+
+l16
+{2}
+l16%e1%k1v80p0@32o6f4r4^8^32f^32f^32ff^32  f8^32d+^32f8^32r4f^32f^32ff^32  
+f8^32d+^32f8^32r4f^32f^32ff^32  f8ccc8ccc8ccc8c8   $2 o6a4r4^8^32a^32a^32a+<c^32  
+d+8^32>f^32<d8^32>f^32<c8^32>f^32a+8^32f^32  a8^32g^32a4r4<f^32ff^32  
+c4f^32ff^32c4f^32ff^32  >a4r4^8^32a^32a^32a+<c^32  d+8^32>f^32<d8^32>f^32<c8^32>f^32a+8^32f^32  
+a8^32g^32a4r4<f^32ff^32  c4f^32ff^32c4f^32ff^32  >g4r4^8^32a^32a+8^32<d^32  
+a+4a4g4f4  d+8^32d+^32d4r8^32>a+^32a+^32<cd^32  d8^32d^32c4r2  >g4r4^8^32a^32a+8^32<d^32  
+a+4a4g4f4  e^32de^32c4r8^32>g^32g^32gg^32  e^32de^32c4r8^32c^32c^32cc^32  
+f4r2a+4  a+8^32a+^32a4r2  f4r2a+4  a+8^32a+^32a4r2  
+g^32a+<d^32f^32d>a+^32g^32a+<d^32f^32d>a+^32  <g^32ag^32f^32gf^32e^32fe^32d^32ed^32  
+>g^32a+<d^32f^32d>a+^32g^32a+<d^32f^32d>a+^32  <e8^fd8^ec8^d>a+8^<c  
+
+;2
+
+l16
+{3}
+l16%e1%k1v120p63@33o5o3f8^32r^32f32rf32r32fr32f8^32r^32f32rf32r32fr32  
+d+8^32r^32d+32rd+32r32d+r32d+8^32r^32d+32rd+32r32d+r32  c+8^32r^32c+32rc+32r32c+r32c+8^32r^32c+32rc+32r32c+r32  
+c8^rc8^rc8^rd8e8   $3 o3f8^32r^32f32rf32r32fr32a8^32r^32f8^32r^32  
+a+8^32r^32a+8^32r^32a+8^32r^32a+8^32r^32  f8^32r^32f32rf32r32fr32f8^32r^32o5c32rc32r32cr32  
+>a8^32r^32<c32rc32r32cr32>a8^32r^32<c32rc32r32cr32  o3f8^32r^32f32rf32r32fr32a8^32r^32f8^32r^32  
+a+8^32r^32a+8^32r^32a+8^32r^32a+8^32r^32  f8^32r^32f32rf32r32fr32f8^32r^32o5c32rc32r32cr32  
+>a8^32r^32<c32rc32r32cr32>a8^32r^32<c32rc32r32cr32  o3g8^32r^32g32rg32r32gr32g8^32r^32g8^32r^32  
+g32rf+32r32gr32a8^32r^32a+32ra32r32a+r32<d8^32r^32  >a+8^32r^32a+32rf32r32a+r32<d8^32r^32>a+8^32r^32  
+f^32rfr32a8^32r^32<c8^32r^32>f8^32r^32  g8^32r^32g32rg32r32gr32g8^32r^32g8^32r^32  
+g32rf+32r32gr32a8^32r^32a+32ra32r32a+r32<d8^32r^32  >c8^32r^32e32rd+32r32er32g8^32r^32a+8^32r^32  
+<c8^32r^32>a+32ra32r32a+r32e8^32r^32c8^32r^32  f8^32r^32f32rf32r32fr32f8^32r^32f8^32r^32  
+f8^32r^32f32rf32r32fr32f8^32r^32f8^32r^32  f8^32r^32f32rf32r32fr32f8^32r^32f8^32r^32  
+f8^32r^32f32rf32r32fr32f8^32r^32f8^32r^32  g^32r2^8^32a+32ro4d8^32  
+>g^32r2^8^32a+32ro4d8^32  >g^32r2^8^32a+32ro4d8^32  >c8^ee8^gg8^32dr32a+8^32cr32  
+
+;3
+
+l16
+{4}
+l16%e1%k1v120p63@33o5>f8^32r^32f32rf32r32fr32f8^32r^32f32rf32r32fr32  
+d+8^32r^32d+32rd+32r32d+r32d+8^32r^32d+32rd+32r32d+r32  c+8^32r^32c+32rc+32r32c+r32c+8^32r^32c+32rc+32r32c+r32  
+c8^rc8^rc8^rd8e8   $4 o4f8^32r^32f32rf32r32fr32a8^32r^32f8^32r^32  
+a+8^32r^32a+8^32r^32a+8^32r^32a+8^32r^32  f8^32r^32f32rf32r32fr32f8^32r^32o6c32rc32r32cr32  
+>a8^32r^32<c32rc32r32cr32>a8^32r^32<c32rc32r32cr32  o4f8^32r^32f32rf32r32fr32a8^32r^32f8^32r^32  
+a+8^32r^32a+8^32r^32a+8^32r^32a+8^32r^32  f8^32r^32f32rf32r32fr32f8^32r^32o6c32rc32r32cr32  
+>a8^32r^32<c32rc32r32cr32>a8^32r^32<c32rc32r32cr32  o4g8^32r^32g32rg32r32gr32g8^32r^32g8^32r^32  
+g32rf+32r32gr32a8^32r^32a+32ra32r32a+r32<d8^32r^32  >a+8^32r^32a+32rf32r32a+r32<d8^32r^32>a+8^32r^32  
+f^32rfr32a8^32r^32<c8^32r^32>f8^32r^32  g8^32r^32g32rg32r32gr32g8^32r^32g8^32r^32  
+g32rf+32r32gr32a8^32r^32a+32ra32r32a+r32<d8^32r^32  >c8^32r^32e32rd+32r32er32g8^32r^32a+8^32r^32  
+<c8^32r^32>a+32ra32r32a+r32e8^32r^32c8^32r^32  f8^32r^32f32rf32r32fr32f8^32r^32f8^32r^32  
+f8^32r^32f32rf32r32fr32f8^32r^32f8^32r^32  f8^32r^32f32rf32r32fr32f8^32r^32f8^32r^32  
+f8^32r^32f32rf32r32fr32f8^32r^32f8^32r^32  g^32r2^8^32a+32ro5d8^32  
+>g^32r2^8^32a+32ro5d8^32  >g^32r2^8^32a+32ro5d8^32  >c8^ee8^gg8^32dr32a+8^32cr32  
+
+;4
+
+l16
+{5}
+l16%e1%k1v120p63@33o5>a8^32r2a^32a^32aa^32  g8^32g^32g8^32r4g^32g^32gg^32  
+g+8^32g+^32g+8^32r4g+^32g+^32g+g+^32  g8eee8eee8eee8e8   $5 o5c4d^32c>b^32<c^32rc^32c^32da^32  
+f8^32d^32f8^32d^32f8^32d^32f8^32d^32  c8^32c^32c4r4<c^32cc^32  >a4<c^32cc^32>a4<c^32cc^32  
+>c4d^32c>b^32<c^32rc^32c^32da^32  f8^32d^32f8^32d^32f8^32d^32f8^32d^32  
+c8^32c^32c4r4<c^32cc^32  >a4<c^32cc^32>a4<c^32cc^32  o4a+4<c^32>a+a^32a+8^32<c^32d8^32a+^32  
+<d4c4d4>a4  g8^32g^32f4r8^32f^32d^32fa+^32  a8^32a^32ar2^8^  >a+4<c^32>a+a^32a+8^32<c^32d8^32a+^32  
+<d4c4d4>a4  g^32gg^32g4r8^32e^32e^32ee^32  >g^32gg^32g4r8^32g^32g^32gg^32  
+a4r2<d4  d8^32d^32c4r2  >a4r2<d4  d8^32d^32c4r2  
+d^32ga+^32<d^32>a+g^32d^32ga+^32<d^32>a+g^32  a+<d>a+<d>a+<d>a+<d>ga+ga+ga+ga+  
+d^32ga+^32<d^32>a+g^32d^32ga+^32<d^32>a+g^32  <c4o5a+8^32g4r^32e4  
+
+;5
+
+l16
+{6}
+l16%e1%k1v80p64@34o5[4e4e4e4e4  ] $6 [20e4e12e12e12e4e4  
+][3e^2^8re12e12e12  ][2e8^ee8^e]
+;6
+
+l16
+{7}
+l16%e1%k1v34p127@32o6r8^>a8^32r2  
+a^32a^32aa^32g8^32g^32g8^32r4  g^32g^32gg^32g+8^32g+^32g+8^32r4  
+g+^32g+^32g+g+^32g8eee8eee8e  ee $7 ro6c4r4^8^32c^32c  ^32da^32f8^32d^32f8^32d^32f8^32d^32f8  
+^32d^32c8^32c^32c4r4<c^32c  c^32>a4<c^32cc^32>a4<c^32c  c^32>c4r4^8^32c^32c^32d  
+a^32f8^32d^32f8^32d^32f8^32d^32f8^32  d^32c8^32c^32c4r4<c^32c  c^32>a4<c^32cc^32>a4<c^32c  
+c^32o5a+4r4^8^32<c^32d8^32  a+^32<d4c4d4>a4  g8^32g^32f4r8^32f^32d^32fa+^32  
+a8^32a^32ag+aa+a4f4  >a+4r4^8^32<c^32d8^32a+^32  <d4c4d4>a4  g^32gg^32g4r8^32e^32e^32ee^32  
+>g^32gg^32g4r8^32g^32g^32gg^32  a4r2<d4  d8^32d^32c4r2  >a4r2<d4  
+d8^32d^32c4r2  d^32ga+^32<d^32>a+g^32d^32ga+^32<d^32>a+g^32  a+<d>a+<d>a+<d>a+<d>ga+ga+ga+ga+  
+d^32ga+^32<d^32>a+g^32d^32ga+^32<d^32>a+g^32  <c4o6a+8^32g4r^32e8^
+;7
+
+l16
+{8}
+l16%e1%k1v34p127@32o6r8  
+^f4r4^8^32f^32f^32ff  ^32f8^32d+^32f8^32r4f^32f^32ff  ^32f8^32d+^32f8^32r4f^32f^32ff  
+^32f8ccc8ccc8ccc $8 o6a4  r4^8^32a^32a^32a+<c^32d+8^32>f^32  <d8^32>f^32<c8^32>f^32a+8^32f^32a8^32g^32  
+a4r4<f^32ff^32c4  f^32ff^32c4f^32ff^32>a4  r4^8^32a^32a^32a+<c^32d+8^32>f^32  
+<d8^32>f^32<c8^32>f^32a+8^32f^32a8^32g^32  a4r4<f^32ff^32c4  f^32ff^32c4f^32ff^32>g4  
+r4^8^32a^32a+8^32<d^32a+4  a4g4f4d+8^32d+^32  d4r8^32>a+^32a+^32<cd^32d8^32d^32  
+c4r2>g4  r4^8^32a^32a+8^32<d^32a+4  a4g4f4e^32de^32  c4r8^32>g^32g^32gg^32e^32de^32  
+c4r8^32c^32c^32cc^32f4  r2a+4a+8^32a+^32  a4r2f4  r2a+4a+8^32a+^32  
+a4r2g^32a+<d^32  f^32d>a+^32g^32a+<d^32f^32d>a+^32<g^32ag^32  f^32gf^32e^32fe^32d^32ed^32>g^32a+<d^32  
+f^32d>a+^32g^32a+<d^32f^32d>a+^32<e8^f  d8^ec8^d>a+8^<c
+;8
+
+l16

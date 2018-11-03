@@ -1,0 +1,91 @@
+#TITLE Few Paths Forbidden
+#ALBUM Seiken Densetsu 3
+#COMPOSER Hiroki Kikuta
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x3E
+#WAVE 0x21 -- 0x1F
+#WAVE 0x22 -- 0x0D
+#WAVE 0x23 -- 0x0F
+#WAVE 0x24 -- 0x22
+#WAVE 0x25 -- 0x21
+#WAVE 0x26 -- 0x03
+#WAVE 0x27 -- 0x1C
+
+
+{1}
+l16t78%v25%x192%b0,70%e1%k1 $1 v50p94@32o5>ga<cdr8decdr8>ga<c>b  
+abgfr8ef<c>br8abge  ga<cdr8decdr8>ga<c>b  abgfr8ef<c>br8abge  ga<cdr8decdr8>ga<c>e  
+faa+<cr8>fa<cdr8fec>a  c>a+ra+a+ra+<frffrefge  aefaeraefaef<c>bge  
+cdfgr8gafgr8cdfe  cd>gar8<cdagr8efd>a  <cdfgr8gafgr8cdfe  cd>gar8<cdagr8efd>a  
+<cdfgr8gafgr8cdf>a  a+<dfgr8>a+<dfar8a+afd  c>a+ra+a+ra+<frffrefge  
+aefaeraefaef<c>bge  aefaeraefaef<c>bgr  v60p94@34v16,16,32<f8^e2^8g8^  
+f8^e2^8e8^  d2^4^c8^  d2^4^e8^  f8^e2^8g8^  
+f8^e2^8e8^  d2^4^c8^  d2^4^r1  r1  
+r1  r1  r8rv
+;1
+
+l16
+{2}
+l16%e1%k1 $2 v50p24@32o5>cdfgr8gafgr8c  
+dfecd>gar8<cdagr8e  fd>a<cdfgr8gafgr8c  dfecd>gar8<cdagr8e  fd>a<cdfgr8gafgr8c  
+df>aa+<dfgr8>a+<dfar8a+  afdr1  fcdecrfcdecdagec  v40p24@38o6cdafg8<c>g8fc8d1  
+m16,16,201^8^mrcdafg8<c>g8fc8  d1  m16,16,239^8^mrcdafg8<c>g8f>f8  
+a+1  m16,16,239^4mr1  v50p24@32>fcdecrfcdecdagec  fcdecrfcdecdager  
+v60p24v16,16,32@34<d8^c2^8e8^  d8^c2^8c8^  >a+2^4^a8^  a+2^4^<c8^  
+d8^c2^8e8^  d8^c2^8c8^  >a+2^4^a8^  a+2^4^r1  
+r1  r1  r1  r8rv
+;2
+
+l16
+{3}
+l16%e1%k1 $3 v120p68@33o5cdafg8<c>g8fc8d1  
+^8rccdafg8<c>g8fc8  d1  ^8^rcdafg8<c>g8f>f8  a+1  
+^4a+<cdef8defga8  a+8a8f1  ga<c>a<c8dc8>bg8a1  
+^8r<c>ga<c>a<c8dc8>bg8  a1  ^8^rga<c>a<c8dc8>ac8  d1  
+^4a+<cdef8defga8  a+8a8f1  v255,0^1  v100>f8^e2r8^e32f32g32e32  
+f8^e2r8^e32f32g32<c32  >a2^4r8a32a+32a32f32  d2^4r8c32f32g32<c32  
+d2^e8fgfeg  f8ed4^8c>a<c>g<dc>f  g8af2r8da+32<c32>a+32a32  f2^4^r1  
+r1  r1  r1  r8r
+;3
+
+l16
+{4}
+l16%e1%k1 $4 v72p64@39r1  
+o5ddr4^>d2^  r1  <ddr4^>d2^  r1  
+a+a+r4^a+8^gaa+aa+<c  o4v40p50@38<gaa+<cd8>a+<cdef8g8f8  m16,16,201d1  
+mr1  o5v72p64@39ddr4^>d2^  r1  <ddr4^>d2^  
+r1  a+a+r4^a+8^gaa+aa+<c  o5v40p50@38gaa+<cd8>a+<cdef8g8f8  m16,16,201d1  
+v255,0^1  mo5v60p63@34a8^a2^8<c8^  >a8^a2^8g8^  f2^4^e8^  
+f2^4^a8^  a8^a2^8<c8^  >a8^a2^8g8^  f2^4^e8^  
+f2^4^r8^  o6v72p64@39>ddddddddddddd+ccc  dddddddddd>dddddr  <ddddddddddddd+ccf  
+dddddddddd>dddddr  
+;4
+
+l16
+{5}
+l16%e1%k1 $5 v50p64@35o6>[6f+f+f+f+f+f+f+f+f+f+f+f+f+f+f+f+  
+]r2^4^8^f+  [7f+f+f+f+f+f+f+f+f+f+f+f+f+f+f+f+  ]r2^4^8^f+  [14f+f+f+f+f+f+f+f+f+f+f+f+f+f+f+f+  
+]
+;5
+
+l16
+{6}
+l16%e1%k1 $6 v120p64@36o6[5ccr4^cr8cr4^  ]ccr4^cr8cr8^cr  
+cr2^4^8^  ccr4^cr8cr8crc  [5ccr4^cr8cr4^  ]ccr4^cr8cr8^cr  
+cr2^4^8^  ccr4^cr8cr4^  ccr4^crccr8^c8  [8ccr4^cr8cr4^  
+]ccrccrccrccrcr8^  ccrccrccrccrcr8^  ccrccrccrccrcr8^  ccrccrccrcrcrr8^  
+
+;6
+
+l16
+{7}
+l16%e1%k1 $7 v80p64@37r4o6e8^r4^e4  [4r4e8^r4^e4  ]r4e8^r4^e8r2  
+^4^8^e8^r4e8  ^r4^er4^8^e8  ^r4^e4[4r4e8  ^r4^e4]r4e8  
+^r4^e8r2  ^4^8^e8^r4e8  ^r4^e4r4e8  ^r4^e8r4^8e8  
+^r4^e4[7r4e8  ^r4^e4]r1  ^2^4^8e8  r1  
+^2^4e4  
+;7
+
+l16

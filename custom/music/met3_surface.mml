@@ -1,0 +1,246 @@
+#TITLE Crateria Surface
+#ALBUM Super Metroid
+#COMPOSER Kenji Yamamoto
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x73~ /0x1A/
+#WAVE 0x21 ~0x7A~ /0x08/
+#WAVE 0x22 ~0x72~ /0x0E/
+#WAVE 0x23 ~0x7F~ /0x0A/
+#WAVE 0x24 ~0x16~ /0x16/
+#WAVE 0x25 ~0x2C~ /0x2C/
+
+#def global= t115%v50%x224%b0,70
+
+#def bass= |5 o5 m
+#def baritone= |0 ~o3~/o5%y0/ %s5 m48,18,207
+#def tenor= |1 ~o5~/o5/ m48,18,239
+#def alto= |2 ~o5~/o6/ ~m~/m48,18,239/
+#def soprano= |3 ~o6~/o6/ m48,18,207
+#def tim= |4 ~o3~/o3/ m
+
+#def bv80= ~v80~/v40/
+#def bv96= ~v96~/v48/
+#def bv112= ~v112~/v56/
+#def bvs112= ~v48,112~/v48,56/
+#def bv120= ~v120~/v60/
+#def bvs120= ~v48,120~/v48,60/
+#def bv127= ~v127~/v64/
+#def bvf32= ~v144,32~/v144,16/
+#def tv64= ~v96~/v64/
+#def tvs72= ~v48,104~/v48,72/
+#def tvs80= ~v48,112~/v48,80/
+#def tv88= ~v120~/v88/
+#def tv96= ~v127~/v96/
+#def tv112= ~v112~/v88/
+#def tv127= ~v127~/v96/
+#def tvf40= ~v216,64~/v216,40/
+#def tvf48= ~v144,72~/v144,48/
+#def av96= ~v112~/v96/
+#def av112= ~v127~/v112/
+#def avf32= ~v144,40~/v144,32/
+#def dv127= ~v127~/v127/
+#def dv120= ~v120~/v120/
+#def dv112= ~v112~/v112/
+#def dv104= ~v104~/v104/
+#def dv80= ~v64~/v64/
+#def svs255,48= ~v255,32~/v255,48/
+#def svs216,32 ~v216,24~/v216,32/
+#def svs192,48= ~v192,32~/v192,48/
+#def svs144,32= ~v144,24~/v144,32/
+#def svs88= ~v48v60,58~/v72v60,88/
+#def svf48= ~v144,32~/v144,48/
+#def sv96= ~v64~/v96/
+#def sv112= ~v72~/v112/
+#def r16= %r24
+#def r8= %r19
+#def r4= %r16
+#def r1= %r10
+#def r0= %r8
+
+{1}
+'global'
+r1. $
+'baritone' %e1 'bv80' p15 l2
+%a3 d. %a4 g. %a3 <e.>b-. 'bv96' d. %a4 g. %a3 <e.>
+##10
+'soprano' p64 v0 l8
+'svs255,48''r8'<c>'r16'gg<c>'r8'g'r16'g
+['r8'b-'r16'e-16e-16a-'r8'b-'r16'e-<e->]
+'r8'<e->'r16'b-b- 'svs216,32' [3'r8'<e->'r16'b-b-]
+'svs192,48' ['r8'b-'r16'e-16e-16a-'r8'b-'r16'e-<e->]
+'svs144,32' ['r8'<e->'r16'b-b-]'r8'<e- rr2
+##19
+'baritone' 'bv96' p15 l2
+%a3 c. %a4 f. %a3 <d.>a-.c. %a4 f. %a3 <d.
+##26
+'soprano' p64 v0 l8
+'svs255,48''r8'<c>'r16'gg<c>'r8'g'r16'g
+[['r8'b-'r16'e-16e-16a-'r8'b-'r16'e-<e->]
+[3'r8'<e->'r16'b-b-]'r8'<e->j2'r16'b-b-]r4
+##35
+'tenor' p64 'tv127' l16 r2.
+[3>>ga-b-<c d-e-fg- a-b-<cd- [6'r8'e-8'r16'>b-b-<e-8]] [6'r8'e-8'r16'>b-b-<e-8]
+##51
+r2.
+[3>>a+b<c+d+ ef+g+a b<c+d+e [6'r8'f+8'r16'c+c+f+8]] [6'r8'f+8'r16'c+c+f+8]
+'tim' 'dv127' f+4.f+4.
+;
+
+{2}
+r1. $
+'baritone'< %e1 'bv96' p39 l8
+'bvs112''r16'ddd'r8'dcg'r1''bv96'd1. r2.
+'bvs120''r16'aaa'r8'ag<d>'r1''bv112'a1. r2.
+##11
+'bv127' 'r16'fff'r8'fe-b-'r1'f1. r2.
+'r16'b-b-b-'r8'b-a-<e->'r1'b-1. r2
+##18.2
+'r8'c'r16'f 'bv112'
+'r1'g2'r16'cf <c>gfcf<c> 'r1'g2. r2
+'r16'cf 'r1'g2'r16'cf <c>gfcf<c> 'r1'g2.
+##26
+'bv127' r2 'r16'e-a-
+'r1'b-2 'r8'e-a- <e->b-a-e-<d-e-> 'r1'b-2.
+r2 'r16'e-a-'r1'b-2 'r8'e-a- <e->b-a-e-<d-e-> 'r1'b-2. r2.
+##35
+'alto' p113 l8 <
+'av112' 'r4'd-.'r16'd-16d-'r8'd->b-<d-> 'r0'b-1. 'avf32'^2.<
+'av112' 'r4'd-.'r16'd-16d-'r8'd->b-<d-> 'r0'b-2. 'avf32'^2. r2.<
+['av112' 'r4'd-.'r16'd-16d-'r8'd->b-<d-> 'r0'b-1. 'avf32'^2.<]
+##51
+['av112' 'r4'e.'r16'e16e'r8'ec+e'r0'c+2.'avf32'^2. r2.]
+'av112' 'r4'e.'r16'e16e'r8'ec+e'av96''r0'c+1.'avf32'^2.
+'av112' 'r4'e.'r16'e16e'r8'ec+e'av96''r0'c+1. r1.
+;
+
+{3}
+r1. $
+'tenor' %e1 'tv64' p89 l8
+r1. 'tvs72''r16'ddd'r8'dcg'r1'd1. r2.
+'tvs80''r16'aaa'r8'ag<d>'r1'a2.
+##11
+r1. 'r16'fff'r8'fe-b-'r1'f1.
+r2. 'r16'b-b-b-'r8'b-a-<e->b- rr2
+##19
+r 'r16'cf'r1'g2 r2.
+'r16'cf'r8'<c>'r16'gf cf'r8'<c>'r1'g4.
+r 'r16'cf'r1'g2 r2.
+'r16'cf'r8'<c>'r16'gf cf'r8'<c>'r1'g4.
+##27
+[r 'r16'e-a-'r1'b-4. r2.
+r 'r16'e-a-'r8'<e->'r16'b-a- 'r8'e-'r16'a-<e->j2'r1'b-4.]'r4'b-4.
+##35
+'alto' p39 l8
+'av112' 'r8'f.'r16'f16f'r8'fe-fe-
+'soprano''svs88''r8'e-a-<e->b-a-e-a-<e->'r1'b-4.'svf48'^2.
+'alto''av112' 'r8'f.'r16'f16f'r8'fe-f
+'soprano''r8''svs88'e->'r16'b-16b-16<'r8'e-gfd-'r1'e-2'svf48'^2.r4
+'alto''av112' 'r8'f.'r16'f16f'r8'fe-f
+'soprano''r8''sv96'e->'r16'b-16b-16<'r8'e-b-fd-'r1'e-1^4r4
+'alto''av96' 'r8'f.'r16'f16f'r8'fe-f
+'soprano''r8'e-'sv96'>'r16'b-16b-16<'r8'e-gfd-'r1'e-1 r2
+##51
+'alto''av112' 'r8'g+.'r16'g+16g+'r8'g+f+f+
+'soprano''r8''sv112' >f+f+b<f+c+>b f+b<f+'r1'c+2.. r4
+'alto''av112' 'r8'g+.'r16'g+16g+'r8'g+f+g+
+'soprano''r8''sv112' >f+'r16'c+16c+16'r8'f+a+g+e'r1'f+1^4r4
+'alto''av112' 'r8'g+.'r16'g+16g+'r8'g+f+g+
+'soprano''r8''sv112' f+'r16'c+16c+16'r8'f+<c+>g+e'r1'f+1^4r4
+'alto''av112' 'r8'g+.'r16'g+16g+'r8'g+f+g+
+'soprano''r8''sv112' f+'r16'c+16c+16'r8'f+a+g+e'r1'f+1 r4r1
+;
+
+{4}
+r1. $
+'baritone' %e1 'bv80' p113 l2
+%a3 a. %a4 <d. %a3 a.f.> 'bv96' a. %a4 <d. %a3 a.>g.
+##11
+e-. %a4 a-. %a3<f.>b.e-. %a4 a-. %a3 <f. r.
+##19
+>g.< %a4 c. %a3 g.e-.>g.< %a4 c. %a3 g.>b-.
+##27
+%a4 e-. %a6 a-.<f.>b. %a5 e-. %a6 a-.<f. r.
+##35
+'tenor' p89 l8 'tv88'
+r1.r2. 'r16're-a-<e->b-a- e-a-<e->'r1'b-^1
+r2. 'r16'e->b-16b-16<e-gfd-'r1'e-2.
+r1. 'r16'e->b-16b-16<e-b-fd-'r1'e-1^4
+r1  'tv127''r16'e->b-16b-16<e-gfd-'r1''tv64'e-2r4
+##52
+r1. r <'r16'f+b<f+c+>b f+b<f+'r1''tvf40'c+1^> r2.
+'tv96''r16'f+c+16c+16f+a+g+e'r1''tv64'f+2. r1.
+'tv127''r16'>f+c+16c+16f+<c+>g+e'r1''tv112'f+2.'tvf48'^2 r1
+'tv127''r16'f+c+16c+16f+a+g+e 'r4'f+2.
+;
+
+{5}
+'tim' %e1 p64 l8
+'dv127'd4.'dv112'ddd 'dv127'd4.'dv112'ddd+ $
+'tim'p64[3'dv127'd4.d4.d4.'dv112'ddd+]'dv127'd4.d4.
+##10
+'baritone'p15'bv96' l2 %a3 <e.>
+b-. %a4 <e-. %a3 b-. a-. >b-.< %a4 e-. %a3 b-. r2
+##18.2
+'bass' v112 p64 l16
+d8d+8
+[4 d8dd ddd8 d8d8 j4 d8dd ddd8 d8d+8]
+##26
+'baritone'p15'bv96' l2
+%a3 <e-. %a5 >b-.< %a6 e-.b-.g-. %a5 >b-.< %a6e-.b-. r.
+##35
+'baritone'<< l8
+[4'bv96''r4'a-.'r16'a-16a-'r8'a-fa-'r1'g1.'bvf32'^2.]
+##51
+'bv96''r4'b.'r16'b16b'r8'bg+b'r1'a+1^1^4
+'r4'b.'r16'b16b'r8'bg+b'r1'a+1^1r4
+'bv80''r4'b.'r16'b16b'r8'bg+b'r1'a+1.'bvf32'^2.
+'bv80''r4'b.'r16'b16b'r8'bg+b'r1'a+1^4 r1..
+;
+
+{6}
+r1.[6r1]
+##11
+$ 'bass' %e1 v127 p64 l16
+[4f8ff fff8 f8f+8 j4 f8ff fff8 f8f8]f8 r4.
+##18.2
+'tim' 'dv112' l8 dd+
+[4'dv104' d4.d4.j4d4.dd'dv112'd+]
+##26
+'bass' v112 p64 l16
+d8dd ddd8 d8d8
+[4 f8ff fff8 f8f+8  f8ff fff8 j4 f8f8]r4
+##35
+'tim' 'dv80' l16 <
+[4 d-8.d-d-8f8d-8f8 [e-8>gg<e-8e-8>g8<e-8][e-8>g8<e-8] ]
+##51
+[4 e8.ee8g+8e8g+8 [f+8>a+a+<f+8 f+8>a+8<f+8][f+8>a+8<f+8] ] r2.
+##68 (all other tracks repeat)
+'bass' v127 p64 l16
+[5d8dd ddd8 d8d8 j4 d8dd ddd8 d8d+8] r2.
+;
+
+{7}
+r1. $ [7r2.]
+##10
+'tim' %e1 p64 l16
+'dv112'>d4.d4.<
+'dv127' [4 f4.fff8f+8 f4.j4f4.]r4.
+##19
+[7r2.]
+##26
+'tim' 'dv112' l8 >d4.d4.<
+[4 f4.ff'dv120'f+ 'dv112'f4.f4.]
+##35
+[16r2.]
+##51
+[17r2.]
+;
+
+{8}
+;
+
+

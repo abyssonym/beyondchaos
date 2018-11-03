@@ -1,0 +1,102 @@
+#TITLE Endless Battlefield
+#ALBUM Sword of Mana
+#COMPOSER Kenji Ito
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x1B
+#WAVE 0x22 -- 0x0E
+#WAVE 0x23 -- 0x02
+#WAVE 0x24 -- 0x14
+#WAVE 0x25 -- 0x22
+#WAVE 0x26 -- 0x06
+
+
+{1}
+l16t142%v32%x192%b0,70%e1%k1v100p60@32o5<e4^8d4^8g4  [3e8^d8^c4^8d4  
+e4^8d4^8g4  ]g+1   $1 o5r1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  v90p60@38m48,18,201a4^8g8a8b8<c8d8  e4^8d4^8g4  e8^d8^c4^8cd8^  
+>b4^8<g4^8d1  ^4mr1  ^1  
+^1  ^1  
+;1
+
+l16
+{2}
+l16%e1%k1v100p54@32o5>a1  a4g8f4g8a4  
+b1  b4a8g4a8b4  a1  a4g8f4g8a4  
+b1  <d1   $2 o5e2a4b4  <c4>a4b4g4  
+e2a4g4  f4c4d4g4  e2a4b4  <c4>a4b4g4  
+<c4^8e4d8c4  >b2g+8^a8^b8  a2f4a4  b4g4a4b4  
+<c4^8>b4a8g4  a8^g8^fed4e4  a4^8f4g8a4  g4^8b4a8g4  
+e4^8d4^8g4  e4^8a2^8  r1  ^1  
+^1  ^1  c8^d8^e8g4d4  >g8^a8^b8b8^<c+8^d+8  
+g+8^a8^b8a8^g+8^f+8  e>b<eg+bg+b<eg+2  
+;2
+
+l16
+{3}
+l16%e1%k1v50p32@33o5>cfa<cfa<cfafc>afc>af  
+cfa<cfa<cfafc>afc>af  dgb<dgb<dgbgd>bgd>bg  dgb<dgb<dgbgd>bgd>bg  
+cfa<cfa<cfafc>afc>af  cfa<cfa<cfafc>afc>af  dgb<dgb<dgbgd>bgd>bg  
+eg+b<e>g+b<eg+>b<eg+beg+b<e   $3 o5v30r1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  cfa<cfa<cfafc>afc>af  cfa<cfa<cfafc>afc>af  >b<dgb<dgb<dgd>bgd>bgd  
+>b<dgb<dgb<dgd>bgd>bgd  r1  ^1  ^1  
+^1  
+;3
+
+l16
+{4}
+l16%e1%k1r1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1   $4 v127p94@34o5a4^ea<ce2  ^8d4c8>b4g4  b8^<c8^>b8e2  
+r1  a4^ea<ce2  ^8d4c8>b8^<c8^d8  e4^8g4f+fe4  
+m16,16,201g+1  ma4^gfed2  ^4e4f4a4  g4^8e4ff+g4  
+c2^8d8c>b8^  a2^8<c8>b8a8  g4^8b4ag+g4  m16,16,201a1  
+mr1  ^1  ^1  ^1  
+^2^8b<cdc>bg  a8^b8^<c8>b4g4  <c8^d8^e8d+8^e8^f+8  m16,16,201e1  
+mr2^dc>b<c>bag+  
+;4
+
+l16
+{5}
+l16%e1%k1v80p74@35o5f1  ^1  g1  
+^1  f8f8f8<f8f8f8c8c8  >f8f8f8<c8c8c8>f8f8  g8g8g8<g8g8g8>g8g8  
+e2<eee>bbbee   $5 a8<ar>a8<ar>a8<ar>g8<gr  >f8<fr>f8<fr>g8<gr>g8<gr  
+>a8<ar>a8<ar>a8<ar>g8<gr  >f8<fr>f8<fr>g8<gr>g8<gr  >a8<ar>a8<ar>a8<ar>g8<gr  
+>f8<fr>f8<fr>g8<gr>g8<gr  c8<cr>c8<cr>c8<cr>c8<cr  o5e8<er>e8<er>e8^f+8^g+8  
+f8<fr>f8<fr>f8<fr>f8<fr  >g8<gr>g8<gr>g8<gr>g8<gr  c8<cr>c8<cr>c8<cro5b8<br  
+>a8<ar>a8<ar>a8<ar>g8<gr  >f8^<f8^c4>f8f8f8  g8^<g8^d4>ggg4  a8<ar>a8<ar>a8<ar>a8<ar  
+>a8<ar>a8<ar>a8<ar>a8<ar  >f4r8f4r8f4  f8^<fr8c4>f8f4  e4r8e4r8e4  
+e8^<er8>b4e8e4  f8<fr>f8<fr>g8<gr>g8<gr  >a8<ar>a8<ar>b8<br>b8<br  
+>ererererdrdrdr1  ^dr
+;5
+
+l16
+{6}
+l16%e1%k1v80p64@36o5r1  ^1  
+^1  ^1  [3ereeerereeereree  ]er4^8^eeeeer8^  
+ $6 [7ereeereeereeeree  ]ereeereeer8er8er  [4ereeereeereeeree  ]r8^er8er8^ererer4  
+er8er8^eeer8^ere  eereeereeereeere  eereeeeeeeeeer1  ^1  
+^1  ^2^8eeer8^  ereeereeereeeree  ereeereeereeeeee  
+er8er8erer8er8ee  eeeeeeeeeeeeeeee  
+;6
+
+l16
+{7}
+l16%e1%k1v80p64@37o4r1  
+^1  ^1  ^1  br8^br8^br8^br8^  
+br8^br8^br8^br8^  br8^br8^br8^br8^  br2^8^br8^   $7 [7br8^br8^br8^br8^  
+]br8^br8^br4^8^  [4br8^br8^br8^br8^  ]br2^brbrbr  br2^brbr8^  
+br8^br8^br8^br8^  br8^br8^br8^br1  ^1  ^1  
+^2^4^8^b  r8^br8^br8^br8^b  r8^br8^br8^br8^b  r8^br4^8^br4  
+^8^br8^br8^br8^b  r8^
+;7
+
+l16

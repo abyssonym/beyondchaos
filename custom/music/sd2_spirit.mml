@@ -1,0 +1,96 @@
+#TITLE Spirit of the Night
+#ALBUM Secret of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- ~0x53~ /0x1B/
+#WAVE 0x22 -- 0x1C
+#WAVE 0x23 -- 0x07
+#WAVE 0x24 -- ~0x62~ /0x1B/
+#WAVE 0x25 -- ~0x62~ /0x3E/
+#WAVE 0x26 -- 0x67
+
+
+{1}
+l16t84%v50%x205%b0,70r64 $1 p104v0@32%e1%a6%r9[16r1  ]v0p32o5c1  
+^1  >b1  ^1  <c2^4^8>b8  
+a2^4^8b8  v52<c1  >b1  a4b4<d4>b4  
+a2<%r12c+2  
+;1
+
+l16
+{2}
+l16%e1r48 $2 p80v23@37%r11[2o7v20c8v15c8v20e8v15e8>v20b8v15b8<v20e8v15e8  
+v20>a8v15av20g8v15gv20a<c>v20a8v15a8v12a8v10a8  v20a8v15a8<v20c8v15c8>v20f8v15f8v20g8v15g8  
+v20e8d8e8v15e8v12e8v10e8v7e8v5e8  o7v20c8v15c8v20e8v15e8>v20b8v15b8<v20e8v15e8  
+v20>a8v15av20g8v15gv20a<c>v20a8v15a8v12a8v20g8  v20f8v15f8v20g8v15g8v20a8<d8>b8g8  
+a8v15a8v12a8v10a8v7a8v5a8v2a8r8  %y]p96v47@32%r8o4a8b8a8b8a8b8a8b8  
+a8b8a8b8a8b8a8b8  g8a8g8a8g8a8g8a8  g8a8g8a8g8a8g8a8  a8b8a8b8a8b8a8g8  
+f8g8f8g8f8g8f8a8  <v40g1  g1  e1  
+e4.g8%r12a2  %y
+;2
+
+l16
+{3}
+l16%e1r48 $3 p80v0@33%r11[2o6c4e4>b4<e4  
+>a8.g8.a<c>a2  a4<c4>f4g4  e8d8e2^4  <c4e4>b4<e4  
+>a8.g8.a<c>a4.g8  f4g4a8<d8>b8g8  a1  %y]p80v47@32%r8o4f8g8f8g8f8g8f8g8  
+f8g8f8g8f8g8f8g8  e8f+8e8f+8e8f+8e8f+8  e8f+8e8f+8e8f+8e8f+8  f8g8f8g8f8g8f8e8  
+d8e8d8e8d8e8d8f8  v40<e1  d1  c+1  
+c+4.d8%r13e2  %y
+;3
+
+l16
+{4}
+l16%e1r64 $4 p80v14@37%r14[2o6c4e4>b4<e4  
+>a8.g8.a<c>a2  a4<c4>f4g4  e8d8e2^4  <c4e4>b4<e4  
+>a8.g8.a<c>a4.g8  f4g4a8<d8>b8g8  a2^2  ]p32v25@35%r11m25,13,196r1  
+r1  r1  r1  r1  
+r2r4o5a8b8  <c4.>b8<c4>b8a8  b4.g8b4a8g8  e1  
+^1  %yp
+;4
+
+l16
+{5}
+l16%e1r64 $5 p56v50@36%r10v0,30,200[2o5e2e2  
+c2c2  >a2a2  <c2>b2  <e2e2  
+c2c2  >a2b2  <d4>b4<c+2  ]p40v25@35%r9m23,15,196vo4a8g8a8<c8>b8a8e4  
+a4<d8>b8a4g8f8  e4.d8e2  ^8f+8g8f+8g8f+8e8d8  a8g8a8<c8>b8a8e4  
+a4<d8>b8a4<c8d8  e4.d8e2  d4.>g8<d4c8>b8  a1  
+^1  %ym
+;5
+
+l16
+{6}
+l16%e1r64 $6 p48v50@36%r10v0,30,199[2o5c2c2  
+>a2a2  f2f2  g2r8f+8r8<d8  c2c2  
+>a2a2  f2g4r8<e8  >a2a2  ]p88v23@35%r9m20,15,196vo5a8g8a8<c8>b8a8e4  
+a4<d8>b8a4g8f8  e4.d8e2  ^8f+8g8f+8g8f+8e8d8  a8g8a8<c8>b8a8e4  
+a4<d8>b8a4<c8d8  e4.d8e2  d4.>g8<d4c8>b8  a1  
+^1  %ym
+;6
+
+l16
+{7}
+l16%e1r64 $7 p80v50@36%r10v0,30,199[2o4a2g2  
+f2e8g8f8e8  d2c2  >c2<e4g4  a2g2  
+f2e8g8f8e8  d2e8g8b4  d4>g4a2  ]p40v51@34%a8%r6vo5f1  
+^1  e1  ^1  f2^4f8e8  
+d1  v57c1  >g1  a1  
+^1  %y
+;7
+
+l16
+{8}
+l16%e1r48 $8 p24v0@32[16r1  ]v0@38p64o6r1  r1  
+r1  r1  r1  r2r4o6v10<c8d8  
+e4.d8e2  d4.>g8<d4c8>b8  a1  ^1  
+
+;8
+
+l16

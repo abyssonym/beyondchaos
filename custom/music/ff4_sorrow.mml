@@ -1,0 +1,54 @@
+#TITLE Cry in Sorrow
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0C
+#WAVE 0x21 -- 0x1B
+
+
+{1}
+l16t80%v25%x192%b0,70%e1%k1 $1 v68p32@32o5a+2^4<c+4  f2^4g+4  
+g1  d+2^4d+8f8  f+2g+4f+4  f4c+4>a+4<c+4  
+d+2^4r8c+8  d+2^4r8c+8  c+1  r1  
+>d+2^4f+4  a+2^4<c+4  c1  >g+2^4g+8a+8  
+b2<c+4>b4  a+4f+4d+4f+4  g+2^4r8f+8  g+2^4r8f+8  
+f+1  r1  
+;1
+
+l16
+{2}
+l16%e1%k1 $2 v68p80@32o5>a+8<f8f+8f8>a+8<f8f+8f8  
+>a+8<f8f+8f8>a+8<f8f+8f8  >a+8<g8g+8g8>a+8<g8g+8g8  >a+8<g8g+8g8>a+8<g8g+8g8  
+>a+8<f+8g+8f+8>a+8<f+8g+8f+8  >a+8<f8f+8f8>a+8<f8f+8f8  >g+8b8<d+8>b8<g+8>b8<d+8>b8  
+f+8a8<c+8>a8<f+8>a8<c+8>a8  c+8f8g+8<c+8g+8c+8f8g+8  <c+8>g+8<c+8f8g+8f8c+8>g+8  
+>d+8a+8b8a+8d+8a+8b8a+8  d+8a+8b8a+8d+8a+8b8a+8  d+8<c8c+8c8>d+8<c8c+8c8  
+>d+8<c8c+8c8>d+8<c8c+8c8  >d+8b8<c+8>b8d+8b8<c+8>b8  d+8a+8b8a+8d+8a+8b8a+8  
+c+8e8g+8e8<c+8>e8g+8e8  >b8<d8f+8d8b8d8f+8d8  >f+8a+8<c+8f+8<c+8>f+8a+8<c+8  
+f+8c+8f+8a+8<c+8>a+8f+8c+8  
+;2
+
+l16
+{3}
+l16%e1%k1 $3 v68p32@33o5a+2^4<c+4  
+f2^4g+4  g1  d+2^4d+8f8  f+2g+4f+4  
+f4c+4>a+4<c+4  d+2^4r8c+8  d+2^4r8c+8  c+1  
+r1  >d+2^4f+4  a+2^4<c+4  c1  
+>g+2^4g+8a+8  b2<c+4>b4  a+4f+4d+4f+4  g+2^4r8f+8  
+g+2^4r8f+8  f+1  r1  
+;3
+
+l16
+{4}
+l16%e1%k1 $4 v68p80@33o5>a+8<f8f+8f8>a+8<f8f+8f8  
+>a+8<f8f+8f8>a+8<f8f+8f8  >a+8<g8g+8g8>a+8<g8g+8g8  >a+8<g8g+8g8>a+8<g8g+8g8  
+>a+8<f+8g+8f+8>a+8<f+8g+8f+8  >a+8<f8f+8f8>a+8<f8f+8f8  >g+8b8<d+8>b8<g+8>b8<d+8>b8  
+f+8a8<c+8>a8<f+8>a8<c+8>a8  c+8f8g+8<c+8g+8c+8f8g+8  <c+8>g+8<c+8f8g+8f8c+8>g+8  
+>d+8a+8b8a+8d+8a+8b8a+8  d+8a+8b8a+8d+8a+8b8a+8  d+8<c8c+8c8>d+8<c8c+8c8  
+>d+8<c8c+8c8>d+8<c8c+8c8  >d+8b8<c+8>b8d+8b8<c+8>b8  d+8a+8b8a+8d+8a+8b8a+8  
+c+8e8g+8e8<c+8>e8g+8e8  >b8<d8f+8d8b8d8f+8d8  >f+8a+8<c+8f+8<c+8>f+8a+8<c+8  
+f+8c+8f+8a+8<c+8>a+8f+8c+8  
+;4
+
+l16

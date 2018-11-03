@@ -1,0 +1,400 @@
+#TITLE Battle Theme
+#ALBUM Final Fantasy X
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x49~ /0x0D/
+#WAVE 0x21 ~0x7F~ /0x0E/
+#WAVE 0x22 ~0x40~ /0x08/
+#WAVE 0x23 ~0x0B~ /0x0B/
+#WAVE 0x24 ~0x44~ /0x00/
+#WAVE 0x25 ~0x4D~ /0x1C/
+#WAVE 0x26 ~0x74~ /0x00/
+
+#WAVE 0x28 ~0x7E~ /0x14/
+#WAVE 0x29 ~0x59~ /0x22/
+#WAVE 0x2A  0x0F
+#WAVE 0x2B ~0x68~ /0x00/
+#WAVE 0x2C ~0x6D~ /0x12/
+#WAVE 0x2D ~0x88~ /0x11/
+
+#def global= t190 %v30 %x224 %b0,70
+
+#def str= |0 ~o4~/o5/ v127 %e1
+#def st1= p90 %a m
+#def st2= p64 %r %y2 %s4 m48,18,209 
+#def stv1= v32v144,44
+#def stv2= v144,56
+#def stv3= v144,68
+#def stv4= v144,80
+#def stv5= v144,92
+#def stv6= v144,104
+#def stv7= v144,116
+#def stv8= v144,127
+#def sqw= ~|6~/@5/ o6 v44 %a12 %y4 %s2 m24,9,237 %e1
+#def saw= ~|4~/@2/ ~o7~/o4/ ~v60~/v36/ m24,9,255 %e1
+#def sa1= p90 '16' %a10 %y7 %s5
+#def sa2= p0 %a12 %y4 %s2
+#def othersaw= ~|6~/@6/ o6 ~v60~/v40/ m24,9,255 %e1 %a9 %y6 %s1 '8'
+#def sh= %s3
+#def sm= %s2
+#def sl= %s1
+#def sv1= v24v144,28
+#def sv2= v144,32
+#def sv3= v144,36
+#def sv4= v144,40
+#def sv5= v144,44
+#def sv6= v144,48
+#def sv7= v144,52
+#def sv8= v144,56
+#def pet= |1 ~o5~/o6/ ~v72~/v96/ p64 m48,18,237 %e1
+#def hrn= |2 ~o4~/o5/ v72 p40 m48,18,237 %e1
+#def org= |3 o6 v28 p64 m48,18,209 v0,7,255 %a12 %e1
+#def bas= |5 o5 ~v127~/v48/ p64 m  %e0
+#def fakechoir= ~|4 o5~/|3 o4/ p64 v63v192,127 m48,18,237 %a13/%s12/
+
+#def 8= %r18
+#def 16=%r22
+#def l= p0
+#def r= p127
+#def hat= v56p104
+
+#drum "a"=5g ~|B~/|C %a11%r23/
+#drum "b"=5a+ |D p36 v32
+#drum "c"=5a+ |D p36 v56
+#drum "d"=5a+ |D p36 v80
+#drum "e"=5a+ |D p36 v96
+#drum "g"=5g |A %r30
+#drum "h"=5g |A %r28
+#drum "i"=5g |A %r
+#drum "k"=5f |9 v127 p58
+#drum "s"=5g |8 v127 p58
+#drum "s-"=5b |8 v127 p58
+#drum "t"=6e |9 v127 p58
+#drum "u"=6a |9 v127 p80
+#drum "x"=5a |C v127 p104
+#drum "y"=5g |C v127 p24 %r19
+#drum "z"=5g |C v127 p24 %r
+
+## using 4/4 time markers since this lines up cleaner than 6/4
+
+{1}
+'global' l8 
+##at 1: trumpet
+'pet''8'g+4g+g+4g+g+4f+4b4 %ye1^4.r <'8'c+4c+c+4c+c+4>b4<e4> %ya1^4.r
+##at 7: lowest trumpet
+l8'pet''8' [c+4c+c+4c+c+4c+4c+4 c+4c+c+4c+c+4d4d4$999]
+##at 13: lowest string
+'str''st1' l8
+'stv1''16'c+4c+c+4c+'stv2''8'c+d+ed+c+d+ 'stv3''16'c+4c+c+4c+'stv4''8'c+d+ed+c+d+
+'stv5''16'c+4c+c+4c+'stv6''8'c+d+ed+c+d+ 'stv7''16'd4dd4d'stv8''8'def+ed>b
+##at 19: high trumpet
+$
+'pet''8' l4 <c+.d+.e.d+.c+>b %ya1..r '8'b.<c+.d+.c+.>b<d+> %yg+1..r
+'8'a.b.<c+.>b.ag+ %yf+1^.r8e2 d+1^.r8d+2 g+1..r
+##at 35: synth echo (skip organ)
+##'org' l1 c+^ c+^ f+^ e^ e^ d+^ e^ g+^
+'sqw''8''r' l8
+r.<C+>g+ e <D+>g+ e <E> g+ e <D+>g+ e <C+>e  b  e 
+ a >B< c+ e >A< c+ e >B< c+ e >A< c+>B< c+ e  a
+ b  f+ d+<C+>f+ d+<D+>f+    d+<C+>f+ d+ b  d+<D+>d+
+ g+>G+ B< e >A  B< e >G+    B< e >A  B  G+ B< e  g+
+ a  e  c+ b  e  c+<C+>e     c+ b  e  c+ a  c+ g+ c+
+ g >A+<c+ d+>G< c+ d+>A+<   c+ d+>G< c+>A+<c+ d+ f
+ a+ g  e <C> g  e <C+>g     e <E> g  e <D+>e <C+>e
+<D+>g+ a+<C> g  g+ a+ d+    g+ c  c+ d+>G+ A+<c16 m
+##at 51: trumpet, horn
+'pet'l8< ~v56~
+g+4g+f+4g+e4 ed+4ec+4>b4 a2<g+2^1^1 r1
+'hrn' ~v112~
+f+4f+e4f+d+4 d+c+4d+>b4a4 g+2<f+2^1^1 r1
+##at 63: sqw1
+'sqw' ~v72~/v96/m48,18,237 l8
+r>ab<c+d+4c+d+ e4d+ef+.e.f+  r>b<c+d+e4d+e f+4ef+b.a.b
+l2 <c+1.d+ e1.g+ f+1.e f+1^1 m
+##at 75: string low
+'str''st1' l4 [3'8'e.e.e.'16'e12e24^]'8'f+.f+.f+.'16'g+12g+24^
+;
+
+{2}
+l8
+##at 1: second string, horn
+'str''st1''16'e4ee4ee4e4e4
+'hrn' l4 e.d+.c+.>b. a1^4.r8 <a.g+.f+ l8 f+edf+
+##at 7: second trumpet
+l8'pet''8' [e4ee4ee4e4e4 e4ee4ee4f+4f+4]
+##at 13: middle string
+'str''st1' l8
+'stv2' r1. 'stv3''16'e4ee4e'stv4''8'ef+g+f+ef+
+'stv5''16'e4ee4e'stv6''8'ef+gf+ef+ 'stv7''16'f+4f+f+4f+'stv8''8'f+f+bf+f+d
+##at 19: low trumpet
+$
+'pet''8' l4 e.f+.g+.f+.ed+ %ye1..r '8'd+.e.f+.e.d+f+ %ye1..r
+'8'c+.d+.e.d+.c+>b< %yc+1^.r8c+2 c+1^.r8c+2 d+1..r
+##at 35: low string
+'str''st1''8' l4 >[4g+.]g+g+ 'st2' b2a1g+.r8
+'st1''8' [4b.]bb 'st2' a2g+1f+.r8
+'st1''8' [4a.]aa 'st2' a+1..r
+'st1''8' g.f+.g.g+.gg 'st2' d+1..r
+##at 51: high string
+'st1'< v80 l4
+g+.a.a+.a.g+f+ e1f1 f+1f1
+f+.g+.a.g+.f+d+ e1^1 ^1^1
+##at 63: string
+'str''st1' l8
+r>ab<c+d+4c+d+ e4d+ef+.e.f+  r>b<c+d+e4d+e f+4ef+b.a.b
+'st2' l2 <c+1.d+ e1.g+ f+1.e f+1^1
+##at 75: string high
+'str''st1' l4 '8'<d+.d+.d+.'16'c+12c+24^ '8'c.c.c.'16'c+12c+24^
+'8'd+.d+.d+.'16'e12e24^ '8'f+.f+.f+.'16'g+12g+24^
+;
+
+{3}
+l8
+##at 1: lowest string
+'str''st1''16'c+4c+c+4c+c+4c+4c+4 'st2'a1.
+'st1''16'f+4f+f+4f+f+4f+4f+4 'st2'd1.
+##at 7: third trumpet
+l8'pet''8' [g+4g+g+4g+g+4a4a4 g+4g+g+4g+g+4b4a4]
+##at 13: highest string
+'str''st1' l8
+'stv4' r1r1r1 'stv5''16'g4gg4g'stv6''8'gabaga 'stv7''16'b4bb4b'stv8''8'b<c+dc+>bf+
+##at 19: high horn
+$
+'hrn' l4 '8' [4c+.]c+c+ %yc+1...r8 '8'>[4b.]bb %yb1...r8
+'8'[4a.]aa %y[a+1^.r8a+2] g+1..r
+##at 35: middle string
+'str''st1''8'l4 e.f+.g+.f+.ed+ 'st2'e1..r
+'st1''8'd+.e.f+.e.d+f+ 'st2'>b1..r<
+'st1''8'c+.d+.e.d+.c+>b< 'st2'c+1..r
+'st1''8'e.e.e.g+.ga+ 'st2'c1..r
+##at 51: middle string
+'st1' v80 l1
+e^ c+^^^ d+^ >b<c+d+c+
+##at 63: organ high
+'org'
+l1 e^f+^ l2 g+1.b <c+1.d+ c+1.c+ d1^1
+##at 75: organ high
+l4 '8'd+.d+.d+.c+. c.c.c.c+.
+d+.d+.d+.e. f+.f+.f+.g+.
+;
+
+{4}
+l8
+##at 1: fourth & fifth string
+'str''st1'< ['8'g+'16'c+g+][3'8'g+'16'c+] ['8'a'16'c+a][3'8'a'16'c+]
+['8'a'16'c+a][3'8'a'16'c+] ['8'a'16'da]'8'a'16'dl16v62v96,100>b<c+def+g+ab
+##at 7: fourth trumpet
+l8'pet''8'<r1r1r1 [c+4c+c+4c+c+4c+4c+4]
+##at 13 unused
+[6r1]
+##at 19: low horn
+$
+'hrn' l4 '8' >[4g+.]g+g+ %yb2a1g+.r8 '8'[4f+.]f+f+ %ya2g+1f+.r8
+'8'[4e.]ee %yf+1^.r8g+2 g1^.r8d+2 d+1..r
+##at 35: high string
+'str''st1''8'l4 <c+.d+.e.d+.c+>b 'st2' a1..r
+'st1''8' b.<c+.d+.c+.>b<d+> 'st2'g+1..r
+'st1''8' a.b.<c+.>b.ag+ 'st2'g1..r
+'st1''8' a+.<c.c+.e.d+c+ 'st2'd+1^1
+##at 51: low string
+'st1' v80 l1
+c+^ >a^^^ b^ >g+^^^
+##at 63: organ low
+'org'
+l1 c+^d+^ l2 e1.f+ a1.b a1.a a1^1
+##at 75: organ middle
+l4 '8'[3g+.g+.g+.g+12g+24^] <d.d.d.d12d24^
+;
+
+{5}
+l8
+##at 1: sixth string
+'str''st1'<<[4['8'c+4'16'c+8]'8'c+4j4c+4c+4]'16'l16>v62v96,100def+g+ab<c+d
+##at 7: fifth trumpet
+l8'pet''8'<r1r1r1 e4ee4ee4e4e4 e4ee4ee4f+4f+4
+###at 13: saw1
+##l8'saw''sa1''sv1' c+'sm'c+'sl'c+'sh'c+'sl'c+'sh'c+ 'sv2'['sh'c+'sm'c+'sl'c+]
+##'sv3' 'sh'c+'sm'c+'sl'c+'sh'c+'sl'c+'sm'c+ 'sv4''sh'c+'sm'c+'sl'c+'sm'c+'sh'c+'sm'c+
+##'sv5' 'sl'c+'sh'c+'sm'c+'sl'c+'sh'c+'sl'c+ 'sv6''sm'c+'sh'c+'sh'c+'sm'c+'sl'c+'sh'c+
+##'sv7'>'sl'b'sh'b'sh'b'sm'b'sl'b'sh'b 'sv8''sm'b'sl'b'sh'b'sm'b'sl'b'sh'b
+'saw''sa1''sv1' %k1 [j2,54j1,53 $54'sv3'[j2,55j1,53
+$55'sv5'[j2,56j1,53 $56'sv7'%k11>[j2,57j1,53 $57<
+###at 19: saw1
+$
+%k1 [j2,58j1,51 $58>%k11[j2,59j1,51 $59<
+%k1 [j2,510j1,51 $510 [j2,511j1,52 $511 %k3[j2,512j1,52 $512%k0
+##l8'saw''sa1'
+##[
+##'sh'c+'sm'c+'sl'c+'sh'c+'sl'c+'sh'c+c+'sm'c+ 'sl'c+'sh'c+'sm'c+'sl'c+'sh'c+'sm'c+'sl'c+'sh'c+
+##['sl'c+'sm'c+'sh'c+'sm'c+] 'sl'c+'sh'c+'sm'c+'sl'c+'sh'c+'sl'c+'sm'c+'sh'c+ j2,50
+##>b'sm'b'sl'b'sh'b'sl'b'sh'bb'sm'b 'sl'b'sh'b'sm'b'sl'b'sh'b'sm'b'sl'b'sh'b
+##['sl'b'sm'b'sh'b'sm'b] 'sl'b'sh'b'sm'b'sl'b'sh'b'sl'b'sm'b'sh'b<
+##]$50 c+'sm'c+'sl'c+'sh'c+'sl'c+'sh'c+c+'sm'c+ 'sl'c+'sh'c+'sm'c+'sl'c+'sh'c+'sm'c+'sl'c+'sh'c+
+##['sl'd+'sm'd+'sh'd+'sm'd+] 'sl'd+'sh'd+'sm'd+'sl'd+'sh'd+'sl'd+'sm'd+'sh'd+
+##at 35: sq1/sq2
+##'sqw''16' l16 ##cannot get accurate panning here without using way too many bytes
+#### C+ g+ e  D+ g+ e  E  g+ e  D+ g+ e  C+ e  b  e 
+####     C+ g+ e  D+ g+ e  E  g+ e  D+ g+ e  C+ e  b  (e)
+##'l'<c+8>g+'r'<c+>'l'e'r'g+'l'<d+>'r'e'l'g+'r'<d+>'l'e'r'g+'l'<e>'r'e'l'g+'r'<e>
+##'l'e'r'g+'l'<d+>'r'e'l'g+'r'<d+>'l'e'r'g+'l'<c+>'r'e'l'e'r'<c+>'l'b'r'e'l'e'r'b
+#### a  B  c+ e  A  c+ e  B  c+ e  A  c+ B  c+ e  a
+#### (e) a  B  c+ e  A  c+ e  B  c+ e  A  c+ B  c+ e (a)
+##'l'a'r'e'l'>b<'r'a'l'c+'r'>b<'l'e'r'c+'l'>a<'r'e'l'c+'r'>a<'l'e'r'c+'l'>b<'r'e
+##'l'c+'r'>b<'l'e'r'c+'l'>a<'r'e'l'c+'r'>a'l'b<'r'c+'l'c+'r'>b<'l'e'r'c+'l'a'r'e
+#### b  f+ d+ C+ f+ d+ D+ f+    d+ C+ f+ d+ b  d+ D+ d+
+#### (e) b  f+ d+ C+ f+ d+ D+    f+ d+ C+ f+ d+ b  d+ D+ (d+)
+##'l'b'r'e'l'f+'r'b'l'd+'r'f+'l'<c+>'r'd'l'f+'r'<c+>'l'd+'r'f+'l'<d+>'r'd+'l'f+'r'<d+>
+##'l'd+'r'f+'l'<c+>'r'd+'l'f+'r'<c+>'l'd+'r'f+'l'b'r'd+'l'd+'r'b'l'<d+>'r'd+'l'd+'r'<d+>
+#### g+ G+ B  e  A  B  e  G+    B  e  A  B  G+ B  e  g+
+#### (d+)g+ G+ B  e  A  B  e     G+ B  e  A  B  G+ B  e  (g+)
+##'l'g+'r'd+'l'>g+<'r'g+'l'>b'r'g+<'l'e'r'>b'l'a<'r'e'l'>b'r'a<'l'e'r'>b'l'g+<'r'e
+##'l'>b'r'g+<'l'e'r'>b'l'a<'r'e'l'>b'r'a'l'g+'r'b'l'b'r'g+<'l'e'r'>b<'l'g+'r'e
+#### a  e  c+ b  e  c+ C+ e     c+ b  e  c+ a  c+ g+ c+
+#### (g+)a  e  c+ b  e  c+ C+    e  c+ b  e  c+ a  c+ g+ (c+)
+##'l'a'r'g+'l'e'r'a'l'c+'r'e'l'b'r'c+'l'e'r'b'l'c+'r'e'l'<c+>'r'c+'l'e'r'<c+>
+##'l'c+'r'e'l'b'r'c+'l'e'r'b'l'c+'r'e'l'a'r'c+'l'c+'r'a'l'g+'r'c+'l'c+'r'g+
+#### g  A+ c+ d+ G  c+ d+ A+    c+ d+ G  c+ A+ c+ d+ f
+#### (c+)g  A+ c+ d+ G  c+ d+    A+ c+ d+ G  c+ A+ c+ d+ f
+##'l'g'r'c+'l'>a+<'r'g'l'c+'r'>a+<'l'd+'r'c+'l'>g<'r'd+'l'c+'r'>g<'l'd+'r'c+'l'>a+<'r'd+
+##'l'c+'r'>a+<'l'd+'r'c+'l'>g<'r'd+'l'c+'r'>g'l'a+<'r'c+'l'c+'r'>a+<'l'd+'r'c+'l'f'r'd+
+#### a+ g  e  C  g  e  C+ g     e  E  g  e  D+ e  C+ e
+#### (f) a+ g  e  C  g  e  C+    g  e  E  g  e  D+ e  C+ e
+##'l'a+'r'f'l'g'r'a+'l'e'r'g'l'<c>'r'e'l'g'r'<c>'l'e'r'g'l'<c+>'r'e'l'g'r'<c+>
+##'l'e'r'g'l'<e>'r'e'l'g'r'<e>'l'e'r'g'l'<d+>'r'e'l'e'r'<d+'l'c+>'r'e'l'e'r'<c+
+#### D+ g+ a+ C  g  g+ a+ d+    g+ c  c+ d+ G+ A+ c  G+
+#### (e) D+ g+ a+ C  g  g+ a+    d+ g+ c  c+ d+ G+ A+ c  G+
+##'l'd+>'r'e'l'g+'r'<d+>'l'a+'r'g+'l'<c>'r'a+'l'g'r'<c>'l'g+'r'g'l'a+'r'g+'l'd+'r'a+
+##'l'g+'r'd+'l'c'r'g+'l'c+'r'c'l'd+'r'c+'l'>g+<'r'd+'l'>a+'r'g+<'l'c'r'>a+'l'g+<'r'c
+
+##pansweep version
+##p0 <c+8> p64p0,12,127 g+<c+>eg+<d+>eg+<d+>eg+<e>eg+<e>
+##eg+<d+>eg+<d+>eg+<c+>ee<c+>beeb
+##ae>b<ac+>b<ec+>a<ec+>a<ec+>b<e
+##c+>b<ec+>a<ec+>ab<c+c+>b<ec+ae
+##bef+bd+f+<c+>df+<c+>d+f+<d+>d+f+<d+>
+##d+f+<c+>d+f+<c+>d+f+bd+d+b<d+>d+d+<d+>
+##g+d+>g+<g+>bg+<e>ba<e>ba<e>bg+<e
+##>bg+<e>ba<e>bag+bbg+<e>b<g+e
+##ag+eac+ebc+ebc+e<c+>c+e<c+>
+##c+ebc+ebc+eac+c+ag+c+c+g+
+##gc+>a+<gc+>a+<d+c+>g<d+c+>g<d+c+>a+<d+
+##c+>a+<d+c+>g<d+c+>ga+<c+c+>a+<d+c+fd+
+##a+fga+eg<c>eg<c>eg<c+>eg<c+>
+##eg<e>eg<e>eg<d+>ee<d+c+>ee<c+
+##d+>eg+<d+>a+g+<c>a+g<c>g+ga+g+d+a+
+##g+d+cg+c+cd+c+>g+<d+>a+g+<c>a+g+<c
+
+##dual channel version
+'sqw''8''l' l8
+<C+>g+ e <D+>g+ e <E> g+ e <D+>g+ e <C+>e  b  e 
+ a >B< c+ e >A< c+ e >B< c+ e >A< c+>B< c+ e  a
+ b  f+ d+<C+>f+ d+<D+>f+    d+<C+>f+ d+ b  d+<D+>d+
+ g+>G+ B< e >A  B< e >G+    B< e >A  B  G+ B< e  g+
+ a  e  c+ b  e  c+<C+>e     c+ b  e  c+ a  c+ g+ c+
+ g >A+<c+ d+>G< c+ d+>A+<   c+ d+>G< c+>A+<c+ d+ f
+ a+ g  e <C> g  e <C+>g     e <E> g  e <D+>e <C+>e
+<D+>g+ a+<C> g  g+ a+ d+    g+ c  c+ d+>G+ A+<c >G+
+
+##at 51: choir / saw1
+p 'fakechoir' l4 c+.c+.c+^1
+'saw''sa1' l8 %k1[j2,513j1,51 $513%k0
+'fakechoir' l4 >b.b.b^1
+'saw''sa1' l8 >%k11[j2,514j1,51 $514%k0
+##at 63: organ 3 / saw1
+'org' l1 a^b^
+'othersaw''8' l8
+[4[<c+>g+f+]c+>g+ c+f+g+f+g+<c+f+g+]
+##at 75:
+'saw''sa1' l8 %k1[j2,515j1,53 $515 [j2,516j1,53 $516 
+[j2,517j1,53 $517 >%k11 [j2,518j1,53 $518 <%k0
+;
+
+## function for saw approximation (53 for 12 notes, 52 for 16, 51 for 32)
+l8 $51 [ $52 'sh'c'sm'c'sl'c'sh'c $53 ['sh'c'sm'c'sl'c]'sh'c'sl'c'sm'c'sh'c'sm'c'sl'c]]
+
+{6}
+'bas' l8
+c+r4c+r4c+r^2 >ar4ar4ar^2< f+r4f+r4f+r^2 dr4dr4dr^2
+##at 7:
+[4c+4g+<c+4>g+a4<c+4e4>]
+##at 13:
+[3c+r4c+r4c+r^2]dr4dr4dr^2
+##at 19:
+$
+l8 [[4c+r4]c+d+e4] >[4br4]b<c+d+4 [4er4]e4d+4
+>[4ar4]ab<c+4 [4f+r4]f+4e4 [4d+r4]d+fgc+ cr4cr4cr>g+r4g+r4gr
+##at 35:
+<c+4.erg+<c+4.>f+4g+<c+4>b4 a4.>a4.b4.<c+4.d+4e4
+>b4.<d+rf+b4.e4f+b4a4 e4.<e4.d+4 c+4>b4a4g+4
+a4.c+rea4.c+4ea4g+4 g4.c+4.d+4.>a+4.g4<c+4
+e4.f+4.g4.g+4.a+4g4 g+4.a+4.<c4.c+4.d+4>g+4
+##at 51:
+l4 c+1.<c+>b a.e.<c+.>f.a<c+>
+a.f+.<c+.>f.a<c+> >b1.<ba
+g+.e.b.e.g+<c+ d+.>e.g+.<c+.>eg+
+##at 63:
+l8 a4.d+rea4.c+4ea4f+4 b4.erf+b4.d+4f+b4<d+4
+l2 c+1.>b a1.g+ f+1.e d1^1
+##at 75:
+l8 [3c+r4c+r4c+r^2]dr4dr4dr^2
+;
+
+{7}
+l4
+[3"k.k.k2."]"k.k.k2s-"
+##at 7:
+l8["k4ks-4kk4s-4k4 k4ks-4kk4k4s-4"]
+##at 13:
+v64 l4 v255,80 "\k.k.k2." v255,96 "\k.k.k2." v255,112 "\k.k.k2." v255,127 "\k.k.k2."
+##at 19:
+$
+l4 [4"k.s.k.s.ks- k.s.k.s.ks-8k8"]
+##at 35:
+l8 [4["!!k4s-4kks-4 kks-k4ks-"j2 ^]"k"]
+##at 51:
+l8 ["k1.^ks-4k4.ks-4.kk4.ks-k4k4k4ks-2k4.ks-k4k"]
+##at 63:
+l8 ["k4s-k4ks-4.ks-kk4s-k"] %g1
+"k1."[6"!ot12"]
+"k2.."l24"bcde4.bcdd8e4d8" l8
+"k1."[6"!ou12"]
+"k1 u48t48^12k4ku48t48^12ks-k" %g0
+##at 75:
+l4 [4"k.k.k2."]
+;
+
+{8}
+l8
+"y4."'hat'[j2,800j1,881$800 [j2,801j1,880$801 [j2,802j1,880$802 "ahhahhahig!!z2"
+##at 7:
+^'hat'[j2,803j1,883$803 [j2,804j1,884$804 [j2,805j1,882$805 [j2,806j1,884$806
+##at 13:
+v32 l8 v255,36 [j2,807j1,880$807 v255,40 [j2,808j1,880$808
+v255,44 [j2,809j1,880$809 v255,48 [j2,810j1,880$810 %r
+##at 19:
+$
+["!!y4."'hat'["ihg"]"ihihia4" [7[3"ihg"]"ihihia4"]]
+##at 51:
+[j2,811j1,886$811"!!c4" [j2,812j1,886$812"!!y4"
+##at 63:
+l8 'hat'["ai4i4iii"["ai4i"]]
+"!!z1"'othersaw' <e c+>g+e c+>g+e c+ %e0
+"!!z1"'othersaw' <e c+>a e c+>a e c+ %e0
+"!!z1"'othersaw' <f+c+>a f+c+>a f+c+ %e0
+"!!z1"'othersaw' <f+d >a f+d >a f+d  %e0
+##at 75:
+"!!y4."'hat'[j2,813j1,881$813 [j2,814j1,880$814 [j2,815j1,880$815 [j2,816j1,880$816
+;
+
+## pattern: AhhA hhAh ighg -- 880 full, 881 trims first ^4.
+$880 l8 "!!!oahh" $881 "!!!oahhahighg"]
+##pattern: [ihg]ihihiA -- 882 full, 883 trims first ^4.
+$882 l8 "!!!oihg" $883 "!!!oihgihihia"]
+##pattern: [ihg]ihiAiA -- 884
+$884 l8 ["!!!oihg"]"ihiaia"]
+##pattern at 51
+$886 l8 "!!!oz4.x4.z4^1" ["d4c4c4bd4c4cd4"j2"c4"]]

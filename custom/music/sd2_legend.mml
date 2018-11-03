@@ -1,0 +1,129 @@
+#TITLE The Legend
+#ALBUM Secret of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- ~0x65~ /0x22/
+#WAVE 0x21 -- ~0x5C~ /0x21/
+#WAVE 0x22 -- ~0x4D~ /0x18/
+#WAVE 0x23 -- ~0x4A~ /0x1C/
+#WAVE 0x24 -- 0x07
+#WAVE 0x25 -- 0x0D
+#WAVE 0x26 -- ~0x86~ /0x31/
+#WAVE 0x27 -- ~0x53~ /0x1B/
+#WAVE 0x28 -- ~0x62~ /0x3E/
+
+#SFXV ` *
+
+*{1}*`{3}`
+l16p64r1  r1  r1  r1  
+r1  r1  r1  r2r4o5v127@33gr8.  
+ $1 o4v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8<v127@33gr8>v80@32gr  
+gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33ggr8  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8<v127@33gr8>v80@32gr  
+gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33ggrg  
+>v80@32gr8.<v127@33gr8.>v80@32ggr<v127@33gr>v80@32ggr  ggr8<v127@33gr8.>v80@32ggr<v127@33gr8>v80@32gr  
+gr8.<v127@33gr8.>v80@32ggr<v127@33gr>v80@32ggr  ggr8<v127@33gr8.>v80@32ggr<v127@33gr>v80@32ggr  
+gr8.gr8.gr8.gr8.  gr8.gr8.gr8.gr8.  gr8.gr8.gr8.gr8.  gr8.gr8.gggr<v127@33g>v80@32gg<v127@33g  
+
+;1
+
+l16
+{2}
+t88%v50%x140%b0,64
+l16%e1p72v65@34o5aaa8aa8aa8aa8aaa  a8aa8aa8aa8aa8a8  
+aaa8aa8aa8aa8aaa  a8aa8aa8aa8aa8a8  a+a+a+8a+a+8a+a+8a+a+8a+a+a+  
+a+8a+a+8a+a+8a+a+8a+a+8a+8  aaa8aa8aa8aa8aaa  a8aa8aa8aa8aa8a8  
+ $2 @35o5v55[2aaaraaraaraaraaa  araaraaraaraarar  aaaraaraaraaraaa  
+araaraaraaraarar  a+a+a+ra+a+ra+a+ra+a+ra+a+a+  a+ra+a+ra+a+ra+a+ra+a+ra+r  
+aaaraaraaraaraaa  araaraaraaraarar  <]@34v65>>a+r8.a+a+r8a+a+ra+r8a+r  
+a+r8.a+a+r8a+a+ra+r8a+r  ar8.aar8aarar8ar  ar8.aar8aarar8ar  %r7p64>a+2^8.fa+r<cr  
+c+2^4<c+>g+d+>a+  <c2^4^rgr  <c2^4ccrc  
+;2
+
+l16
+*{3}*`{1}`
+l16%e1p40v35@36m20,18,195%r4o6fec>g<cefec>g<cdfec>g  
+<fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  
+<dc>afa<cdc>afa<cdc>af  <dc>afa<cdc>afa<cdc>af  <fec>g<cefec>g<cdfec>g  
+<fec>g<cefec>g<cdfec>g   $3 v40@36o5d4.g2^8  ^4<c4>g4c4  d4.g2^8  
+^4<c4>g4<c4  d1  ^2^4c4  >a4.e2^8  
+^1  d4.g2^8  ^4<c4>g4c4  d4.g2^8  
+^4^a<cdfecdefga  a+2^4^8ag  d2^4c4  >a4.e2^8  
+^1  <defrfgfrefredrcr  fgf2^8c4  defrfgfrefredrcr  
+f<c>a2^8>a4  a+<cdrdefgf2  c+d+frfgg+a+g+4g+8a+8  <c2^4>g4  
+<c2^4>gec>g  
+;3
+
+l16
+*{4}*`{8}`
+l16%e1p88v57@37%r5o5d4.g2^8  ^4<c4>g4c4  
+d4.g2^8  ^4<c4>g4<c4  d1  ^2^4c4  
+>a4.e2^8  ^1   $4 v57@37o5p88%r5d4.g2^8  ^4<c4>g4c4  
+d4.g2^8  ^4<c4>g4<c4  d1  ^2^4c4  
+>a4.e2^8  ^1  g4.<c2^8  ^4f4c4>f4  
+g4.<c2^8  ^4f4c4f4  g1  ^2^4f4  
+d4.c2^8  ^1  >a+8.ra+8.ra+8.<c8.>a8  <dgaa+<c8>a+ag8.a8.f8  
+e2^4c4  >a2^4<c4  p80>a+2^4a+8<c8  c+2^4c+8d+8  
+f2^4f8ed  e2^4c4  
+;4
+
+l16
+{5}
+l16%e1p85v57@37%r5o4g4.<c2^8  ^4f4c4>f4  
+g4.<c2^8  ^4f4c4f4  a+1  ^2^4g4  
+d4.c2^8  ^1   $5 p85o4g4.<c2^8  ^4f4c4>f4  
+g4.<c2^8  ^4f4c4f4  a+1  ^2^4g4  
+d4.c2^8  ^1  d4.g2^8  ^4<c4>g4c4  
+d4.g2^8  ^4<c4>g4<c4  d1  ^2^4c4  
+>a4.e2^8  ^1  g8.rg8.rg8.a8.f8  a+4.gaa+8.<c8.d8  
+>a2^4^age  f4g4e4a4  p64f2^4f8g8  g+2^4g+8a+8  
+<c1  c2^4>g4  
+;5
+
+l16
+{6}
+l16%e1p64r1  r1  
+r1  r1  r1  r1  
+r1  r1   $6 [2p104v50@38o6fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  
+<fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  <dc>afa<cdc>afa<cdc>af  
+<dc>afa<cdc>afa<cdc>af  <fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  
+]p64v55gaa+ga+<c>a+agaa+<c>afa+a  gaa+g<cd>a+agaa+<c>afa+a  efgae<c>afefg<c>gefd  
+efgae<c>afefg<c>gefd  v57@37p48%r5d2^4d8e8  f2^4f8g8  g1  
+g2^4e4  
+;6
+
+l16
+{7}
+l16%e1p56v60@34o5ddd8dd8dd8dd8ddd  d8dd8dd8dd8dd8d8  
+ddd8dd8dd8dd8ddd  d8dd8dd8dd8dd8d8  d+d+d+8d+d+8d+d+8d+d+8d+d+d+  
+d+8d+d+8d+d+8d+d+8d+d+8d+8  ddd8dd8dd8dd8ddd  d8dd8dd8dd8dd8d8  
+ $7 @35v55p56[2o6dddrddrddrddrddd  drddrddrddrddrdr  dddrddrddrddrddd  
+drddrddrddrddrdr  d+d+d+rd+d+rd+d+rd+d+rd+d+d+  d+rd+d+rd+d+rd+d+rd+d+rd+r  
+dddrddrddrddrddd  drddrddrddrddrdr  ]@34v60>d+r8.d+d+r8d+d+rd+r8d+r  
+d+r8.d+d+r8d+d+rd+r8d+r  dr8.ddr8ddrdr8dr  dr8.ddr8ddrdr8dc  v26@40p80<defgdefgdefgdefg  
+fgg+a+fgg+a+fgg+a+fgg+a+  <c4>g4<c4f8ed  e4c4>g4c4  
+;7
+
+l16
+*{8}*`{4}`
+l16%e1p43v35@36o6dc>gdg<cdc>gdgb<dc>gd  
+<dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  
+a+afdfaa+afdfaa+afd  a+afdfaa+afdfaa+afd  <dc>gdg<cdc>gdgb<dc>gd  
+<dc>gdg<cdc>gdgb<dc>gd   $8 v50@38p24[2o6dc>gdg<cdc>gdgb<dc>gd  
+<dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  
+a+afdfaa+afdfaa+afd  a+afdfaa+afdfaa+afd  <dc>gdg<cdc>gdgb<dc>gd  
+<dc>gdg<cdc>gdgb<dc>gd  ]v60@39p43<fgaraa+argargfrer  v30@36ded^2^v60@39gec>a  
+<fgaraa+argargfrer  v30@36daf^2^r4  r1  r1  
+r1  r1  
+;8
+
+l16

@@ -1,0 +1,103 @@
+#TITLE Lava Dome
+#ALBUM Final Fantasy Mystic Quest
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
+# via ff5ff6mcs2
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 --  0x22           #Kick
+#WAVE 0x21 --  0x14           #Snare
+#WAVE 0x22 --  0x0F           #Hi-Hat Closed
+#WAVE 0x23 --  0x17           #Tom
+
+#WAVE 0x25 --  0x12           #Cymbal
+#WAVE 0x26 -- ~0x4A~ /0x02/   #Bass
+#WAVE 0x27 --  0x0B           #Rock Organ
+#WAVE 0x28 --  0x1E           #Dist.Guitar
+#WAVE 0x29 -- ~0x43~ /0x0D/   #Strings
+
+l16
+{1}
+t140%b60,0%v70%x232
+%k5
+v70p64%e1m24,30,211r2 $ @41v75%a15~o4~/o5/[2e2  b3^24a+ba+2  <c12>b12<c12d12c12d12j2e4>b12<e12>b12  
+<a+6a6g6>b12a+12b12<e12d+12e12  c12>b12<c12g12f+12g12>]e12d+12e12g12f+12g12  
+a+6a6g6b6a+24b24a+a8.  g6f+24g24f+f^24 />/@0 v56m12,11,255 >b12<g4f+12e12d12  e2a+12a12g12e12d12e12  
+>b6e6g12a12b4<f+4  d+4b4<c6>b12a12b12d+12  >b12a+12b12<f+6>b12<g4e12d+12e12  
+b6e6<e6>a+6a12g12e12d12  e2d+12>b12f+12<d+12>b12<e12  d+6b3<e12d+12>b12f+12d+12f+12  
+b2r1  @5 m0,7,255v0,4,255v80 >>b4<f+4b4<b4  r1  d12c12>a+12r12g+12a+12f+6<f+3  v72
+r1  >b6<f+6e12f+12b2  r1  <d12>a+12<d12f+12d12>a+12<a+12f+12a+12<c+4  
+v> @41v65%a15m>>e2<e2  >b6a+6a6a+12a12a+12b12a+12a12  a+12r12<e12r12a+12r3r4  
+;
+
+{2}
+%k5
+l16v127p64@38%e0r2 $ o5[2e12r12e12g12e12e12  b12e12g12e12b12a+12<c+12>f+12f+12a+12f+12<f+12  
+c12>f12f12<f12>f12f12e12e12e12g12e12e12  j2a+12e12a12e12g12e12b12e12e12g12e12e12  
+<c12>e12g12e12<d12>e12]a+6a6g6  b6a+6a6g6f+6f6  [2e12e12e12g12e12e12b12e12e12g12e12e12  
+a+12e12a12e12g12e12g12e12a12e12g12a12  b12a+12b12f+4b6<d+12e12f12f+12  
+c12>e12b12a12a+12b12a+12e12b12a12g12f+12  ][2e12r12e12<e12>e12r12e12r12e12a+12e6  
+a+12b12b12b12b12b12a+12b12b12b12b12b12  e12r12e12<e12>e12r12e12r12e12b12e12r12  
+a12a+12a+12a+12a+12a+12f12f+12f+12f+12f+12f+12  ]<e6>e12r12e12r12a+6e12r12e12r12  
+g6f+6f6<a+12a+12r3  >a+12a+12r3<e12a+12f12b12f+12<c12  
+;
+
+{3}
+%k5
+l16v70p64@40%e1r2 $ o5e6e12>[3e24r24]<g6  
+>[4e24r24]<f+6>[4f+24r24]<f6>[4f24r24]<e6e12>[3e24r24]a+6  a6g6b6[4e24r24]<c6>e24r24e24r24<d12  
+>e24r24<e6e12>[3e24r24]<g6>[4e24r24]<f+6>[4f+24r24]<f6  >[4f24r24]<e6e12>[3e24r24]a+6a6g6b6  
+a+6a6g6f+6f6[2r4  <e2^4>a+6a12  r4g6a12r4r4  b2^4<c6>b12  
+r4a+6b12r4]e4  g4e4a+4<b12>[5b24r24]<d+12  >[5b24r24]e4g4e4b4  <a+12>[5a+24r24]<f+12>[5f+24r24]e4g4e4  
+a+4<b12>[5b24r24]<d+12>[5b24r24]e4g4  e4b4<a+12>[5a+24r24]<f+12>[5f+24r24]<e6  
+>e12r12e12r12a+6e12r12e12r12g6  f+6f6a+12a+12r3a+12a+12  r3a+6b6<c6
+;
+
+{4}
+%k5
+l16v24p32@0%e1%y1%s0 r2 $
+[16r1  ]o5[2b12e12a+12e12g12e12<c12>e12b12e12a+12e12  b6b6b12b12b6b6b12b12  
+b12e12g12e12a+12e12b12e12<c12>e12a+12e12  f+6f+6f+12f+12c+6c+6c+12c+12  
+]r1  r2r6>>e12a+12<e12a+12  <e1  
+;
+
+{5}
+%k5
+l16v32@39%e1r2 $ p96o4[2b6b12r4  
+<d4r4c+4r4  c4r4>b6b12r4  f6e6d6j2f+12r4.r24  g12r4a12r12]f+6f6e6  
+d6c+6c6[12b24r24]<f6e12r4  d6e12r4>[12f+24r24]<g6f+12r4  f6f+12r4>[12b24r24]<f6e12r4  
+d6e12r4>[12f+24r24]<g6f+12r4  f6f+12r4r1  <[2e6e12r12e12e12]r1  
+>a+6a+12r12a+12a+12<f+6f+12r12f+12f+12  r1  [2e6e12r12e12e12]r1  
+>a+6a+12r12a+12a+12<f+6f+12r12f+12f+12  [6e12>e12<]e12>e12b12c12b12c12<e12e12r3  
+e12e12r3>e6f6f+6  
+;
+
+{6}
+%k5
+l16v32@39%e1r2 $ p32o5[2e6e12>e12g12b12  
+<g4>e12g12b12<f+4>e12b12e12  <f4>f12<c12>f12<e6e12>e12g12b12  a+6a6g6j2b12e12b12g12e12b12  
+<c12<c12>g12e12d6]b6a+6a6  g6f+6f6<[12e24r24]a+6a12r4  g6a12r4>[12b24r24]<<c6>b12r4  
+a+6b12r4[12e24r24]a+6a12r4  g6a12r4>[12b24r24]<<c6>b12r4  a+6b12r4r1  
+p96<[2[2f+6f+12r12f+12f+12]r1  d6d12r12d12d12a+6a+12r12a+12a+12  
+r1  [2f+6f+12r12f+12f+12]r1  d6d12r12d12d12a+6a+12r12a+12a+12  p32[3e12>b12<][3e12>a+12<]e12>g12b12f+12b12f12<a+12a+12  
+r3a+12a+12r3>a+6  b6<c6
+;
+
+{7}
+l16v115p64%e0r2 $ o5@37f6  @34a6a6a6a6a6[3[6a6  
+]]@37f6@34[14a6]@37f6f6f6g6  g6g6r3<d+6>[4@37f6  @34[23a6]]@37[6g12r12]r2r4  
+r12<d6r3d6r4  <c4
+;
+
+{8}
+l16v127p64@33%e0o5@33b48bb12b12b12b12b12 $
+[3[2@32a12a12a12  
+@33b12@32a12a12]]@32a12a12a12@33b12@32a12a12a12a12a12  @33b12b12b12[2[2@32a12a12a12@33b12@32a12a12]]@32a12a12a12  
+@33b12@32a12a12[3a12r12]@32a6a6a6@33b32b  ^32@35f24e24d24c12@33b6[3[2@32a12a12a12@33b12@32a12a12]][3@32a12a12  
+a12@33b12@32a12a12a12a12a12@33b12b12b12[3[2@32a12a12  a12@33b12@32a12a12]]]@32a12a12a12@33b12@32a12a12a12a12  
+a12@33b12b12b12@32a6a6a6a6  a6a6@35f24f8e6e6d12d12  e6e6@33[7b12]@35>e24d24<@33b12b12@35e24d24@33b12
+;
+

@@ -1,0 +1,132 @@
+#TITLE Main Theme of Final Fantasy IV
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x07
+#WAVE 0x21 -- 0x1B
+#WAVE 0x22 -- 0x02
+#WAVE 0x23 -- 0x0D
+#WAVE 0x24 -- 0x22
+#WAVE 0x25 -- 0x14
+#WAVE 0x26 -- 0x21
+#WAVE 0x27 -- 0x0F
+
+
+{1}
+l16t140%v32%x192%b0,70%e1%k1@32r1  ^1   $1 o4v80p68m48,18,200a2<c2  
+e2g2  f+1  d2^8d8d8e8  f2g4f4  
+e4c4>a4<c4  d1  ^2^4c4  d1  
+^2^4c4  c1  v222,0^1  v100>a2<c2  
+e2g2  f+1  d2^8d8d8e8  f2g4f4  
+e4c4>a4<c4  d1  ^2^4c4  d1  
+^2^4c4  c1  v222,0^1  v100d4f4e4f4  
+a4g4f4g4  e2c1  ^2d4f4  e4f4a4g4  
+f4g4e1  ^1  e4g4f+4g4  b4a4g4a4  
+f+2d1  ^2e4g4  f+4g4b4a4  g4a4a4<c4  
+>b4<c4e4d4  c4d4>b2  ^4^8<cc+d2  ^4^8c+c>b1  
+v200,0^1  
+;1
+
+l16
+{2}
+l16%e1%k1p50@33o5>v20a<cea>v24gb<dg>v30a<cea>v40b<dgb  
+v50cea<co4v60b<dgbv68cea<c>v76dgb<d   $2 o4v80a<cea>a<cea>a<cea>a<cea  
+>a<cea>a<cea>a<cea>a<cea  >a<df+a>a<df+a>a<df+a>a<df+a  >a<df+a>a<df+a>a<df+a>a<df+a  
+>a<cfa>a<cfa>a<cfa>a<cfa  >g<ceg>g<ceg>g<ceg>g<ceg  >ga+<dg>ga+<dg>ga+<dg>ga+<dg  
+>ga+<dg>ga+<dg>ga+<dg>ga+<dg  >fg+<cf>fg+<cf>fg+<cf>fg+<cf  >fg+<cf>fg+<cf>fg+<cf>fg+<cf  
+>eg<ce>eg<ce>eg<ce>eg<ce  >eg<ce>eg<ce>eg<ce>eg<ce  >a<cea>a<cea>a<cea>a<cea  
+>a<cea>a<cea>a<cea>a<cea  >a<df+a>a<df+a>a<df+a>a<df+a  >a<df+a>a<df+a>a<df+a>a<df+a  
+>a<cfa>a<cfa>a<cfa>a<cfa  >g<ceg>g<ceg>g<ceg>g<ceg  >ga+<dg>ga+<dg>ga+<dg>ga+<dg  
+>ga+<dg>ga+<dg>ga+<dg>ga+<dg  >fg+<cf>fg+<cf>fg+<cf>fg+<cf  >fg+<cf>fg+<cf>fg+<cf>fg+<cf  
+>eg<ce>eg<ce>eg<ce>eg<ce  >eg<ce>eg<ce>eg<ce>eg<ce  >fa+<dfa+<dfa+<d>a+fd>a+fd>a+  
+fa+<dfa+<dfa+<d>a+fd>a+fd>a+  ea<cea<cea<c>aec>aec>a  ea<cea<cea<c>aec>aec>a  
+fa+<dfa+<dfa+<d>a+fd>a+fd>a+  fa+<dfa+<dfa+<d>a+fd>a+fd>a+  ea<cea<cea<c>aec>aec>a  
+ea<cea<cea<c>aec>aec>a  eg<ceg<ceg<c>gec>gec>g  eg<ceg<ceg<c>gec>gec>g  
+df+b<df+b<df+bf+d>bf+d>bf+  df+b<df+b<df+bf+d>bf+d>bf+  eg<ceg<ceg<c>gec>gec>g  
+eg<ceg<ceg<c>gec>gec>g  fa<cfa<cfa<c>afc>afc>a  fa<cfa<cfa<c>afc>afc>a  
+eg+b<eg+b<eg+bg+e>bg+e>bg+  dgb<dgb<dgbgd>bgd>bg  eab<eab<eabae>bae>ba  
+eab<deg+b<ded>bg+ed>bg+  
+;2
+
+l16
+{3}
+l16%e1%k1p74@34o5v50a4a4a4a4  
+v60a4a4a4a4   $3 o5v120a4a4a4a4  a4a4a4a4  o6d4d4d4d4  
+d4d4d4d4  >f4f4f4g4  a4a4a4a4  g4g4g4g4  
+g4g4g4g4  f4f4f4f4  f4f4f4f4  <c4c4c4c4  
+c4c4c4c4  >a4a4a4a4  a4a4a4a4  <d4d4d4d4  
+d4d4d4d4  >f4f4f4g4  a4a4a4a4  g4g4g4g4  
+g4g4g4g4  f4f4f4f4  f4f4f4f4  <c4c4c4c4  
+c4c4c4c4  >a+4r1  ^2^4a4  r1  
+^2^4a+4  r1  ^2^4a4  r1  
+^2^4<c4  r1  ^2^4>b4  r1  
+^2^4<c4  r1  ^2^4>f4  r1  
+^2^4e4  r2^4g4  r2^4e4  e4e4e4e4  
+e4e4e4
+;3
+
+l16
+{4}
+l16%e1%k1@35r1  ^1   $4 o5v80p62e1  ^2a4g4  
+f+1  ^1  f1  e2a4g4  
+a+2<d2  c2>a+2  g+2<c2  >a+2g+2  
+g1  ^1  e1  ^2a4g4  
+f+1  ^1  f1  e2a4g4  
+a+2<d2  c2>a+2  g+2<c2  >a+2g+2  
+g1  ^1  a+1  <d1  
+e2<c2  >b2a2  >a+1  <d1  
+e2<c2  >b2a2  c1  e1  
+d2b2  a2f+2  c1  e1  
+f1  e1  e1  d1  
+e1  ^1  
+;4
+
+l16
+{5}
+l16%e1%k1@35r1  ^1  
+ $5 o5v80p62c1  ^1  c1  ^2>b4a4  
+a2^4b4  <c1  d1  ^1  
+c1  ^2^4d4  e1  ^1  
+c1  ^1  c1  ^2>b4a4  
+a2^4b4  <c1  d1  ^1  
+c1  ^2^4d4  e1  ^1  
+d1  f1  <c2e2  d2c2  
+>d1  f1  <c2e2  d2c2  
+>e1  g1  f+1  b1  
+e1  g1  a1  ^1  
+g+1  b1  a1  g+1  
+
+;5
+
+l16
+{6}
+l16%e1%k1@35r1  ^1   $6 v80p62o3a1  ^1  
+<d1  ^1  >f2^4g4  a1  
+g1  ^1  f1  ^1  
+<c1  ^1  >a1  ^1  
+<d1  ^1  >f2^4g4  a1  
+g1  ^1  f1  ^1  
+<c1  ^1  >a+1  ^1  
+a1  ^1  a+1  ^1  
+a1  ^1  <c1  ^1  
+>b1  ^1  <c1  ^1  
+>f1  ^1  e1  g1  
+e1  ^1  
+;6
+
+l16
+{7}
+l16%e1%k1r1  ^1  
+ $7 o5v120p64[12@36c8c8r4@38e4r8@36cr  c4c4@38e4r4  ][10@36c4r4@38e4r4  
+@36c8c8r4@38e4r4  ]
+;7
+
+l16
+{8}
+l16%e1%k1@37v34p64o5r1  ^1   $8 g+8g+g+g+rg+g+g+8g+g+g+rg+g+  
+
+;8
+
+l16

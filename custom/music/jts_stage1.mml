@@ -1,0 +1,125 @@
+#TITLE Stage 1
+#ALBUM Journey to Silius
+#COMPOSER Naoki Kodaka
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 -- 0x1C
+#WAVE 0x22 -- ~0x44~ /0x33/
+#WAVE 0x23 -- 0x22
+#WAVE 0x24 -- 0x0F
+#WAVE 0x25 -- 0x21
+
+
+{1}
+l16t183%v40%x224%b0,70v70p64%e1|0o5[4c8c8<c8>c8d+8f8g8a+8  c8c8<c8>c8a+8<c8>f8g8  
+]c8c8<c8>c8d+8f8g8a+8   $1 >a+8a+8<a+8>a+8<g8a+8d+8f8  >g+8g+8<g+8>g+8<c8d8d+8f8  
+>a+8a+8<a+8>a+8<g+8a+8f8g8  c8c8<c8>c8d+8f8g8a+8  >a+8a+8<a+8>a+8<g8a+8d+8f8  
+>g+8g+8<g+8>g+8<c8d8d+8f8  >a+8a+8<a+8>a+8<g+8a+8f8g8  >f8f8<f8>f8f8<f8d+8c8  
+>f8f8g+8f8f8<d8d+8f8  >g8g8<g8>g8g8<g8f8d8  >g8g8<f8>g8g8<d8f8g8  
+>f8f8<f8>f8f8<f8d+8c8  >f8f8g+8f8f8<d8d+8f8  >g8g8<g8>g8g8<g8f8d8  
+>g8g8<f8>g8g8<d8f8g8  c8c8<c8>c8d+8f8g8a+8  [3>a+8a+8<a+8>a+8<g8a+8d+8f8  
+>g+8g+8<g+8>g+8<c8d8d+8f8  >a+8a+8<a+8>a+8<g+8a+8f8g8  c8c8<c8>c8d+8f8g8a+8  
+]>a+8a+8<a+8>a+8<g8a+8d+8f8  >g+8g+8<g+8>g+8<c8d8d+8f8  >a+8a+8<a+8>a+8<g+8a+8f8g8  
+[5c8c8<c8>c8d+8f8g8a+8  c8c8<c8>c8a+8<c8>f8g8  ]c8c8<c8>c8d+8f8g8a+8  
+
+;1
+
+l16
+{2}
+l16v80p50%e1 $2 @5o5[2c2d+8r8drc4  ^8c8r8d+8r8drc4  
+^8c8r8d+8r8drc4  ^8c8r8d+rf4r8]r1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  
+;2
+
+l16
+{3}
+l16p54%e1 $3 v80 @5o5[2>g2a+8r8g+rg4  
+^8g8r8a+8r8g+rg4  ^8g8r8a+8r8g+rg4  ^8g8r8a+r<c4r8]r1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  
+o5 k2v24 v96,32c2
+v192,48 d4d+8m16,16,201c2^8  v192,64 md4d+8m16,16,201c2^8  v192,80 md4d+8g8r8f8r8d+8  r8>m16,16,201a+4^8m<c2  
+d4d+8m16,16,201c2^8  md4d+8m16,16,201c2^8  md4d+8g8r8f8r8g8  r8m16,16,201a+4^8m<c1  
+v192,24^1  mk0
+;3
+
+l16
+{4}
+l16p74%e1 $4 v100@5o4r1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+g8f8r8c2^4  c8d+8c8g8c4r8g8  f8r8c2^4  c8d8d+8f8g4r8g8  
+f8r8c2^4  c8d+8c8g8c4r8g8  f8g8a+4g8f8m16,16,201g2  ^4^8ma+4<c2  
+d4d+8m16,16,201c2^8  md4d+8m16,16,201c2^8  md4d+8g8r8f8r8d+8  r8>m16,16,201a+4^8m<c2  
+d4d+8m16,16,201c2^8  md4d+8m16,16,201c2^8  md4d+8g8r8f8r8g8  r8m16,16,201a+4^8m<c2  
+d4d+8m16,16,201c2^8  md4d+8m16,16,201c2^8  md4d+8g8r8f8r8d+8  r8>m16,16,201a+4^8m<c2  
+d4d+8m16,16,201c2^8  md4d+8m16,16,201c2^8  md4d+8g8r8f8r8g8  r8m16,16,201a+4^8m<m16,16,201c1  
+v192,24^1  m
+;4
+
+l16
+{7}
+l16p74%e1@5r1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^8^ $5 v50o4g8f8r8c2  ^4c8d+8c8g8c4  r8g8f8r8c2  
+^4c8d8d+8f8g4  r8g8f8r8c2  ^4c8d+8c8g8c4  r8g8f8g8a+4g8f8  
+m16,16,201g2^4^8ma+4  [2<c2d4d+8m16,16,201c2  ^8md4d+8m16,16,201c2  
+^8md4d+8g8r8f8r8  d+8r8>a+4^8<c2  d4d+8m16,16,201c2^8  md4d+8m16,16,201c2^8  
+md4d+8g8r8f8r8g8  r8a+4^8]<m16,16,201c1  v192,24^1  mr1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  
+;5
+
+l16
+{6}
+l16~v88~/v96/p34%e1|2o5r1 ~<<%a10%y0%s7%r3 m24,18,239~ 
+^1  ^1  ^1  ^1  
+^1  ^1  ^1   $6 c4g4f8d+8d8d+8
+%l1f8g8r8%l0>a+8r8a+8g8a+8  <c4c4d8d+8r8d8  r4d4c8>a+4^8  <c4g4f8d+8d8d+8
+%l1f8g8r8%l0>a+8r8a+8g8a+8  <c4c4d8d+8r8d8  r4d4d+8f4^8  r1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  
+;6
+
+l16
+{5}
+l16v100p64%e1|3o5[23b8r8|5<e8r8>|3b8b8<|5e8>|3b8  
+] $7 b8r8<|5e8r8>|3b8b8<|5eree  >|3b8r8<|5e8r8>|3b8b8<|5e8>|3b8  
+[16b8r8<|5e8r8>|3b8b8<|5e8>|3b8  ]b8r8<|5er8^>|3b8b8<|5eree  >|3b8r8<|5e8r8>|3b8b8<|5e8>|3b8  
+[22b8r8<|5e8r8>|3b8b8<|5e8>|3b8  ]
+;7
+
+l16
+{8}
+l16v50p64%e1 $8 |4o6f+8f+8f+8f+8f+8f+8f+8f+8  
+
+;8
+
+l16

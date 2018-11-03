@@ -1,0 +1,122 @@
+#TITLE Battle 2 (unused)
+#ALBUM Chrono Trigger
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 0x22 roundhouse
+#WAVE 0x21 ~0x56~/0x14/ trap
+#WAVE 0x22 0x0F headpiece
+#WAVE 0x23 ~0x12~ /0x12/ icon
+
+#WAVE 0x24 -- ~0x0e~ /0x0E/ pet
+#WAVE 0x25 -- ~0x45~ /0x0D/ yarn
+#WAVE 0x26 -- ~0x47~ /0x3E/ phone
+#WAVE 0x27 -- ~0x6b~ /0x02/ fish
+
+#DRUM "c"= 5f |2 p121
+#DRUM "d"= 5g |0 p64
+#DRUM "e"= 5f |3 p64
+#DRUM "a"= 5g |1 p81 
+#DRUM "r"=r
+
+#def phone=~o5%r25~/%a13%r28o5v40/
+
+{1}
+l16t180%v20%b0,70%x224%f0,0%b0,30%e1r2%b0,70 $1 |4 v115p64o6m12,24,203%r7e4.f+4.  
+g4^8a4.b4  a4<d4.c4.  >b4^8a4.g4  a4f+4.g4.  
+a4^8b4.a4  g4f+4.%g1gf+e2  %g0^2^rc8d8e8  ^2e4a8f+8  
+^4.d8r8c8d8e8  ^2e4b8r8  b4.a8r8e8f+8g8  ^2^rf+8g8a8  
+^2g4a8f+8  ^1  ^1  v85<[2p34e8d8e8f8r8f8r8p94e4  
+d8g8r8g8r8p34e8d8e8  f8r8f8r8p94e4d8a8  r8a8r8]|5v50o7%a4%r8e1  
+^1  f+1  ^1  %y
+;1
+
+l16
+{2}
+l16%e1r2 $2 |5v40p64o6%a10%r3e1  
+^1  d1  ^1  >b1  
+^1  a1  g2f+4.e8  ^2^4.f+8  
+^2^4.g8  ^2^4.a8  ^2^4.g8  ^2^4.a8  
+^2^4.b8  ^1  ^1  %y|4v75o7[2p34>b8a8b8<c8r8c8r8p94>b4  
+a8<d8r8d8r8p34>b8a8b8  <c8r8c8r8p94>b4a8<e8  r8e8r8]|5v45o6p84%a7%r8e1  
+^1  f+1  ^8%a11v40v184,100p0p184,127%l1<f+ed+>baf+ed+>baf+ed+>b  
+%y%l0
+;2
+
+l16
+{3}
+l16%e1r2 $3 |7v90p64o5e8<e8>b8<d8  e8>b8<d8e8^8>e8b8<d8  
+e8>b8<d8e8>f8<f8c8g4  >f8<f8c8a8>f8<b8c8<c8  >>f8<b8c8>e8<e8>b8<d8e8  
+>b8<d8e8^8>e8b8<d8e8  >b8<d8e8c8c8<c8>c4  c8<c8>c8^8c8<c8>c8c8  
+>b4a8^8<a8e8g8a8  e8g8>b8^8b8<f+8b4  b8f+8c8^8c8g8<c4  >b8g8d8^4a8<d4  
+e8d8>a8>a8<a8e8g8a8  e8g8>f8f8<f8c8g4  >f8<f8>b8^8b8<f+8b4  f+8a8b8^8>b8<f+8b4  
+a8f+8d+8e8>b8e8f8r8  f8r8<e4>e8f8r8f8  r8<e8>b8e8f8r8f8r8  <e4>e8f8r8f8r8<e8  
+>b8e8f8r8f8r8<e4  >e8f8r8f8r8<e8>b8e8  f8r8f8r8<e4>e8f8  r8f8r8b4<b8f+8a4  
+b8>b8^8<b8f+8a8<c4  >b8a8>b4<b8f+8a4  b8>b8^8<b8f+8a8g8f+8  e8>b8
+;3
+
+l16
+{4}
+l16%e1r2 $4 |6'phone'v40p94b8b4  
+b8b4b8b8^8b8b4  b4b4b8b4b8  b4b8b8^8b8b4  b4a4b8b4b8  
+b4b8b8^8b8b4  b4b4b8b4b8  b4b8b8^8b8b4  b8a4g8^8g8g4  
+g2a4.a4  a4b8^8b8b4b2  a4.a4a4g8  ^8g8g4g2  
+a4.a4a4a8  ^8b4.b2  b4b8<d4d+4e8  |5v60o5%a10[2e8d8e8f8r8f8r8e4  
+d8g8r8g8r8e8d8e8  f8r8f8r8e4d8a8  r8a8r8]%y|6'phone'v60p64e4.e4.  e4r8e4.e4  
+e4f+4.f+4.  f+4r8f+4.f+4  f+4
+;4
+
+l16
+{5}
+l16%e1r2 $5 |6'phone'v40p34f+8f+4  
+f+8f+4f+8f+8^8f+8f+4  f+4f+4f8f4f8  f4f8f8^8f8f4  f4f4f+8f+4f+8  
+f+4f+8f+8^8f+8f+4  f+4f+4e8e4e8  e4e8e8^8e8e4  e8d4c8^8c8c4  
+c2d4.d4  d4e8^8e8e4e2  d4.d4d4c8  ^8c8c4c2  
+c4.c4c4c8  ^8d+4.d+2  d+4d+8f+4a4b8  |5v60o5%a10[2>b8a8b8<c8r8c8r8>b4  
+a8<d8r8d8r8>b8a8b8  <c8r8c8r8>b4a8<e8  r8e8r8]v40o6p44%a7%r8b1  
+^1  <d+1  ^1  
+;5
+
+l16
+{7}
+l16r2 $6 [8~v64~/v80/"c8"~v36~/v48/"c8c8c8  
+c8c8"~v64~/v80/"c8"~v36~/v48/"c8c8c8c8c8"  ~v64~/v80/"c8"~v36~/v48/"c8"~v64~/v80/"c8"~v36~/v48/"c8"][4~v64~/v80/"c4c4  c4c4c4c4  
+c4"][2~v64~/v80/"c8"~v36~/v48/"c8c8c8c8c8"  ~v64~/v80/"c8"~v36~/v48/"c8c8c8c8c8"~v64~/v80/"c8"~v36~/v48/"c8"  ~v64~/v80/"c8"~v36~/v48/"c8"]
+;6
+
+l16
+{6}
+l16%e1v127"d8"v72"a8"v96"a8"v120"a8"%e0 $7 v127"d4"  
+v96"a4"v127"d8d8"v96"a8"v127"d8^8d8"  v96"a4"v127"d4"v96"a4"v127"d4"
+v96"a4"v127"d8d8"v96"a8"v127"d8^8d8"
+v96"a8"v127"d8d8d8"v96"a8"v127"d8d4  "v96"a4"v127"d8d8"v96"a8"v127"d8^8d8
+"v96"a4"v127"d4"v96"a4"v127"d4  
+"v96"a4"v127"d8d8"v96"a8"v127"d8^8d8  "v96"a4"v127"d4"v96"a8"v127"d8^8d8  
+"v96"a4"v127"d4"v96"a8"v127"d8^8d8  
+"v96"a8"v127"d8d4"v96"a8"v127"d8^8d8  "v96"a4"v127"d4"v96"a8"v127"d8^8d8  
+"v96"a8"v127"d4d8"v96"a8"v127"d8^8d8  
+"v96"a4"v127"d4"v96"a8"v127"d8^8d8  "v96"a4"v127"d4"v96"a8"v127"d8^8d8  
+"v96"a8"v127"d4d8"v96"a8"v127"d8^8d8  
+"v96"a4"v127"d8"v72"a8"v104"a8"v120"a8"[2v127"d4  d8"v96"a4"v127"d4d4d8  
+"v112"a4a4"v127"d4"v96"a8"v127"d4  
+d4d4d8"v112"a4a4"  ]v127"d4"v96"a4"v127"d8d8"v96"a8"v127"d8  
+^8d8"v96"a4"v127"d4"v96"a4  
+"v127"d4"v96"a4"v127"d8d8"v96"a8"v127"d8  
+^8d8"v96"a8"v127"d8"v72"a8"v96"a8"v112"a8"v120"a8"
+
+;7
+
+l16
+{8}
+l16v127"d8r4r8"v120 $8 "e1  ^1  ^1  ^1  
+e1  ^1  ^1  ^2^4.e8"  
+[6"^2^4.e8"  ]"^2^4.^8  ^1"  [4"e2^4.e2  
+^4."]"e1  ^1  e1  ^1  "
+
+;8
+
+l16

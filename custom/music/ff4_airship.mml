@@ -1,0 +1,90 @@
+#TITLE The Airship
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x02
+#WAVE 0x21 -- 0x0D
+#WAVE 0x22 -- 0x0E
+#WAVE 0x23 -- 0x1B
+#WAVE 0x24 -- 0x22
+#WAVE 0x25 -- 0x0F
+#WAVE 0x26 -- 0x14
+
+
+{1}
+l16t160%v25%x192%b0,70%f0,0%e1%k1 $1 v80p68@32o6g8g8g8g8g8g8f8f8  
+d+8d+8d+8d+8d+8d+8d+8d+8  a+8a+8a+8a+8a+8a+8a+8a+8  f8f8f8f8f8f8f8f8  
+f8f8g8g8g+8g+8a+8a+8  <c8c8c8c8c8c8c8c8  c8c8c8c8c8c8c8c8  dr>a8<dr>a8<dr>a8<dr>a8  
+<dr>a8<dr>a8<dr>a8<dd>a8  <dr>g+8<dr>g+8<dr>g+8<dr>g+8  <dr>g+8<dr>g+8<dr>g+8<dd>g+8  
+<c8c8c8c8c8c8c8c8  >f+8f+8f+8f+8f+8f+8f+8f+8  b8b8b8b8b8b8b8b8  
+<d8d8d8d8d8d8d8d8  
+;1
+
+l16
+{2}
+l16%e1%k1 $2 v80p50@33o5g2<g4g4  
+f4d+4d4c4  >a+2<c4d4  c1  ^2^4>a+4  
+<c1  ^2^4r4  d4e4>a4<c4  d2^4c4  
+d4e4>g+4<c4  d2c4d4  e2g4g4  f+4e4d4c+4  
+f+1  ^2^4r4  
+;2
+
+l16
+{3}
+l16%e1%k1 $3 v80p50@33o5d2^4c4  >a+2<g2  
+f2e4d4  f1  ^1  e1  
+^1  f+1  ^4a4g4f+4  f1  
+^4g+4g4f4  g2gb<cde4  c+4>b4a2  b1  
+<c1  
+;3
+
+l16
+{4}
+l16%e1%k1 $4 v80p50@33o5>b2^4a4  g2<d+2  d2>a+2  
+g+1  ^1  g1  <e4d4c4e4  
+d1  ^4f+4e4d4  d1  ^4f4e4d4  
+e2egab<c4  >a+4g+4f+2  e1  d1  
+
+;4
+
+l16
+{5}
+l16%e1%k1 $5 v104p62@34o6>b2^4a4  g2<d+2  d2>a+2  g+1  
+m48,18,207^1  mg1  m16,16,207v192,24^1  mv100<d32r^32d8^^32r32d32r^32d32r^32d8^^32r32d32r^32  
+d2c8^^32r32c8^^32r32  d32r^32d8^^32r32d32r^32d32r^32d8^^32r32d32r^32  
+d2c8^^32r32c8^^32r32  c2e4e4  >a+4<c+4d4e4  b8^^32r32b32r^32b8^^32r32b8^^32r32b32r^32  
+f+8^^32r32f+32r^32f+8^^32r32f+8^^32r32f+32r^32  
+;5
+
+l16
+{6}
+l16%e1%k1 $6 v50@35r1  
+^1  ^1  ^1  ^1  
+^1  o7p100c32>ge32p90c32>ge32p80<g32ec32>p70g32ec32p60<e32c>g32p50e32c>g32p40o6c32>ge32p30c32>ge32  
+r1  ^1  ^1  ^1  
+^1  ^1  o6v104p62@34<f+8^^32r32f+32r^32f+8^^32r32f+8^^32r32f+32r^32  
+c8^^32r32c32r^32c8^^32r32c8^^32r32c32r^32  
+;6
+
+l16
+{7}
+l16%e1%k1 $7 v120p64@36o4br8^<@38dr8^>@36brbr<@38dr8^  
+>@36brbr<@38dr>@36br8^br<@38dr8^  >@36br8^<@38dr8^>@36brbr<@38dr8^  
+>@36brbr<@38dr>@36br8^br<@38dr8^  >@36br8^<@38dr8^>@36brbr<@38dr8^  
+>@36brbr<@38dr>@36br8^br<@38dr8^  >@36brbr<@38dr>@36br8^br<@38dr>@36br  
+<@38dr>@36br<@38dr>@36br<@38dr>@36br<@38dr>@36br  <@38dr>@36br<@38dr>@36br<@38dr>@36br<@38dd>@36br  
+<@38dr>@36br<@38dr>@36br<@38dr>@36br<@38dr>@36br  <@38dr>@36br<@38dr>@36br<@38dr>@36br<@38dd>@36br  
+br8^<@38dr8^>@36brbr<@38dr8^  >@36brbr<@38dr>@36br8^br<@38dr8^  
+>@36br8^<@38dr8^>@36brbr<@38dr8^  >@36brbr<@38dr>@36br8^br<@38dr8^  
+
+;7
+
+l16
+{8}
+l16%e1%k1 $8 v50p64@37o5[12f+rf+f+f+rf+f+]r1  [8f+rf+rf+rf+r][8f+rf+f+f+rf+f+  
+]
+;8
+
+l16

@@ -1,0 +1,96 @@
+#TITLE Troian Beauty
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0A
+#WAVE 0x21 -- 0x0D
+#WAVE 0x22 -- 0x02
+#WAVE 0x23 -- 0x1B
+#WAVE 0x24 -- 0x2F
+
+
+{1}
+l16t160%v40%x192%b0,70%e1%k1v100p63@32r1  ^1  ^1   $1 o5m48,18,215b2<d4c2  
+>b4a2<c4  >b2a4g2  ^4<g2^4  f+4e4d4>b2  
+<c4d2^4  >b1  ^1  r4b4a4b4  
+g1  ^2r4g4  a4b4a4b4  g1  
+^2^4r4  <d+4d2c+8d8  d+2f+4e2  d+8e8f4b4a4  
+>b4a4b4g1  ^2r4g4  a4a+4a4a+4  d+1  
+^2r4d+4  f4g4f4g4  a4^8g8a4a+4  a4a+4<c4^8d8  
+d+4d1  ^1  ^4r2^4  
+;1
+
+l16
+{2}
+l16%e1%k1v60p94@33r1  
+^1  ^1   $2 r4o5b8r8b8r4^8  b8r8b8r4^8a8r8  
+a8r4^8a8r8a8r4  ^8b8r8b8r4^8b8  r8b8r4^8b8r8b8  r4^8b8r8b8r8a1  
+^2b2  ^4<d2^4  >b2^4<c2  ^4d2^4  
+c2^4>b2  ^4<c2^4  d2^4c2  ^4>b2^4  
+a2^4g2  a4b2<d4  >b2^4<c2  ^4d2^4  
+c2^4>a+2  ^4<c2^4  d2^4c2  ^4d+1  
+^1  ^1  g1  ^2f+1  
+^2
+;2
+
+l16
+{3}
+l16%e1%k1v60p34@33r1  ^1  ^1   $3 r4o5g8r8g8r4^8  
+g8r8g8r4^8f8r8  f8r4^8f8r8f8r4  ^8g8r8g8r4^8g8  r8g8r4^8g8r8g8  
+r4^8g8r8g8r8f+2  ^4b2a4  g2^4f2  ^4g2^4  
+g2^4b2  ^4a2^4  g2^4a2  ^4b2^4  
+a2^4g2  ^4f+2a4  g2^4f2  ^4g2^4  
+a2^4b2  ^4a2^4  g2^4a2  ^4a+2^4  
+a2^4a+2  ^4<c2^4  d1  ^1  
+^1  ^1  ^2
+;3
+
+l16
+{4}
+l16%e1%k1v60p63@33o5r1  ^1  
+^1   $4 d8e8d8e8d8e8d8e8  d8e8d8e8c8d8c8d8  c8d8c8d8c8d8c8d8  
+[3d8e8d8e8d8e8d8e8  ]d2^4d+2  ^4e2^4  f2^4e1  
+^1  ^1  d+1  ^1  
+^1  d2^4d+2  ^4e2^4  f2^4e1  
+^1  ^1  d+1  ^1  
+^1  d+2^4f2  ^4g2^4  a2^4a1  
+^2a1  ^2
+;4
+
+l16
+{5}
+l16%e1%k1v100p64@34o5r1  ^1  
+^1   $5 g2<d4g2  ^4r4f4c4  >f2<c4>e2  
+b4<e2^4  c2^4>c2  <c4d2^4  d+2^4e2  
+^4f2^4  c1  ^2>g2  ^4<g2>b4  
+<c1  ^2>g2  ^4<g4f4d+4  d4^8>b8g4f+2  
+^4e2<e4  >f4b4<g4c1  ^2>g2  ^4<g2>b4  
+<c1  ^2>g2  ^4<g4c4d4  d+2d+4d+2  
+^4d+2d+4  d+2>a4<d2  ^4>a2^4  d2^4<d8r8  
+>a8r8f+8r8
+;5
+
+l16
+{6}
+l16%e1%k1v60p63@35o5<g8d8e8>b8  <d8>a8b8g8a8e8g8d8  
+<g8d8e8>b8<d8>a8b8g8  a8e8g8d8 $6 g8d8e8>b8  <d8>a8b8g8a8e8g8d8  
+<f8c8d8>a8<c8>g8a8f8  g8d8f8c8<g8d8e8>b8  <d8>a8b8g8a8e8g8d8  <f+8d8e8>b8<d8>a8b8g8  
+a8f+8g8e8<f+8d8>a8f+8  d8>a8o6f+8d+8>b8f+8d+8>b8  o6g8e8>b8g8e8>b8o6g8f8  
+d8>b8g8f8e8g8b8<e8  g8b8>e8a8<c8e8a8<c8  o5e8b8<d8e8b8<d8o5e8a8  
+<c8e8a8<c8o5d+8g8b8<d+8  g8b8>d+8a8<c8d+8a8<c8  o5d+8b8<d8d+8b8<d8o5d+8a8  
+<c8d+8a8<c8o5d8g8b8<d8  g8b8>d+8f+8b8<d+8f+8b8  >e8g8b8<e8g8b8>f8g8  
+b8<f8g8b8>e8g8b8<e8  g8b8>e8a8<c8e8a8<c8  o5e8b8<d8e8b8<d8o5e8a8  
+<c8e8a8<c8o5d+8g8a+8<d+8  g8a+8>d+8a8<c8d+8a8<c8  o5d+8a+8<d8d+8a+8<d8o5d+8a8  
+<c8d+8a8<c8o5d+8g8a+8<d+8  g8a+8>f8a8<c8f8a8<c8  o5d+8g8a+8<d+8g8a+8>f8a8  
+<c8f8a8<c8o5d8g8a8<d8  g8a8>d8g8a8<d8g8a8  >d8f+8a8<d8f+8a8>d8f+8  
+a8<d8f+8a8
+;6
+
+l16
+{7}
+l16%e1%k1p64@36o5r1  ^1  ^1   $7 v24a+4v19a+4v14a+4
+;7
+
+l16

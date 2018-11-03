@@ -1,0 +1,159 @@
+#TITLE Courage and Pride
+#ALBUM Sword of Mana // Seiken Densetsu New Testament
+#COMPOSER Kenji Ito
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x0A
+#WAVE 0x22 -- 0x0E
+#WAVE 0x24 -- 0x02
+#WAVE 0x25 -- 0x14
+#WAVE 0x26 -- 0x22
+
+
+{1}
+l16t155%v32%x192%b0,48v120p62%e1%k1@32o5af+a<c+f+edc+d2  ^8^e8^d8c+2  
+^8^d8^c+8>b2  ^8<c+8^>b8^a8^b8^<c+8  e8^d8^e8f+2  ^8g8^f+8^e8^f+8^g8  
+a8^g8^f+8d8^e8^f+8  g8^a8^b8a8^f+8^a8  <c+8^>b8^a8b1  r1  
+>f+8g8f+8ef+4^g8a8  a8^g8^f+8e4^8f+a  b8a8g8ab4^<c+8>b8  a8^g8^f+8e8d8e8ga  
+g4^8aag8^f+8^e8  g8^f+8^e8e8^  f+8^g8 $1  f+8^c+8^f+8g8^d8^g8  g+8^e8^g+8ac+>b<c+dc+>b<c+  
+f+8g8f+8ef+4^g8a8  a8^g8^f+8e4^8f+a  b8a8g8ab4^<c+8>b8  a8^g8^f+8<c+8^>b8^a8  
+b8^a8^b8<c+4>b4  a8^e8^g8f+4e4  g8^d8^ef+e4c+4  >b<df+ab<df+ab2  
+>f+1  e8^a8^g8f+2  e1  aeab<c+4>b4a4  
+<c8>b8a8b8<c8^d8^e8  d+4>b8<d+4>b8a8g+8  gf+ef+g4gf+ef+g4  g4b4a4g4  
+f+8^c+8^f+8g8^d8^g8  a<c+def+ef+ea+2  >f+8g8f+8ef+4^g8a8  a8^g8^f+8e4^8f+a  
+b8a8g8ab4^<c+8>b8  a8^g8^f+8e8d8e8ga  g4^8aag8^f+8^e8  g8^f+8^e8e8^f+8^g8  
+f+8^c+8^f+8g8^d8^g8  g+8^e8^g+8ac+>b<c+dc+>b<c+  f+8g8f+8ef+4^g8a8  
+a8^g8^f+8e4^8f+a  b8a8g8ab4^<c+8>b8  a8^g8^f+8<c+8^>b8^a8  b8^a8^b8<c+4>b4  
+a8^e8^g8f+4e4  g8^d8^ef+e4c+4  >b<df+ab<df+ab2  >f+1  
+e8^a8^g8f+2  e1  aeab<c+4>b4a4  <c8>b8a8b8<c8^d8^e8  
+d+4>b8<d+4>b8a8g+8  gf+ef+g4gf+ef+g4  g4b4a4g4  f+8^c+8^f+8g8^d8^g8  
+a<c+def+ef+ea+2  >f+8g8f+8ef+4^g8a8  a8^g8^f+8e4^8f+a  b8a8g8ab4^<c+8>b8  
+a8^g8^f+8e8d8e8ga  g4^8aag8^f+8^e8  g8^f+8^e8e8^f+8^g8  
+;1
+
+l16
+{2}
+l16v120p62%e1%k1@32o5c+8f+8g8a8f+1  
+e2f+2  g2f+2  c+8^d8^f+8g8^f+8^g8  <d2c+4>b4  
+g8^a8^b8<c+8^>b8^a8  f+8^g8^a8b8^<c+8^d8  e2g8^f+8^e8  d1  
+
+;
+
+l16
+{3}
+l16v96p62%e1%k1@33r1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^8 $2 o5df+b<c+def+4^8ed  c+8^>b8^<c+4^8r4  
+^8>gb<c+dc+>ba4^8<a4  e4g8m16,16,201f+2^4  mr8f+ga8g8f+8g8a8^b8  
+^<c8>b4f+8b4a8g8  f+8m16,16,201g2^4mr8  ef+g4f+4e4d4  c+8^>f+8^<c+8d8^>g8^<d8  
+e8^>a8^<e8m16,16,201f+2  mr1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^2^8
+;2
+
+l16
+{4}
+l16v127p94%e1%k1@34o5r1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^4^8b<c+d2  r8d8e8f+8f+8^e8^d8  
+c+4r8>b<c+d2  r8d8e8d8c+8^>b8^a8  a4r8b<c+d8^c+8^>b8  b4r8<c+de8^d8^c+8  
+c+8^d8^e8f+4r8ef+  g4r8ff+g+4r8f+g+  a4r8>b<c+d2  r8d8e8f+8f+8^e8^d8  
+c+4r8>b<c+d2  r8d8e8d8c+8^>b8^a8  <a4r8f+ga8^g8^f+8  g2f+8^c+8^e8  
+d4c+4>b4^8<c+d  c+4>a4b1  r1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^2^4^8b<c+  
+d2r8d8e8f+8  f+8^e8^d8c+4r8>b<c+  d2r8d8e8d8  c+8^>b8^a8a4r8b<c+  
+d8^c+8^>b8b4r8<c+d  e8^d8^c+8c+8^d8^e8   $3 f+4r8ef+g4r8ff+  g+4r8f+g+a4r8>b<c+  
+d2r8d8e8f+8  f+8^e8^d8c+4r8>b<c+  d2r8d8e8d8  c+8^>b8^a8<a4r8f+g  
+a8^g8^f+8g2  f+8^c+8^e8d4c+4  >b4^8<c+dc+4>a4  b1  
+r1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^2^4^8b<c+  d2r8d8e8f+8  f+8^e8^d8c+4r8>b<c+  
+d2r8d8e8d8  c+8^>b8^a8a4r8b<c+  d8^c+8^>b8b4r8<c+d  e8^d8^c+8c+8^d8^e8  
+
+;3
+
+l16
+{5}
+l16v80p62%e1%k1@5o4r2df+bf+df+bf+  df+bf+df+bf+c+eaec+eae  
+c+eaec+eae>b<dgd>b<dgd  >b<dgd>b<dgde8^f+8^g8  a8^g8^a8b<f+df+>b<f+df+  
+>b<f+df+>b<f+df+>a<ec+e>a<ec+e  >a<ec+e>a<ec+er1  ^1  >d>b<e>b<f+>b<g>b<f+>b<e>b<f+>b<d>b  
+<d>b<e>b<f+>b<g>b<f+>b<e>b<f+>b<d>b  <d8e8d8c+d2^  c+4^8>b8a2  <d8c+8>b8<c+d2^  
+c+4^8>b8a2  b4^8<c+8d2  >b8^a8^g8g8^a8^b8   $4 a+2b2  
+<c+2c+>agababf+  <d8e8d8c+d2^  c+4^8>b8a2  <d8c+8>b8<c+d2^  
+c+4^8>b8<e2  d2e2  c+2d4c+4  >b2a2  
+f+1  b4^8<c+4^8>b4  <c+2^4>b4  a4^8b4^8a4  
+b4<e4d4c+4  e2f+4g4  f+4c+8f+4e8d8c+8  >b4^8r8b4^8r8  
+<e2>b2  a+2b2  <c+8^d8^e8f+8r4^8  d8e8d8c+d2^  
+c+4^8>b8a2  <d8c+8>b8<c+d2^  c+4^8>b8a2  b4^8<c+8d2  
+>b8^a8^g8g8^a8^b8  a+2b2  <c+2c+>agababf+  <d8e8d8c+d2^  
+c+4^8>b8a2  <d8c+8>b8<c+d2^  c+4^8>b8<e2  d2e2  
+c+2d4c+4  >b2a2  f+1  b4^8<c+4^8>b4  
+<c+2^4>b4  a4^8b4^8a4  b4<e4d4c+4  e2f+4g4  
+f+4c+8f+4e8d8c+8  >b4^8r8b4^8r8  <e2>b2  a+2b2  
+<c+8^d8^e8f+8r4^8  d8e8d8c+d2^  c+4^8>b8a2  <d8c+8>b8<c+d2^  
+c+4^8>b8a2  b4^8<c+8d2  >b8^a8^g8g8^a8^b8  
+;4
+
+l16
+{6}
+l16v104p40%e1%k1@36o5r2b4^^32r32b32r32b32r32  
+e8^b8^e8a4^^32r32a32r32a32r32  d8^a8^d8e4^^32r32e32r32e32r32  d8^a8^d8<c+8^>b8^<c+8  
+f+8^c+8^>f+8b4^^32r32b32r32b32r32  e8^b8^e8a4^^32r32a32r32a32r32  
+d8^a8^d8g8^<d8^>g8  e8^b8^e8f+8rf+8rf+8  <e8^d8^c+8>b2  ^4^ra8b32r2  
+^^32f+32r^32f+32r^32f+32r^32b8<br>b8<br>b8  <br>b8<br>a8<ar>a8<ar>a8  
+<ar>a8<ar>g8<gr>g8<gr>g8  <gr>g8<gr>f+8<f+r>f+8<f+r>f+8  <f+r>f+8<f+r>e8<er>e8<er>e8  
+<er>e8<erc+8<c+r>c+8<c+r>c+8  <c+r>c+8<c+ro5f+8^^32r32<f+8>ggg8  
+^^32r32<g8>g+g+g+8^^32r32<g+8>aaf+8  r8<f+8^^32r32>b8<br>b8<br>b8  
+<br>b8<br>a8<ar>a8<ar>a8  <ar>a8<ar>g8<gr>g8<gr>g8  <gr>g8<gr>f+8<f+r>f+8<f+r>f+8  
+<f+r>f+8<f+r>g8<gr>g8<gr>e8  <er>e8<er>f+8<f+r>f+8<f+r>b8  <br>a8<ar>g8<gr>g8<gr>a8  
+<ar>a8<ar>g<df+babab>b8  ^^32r32a8^^32r32g2^8  <g8d8g8>g2^8  <f+8c+8>g8f+2^8  
+ $5 <f+8c+8f+8>f+8^^32r32<f+8^^32r32c+8  ^^32r32>f+8^^32r32g8<gr>g8<gr>g8  
+<gr>g8<gr>a8<ar>a8<ar>b8  <brc+8<c+r>ererererdr  drdrdrc+2^4  ^8^r>f+rf+rf+rf+rgrgr  
+grgrararararb8^^32r32  f+8^^32r32b8<br>b8<br>b8<br  >b8<br>a8<ar>a8<ar>a8<ar  
+>a8<ar>g8<gr>g8<gr>g8<gr  >g8<gr>f+8<f+r>f+8<f+r>f+8<f+r  >f+8<f+r>e8<er>e8<er>e8<er  
+>e8<erc+8<c+r>c+8<c+r>c+8<c+r  >c+8<c+ro5f+8^^32r32<f+8>ggg8^^32r32  
+<g8>g+g+g+8^^32r32<g+8>aaf+8r8  <f+8^^32r32>b8<br>b8<br>b8<br  >b8<br>a8<ar>a8<ar>a8<ar  
+>a8<ar>g8<gr>g8<gr>g8<gr  >g8<gr>f+8<f+r>f+8<f+r>f+8<f+r  >f+8<f+r>g8<gr>g8<gr>e8<er  
+>e8<er>f+8<f+r>f+8<f+r>b8<br  >a8<ar>g8<gr>g8<gr>a8<ar  >a8<ar>g<df+babab>b8^^32r32  
+a8^^32r32g2^8<g8  d8g8>g2^8<f+8  c+8>g8f+2^8
+;5
+
+l16
+{7}
+l16v120p64%e1%k1@37o5r2  
+e8r4ee[2e8re8re8  e8r4ee]e8re8re8  e8re8re8e8re8re8  e8r4ee[3e8re8re8  
+e8re8re8]e8re8re8  r1  ^1  ^4e8^e[5r4e8r4  
+^8e8^e]r4e8r8e8  re8reee8re8reee8  re8reee8r8e8r4  ^8e8^e[6r4e8r4  
+^8e8^e]r4e8r4  ^8eeeee8e8e8e8e8  eee8e8 $6 eee8eeeee8  eee8e8eee8eeeee8  
+eee8e8eee8eeeee8  r8eeeeeeeee8r4  ^8e8^er4e8r4  ^8e8^er4e8r8ee  
+eee8e8eeeee8e8e8  r2e8e8e8r1  ceeeeeeee8^^32r32e8^^32r4  
+^32e8^e[5r4e8r4^8  e8^e]r4e8r8e8re8  reee8re8reee8re8  reee8r8e8r4^8e8  
+^e[6r4e8r4^8e8  ^e]r4e8r4^8ee  eee8e8e8e8e8eee8  e8
+;6
+
+l16
+{8}
+l16v120p64%e1%k1@38o5r1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^2c8r4^8  [5c8c8r4c8r4^8  ]c8c8r1  
+^1  ^4c8r4^8[5c8c8  r4c8r4^8]c8c8  r4c8rcr8c8c8c8  
+r8c4r1  ^1  ^1  ^1  
+^2^4^8c8  r4^8c8c8r4c8  r4^8c8c8r1  ^1  
+^4 $7 c8^^32r32c8^^32r32c8^^32r32  c8^^32r32c4c4r4  c4c8r4^8[5c8c8  
+r4c8r4^8]c8c8  r1  ^1  ^4c8r4^8[5c8c8  
+r4c8r4^8]c8c8  r4c8rcr8crc8c8  r8crc8r1  ^1  
+^1  ^1  ^2^4^8c8  r4^8c8c8r4c8  
+r4^8c8c8r1  ^1  ^4
+;7
+
+l16

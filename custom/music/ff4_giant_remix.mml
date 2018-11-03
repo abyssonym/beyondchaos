@@ -1,0 +1,112 @@
+#TITLE Within the Giant (Airship Remix)
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0E
+#WAVE 0x21 -- 0x1C
+#WAVE 0x22 -- 0x1B
+#WAVE 0x23 -- 0x0D
+#WAVE 0x24 -- 0x22
+#WAVE 0x25 -- 0x0F
+#WAVE 0x26 -- 0x14
+
+
+{1}
+l16t150%v32%x192%b0,70%e1%k1 $1 v120p62@32o6r2<d2  >a+2g2  
+<c1  m16,16,201^1  mr2d2  >a+2g2  
+<d+1  m16,16,201^1  mr2d2  >a+2g2  
+<f4d+4d4d+4  c2d+4f4  g2^4a+4  a2g4f4  
+g1  m16,16,201^1  mg2^8f8d+8c8  >g4g+4<c4g4  
+f2a+2  d1  d+2^8d8c8>g+8  f4g+4<c4d+4  
+d2g1  ^2g2  ^8f8d+8c8>g4g+4  <c4g4f2  
+a+2d1  d+2^8d8c8>g+8  f4g+4<c4d+4  f2^8f8g+8f+8  
+f2d+2  m16,16,201f1  ^1  m
+;1
+
+l16
+{2}
+l16%e1%k1 $2 v50p62@33o4a+8a+8a+8a+8a+8a+8a+8a+8  
+a+8a+8a+8a+8a+8a+8a+8a+8  g+8g+8g+8g+8g+8g+8g+8g+8  g+8g+8g+8g+8g+8g+8g+8g+8  
+a+8a+8a+8a+8a+8a+8a+8a+8  a+8a+8a+8a+8a+8a+8a+8a+8  g+8g+8g+8g+8g+8g+8g+8g+8  
+g+8g+8g+8g+8g+8g+8g+8g+8  a+8a+8a+8a+8a+8a+8a+8a+8  a+8a+8a+8a+8a+8a+8a+8a+8  
+g+8g+8g+8g+8g+8g+8g+8g+8  g+8g+8g+8g+8g+8g+8g+8g+8  g8g8g8g8g8g8g8g8  
+f8f8f8f8f8f8f8f8  g8g8g8g8g8g8g8g8  g8g8g8g8g8g8g8g8  <c8c8c8c8c8c8c8c8  
+c8c8c8c8c8c8c8c8  >a+8a+8a+8a+8a+8a+8a+8a+8  a+8a+8a+8a+8a+8a+8a+8a+8  
+g+8g+8g+8g+8g+8g+8g+8g+8  g+8g+8g+8g+8g+8g+8g+8g+8  g8g8g8g8g8g8g8g8  
+g8g8g8g8g8g8g8g8  <c8c8c8c8c8c8c8c8  c8c8c8c8c8c8c8c8  >a+8a+8a+8a+8a+8a+8a+8a+8  
+a+8a+8a+8a+8a+8a+8a+8a+8  g+8g+8g+8g+8g+8g+8g+8g+8  g+8g+8g+8g+8g+8g+8g+8g+8  
+<c+8c+8c+8c+8c+8c+8c+8c+8  >f+8f+8f+8f+8f+8f+8f+8f+8  f8f8f8f8f8f8f8f8  
+f8f8f8f8f8f8f8f8  
+;2
+
+l16
+{3}
+l16%e1%k1 $3 v80p62@34o5>a+8<d8f8a+8<d8>a+8f8d8  
+>a+8<d8f8a+8<d8>a+8f8d8  >g+8<c8d+8g+8<c8>g+8d+8c8  >g+8<c8d+8g+8<c8>g+8d+8c8  
+>a+8<d8f8a+8<d8>a+8f8d8  >a+8<d8f8a+8<d8>a+8f8d8  >g+8<c8d+8g+8<c8>g+8d+8c8  
+>g+8<c8d+8g+8<c8>g+8d+8c8  >a+8<d8f8a+8<d8>a+8f8d8  >a+8<d8f8a+8<d8>a+8f8d8  
+>g+8<c8d+8g+8<c8>g+8d+8c8  >g+8<c8d+8g+8<c8>g+8d+8c8  >g8a+8<d8g8a+8g8d8>a+8  
+f8a8<c8f8a8f8c8>a8  g8<c8d8g8<c8>g8d8c8  >g8b8<d8g8b8g8d8>b8  <c8d+8g8<c8d+8c8>g8d+8  
+c8d+8g8<c8d+8c8>g8d+8  >a+8<d8f8a+8<d8>a+8f8d8  >a+8<d8f8a+8<d8>a+8f8d8  
+>g+8<c8d+8g+8<c8>g+8d+8c8  >g+8<c8d+8g+8<c8>g+8d+8c8  >g8b8<d8g8b8g8d8>b8  
+g8b8<d8g8b8g8d8>b8  <c8d+8g8<c8d+8c8>g8d+8  c8d+8g8<c8d+8c8>g8d+8  
+>g8a+8<d8g8a+8g8d8>a+8  g8a+8<d8g8a+8g8d8>a+8  g+8<c8d+8g+8<c8>g+8d+8c8  
+>g+8<c8d+8g+8<c8>g+8d+8c8  >g+8<c8f8g+8<c+8>g+8f8c+8  >f+8a+8<c+8f+8a+8f+8c+8>a+8  
+f8a+8<c8f8a+8f8c8>a+8  f8a8<c8f8a8f8c8>a8  
+;3
+
+l16
+{4}
+l16%e1%k1 $4 v60p62@35o5a+1  
+^1  <c1  ^1  >a+1  
+^1  <c1  ^1  >a+1  
+^1  <c1  ^1  d1  
+c1  d1  ^1  c1  
+^1  >a+1  ^1  <d+1  
+^1  d1  d+2f2  d+1  
+^1  d1  ^1  d+1  
+^1  c+1  c+1  c1  
+^1  
+;4
+
+l16
+{5}
+l16%e1%k1 $5 v60p62@35o5f1  ^1  g+1  
+^1  f1  ^1  g+1  
+^1  f1  ^1  g+1  
+^1  a+1  a1  <c1  
+>b1  g1  ^1  f1  
+^1  <c1  ^1  >b1  
+<c2d2  c1  ^1  >a+1  
+^1  <c1  ^1  >g+1  
+a+1  a+1  a1  
+;5
+
+l16
+{6}
+l16%e1%k1 $6 v60p62@35o5d1  
+^1  d+1  ^1  d1  
+^1  d+1  ^1  d1  
+^1  d+1  ^1  g1  
+f1  g1  ^1  d+1  
+^1  d1  ^1  g+1  
+^1  g1  r1  g1  
+^1  g1  ^1  g+1  
+^1  f1  f+1  f1  
+^1  
+;6
+
+l16
+{7}
+l16%e1%k1v104p64 $7 @36o5b4@38<e4>@36b8b8<@38e4  
+>@36b4<@38e4^8>@36b8@38<e4  >
+;7
+
+l16
+{8}
+l16%e1%k1v50p64@37o5 $8 f+8
+;8
+
+l16

@@ -1,0 +1,73 @@
+#TITLE Black Waltz
+#ALBUM Final Fantasy IX
+#COMPOSER Nobuo Uematsu
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x25
+#WAVE 0x21 -- 0x1F
+#WAVE 0x22 -- 0x0C
+#WAVE 0x23 -- 0x06
+
+#SFXV ` *
+
+{1}
+l16t80%v32%x192%b0,70%e1%k1 $1 v80p62@32o4g2^4g+2  ^4g2^4  
+f+2^4g2  ^4a2^4  a+2^4a2  ^4g2^4  
+a2^4a+2  ^4a2^4  g2^4a2  ^4a+2^4  
+a2^4g2  ^4a2^4  a+2^4a2  ^4
+;1
+
+l16
+*{2}*`{7}`
+l16%e1%k1 $2 v80p62@32o4g<cd+g<cd+c>gd+c>gd+  
+g<cd+g<cd+c>gd+c>gd+g<cd+g  <cd+c>gd+c>gd+f+b<df+b<d>bf+  d>bf+do5d+4^8d8d+8c8  
+f+2^4g4  ^8f+8g8d+8a2  ^4d+4^8d8d+8c8  f+2^4g4  
+^8f+8g8d+8a2  ^4r1  ^1  ^1  
+^1  ^1  ^1  
+;2
+
+l16
+*{3}*`{2}`
+l16%e1%k1 $3 v80p62@32o4c2^4c2  
+^4c2^4  >b2^4<c2  ^4c2^4  c2^4c2  
+^4c2^4  c2^4c2  ^4c2^4  c1  
+^1  ^1  c1  ^1  
+^1  
+;3
+
+l16
+*{4}*`{5}`
+l16%e1%k1 $4 v100p74@33r1  ^1  ^1  
+^1  ^1  ^1  o6d+4^8d8d+8c8f+2  
+^4g4^8f+8g8d+8  a2^4r1  ^1  ^1  
+^1  ^1  ^1  
+;4
+
+l16
+*{5}*`{8}`
+l16%e1%k1 $5 v104p50@34o5r1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+o7c4>a+4d+4a4  g4c4f+1  ^2<c4>a+4  d+4a4g4c4  
+f+2g4a2  ^4
+;5
+
+l16
+{6}
+l16%e1%k1 $6 v60p126@35o5d+2^4  d+2^4d+2  
+^4d2^4  d+2^4d2  ^4d+2^4  d2^4d+2  
+^4d2^4  d+2^4d2  ^4d+2^4  d+2^4d2  
+^4d2^4  d+1  ^2d+2  ^4d2^4  
+
+;6
+
+l16
+*{7}*`{3}`
+l16%e1%k1 $7 v60p0@35o5>g2^4g+2  ^4g2^4  f+2^4g2  ^4a2^4  
+a+2^4a2  ^4g2^4  a2^4a+2  ^4a2^4  
+g2^4a2  ^4a+2^4  a2^4g2  ^4a2^4  
+a+2^4a2  ^4
+;7
+
+l16

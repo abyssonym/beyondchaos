@@ -1,0 +1,67 @@
+#TITLE A Wish...
+#ALBUM Secret of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- ~0x63~ /0x36/
+
+#SFXV ` *
+
+{1}
+l16%v50%x170%b0,70m8,19,196 $1 t74p64v50@32%e1%a6%r12r4r32~o5~/o6/g4.^^32r4  
+r32e4.^^32r4r32g4.  ^^32r4r32e4.^^32r4  r32g8.^32r32d8.^32r4r32e8.^32  
+r32>a8.^32r4r32<g8.^32r32d8.^32  r4r32e8.^32r32>a8.^32e8d2  ^8c8d2^8r4  
+r32<a4.^^32r4r32g4.  ^^32r4r32a^32b8a4g4.  f8e4d4.c8>b4  <c8>b8a4<c4d2  
+c4d2^4  d2c4d2  ^4
+;1
+
+l16
+{2}
+l16m8,20,196 $2 p69v50@32%e1%a6%r12~o3~/o4/a8<e8g2  
+>f8<c8f2>a8<e8  g2>f8<c8f2  >g8<d8g4d4>f8<c8  e4c4>g8<d8g4  
+d4>f8<c8e4c8>b8  a8g2^8f8g2  ^8f2^4e2  ^4f2^4  
+e2^4d2  ^4c2^4  >a+2^4a+2  ^4<c2^4  
+c2^4
+;2
+
+l16
+*{3}*`{7}`
+l16m8,19,196 $3 p74v50@32%e1%a6%r12r2  r4r2r4  
+r2r4r2  r4r2r4  r2r4r2  r4r2r4  
+r2r4r2  r4r8~o4~/o5/e4.e4  r8d4.d4r8e2  e8r8d4.d4r8  
+c4.c4r8>g4.  g4r8f2^8  r8f2^8r8g2  ^8r8g2g8
+;3
+
+l16
+*{4}*`{8}`
+l16m8,19,196 $4 p49v50@32%e1%a6%r12r2  
+r4r2r4  r2r4r2  r4r2r4  r2r4r2  
+r4r2r4  r2r4r2  r4r4~o4~/o5/a2  r4g2r4  
+a2r4g2  r4f2r4  >b2r4a+2  r4a+2r4  
+<c2r4c4  c4
+;4
+
+l16
+{5}
+l16m8,20,196 $5 p54v50@32%e1%a6%r12r2r4  
+r2r4r2  r4r2r4  r2r4r2  r4r2r4  
+r2r4r2  r4r2r4  r2r4r2  r4r2r4  
+r2r4r2  r4r2r4  r4.~o4~/o5/f8r8<f8a8f8  >a+8f8c8>g8r4.<f8  
+r8<f8a8f8c8>g8r8r8  
+;5
+
+l16
+{6}
+l16m8,19,196 $6 p59v50@32%e1%a6%r12r4r64~o5~/o6/c4.^^32^64r4  
+r64>a4.^^32^64r4r64<c4.  ^^32^64r4r64>a4.^^32^64r4  r64b^32^64<c8r64>b^32^64g8r4r64<c^32^64>b8  
+r64g^32^64^8r4r64b^32^64<c8r64>b^32^64g8  r4r64<c^32^64>b8r64g^32^64r64d^32^64c8>b2  
+^8a8b2^8r4  r64<<c4.^^32^64r4r64>b4.  ^^32^64r4r64<c4.^^32^64r4  
+r64>b4.^^32^64r4r64a4.  ^^32^64r4r64e4.^^32^64r4  r64d4.^^32^64r4r64d4.  
+^^32^64r4r64d4.^^32^64r4  r64d4.^^32^64
+;6
+
+*{7} {8}*`{3} {4}` r;

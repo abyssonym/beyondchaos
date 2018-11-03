@@ -1,0 +1,90 @@
+#TITLE The Wind Never Ceases
+#ALBUM Secret of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x1B
+#WAVE 0x22 -- 0x1C
+
+
+{1}
+l16t85%v50%x125%b0,70r64%e0 $1 p64v77@34[2o4ara8r4ara8r4  ara8r4ara8ra<c8  
+drd8r4drd8r4  drd8r4drd8re>g8  ]frf8r4frf8r4  frf8r4frf8rf<c>g  
+ara8r4ara8r4  ara8r4ara8raga  a+ra+8r4a+ra+8r4  a+ra+8r4a+ra+8ra+<d8  
+d+rd+8r4d+rd+8r4  d+rd+8r4d+rd+8r8d+8  frf8r4frf8r4  frf8r4frf8fc>f8  
+ere8r4ere8r4  ere8r4ere8eb<e8  
+;1
+
+l16
+{2}
+l16r64%e1 $2 p64v40@33[2[2o5ab<dgf+d>b<bgec<c>bdge  
+][2o5ab<dgf+d>b<bgec<d>beaf+  ]]>egb<cdefgfec>bgfed  egb<cdefgfec>bgedc  
+>ab<degb<cdgdcbgec>g  >ab<degb<cegec<d>bgd>b  a<cdfaa+afdc>aga<c>af  
+a<cdfaa+afdc>afa<dc>g+  a+<d+fga+<c>a+gfd+>a+g+a+<d+c>g+  a+<d+fga+<c>a+gfd+c>a+g+<ed+c+  
+[2o6cfg<c>gfcgfc>gfg<c>ac  ][2o5b<ef+bf+e>b<f+e>bf+ef+bg+>b  ]
+;2
+
+l16
+{3}
+l16r48%e1 $3 p104v63@32%r6r1  
+r1  r1  r1  r4~o4~/o5/b8<c8g4.a8  
+f+8e8d4f+8g8b4  a8g8f+2^4  ^2f+8d8d8>a8  <e2^8f8e8d8  
+e4.d8>b4g8f+8  r2a2  b2<d2  g2^8a8g8f8  
+g2g4g+4  a+2^8<c8>a+8g+8  a+4.a8g4<c+4  c4.>a+8<c2  
+^1  >b4.a8b2  ^1  
+;3
+
+l16
+{4}
+l16r64%e1 $4 p96v63@32%r6r4~o4~/o5/g8a8<d4.e8  
+c8>b8a4g8a8<g4  f+8e8d2^4  ^2d8e8c8>b8  a8r8g8a8<d4.e8  
+c8>b8a4<c8d8g4  f+8e8d2^4  ^2d8>a8a8f+8  <c2^8d8c8>b8  
+<c4.>b8g4e8d8  g2^4<c8d8  >g2a2  <c2^8d8c8>a+8  
+<c2c4d+4  f2^8g8f8d+8  f2f4g+4  a4.g8a2  
+^1  g+4.f+8g+2  ^1  
+;4
+
+l16
+{5}
+l16r48%e1 $5 p88v66@32%r6r4~o4~/o5/e8f+8g4.a8  
+g8f+8e4d8e8<d4  c8>b8a2^4  ^2b8<c8>g8f+8  e8r8f+8g8b4.<c8  
+>a8g8e4g8a8<d4  c8>b8a2^4  ^2a8f+8f+8d8  e2^8f8e8d8  
+e4.d8>b4<c8>b8  <e2c2  d1  a2^8b8a8g8  
+a2a4a+4  <c2^8d8c8>a+8  <c2>a+4<c+4  c4.>a+8<c2  
+^1  >b4.a8b2  ^1  
+;5
+
+l16
+{6}
+l16r64%e1 $6 p40v71@32%r6~o3~/o4/g1  
+^1  f+1  ^1  g1  
+^1  f+1  ^1  a1  
+^1  a1  g2<c2  e2^8f8e8d8  
+e2e4g4  f2^8g8f8d+8  f2d4f4  g4.f8g2  
+^1  f+4.e8f+2  ^1  
+;6
+
+l16
+{7}
+l16r48%e1 $7 p32v73@32%r6~o3~/o4/e1  
+^1  d1  ^1  e1  
+^1  d1  ^1  f1  
+^1  e1  ^1  f1  
+^2f4f+4  g1  ^1  <c1  
+^1  >b1  ^1  
+;7
+
+l16
+{8}
+l16r64%e1 $8 p24v73@32%r6~o2~/o3/a1  
+^1  a1  ^1  a1  
+^1  a1  ^1  <c1  
+^1  c1  ^1  >a+1  
+^2a+4<d4  d+1  ^1  f1  
+^1  e1  ^1  
+;8
+
+l16

@@ -1,0 +1,80 @@
+#TITLE What the Forest Taught Me
+#ALBUM Secret of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x33
+#WAVE 0x22 -- ~0x7F~ /0x0A/
+#WAVE 0x23 -- 0x07
+#WAVE 0x24 -- ~0x53~ /0x32/
+
+
+{1}
+l16t145%v24%x105%b0,70 $1 p48v57@36[2r1  r1  r1  r1  
+r1  r1  r1  r1  
+][2o6c8g8<c8>g8c8g8<c8>g8  c8g8<c8>g8c8g8<c8>g8  c8g8<c8>g8c8g8<c8>g8  
+c8g8<c8>g8c8g8<c8>g8  ]v62@32p88[2o6d+4c8r8>a+4g8r8  f4g8f8a+4g8r8  
+f2^4e8d8  e1  ]
+;1
+
+l16
+{2}
+l16r64 $2 v62@32p88%e1[2r1  r1  
+r1  r1  ][2o6d+4c8r8>a+4g8r8  f4d+8a+8f4d+8r8  
+d4c8f8d4c8r8  >a+4.<c8c2  ][2o6e4>g8r4g8<c8r8  d4g8d8f8e8c8>g8  
+<e4>g8r4g8<c8r8  d4g8r8<c4.^r  ]v50@35p72[2o6d+4c8r8>a+4g8r8  f4g8f8a+4g8r8  
+f2^4e8d8  e1  ]
+;2
+
+l16
+{3}
+l16r64 $3 v50@35p72%e1m20,13,196[2o6e4>g8r4g8<c8r8  
+d4g8d8f8e8c8>g8  <e4>g8r4g8<c8r8  d4g8r8<c4.r8  ]m[2o6d+4c8r8>a+4g8r8  
+f4d+8a+8f4d+8r8  d4c8f8d4c8r8  >a+4.<c8c2  ][2m20,13,196o6e4>g8r4g8<c8r8  
+d4g8d8f8e8c8>g8  <e4>g8r4g8<c8r8  d4g8r8<c4.^r  m][2p56o5f4.r8d+4.r8  
+d2c+4.r8  c1  ^1  ]
+;3
+
+l16
+{4}
+l16r48 $4 v50@35p72%e1m20,14,196[2o6c4r4>f4r4  
+b4r4<c4r4  c4r4>f4r4  <c4r4f4.r8  ]m[2o5a+8a8g8r8f8e8d8r8  
+c8>a+8a8<d+8d8c8>a+8r8  a+4a8g8f4d+8r8  f4.a8g2  ][2m20,14,196o6c4r4>f4r4  
+b4r4<c4r4  c4r4>f4r4  <c4r4f4.^r  m]v50@34p40[2o5c8d8d+8r8d+8f8g8r8  
+g8f8g8a8a+4<c8d8  d+8d8c8>a+8a4g8f8  g1  ]
+;4
+
+l16
+{5}
+l16r64 $5 v50@35p56%e1[2o5c4r4c4r4  
+c4r4c4r4  c4r4c4r4  >a+4r4a+4r4  ][2o5g8f8d+8r8d8c8>b8r8  
+a8g8f8<c8>a+8a8g8r8  g4f8d+8d4c8r8  d+4.d8d2  ][2o5c4r4c4r4  
+c4r4c4r4  c4r4c4r4  >a+4r4a+4r4  ]v62@32p80[2o5f4.r8d+4.r8  
+d2c+4.r8  c1  ^1  ]
+;5
+
+l16
+{6}
+l16r48 $6 v62@32p80%e1[2r1  
+r1  r1  r1  r1  
+r1  r1  r1  ][2o6c4r4>f4r4  
+b4r4<c4r4  c4r4>f4r4  <c4r4f4.^r  ]v40@33p48[2o5c8d8d+8r8d+8f8g8r8  
+g8f8g8a8a+4<c8d8  d+8d8c8>a+8a4g8f8  g1  ]
+;6
+
+l16
+{7}
+l16r64 $7 v50@36p40%e1[2r1  
+r1  r1  r1  r1  
+r1  r1  r1  ][2o4c8g8<c8r8>c8g8<c8r8  
+>c8g8<c8>g8c8g8<c8r8  >c8g8<c8r8>c8g8<c8r8  >>a+8<f8a+8r8>a+8<f8a+8r8  
+][2r1  r1  r1  r1  
+]
+;7
+
+l16

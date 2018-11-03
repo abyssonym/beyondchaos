@@ -1,0 +1,82 @@
+#TITLE Keeper's Dome
+#ALBUM Chrono Trigger (beta)
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 0x1B
+#WAVE 0x21 ~0x79~/0x0C/
+#WAVE 0x22 ~0x45~/0x0D/
+#WAVE 0x23 0x18
+#WAVE 0x24 ~0x83~/0x36/
+
+{1}
+l16%v25%b0,70%f0,0t70%x224 $1 |0v80p24%e1o5
+[2p10p192,115<d>a+agdgaa+<d>a+agdgaa+  
+p192,10<c+>ag+f+c+f+g+a<c+>ag+f+c+f+g+a  ]
+[2p10p192,115<c+>ag+f+c+f+g+a<c+>ag+f+c+f+g+a  
+p192,10bgf+e>b<ef+gbgf+e>b<ef+g  ]
+;1
+
+l16
+{2}
+l16|1v80p104%e1 $2 ~o5~/o6/[2p115p192,10ga+<dga+gd>a+ga+<dga+gd>a+  
+p192,115f+a<c+f+af+c+>af+a<c+f+af+c+>a  ]
+[2p115p192,10f+a<c+f+g+f+c+>af+a<c+f+g+f+c+>a  
+p192,115egb<ef+e>bgegb<ef+e>bg  ]
+;2
+
+l16
+{3}
+l16|2v80p10%e1r1  
+r1  r1  r1  r1  
+r1  r1  r1   $3 ~o2~/o3/[2v20v96,100g2^4v48,20^4  
+v96,100f+2^4v48,20^4  ][2v20v96,100f+2^4v48,20^4  v96,100e2^4v48,20^4  
+]
+;3
+
+l16
+{4}
+l16|3v120%e1r1  r1  r1  r1  
+r1  r1  r1  r1  
+ $4 o6[2r4p30dr8.p64gr8.p98a+r8.  r4p98c+r8.p64f+r8.p30ar8.  ][2r4p30c+r8.p64f+r8.p98ar8.  
+r4p98>p64br8.<er8.p30gr8.  ]
+;4
+
+l16
+{5}
+l16|4v80p64%e1r1  r1  r1  
+r1  r1  r1  r1  
+r1   $5 ~o4~/o6/[2r4%l1v10v72,100p64p72,96[6a+32<c32>]v72,10p72,126[6a+32<c32>]
+r4%l1v10v72,100p72,96[6a32b32]v72,10p72,64[6a32b32]]<[2r4  
+%l1v10v72,100p64p72,96[6c+32d+32]v72,10p72,126[6c+32d+32]r4%l1v10v72,100p72,96
+[6>b32<c+32]v72,10p72,64[6>b32<c+32]]
+;5
+
+l16
+{6}
+l16|4p64%e1%l1r1  
+r1  r1  r1  r1  
+r1  r1  r1   $6 ~o4~/o6/[2r4%l1v10v72,100p64p72,32[6g32a32]v72,10p72,1[6g32a32]r4%l1v10v72,100p72,32[6f+32g+32]v72,10p72,64[6f+32g+32]]
+[2r4  %l1v10v72,100p64p72,32[6a32b32]v72,10p72,1[6a32b32]r4%l1v10v72,100p72,32
+[6g32a32]v72,10p72,64[6g32a32]]
+;6
+
+l16
+{7}
+l16|2v80p115%e1r32k4r1  
+r1  r1  r1  r1  
+r1  r1  r1   $7 ~o2~/o3/[2v20v96,100g2^4v48,20^4  
+v96,100f+2^4v48,20^4  ][2v20v96,100f+2^4v48,20^4  v96,100e2^4v48,20^4  
+]
+;7
+
+l16
+{8}
+l16 $8 r1
+;8
+
+l16

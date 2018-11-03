@@ -1,0 +1,90 @@
+#TITLE The Big Whale
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED Royaken
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0E
+#WAVE 0x21 -- 0x0D
+#WAVE 0x22 -- 0x1C
+#WAVE 0x23 -- 0x12
+#WAVE 0x24 -- 0x14
+#WAVE 0x25 -- 0x16
+
+
+{1}
+l16t165%v32%x208%b0,70%e1%k1v100p60@32 $1 o6d+2f2  a+2^4d+4  
+g+4a+4<d+1  ^2>a+2  <c2d+2  ^4>g+4<c+4d+4  
+g+1  ^2f2  ^4>a+8<c8c+2  f2d+8f8d+4  
+>a+1  ^4<c+4f2  ^4>a+8<c8c+2  f2d+8f8f+1  
+^4f+4g+4a1  ^2a4b4  <c1  ^1  
+
+;1
+
+l16
+{2}
+l16%e1%k1v67p248@33 $2 o5[2d+ga+<d+gd+>a+g]d+ga+<d+>a+<d+ga+  
+a+a+gd+a+gd+>a+[2>g+<cd+g+<c>g+d+c  ]>g+<cd+g+d+g+<cd+g+d+c>g+<d+c>g+d+  
+[2>a+<c+f+a+<c+>a+f+c+]>a+<c+f+a+f+a+<c+f+  a+f+c+>a+<f+c+>a+f+[2c+fg+<c+fc+>g+f  
+]c+fg+<c+>g+<c+fg+<c+>g+fc+g+fc+>g+  [4f8d+8f8c+8]g8f8g8d+8  g8f8g+a+<cc+d+4cc+d+f  
+g4d+fgg+a+8g+8a+8g8  g+8g8g+8f8g8f8g8d+8  f8d+8f8c+8d+8c+8d+8>b8  
+<d+8c+8d+8>b8<d+8c+8d+8>b8  <d+8c+8d+8>b8<c+8>b8a8g+8  f+8e8d8c+8>b8<c+8d8e8  
+f+8g+8a8b8o6c2  o7c2>a+2  <c2
+;2
+
+l16
+{3}
+l16%e1%k1v67p8@33 $3 o5>a+<d+ga+<d+>a+gd+  
+d+d+ga+<d+>a+gd+>a+<d+ga+ga+<d+g  <d+>gd+>a+<gd+>a+g>d+g+<cd+g+d+c>g+  
+d+g+<cd+g+d+c>gd+g+<cd+cd+g+<c  d+c>g+d+<c>g+d+c>f+a+<c+f+a+f+c+>a+  
+f+a+<c+f+a+f+c+>a+f+a+<c+f+c+f+a+<c+  f+c+>a+f+<c+>a+f+c+>g+<c+fg+<c+>g+fc+  
+>g+<c+fg+<c+>g+fc+>g+<c+fg+fg+<c+f  g+fc+>g+<fc+>g+fc+8c8c+8>a+8  
+<c+8c8c+8>a+8<c+8c8c+8>a+8  <c+8c8c+8>a+8<d+8c+8d+8d+8  d+8c+8fgg+a+a+4g+a+<cc+  
+d+4cc+d+fg8f8g8d+8  f8d+8f8c8d+8c+8d+8c8  c+8c8c+8>a+8[4b8a+8b8g+8  
+]a8g+8f+8e8d8c+8>b8a8  g+8a8b8<c+8d8e8f+8g+8  g+2o6g+2  f+2g+2  
+
+;3
+
+l16
+{4}
+l16%e1%k1v100p60@33 $4 o5r1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+>f1  a+2g+2  g1  ^1  
+a+1  g1  f+1  b1  
+a1  ^1  g+1  ^1  
+
+;4
+
+l16
+{5}
+l16%e1%k1v57p16@34 $5 o4[16d+8]>[16g+8][16f+8]<[16c+8]>[16a+8]<[16d+8][16c+8]>[16b8  
+]<[16d8]>[16g+8]
+;5
+
+l16
+{6}
+l16%e1%k1v72p60@35 $6 o5c+2r1  [10^1  
+]^2c+1  r1  ^1  ^1  
+^1  ^1  ^1  ^1  
+
+;6
+
+l16
+{7}
+l16%e1%k1v72p60@36 $7 o5e8r2^4e32r32e32e32  [2r2^4^8e32r32e32e32  
+]r4^8e32r32e32r32e8e32r32e32r32e8e32r32e32e32  [3r2^4^8e32r32e32e32  
+]r4^8e32r32e32r32e8e32r32e32r32e8e32r32e32e32  r2^4eeee  [2e4r2^4  
+e4r2eeee  e4eeeee4eeee  e4r2eeee  ]e4r2^4  
+e4r2eeee  e4eeeee4eeee  
+;7
+
+l16
+{8}
+l16%e1%k1v83p240@37 $8 o5>d+4r2>a+4  
+<d+4r2^4  >g+4r2d+4  [2g+4d+4]f+4r2  c+4f+4r2  
+^4<c+4r2  >g+4[2<c+4>g+4]a+4  r2f4a+4  r2^4[2<d+4  
+r4>a+4r4]a+4  r2f4a+4  r2^4[2b4  r4f+4r4]<d4  
+r2>a4<d4  r2^4>[2g+4  r4d+4r4]
+;8
+
+l16

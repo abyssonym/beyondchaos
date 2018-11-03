@@ -33,9 +33,9 @@ from locationrandomizer import (EntranceSet,
                                 get_locations, get_location, get_zones)
 from chestrandomizer import mutate_event_items, get_event_items
 from towerrandomizer import randomize_tower
+from musicrandomizer import randomize_music
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
-
 
 VERSION = "64"
 BETA = True
@@ -6371,6 +6371,8 @@ k   Randomize the clock in Zozo
     secret_codes['randombosses'] = "RANDOM BOSSES MODE"
     secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
     secret_codes['notawaiter'] = "CUTSCENE SKIPS"
+    secret_codes['johnnydmad'] = "MUSIC REPLACEMENT MODE"
+    secret_codes['johnnyachaotic'] = "MUSIC MANGLING MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -6708,6 +6710,9 @@ k   Randomize the clock in Zozo
 
     reseed()
 
+    if 'johnnydmad' in activated_codes or 'johnnyachaotic' in activated_codes:
+        randomize_music(fout, True if 'johnnyachaotic' in activated_codes else False)
+            
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()
     for fs in fsets:

@@ -1,0 +1,71 @@
+#TITLE Long Way to Go
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x07
+#WAVE 0x21 -- 0x0D
+
+#SFXV ` *
+
+{1}
+l16t75%v32%x192%b0,70%e1%k1 $1 v48p62@32o4r1  ^1  ^1  ^1  
+<e4g8b8<d2  c+8>b8a8<c+8>b2  g4b8<d8f+4e4  d4e8f+8c+4^8>a8  
+g4a8b8f+2  g4b8<d8f+4^8d8  e2^4f+ed8  e1  
+>e4g8b8<d2  c+8>b8a8<c+8>b2  g4b8<d8f+4e4  d4e8f+8c+4^8>a8  
+g4a8b8f+2  g4b8<d8f+4^8d8  e2^4f+ed8  e1  
+
+;1
+
+l16
+*{2}*`{8}`
+l16%e1%k1 $2 v80p62@33o5e4e4drd4d8  e4e4f+rf+4f+8  
+e4e4drd4d8  e4e4f+rf+4f+8  e4e4drd4d8  e4e4f+rf+4f+8  
+e4e4drd4d8  e4e4f+rf+4f+8  e4e4drd4d8  e4e4f+rf+4f+8  
+e4e4drd4d8  e4e4f+rf+4f+8  e4e4drd4d8  e4e4f+rf+4f+8  
+e4e4drd4d8  e4e4f+rf+4f+8  e4e4drd4d8  e4e4f+rf+4f+8  
+e4e4drd4d8  e4e4f+rf+4f+8  
+;2
+
+l16
+*{3}*`{2}`
+l16%e1%k1 $3 v80p62@33o5>e1  
+e1  e1  e1  e1  
+e1  e1  e1  e1  
+e1  e1  e1  e1  
+e1  e1  e1  e1  
+e1  e1  e1  
+;3
+
+l16
+*{4}*`{5}`
+l16%e1%k1 $4 v80p62@33o5o3e1  
+e1  e1  e1  e1  
+e1  e1  e1  e1  
+e1  e1  e1  e1  
+e1  e1  e1  e1  
+e1  e1  e1  
+;4
+
+l16
+*{5}*`{7}`
+l16%e1%k1 $5 v80p62@33o5>b4b4ara4b8  
+b4b4<c+rc+4c+8  >b4b4ara4b8  b4b4<c+rc+4c+8  >b4b4ara4b8  
+b4b4<c+rc+4c+8  >b4b4ara4b8  b4b4<c+rc+4c+8  >b4b4ara4b8  
+b4b4<c+rc+4c+8  >b4b4ara4b8  b4b4<c+rc+4c+8  >b4b4ara4b8  
+b4b4<c+rc+4c+8  >b4b4ara4b8  b4b4<c+rc+4c+8  >b4b4ara4b8  
+b4b4<c+rc+4c+8  >b4b4ara4b8  b4b4<c+rc+4c+8  
+;5
+
+l16
+{6}
+l16%e1%k1 $6 v80p62@33o5>g4g4f+rf+4f+8  
+g4g4ara4a8  g4g4f+rf+4f+8  g4g4ara4a8  g4g4f+rf+4f+8  
+g4g4ara4a8  g4g4f+rf+4f+8  g4g4ara4a8  g4g4f+rf+4f+8  
+g4g4ara4a8  g4g4f+rf+4f+8  g4g4ara4a8  g4g4f+rf+4f+8  
+g4g4ara4a8  g4g4f+rf+4f+8  g4g4ara4a8  g4g4f+rf+4f+8  
+g4g4ara4a8  g4g4f+rf+4f+8  g4g4ara4a8  
+;6
+
+l16

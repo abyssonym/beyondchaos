@@ -13,14 +13,14 @@ ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
               "hitmdef", "elemabsorbs", "elemnulls", "elemweaks",
               "statusacquire2", "mblockevade", "specialaction"]
 
-STATPROTECT = {"fieldeffect": 0x5c,
+STATPROTECT = {"fieldeffect": 0xdc,
                "statusprotect1": 0x00,
                "statusprotect2": 0x00,
                "statusacquire3": 0x00,
                "statboost1": 0x00,
                "special1": 0x00,
                "statboost2": 0x02,
-               "special2": 0xa8,
+               "special2": 0x28,
                "special3": 0x60,
                "otherproperties": 0xdf,
                "statusacquire2": 0x00}
@@ -92,8 +92,12 @@ def extend_item_breaks(fout):
     break_sub.bytestring = [0x22, 0x13, 0x30, 0xF0]
     break_sub.write(fout)
     
-    break_sub.set_location(0x2274B)
-    break_sub.bytestring = [0xAD, 0x10, 0x34, 0xEA, 0xEA]
+    break_sub.set_location(0x22743)
+    break_sub.bytestring = [0x30, 0x05]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x2274A)
+    break_sub.bytestring = [0xAD, 0x10, 0x34]
     break_sub.write(fout)
     
     break_sub.set_location(0x229ED)
@@ -105,7 +109,7 @@ def extend_item_breaks(fout):
     break_sub.write(fout)
     
     break_sub.set_location(0x303000)
-    break_sub.bytestring = [0xBD, 0xA4, 0x3B, 0x29, 0x0C, 0x0A, 0x0A, 0x0A, 0x0A, 0x8D, 0x89, 0x3A, 0xBD, 0x34, 0x3D, 0x8D, 0x7E, 0x3A, 0x6B, 0x08, 0xBF, 0x12, 0x50, 0xD8, 0x8D, 0x10, 0x34, 0xBF, 0x13, 0x50, 0xD8, 0x29, 0x0C, 0x0A, 0x0A, 0x0A, 0x0A, 0x28, 0x6B]
+    break_sub.bytestring = [0xBD, 0xA4, 0x3B, 0x29, 0x0C, 0x0A, 0x0A, 0x0A, 0x0A, 0x8D, 0x89, 0x3A, 0xBD, 0x34, 0x3D, 0x8D, 0x7E, 0x3A, 0x6B, 0x08, 0xBF, 0x12, 0x50, 0xD8, 0x8D, 0x10, 0x34, 0xBF, 0x13, 0x50, 0xD8, 0x0A, 0x0A, 0x0A, 0x0A, 0x28, 0x29, 0xC0, 0x6B]
     break_sub.write(fout)
 
 
@@ -246,8 +250,11 @@ class ItemBlock:
 
         write_multi(fout, self.price, length=2)
 
-        if self.is_weapon:
-            fout.seek(0x2CE408 + (8*self.itemid))
+        if self.is_weapon or (self.itemtype & 0x0f) == 0x01:
+            if self.itemid < 93:
+                fout.seek(0x2CE408 + (8*self.itemid))
+            else:
+                fout.seek(0x303100 + (8*(self.itemid -93)))
             fout.write("".join(map(chr, self.weapon_animation)))
 
         fout.seek(0x12B300 + (13*self.itemid))
@@ -495,7 +502,7 @@ class ItemBlock:
 
     def mutate_price(self, undo_priceless=False, crazy_prices=False):
         if crazy_prices:
-            self.price = random.randint(30, 1000)
+            self.price = random.randint(20, 500)
             return
         if self.price <= 2:
             if undo_priceless:

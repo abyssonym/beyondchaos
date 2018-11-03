@@ -10,7 +10,6 @@ from utils import (ESPER_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
                    WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE, RIDING_SPRITE_TABLE,
                    MOOGLE_NAMES_TABLE, SKIP_EVENTS_TABLE,
-                   SKIP_EVENT_PALETTES_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -237,20 +236,13 @@ class AutoLearnRageSub(Substitution):
 class AutoRecruitGauSub(Substitution):
     @property
     def bytestring(self):
-        if 'notawaiter' in activated_codes:
-            return [0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
-        else:
-            return [0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
+        return [0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE]
 
     def write(self, filename):
         sub_addr = self.location - 0xa0000
         call_recruit_sub = Substitution()
         call_recruit_sub.bytestring = [0xB2] + int2bytes(sub_addr, length=3)
-        if 'notawaiter' in activated_codes:
-            call_recruit_sub.bytestring.append(0xFE)
-            call_recruit_sub.set_location(0xBC0A4)
-        else:
-            call_recruit_sub.set_location(0xBC19C)
+        call_recruit_sub.set_location(0xBC19C)
         call_recruit_sub.write(filename)
         gau_stays_wor_sub = Substitution()
         gau_stays_wor_sub.bytestring = [0xD4, 0xFB]
@@ -1621,23 +1613,28 @@ def manage_sprint():
     autosprint.bytestring = [0x80, 0x00]
     autosprint.write(fout)
 
-def lk2_manage_skips():
+def manage_skips():
+    # To identify if this cutscene skip is active in a ROM, look for the bytestring:
+    # 41 6E 64 53 68 65 61 74 68 57 61 73 54 68 65 72 65 54 6F 6F
+    # at 0xCAAA1
     characters = get_characters();
-    state = "Replacing Event Code"
     
-    for line in open(SKIP_EVENTS_TABLE):
-        split_line = line.strip().split(' ')
-
+    def writeToAddress(address, event):
         event_skip_sub = Substitution()
         event_skip_sub.bytestring = []
-        for byte in split_line[1:]:
+        for byte in event:
             event_skip_sub.bytestring.append(int(byte, 16))
-        event_skip_sub.set_location(int(split_line[0], 16))
+        event_skip_sub.set_location(int(address, 16))
         event_skip_sub.write(fout)
         
-    for line in open(SKIP_EVENT_PALETTES_TABLE):
-        split_line = line.strip().split(' ')
-    
+    def handleNormal(split_line): # Replace events that should always be replaced
+        writeToAddress(split_line[0], split_line[1:])
+        
+    def handleGau(split_line): # Replace events that should be replaced if we are auto-recruiting Gau
+        if 'o' in flags or 'w' in flags or 't' in flags:
+            writeToAddress(split_line[0], split_line[1:])
+            
+    def handlePalette(split_line): # Fix palettes so that they are randomized
         for character in characters:
             if character.id == int(split_line[1], 16):
                 palette_correct_sub = Substitution()
@@ -1645,6 +1642,12 @@ def lk2_manage_skips():
                 palette_correct_sub.set_location(int(split_line[0], 16))
                 palette_correct_sub.write(fout)
     
+    for line in open(SKIP_EVENTS_TABLE):
+        # If "Foo" precedes a line in skipEvents.txt, call "handleFoo"
+        split_line = line.strip().split(' ')
+        handler = "handle" + split_line[0]
+        locals()[handler](split_line[1:])
+
     flashback_skip_sub = Substitution()
     flashback_skip_sub.bytestring = [0xB2, 0xB8, 0xA5, 0x00, 0xFE]
     flashback_skip_sub.set_location(0xAC582)
@@ -1709,10 +1712,6 @@ def lk2_manage_skips():
     tintinabar_sub.set_location(0xD81F1)
     tintinabar_sub.bytestring = [0x25, 0xB0, 0x7F, 0x56, 0x59, 0x54, 0x54, 0x7F, 0x26, 0x2F, 0xAC, 0x8B, 0xB2, 0x8F, 0x8E, 0xA4, 0x8C, 0x56, 0xBB, 0xD0, 0xBA, 0xC8, 0x98, 0xB9, 0x89, 0xFA, 0x4B, 0x3D, 0x98, 0xB9, 0x33, 0x9F, 0x42, 0x3C, 0x98, 0x8F, 0x8C, 0xB9, 0x3B, 0x48, 0x48, 0x44, 0x65, 0x01, 0x15, 0x7F, 0x6B, 0x32, 0x3E, 0xB5, 0x81, 0x85, 0x46, 0x6C, 0x7F, 0x7F, 0x15, 0x7F, 0x6B, 0x25, 0x48, 0x4B, 0x40, 0xD0, 0x97, 0x4D, 0x6C, 0x00 ] #'F', 'or', ' ', '2', '5', '0', '0', ' ', 'G', 'P', ' y', 'ou', ' c', 'an', ' s', 'en', 'd ', '2', ' l', 'et', 'te', 'rs', ', ', 'a ', 're', 'co', 'r', 'd', ', ', 'a ', 'T', 'on', 'i', 'c', ', ', 'an', 'd ', 'a ', 'b', 'o', 'o', 'k', '.', '\n', '<choice>', ' ', '(', 'S', 'e', 'nd', ' t', 'he', 't', ')', ' ', ' ', '<choice>', ' ', '(', 'F', 'o', 'r', 'g', 'et', ' i', 't', ')''\0'
     tintinabar_sub.write(fout)
-
-    # We overwrote the Gau recruition code, so call it again
-    if 'o' in flags or 'w' in flags or 't' in flags:
-        auto_recruit_gau()
         
     # We overwrote some of the event items, so write them again
     if 't' in flags:
@@ -1953,9 +1952,9 @@ def manage_monsters():
     monsters = get_monsters(sourcefile)
     itembreaker = "collateraldamage" in activated_codes
     randombosses = "randombosses" in activated_codes
-    beyondtierless = "beyondtierless" in activated_codes
     madworld = "madworld" in activated_codes
-    change_skillset = True if madworld in activated_codes else None
+    darkworld = "darkworld" in activated_codes
+    change_skillset = True if darkworld in activated_codes else None
     final_bosses = (range(0x157, 0x160) + range(0x127, 0x12b) +
                     [0x112, 0x11a, 0x17d])
     for m in monsters:
@@ -1967,22 +1966,22 @@ def manage_monsters():
             if 0x157 <= m.id < 0x160 or m.id == 0x17d:
                 # deep randomize three tiers, Atma
                 m.randomize_boost_level()
-                if madworld:
+                if darkworld:
                     m.increase_enemy_difficulty()
-                m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
             else:
-                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
             if 0x127 <= m.id < 0x12a or m.id == 0x17d or m.id == 0x11a:
                 # boost statues, Atma, final kefka a second time
                 m.randomize_boost_level()
-                if madworld:
+                if darkworld:
                     m.increase_enemy_difficulty()				
-                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         else:
-            if madworld:
+            if darkworld:
                 m.increase_enemy_difficulty()
-            m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)				
+            m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)				
 
         m.tweak_fanatics()
         m.relevel_specifics()
@@ -2212,7 +2211,7 @@ def manage_character_names(change_to, male):
             elif chance != 1:
                 random_name_ids.append(moogle_id)
         
-        f = open(MOOGLE_NAMES_TABLE)
+        f = open_mei_fallback(MOOGLE_NAMES_TABLE)
         mooglenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
         f.close()
         
@@ -2222,7 +2221,7 @@ def manage_character_names(change_to, male):
             
         # Human Mog gets a human name, maybe
         if random.choice([True, True, False]):
-            f = open(MALE_NAMES_TABLE)
+            f = open_mei_fallback(MALE_NAMES_TABLE)
             malenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
             f.close()
             
@@ -2378,10 +2377,10 @@ def manage_character_appearance(preserve_graphics=False):
     sabin_mode = 'suplexwrecks' in activated_codes
     tina_mode = 'bravenudeworld' in activated_codes
     soldier_mode = 'quikdraw' in activated_codes
-    sprite_swap_mode = 'makeover' in activated_codes
     moogle_mode = 'kupokupo' in activated_codes
     ghost_mode = 'halloween' in activated_codes
     christmas_mode = 'christmas' in activated_codes
+    sprite_swap_mode = 'makeover' in activated_codes and not (sabin_mode or tina_mode or soldier_mode or moogle_mode or ghost_mode)
 
     if (wild or tina_mode or sabin_mode or christmas_mode):
         if christmas_mode:
@@ -2720,7 +2719,7 @@ def manage_colorize_animations():
 def manage_items(items, changed_commands=None):
     from itemrandomizer import (set_item_changed_commands, extend_item_breaks)
     always_break = True if "collateraldamage" in activated_codes else False
-    crazy_prices = True if "beyondtierless" in activated_codes else False
+    crazy_prices = True if "madworld" in activated_codes else False
     extra_effects= True if "masseffect" in activated_codes else False
     wild_breaks = True if "electricboogaloo" in activated_codes else False
 
@@ -3020,7 +3019,7 @@ def manage_espers(freespaces):
     espers = get_espers()
     random.shuffle(espers)
     for e in espers:
-        e.generate_spells(tierless = "beyondtierless" in activated_codes)
+        e.generate_spells(tierless = "madworld" in activated_codes)
         e.generate_bonus()
 
     bonus_espers = [e for e in espers if e.id in [15, 16]]
@@ -3121,6 +3120,7 @@ def manage_treasure(monsters, shops=True):
 
 
 def manage_chests():
+    crazy_prices = True if "madworld" in activated_codes else False
     locations = get_locations(sourcefile)
     locations = sorted(locations, key=lambda l: l.rank())
     for l in locations:
@@ -3131,7 +3131,7 @@ def manage_chests():
                     if c.contenttype == 0x40 and c.contents == 166:
                         c.contents = 33
 
-        l.mutate_chests()
+        l.mutate_chests(crazy_prices=crazy_prices)
     locations = sorted(locations, key=lambda l: l.locid)
 
     for m in get_monsters():
@@ -3493,15 +3493,15 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
 
         itembreaker = 'collateraldamage' in activated_codes
         randombosses = 'randombosses' in activated_codes
-        beyondtierless = 'beyondtierless' in activated_codes
         madworld = 'madworld' in activated_codes
+        darkworld = 'darkworld' in activated_codes
         ue.auxloc = "Missing (Boss)"
-        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
-        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
 
-        ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+        ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
         if random.choice([True, False]):
-            ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, beyondtierless=beyondtierless, madworld=madworld)
+            ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
         ue.treasure_boost()
         ue.graphics.mutate_palette()
         name = randomize_enemy_name(fout, ue.id)
@@ -3639,7 +3639,7 @@ def get_shops():
 def manage_shops():
     buyables = set([])
     descriptions = []
-    crazy_shops = "beyondtierless" in activated_codes
+    crazy_shops = True if "madworld" in activated_codes else False
     for s in get_shops():
         s.mutate_items(fout, crazy_shops)
         s.mutate_misc()
@@ -4377,10 +4377,6 @@ def manage_auction_house():
         0x7F, 0x26, 0x2F, 0x5F, 0x5E, 0x00] #  " GP?!"
         auction_sub.write(fout)
 
-    auction_sub = Substitution()
-    auction_sub.set_location(0xB4E47)
-    auction_sub.bytestring = [0x45] * 12
-    auction_sub.write(fout)
 
 def manage_bingo():
     target_score = 200.0
@@ -5272,7 +5268,7 @@ def manage_ancient():
                     and f.get_music() != 0]):
                 return False
         best_drop = formation.get_best_drop()
-        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or "beyondtierless" in activated_codes):
+        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or "madworld" in activated_codes):
             return True
         return False
 
@@ -6081,7 +6077,7 @@ def manage_spookiness():
         nowhere_to_run_bottom_sub.write(fout)
         
 def manage_dances():
-    if 'beyondtierless' in activated_codes:
+    if 'madworld' in activated_codes:
          spells = get_ranked_spells(sourcefile)
          dances = random.sample(spells, 32)
          dances = [s.spellid for s in dances]
@@ -6136,6 +6132,7 @@ def manage_dances():
 def nerf_paladin_shield():
     paladin_shield = get_item(0x67)
     paladin_shield.mutate_learning()
+    paladin_shield.write_stats(fout)
 
 
 def expand_rom():
@@ -6368,12 +6365,12 @@ k   Randomize the clock in Zozo
     secret_codes['randomboost'] = "RANDOM BOOST MODE"
     secret_codes['dancingmaduin'] = "RESTRICTED ESPERS MODE"
     secret_codes['masseffect'] = "WILD EQUIPMENT EFFECT MODE"
-    secret_codes['madworld'] = "EXTREME DIFFICULTY MODE"
+    secret_codes['darkworld'] = "SLASHER'S DELIGHT MODE"
     secret_codes['supernatural'] = "SUPER NATURAL MAGIC MODE"
-    secret_codes['beyondtierless'] = "TIERS FOR FEARS MODE"
+    secret_codes['madworld'] = "TIERS FOR FEARS MODE"
     secret_codes['randombosses'] = "RANDOM BOSSES MODE"
     secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
-    secret_codes['notawaiter'] = "ALTERNATE CUTSCENE SKIPS"
+    secret_codes['notawaiter'] = "CUTSCENE SKIPS"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -6405,7 +6402,7 @@ k   Randomize the clock in Zozo
         except:
             multiplier = None
         set_randomness_multiplier(multiplier)
-    elif 'beyondtierless' in activated_codes:
+    elif 'madworld' in activated_codes:
         set_randomness_multiplier(None)
 
     fout = open(outfile, "r+b")
@@ -6437,7 +6434,7 @@ k   Randomize the clock in Zozo
     reseed()
 
     spells = get_ranked_spells(sourcefile)
-    if 'beyondtierless' in activated_codes:
+    if 'madworld' in activated_codes:
         random.shuffle(spells)
         for i, s in enumerate(spells):
             s._rank = i+1
@@ -6487,6 +6484,15 @@ k   Randomize the clock in Zozo
             rename_card = get_item(231)
             rename_card.become_another(tier="low")
             rename_card.write_stats(fout)
+
+            weapon_anim_fix = Substitution()
+            weapon_anim_fix.set_location(0x19DB8)
+            weapon_anim_fix.bytestring = [0x22, 0x80, 0x30, 0xF0]
+            weapon_anim_fix.write(fout)
+
+            weapon_anim_fix.set_location(0x303080)
+            weapon_anim_fix.bytestring = [0xE0, 0xE8, 0x02, 0xB0, 0x05, 0xBF, 0x00, 0xE4, 0xEC, 0x6B, 0xDA, 0xC2, 0x20, 0x8A, 0xE9, 0xF0, 0x02, 0xAA, 0x29, 0xFF, 0x00, 0xE2, 0x20, 0xBF, 0x00, 0x31, 0xF0, 0xFA, 0x6B]
+            weapon_anim_fix.write(fout)
     reseed()
 
     items = get_ranked_items()
@@ -6685,7 +6691,7 @@ k   Randomize the clock in Zozo
     
     if 'notawaiter' in activated_codes:
         print "Cutscenes are currently skipped up to Kefka @ Narshe"
-        lk2_manage_skips()
+        manage_skips()
     reseed()
 
     if 'worringtriad' in activated_codes:

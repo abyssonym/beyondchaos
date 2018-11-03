@@ -25,7 +25,7 @@ from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield, unhack_tintinabar)
 from esperrandomizer import (EsperBlock, allocate_espers)
-from shoprandomizer import ShopBlock
+from shoprandomizer import (ShopBlock, buy_owned_breakable_tools)
 from namerandomizer import generate_name
 from formationrandomizer import (get_formations, get_fsets,
                                  get_formation, get_fset)
@@ -3680,6 +3680,8 @@ def manage_shops():
     buyables = set([])
     descriptions = []
     crazy_shops = True if "madworld" in activated_codes else False
+    buy_owned_breakable_tools(fout)
+
     for s in get_shops():
         s.mutate_items(fout, crazy_shops)
         s.mutate_misc()

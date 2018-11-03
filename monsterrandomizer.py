@@ -1054,12 +1054,20 @@ class MonsterBlock:
 
         self.write_ai(fout)
 
-    def screw_tutorial_bosses(self):
+    def screw_tutorial_bosses(self, old_vargas_fight=False):
         name = self.name.lower().strip('_')
         tutmessage = None
         if name == 'vargas':
-            self.stats['hp'] = 900 + random.randint(0, 100) + random.randint(0, 100)
-            tutmessage = "".join(map(chr, [0xF7, 0x08]))
+            if old_vargas_fight:
+                self.stats['hp'] = 900 + random.randint(0, 100) + random.randint(0, 100)
+            else:
+                self.stats['hp'] = 1500 + random.randint(0, 150) + random.randint(0, 150)
+                tutmessage = "".join(map(chr, [0xF7, 0x08]))
+                # trigger phase change at 640 or 768 HP
+                for i, a in enumerate(self.aiscript):
+                    if a[0:3] == "".join(map(chr,[0xFC, 0x06, 0x36])):
+                        self.aiscript[i] = "".join(map(chr, [0xFC, 0x06, 0x36, random.randint(5,6)]))
+                        break
         if name == 'tunnelarmr':
             self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
             self.aiscript = self.aiscript[4:]

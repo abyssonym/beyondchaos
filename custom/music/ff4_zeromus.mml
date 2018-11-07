@@ -1,4 +1,4 @@
-#TITLE Zeromus
+#TITLE The Final Battle
 #ALBUM Final Fantasy IV
 #COMPOSER Nobuo Uematsu
 #ARRANGED Gi Nattak
@@ -14,7 +14,7 @@
 
 
 {1}
-l16t175%v32%x192%b0,24v98p68%e1%k1@32o6m16,16,201r4d2>b2  <c2d+2  
+l16t175%v32%x192%b0,24v98p68%e1@32o6m16,16,201r4d2>b2  <c2d+2  
 d2f2  d+2g2  a8f+8g8a+8a8<c8>a+8<d8  d+8c8d8f8d+8g8f+8a8  
 g1  ^1  g8^g8^g8v78g8^g8^g8  v58g8^g8^g8v38g8^g8^g8  
 v98g1  ^1  g8^g8^g8v78g8^g8^g8  v58g8^g8^g8v38g8^g8^v98g8  
@@ -37,7 +37,7 @@ v98%v50p68>a+4c+^32f+a+^32b4<c4  >a^32gf^32a+4g4c^32d+g^32  a4f^32d+c+^32<r1
 
 l16
 {2}
-l16v98p68%e1%k1@32o5m16,16,201r4>b2g+2  
+l16v98p68%e1@32o5m16,16,201r4>b2g+2  
 a2<c2  >b2<d2  c2d+2  f+8d+8e8g8f+8a8g8a+8  
 <c8>a8a+8<d8c8d+8d8f+8  e1  ^1  e8^e8^e8v78e8^e8^e8  
 v58e8^e8^e8v38e8^e8^e8  v98e1  ^1  e8^e8^e8v78e8^e8^e8  
@@ -60,7 +60,7 @@ v98p68f+4r4g4g4  r4f4d+4r4  f4<r1  ^1
 
 l16
 {3}
-l16v77p62%e1%k1@33o5r4>d2  >b2<c2  
+l16v77p62%e1@33o5r4>d2  >b2<c2  
 d+2d2  f2d+2  g2a8f+8g8a+8  a8<c8>a+8<d8d+8c8d8f8  
 d+8g8f+8a8a+1  ^1  a+8^a+r8a+8v67a+8^a+r8a+8  v57a+8^a+r8a+8v47a+8^a+r8a+8  
 v77a+1  ^1  a+8^a+r8a+8v67a+8^a+r8a+8  v57a+8^a+r8a+8v47a+8^a+r8a+8  
@@ -84,7 +84,7 @@ f2a+1  ^1  >a+1  ^1
 
 l16
 {4}
-l16v77p62%e1%k1@33o3r4b2g+2  a2<c2  >b2<d2  c2d+2  
+l16v77p62%e1@33o3r4b2g+2  a2<c2  >b2<d2  c2d+2  
 f+8d+8e8g8f+8a8g8a+8  <c8>a8a+8<d8c8d+8d8f+8  d1  ^1  
 c+8^c+r8c+8v67c+8^c+r8c+8  v57c+8^c+r8c+8v47c+8^c+r8c+8  v77d1  
 ^1  c+8^c+r8c+8v67c+8^c+r8c+8  v57c+8^c+r8c+8v47c+8^c+r8c+8  v77>a1  
@@ -107,7 +107,7 @@ v75p34<c8r8>v50p80c8r8v75o5c+8r8v50c+8r8  v75p34>c+8r8v50c+8r8v75p80<c+8r8v50>p3
 
 l16
 {5}
-l16p50%e1%k1@34o5r4v30d+v35dv40d+v45dv50d+v55dv60d+v65dv70d+v75dv80d+v75d  
+l16p50%e1@34o5r4v30d+v35dv40d+v45dv50d+v55dv60d+v65dv70d+v75dv80d+v75d  
 v70d+v65dv60d+v55dv50d+v45dv40d+v35dv30d+v35dv40d+v45dv50d+v55dv60d+v65d  
 v70d+v75dv80d+v75dv70d+v65dv60d+v55dv50d+v45dv40d+v35dv30d+v35dv40d+v45d  
 v50d+v55dv60d+v65dv70d+v75dv80d+v85dd+v80dv75d+v70dv65d+v60dv55d+v50d  
@@ -133,7 +133,7 @@ d8d8d8d8g8<d8[3g8>f8  <c8f8d+8>a+8g8<d8]
 
 l16
 {6}
-l16v50p64%e1%k1@35o5r4  
+l16v50p64%e1@35o5r4  
 d2>b2  <c2d+2  d2f2  d+2g2  
 a8f+8g8a+8a8<c8>a+8<d8  d+8c8d8f8d+8g8f+8a8  >g8g8f+8g+8g+8g8[7a8g+8  
 g8g8f+8g+8g+8g8]a8g+8  <d2^4>a4  g2a4a+4  f2g4a4  
@@ -154,7 +154,7 @@ d8d8d8d8d8d8d8d8  d8d8d8d8g8<d8[3g8>f8  <c8f8d+8>a+8g8<d8]g8>f8
 
 l16
 {7}
-l16v104p64%e1%k1@36r1  ^1  ^1  ^1  
+l16v104p64%e1@36r1  ^1  ^1  ^1  
 ^4o6drdrdrdrdrdr  drdrdrdrdrdrdddd  dddd@38cr8^@36dr8^@38crcr  [2@36dr8^@38crcr@36dr@38cr8^cr  
 @36dr@38crcr8^@36dr@38cr8^cr  @36dr8^@38cr8c@36dr@38cr8^cr  @36dr8^@38cr8^@36dr8^@38crcr  
 ][5@36dr8^@38crcr@36dr@38cr8^cr  @36dr@38crcr8^@36dr@38cr8^cr  ]@36dr8^@38cr8c@36dr@38cr8^cr  
@@ -176,7 +176,7 @@ rcr@36dr8^@38cr8^@36dr8^@38c  rcr@36dr8^@38cr8^@36dr@38cr8  ^cr@36dr8^@38cr8^@36
 
 l16
 {8}
-l16v123p94%e1%k1@37o6r1  
+l16v123p94%e1@37o6r1  
 ^1  ^1  ^1  ^1  
 ^1  ^4>c+1  [7r1  ^1  
 ^1  c+1  ] $8 r1  ^1  

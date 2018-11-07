@@ -9,7 +9,7 @@
 
 
 {1}
-l16t90%v36%x200%b0,70v50p63%e1%k1 $1 @32o5b2a+8r8b2  a+8r8b8<c+8d2  
+l16t90%v36%x200%b0,70v50p63%e1 $1 @32o5b2a+8r8b2  a+8r8b8<c+8d2  
 c+4>b2^4  b2a+8r8b2  a+8r8b8<c+8d2  c+4>b2^4  
 <e2d+8r8e2  d+8r8e8f+8g2  f+4e2^4  e2d+8r8e2  
 d+8r8e8f+8g2  f+4e2^4  ed+e>b<c>ab<e>a<e>g<e>f+<e>g<e  >a<eo4b<bc+bd+bebd+bebf+b  
@@ -19,7 +19,7 @@ a+1  ba+bf+gef+bebdbc+bdb  eb>f+<f+>g+<f+>a+<f+>b<f+>a+<f+>b<f+c+f+
 
 l16
 {2}
-l16v50p63%e1%k1 $2 @32o4>e1  ^1  
+l16v50p63%e1 $2 @32o4>e1  ^1  
 ^4^8r8e4f+8g8  a8b8<c+1  ^1  ^2r8c+8>b8a+8  
 b8<c+8>a1  ^1  ^2^4a8g+8  a8b8a1  
 ^1  ^2^8a8g+8g8  f+8f8e1  ^1  
@@ -29,7 +29,7 @@ g+8b8g+8f8g+8f8d8>b8
 
 l16
 {3}
-l16v50p63%e1%k1 $3 @32o5g2f+8r8g2  
+l16v50p63%e1 $3 @32o5g2f+8r8g2  
 f+8r8g8a+8b2  a+4g2^4  g2f+8r8g2  f+8r8g8a+8b2  
 a+4r2^4  <c2>b8r8<c2  >b8r8<c8d+8e2  d+4c2^4  
 c2>b8r8<c2  >b8r8<c8d+8e2  d+4c2^4  r1  
@@ -39,7 +39,7 @@ c2>b8r8<c2  >b8r8<c8d+8e2  d+4c2^4  r1
 
 l16
 {4}
-l16v50p63%e1%k1 $4 @32o5e2c+8r8e2  c+8r8e8f+8g2  
+l16v50p63%e1 $4 @32o5e2c+8r8e2  c+8r8e8f+8g2  
 f+4e2^4  e2c+8r8e2  c+8r8e8f+8g2  f+4g2^4  
 a2f+8r8a2  f+8r8a8b8<c2  >b4a2^4  a2f+8r8a2  
 f+8r8a8b8<c2  >b4a2^4  r1  ^1  
@@ -49,7 +49,7 @@ e1  r1  ^1  g+1
 
 l16
 {5}
-l16v50p63%e1%k1 $5 @32o5r1  ^2^8e8e2  e4r1  
+l16v50p63%e1 $5 @32o5r1  ^2^8e8e2  e4r1  
 ^1  ^4^8e8e2  e4e2^4  r1  
 ^2^8a8a2  a4r1  ^1  ^4^8a8a2  
 a4r1  ^1  ^1  ^1  
@@ -58,7 +58,7 @@ a4r1  ^1  ^1  ^1
 
 l16
 {6}
-l16v60p63%e1%k1 $6 @33o5b2  
+l16v60p63%e1 $6 @33o5b2  
 a+8r8b2a+8r8  b8<c+8d2c+4  >b2^4b2  a+8r8b2a+8r8  
 b8<c+8d2c+4  >b2^4<e2  d+8r8e2d+8r8  e8f+8g2f+4  
 e2^4e2  d+8r8e2d+8r8  e8f+8g2f+4  e2^4r1  
@@ -68,7 +68,7 @@ g+8f8d8f8d8>b8<d8>b8  g+8b8g+8f8g+8f8r4
 
 l16
 {7}
-l16v60p63%e1%k1 $7 @33o4e1  
+l16v60p63%e1 $7 @33o4e1  
 ^1  ^4^8r8e4f+8g8  a8b8<c+1  ^1  
 ^2r8c+8>b8a+8  b8<c+8>a1  ^1  ^2^4a8g+8  
 a8b8a1  ^1  ^2^8a8g+8g8  f+8f8r1  
@@ -78,7 +78,7 @@ g+8f8d8f8d8>b8<d8>b8  g+8b8g+8f8g+8f8<d8>b8
 
 l16
 {8}
-l16v60p63%e1%k1 $8 @33o5g2f+8r8g2  
+l16v60p63%e1 $8 @33o5g2f+8r8g2  
 f+8r8g8a+8b2  a+4g2^4  g2f+8r8g2  f+8r8g8a+8b2  
 a+4g2^4  <c2>b8r8<c2  >b8r8<c8d+8e2  d+4c2^4  
 c2>b8r8<c2  >b8r8<c8d+8e2  d+4c2^4  r1  

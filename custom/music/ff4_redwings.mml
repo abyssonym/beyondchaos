@@ -12,7 +12,7 @@
 
 
 {1}
-l16t200%v25%x192%b0,70%e1%k1 $1 v120p62@32o6r1  ^1  ^1  ^1  
+l16t200%v25%x192%b0,70%e1 $1 v120p62@32o6r1  ^1  ^1  ^1  
 ^1  ^1  ^2^4d2  ^4<d2^4  
 c2^4>a+2  ^4a4^8<c4^8  >a+2^4g2  ^4<d2^4  
 >g1  ^2<c8^d8^d+8  ^f8^g1  ^2f2  
@@ -29,7 +29,7 @@ r2^8g+8g+8g+8  f4^8b4r8b4  r2b4r2  brbrbrb4r8
 
 l16
 {2}
-l16%e1%k1 $2 v120p80@32o6r1  
+l16%e1 $2 v120p80@32o6r1  
 ^1  ^1  ^1  ^1  
 ^1  >g1  ^1  ^1  
 g1  ^1  ^1  a+1  
@@ -48,7 +48,7 @@ r2f+rf+rf+rf+4  r8
 
 l16
 {3}
-l16%e1%k1 $3 v120p80@32o6r1  ^1  
+l16%e1 $3 v120p80@32o6r1  ^1  
 ^1  ^1  ^1  ^1  
 ^1  ^1  ^1  ^1  
 ^1  ^1  ^1  ^1  
@@ -66,7 +66,7 @@ r1  ^2^4^8^d  rdrdrc+rc+rc+rcrcrc  rg+4^8f8r8g+8g+4
 
 l16
 {4}
-l16%e1%k1 $4 v104p80@33o5d4^8d4^8dr8  
+l16%e1 $4 v104p80@33o5d4^8d4^8dr8  
 dr8d4^8d4^8f  rfrfrerererd+rd+rd+  rd4^8d4^8dr8  dr8d4^8d4^8f  
 rfrfrerererd+rd+rd+  rg1  ^1  ^1  
 f1  ^1  ^1  g1  
@@ -85,7 +85,7 @@ d8f8g+8b8g+8f8d8f8  g+8b8g+8f8d8f8g+8f8  g+8b8<d8>b8g+8f8g+8b8
 
 l16
 {5}
-l16%e1%k1 $5 v104p80@33o5>g4  
+l16%e1 $5 v104p80@33o5>g4  
 ^8g4^8gr8gr8g4  ^8g4^8<drdrdrc+r  c+rc+rcrcrcr>g4^8  g4^8gr8gr8g4  
 ^8g4^8<drdrdrc+r  c+rc+rcrcrcrd1  ^1  ^1  
 c1  ^1  ^1  d+1  
@@ -104,7 +104,7 @@ g+8f8d8>b8<d8f8g+8f8  d8>b8<d8f8d+4r8d+4  r2d+4r2  d+rd+rd+rd+4r8
 
 l16
 {6}
-l16%e1%k1 $6 v120p24@34o5g4  
+l16%e1 $6 v120p24@34o5g4  
 ^8g4^8g8^g8rg4  ^8g4^8g8g8g8g8  g8g8g8g8g8g4^8  g4^8g8^g8rg4  
 ^8g4^8g8g8g8g8  g8g8g8g8g8g4^8  g4^8g8^g8rg4  ^8g4^8g8g8g8g8  
 g8g8g8g8g8g4^8  g4^8g8^g8rg4  ^8g4^8g8g8g8g8  g8g8g8g8g8g4^8  
@@ -123,7 +123,7 @@ g+rg+4r8
 
 l16
 {7}
-l16%e1%k1 $7 v104p64@35o5[14d4^8d8  d8d8d4^8dddddd  
+l16%e1 $7 v104p64@35o5[14d4^8d8  d8d8d4^8dddddd  
 d4^8d4^8d8d8  d8d8d8d8]v80b4^8f4  ^8b8b8b8f4^8f8  rfffb8b8b8f4^8  
 b4^8f4^8b8b8  b8f4^8f8rfffb8  b8b8f4^8b4^8  f4^8b8b8b8f4  
 ^8f8rfffb8b8b8f4  ^8b4^8f4^8b8  b8b8f4^8f8rfff  b8b8b8f4^8b4  
@@ -132,7 +132,7 @@ r8b4r8ffffffb4  r8ffffffbrbrbrb4  r8
 
 l16
 {8}
-l16%e1%k1 $8 v120p64@36o5r1  
+l16%e1 $8 v120p64@36o5r1  
 ^1  ^1  ^1  ^1  
 ^1  >a2^4r1  ^1  ^4a2^4  
 r1  ^1  ^4a2^4  r1  

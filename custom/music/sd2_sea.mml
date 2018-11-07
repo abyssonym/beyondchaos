@@ -18,42 +18,39 @@
 
 {1}
 l16t140%x145%v31%b0,70%e1r64p104v50@35[4 ~o6~/o5/ d4.f4.e8c8  ]
-$1 ~o6~/o5/[2p88v50@35[8r8 ~o7~/o6/ c4d4c8>b4  
+$1 ~o6~/o5/p88v50@35[8r8 ~o7~/o6/ c4d4c8>b4  
 ][8r8 ~o7~/o6/ c+4d+4c+8c4  ][8r8 ~o7~/o6/ c4d4c8>b4  ]%e1p104v50@35[4 ~o6~/o5/ d4.f4.e8c8  
-]v[2p88v50@35[8r8 ~o7~/o6/ c4d4c8>b4  ][8r8 ~o7~/o6/c+4d+4c+8c4  ][8r8 ~o7~/o6/c4d4c8>b4  
+]p88v50@35[8r8 ~o7~/o6/ c4d4c8>b4  ][8r8 ~o7~/o6/c+4d+4c+8c4  ][8r8 ~o7~/o6/c4d4c8>b4  
 ][12r1  ]r2
 ;1
 
-l16p104v50@35[4 ~o6~/o5/d4.f4.  e8c8]]
 {2}
 l16%e1r48p88v50@35[4 ~o6~/o5/g4.r8a4  
-r8f8] $2 ~o6~/o5/[2p72v50@35[2 ~o7~/o6/ d4f2  g4d4f2  g8d8d4f2  g4d4f4.g8  
+r8f8] $2 ~o6~/o5/p72v50@35[2 ~o7~/o6/ d4f2  g4d4f2  g8d8d4f2  g4d4f4.g8  
 e8r8][4 ~o6~/o5/ d+4.>g+8<a+4  f8c+8d+4.>g+8<a+4  >f+8<c+8][2 ~o7~/o6/ d4f2  g4d4f2  
-g8d8d4f2  g4d4f4.g8  e8r8]%e1p88v50@35[4 ~o6~/o5/ g4.r8a4  r8f8]v[2p72v50@35[2 ~o7~/o6/ d4f2  
+g8d8d4f2  g4d4f4.g8  e8r8]%e1p88v50@35[4 ~o6~/o5/ g4.r8a4  r8f8]p72v50@35[2 ~o7~/o6/ d4f2  
 g4d4f2  g8d8d4f2  g4d4f4.g8  e8r8][4 ~o6~/o5/ d+4.>g+8<a+4  
 f8c+8d+4.>g+8<a+4  >f+8<c+8][2 ~o7~/o6/ d4f2  g4d4f2  g8d8d4f2  
 g4d4f4.g8  e8r8][12r1  ]r2
 ;2
 
-l16p88v50@35[4 ~o6~/o5/g4.r8  a4r8f8]]
 {3}
 l16%e1r64p72v50@35[4r8 ~o7~/o6/c4r4  
-c8>b4] $3 ~o6~/o5/[2p56v50@35[4 ~o6~/o5/d4.>g8<a4  e8c8d4.>g8<a4  >f8<c8][2 ~o6~/o5/g+4.f+4.  
+c8>b4] $3 ~o6~/o5/p56v50@35[4 ~o6~/o5/d4.>g8<a4  e8c8d4.>g8<a4  >f8<c8][2 ~o6~/o5/g+4.f+4.  
 r8f+8g+4.f+4.  f8f+8g+4.f+4.  r8f+8g+4.f+4>f+8  <f8f+8][4 ~o6~/o5/ d4.>g8<a4  
-e8c8d4.>g8<a4  >f8<c8]%e1p72v50@35[4r8 ~o7~/o6/ c4r4c8  >b4]v[2p56v50@35[4 ~o6~/o5/ d4.>g8<a4  
+e8c8d4.>g8<a4  >f8<c8]%e1p72v50@35[4r8 ~o7~/o6/ c4r4c8  >b4]p56v50@35[4 ~o6~/o5/ d4.>g8<a4  
 e8c8d4.>g8<a4  >f8<c8][2 ~o6~/o5/ g+4.f+4.  r8f+8g+4.f+4.  f8f+8g+4.f+4.  
 r8f+8g+4.f+4>f+8  <f8f+8][4 ~o6~/o5/ d4.>g8<a4  e8c8d4.>g8<a4  >f8<c8][12r1  
 ]r2
 ;3
 
-l16p72v50@35[4r8 ~o7~/o6/ c4r4  c8>b4]]
 {4}
 l16%e1r64p56v50@35 ~o7~/o6/d4.d4.  
-r4d4.d4.  r8d8d4.d4.  r4d4.d4.  r4 $4 ~o7~/o6/[2p40v50@35[2 ~o6~/o5/ g4.f4.  
+r4d4.d4.  r8d8d4.d4.  r4d4.d4.  r4 $4 ~o7~/o6/p40v50@35[2 ~o6~/o5/ g4.f4.  
 r8f8g4.f4.  e8f8g4.f4.  r8f8g4.f4>f8  <e8f8][2 ~o7~/o6/ d+4f+2  
 g+4d+4f+2  g+8d+8d+4f+2  g+4d+4f+4.g+8  f8r8][2 ~o6~/o5/ g4.f4.  
 r8f8g4.f4.  e8f8g4.f4.  r8f8g4.f4>f8  <e8f8]%e1p56v50@35 ~o7~/o6/ d4.d4.  
-r4d4.d4.  r8d8d4.d4.  r4d4.d4.  r4v[2p40v50@35[2 ~o6~/o5/ g4.f4.  
+r4d4.d4.  r8d8d4.d4.  r4d4.d4.  r4p40v50@35[2 ~o6~/o5/ g4.f4.  
 r8f8g4.f4.  e8f8g4.f4.  r8f8g4.f4>f8  <e8f8][2~o7~/o6/ d+4f+2  
 g+4d+4f+2  g+8d+8d+4f+2  g+4d+4f+4.g+8  f8r8][2~o6~/o5/ g4.f4.  
 r8f8g4.f4.  e8f8g4.f4.  r8f8g4.f4>f8  <e8f8]r1  
@@ -62,8 +59,6 @@ r4<gc+>bf+<f+c+>bf+r4  r4<gc+>bf+r2  r4<gc+>bf+<f+c+>bf+<fc+>bf+
 ]r2
 ;4
 
-l16p56v50@35 ~o7~/o6/ d4.d4.  r4d4.d4.  r8d8d4.d4.  r4d4.d4.  
-r4]
 {5}
 l16%e1r48k2p40v50@35r4.~o5~/o4/g2  ^8r4.g4.f8  r8r4.g2  ^8r4.g4f8g8  
 r8k0 $5 p104v60@36o5c1  ^2^4^8>b8  <c1  ^4.>g8a8b8<c8d8  
@@ -111,8 +106,8 @@ p64%p1<a32a32aaa8aaa%p0
 l16
 {7}
 l16r64p64v42@34r1  r1  r1  r1  
- $7 v[2[12o6ffaaffaaffaaffaa  ffaaffaarfaaffaa  ]vp64v42@34r1  r1  
-r1  r1  v[2[12o6ffaaffaaffaaffaa  ffaaffaarfaaffaa  
+ $7 [12o6ffaaffaaffaaffaa  ffaaffaarfaaffaa  ]p64v42@34r1  r1  
+r1  r1  [12o6ffaaffaaffaaffaa  ffaaffaarfaaffaa  
 ][6aaraaaaraaaaraar  aaraaaara24a24a24aaaaar  ]ffffrfff
 ;7
 
@@ -121,11 +116,11 @@ r1  r1  r1  ]
 {8}
 l16r64p64o5v80@32a8.ar8a8a8.ar8a8  
 a8.ar8aa8arar8a8  a8.ar8a8a8.ar8a8  a8.ar8ara24<v127@33a24a24a8aaaa  
- $8 v[2[6o5v80@32a8.a<v127@33a8>v80@32a8a8.a<v127@33a8>v80@32a8  
+ $8 [6o5v80@32a8.a<v127@33a8>v80@32a8a8.a<v127@33a8>v80@32a8  
 a8.a<v127@33a8>v80@32a8.<v127@33a8>v80@32a<v127@33a8>v80@32a8  a8.a<v127@33a8>v80@32a8a8.a<v127@33a8>v80@32a8  
 a8.a<v127@33a8>v80@32a8.<v127@33a8>v80@32a<v127@33a8>v80@32a24a24a24  
 ]vp64o5v80@32a8.ar8a8a8.ar8a8  a8.ar8aa8arar8a8  a8.ar8a8a8.ar8a8  
-a8.ar8ara24<v127@33a24a24a8aaaa  v[2[6o5v80@32a8.a<v127@33a8>v80@32a8a8.a<v127@33a8>v80@32a8  
+a8.ar8ara24<v127@33a24a24a8aaaa  [6o5v80@32a8.a<v127@33a8>v80@32a8a8.a<v127@33a8>v80@32a8  
 a8.a<v127@33a8>v80@32a8.<v127@33a8>v80@32a<v127@33a8>v80@32a8  a8.a<v127@33a8>v80@32a8a8.a<v127@33a8>v80@32a8  
 a8.a<v127@33a8>v80@32a8.<v127@33a8>v80@32a<v127@33a8>v80@32a24a24a24  
 ]r1  r1  r1  r1  

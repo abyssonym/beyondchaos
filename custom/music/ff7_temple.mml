@@ -15,7 +15,7 @@
 #SFXV ` *
 
 *{1}*`{7}`
-l16t110%v50%x192%b96,100%e1%k1 $1 v104p62@32o3e8o4e8g8b8o3e8o4e8g8o5c8  
+l16t110%v50%x192%b96,100%e1 $1 v104p62@32o3e8o4e8g8b8o3e8o4e8g8o5c8  
 o3e8o4e8g8o5c+8o3e8o4e8g8o5c8  o3e8o4e8g8b8o3e8o4e8g8o5c8  o3e8o4e8g8o5c+8o3e8o4e8g8o5c8  
 o3a8o4e8a8o5c8o3a8o4f8a8o5c8  o3a8o4f+8a8o5c8o3a8o4f8a8o5c8  o3a8o4e8a8o5c8o3a8o4f8a8o5c8  
 o3a8o4f+8a8o5c8o3a8o4f8a8o5c8  o3a8o4e8a8o5c8o3a8o4f8a8o5c8  o3a8o4f+8a8o5c8o3a8o4f8a8o5c8  
@@ -36,7 +36,7 @@ o4d8a8o5d8f8o4d8a+8o5d8f8  o4d8b8o5d8f8o4d8a+8o5d8f8
 
 l16
 {2}
-l16%e1%k1 $2 p60@33o5<v10ef+v20ef+v24ef+v40ef+v50ef+ef+ef+ef+  
+l16%e1 $2 p60@33o5<v10ef+v20ef+v24ef+v40ef+v50ef+ef+ef+ef+  
 ef+ef+ef+ef+ev40f+ev24f+ev20f+ev10f+  gagv20agv24agv40agv50agagaga  
 gagagagav40gav24gav20gav10ga  v24o4e2f2  f+2f2  e2f2  
 f+2f2  e2f2  f+2f2  e2f2  
@@ -54,7 +54,7 @@ b2a+2  a2a+2  b2a+2
 
 l16
 *{3}*`{1}`
-l16%e1%k1 $3 v44p35@34o4r1  
+l16%e1 $3 v44p35@34o4r1  
 ^1  ^1  ^1  <a8g+8g8f+8f4e^32r32e8  
 <c4>a8^ra2  <e4>a8b8<c4>b8a8  f8e8<c8^r>a4^8^^32r32  a8g+8g8f+8f4e^32r32e8  
 <c4>a8^ra2  g8^32r^32g+8^32r^32m16,16,201a1  ^2mr1  
@@ -71,7 +71,7 @@ v100,0^2mr1  ^1  ^1  ^1
 
 l16
 *{4}*`{5}`
-l16%e1%k1 $4 v113p70@35r1  ^1  ^1  ^1  
+l16%e1 $4 v113p70@35r1  ^1  ^1  ^1  
 ^1  o5a1  r1  ^1  
 ^1  a1  r1  ^1  
 ^1  ^1  ^1  ^1  
@@ -87,7 +87,7 @@ d1  ^4>a4o4d4^8dr  d1  ^4>a4
 
 l16
 *{5}*`{8}`
-l16%e1%k1 $5 v95@36o5p100<d4d+4  
+l16%e1 $5 v95@36o5p100<d4d+4  
 e4^1  r4d4d+4e4  ^1  r1  
 ^1  ^1  ^1  ^1  
 ^1  ^1  ^4v80p94@37o4g8^32r^32g+8^32r^32a2  o6v95p100@36p94d4d+4e4^1  
@@ -104,7 +104,7 @@ mr2d8c8>b8<c8  >b8a8g8a8f+1  d8e8f8e8d1
 
 l16
 {6}
-l16%e1%k1 $6 p34@33o5r1  
+l16%e1 $6 p34@33o5r1  
 ^1  <v10ef+v20ef+v24ef+v40ef+v50ef+ef+ef+ef+  ef+ef+ef+ef+v40ef+v24ef+v20ef+v10ef+  
 p64v100,15a1  ^1  ^1  ^1  
 ^1  ^1  ^1  v250,0^1  
@@ -122,7 +122,7 @@ r1  ^1  ^1  ^1
 
 l16
 *{7}*`{3}`
-l16%e1%k1 $7 p60@33o5v10r1  ^1  ^1  ^1  
+l16%e1 $7 p60@33o5v10r1  ^1  ^1  ^1  
 <v100,15e1  ^1  ^1  ^1  
 ^1  ^1  ^1  v192,0^1  
 v24r1  ^1  ^1  ^1  
@@ -139,7 +139,7 @@ v0v100,15a1  ^1  ^1  ^1
 
 l16
 *{8}*`{4}`
-l16%e1%k1 $8 p60@33o5v10r1  ^1  ^1  ^1  
+l16%e1 $8 p60@33o5v10r1  ^1  ^1  ^1  
 <v100,15c1  ^1  ^1  ^1  
 ^1  ^1  ^1  v250,0^1  
 r1  ^1  ^1  ^1  

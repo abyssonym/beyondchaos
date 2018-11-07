@@ -16,7 +16,7 @@
 
 
 {1}
-l16t135%v32%x192%b0,70v80p62%e1%k1@32o5ab<cde1  ^4 $1 d4e4g4  
+l16t135%v32%x192%b0,70v80p62%e1@32o5ab<cde1  ^4 $1 d4e4g4  
 c4^8d32c32r32>b32<c1  ^4>ab<ced1  ^2^8>b<c>bag8  
 a4^8b8a1  ^4ab<cde1  ^4d4e4g4  
 c4^8d32c32r32>b32<c1  ^4>ab<ced1  ^2^8>b<c>bag8  
@@ -30,7 +30,7 @@ g+4f4g4g+4  a2<c2  f2g2  g+2a+2
 
 l16
 {2}
-l16v80p64%e1%k1@33^4o5araaaraa  araaaraa $2 araaaraa  
+l16v80p64%e1@33^4o5araaaraa  araaaraa $2 araaaraa  
 araaaraa<crcccrcc  crcccrcccrcccrcc  crcccrcc>grgggrgg  grgggrgggrgggrgg  
 gr>bbb<cegaraaaraa  araaaraaaraaaraa  araa<c>bgearaaaraa  araaaraaaraaaraa  
 araaaraa<crcccrcc  crcccrcccrcccrcc  crcccrcc>grgggrgg  grgggrgggrgggrgg  
@@ -44,7 +44,7 @@ araaaraaaraaaraa
 
 l16
 {3}
-l16v60p62%e1%k1@34^4o6m16,16,201e1  
+l16v60p62%e1@34^4o6m16,16,201e1  
 ^4m $3 d4e4g4  c4^8d32c>b32<m16,16,201c1  ^4m>ab<cem16,16,201d1  
 ^2^8m>b<c>bag8  a4^8b8m16,16,201a1  ^4mga<cem16,16,201a1  
 ^4mg4a4<c4  >f4^8g32fe32m16,16,201f1  ^4mdea<cm16,16,201>b1  
@@ -58,7 +58,7 @@ g1  r2<gdc>bgd>bg  <m16,16,201e1  ^4m
 
 l16
 {4}
-l16v34p0%e1%k1@35o4^4 $4 <a<cea<c>ea<c  
+l16v34p0%e1@35o4^4 $4 <a<cea<c>ea<c  
 ec>ae<c>aec>a<cea<c>ea<c  ec>ae<c>aec>fa<cfacfa  <c>afcafc>aga<cfacfa  
 <c>afcafc>agb<dgbdgb  <d>bgdbgd>bab<dgbdgb  <d>bgdb32<c32>gd>bf+a<df+adf+a  
 <c>af+daf+d>aga<df+adf+a  <c>af+df+dc>ba<cea<c>ea<c  ec>ae<c>aec>a<cea<c>ea<c  
@@ -73,7 +73,7 @@ g1  g8r2^4^8
 
 l16
 {5}
-l16v80p74%e1%k1@36o5^4 $5 c4^8d4^8  e4^8c4^8d4  
+l16v80p74%e1@36o5^4 $5 c4^8d4^8  e4^8c4^8d4  
 g4c4^8d4^8  e4^8d4^8c4  e4>b4^8<c4^8  d4^8c4^8>b4  
 d4f+4^8a4^8  f+4^8d2^8  cdeg<c4^8d4^8  e4^8c4^8d4  
 g4c4^8d4^8  e4^8d4^8c4  e4>b4^8<c4^8  d4^8c4^8>b4  
@@ -87,7 +87,7 @@ d1  d8r2^4^8
 
 l16
 {6}
-l16v80p74%e1%k1@36o5^4a4^8b4^8  <c4^8 $6 >a4^8b4  
+l16v80p74%e1@36o5^4a4^8b4^8  <c4^8 $6 >a4^8b4  
 <e4>a4^8b4^8  <c4^8>b4^8a4  <c4>g4^8a4^8  b4^8a4^8g4  
 >b4<e4^8f+4^8  d4^8>a2^8  ab<cea4^8b4^8  <c4^8>a4^8b4  
 <e4>a4^8b4^8  <c4^8>b4^8a4  <c4>g4^8a4^8  b4^8a4^8g4  
@@ -101,7 +101,7 @@ g+1  ^2g+4a+4  a1  ^1
 
 l16
 {7}
-l16v60p64%e1%k1@37o5f+32f+32f+f+32f+32f+ $7 f+^f+f+@39a+^@37f+f+f+^  
+l16v60p64%e1@37o5f+32f+32f+f+32f+32f+ $7 f+^f+f+@39a+^@37f+f+f+^  
 f+f+@39a+^@37f+f+f+^f+f+@39a+^@37f+f+f+^  f+f+@39a+^@37f+f+f+^f+f+@39a+^@37f+f+f+^  
 f+f+@39a+^@37f+f+f+^f+f+@39a+^@37f+f+f+^  f+f+@39a+a+@37f+f+f+^f+f+@39a+^@37f+f+f+^  
 f+f+@39a+^@37f+f+f+^f+f+@39a+^@37f+f+f+^  f+f+@39a+^@37f+f+f+^f+f+@39a+^@37f+f+f+^  
@@ -119,7 +119,7 @@ f+f+@39a+^@37f+f+]f+4^2  ^4
 
 l16
 {8}
-l16v127p64%e1%k1@38o5d8^>@40bb^8^<@38d^8^  
+l16v127p64%e1@38o5d8^>@40bb^8^<@38d^8^  
 >@40b^8^<@38d^8^ $8 @40c^8^@38d^8^  @40c^8^@38d^8@40cc^8^@38d^8^  
 >@40b^8^<@38d^8^>@40b^8^<@38d^8^  >@40b^8^<@38d>@40b^bb^8^<@38d^8^  
 >@40b^8^<@38d^8^@40c^8^@38d^8^  >@40b^8^<@38d^8>@40bb^8^<@38d^8^  

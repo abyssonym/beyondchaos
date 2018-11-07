@@ -11,27 +11,27 @@
 #WAVE 0x24 --  0x16         #timpani
 #WAVE 0x25 -- ~0x6D~ /0x12/ #cymbal
 #WAVE 0x27 -- ~0x80~ /0x1C/ #bass
-#WAVE 0x28 -- ~0x7A~ /0x1E/ #horn
+#WAVE 0x28 -- ~0x7A~ /0x08/ #horn
 #WAVE 0x29 -- ~0x43~ /0x0D/ #strings
 #WAVE 0x2A -- ~0x40~ /0x0A/ #horn
 
 
 {1}
-l16 $1 t130%x208%b120,64%v24@41v50p32%e1%y3%s0o5[8[2e12r6e12e12e12]f4d4  
+l16 $1 t130%x208%b120,64%v24@41v50p32%e1%y3%s0~o5~/o6/[8[2e12r6e12e12e12]f4d4  
 ][2e4.eeergrgrfr  frererdrcrdre4.  eeergrgrfrfrerer  drerfr]
 ;1
 
 l16
 {2}
-l16 $2 v50p96@41%e1%y3%s0[8o4[2b12r6b12b12b12]<c4  
+l16 $2 v50p96@41%e1%y3%s0[8~o4~/o5/[2b12r6b12b12b12]<c4  
 >a4][2b4.bbbr<dr  drcrcr>brbrargrar  b4.bbbr<drdrcr  cr>brbrarbr<cr>]
 ;2
 
 l16
 {3}
-l16 $3 v70p64m48,25,201@41%e1%a13o3[2b2  
+l16 $3 v70p64m48,25,201@41%e1%a13~o3~/o4/[2b2  
 ^4a8b8<c4d4  e8d8e2d8e8  f4g8f+fe2  ^4a8b8<c4d4  
-e8d8e4^2  <c4>f4>]<@37v125>c1  r2r4c4  ^4^2^4  
+e8d8e4^2  <c4>f4>]~<~@37v125>c1  r2r4c4  ^4^2^4  
 r2c2  ^1  r4c2^4  r2r4r8r8  
 
 ;3

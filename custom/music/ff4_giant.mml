@@ -15,7 +15,7 @@
 
 
 {1}
-l16t142%v25%x200%b0,70%e1%k1@32r1  ^1  ^1  ^1  
+l16t142%v25%x200%b0,70%e1@32r1  ^1  ^1  ^1  
 ^2 $1 v120p54o6<d2  >a+2g2  <m16,16,201c1  ^1  
 mr2d2  >a+2g2  <m16,16,201d+1  ^1  
 mr2d2  >a+2g2  <f4d+4d4d+4  c2d+4f4  
@@ -29,7 +29,7 @@ f4g+4<c4d+4  f2^4g+8f+8  f2d+2  m16,16,201f1
 
 l16
 {2}
-l16%e1%k1@33v68p62o5r1  ^1  g1  
+l16%e1@33v68p62o5r1  ^1  g1  
 ^1   $2 o5a+1  ^1  <c1  
 ^1  >a+1  ^1  <c1  
 ^1  >a+1  ^1  <c1  
@@ -43,7 +43,7 @@ d+1  c1  ^1
 
 l16
 {3}
-l16%e1%k1@33v68p62o5r1  
+l16%e1@33v68p62o5r1  
 ^1  d+1  ^1   $3 o5g1  
 ^1  g+1  ^1  g1  
 ^1  g+1  ^1  g1  
@@ -58,7 +58,7 @@ a1
 
 l16
 {4}
-l16%e1%k1@33v68p62o5r1  ^1  >a+1  
+l16%e1@33v68p62o5r1  ^1  >a+1  
 ^1  < $4 o5d1  ^1  d+1  
 ^1  d1  ^1  d+1  
 ^1  d1  ^1  d+1  
@@ -72,7 +72,7 @@ f+1  f1  ^1
 
 l16
 {5}
-l16%e1%k1v80p50@34o8>cccc+cccc+cccc+cccc+  
+l16%e1v80p50@34o8>cccc+cccc+cccc+cccc+  
 cccc+cccc+cccc+cccc+  cccc+cccc+cccc+cccc+  cccc+cccc+cccc+cccc+  
 > $5 gggg+gggg+gggg+gggg+  gggg+gggg+gggg+gggg+  g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  
 g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  gggg+gggg+gggg+gggg+  gggg+gggg+gggg+gggg+  
@@ -90,7 +90,7 @@ gggg+gggg+gggg+gggg+  gggg+gggg+gggg+gggg+  fffgfffgfffgfffg  fffgfffgfffgfffg
 
 l16
 {6}
-l16%e1%k1r1  ^1  
+l16%e1r1  ^1  
 ^1  ^1   $6 @35v100p64o5b1  ^1  
 r1  ^1  b1  ^1  
 r1  ^1  b1  ^1  
@@ -107,7 +107,7 @@ r1  ^1  v60p62@38o4g+<cd+g+<cd+g+<cd+c>g+d+c>g+d+c  >g+<cd+g+<cd+g+<cd+c>g+d+c>g
 
 l16
 {7}
-l16%e1%k1v127p64@36o5r1  ^1  ^1  ^1  
+l16%e1v127p64@36o5r1  ^1  ^1  ^1  
  $7 c4c4@39d4r4  @36c4c4@39d8@36c8r8c8  c4c4@39d4r8@36c4  r8c8c8@39d8@36c8r8c8c4  
 c4@39d4r4@36c4  c4@39d8@36c8r8c8c4  c4@39d4r8@36c4r8  c8c8@39d8@36c8r8c8c4  
 c4@39d4r4@36c4  c4@39d8@36c8r8c8c4  c4@39d4r8@36c4r8  c8c8@39d8@36c8r8c8c4  
@@ -121,7 +121,7 @@ c4@39d4r8@36c4r8  c8c8@39d8@36c8r8c8
 
 l16
 {8}
-l16%e1%k1@37o5v50p100g+8r8  
+l16%e1@37o5v50p100g+8r8  
 v40p75g+8r8v30p50g+8r8v20p25g+8r8v50p100g+8r8  v40p75g+8r8v30p50g+8r8v20p25g+8r8v50p100g+8r8  
 v40p75g+8r8v30p50g+8r8v20p25g+8r8v50p100g+8r8  v40p75g+8r8v30p50g+8r8v20p25g+8r8 $8 @37[16v50p100g+8r8  
 v40p75g+8r8v30p50g+8r8v20p25g+8r8]v100p64@35b1  ^1  [4r1  ^1  

@@ -7,13 +7,13 @@
 #VARIANT ~
 #VARIANT / nopatch
 
-#WAVE 0x20 -- ~0x53~ /0x0C/
+#WAVE 0x20 -- ~0x79~ /0x0C/
 #WAVE 0x21 -- 0x06
 #WAVE 0x22 -- 0x3F
 
 
 {1}
-l16%x195t90%v54%b0,70p64@32%e1r48p0,192,192 $1 ~o5v45~/o6v45/ a8e8d8g8>g8a8<b8<c8  
+l16%x195t90%v54%b0,70p64@32%e1r48p0,192,192 $1 ~o6v45~/o6v45/ a8e8d8g8>g8a8<b8<c8  
 >b8g8d8>b8<a8e8d8g8  >g8a8<b8<c8>b8g8d8>b8  <a8e8d8g8>g8a8<b8<c8  
 >b8g8d8>b8<a8e8d8g8  >g8a8<b8<c8>b8g8d8>b8  <a8e8d8g8>g8a8<b8<c8  
 >b8g8d8>b8<a8e8d8g8  >g8a8<b8<c8>b8g8d8>b8  <a8e8d8g8>g8a8<b8<c8  

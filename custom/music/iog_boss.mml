@@ -10,7 +10,7 @@
 
 
 {1}
-l16t166%v25%x192%b0,70%e1%k1 $1 v95p68@32o3d+8c8d8c8d+8c8f+8c8  
+l16t166%v25%x192%b0,70%e1 $1 v95p68@32o3d+8c8d8c8d+8c8f+8c8  
 r4g+8r4^8a8r8  d+8c8d8c8d+8c8f+8c8  r4g+8r4^8a8r8  a+1  
 a1  g+1  f+1  r1  
 ^4g+2a4  c2g2  ^4g+8d+8g+8d+8a8d+8  a+1  
@@ -29,7 +29,7 @@ c^32cr^32f+8^32f+^32
 
 l16
 {2}
-l16%e1%k1 $2 v80p68@32o7d+8c8d8c8  
+l16%e1 $2 v80p68@32o7d+8c8d8c8  
 d+8c8f+8c8c>b<cdd+r8^  d+dd+ff+r8^d+8c8d8c8  d+8c8f+8c8c>b<cdd+r8^  
 d+dd+ff+r8^d8>a+8<c8>a+8  <d8>a+8<c8>a+8<d+8>a8<c8>a8  <d+8>a8<c8>a8<d+8>g+8<c8>a8  
 <d+8>g+8<c8>g+8<d+8>g+8<c8>a8  <d+8>g+8<c8>g+8<d+8c8d8c8  d+8c8f+8c8c>b<cdd+r8^  
@@ -50,7 +50,7 @@ f+8^32f+^32c^32cr^32f+8^32f+^32c^32cr^32  f+8^32f+^32
 
 l16
 {3}
-l16%e1%k1 $3 v88p68@32o5<d+8c8d8c8d+8c8  
+l16%e1 $3 v88p68@32o5<d+8c8d8c8d+8c8  
 f+8c8c>b<cdd+r8^d+dd+f  f+r8^d+8c8d8c8d+8c8  f+8c8c>b<cdd+r8^d+dd+f  
 f+r8^f8d8d+8d8f8d8  f+8d8g8c+8e8c+8g8c+8  e8c+8g+8c8d+8c8g+8c8  
 d+8c8g+8c8d+8c8g+8c8  d+8c8d+8c8d8c8d+8c8  f+8c8c>b<cdd+r8^d+dd+f  
@@ -69,7 +69,7 @@ c^32cr^32f+8^32f+^32c^32cr^32f+8^32f+^32
 
 l16
 {4}
-l16%e1%k1 $4 v104p50@33o6<d+8c8d8c8d+8c8f+8c8  
+l16%e1 $4 v104p50@33o6<d+8c8d8c8d+8c8f+8c8  
 r4c8r4^8c+8r8  d+8c8d8c8d+8c8f+8c8  r4c8r4^8c+8r8  dd>a+a+<cc>a+a+<dd>a+a+<cc>a+a+  
 <d+d+>aa<cc>aa<d+d+>aa<cc>aa  <d+d+>g+g+<cc>aa<d+d+>g+g+<cc>g+g+  
 <d+d+>g+g+<cc>aa<d+d+>g+g+<cc>g+g+  <d+d+ccddccd+d+ccf+f+cc  r4c8r4^8c+8r8  
@@ -89,7 +89,7 @@ d+8c8o7c^32cr^32>f+8^32f+^32<c^32cr^32  >f+8^32f+^32<c^32cr^32>f+8^32f+^32<c^32c
 
 l16
 {5}
-l16%e1%k1 $5 v104p50@33o6>d+8c8d8c8d+8c8  
+l16%e1 $5 v104p50@33o6>d+8c8d8c8d+8c8  
 f+8c8r4d+8r4^8  d+8r8d+8c8d8c8d+8c8  f+8c8r4d+8r4^8  d+8r8f1  
 c+2a2  <c2>g+2  <d+1  >d+d+ccddccd+d+ccf+f+cc  
 r4d+8r4^8d+8r8  d+d+ccddccd+d+ccf+f+cc  r4d+8r4^8d+8r8  f1  
@@ -106,7 +106,7 @@ c^32cr^32<c8^32c^32>c^32cr^32<c8^32c^32  >c^32cr^32<c8^32c^32>c^32cr^32<c8^32c^3
 
 l16
 {6}
-l16%e1%k1 $6 v120p74@34o5>c8>g8<c8>g8<c8>g8<c8>g8  
+l16%e1 $6 v120p74@34o5>c8>g8<c8>g8<c8>g8<c8>g8  
 r4g8r4^8g8r8  <c8>g8<c8>g8<c8>g8<c8>g8  r4g8r4^8g8r8  <c4r4>g4r4  
 <c4r4>g4r4  <c4r4>g4r4  <c4r4>gggggggg  r1  
 ^4g4r4g4  <c4r1  >g4gggggggg<c8r8  >g8r8<c8r8>g8r8<c8r8  

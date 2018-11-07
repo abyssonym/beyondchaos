@@ -13,8 +13,8 @@
 #WAVE 0x23 -- ~0x68~ /0x11/
 #WAVE 0x24 -- 0x3E
 #WAVE 0x25 -- 0x0E
-#WAVE 0x26 -- 0x08
-#WAVE 0x27 -- ~0x53~ /0x08/
+#WAVE 0x26 -- ~0x4F~ /0x08/
+#WAVE 0x27 -- ~0x53~ /0x0C/
 #WAVE 0x28 -- 0x33
 
 
@@ -57,11 +57,11 @@ l16
 {4}
 l16 $4 p72v60@38%e1m10,14,197r1  
 r1  r1  r1  r1  
-r1  r1  r1  o5d+12r24f+12r24g12r24f+12r24g4d+12c24>a+12g24  
+r1  r1  r1  o5~<~d+12r24f+12r24g12r24f+12r24g4d+12c24>a+12g24  
 a+8<c24r2r4r12  d+12r24f+12r24g12r24f+12r24g8.^48<c24>d+12c24>a+12g24  
 a+8<c24r2r4r12  <c24>g24a+24f24g24d+24c24>b24<f+24g24f+24c24d+8f8g8a+8  
 f12f+48g48<c8>g24f+24a+24d+24c24>a+24g8a+8<c24r12d+8  c24r8.r48d+12e24f12f+24g8a+8g24r24f24d+12c24  
-d+8d+8c24r24>a+24f24r24f+24g8a+8<c24r8.r48  p68v45@39m%r20<r2r8>c8c12c8c24  
+d+8d+8c24r24>a+24f24r24f+24g8a+8<c24r8.r48  ~>~p68v45@39m%r20<r2r8>c8c12c8c24  
 r2r8c8c8r8  r2r8c8c12c8c24  r2r8c8c8r8  
 ;4
 

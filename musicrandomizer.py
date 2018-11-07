@@ -15,6 +15,7 @@ except ImportError:
     
 HIROM = 0xC00000
 MUSIC_PATH = os.path.join('custom','music')
+INST_METADATA_OFFSET = 310000    #0x600 bytes
 CONFIG = ConfigParser.RawConfigParser({
         'free_rom_space': '310600-380000',
         'allow_music_repeats': 'False',
@@ -48,6 +49,7 @@ freespace = None
 spoiler = {}
 f_tellmewhy = False
 DEBUG = False
+FLAGS = set()
 
 def safepath(vpath):
     if not MEI:
@@ -59,6 +61,18 @@ def isfile(fn):
         return os.path.isfile(fn)
     return os.path.isfile(os.path.join(_MEIPASS, fn))
     
+#compatibility stubs
+def to_default(cfgname): 
+    return CONFIG[cfgname]
+
+def despoil(t=""):
+    pass
+
+def dprint(t):
+    pass
+
+### begin functions shared with nascentorder
+
 def byte_insert(data, position, newdata, maxlength=0, end=0):
     while position > len(data):
         data = data + "\x00"
@@ -87,16 +101,6 @@ def bytes_to_int(data, reversed=True):
         else:
             n = (n << (8 * i)) + ord(d)
     return n
-
-#compatibility stubs
-def to_default(cfgname): 
-    return CONFIG[cfgname]
-
-def despoil(t=""):
-    pass
-
-def dprint(t):
-    pass
     
 def put_somewhere(romdata, newdata, desc, f_silent=False):
     global freespace, spoiler
@@ -191,22 +195,18 @@ def insert_instruments(data_in, metadata_pos= False):
     sampleptrs = [int(s.strip(),16) for s in CONFIG.get('MusicPtr', 'brrpointers').split(',')]
     if len(sampleptrs) != 2: sampleptrs = to_default('brrpointers')
     ptrdata = data[sampleptrs[0]:sampleptrs[1]+1]
-    #free_space(sampleptrs[0], sampleptrs[1])
     
     looplocs = [int(s.strip(),16) for s in CONFIG.get('MusicPtr', 'brrloops').split(',')]
     if len(looplocs) != 2: looplocs = to_default('brrloops')
     loopdata = data[looplocs[0]:looplocs[1]+1]
-    #free_space(looplocs[0], looplocs[1])
     
     pitchlocs = [int(s.strip(),16) for s in CONFIG.get('MusicPtr', 'brrpitch').split(',')]
     if len(pitchlocs) != 2: pitchlocs = to_default('brrpitch')
     pitchdata = data[pitchlocs[0]:pitchlocs[1]+1]
-    #free_space(pitchlocs[0], pitchlocs[1])
     
     adsrlocs = [int(s.strip(),16) for s in CONFIG.get('MusicPtr', 'brradsr').split(',')]
     if len(adsrlocs) != 2: adsrlocs = to_default('brradsr')
     adsrdata = data[adsrlocs[0]:adsrlocs[1]+1]
-    #free_space(adsrlocs[0], adsrlocs[1])
     
     for id, smp in samplecfg.items('Samples'):
         id = int(id, 16)
@@ -299,7 +299,7 @@ def insert_instruments(data_in, metadata_pos= False):
     
     return data
 
-def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos=False, f_altsonglist=False):
+def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=False, f_altsonglist=False):
     global freespace
     data = data_in
     freespacebackup = freespace
@@ -481,8 +481,6 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos
             battlechoices.sort(key=operator.itemgetter(1))
             battleprog = [None]*len(battleids)
             bossprog = [None]*len(bossids)
-            #battleprog[0] = battlechoices.pop(0)
-            #bossprog[0] = battlechoices.pop(-1)
             bosschoices = []
             battlechoices.sort(key=operator.itemgetter(2))
             for i in xrange(0, len(bossids)):
@@ -504,8 +502,8 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos
                     bt = min(ei,60) 
 
                     super, (si, sg) = rng.choice(intensity_subset(imin=bt, gmin=66).items())
-                    boss, (bi, bg) = rng.choice(intensity_subset(imin=bt, gmin=eg, gmax=sg).items())
-                    wt = max(bg, 50)
+                    boss, (bi, bg) = rng.choice(intensity_subset(imin=bt, gmin=max(22,eg), gmax=sg).items())
+                    wt = min(80,max(bg, 50))
                     balance = rng.sample(intensity_subset(imax=bt, gmax=wt).items(), 2)
                     if balance[0][1][0] + balance[0][1][1] > balance[1][1][0] + balance[1][1][1]:
                         boutside, (boi, bog) = balance[1]
@@ -632,10 +630,6 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos
             
             mml = "#VARIANT / \n#VARIANT ? ignore \n" + tierfiles[0] + tierfiles[1] + tierfiles[2]
             
-            #with open('mydebug.mml', 'a+') as f:
-            #    f.seek(0,2)
-            #    f.write(mml)
-                
             akao = mml_to_akao(mml, str(tiernames), variant='_default_')
             inst = akao['_default_'][1]
             akao = akao['_default_'][0]
@@ -726,8 +720,6 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos
                     else:
                         s.is_pointer = False
                         slen = bytes_to_int(data[loc:loc+2]) + 2
-                        #if data[loc+slen-1] == '\xF6': slen = slen + 2
-                        #if data[loc+slen-2] == '\xF6': slen = slen + 1
                         s.data = data[loc:loc+slen]
                     loc = isetlocs[0] + sid * isetsize
                     assert loc + isetsize <= isetlocs[1] + 1
@@ -755,7 +747,6 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos
                         fi.close()
                     except IOError:
                         dprint("translating inst file for id{} {}".format(s.id, s.changeto))
-                        #s.inst = translate_inst(ibin) #TODO
                         dprint("translation is NYI")
                     try:
                         fi = open(os.path.join(MUSIC_PATH, s.changeto + "_data_nopatch.bin"), "rb")
@@ -820,23 +811,7 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos
         songinst = data[isetlocs[0]:isetlocs[1]+1]    
         if f_moveinst: free_space(isetlocs[0], isetlocs[1])
         claim_space(songptraddrs[0], songptraddrs[0] + 3*(len(songtable)+1))
-        #dprint("    free space for music: {}".format(space))
         for ident, s in songtable.items():
-            #dprint("attempting to insert {} in slot {} ({})".format(s.changeto, s.id, ident))
-#            for i, l in enumerate(songdatalocs):
-#                if not s.is_pointer:
-#                    if space[i] >= len(s.data):
-#                        insertloc = l[0] + len(songdata[i])
-#                        songdata[i] += s.data
-#                        space[i] -= len(s.data)
-#                        songinst = byte_insert(songinst, s.id * isetsize, s.inst, isetsize)
-#                        songptrdata = int_insert(songptrdata, s.id * 3, insertloc + HIROM, 3)
-#                        songlocations[s.id] = insertloc
-#                        break
-#                    else:
-#                        songptrdata = int_insert(songptrdata, s.id * 3, s.data, 3)
-#                        songlocations[s.id] = s.data - HIROM
-#                        break
             if not s.is_pointer:
                 try:
                     data, start, end = put_somewhere(data, s.data, "  (song) [{:02x}] {}".format(s.id, s.changeto), True)
@@ -884,17 +859,7 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos
         pausetable = "".join(map(chr, pausetable))
         
         
-    # write to rom
-    #if f_moveinst:
-        #songptrptr = int(CONFIG.get('MusicPtr', 'songpointerpointer'), 16)
-        #don't need to move song pointers because we are assuming it can just
-        #extend into the instrument space we are now freeing. may need to
-        #add contingency for if they are already separate later.
-        
-        #instlocptr = int(CONFIG.get('MusicPtr', 'instrumentpointer'), 16)
-        #data = int_insert(data, instlocptr, new_instloc[0] + HIROM, 3)
-        
-        
+    # write to rom        
     if f_battleprog:
         data = byte_insert(data, pausetableloc, pausetable, 5)
         data = byte_insert(data, battlesongsloc, battletable, 8)
@@ -902,15 +867,12 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos
     if not f_moveinst: songptrdata = songptrdata[:songptraddrs[1] + 1]
     data = byte_insert(data, songptraddrs[0], songptrdata)
     if f_moveinst:
-        #data = byte_insert(data, new_instloc[0], songinst, end=new_instloc[1])
         data, s, e = put_somewhere(data, songinst, "INSTRUMENT TABLES FOR SONGS")
         instlocptr = int(CONFIG.get('MusicPtr', 'instrumentpointer'), 16)
         data = int_insert(data, instlocptr, s + HIROM, 3)
     else:
         data = byte_insert(data, isetlocs[0], songinst, end=isetlocs[1])
-    #for i, l in enumerate(songdatalocs):
-    #    data = byte_insert(data, l[0], songdata[i], end=l[1])
-    
+
     # make spoiler
     changed_songs = {}
     for ident, s in songtable.items():
@@ -935,12 +897,54 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=False, f_mchaos
             despoil("{} ({}) -----> {} at {}".format(hex(id), ident, newsong, hex(loc)))
     return data
 
+### end functions shared with nascentorder
+
+def process_formation_music_by_table(data):
+    
+    o_formaux = 0xF5900
+    
+    with open(os.path.join("tables","formationmusic.txt"), "r") as f:
+        tbl = f.readlines()
+    
+    table = []
+    for line in tbl:
+        line = [s.strip() for s in line.split()]
+        if len(line) == 2: line.append(None)
+        if len(line) == 3: table.append(line)
+        
+    for line in table:
+        #table format: [formation id] [music bitfield] [force continue field music]
+        try:
+            fid = int(line[0])
+        except ValueError:
+            continue
+        try:
+            mbf = int(line[1]) << 3
+        except ValueError:
+            mbf = 0
+        pos = o_formaux + fid*4
+        dat = list(data[pos:pos+4])
+        
+        dat[3] = chr((ord(dat[3]) & 0b11000111) | mbf)
+        
+        if line[2] == "1":
+            dat[1] = chr(ord(dat[1]) | 0b00000010)
+            dat[3] = chr(ord(dat[3]) | 0b10000000)
+        elif line[2] == "0":
+            dat[1] = chr(ord(dat[1]) & 0b11111101)
+            dat[3] = chr(ord(dat[3]) & 0b01111111)
+
+        data = byte_insert(data, pos, ''.join(dat))
+    
+    return data
+        
 def randomize_music(fout, f_mchaos=False):
     fout.seek(0)
     data = fout.read()
-    data = insert_instruments(data, 0x310000)
+    data = insert_instruments(data, INST_METADATA_OFFSET)
     data = process_custom_music(data, f_mchaos=f_mchaos)
-        
+    data = process_formation_music_by_table(data)
+    
     fout.seek(0)
     fout.write(data)
     

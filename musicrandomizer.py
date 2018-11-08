@@ -607,6 +607,7 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=
             mml = re.sub('#VARIANT', '#', mml)
             mml = re.sub('{.*?}', '', mml)
             mml = re.sub('\$555444([0-9])', '{\g<1>}', mml)
+            mml = re.sub("'(.*)'", "'555\g<1>'", mml)
             tierfiles[0] = mml
             
             mml = re.sub('[?!]', '', tierfiles[1])
@@ -617,6 +618,8 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=
             mml = re.sub('\$666444([0-9])', '$222\g<1>', mml)
             mml = re.sub('#VARIANT', '#', mml)
             mml = re.sub('{.*?}', '', mml)
+            mml = re.sub("'(.*)'", "'555\g<1>'", mml)
+            mml = re.sub('"', ')', mml)
             tierfiles[1] = mml
             
             mml = re.sub('[?_]', '', tierfiles[2])
@@ -626,6 +629,8 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=
             mml = re.sub('\$777444([0-9])', '$333\g<1>', mml)
             mml = re.sub('#VARIANT', '#', mml)
             mml = re.sub('{.*?}', '', mml)
+            mml = re.sub("'(.*)'", "'555\g<1>'", mml)
+            mml = re.sub('"', '(', mml)
             tierfiles[2] = mml
             
             mml = "#VARIANT / \n#VARIANT ? ignore \n" + tierfiles[0] + tierfiles[1] + tierfiles[2]
@@ -913,7 +918,7 @@ def process_formation_music_by_table(data):
         if len(line) == 3: table.append(line)
         
     for line in table:
-        #table format: [formation id] [music bitfield] [force continue field music]
+        #table format: [formation id] [music bitfield] [force music on/off]
         try:
             fid = int(line[0])
         except ValueError:
@@ -927,10 +932,10 @@ def process_formation_music_by_table(data):
         
         dat[3] = chr((ord(dat[3]) & 0b11000111) | mbf)
         
-        if line[2] == "1":
+        if line[2] == "0":
             dat[1] = chr(ord(dat[1]) | 0b00000010)
             dat[3] = chr(ord(dat[3]) | 0b10000000)
-        elif line[2] == "0":
+        elif line[2] == "1":
             dat[1] = chr(ord(dat[1]) & 0b11111101)
             dat[3] = chr(ord(dat[3]) & 0b01111111)
 

@@ -906,7 +906,10 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=
 
 def process_formation_music_by_table(data):
     
+    o_forms = 0xF6200
     o_formaux = 0xF5900
+    o_monsters = 0xF0000
+    o_epacks = 0xF5000
     
     with open(os.path.join("tables","formationmusic.txt"), "r") as f:
         tbl = f.readlines()
@@ -916,9 +919,20 @@ def process_formation_music_by_table(data):
         line = [s.strip() for s in line.split()]
         if len(line) == 2: line.append(None)
         if len(line) == 3: table.append(line)
-        
+    
+    event_formations = set()
+    for i in xrange(0,256):
+        loc = o_epacks + i*4
+        event_formations.add(bytes_to_int(data[loc:loc+2]))
+        event_formations.add(bytes_to_int(data[loc+2:loc+4]))
+    
     for line in table:
         #table format: [formation id] [music bitfield] [force music on/off]
+        #value of 'c' forces music on if:
+        #   unrunnable enemy in formation
+        #   hard to run enemy in formation
+        #   "attack first" enemy in formation
+        #   formation is present in packs > 255 (event battles)
         try:
             fid = int(line[0])
         except ValueError:
@@ -931,14 +945,25 @@ def process_formation_music_by_table(data):
         dat = list(data[pos:pos+4])
         
         dat[3] = chr((ord(dat[3]) & 0b11000111) | mbf)
-        
+        force_music = False
         if line[2] == "0":
             dat[1] = chr(ord(dat[1]) | 0b00000010)
             dat[3] = chr(ord(dat[3]) | 0b10000000)
-        elif line[2] == "1":
+        elif line[2] == "c":
+            if fid in event_formations:
+                force_music = True
+            else:
+                for m in xrange(0,6):
+                    fpos = o_forms + fid*15
+                    if (ord(data[fpos+1]) >> m) & 1:
+                        mid = ord(data[fpos+2+m]) + (((ord(data[fpos+14]) >> m) & 1) << 8)
+                        mb = ord(data[o_monsters+mid*32+19])
+                        if mb & 0b00001011:
+                            force_music = True
+                            break
+        if line[2] == "1" or force_music:
             dat[1] = chr(ord(dat[1]) & 0b11111101)
             dat[3] = chr(ord(dat[3]) & 0b01111111)
-
         data = byte_insert(data, pos, ''.join(dat))
     
     return data
@@ -952,4 +977,5 @@ def randomize_music(fout, f_mchaos=False):
     
     fout.seek(0)
     fout.write(data)
+    return "\n".join(spoiler['Music'])
     

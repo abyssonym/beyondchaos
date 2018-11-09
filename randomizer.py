@@ -6711,7 +6711,8 @@ k   Randomize the clock in Zozo
     reseed()
 
     if 'johnnydmad' in activated_codes or 'johnnyachaotic' in activated_codes:
-        randomize_music(fout, True if 'johnnyachaotic' in activated_codes else False)
+        music_log = randomize_music(fout, True if 'johnnyachaotic' in activated_codes else False)
+        log(music_log, section="music")
             
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()
@@ -6801,6 +6802,7 @@ k   Randomize the clock in Zozo
     if "ancientcave" not in activated_codes:
         log_chests()
     log_break_learn_items()
+            
     f = open(outlog, 'w+')
     f.write(get_logstring())
     f.close()

@@ -5,11 +5,11 @@ Song conversions:
                  ct_battle, ct_battle2, ct_bobonga, ct_keeper, ct_night,
                  ct_revolution, ct_theme, ct_truth
                  eo3_waves
-                 ff5_battle, ff5_cave, ff5_final, ff5_hurry, ff5_lenna,
-                 ff5_theme, ff5_void, ff5_world1
+                 ff5_battle, ff5_cave, ff5_excastle, ff5_final, ff5_hurry,
+                 ff5_lenna, ff5_theme, ff5_void, ff5_world1
                  ff7_battle, ff7_corel, ff7_hurry, ff7_reunion
-                 ff8_battle
-                 ff9_gargan, ff9_hunt, ff9_rose
+                 ff8_battle, ff8_witches
+                 ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
                  ffx_battle, ffx_via
                  ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
                  ffmq_fossil, ffmq_lava, ffmq_light, ffmq_rock, ffmq_tower,
@@ -74,7 +74,7 @@ Song conversions:
     tsushiy -- ff1_bossb
                ff4_baron
 Tierboss segments:
-    emberling -- ffmq_lava_dm
+    emberling -- ffmq_lava_dm, ff8_witches
     Gi Nattak -- cc_flame_dm
     emberling, Gi Nattak, tsushiy -- ff3_eureka_dm
     Nobuo Uematsu -- ff6_tier1_dm, ff6_tier2_dm, ff6_tier3_dm

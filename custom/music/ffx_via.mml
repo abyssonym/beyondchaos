@@ -28,7 +28,7 @@
 #def global= t130 %v50 %b0,70 %x224
 
 {1}
-'global'
+'global' %e1
 $[p64 /o3/'low''o3' 
  v96f+2. v98f+2.
  v103b2. v89b2.

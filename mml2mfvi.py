@@ -376,12 +376,16 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             if c in "+-":
                 modifier = c
         thisnumber = ""
+        is_negative = False
         for c in command[len(prefix):] + " ":
             if c in "1234567890":
                 thisnumber += c
+            elif c == "-" and prefix not in "abcdefg^r":
+                is_negative = True
             elif thisnumber:
-                params.append(int(thisnumber))
+                params.append(0x100-int(thisnumber) if is_negative else int(thisnumber))
                 thisnumber = ""
+                is_negative = False
         dots = len([c for c in command if c == "."])
         
         if (prefix, len(params)) not in command_tbl and len(params):
@@ -431,10 +435,6 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     params[0] -= 1
                 else:
                     params.append(1)
-            #special case: portamento
-            if prefix == "m" and len(params) == 2 and '-' in modifier:
-                if params[1] > 0:
-                    params[1] = 0x100 - params[1]
             #special case: end loop adds jump target if j,1 is used
             if prefix == "]":
                 while len(jumpout):

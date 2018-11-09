@@ -22,7 +22,7 @@ ct_battle2:     I05, G40, battle*2, grandfinale
 ct_bobonga:     I00, G50, strago, veldt*2, zozo, gogo, umaro*2
 ct_boss2:       I95, G75, atma*2, metamorphosis, grandfinale, catastrophe
 ct_keeper:      espers, fanatics, ruin, owzer
-ct_night:       coin*2, daryl, celes*2, ruin, train
+ct_night:       coin*2, daryl, celes*2, ruin
 ct_revolution:  I80, G90, atma*2, dmad5, metamorphosis
 ct_theme:       I45, G80, locke, savethem, grandfinale
 ct_truth:       kefka, grandfinale, catastrophe
@@ -61,6 +61,7 @@ ff4_zot:        kefka, troops, fanatics
 ff5_battle:     I10, G10, battle*2
 ff5_bridge:     I65, G70, atma, grandfinale, unforgiven, savethem
 ff5_cave:       prelude, ruin, forest*2
+ff5_excastle:   kefka, troops*2, savethem, gogo, umaro, kefkastower
 ff5_exdeath:    metamorphosis*2, grandfinale, fanatics
 ff5_final:      I90, G95, atma, dmad5
 ff5_hurry:      I70, G00, unforgiven
@@ -86,10 +87,12 @@ ff8_battle:     I15, G40, battle*2, metamorphosis, grandfinale, catastrophe
 ff8_heresy:     gestahl, kefka, catastrophe, owzer, ruin, fanatics*2
 ff8_laguna:     I60, G30, battle*2, chocobo, magitek, floatingcont
 ff8_oath:       omen3, celes, rachel*2, ruin
+ff8_witches:    omen3, gestahl*2, kefka*2, owzer, ruin, train*2, fanatics
 ff9_blackmage:  chocobo, johnny, what, moogles*2, gogo, zozo, strago*2, magitek
 ff9_blackwaltz: ruin, fanatics*2
 ff9_dali:       awakening, town*2, town_ruin
 ff9_gargan:     spinachrag, what*2, gogo, umaro, zozo, strago
+ff9_hills:      strago, town_ruin, balance*2
 ff9_home:       prelude, gau, spinachrag*2, town_ruin, ruin
 ff9_hunt:       I40, G70, savethem*2, gogo*2, umaro*2
 ff9_memoria:    omen3, ruin*2, train*2
@@ -245,7 +248,7 @@ ff6_ruin:       omen3, daryl, ruin*2, zozo, owzer, train*2, fanatics
 ff6_dmad5:      dmad5*2, grandfinale, kefka, floatingcont, kefkastower
 
 [TierBoss]
-dmad123: ff6_tier1, ff6_tier2, ff6_tier3, cc_flame, ff3_eureka, ffmq_lava
+dmad123: ff6_tier1, ff6_tier2, ff6_tier3, cc_flame, ff3_eureka, ffmq_lava, ff8_witches
 
 [SongSlots]
 #song id: identifier, % chance to allow change

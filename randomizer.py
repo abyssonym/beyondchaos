@@ -6754,6 +6754,7 @@ k   Randomize the clock in Zozo
 
     if 'k' in flags:
         manage_clock()
+    reseed()
 
     if 'g' in flags:
         if 0x13 not in changed_commands:

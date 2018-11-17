@@ -604,9 +604,10 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,555\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>555\g<2>', mml)
             mml = re.sub('([;:])555444([0-9])', '\g<1>222\g<2>', mml)
-            mml = re.sub('#VARIANT', '#', mml)
+            mml = re.sub('#VARIANT', '#', mml, flags=re.IGNORECASE)
             mml = re.sub('{.*?}', '', mml)
             mml = re.sub('\$555444([0-9])', '{\g<1>}', mml)
+            mml = re.sub('#def\s+(\S+)\s*=', '#def 555\g<1>=', mml, flags=re.IGNORECASE)
             mml = re.sub("'(.*)'", "'555\g<1>'", mml)
             tierfiles[0] = mml
             
@@ -616,9 +617,10 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>666\g<2>', mml)
             mml = re.sub('([;:])666444([0-9])', '\g<1>333\g<2>', mml)
             mml = re.sub('\$666444([0-9])', '$222\g<1>', mml)
-            mml = re.sub('#VARIANT', '#', mml)
+            mml = re.sub('#VARIANT', '#', mml, flags=re.IGNORECASE)
             mml = re.sub('{.*?}', '', mml)
-            mml = re.sub("'(.*)'", "'555\g<1>'", mml)
+            mml = re.sub('#def\s+(\S+)\s*=', '#def 666\g<1>=', mml, flags=re.IGNORECASE)
+            mml = re.sub("'(.*)'", "'666\g<1>'", mml)
             mml = re.sub('"', ')', mml)
             tierfiles[1] = mml
             
@@ -627,14 +629,18 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,777\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>777\g<2>', mml)
             mml = re.sub('\$777444([0-9])', '$333\g<1>', mml)
-            mml = re.sub('#VARIANT', '#', mml)
+            mml = re.sub('#VARIANT', '#', mml, flags=re.IGNORECASE)
             mml = re.sub('{.*?}', '', mml)
-            mml = re.sub("'(.*)'", "'555\g<1>'", mml)
+            mml = re.sub('#def\s+(\S+)\s*=', '#def 777\g<1>=', mml, flags=re.IGNORECASE)
+            mml = re.sub("'(.*)'", "'777\g<1>'", mml)
             mml = re.sub('"', '(', mml)
             tierfiles[2] = mml
             
             mml = "#VARIANT / \n#VARIANT ? ignore \n" + tierfiles[0] + tierfiles[1] + tierfiles[2]
-            
+            ## uncomment to debug tierboss MML
+            #with open("lbdebug.mml", "w") as f:
+            #    f.write(mml)
+                
             akao = mml_to_akao(mml, str(tiernames), variant='_default_')
             inst = akao['_default_'][1]
             akao = akao['_default_'][0]

@@ -1,6 +1,6 @@
 Song conversions:
     emberling -- bof2_battle
-                 cc_dragonia, cc_home
+                 cc_dragonia, cc_home, cc_hydra
                  crys_fields
                  ct_battle, ct_battle2, ct_bobonga, ct_keeper, ct_night,
                  ct_revolution, ct_theme, ct_truth
@@ -10,7 +10,7 @@ Song conversions:
                  ff7_battle, ff7_corel, ff7_hurry, ff7_reunion
                  ff8_battle, ff8_witches
                  ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
-                 ffx_battle, ffx_via
+                 ffx_battle, ffx_via, ffx_zanarkand
                  ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
                  ffmq_fossil, ffmq_lava, ffmq_light, ffmq_rock, ffmq_tower,
                  ffmq_tristam, ffmq_victory
@@ -18,6 +18,7 @@ Song conversions:
                  lo_battle
                  lu2_battle
                  met3_surface
+                 ob_battle
                  sd2_8bells, sd2_always, sd2_angel, sd2_city, sd2_desert,
                  sd2_eternal, sd2_flammie, sd2_forest, sd2_forget, sd2_ghost,
                  sd2_hope, sd2_intruder, sd2_jema, sd2_legend, sd2_lofty,
@@ -26,6 +27,7 @@ Song conversions:
                  sd2_star, sd2_steel, sd2_tasnica, sd2_thanatos, sd2_thunder,
                  sd2_tomorrow, sd2_town, sd2_wish
                  sd3_angels, sd3_flight
+                 sf2_balrog
                  top_world1, top_world3
                  xc2_morardain, xc2_tantal
                  xg_boss, xg_flight
@@ -45,7 +47,7 @@ Song conversions:
                  ff8_laguna, ff8_oath
                  ff9_blackmage, ff9_blackwaltz, ff9_dali, ff9_eiko,
                  ff9_home, ff9_memoria
-                 ffx_decision, ffx_seymour, ffx_zanarkand
+                 ffx_decision
                  ffmq_gale
                  iog_boss, iog_womb
                  jts_stage1
@@ -64,6 +66,7 @@ Song conversions:
                  ys3_wings
                  zaol_overworld
                  zoot_storms
+    Jackimus -- ffx_seymour
     MetroidQuest -- ff4_boss, ff4_cave
                     ff5_bridge
     Royaken -- ff4_bomb, ff4_mysidia, ff4_whale

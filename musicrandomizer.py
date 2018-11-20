@@ -305,7 +305,7 @@ def insert_instruments(data_in, metadata_pos= False):
     
     return data
 
-def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=False, f_altsonglist=False):
+def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=True, f_mchaos=False, f_altsonglist=False):
     global freespace
     data = data_in
     freespacebackup = freespace
@@ -394,14 +394,25 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=
     for song in songconfig.items('Imports'):
         canbe = [s.strip() for s in song[1].split(',')]
         intense, epic = 0, 0
+        event_mults = {}
         if f_mchaos:
             for ident, s in songtable.items():
                 s.choices.append(song[0])
         for c in canbe:
             if not c: continue
-            if c == "CONVERT":
-                pass #TODO
-            elif c[0] == "I":
+            if c[0] in eventmodes and ":" not in c:
+                try:
+                    event_mults[c[0]] = int(c[1:])
+                except ValueError:
+                    print "WARNING: in songs.txt: could not interpret '{}'".format(c)
+        static_mult = 1
+        for k, v in event_mults.items():
+            static_mult *= v
+        for c in canbe:
+            if not c: continue
+            if ":" in c and c[0] in eventmodes:
+                c = c.split(':', 1)[1]
+            if c[0] == "I":
                 intense = int(c[1:])
             elif c[0] == "E" or c[0] == "G":
                 epic = int(c[1:])
@@ -412,10 +423,9 @@ def process_custom_music(data_in, f_randomize=True, f_battleprog=True, f_mchaos=
                     ch = ch[0]
                 else:
                     ch = c
-                    mult = 1
-                
+                    mult = 1 
                 if ch in songtable:
-                    songtable[ch].choices.extend([song[0]]*mult)
+                    songtable[ch].choices.extend([song[0]]*mult*static_mult)
         intense = max(0, min(intense, 99))
         epic = max(0, min(epic, 99))
         if (intense or epic):
@@ -980,11 +990,16 @@ def process_formation_music_by_table(data):
     
     return data
         
-def randomize_music(fout, f_mchaos=False):
+def randomize_music(fout, f_mchaos=False, codes=[]):
+    events = ""
+    if 'christmas' in codes:
+        events += "W"
+    if 'halloween' in codes:
+        events += "H"
     fout.seek(0)
     data = fout.read()
     data = insert_instruments(data, INST_METADATA_OFFSET)
-    data = process_custom_music(data, f_mchaos=f_mchaos)
+    data = process_custom_music(data, f_mchaos=f_mchaos, eventmodes=events)
     data = process_formation_music_by_table(data)
     
     fout.seek(0)

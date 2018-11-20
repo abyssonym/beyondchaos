@@ -6711,7 +6711,7 @@ k   Randomize the clock in Zozo
     reseed()
 
     if 'johnnydmad' in activated_codes or 'johnnyachaotic' in activated_codes:
-        music_log = randomize_music(fout, True if 'johnnyachaotic' in activated_codes else False)
+        music_log = randomize_music(fout, f_mchaos = True if 'johnnyachaotic' in activated_codes else False, codes=activated_codes)
         log(music_log, section="music")
             
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----

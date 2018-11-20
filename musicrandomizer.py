@@ -59,7 +59,13 @@ def safepath(vpath):
 def isfile(fn):
     if not MEI:
         return os.path.isfile(fn)
-    return os.path.isfile(os.path.join(_MEIPASS, fn))
+    
+    if os.path.isfile(fn):
+        return True
+    elif os.path.isfile(os.path.join(_MEIPASS, fn)):
+        return True
+    else:
+        return False
     
 #compatibility stubs
 def to_default(cfgname): 

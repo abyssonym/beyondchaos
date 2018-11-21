@@ -108,6 +108,7 @@ ffx_decision:   relm, awakening, town, martiallaw
 ffx_seymour:    I99, G80, atma, dmad5
 ffx_via:        H2, omen3, celes, zozo, train*2
 ffx_zanarkand:  celes*2, daryl, coin*2, ruin*2
+ff12_paramina:  omen3*2, gestahl*2, catastrophe, narshe*2, martiallaw, town_ruin, ruin*2, forest*2, W:shadow, W:awakening, W:cyan, W:troops*2, W:umaro, W:zozo, W:owzer, W:balance, W:train*2, W:serpent, W:espers*2
 ffmq_battle1:   I50, G15, battle*2
 ffmq_battle3:   I60, G95, atma, dmad5, grandfinale, kefkastower
 ffmq_boss:      I55, G60, boss*2, floatingcont

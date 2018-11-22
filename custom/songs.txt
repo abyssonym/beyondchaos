@@ -108,7 +108,7 @@ ffx_decision:   relm, awakening, town, martiallaw
 ffx_seymour:    I99, G80, atma, dmad5
 ffx_via:        H2, omen3, celes, zozo, train*2
 ffx_zanarkand:  celes*2, daryl, coin*2, ruin*2
-ff12_paramina:  omen3*2, gestahl*2, catastrophe, narshe*2, martiallaw, town_ruin, ruin*2, forest*2, W:shadow, W:awakening, W:cyan, W:troops*2, W:umaro, W:zozo, W:owzer, W:balance, W:train*2, W:serpent, W:espers*2
+ff12_paramina:  W4, omen3*2, gestahl*2, catastrophe, narshe*2, martiallaw, town_ruin, ruin*2, forest*2, W:shadow, W:awakening, W:cyan, W:troops*2, W:umaro, W:zozo, W:owzer, W:balance, W:train*2, W:serpent, W:espers*2
 ffmq_battle1:   I50, G15, battle*2
 ffmq_battle3:   I60, G95, atma, dmad5, grandfinale, kefkastower
 ffmq_boss:      I55, G60, boss*2, floatingcont
@@ -120,6 +120,7 @@ ffmq_rock:      prelude, setzer, chocobo*2, blackjack, johnny*2, spinachrag, moo
 ffmq_tower:     gestahl, catastrophe, troops*2, savethem, umaro, kefkastower
 ffmq_tristam:   fanfare, chocobo, johnny*2, spinachrag, moogles
 ffmq_victory:   fanfare*2
+fz_white1:      W4, W:I40, W:G30, blackjack, johnny, moogles, chocobo, W:battle, W:unforgiven*2, W:setzer, W:locke, W:zozo, W:falcon*2, W:serpent*2, W:magitek, W:floatingcont
 iog_boss:       I95, G55, boss, metamorphosis*2, catastrophe, unforgiven
 iog_womb:       W2, prelude, daryl, coin, rachel, awakening, ruin, forest, train
 jts_stage1:     I10, G60, battle, johnny, chocobo, zozo, magitek*2, floatingcont

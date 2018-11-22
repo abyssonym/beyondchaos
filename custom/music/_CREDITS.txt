@@ -15,6 +15,7 @@ Song conversions:
                  ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
                  ffmq_fossil, ffmq_lava, ffmq_light, ffmq_rock, ffmq_tower,
                  ffmq_tristam, ffmq_victory
+                 fz_white1
                  ds4_lyll
                  lo_battle
                  lu2_battle

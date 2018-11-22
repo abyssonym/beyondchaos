@@ -7,7 +7,7 @@
 44: s201_synplk,    4206, FC60, F 7 7  F
 45: ct2c_synstr,    1B00, E9F0, F 7 7  0
 46: tr37_strings,   1B00, E099, D 2 5  0
-47: ct35_bell,      0000, 2300, E 7 7 14
+47: rs0a_bell,      D104, E300, F 7 7 12
 48: ts48_sitar,     0216, D600, F 7 7  E
 49: ts49_strings,   A506, 1800, F 7 7  0
 4A: ts4a_sbass,     3108, D380, F 7 7  E
@@ -76,3 +76,5 @@
 89: cs16_synth,     9F0C, F270, F 7 7  0
 8A: s32e_pianofp5,  6426, 2FFF, F 7 7  B
 8B: s32d_pianocp6,  651F, CE20, F 7 7  A
+8C: s315_pianoa6,   0810, 8000, F 7 7  F
+8D: ct28_tube,      7806, C900, F 7 7  E

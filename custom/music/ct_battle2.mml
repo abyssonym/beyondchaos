@@ -23,12 +23,12 @@
 #DRUM "a"= 5g |1 p81 
 #DRUM "r"=r
 
-#def phone=~o5%r25~/%a13%r28o5v40/
+#def phone=~o6%r25~/%a13%r28o5v40/
 
 {1}
 l16t180%v20%b0,70%x224%f0,0%b0,30%e1r2%b0,70 $1 |4 v115p64o6m12,24,203%r7e4.f+4.  
 g4^8a4.b4  a4<d4.c4.  >b4^8a4.g4  a4f+4.g4.  
-a4^8b4.a4  g4f+4.%g1gf+e2  %g0^2^rc8d8e8  ^2e4a8f+8  
+a4^8b4.a4  g4f+4.gf+e2  ^2^rc8d8e8  ^2e4a8f+8  
 ^4.d8r8c8d8e8  ^2e4b8r8  b4.a8r8e8f+8g8  ^2^rf+8g8a8  
 ^2g4a8f+8  ^1  ^1  v85<[2p34e8d8e8f8r8f8r8p94e4  
 d8g8r8g8r8p34e8d8e8  f8r8f8r8p94e4d8a8  r8a8r8]|5v50o7%a4%r8e1  

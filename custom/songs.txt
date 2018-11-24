@@ -84,6 +84,7 @@ ff7_hurry2:     I35, G30, battle, metamorphosis, grandfinale, unforgiven, saveth
 ff7_judgment:   omen3, catastrophe, troops, floatingcont*2, kefkastower*2
 ff7_materia:    prelude, kefka, shadow, spinachrag, what*2, moogles, owzer*2, strago
 ff7_planet:     H2, omen3, shadow, zozo, ruin*2, train, espers
+ff7_snow:       W4, narshe, ruin*2, W:prelude*2, W:omen3, W:daryl, W:coin, W:gau, W:what, W:zozo, W:town_ruin, W:mountain, W:train, W:espers
 ff7_reunion:    omen3, owzer, strago, ruin, train, espers, serpent
 ff7_temple:     H2, omen3, shadow, owzer, forest*2, train, serpent
 ff7_tifa:       prelude, rachel, relm*2, awakening*2, town_ruin

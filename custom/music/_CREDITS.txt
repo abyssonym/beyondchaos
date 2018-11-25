@@ -10,7 +10,7 @@ Song conversions:
                  ff7_battle, ff7_corel, ff7_hurry, ff7_reunion, ff7_snow
                  ff8_battle, ff8_witches
                  ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
-                 ffx_battle, ffx_via, ffx_zanarkand
+                 ffx_battle, ffx_gagazet, ffx_via, ffx_zanarkand
                  ff12_paramina
                  ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
                  ffmq_fossil, ffmq_lava, ffmq_light, ffmq_rock, ffmq_tower,

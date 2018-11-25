@@ -591,7 +591,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             except IOError:
                 print "couldn't open {}".format(sfx)
                 
-        return mml_to_akao(mml, name, True if (id != 0x29) else False)
+        return mml_to_akao(mml, name, True if (id == 0x4F) else False)
     
     def process_tierboss(opts):
         opts = [o.strip() for o in opts.split(',')]

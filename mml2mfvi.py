@@ -190,15 +190,24 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     post = "".join(post.split())
                 macros[pre] = post.lower()
     
-    stillmacros = True
-    while stillmacros:
-        stillmacros = False
-        for i, line in enumerate(mml):
-            for k, v in macros.items():
-                if "'{}'".format(k) in line:
-                    stillmacros = True
-                    line = line.replace("'{}'".format(k), v)
-            mml[i] = line
+    #stillmacros = True
+    #while stillmacros:
+    #    stillmacros = False
+    #    for i, line in enumerate(mml):
+    #        for k, v in macros.items():
+    #            if "'{}'".format(k) in line:
+    #                stillmacros = True
+    #                line = line.replace("'{}'".format(k), v)
+    #        mml[i] = line
+    for i, line in enumerate(mml):
+        while True:
+            r = re.search("'(.*?)'", line)
+            if not r: break
+            m = r.group(1)
+            s = macros[m] if m in macros else ""
+            line = line.replace(r.group(0), s, 1)
+        mml[i] = line
+            
     #drums
     drums = {}
     for line in mml:

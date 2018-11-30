@@ -193,6 +193,7 @@ tn_evergreen:   awakening*2, relm*2, forest
 top_cold:       W4, shadow, zozo, owzer, narshe*2, ruin*2, forest*2, serpent, espers*2, W:prelude, W:omen3, W:celes, W:daryl, W:umaro, W:town_ruin, W:veldt, W:mountain, W:kefkastower
 top_world1:     omen3, shadow, cyan, narshe, ruin, balance, falcon, serpent
 top_world3:     I00, G85, johnny, umaro, zozo, falcon, serpent*2, floatingcont, kefkastower
+xc1_valakn:     W4, omen3, celes, daryl, narshe, ruin*2, forest*2, W:prelude, W:coin, W:shadow, W:zozo, W:town_ruin, W:falcon, W:balance, W:mountain, W:espers
 xc2_morardain:  fanfare, grandfinale, setzer*2, moogles, umaro, martiallaw*2, falcon
 xc2_tantal:     W4, omen3, gestahl, zozo, narshe*2, train*2, ruin*2, serpent, espers, W:celes, W:cyan, W:gogo, W:umaro*2, W:owzer, W:balance, W:forest, W:floatingcont, W:kefkastower
 xg_boss:        I85, G50, boss*2, metamorphosis, grandfinale, troops, savethem

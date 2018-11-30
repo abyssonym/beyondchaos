@@ -32,6 +32,7 @@ Song conversions:
                  sdlm_snowfield
                  sf2_balrog
                  top_cold, top_world1, top_world3
+                 xc1_valakn
                  xc2_morardain, xc2_tantal
                  xg_boss, xg_flight
     Gi Nattak -- cc_arni, cc_flame, cc_miguel

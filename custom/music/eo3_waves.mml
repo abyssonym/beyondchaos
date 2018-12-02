@@ -36,12 +36,12 @@
 #def celesta_duo= @3 v64p64v24,20,255%y0%s0%r0 o6
 #def deepness= v ~|5 v112 o4 %r6 m96,32,192~ /|2 v72 o6/
 #def deepness2= v ~|5 v80 o4 %a0%r6 m96,15,255~ /|2 v72 o6/
-#def atmosynth= p80 |2 ~v56 o7 %a6%s7%r1~ /v36 o7/
-#def atmosynth2= p80 |2 ~v64 o7~ /v72 o7/
+#def atmosynth= p80 |2 ~v56 o6 %a6%s7%r1~ /v36 o7/
+#def atmosynth2= p80 |2 ~v64 o6~ /v72 o7/
 #def pad1= ~|3 v60 %a3%y4%s4 o5~ /|2 v96 %a2%y4%s4 o6/
 #def pad2= ~|3 v48 %a5%y2%s4 o5~ /|2 v96 %a4%y2%s4 o6/
 #def bass= |3 v64 p52 o5
-#def midpluck= p32 ~|2 v64 %r12 o6~ /@0 v72 %s2%y5%r12 o4/
+#def midpluck= p32 ~|2 v64 %r12 o5~ /@0 v72 %s2%y5%r12 o4/
 #def lowpluck= ~|3 v56 %a5%s4 o6~ /|2 v96 o5 %a >/ 
 #def secretharmony= ~|0 v64 o6~ /|0 v56 o6/
 #def cv=v127

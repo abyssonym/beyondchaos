@@ -19,7 +19,7 @@
 
 #def global= t100 %v50 %x224 %b0,70
 
-#def git= |0 p64 v72 %e1 ~o6~ %a14 %y3 %s2 %r14 /o5 m/
+#def git= |0 p64 v72 %e1 ~o5~ %a14 %y3 %s2 %r14 /o5 m/
 #def sit= |1 p64 ~v80~ %e1 ~o5~ /o4 v104 %r14 %a15 %y7 %s2 m16,18,237/
 #def bas= |2 p64 ~v80~/v80/ %e1 o5
 #def m= %r21

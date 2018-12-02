@@ -4,7 +4,7 @@
 41: fm23_halo,      7704, FFF0, F 7 7  0
 42: ts42_celesta,   4605, E100, F 7 7  C
 43: ts43_synstr,    C804, 1E00, F 7 7  0
-44: s201_synplk,    4206, FC60, F 7 7  F
+44: s201_x20_dulci, 2A03, FC60, F 7 7  F
 45: ct2c_synstr,    1B00, E9F0, F 7 7  0
 46: tr37_strings,   1B00, E099, D 2 5  0
 47: rs0a_bell,      D104, E300, F 7 7 12
@@ -49,7 +49,7 @@
 6E: tr18_eguitar,   0D08, E05A, F 3 3  0
 6F: tr19_eguitar,   1E06, D28A, F 3 3  0
 70: tr3a_synbass,   E30D, E05A, F 7 7  0
-71: ts71_esnare,    9411, C000, F 7 7  0
+71: f503_x20_snare, 0000, 8000, F 7 7  0
 72: actr_trumpet,   2F04, D6B0, F 7 7  8
 73: tr21_ehorn,     721E, E05A, F 0 2  0
 74: tr0f_clarinet,  EB02, E05A, F 1 5  0
@@ -68,13 +68,15 @@
 81: s32a_msnare,    CA08, 0000, F 7 7  0
 82: s329_brass,     1B09, D280, F 7 7  A
 83: sm32_future,    7704, FFE1, F 7 7  0
-84: ts84_snare,     0000, 0000, F 7 7  0
+84: sm2f_x20_tom,   0000, 8000, F 7 7  0
 85: ts85_percslap,  0000, 0000, F 7 7  0
 86: ts86_xylophone, 8F07, 19B0, F 7 7 18
 87: ts87_accordion, BA0C, 1900, F 7 7  0
-88: gh3c_ride,      AE06, 0000, F 7 7 12
+88: gh3c_x15_ride,  8004, C000, F 7 7 12
 89: cs16_synth,     9F0C, F270, F 7 7  0
 8A: s32e_pianofp5,  6426, 2FFF, F 7 7  B
 8B: s32d_pianocp6,  651F, CE20, F 7 7  A
 8C: s315_pianoa6,   0810, 8000, F 7 7  F
 8D: ct28_tube,      7806, C900, F 7 7  E
+8E: f504_x15_crash, 8004, C000, F 7 7 10
+8F: ct08_x20_ohh,   0000, 8000, F 7 7  0

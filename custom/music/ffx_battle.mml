@@ -35,7 +35,7 @@
 #def stv7= v144,116
 #def stv8= v144,127
 #def sqw= ~|6~/@5/ o6 v44 %a12 %y4 %s2 m24,9,237 %e1
-#def saw= ~|4~/@2/ ~o7~/o4/ ~v60~/v36/ m24,9,255 %e1
+#def saw= ~|4~/@2/ ~o6~/o4/ ~v60~/v36/ m24,9,255 %e1
 #def sa1= p90 '16' %a10 %y7 %s5
 #def sa2= p0 %a12 %y4 %s2
 #def othersaw= ~|6~/@6/ o6 ~v60~/v40/ m24,9,255 %e1 %a9 %y6 %s1 '8'
@@ -54,7 +54,7 @@
 #def hrn= |2 ~o4~/o5/ v72 p40 m48,18,237 %e1
 #def org= |3 o6 v28 p64 m48,18,209 v0,7,255 %a12 %e1
 #def bas= |5 o5 ~v127~/v48/ p64 m  %e0
-#def fakechoir= ~|4 o5~/|3 o4/ p64 v63v192,127 m48,18,237 %a13/%s12/
+#def fakechoir= ~|4 o4~/|3 o4/ p64 v63v192,127 m48,18,237 %a13/%s12/
 
 #def 8= %r18
 #def 16=%r22

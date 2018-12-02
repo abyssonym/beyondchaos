@@ -30,7 +30,7 @@
 #def guitar= |3 v56 o5 ##midi 004 + 005
 #def choir= |6 v64 o4 ##midi 006 + 061
 #def vibe= |1 v64 o4 %y5%s1 ##midi 007
-#def crystal= |2 v64 ~o6~/o5/ %a12 ##midi 062 + 064
+#def crystal= |2 v64 ~o5~/o5/ %a12 ##midi 062 + 064
 #def flute= |5 v64 o5 ##midi 090
 
 ##midi channels

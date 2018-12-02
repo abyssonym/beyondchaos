@@ -22,7 +22,7 @@
 
 #def epian= |4 ~o5~/o5/ v64 m
 #def clari= |0 ~o5~/o5/ v56 %r10 m48,18,223
-#def chiff= ~|3~/|1/ ~o6~/o6/ v48 %r10 m %y1%s0
+#def chiff= ~|3~/|1/ ~o6~/o6/ ~v72~/v48/ %r10 m %y1%s0
 #def panfl= |1 ~o4~/o5/ v80 %r10 m48,18,239
 #def atmos= |5 ~o6~/o6/ v68 %r20 m
 #def wmpad= |2 ~o5~/o5/ v16 %a6%r0 m

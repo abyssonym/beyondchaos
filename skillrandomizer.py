@@ -89,7 +89,7 @@ class SpellBlock:
         self.mp = ord(f.read(1))
         f.seek(self.pointer+6)
         self.power = ord(f.read(1))
-        f.seek(self.pointer+7)
+        f.seek(self.pointer+8)
         self.accuracy = ord(f.read(1))
         f.seek(self.pointer+9)
         self.special = ord(f.read(1))
@@ -423,7 +423,11 @@ def get_spellsets(spells=None):
                          [0x10, 0x11, 0x12, 0x13, 0x19, 0x1B, 0x1F, 0x20, 0x22,
                           0x26, 0x27, 0x28, 0x2A, 0x2B, 0x34, 0x89, 0x9B, 0xA0,
                           0xC9, 0xDF])
-
+    spellsets['Level'] = ('level-based skill',
+                          [s for s in spells if s.level_spell])
+    spellsets['Miss'] = ('skill with low accuracy',
+                        [s for s in spells if not s.unblockable and not s.level_spell and 0 < s.accuracy < 90])
+                            
     for key, desc_and_spellset in spellsets.items():
         if not desc_and_spellset:
             continue

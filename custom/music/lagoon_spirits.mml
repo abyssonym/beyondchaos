@@ -1,0 +1,96 @@
+#TITLE Voice of Spirits
+#ALBUM Lagoon
+#COMPOSER Zoom Reversible Band
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+#SFXV ` *
+
+##                                      orig    enh     nat     octave on which middle C
+#WAVE 0x20 ~0x4D~/0x18/ ##bass          o6      o6      o6
+#WAVE 0x21 ~0x63~/0x36/ ##wind flute    o5      o4      o5
+#WAVE 0x22 ~0x67~/0x0C/ ##piano         o5      o5      o5
+#WAVE 0x23 ~0x0D~/0x0D/ ##strings       o5      o5      o5
+#WAVE 0x24 ~0x44~/0x0B/ ##organ         o6      o6      o6
+
+{1}
+l16t110%v50%b0,70%x224v80p64%e1 $1 |0o5d8a8<d8e2^8  >d8a8<d8e2^8  o4a+8<f8<c8d2^8  
+o4a+8<f8<c8d2^8  >d8a8<d8e2^8  >d8a8<d8e2^8  o4a+8<f8<c8d2^8  
+o4a+8<f8<c8d2^8  >d8a8<d8e2^8  >d8a8<d8e2^8  o4a+8<f8<c8d2^8  
+o4a+8<f8<c8d2^8  o4g8<d8a8a+2^8  >g8<d8a+8a2^8  >d1  
+^1  <d1  ^1  d1  
+^1  >a+1  <c1  d1  
+^1  
+;1
+
+l16
+{2}
+l16~v80~/v24/p94%e1|1~%y4%s2~ $2 ~o3~/o4/m16,16,201<e2^4^8mde  g2f4e4  
+m16,16,201>a+1  ^1  <e2^4^8mde  g2f4e4  
+>m16,16,201a+1  ^1  <e2^4^8mde  g2f4e4  
+>m16,16,201a+1  ^1  mr1  ^1  
+^1  ^1  <m16,16,201a2^4mg8a8  <c2>a+2  
+m16,16,201a2^4mg8a8  m16,16,201<c2>a+2  ma8ff2^e8f8  g4e4f8e8d8c8  
+m16,16,207d1  ^1  m
+;2
+
+l16
+*{3}*`{7}`
+l16~v80~/v24/p24%e1 $3|1~%y4%s2~ ~o3~/o4/r8<m16,16,201e2^4^8  
+mdeg2f4e4  >m16,16,201a+1  ^1  <e2^4^8mde  
+g2f4e4  >m16,16,201a+1  ^1  <e2^4^8mde  
+g2f4e4  >m16,16,201a+1  ^2^4^8mr1  ^1  
+^1  ^1  ^8<m16,16,201a2^4g8  ma8m16,16,201<c2>a+2  
+a2^4mg8a8  m16,16,201<c2>a+2  ma8ff2^e8f8  g4e4f8e8d8c8  
+m16,16,207d1  ^2^4^8m
+;3
+
+l16
+*{5}*`{6}`
+l16v60p74%e1|2o5r4  ^8 $4 e8e2^4  
+^8e8e2^4  ^8d8d2^4  ^8d8d2r4  ^8e8e2^4  
+^8e8e2^4  ^8d8d2^4  ^8d8d2r4  ^8e8e2^4  
+^8e8e2^4  ^8d8d2^4  ^8d8d2d1  d1  
+d1  ^1  r4^8e8e2  ^4^8f8f2  
+^4^8e8e2  ^4^8f8f2  ^4^8a8a2  ^4^8g8g2  
+e1  r1  ^4^8
+;4
+
+l16
+*{6}*`{8}`
+l16v60p60%e1|2o5r4^8 $5 d8d2  ^4^8d8d2  
+^4^8c8c2  ^4^8c8c2  r4^8d8d2  ^4^8d8d2  
+^4^8c8c2  ^4^8c8c2  r4^8d8d2  ^4^8d8d2  
+^4^8c8c2  ^4^8c8c2  >a+1  a1  
+a1  ^1  r4^8<d8d2  ^4^8d8d2  
+^4^8d8d2  ^4^8d8d2  ^4^8f8f2  ^4^8e8e2  
+d1  r1  ^4^8
+;5
+
+l16
+*{7}*`{3}`
+l16v60p34%e1|2r4^8 $6 o5>a8a2  ^4^8a8a2  
+^4^8a+8a+2  ^4^8a+8a+2  r4^8a8a2  ^4^8a8a2  
+^4^8a+8a+2  ^4^8a+8a+2  r4^8a8a2  ^4^8a8a2  
+^4^8a+8a+2  ^4^8a+8a+2  g1  g1  
+g1  ^1  r4^8a8a2  ^4^8a+8a+2  
+^4^8a8a2  ^4^8a+8a+2  ^4^8<d8d2  ^4^8c8c2  
+>a1  r1  ^4^8
+;6
+
+l16
+*{4}*`{5}`
+l16p60%e1 $7 v24|3o5>v80,80a2^4  ^8^v24rv80,80<d4^8^v24rv80,80a4  
+^8^v24rv80,80f1  ^2^4^8^v24r  >v80,80a2^4^8^v24r  <v80,80d4^8^rv24v80,80a4^8^v24r  
+v80,80f1  ^2^4^8^v24r  >v80,80a2^4^8^v24r  <v80,80d4^8^rv24v80,80a4^8^v24r  
+v80,80f1  ^2^4^8^r1  ^1  ^1  
+^1  ^v44|4~%a8~<afd>a<afd>a<afd>a<afd  >a<a+fd>a+<a+fd>a+<a+fd>a+<a+fd  
+>a+<afd>a<afd>a<afd>a<afd  >a<a+fd>a+<a+fd>a+<a+fd>a+<a+fd  >a+<afd>a+<afd>a+<afd>a+<afd  
+>a+<afd>a<afd>a<afd>a<afd  >a<ed>a<ded>a<ded>a<ded>a  <dd2^4^8^  
+r
+;7
+
+*{8}*`{4}`r;
+l16

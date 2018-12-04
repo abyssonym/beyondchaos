@@ -3,10 +3,11 @@ Song conversions:
                  cc_dragonia, cc_home, cc_hydra
                  crys_fields
                  ct_battle, ct_battle2, ct_bobonga, ct_keeper, ct_night,
-                 ct_revolution, ct_theme, ct_truth
+                 ct_revolution, ct_schala, ct_theme, ct_truth, ct_tylair
+                 ds4_lyll
                  eo3_waves
                  ff5_battle, ff5_cave, ff5_excastle, ff5_final, ff5_hurry,
-                 ff5_lenna, ff5_theme, ff5_void, ff5_world1
+                 ff5_lenna, ff5_library, ff5_theme, ff5_void, ff5_world1
                  ff7_battle, ff7_corel, ff7_hurry, ff7_reunion, ff7_snow
                  ff8_battle, ff8_witches
                  ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
@@ -16,7 +17,7 @@ Song conversions:
                  ffmq_fossil, ffmq_lava, ffmq_light, ffmq_rock, ffmq_tower,
                  ffmq_tristam, ffmq_victory
                  fz_white1
-                 ds4_lyll
+                 iog_whispers
                  lo_battle
                  lu2_battle
                  met3_surface
@@ -31,7 +32,7 @@ Song conversions:
                  sd3_angels, sd3_flight, sd3_winter
                  sdlm_snowfield
                  sf2_balrog
-                 top_cold, top_world1, top_world3
+                 top_cold, top_mint, top_world1, top_world3
                  xc1_valakn
                  xc2_morardain, xc2_tantal
                  xg_boss, xg_flight
@@ -55,8 +56,9 @@ Song conversions:
                  ffmq_gale
                  iog_boss, iog_womb
                  jts_stage1
+                 lagoon_spirits
                  lu1_boss
-                 lu2_boss, lu2_map, lu2_mountain, lu2_narvick
+                 lu2_battle3, lu2_boss, lu2_map, lu2_mountain, lu2_narvick
                  met3_brain
                  rs3_underwater
                  rsms_battle

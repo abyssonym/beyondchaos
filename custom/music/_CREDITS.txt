@@ -2,8 +2,9 @@ Song conversions:
     emberling -- bof2_battle
                  cc_dragonia, cc_home, cc_hydra
                  crys_fields
-                 ct_battle, ct_battle2, ct_bobonga, ct_keeper, ct_night,
-                 ct_revolution, ct_schala, ct_theme, ct_truth, ct_tylair
+                 ct_battle, ct_battle2, ct_bobonga, ct_fair, ct_keeper,
+                 ct_night, ct_revolution, ct_schala, ct_theme, ct_truth,
+                 ct_tylair
                  ds4_lyll
                  eo3_waves
                  ff5_battle, ff5_cave, ff5_excastle, ff5_final, ff5_hurry,

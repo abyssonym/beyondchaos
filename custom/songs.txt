@@ -94,6 +94,7 @@ ff7_temple:     H2, omen3, shadow, owzer, forest*2, train, serpent
 ff7_tifa:       prelude, rachel, relm*2, awakening*2, town_ruin
 ff8_battle:     I15, G40, battle*2, metamorphosis, grandfinale, catastrophe
 ff8_heresy:     H2, gestahl, kefka, catastrophe, owzer, ruin, fanatics*2
+ff8_horizon:    prelude, daryl, coin, gau, zozo, town, town_ruin
 ff8_laguna:     I60, G30, battle*2, chocobo, magitek, floatingcont
 ff8_oath:       omen3, celes, rachel*2, ruin
 ff8_witches:    H4, omen3, gestahl*2, kefka*2, owzer, ruin, train*2, fanatics
@@ -209,6 +210,7 @@ xg_boss:        I85, G50, boss*2, metamorphosis, grandfinale, troops, savethem
 xg_chuchu:      spinachrag*2, what*2, moogles, gogo, strago
 xg_flight:      I30, G90, grandfinale, locke*2, setzer, returners, savethem*2, falcon
 xg_mermaid:     daryl*2, coin, rachel, espers*2
+ys1_wars:       I25, G90, battle, grandfinale, chocobo, falcon, magitek, floatingcont*2, kefkastower
 ys3_wings:      setzer*2, locke, savethem, blackjack, chocobo, serpent*2
 zaol_overworld: figaro, returners
 zoot_storms:    kefka*2, shadow*2, gogo*2, umaro, owzer, strago

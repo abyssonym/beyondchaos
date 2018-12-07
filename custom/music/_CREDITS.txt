@@ -9,7 +9,8 @@ Song conversions:
                  eo3_waves
                  ff5_battle, ff5_cave, ff5_excastle, ff5_final, ff5_hurry,
                  ff5_lenna, ff5_library, ff5_theme, ff5_void, ff5_world1
-                 ff7_battle, ff7_corel, ff7_hurry, ff7_reunion, ff7_snow
+                 ff7_battle, ff7_corel, ff7_hurry, ff7_rebirth, ff7_reunion,
+                 ff7_snow
                  ff8_battle, ff8_horizon, ff8_witches
                  ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
                  ffx_battle, ffx_gagazet, ffx_via, ffx_zanarkand

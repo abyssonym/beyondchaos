@@ -195,6 +195,7 @@ sd3_angels:     omen3, espers*2, awakening
 sd3_faith:      I55, G70, boss, atma, grandfinale, gogo, umaro, kefkastower
 sd3_flight:     setzer, chocobo, blackjack*2, mountain
 sd3_paths:      gogo, mountain*2, serpent*2
+sd3_tension:    I50, G60, boss*2, grandfinale, setzer, locke, savethem, chocobo, blackjack, johnny*2
 sd3_winter:     W4, omen3*2, daryl, owzer, narshe*2, town_ruin, ruin*2, forest, train, serpent, W:celes, W:coin, W:rachel, W:relm, W:shadow, W:umaro, W:zozo, W:martiallaw, W:mountain, W:espers*2
 sdlm_nostalgic: daryl, rachel*2, gau, awakening, town_ruin*2
 sdlm_snowfield: W4, moogles, zozo, serpent*2, W:cyan, W:setzer, W:troops, W:savethem, W:martiallaw, W:town_ruin, W:falcon, W:mountain, W:espers, W:floatingcont

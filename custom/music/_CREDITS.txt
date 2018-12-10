@@ -7,6 +7,7 @@ Song conversions:
                  ct_tylair
                  ds4_lyll
                  eo3_waves
+                 ff2_battleb
                  ff5_battle, ff5_cave, ff5_excastle, ff5_final, ff5_hurry,
                  ff5_lenna, ff5_library, ff5_theme, ff5_void, ff5_world1
                  ff7_battle, ff7_corel, ff7_hurry, ff7_rebirth, ff7_reunion,

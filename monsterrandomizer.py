@@ -179,7 +179,6 @@ class MonsterBlock:
                         score += 1 * formation.present_enemies.count(self)
             score = score / float(len(fsets))
 
-        from formationrandomizer import get_fset
         locations = get_locations()
         fsets = set(fsets)
         locations = [l for l in get_locations()
@@ -719,8 +718,18 @@ class MonsterBlock:
         if madworld: 
             restricted = []
         else:
-            restricted = [0x13, 0x14]		
+            restricted = [0x13, 0x14]
 
+        banned = restricted
+        # No blizzard or tek laser in solo terra
+        from formationrandomizer import get_fset
+        for id in [0x39, 0x3A]:
+            fset = get_fset(id)
+            for f in fset.formations:
+                if self in f.present_enemies:
+                    banned.extend([0xB5, 0xBA])
+                    break
+            
         oldskills = sorted([s for s in all_spells if s.spellid in skillset],
                            key=lambda s: s.rank())
         if change_skillset:
@@ -741,7 +750,7 @@ class MonsterBlock:
                     if random.choice([True, False]):
                         candidates = [c for c in candidates if c.valid]
                     candidates = [c for c in candidates if
-                                  c.spellid not in restricted]
+                                  c.spellid not in banned]
                     if skill not in candidates:
                         candidates.append(skill)
                     candidates = sorted(candidates, key=lambda s: s.rank())
@@ -1807,7 +1816,26 @@ def shuffle_monsters(monsters):
             pass
         else:
             to_swap = get_swap_index(index)
-            m.swap_ai(candidates[to_swap])
+            n = candidates[to_swap]
+            
+            # No blizzard or tek laser in solo terra
+            banned_narshe_skills = [0xB5, 0xBA]
+            
+            banned_from_narshe = banned_narshe_skills in m.get_skillset()
+            banned_from_narshe |= banned_narshe_skills in n.get_skillset()
+            
+            if banned_from_narshe:
+                in_narshe_caves = False
+            
+                for id in [0x39, 0x3A]:
+                    fset = get_fset(id)
+                    for f in fset.formations:
+                        if m in f.present_enemies or n in f.present_enemies:
+                            in_narshe_caves = True
+                            break
+
+            if not banned_from_narshe or not in_narshe_caves:
+                m.swap_ai(n)
 
 
 palette_pools = {}

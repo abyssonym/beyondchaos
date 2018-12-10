@@ -1800,6 +1800,9 @@ def shuffle_monsters(monsters):
             candidates = nonbosses
         index = candidates.index(m)
 
+        candidates = [c for c in candidates
+                      if abs(c.stats["level"] - m.stats["level"]) <= 20]
+
         def get_swap_index(to_swap):
             to_swap = mutate_index(index, len(candidates),
                                    [False, False, True],

@@ -33,14 +33,15 @@ ct_schala:      H2, awakening, relm*2, strago, espers, H:prelude, H:omen3, H:cel
 ct_theme:       I45, G80, locke, savethem, grandfinale
 ct_truth:       kefka, grandfinale, catastrophe
 ct_tylair:      I85, G75, atma, metamorphosis*2, catastrophe*2, savethem, grandfinale
-cv3_aquarius:   I35, G55, magitek, floatingcont, kefkastower
+cv3_aquarius:   H2, I35, G55, magitek, floatingcont, kefkastower
+cv4_beginning:  H2, I00, G35, battle, locke, falcon, train, serpent, floatingcont
 ds4_lyll:       blackjack, falcon, mountain, serpent, setzer
 eo3_waves:      I50, G99, atma*2, kefkastower, dmad5
 evo_boss:       I85, G40, boss*2, unforgiven
 ff1_battle:     I10, G00, battle, grandfinale, unforgiven
 ff1_bossb:      I85, G70, grandfinale, boss, atma, savethem, catastrophe
 ff1_dungeon:    I85, G25, metamorphosis, grandfinale, unforgiven, floatingcont, boss
-ff2_battleb:    kefka, gogo, owzer*2, train, espers, fanatics*2, grandfinale
+ff2_battleb:    H4, kefka, gogo, owzer*2, train, espers, fanatics*2, grandfinale, H:I50, H:G30, H:prelude, H:omen3, H:shadow, H:strago, H:balance, H:forest
 ff3_darkworld:  prelude, awakening, setzer
 ff3_eureka:     mountain, serpent, falcon, setzer
 ff4_airship:    blackjack*2
@@ -52,6 +53,7 @@ ff4_cave:       awakening, balance, forest*2, espers
 ff4_giant:      gogo, magitek, floatingcont*2, falcon, kefkastower
 ff4_giant_remix: blackjack*2, setzer
 ff4_golbez:     H2, kefka*2, fanatics*2, owzer
+ff4_illusion:   prelude, awakening, owzer, town_ruin, ruin, forest, train, espers
 ff4_longway:    omen3, train, ruin
 ff4_mysidia:    H4, strago*2, what, gogo, owzer
 ff4_overworld:  balance*2, setzer, mountain, falcon

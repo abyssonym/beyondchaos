@@ -5,6 +5,7 @@ Song conversions:
                  ct_battle, ct_battle2, ct_bobonga, ct_fair, ct_keeper,
                  ct_night, ct_revolution, ct_schala, ct_theme, ct_truth,
                  ct_tylair
+                 cv4_beginning
                  ds4_lyll
                  eo3_waves
                  ff2_battleb
@@ -85,7 +86,7 @@ Song conversions:
                ff9_messenger
                ffx_ambition
     tsushiy -- ff1_bossb
-               ff4_baron
+               ff4_baron, ff4_illusion
 Tierboss segments:
     emberling -- ffmq_lava_dm, ff8_witches
     Gi Nattak -- cc_flame_dm

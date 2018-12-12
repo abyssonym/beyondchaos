@@ -1,0 +1,69 @@
+#TITLE Illusionary World
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED tsushiy
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x07
+#WAVE 0x21 -- 0x1B
+#WAVE 0x22 -- 0x02
+#WAVE 0x23 -- 0x0D
+
+#SFXV ` *
+
+{1}
+l16t116%x232%v70%b0,70%f0,0v48p64|0%e1m90,50,20 $1 [2o5e4.e4e8e4.  
+f4g8e2^4  ^48c4.d3e2  ^4^64^2^4  >b2^4^64^2  
+^4]a8g+8a8b8a8b8  <c8>b8<c8d8c8d8e3  c4d8>b2^4  a8g+8a8b8a8b8<c8>b8  
+<c8d8c8d8e2  ^4^32c4.d3f2  ^4^32a2^4  g+2^4^2  
+r4
+;1
+
+*{2}*`{8}`
+l16v48p86|1%e1 $2 [2o4f8g+8<c8e8c8>g+8f8g+8  <c8e8c8>g+8f8g+8<c8e8  
+c8>g+8f8g+8<c8e8c8>g+8  c8e8f+8b8f+8e8c8e8  f+8b8f+8e8c8e8f+8b8  
+f+8e8c8e8f+8b8f+8e8  ]>a8<e8a8>g+8<e8g+8>g8<e8  g8>f+8<d8f+8>f8<c8f8a8  
+<c8f8>>e8b8<e8g+8b8<e8  >>a8<e8a8>g+8<e8g+8>g8<e8  g8>f+8<d8f+8>f8<c8f8a8  
+<c8f8a8f8c8>a8f8c8  >b8<d8f8a8b8<d8f8d8  >b8a8f8d8>e8b8<e8g+8  b8<e8g+2^4  
+
+;2
+
+*{3}*`{7}`
+l16v64p64|2%e0 $3 [2o6%r12f2^4^4.  <c4.f2^4  ^4.c4.>c2  ^4^4.f+4.  
+c2^4^2  ^4]a4.g+4.  g4.f+4.f2  ^4e2^4  
+a4.g+4.g4.  f+4.f2^4  ^2^4b2  ^4^2^4  
+e2^4^2  ^4
+;3
+
+*{4}*`{2}`
+l16v32p41|3%e1m90,50,20 $4 [2r2r4o6c2  
+^4e2^4  g+2^4b2  ^4^2^4  ^2^4^2  
+^4]r4.e4.  r4.d4.e2  ^4^2^4  r4.e4.r4.  
+d4.e2^4  ^2^4d2  ^4^2^4  e2^4^2  
+r4
+;4
+
+{5}
+l16v32p41|3%e1m90,50,20 $5 [2r2r4o5g+2  ^4^2^4  ^2^4<e2  ^4^2^4  
+^2^4^2  ^4]r4.>b4.  r4.a4.a2  ^4g+2^4  
+r4.b4.r4.  a4.a2^4  ^2^4^2  ^4^2^4  
+g+2^4^2  r4
+;5
+
+{6}
+l16v32p48|3%e1m90,50,20 $6 [2r2r4o5e2  ^4^2^4  ^2^4f+2  
+^4e2^4  >b2^4^2  ^4]r4.<e4.  r4.f+4.f2  
+^4e2^4  r4.e4.r4.  f+4.f2^4  ^2^4^2  
+^4^2^4  e2^4^2  r4
+;6
+
+*{7}*`{3}`
+l16v48p48|3%e1m90,50,20 $7 [2r2r4r2  
+r4r2r4  r2r4r2  r4r2r4  r2r4r2  
+r4]o3e2^4  ^4.d4.c4.  f4.e2^4  e2^4^4.  
+d4.c2^4  d2^4f2  ^4a2^4  g+2^4^2  
+r4
+;7
+
+*{8}*`{4}`
+r;

@@ -1,1 +1,4 @@
 *.pyc
+beyondchaos.spec
+build.bat
+savedflags.txt

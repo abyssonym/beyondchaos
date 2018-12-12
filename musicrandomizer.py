@@ -15,7 +15,7 @@ except ImportError:
     
 HIROM = 0xC00000
 MUSIC_PATH = os.path.join('custom','music')
-INST_METADATA_OFFSET = 310000    #0x600 bytes
+INST_METADATA_OFFSET = 0x310000    #0x600 bytes
 CONFIG = ConfigParser.RawConfigParser({
         'free_rom_space': '310600-380000',
         'allow_music_repeats': 'False',

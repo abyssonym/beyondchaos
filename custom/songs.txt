@@ -44,6 +44,7 @@ ff1_dungeon:    I85, G25, metamorphosis, grandfinale, unforgiven, floatingcont, 
 ff2_battleb:    H4, kefka, gogo, owzer*2, train, espers, fanatics*2, grandfinale, H:I50, H:G30, H:prelude, H:omen3, H:shadow, H:strago, H:balance, H:forest
 ff3_darkworld:  prelude, awakening, setzer
 ff3_eureka:     mountain, serpent, falcon, setzer
+ff3_warrior:    fanfare, figaro, returners*2
 ff4_airship:    blackjack*2
 ff4_babil:      troops*2, mountain, returners
 ff4_baron:      figaro, troops*2, returners
@@ -74,6 +75,7 @@ ff5_cave:       prelude, ruin, forest*2
 ff5_excastle:   kefka, troops*2, savethem, gogo, umaro, kefkastower
 ff5_exdeath:    metamorphosis*2, grandfinale, fanatics
 ff5_final:      I90, G95, atma, dmad5
+ff5_home:       prelude, daryl*2, coin*2, town_ruin*2, gau
 ff5_hurry:      I70, G00, unforgiven
 ff5_lenna:      gau*2, awakening, rachel, town_ruin, ruin
 ff5_library:    H4, gogo, zozo, owzer*2, strago*2, H:omen3, H:kefka, H:catastrophe, H:shadow, H:spinachrag, H:what, H:umaro
@@ -100,6 +102,8 @@ ff8_battle:     I15, G40, battle*2, metamorphosis, grandfinale, catastrophe
 ff8_heresy:     H2, gestahl, kefka, catastrophe, owzer, ruin, fanatics*2
 ff8_horizon:    prelude, daryl, coin, gau, zozo, town, town_ruin
 ff8_laguna:     I60, G30, battle*2, chocobo, magitek, floatingcont
+ff8_lion:       I80, G80, atma*2, dmad5
+ff8_lion_nointro: catastrophe*2
 ff8_oath:       omen3, celes, rachel*2, ruin
 ff8_witches:    H4, omen3, gestahl*2, kefka*2, owzer, ruin, train*2, fanatics
 ff9_blackmage:  H4, chocobo, johnny, what, moogles*2, gogo, zozo, strago*2, magitek

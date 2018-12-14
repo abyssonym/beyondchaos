@@ -33,6 +33,7 @@ ct_schala:      H2, awakening, relm*2, strago, espers, H:prelude, H:omen3, H:cel
 ct_theme:       I45, G80, locke, savethem, grandfinale
 ct_truth:       kefka, grandfinale, catastrophe
 ct_tylair:      I85, G75, atma, metamorphosis*2, catastrophe*2, savethem, grandfinale
+ct_tyran:       catastrophe, umaro*2, floatingcont, kefkastower
 cv3_aquarius:   H2, I35, G55, magitek, floatingcont, kefkastower
 cv4_beginning:  H2, I00, G35, battle, locke, falcon, train, serpent, floatingcont
 ds4_lyll:       blackjack, falcon, mountain, serpent, setzer

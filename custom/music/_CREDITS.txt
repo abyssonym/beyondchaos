@@ -4,7 +4,7 @@ Song conversions:
                  crys_fields
                  ct_battle, ct_battle2, ct_bobonga, ct_fair, ct_keeper,
                  ct_night, ct_revolution, ct_schala, ct_theme, ct_truth,
-                 ct_tylair
+                 ct_tylair, ct_tyran
                  cv4_beginning
                  ds4_lyll
                  eo3_waves

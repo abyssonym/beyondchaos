@@ -418,14 +418,17 @@ class ItemBlock:
         self.features['learnspell'] = spell.spellid
 
     def mutate_special_action(self):
-        if self.features['specialaction'] != 0 or not self.is_weapon:
+        if self.features['specialaction'] & 0xf0 != 0 or not self.is_weapon:
             return
 
         new_action = random.randint(1, 0xf)
-        if new_action == 8:
+        if new_action == 0xA: # make random valiant knife effect rare
+            new_action = random.randint(1, 0xf)
+            
+        if new_action == 9: # no random dice effect
             return
 
-        self.features['specialaction'] = new_action
+        self.features['specialaction'] = (new_action << 4) | (self.features['specialaction'] & 0x0f)
 
     def mutate_stats(self):
         if self.is_consumable:

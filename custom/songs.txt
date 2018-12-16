@@ -140,7 +140,7 @@ ffmq_victory:   fanfare*2
 fz_white1:      W4, W:I40, W:G30, blackjack, johnny, moogles, chocobo, W:battle, W:unforgiven*2, W:setzer, W:locke, W:zozo, W:falcon*2, W:serpent*2, W:magitek, W:floatingcont
 iog_boss:       I95, G55, boss, metamorphosis*2, catastrophe, unforgiven
 iog_whispers:   H2, zozo, owzer*2, ruin*2, forest*2, train, espers, H:prelude, H:daryl, H:shadow
-iog_womb:       W2, prelude, daryl, coin, rachel, awakening, ruin, forest, train
+iog_womb:       W2, prelude, daryl, coin, rachel, awakening, ruin, forest
 jts_stage1:     I10, G60, battle, johnny, chocobo, zozo, magitek*2, floatingcont
 lagoon_spirits: celes, awakening, owzer, ruin, forest*2, train
 lo_battle:      I05, G75, battle*2, grandfinale, cyan, umaro
@@ -158,7 +158,7 @@ rs3_underwater: omen3, shadow, owzer, narshe*2, town_ruin*2, ruin, forest*2
 rsms_battle:    I50, G65, battle*2, unforgiven, magitek
 sd1s_boss:      I50, G40, boss*2, unforgiven, floatingcont
 sd1s_courage:   I70, G80, boss, atma, savethem*2, grandfinale*2
-sd1s_decision:  gestahl*2, shadow, gau, owzer, narshe, ruin*2, train*2, forest
+sd1s_decision:  gestahl*2, shadow, gau, owzer, narshe, ruin*2, train*2
 sd1s_fate:      omen3, gestahl, celes, narshe, ruin*2, train, forest, town_ruin*2
 sd1s_field:     I35, G75, battle, grandfinale, returners, savethem*2, falcon*2
 sd1s_risingsun: celes*2, rachel, relm, gau, awakening, martiallaw, town_ruin*2
@@ -213,6 +213,7 @@ top_cold:       W4, shadow, zozo, owzer, narshe*2, ruin*2, forest*2, serpent, es
 top_mint:       omen3, celes, rachel, awakening*2, town_ruin
 top_world1:     omen3, shadow, cyan, narshe, ruin, balance, falcon, serpent
 top_world3:     I00, G85, johnny, umaro, zozo, falcon, serpent*2, floatingcont, kefkastower
+totr_arrow:     I75, G60, boss, grandfinale
 xc1_valakn:     W4, omen3, celes, daryl, narshe, ruin*2, forest*2, W:prelude, W:coin, W:shadow, W:zozo, W:town_ruin, W:falcon, W:balance, W:mountain, W:espers
 xc2_morardain:  fanfare, grandfinale, setzer*2, moogles, umaro, martiallaw*2, falcon
 xc2_tantal:     W4, omen3, gestahl, zozo, narshe*2, train*2, ruin*2, serpent, espers, W:celes, W:cyan, W:gogo, W:umaro*2, W:owzer, W:balance, W:forest, W:floatingcont, W:kefkastower

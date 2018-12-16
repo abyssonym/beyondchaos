@@ -39,6 +39,7 @@ Song conversions:
                  sdlm_snowfield
                  sf2_balrog
                  top_cold, top_mint, top_world1, top_world3
+                 totr_arrow
                  xc1_valakn
                  xc2_morardain, xc2_tantal
                  xg_boss, xg_flight

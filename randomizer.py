@@ -6155,7 +6155,9 @@ def manage_dances():
 
         # Replace 2/16 moves that are duplicated from other dances
         spells = get_ranked_spells(sourcefile)
-        spells = [s for s in spells if s.spellid >= 0x36 and s.spellid not in geo and s.spellid not in beasts]
+        spells = [s for s in spells
+                  if s.valid and s.spellid >= 0x36
+                  and s.spellid not in geo and s.spellid not in beasts]
         half = len(spells) / 2
 
         other = []

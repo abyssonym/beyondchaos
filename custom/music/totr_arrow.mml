@@ -121,15 +121,15 @@ f+1    c+1
 ;
 
 {6}
-r2 k1
+r2
 $
-'odr' p32 l16 'o'a8'm'[6a] 'o'b8'm'[6b] 'o'f+8'm'[6f+] 'o'<c+>bag+f+f+8.
+'odr'k1 p32 l16 'o'a8'm'[6a] 'o'b8'm'[6b] 'o'f+8'm'[6f+] 'o'<c+>bag+f+f+8.
 a8'm'[6a] 'o'b8'm'[6b]    'o'<c+dc+>b <c+>bab g+8'm'g+g+g+'o'b8.
 ##2.22
 <c+8'm'[6c+]> 'o'b8'm'[6b]    'o'f+8'm'[6f+] 'o'bag+eeb8.
 <c+8'm'[6c+]> 'o'b8'm'[6b]    'o'f+ag+f+c+bag+ f+ff+g+ag+ab
 ##3.196
-'dis' p96 %r13 >a1<     e1
+'dis'k0 p96 %r13 >a1<     e1
 f+1    c+1
 ##5.171
 'o'd8'n'[14d]    'o'e8'n'[14e]
@@ -145,11 +145,11 @@ l8 %y"z4"[12"!oh"]"h16z8."
 "y4"[6"!oh"]    [6"h"]"h16y8."
 "y4"[6"!oh"]    [4"h"] ^2
 ##3.196
-'odr' p32 %r10 a1    b1
+'odr'k1 p32 %r10 a1    b1
 <c+1>    g+1
 ##5.171
 l16 'o'a8'm'[14a]    'o'b8'm'[14b]
-'o'f+8'm'[14f+]    <%r10f+2f2
+'o'f+8'm'[14f+]    <%r10f+2f2 k0
 ;
 
 {8}

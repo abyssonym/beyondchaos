@@ -926,7 +926,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
 
 ### end functions shared with nascentorder
 
-def process_formation_music_by_table(data):
+def process_formation_music_by_table(data, form_music_overrides={}):
     
     o_forms = 0xF6200
     o_formaux = 0xF5900
@@ -959,6 +959,22 @@ def process_formation_music_by_table(data):
             fid = int(line[0])
         except ValueError:
             continue
+        
+        # account for random music settings in other parts of the randomizer
+        # ancient cave bosses can be set to 5, 2, or 4
+        # superbosses (formations_hidden) can be set to anything 1-5
+        # I don't recommend using random tierboss in this way; it should only be used on the tierboss itself. So we need to adjust these settings
+        # 1 (boss) remains 1
+        # 2 (superboss) changes to 6 (battle4)
+        # 3 (savethem) changes to 5 (battle3)
+        # 4 (returners) changes to 7 (event)
+        # 5 (dmad1) changes to 2 (superboss)
+        force_music = False
+        if fid in form_music_overrides:
+            mutation_table = [0, 1, 6, 5, 7, 2, 0, 0]
+            line[1] = mutation_table[form_music_overrides[fid]]
+            force_music = True
+            
         try:
             mbf = int(line[1]) << 3
         except ValueError:
@@ -967,7 +983,6 @@ def process_formation_music_by_table(data):
         dat = list(data[pos:pos+4])
         
         dat[3] = chr((ord(dat[3]) & 0b11000111) | mbf)
-        force_music = False
         if line[2] == "0":
             dat[1] = chr(ord(dat[1]) | 0b00000010)
             dat[3] = chr(ord(dat[3]) | 0b10000000)
@@ -990,7 +1005,7 @@ def process_formation_music_by_table(data):
     
     return data
         
-def randomize_music(fout, f_mchaos=False, codes=[]):
+def randomize_music(fout, f_mchaos=False, codes=[], form_music_overrides={}):
     events = ""
     if 'christmas' in codes:
         events += "W"
@@ -1000,7 +1015,7 @@ def randomize_music(fout, f_mchaos=False, codes=[]):
     data = fout.read()
     data = insert_instruments(data, INST_METADATA_OFFSET)
     data = process_custom_music(data, f_mchaos=f_mchaos, eventmodes=events)
-    data = process_formation_music_by_table(data)
+    data = process_formation_music_by_table(data, form_music_overrides=form_music_overrides)
     
     fout.seek(0)
     fout.write(data)

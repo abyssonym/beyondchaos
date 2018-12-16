@@ -3372,7 +3372,7 @@ def manage_formations(formations, fsets):
     return formations
 
 
-def manage_formations_hidden(formations, freespaces, esper_graphics=None):
+def manage_formations_hidden(formations, freespaces, esper_graphics=None, form_music_overrides={}):
     for f in formations:
         f.mutate(ap=True)
 
@@ -3516,6 +3516,7 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None):
                 assert m.aiptr != ue.aiptr
 
         uf.set_music_appropriate()
+        form_music_overrides[uf.formid] = uf.get_music()
         appearances = range(1, 14)
         if ue.stats['level'] > 50:
             appearances += [15]
@@ -4921,7 +4922,7 @@ def manage_clock():
         second_text_sub2.set_location(0xDAF63)
         second_text_sub2.write(fout)
 
-def manage_ancient():
+def manage_ancient(form_music_overrides={}):
     change_battle_commands = [41, 42, 43]
     if 'o' not in flags:
         alrs = AutoLearnRageSub(require_gau=True)
@@ -6009,6 +6010,7 @@ def manage_ancient():
                     chosen.set_music(2)
                 else:
                     chosen.set_music(4)
+                form_music_overrides[chosen.formid] = chosen.get_music()
                 chosen.set_appearing([1, 2, 3, 4, 5, 6,
                                       7, 8, 9, 10, 11, 13])
                 fset = get_2pack(chosen)
@@ -6618,12 +6620,13 @@ k   Randomize the clock in Zozo
     if 'f' in flags or 't' in flags:
         assign_unused_enemy_formations()
 
+    form_music = {}
     if 'f' in flags:
-        manage_formations_hidden(formations, freespaces=aispaces)
+        manage_formations_hidden(formations, freespaces=aispaces, form_music_overrides=form_music)
         for m in get_monsters():
             m.write_stats(fout)
     reseed()
-
+    
     for f in get_formations():
         f.write_data(fout)
 
@@ -6643,7 +6646,7 @@ k   Randomize the clock in Zozo
         manage_colorize_dungeons()
 
     if 'ancientcave' in activated_codes:
-        manage_ancient()
+        manage_ancient(form_music_overrides=form_music)
     reseed()
 
     if 'o' in flags or 'w' in flags or 'm' in flags:
@@ -6711,7 +6714,7 @@ k   Randomize the clock in Zozo
     reseed()
 
     if 'johnnydmad' in activated_codes or 'johnnyachaotic' in activated_codes:
-        music_log = randomize_music(fout, f_mchaos = True if 'johnnyachaotic' in activated_codes else False, codes=activated_codes)
+        music_log = randomize_music(fout, f_mchaos = True if 'johnnyachaotic' in activated_codes else False, codes=activated_codes, form_music_overrides=form_music)
         log(music_log, section="music")
             
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----

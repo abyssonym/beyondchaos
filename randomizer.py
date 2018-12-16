@@ -1167,7 +1167,7 @@ def manage_commands_new(commands):
                 ALWAYS_FIRST = []
                 ALWAYS_LAST = [
                     "Palidor", "Quadra Slam", "Quadra Slice", "Spiraler",
-                    "Pep Up", "Exploder",
+                    "Pep Up", "Exploder", "Quick"
                     ]
                 WEIGHTED_FIRST = [
                     "Life", "Life 2",
@@ -1239,11 +1239,17 @@ def manage_commands_new(commands):
 
                 c.properties = 3
                 c.targeting = 0
-                for mask in [0x01, 0x20, 0x40]:
+                for mask in [0x01, 0x40]:
                     for s in css.spells:
                         if s.targeting & mask:
                             c.targeting |= mask
                             break
+
+                # If the first spell is single-target only, but the combo allows
+                # targeting multiple, it'll randomly pick one target and do both
+                # spells on that one.
+                # So, only allow select multiple targets if the first one does.
+                c.targeting |= css.spells[0].targeting & 0x20
 
                 if css.spells[0].targeting & 0x40 == c.targeting & 0x40:
                     c.targeting |= (css.spells[0].targeting & 0x4)
@@ -1265,9 +1271,6 @@ def manage_commands_new(commands):
                 if (c.targeting & 1 and not c.targeting & 8
                         and random.randint(1, 30) == 30):
                     c.targeting = 0xC0
-
-                if c.targeting & 1:
-                    c.targeting |= 0x20  # allow multi-targeting
 
                 if c.targeting & 3 == 3:
                     c.targeting ^= 2  # allow targeting either side

@@ -9,7 +9,7 @@ from utils import (ESPER_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, WOB_TREASURE_TABLE,
                    WOR_ITEMS_TABLE, WOB_EVENTS_TABLE, SPRITE_REPLACEMENT_TABLE, RIDING_SPRITE_TABLE,
-                   MOOGLE_NAMES_TABLE, SKIP_EVENTS_TABLE,
+                   MOOGLE_NAMES_TABLE, SKIP_EVENTS_TABLE, DANCE_NAMES_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -6186,7 +6186,40 @@ def manage_dances():
     Dancesub.set_location(0x0FFE80)
     Dancesub.write(fout)
 
-    dance_names = ["Wind Song", "Forest Nocturne", "Desert Aria", "Love Sonata", "Earth Blues", "Water Rondo", "Dusk Requium", "Snowman Jazz"]
+    # Randomize names
+    bases = []
+    prefixes = [[] for i in range(0,8)]
+    i = -1
+    for line in open_mei_fallback(DANCE_NAMES_TABLE):
+        line = line.strip()
+        if line[0] == '*':
+            i += 1
+            continue
+        if i < 0:
+            bases.append(line)
+        elif i < 8:
+            prefixes[i].append(line)
+
+    used_bases = random.sample(bases, 8)
+    used_prefixes = [''] * 8
+    for i, terrain_prefixes in enumerate(prefixes):
+        max_len = 11 - len(used_bases[i])
+        candidates = [p for p in terrain_prefixes if len(p) <= max_len]
+        if not candidates:
+            candidates = terrain_prefixes
+            used_bases[i] = None
+        prefix = random.choice(candidates)
+        used_prefixes[i] = prefix
+        if not used_bases[i]:
+            max_len = 11 - len(prefix)
+            candidates = [b for b in bases if len(b) <= max_len]
+            used_bases[i] = random.choice(candidates)
+    
+    dance_names = [" ".join(p) for p in zip(used_prefixes, used_bases)]
+    for i, name in enumerate(dance_names):
+        name = name_to_bytes(name, 12)
+        fout.seek(0x26FF9D + i * 12)
+        fout.write("".join(map(chr, name)))
 
     for i, dance in enumerate(dance_names):
         from skillrandomizer import spellnames;
@@ -6941,7 +6974,7 @@ k   Randomize the clock in Zozo
 
 if __name__ == "__main__":
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

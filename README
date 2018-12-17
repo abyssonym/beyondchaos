@@ -148,9 +148,6 @@ A: No.
 Q: I can't choose my party for the final battle. Is this a bug?
 A: No.
 
-Q: It says my character can use Blitz/Lore/etc. in their skills menu, but they don't actually know it.
-A: This is a side effect of replacing the old commands. I'm not sure how to fix it, but it doesn't really affect the game so I haven't really looked into it.
-
 Q: I used Control on an enemy and ordered him to use a skill on his own party, but he attacked me instead!
 A: Some skills are just like that. They're flagged to never be used on your own party.
 
@@ -162,9 +159,6 @@ A: Gur pynffvp fgengrtl bs Enfcvat uvz gb qrngu fgvyy jbexf, naq ur vf bsgra ihy
 
 Q: Dude I've got like six cursed shields.
 A: Fun fact, if you equip cursed shields on multiple party members, you can uncurse one of them 2x or 3x or 4x as quickly.
-
-Q: Why can't Gogo select X ability?
-A: It's probably there. You just have to scroll past the edge of the menu. Unless it's an ability Shadow had and you let him die, in which case, it won't be there.
 
 Q: I just got a Game Over, but I didn't get to keep my experience levels.
 A: This feature was removed because it didn't work properly with one of the new esper boosts. I also wasn't very fond of it to begin with, because I would often get a Game Over and forget to reset so I don't miss out on valuable esper levels.

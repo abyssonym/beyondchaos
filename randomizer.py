@@ -1628,7 +1628,7 @@ def manage_umaro(commands):
     if random.choice([True, False, False]):
         umaro_risk.battle_commands = [0x00, 0xFF, 0xFF, 0xFF]
     else:
-        cands = [0x00, 0x03, 0x05, 0x06, 0x07, 0x09, 0x0A, 0x0B, 0x0D, 0x10,
+        cands = [0x00, 0x05, 0x06, 0x07, 0x09, 0x0A, 0x0B, 0x10,
                  0x12, 0x13, 0x16, 0x18]
         cands = [i for i in cands if i not in changed_commands]
         base_command = random.choice(cands)
@@ -4419,7 +4419,7 @@ def manage_auction_house():
         
         addr = 0x302000 + i * 6
         auction_sub.set_location(addr)
-        auction_sub.bytestring = [0x66, auction_item[3] & 0xff, (auction_item[3] & 0xff00) >> 8, item.itemid, # Show text 0x0A4B with item e.contents
+        auction_sub.bytestring = [0x66, auction_item[3] & 0xff, (auction_item[3] & 0xff00) >> 8, item.itemid, # Show text auction_item[3] with item item.itemid
                 0x94, # Pause 60 frames
                 0xFE] # return
         auction_sub.write(fout)
@@ -4438,7 +4438,7 @@ def manage_auction_house():
         opening_bid = str(auction_item[4])
         fout.seek(0xCE602 + 2 * auction_item[3])
         dialog_ptr = read_multi(fout)
-        auction_sub.set_location(0xD0000 if auction_item < next_bank_index else 0xE0000 + dialog_ptr)
+        auction_sub.set_location(0xD0000 if auction_item[3] < next_bank_index else 0xE0000 + dialog_ptr)
         auction_sub.bytestring = [0x01, 0x14, 0x08, 0x73, 0x1A, 0x62, 0x5E, 0x13, # "<LF>        \"<I>\"!<P>"
         0x01, 0x23, 0x48, 0xB8, 0x91, 0xA8, 0x93  # "<LF>Do I hear "  
         ] + map(lambda x: table[x], opening_bid) + [  # auction_item[4]
@@ -6502,6 +6502,7 @@ k   Randomize the clock in Zozo
     secret_codes['randombosses'] = "RANDOM BOSSES MODE"
     secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
     secret_codes['notawaiter'] = "CUTSCENE SKIPS"
+    secret_codes['theoldways'] = "OLD BALANCE MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -6640,7 +6641,7 @@ k   Randomize the clock in Zozo
 
     if 'm' in flags or 'o' in flags or 'w' in flags:
         for m in monsters:
-            m.screw_tutorial_bosses()
+            m.screw_tutorial_bosses(old_vargas_fight='the old ways' in activated_codes)
             m.write_stats(fout)
 
     if 'c' in flags and 'm' in flags:

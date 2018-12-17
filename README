@@ -4,41 +4,43 @@ Date:       May 03, 2018
 URL:        https://github.com/abyssonym/beyondchaos
 Contact:    https://twitter.com/abyssonym
             https://www.twitch.tv/abyssonym
+Discord:    https://discord.gg/S3G3UXy
 
 --- QUICKSTART ---
-Running the randomizer:
-    Windows users may use the executable file, "beyondchaos.exe". Other users, please run "randomizer.py" using Python version 2.7
+Requirements:
+	FF3 US 1.0 ROM
+	If not running Windows, install Python 2.7. (NOT python 3.0+)
 
-Source rom file:
-    The randomizer will ask for a rom file. Beyond Chaos does not provide this rom. Put the file in the same directory as Beyond Chaos and simply input the file name. The rom used should be the FF3 US 1.0 rom. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
+Running the randomizer:
+    Windows users: run beyondchaos.exe.
+	Other users: run "randomizer.py" using Python version 2.7 (It DOES NOT work with python 3.)
+
+Source ROM file:
+    The randomizer will ask for a ROM file. Beyond Chaos does not provide this ROM. The simplest thing is to put the ROM in the same directory as Beyond Chaos and simply input the file name.
+	e.g., "ff3.smc"
+	
+	If you prefer to keep the ROM in a different folder, enter the full path. e.g., "C:\Users\Kefka\Documents\snes\ff3.smc"
+	
+	The ROM used should be the FF3 US 1.0 ROM. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
     MD5 - e986575b98300f721ce27c180264d890
     CRC32 - a27f1c7a
 
 Seed value:
-    Next, the randomizer will ask for a seed value. If you don't know which seed you want, just leave this blank and the randomizer will choose one for you. The seed value is an integer number that can be used to share the same randomization with other people. It's like a signature for the game that Beyond Chaos creates. If you want to play the game along with a friend, you can use the same seed.
+    Next, the randomizer will ask for a seed value. The seed value is an integer number that can be used to share the same randomization with other people. If you don't know which seed you want, just leave this blank.
 
 Flags:
-    Finally, the randomizer will ask for a list of flags. If you don't know which flags you want, just leave this blank and the randomizer will give you the standard setting: all flags. If you would like to customize your experience, here is a list of flags and what they do:
-    o   Shuffle characters' in-battle commands.
-    w   Generate new commands for characters, replacing old commands.
-    z   Always have "Sprint Shoes" effect.
-    b   Make the game more balanced by removing exploits such as Joker Doom,
-            Vanish/Doom, and the Evade/Mblock bug.
-    m   Randomize enemy stats.
-    c   Randomize palettes and names of various things.
-    i   Randomize the stats of equippable items.
-    q   Randomize what equipment each character can wear and character stats.
-    e   Randomize esper spells and levelup bonuses.
-    t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
-    u   Umaro risk. (Random character will be berserk)
-    l   Randomize blitz inputs.
-    n   Randomize window background colors.
-    f   Randomize enemy formations.
-    s   Swap character graphics around.
-    p   Randomize the palettes of spells and weapon animations.
-    d   Randomize final dungeon.
-    g   Randomize dances
-    k   Randomize the clock in Zozo
+    Finally, the randomizer will ask for a list of flags. These allow you to customize what it randomizes.
+	
+	* If this is your first seed, I recommend typing:
+	-dfklu partyparty makeover
+	
+	This will give you a good taste of Beyond Chaos while leaving out a few things that can sometimes be frustrating for new players. (partyparty and makeover are "secret" codes that randomize the sprites even more.)
+	
+	* If you find that too hard, try:
+	-dfklmu partyparty makeover
+	
+	* The "typical" flags used by veterans are:
+	-lk partyparty makeover
 
 Output rom file:
     The randomizer generates two files, a patched rom file, and a mini-FAQ. Both files will have the seed value in their name. To play the game, load the patched rom file in your emulator. The mini-FAQ is a text file that mainly includes information about where to get items; colosseum rewards, monster steals and drops, shop info, and monster rages are all included.

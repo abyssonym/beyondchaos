@@ -6205,6 +6205,69 @@ def nerf_paladin_shield():
     paladin_shield.write_stats(fout)
 
 
+# Moves check for dead banon after Life 3 so he doesn't revive and then game over.
+def manage_banon_life3():
+    banon_sub = Substitution()
+    banon_sub.set_location(0x206bf)
+    banon_sub.bytestring = [
+        0x89, 0xC2,        # BIT #$C2       (Check for Dead, Zombie, or Petrify status)
+        #06C1
+        0xF0, 0x09,        # BEQ $06CC      (branch if none set)
+        #06C3
+        0xBD, 0x19, 0x30,  # LDA $3019,X
+        #06C6
+        0x0C, 0x3A, 0x3A,  # TSB $3A3A      (add to bitfield of dead-ish or escaped monsters)
+        #06C9
+        0x20, 0xC8, 0x07,  # JSR $07C8      (Clear Zinger, Love Token, and Charm bonds, and
+                                            # clear applicable Quick variables)
+        #06CC
+        0xBD, 0xE4, 0x3E,  # LDA $3EE4,X
+        #06CF
+        0x10, 0x2F,        # BPL $0700      (Branch if alive)
+        #06D1
+        0x20, 0x10, 0x07,  # JSR $0710   (If Wound status set on mid-Jump entity, replace
+                                       # it with Air Anchor effect so they can land first)
+        #06D4
+        0xBD, 0xE4, 0x3E, # LDA $3EE4,X
+        #06D7
+        0x89, 0x02,       # BIT #$02
+        #06D9
+        0xF0, 0x03,       # BEQ $06DE      (branch if no Zombie Status)
+        #06DB
+        0x20, 0x28, 0x07, # JSR $0728      (clear Wound status, and some other bit)
+        #06DE
+        0xBD, 0xE4, 0x3E, # LDA $3EE4,X
+        #06E1
+        0x10, 0x1D,       # BPL $0700      (Branch if alive)
+        #06E3
+        0xBD, 0xF9, 0x3E, # LDA $3EF9,X
+        #06E6
+        0x89, 0x04,       # BIT #$04
+        #06E8
+        0xF0, 0x05,       # BEQ $06EF      (branch if no Life 3 status)
+        #06EA
+        0x20, 0x99, 0x07, # JSR $0799      (prepare Life 3 revival)
+        #06ED
+        0x80, 0x11,       # BRA $0700
+        #06EF
+        0xE0, 0x08,       # CPX #$08
+        #06F1
+        0xB0, 0x0C,       # BCS $06E4      (branch if monster)
+        #06F3
+        0xBD, 0xD8, 0x3E, # LDA $3ED8,X    (Which character)
+        #06F6
+        0xC9, 0x0E,       # CMP #$0E
+        #06F8
+        0xD0, 0x06,       # BNE $0700      (Branch if not Banon)
+        #06FA
+        0xA9, 0x06,       # LDA #$06
+        #06FC
+        0x8D, 0x6E, 0x3A, # STA $3A6E      (Banon fell... "End of combat" method #6)
+        #06FF
+        0xEA,
+    ]
+    banon_sub.write(fout)
+
 def expand_rom():
     fout.seek(0,2)
     if fout.tell() < 0x400000:
@@ -6843,6 +6906,8 @@ k   Randomize the clock in Zozo
         manage_santa()
     elif 'halloween' in activated_codes:
         manage_spookiness()
+
+    manage_banon_life3()
 
     rewrite_title(text="FF6 BC %s" % seed)
     fout.close()

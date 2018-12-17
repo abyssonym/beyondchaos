@@ -4354,7 +4354,7 @@ def manage_auction_house():
         
         addr = 0x302000 + i * 6
         auction_sub.set_location(addr)
-        auction_sub.bytestring = [0x66, auction_item[3] & 0xff, (auction_item[3] & 0xff00) >> 8, item.itemid, # Show text 0x0A4B with item e.contents
+        auction_sub.bytestring = [0x66, auction_item[3] & 0xff, (auction_item[3] & 0xff00) >> 8, item.itemid, # Show text auction_item[3] with item item.itemid
                 0x94, # Pause 60 frames
                 0xFE] # return
         auction_sub.write(fout)
@@ -4373,7 +4373,7 @@ def manage_auction_house():
         opening_bid = str(auction_item[4])
         fout.seek(0xCE602 + 2 * auction_item[3])
         dialog_ptr = read_multi(fout)
-        auction_sub.set_location(0xD0000 if auction_item < next_bank_index else 0xE0000 + dialog_ptr)
+        auction_sub.set_location(0xD0000 if auction_item[3] < next_bank_index else 0xE0000 + dialog_ptr)
         auction_sub.bytestring = [0x01, 0x14, 0x08, 0x73, 0x1A, 0x62, 0x5E, 0x13, # "<LF>        \"<I>\"!<P>"
         0x01, 0x23, 0x48, 0xB8, 0x91, 0xA8, 0x93  # "<LF>Do I hear "  
         ] + map(lambda x: table[x], opening_bid) + [  # auction_item[4]

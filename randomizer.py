@@ -1563,7 +1563,7 @@ def manage_umaro(commands):
     if random.choice([True, False, False]):
         umaro_risk.battle_commands = [0x00, 0xFF, 0xFF, 0xFF]
     else:
-        cands = [0x00, 0x03, 0x05, 0x06, 0x07, 0x09, 0x0A, 0x0B, 0x0D, 0x10,
+        cands = [0x00, 0x05, 0x06, 0x07, 0x09, 0x0A, 0x0B, 0x10,
                  0x12, 0x13, 0x16, 0x18]
         cands = [i for i in cands if i not in changed_commands]
         base_command = random.choice(cands)
@@ -6437,6 +6437,7 @@ k   Randomize the clock in Zozo
     secret_codes['randombosses'] = "RANDOM BOSSES MODE"
     secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
     secret_codes['notawaiter'] = "CUTSCENE SKIPS"
+    secret_codes['theoldways'] = "OLD BALANCE MODE"
     s = ""
     for code, text in secret_codes.items():
         if code in flags:
@@ -6575,7 +6576,7 @@ k   Randomize the clock in Zozo
 
     if 'm' in flags or 'o' in flags or 'w' in flags:
         for m in monsters:
-            m.screw_tutorial_bosses()
+            m.screw_tutorial_bosses(old_vargas_fight='the old ways' in activated_codes)
             m.write_stats(fout)
 
     if 'c' in flags and 'm' in flags:

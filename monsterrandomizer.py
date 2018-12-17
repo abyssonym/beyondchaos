@@ -179,7 +179,6 @@ class MonsterBlock:
                         score += 1 * formation.present_enemies.count(self)
             score = score / float(len(fsets))
 
-        from formationrandomizer import get_fset
         locations = get_locations()
         fsets = set(fsets)
         locations = [l for l in get_locations()
@@ -719,8 +718,18 @@ class MonsterBlock:
         if madworld: 
             restricted = []
         else:
-            restricted = [0x13, 0x14]		
+            restricted = [0x13, 0x14]
 
+        banned = restricted
+        # No blizzard or tek laser in solo terra
+        from formationrandomizer import get_fset
+        for id in [0x39, 0x3A]:
+            fset = get_fset(id)
+            for f in fset.formations:
+                if self in f.present_enemies:
+                    banned.extend([0xB5, 0xBA])
+                    break
+            
         oldskills = sorted([s for s in all_spells if s.spellid in skillset],
                            key=lambda s: s.rank())
         if change_skillset:
@@ -741,7 +750,7 @@ class MonsterBlock:
                     if random.choice([True, False]):
                         candidates = [c for c in candidates if c.valid]
                     candidates = [c for c in candidates if
-                                  c.spellid not in restricted]
+                                  c.spellid not in banned]
                     if skill not in candidates:
                         candidates.append(skill)
                     candidates = sorted(candidates, key=lambda s: s.rank())
@@ -1054,12 +1063,20 @@ class MonsterBlock:
 
         self.write_ai(fout)
 
-    def screw_tutorial_bosses(self):
+    def screw_tutorial_bosses(self, old_vargas_fight=False):
         name = self.name.lower().strip('_')
         tutmessage = None
         if name == 'vargas':
-            self.stats['hp'] = 900 + random.randint(0, 100) + random.randint(0, 100)
-            tutmessage = "".join(map(chr, [0xF7, 0x08]))
+            if old_vargas_fight:
+                self.stats['hp'] = 900 + random.randint(0, 100) + random.randint(0, 100)
+            else:
+                self.stats['hp'] = 1500 + random.randint(0, 150) + random.randint(0, 150)
+                tutmessage = "".join(map(chr, [0xF7, 0x08]))
+                # trigger phase change at 640 or 768 HP
+                for i, a in enumerate(self.aiscript):
+                    if a[0:3] == "".join(map(chr,[0xFC, 0x06, 0x36])):
+                        self.aiscript[i] = "".join(map(chr, [0xFC, 0x06, 0x36, random.randint(5,6)]))
+                        break
         if name == 'tunnelarmr':
             self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
             self.aiscript = self.aiscript[4:]
@@ -1554,7 +1571,7 @@ class MonsterBlock:
             valid = [r for r in ranked if r in valid]
             index = int(self.level_rank() * len(valid))
             index = mutate_index(index, len(valid), [False, True],
-                                 (-5, 5), (-3, 3))
+                                 (-5, 5), (-3, 3), disregard_multiplier=True)
             special = valid[index]
             if special == 0x07 or (special not in [0x30, 0x31] and
                                    random.choice([True, False])):
@@ -1783,6 +1800,9 @@ def shuffle_monsters(monsters):
             candidates = nonbosses
         index = candidates.index(m)
 
+        candidates = [c for c in candidates
+                      if abs(c.stats["level"] - m.stats["level"]) <= 20]
+
         def get_swap_index(to_swap):
             to_swap = mutate_index(index, len(candidates),
                                    [False, False, True],
@@ -1799,7 +1819,26 @@ def shuffle_monsters(monsters):
             pass
         else:
             to_swap = get_swap_index(index)
-            m.swap_ai(candidates[to_swap])
+            n = candidates[to_swap]
+            
+            # No blizzard or tek laser in solo terra
+            banned_narshe_skills = [0xB5, 0xBA]
+            
+            banned_from_narshe = banned_narshe_skills in m.get_skillset()
+            banned_from_narshe |= banned_narshe_skills in n.get_skillset()
+            
+            if banned_from_narshe:
+                in_narshe_caves = False
+            
+                for id in [0x39, 0x3A]:
+                    fset = get_fset(id)
+                    for f in fset.formations:
+                        if m in f.present_enemies or n in f.present_enemies:
+                            in_narshe_caves = True
+                            break
+
+            if not banned_from_narshe or not in_narshe_caves:
+                m.swap_ai(n)
 
 
 palette_pools = {}

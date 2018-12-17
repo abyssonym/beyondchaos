@@ -522,3 +522,88 @@ elemabsorbs         20
 name_icon           e4
 name_text           Page Jacket
 tier                low
+
+! Turtle
+price               2
+itemtype            22
+equippable          8000
+learnrate           1
+learnspell          1C
+statusprotect2      10
+statusacquire3      04
+special3            02
+targeting           2E
+elements            80
+speedvigor          F0
+breakeffect         4C
+power               55
+hitmdef             37
+mblockevade         AA
+name_icon           e4
+name_text           Turtle
+description         Cool but rude
+tier                low
+
+! Rename Card
+price               2
+itemtype            11
+equippable          3fff
+otherproperties     24
+statboost2          08
+breakeffect         1e
+power               80
+hitmdef             e6
+weapon_animation    10 10 18 0a 36 81 5b 0
+name_icon           e0
+name_text           Rename Card
+tier                low
+
+! Munchausen
+price               2
+itemtype            24
+equippable          3fff
+statusacquire3      01
+statusprotect2      02
+special1            80
+special2            C0
+special3            04
+targeting           6e
+magstam             03
+breakeffect         5f
+power               18
+hitmdef             40
+statusacquire2      02
+name_icon           e3
+name_text           Munchausen
+tier                low
+
+! Zephyr Cap
+price               2
+itemtype            24
+equippable          3fff
+targeting           2E
+elements            10
+speedvigor          10
+breakeffect         93
+power               18
+hitmdef             11
+mblockevade         11
+specialaction       0F
+name_icon           e3
+name_text           Zephyr Cap
+description         Ole!
+tier                low
+
+! Meme ring
+price               80
+itemtype            25
+equippable          3fff
+statusprotect1      C2
+targeting           41
+speedvigor          10
+breakeffect         1A
+statusacquire2      01
+name_icon           e7
+name_text           Meme Ring
+description         Never talk to me or my son again.
+tier                low

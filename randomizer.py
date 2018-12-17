@@ -25,7 +25,7 @@ from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield, unhack_tintinabar)
 from esperrandomizer import (EsperBlock, allocate_espers)
-from shoprandomizer import ShopBlock
+from shoprandomizer import (ShopBlock, buy_owned_breakable_tools)
 from namerandomizer import generate_name
 from formationrandomizer import (get_formations, get_fsets,
                                  get_formation, get_fset)
@@ -829,6 +829,22 @@ def manage_commands(commands):
     eems = EnableEsperMagicSub()
     eems.set_location(0x3F091)
     eems.write(fout)
+    
+    # Let x-magic user use magic menu.
+    enable_xmagic_menu_sub = Substitution()
+    enable_xmagic_menu_sub.bytestring = [0xDF, 0x78, 0x4D, 0xC3, # CMP $C34D78,X
+    0xF0, 0x07, # BEQ 
+    0xE0, 0x01, 0x00, # CPX #$0001
+    0xD0, 0x02, # BNE
+    0xC9, 0x17, # CMP #$17
+    0x6b        # RTL
+    ]
+    enable_xmagic_menu_sub.set_location(0x3F09B)
+    enable_xmagic_menu_sub.write(fout)
+    
+    enable_xmagic_menu_sub.bytestring = [0x22, 0x9B, 0xF0, 0xC3]
+    enable_xmagic_menu_sub.set_location(0x34d56)
+    enable_xmagic_menu_sub.write(fout)
 
     # Prevent Runic, SwdTech, and Capture from being disabled/altered
     protect_battle_commands_sub = Substitution()
@@ -1151,7 +1167,7 @@ def manage_commands_new(commands):
                 ALWAYS_FIRST = []
                 ALWAYS_LAST = [
                     "Palidor", "Quadra Slam", "Quadra Slice", "Spiraler",
-                    "Pep Up", "Exploder",
+                    "Pep Up", "Exploder", "Quick"
                     ]
                 WEIGHTED_FIRST = [
                     "Life", "Life 2",
@@ -1223,11 +1239,17 @@ def manage_commands_new(commands):
 
                 c.properties = 3
                 c.targeting = 0
-                for mask in [0x01, 0x20, 0x40]:
+                for mask in [0x01, 0x40]:
                     for s in css.spells:
                         if s.targeting & mask:
                             c.targeting |= mask
                             break
+
+                # If the first spell is single-target only, but the combo allows
+                # targeting multiple, it'll randomly pick one target and do both
+                # spells on that one.
+                # So, only allow select multiple targets if the first one does.
+                c.targeting |= css.spells[0].targeting & 0x20
 
                 if css.spells[0].targeting & 0x40 == c.targeting & 0x40:
                     c.targeting |= (css.spells[0].targeting & 0x4)
@@ -1249,9 +1271,6 @@ def manage_commands_new(commands):
                 if (c.targeting & 1 and not c.targeting & 8
                         and random.randint(1, 30) == 30):
                     c.targeting = 0xC0
-
-                if c.targeting & 1:
-                    c.targeting |= 0x20  # allow multi-targeting
 
                 if c.targeting & 3 == 3:
                     c.targeting ^= 2  # allow targeting either side
@@ -1318,6 +1337,13 @@ def manage_commands_new(commands):
                 newname = "%sx%s" % (s.count, newname)
         elif isinstance(s, ChainSpellSub):
             newname = "?-%s" % newname
+
+        # Disable menu screens for replaced commands.
+        for i, name in enumerate(['swdtech', 'blitz', 'lore', 'rage', 'dance']):
+            if c.name == name:
+                print(c.name, newname)
+                fout.seek(0x34D7A + i)
+                fout.write(chr(0xFF))
 
         c.newname(newname, fout)
         c.unsetmenu(fout)
@@ -2843,15 +2869,13 @@ def manage_equipment(items):
     return items
 
 
-def manage_reorder_rages(freespaces, by_level=False):
+def manage_reorder_rages(freespaces):
     pointer = 0x301416
 
     monsters = get_monsters()
     monsters = sorted(monsters, key=lambda m: m.display_name)
     monsters = [m for m in monsters if m.id <= 0xFE]
     assert len(monsters) == 255
-    if by_level:
-        monsters = reversed(sorted(monsters, key=lambda m: m.stats['level']))
     monster_order = [m.id for m in monsters]
 
     reordered_rages_sub = Substitution()
@@ -3682,6 +3706,8 @@ def manage_shops():
     buyables = set([])
     descriptions = []
     crazy_shops = True if "madworld" in activated_codes else False
+    buy_owned_breakable_tools(fout)
+
     for s in get_shops():
         s.mutate_items(fout, crazy_shops)
         s.mutate_misc()
@@ -6139,7 +6165,9 @@ def manage_dances():
 
         # Replace 2/16 moves that are duplicated from other dances
         spells = get_ranked_spells(sourcefile)
-        spells = [s for s in spells if s.spellid >= 0x36 and s.spellid not in geo and s.spellid not in beasts]
+        spells = [s for s in spells
+                  if s.valid and s.spellid >= 0x36
+                  and s.spellid not in geo and s.spellid not in beasts]
         half = len(spells) / 2
 
         other = []
@@ -6323,8 +6351,6 @@ f   Randomize enemy formations.
 s   Swap character graphics around.
 p   Randomize the palettes of spells and weapon animations.
 d   Randomize final dungeon.
-a   Organize rages alphabetically (default)
-h   Organize rages by highest level first
 g   Randomize dances
 k   Randomize the clock in Zozo
 0-9 Shorthand for the text saved under that digit, if any
@@ -6645,9 +6671,7 @@ k   Randomize the clock in Zozo
     reseed()
 
     if flags:
-        by_level = 'h' in flags and 'a' not in flags
-        esperrage_spaces = manage_reorder_rages(esperrage_spaces,
-                                                by_level=by_level)
+        esperrage_spaces = manage_reorder_rages(esperrage_spaces)
 
         titlesub = Substitution()
         titlesub.bytestring = [0xFD] * 4
@@ -6806,6 +6830,7 @@ k   Randomize the clock in Zozo
 
     if 'k' in flags:
         manage_clock()
+    reseed()
 
     if 'g' in flags:
         if 0x13 not in changed_commands:
@@ -6924,6 +6949,8 @@ if __name__ == "__main__":
         raw_input("Press enter to close this program. ")
     except Exception, e:
         print "ERROR: %s" % e
+        if fout:
+            fout.close()
         if outfile is not None:
             print "Please try again with a different seed."
             raw_input("Press enter to delete %s and quit. " % outfile)

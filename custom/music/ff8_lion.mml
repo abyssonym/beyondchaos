@@ -5,6 +5,7 @@
 
 #VARIANT ~ enh
 #VARIANT / nat
+#VARIANT ~_ nointro
 
 #WAVE 0x20 ~0x0B~/0x0B/
 #WAVE 0x21 ~0x6F~/0x00/
@@ -83,7 +84,7 @@
 
 {1}
 'global'
-l16 [[["a8db8d"]j2"a8cd"]j2"a8a8"]"a8"k0 '02' [12m-2&2f] %k0
+l16 _[[["a8db8d"]j2"a8cd"]j2"a8a8"]"a8"k0 '02' [12m-2&2f] %k0_
 $
 [16"!!!o e8ih8ge8w8e8v8e8"]
 ##21
@@ -100,7 +101,7 @@ l16 [3"u8wu8uw8.uwu8uwu"]"u8wu8uw8.w-"v72,117"\wwwwww"
 ;
 
 {2}
-l16 [[["a-8d-b-8d-"]j2"a-8c-d-"]j2"a-8a-8"] "a-8" '02b'  [12m-2&2f] %k0
+l16 _[[["a-8d-b-8d-"]j2"a-8c-d-"]j2"a-8a-8"] "a-8" '02b'  [12m-2&2f] %k0_
 $
 '09' l2 [f1.g g+1.a+ b1.j2f a+1f+1]<c+ d1 l16 g8frc+8dc8.>a+8f8f+8
 ##21
@@ -116,7 +117,7 @@ l16 [29f]dff+ [g8gg8g8g8gggf8df g8gg8gg8gg8gfdff+] f8ff8f8f8fffd+8cd+ f8ff8ff8ff
 ;
 
 {3}
-r1r1 l16 ["f8ih8ifijifif8"j2"ii"]":f:z8"
+_r1r1 l16 ["f8ih8ifijifif8"j2"ii"]":f:z8"_
 $
 '01'>> l2 [f1.g g+1.a+ b1.j2f a+1f+1]<c+ d1^1
 ##21
@@ -133,7 +134,7 @@ l16 &186c1^1r32 <r8.f8rdrr4>a+ra+r r4fr8g8gg8g4
 ;
 
 {4}
-r1r1r1r2.. '01'> [12m-1&2f] %k0
+_r1r1r1r2.. '01'> [12m-1&2f] %k0_
 $
 '02'>> l2 [f1.g g+1.a+ b1.j2f a+1f+1]<c+ d1^1
 ##21
@@ -150,7 +151,7 @@ g2f2g2a+4....r64 <f8.f8.f8.f8fd+c>a+<c f8d+8>a+8.f8a+<d+g+g4
 ;
 
 {5}
-r1r1r1r1
+_r1r1r1r1_
 $
 '02b'>> l2 [f1.g g+1.a+ b1.j2f a+1f+1]<c+ d1^1 %k0
 ##21
@@ -168,7 +169,7 @@ l16 [ [&1^"!!!ok8ml8mkmnnkn"&35"k"j2"i"]^ ]
 ;
 
 {6}
-r1r1r1r1
+_r1r1r1r1_
 $
 '10'[8f1^1]
 ##21
@@ -184,7 +185,7 @@ l16 "!!y+1^1^1.x2 y+1^1^1."r"w-"v72,117"\wwwwww"
 ;
 
 {7}
-r1r1r1r1
+_r1r1r1r1_
 $
 l16 [8 [&1^"k8ml8mkmnnkn"&35"k"j2"i"]^ ]
 ##21
@@ -201,7 +202,7 @@ l8 [8"!!!o xxs16x16xxxxx"]
 ;
 
 {8}
-r1r1r1r1
+_r1r1r1r1_
 $
 l4 [16"xxyx"]
 ##21

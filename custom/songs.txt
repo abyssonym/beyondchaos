@@ -45,7 +45,8 @@ ff1_dungeon:    I85, G25, metamorphosis, grandfinale, unforgiven, floatingcont, 
 ff2_battleb:    H4, kefka, gogo, owzer*2, train, espers, fanatics*2, grandfinale, H:I50, H:G30, H:prelude, H:omen3, H:shadow, H:strago, H:balance, H:forest
 ff3_darkworld:  prelude, awakening, setzer
 ff3_eureka:     mountain, serpent, falcon, setzer
-ff3_warrior:    fanfare, figaro, returners*2
+ff3_warrior:    figaro, returners*2
+ff3_warrior_vic: fanfare*2
 ff4_airship:    blackjack*2
 ff4_babil:      troops*2, mountain, returners
 ff4_baron:      figaro, troops*2, returners
@@ -73,6 +74,8 @@ ff4_zot:        kefka, troops, fanatics
 ff5_battle:     I10, G10, battle*2
 ff5_bridge:     I65, G70, atma, grandfinale, unforgiven, savethem
 ff5_cave:       prelude, ruin, forest*2
+ff5_curse:      H4, shadow, owzer, ruin, fanatics, zozo, H:prelude, H:omen3, H:gestahl, H:kefka, H:gogo, H:strago, H:forest, H:espers
+ff5_curse_tr:   train*2
 ff5_excastle:   kefka, troops*2, savethem, gogo, umaro, kefkastower
 ff5_exdeath:    metamorphosis*2, grandfinale, fanatics
 ff5_final:      I90, G95, atma, dmad5
@@ -131,6 +134,7 @@ ffmq_battle3:   I60, G95, atma, dmad5, grandfinale, kefkastower
 ffmq_boss:      I55, G60, boss*2, floatingcont
 ffmq_forest:    omen3, shadow, awakening, owzer, narshe, town_ruin, ruin, forest*2, train
 ffmq_fossil:    cyan*2, figaro, troops*2, returners, gogo, martiallaw
+ffmq_gale:      cyan, troops, savethem, umaro*2, mountain*2, falcon, floatingcont, serpent
 ffmq_lava:      I35, G85, boss, gogo, umaro, zozo, magitek*2, floatingcont*2, kefkastower*2
 ffmq_light:     prelude, relm, awakening*2, town_ruin
 ffmq_rock:      prelude, setzer, chocobo*2, blackjack, johnny*2, spinachrag, moogles, zozo, martiallaw
@@ -208,6 +212,7 @@ sd3_winter:     W4, omen3*2, daryl, owzer, narshe*2, town_ruin, ruin*2, forest, 
 sdlm_nostalgic: daryl, rachel*2, gau, awakening, town_ruin*2
 sdlm_snowfield: W4, moogles, zozo, serpent*2, W:cyan, W:setzer, W:troops, W:savethem, W:martiallaw, W:town_ruin, W:falcon, W:mountain, W:espers, W:floatingcont
 sf2_balrog:     I35, G65, battle*2, setzer, blackjack, chocobo*2, johnny*2, moogles, magitek, floatingcont
+so2_rescue:     I70, G20, unforgiven, savethem, magitek*2, floatingcont
 tn_evergreen:   awakening*2, relm*2, forest
 top_cold:       W4, shadow, zozo, owzer, narshe*2, ruin*2, forest*2, serpent, espers*2, W:prelude, W:omen3, W:celes, W:daryl, W:umaro, W:town_ruin, W:veldt, W:mountain, W:kefkastower
 top_mint:       omen3, celes, rachel, awakening*2, town_ruin

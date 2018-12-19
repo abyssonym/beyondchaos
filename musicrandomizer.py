@@ -331,6 +331,11 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         if f_tellmewhy:
             if 'MusicPools' not in spoiler: spoiler['MusicPools'] = []
             spoiler['MusicPools'].append(txt)
+    
+    def usage_id(name):
+        if name.count("_") <= 1:
+            return name
+        return "_".join(name.split("_")[0:2])
             
     class SongSlot:
         def __init__(self, id, chance=0, is_pointer=True, data="\x00\x00\x00"):
@@ -479,7 +484,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         # 4. battle0 and battle1 chosen from I<boss0, G<max(50,boss1), sorted by G
         # 5. battle2 and battle3 chosen from I<boss2, G>battle1
         def intensity_subset(imin=0, gmin=0, imax=99, gmax=99):
-            return {k: v for k, v in intensitytable.items() if v[0] >= imin and v[0] <= imax and v[1] >= gmin and v[1] <= gmax and k not in used_songs}
+            return {k: v for k, v in intensitytable.items() if v[0] >= imin and v[0] <= imax and v[1] >= gmin and v[1] <= gmax and usage_id(k) not in used_songs}
             
         battlecount = len(battleids) + len(bossids)
         while len(intensitytable) < battlecount:
@@ -493,7 +498,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                 retry = False
                 battlechoices = rng.sample([(k, sum(intensitytable[k]), intensitytable[k][0]) for k in intensitytable.keys()], battlecount)
                 for c in battlechoices:
-                    if battlechoices[0] in used_songs: retry = True
+                    if usage_id(battlechoices[0]) in used_songs: retry = True
             battlechoices.sort(key=operator.itemgetter(1))
             battleprog = [None]*len(battleids)
             bossprog = [None]*len(bossids)
@@ -561,7 +566,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     else:
                         changeto = battleprog[battleids.index(id)]
                     s.changeto = changeto
-                    used_songs.append(changeto)
+                    used_songs.append(usage_id(changeto))
 
         return (battleids, bossids)
     
@@ -691,14 +696,14 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             if ident in tierboss:
                 songtable[ident].changeto = '!!tierboss'
             else:
-                choices = [c for c in songtable[ident].choices if c not in used_songs]
+                choices = [c for c in songtable[ident].choices if usage_id(c) not in used_songs]
                 if not choices: choices.append(native_prefix + ident)
                 newsong = rng.choice(choices)
-                if (newsong in used_songs) and (not f_repeat):
+                if (usage_id(newsong) in used_songs) and (not f_repeat):
                     keeptrying = True
                     break
                 else:
-                    if not f_repeat: used_songs.append(newsong)
+                    if not f_repeat: used_songs.append(usage_id(newsong))
                     songtable[ident].changeto = newsong if f_randomize else native_prefix + ident
                 
         if keeptrying:
@@ -711,17 +716,40 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                 s.data, s.inst = process_tierboss(tierboss[ident])
                 s.is_pointer = False
             # case: get song from MML
-            elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")):
+            elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")) or isfile(os.path.join(MUSIC_PATH, usage_id(s.changeto) + ".mml")):
+                mml, variant = "", ""
+                akao = {}
                 try:
-                    with open(os.path.join(MUSIC_PATH, s.changeto + ".mml"), 'r') as mmlf:
+                    with open(os.path.join(MUSIC_PATH, usage_id(s.changeto)) + ".mml", 'r') as mmlf:
                         mml = mmlf.read()
-                except:
-                    print "couldn't open {}.mml".format(s.changeto)
+                except IOError:
+                    pass
+                if mml:
+                    akao = process_mml(s.id, mml, usage_id(s.changeto) + ".mml")
+                if s.changeto.count("_") >= 2:
+                    variant = s.changeto[len(usage_id(s.changeto)):]
+                    if variant[0] == "_" and len(variant) > 1: variant = variant[1:]
+                    if variant not in akao:
+                        variant = ""
+                        try:
+                            with open(os.path.join(MUSIC_PATH, s.changeto) + ".mml", 'r') as mmlf:
+                                mml = mmlf.read()
+                        except IOError:
+                            mml = ""
+                        if mml:
+                            akao = process_mml(s.id, mml, s.changeto + ".mml")
+                        else:
+                            akao = {}
+                if not akao:
+                    print "couldn't find valid mml for {}".format(s.changeto)
                     keeptrying = True
                     break
-                akao = process_mml(s.id, mml, s.changeto + ".mml")
-                s.data = akao['_default_'][0]
-                s.inst = akao['_default_'][1]
+                if variant and variant in akao:
+                    s.data = akao[variant][0]
+                    s.inst = akao[variant][1]
+                else:
+                    s.data = akao['_default_'][0]
+                    s.inst = akao['_default_'][1]
                 s.is_pointer = False
                 if max(map(ord, s.inst)) > instcount:
                     if 'nopatch' in akao:
@@ -732,7 +760,6 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                         s.data = akao['nat'][0]
                     else:
                         print "WARNING: instrument out of range in {}".format(s.changeto + ".mml")
-                        
             # case: get song from source ROM
             elif not isfile(os.path.join(MUSIC_PATH, s.changeto + "_data.bin")):
                 target = s.changeto[len(native_prefix):]

@@ -1,0 +1,86 @@
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x21 -- ~0x81~/0x14/
+#WAVE 0x24 -- ~0x16~/0x16/
+#WAVE 0x26 -- ~0x80~/0x02/
+#WAVE 0x27 -- ~0x6A~/0x0E/
+#WAVE 0x28 -- ~0x7a~/0x08/
+#WAVE 0x29 -- ~0x46~/0x0D/
+#WAVE 0x2A -- ~0x0E~/0x0A/
+#WAVE 0x2B -- ~0x34~/0x34/
+
+
+{1}
+l16%x205t135%b60,0%v60p32%e1r4 $2 |9%a13~%y4%s4v50~/%y5%s2v60/o6[16f+8][8e8][8d8]>b8b8b8  
+b8r8b8<c+8d8[8e8][16d8][16f+8  ][8e8][8d8]>b8b8b8b8r8b8  <c+8d8[8e8][16d8][16e8]>[16b8]<[16c+8]|7~>~//v45[2r4  
+d4c+2^4  r8c+c+c+8c+c+c+8c+c+j2 r4  >b4<c+2^4  r8c+c+c+8c+c+c+8c+c+]c1  
+>b1  ^1  
+;2
+
+l16
+{2}
+l16%e1r4 $3 p96|9%a13~%y4%s4v50~/%y5%s2v60/o6[16d8]>[16b8][8f+8][24b8]<[16d8]>[16b8  
+][8f+8][24b8]<[16c+8]>[16g8][14a8]p64|7~>~//v65>b<c+def+4  ^rf+f+f+r<drdrc+rc+r>br  
+brararg+rg+rgrf+4  d4e2^4.  eeerarg+rgrf+4.  >bb<f+4.>bb<f+4.  
+>bb<f+r>br<c+rdrc4.  >g<cercegregf+4.  f+f+f+2^1  
+;3
+
+l16
+{3}
+l16%e1%a15r4 $5 |7v60p96[14r1  
+]o4/</b4^r<c+4^rd4  >b2r8br<c+rdr  >a8.rera8.rbr<c+4  ^1  
+>g4r8a4r8b4  ^2^8br<c+rdr  d8.rerc+2^8  ^1  
+|7v45>[2r4b4a2  ^4r8aaa8aaa8aa  j2 r4g4a2  ^4r8aaa8aaa8aa  
+]g1  f+1  ^1  
+;5
+
+l16
+{4}
+l16p64%e1%a15v115|4o3bbbb $6 p64o3v127|4[11f2^4  
+r8g8g2^4  r8f8]p79|B<v60%y0%s4%r4<b4.bbf+2  r4e4d4c+4  r1  
+p0,80,100v40<ag+gf+fed+dc+c>ba+ag+gf+  pr1  r1  v60<c>b<cde8cdergrf+gf+e  
+f+gf+ef+8f+gf+ef+8f+gf+e  f+1  
+;6
+
+l16
+{5}
+l16~v90~/v60/|8%e1r4 m48,18,207%y0%s5%r4 $7 p64[2o4b4.<d4.  
+b4a1  g+1  g1  >b4.<d4.a4  
+g+2^4e4  g1  ^1  ]e1  
+a1  b4.d4.g4  ^1  a1  
+^1  >b1  ^1  b1  
+^1  b1  ^1  <<e4.>g4.<c4  
+>b4.b<f+b2  ^1  
+;7
+
+l16
+{6}
+l16v80p64|6%y4%s3%r8%e1r4o4/</ $8 [2b2^4  ^8f+8b2^4  
+^8f+8e2^4  ^8b8g2^4  ^8<d8>b2^4  f+8b8e2^4  
+b8e8g2^4  ^8d8g2^4  ^8d8]a2^4  ^8e8a2^4  
+^8erg2^4  ^8d8g2^4  ^8d8a2^4  ^8e8a2^4  
+^8e8[6b4.b4.  b8f+8]<c4.c4.  c8>g8b4.b4.  b8f+8b4.b4.  
+b8f+8
+;8
+
+l16
+{7}
+l16%e1r4 $9 |A~v100~/v60/p32%y4%s3%r8[14r1  ]r2r4o5/>/ef+ga  b4.<c+4.d4  
+e1  a4e8a4b8<c+8d8  >b1  ^4.g4grarbr  
+b4^ra2^8  ^2^4/</|9~v100~/v70/%a15p64def+g  f+4.>brb2  ^4<c+4d4e4  
+f+edc+drf+re2  ^2a4.g+g  f+4.>f+8b4^<c+de  f+4^edc+>b8a8g8f+8  
+e4.a4.b8<c8  >b1  ^1  
+;9
+
+l16
+{8}
+l16p64%e1r4 $10 |1o5[5[2v80b8v40bbb8]v80b8v40b8[2v80b8  
+v40bbb8]v80bv40bb8[2v80b8v40bbb8]v80b8  v40b8[2v80b8v40bbb8]v80bv40bbb][2v80b8v40bb  
+b8]v80b8v40b8[2v80b8v40bbb8]v80bv40bb8  [9|4v80o3f8|1o5v60bbb8v80b8v60bbv80b8v60b8|4o3v80g8  
+]
+;10
+
+l16

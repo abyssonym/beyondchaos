@@ -3,9 +3,9 @@
 #COMPOSER Nobuo Uematsu
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
-#VARIANT ~_ nointro
+#VARIANT ~_ enh
+#VARIANT /_ nat
+#VARIANT ~ nointro
 
 #WAVE 0x20 ~0x0B~/0x0B/
 #WAVE 0x21 ~0x6F~/0x00/

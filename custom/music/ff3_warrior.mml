@@ -1,0 +1,120 @@
+#TITLE Return of the Warrior
+#ALBUM Final Fantasy III
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+#Based on NDS arrangement by Tsuyoshi Sekito
+
+#VARIANT ~! enh
+#VARIANT / nat
+#VARIANT ~_ vic
+
+#WAVE 0x20 !0x72!/0x0E/_0x7F_
+#WAVE 0x21 !0x73!/0x08/_0x08_
+#WAVE 0x22 ~0x1A~/0x1A/
+#WAVE 0x2A ~0x81~/0x14/
+#WAVE 0x2B !0x21!/0x21/_0x00_
+#WAVE 0x2C ~0x84~/0x17/
+#WAVE 0x2D !0x6D!/0x12/_0x8E_
+#WAVE 0x2E ~0x16~/0x16/
+#WAVE 0x2F !0x88!/0x11/_0x0F_
+
+#WAVE _0x20 0x7F_
+#WAVE _0x21 0x08_
+#WAVE _0x2B 0x00_
+#WAVE _0x2D 0x8E_
+#WAVE _0x2F 0x0F_
+
+#def global= t120 %x224 %b0,70 %v50
+
+#def tpet= |0 ~v96~/v64/ ~o5~/o6/ /m48,18,239/~m~ %e1
+#def horn= |1 ~v112~/v64/ ~o5~/o5/ m48,18,223 %e1
+#def tuba= |2 v64 o5 m48,18,207 %e1
+
+#drum "r"=5d |A p64 %e0
+#drum "s"=5e |A v80 p64 %e0
+#drum "s-"=5c |A v40 p64 %e0
+
+#drum "e"=4c |E v127 p64 %e1
+#drum "f"=4e |B v127 p64 %e1 %y1%s0
+#drum "f+"=~4f~/3f/ |C v127 p64 %e1
+#drum "d"=4d+ |E v127 p64 %e1
+#drum "d+"=5d+ |D v108 p64 %e1
+#drum "a+"=~4a~/3a/ |C v127 p64 %e1
+#drum "y"=5f |D v108 p64 %e0
+#drum "z"=5e |F v80 p64 %e0 %r17
+
+{1}
+'global'
+'tpet' l12 p96 $1 bag
+$
+f+3rf+b6rc+6r d3^rr8d8f+8a8 <d3rdd6rc+6>b <e3r>aa8r8a6r
+bree4r8e8f+8g8 l16f+ef+gl12a3^rdf+a <dr>bb4r8b8<c+8d8 l16c+>b<c+dl12e3^r>a6r
+<f+3rf+c+6re6r d3rc+>b8<d8c+8>b8
+l8 af+<d>f+a2..rr2 ge<c+>eg2..r4.l12bag
+;
+
+{2}
+'horn' l12 p32 $2 r4
+$
+d3rdg6r>a6r b3^rr8f+8a8<d8 e3reg+6rd8r24d c+3rc+c+8r8d+6r
+ar>bb4r8<d8c+8>b8 a6r<l16dc+del12f+6r>aa<d brf+f+4r8f+8e8d8 c+8^r24l16c+>b<c+dl12e6rc+6r
+f+6rg+6ra+6rc+6r b6rf+rf+f+3^r
+>a2^r6<dde f+6rddef+6rdde >a2^r6<c+c+d e6rc+c+de6rr4
+;
+
+{3}
+r4
+$
+'tuba' p64 l16
+d8.rd8.rc+8.rc+8.r >b8.rb8.r<a8.ra8.r g+8.rg+8.re8.re8.r >a8.r<a8.rg8.rf+8.r
+e8.^.r.e8g8.r>b8.r< d8.r8.d8f+8.r>a8.r b8.^.r.b8<d8.rf+8.r a8.^.r.a8e8.r>a8.r<
+f+4e4c+4>a+4 b4<b.r32r24br48b2
+[4d4>a8.r<] [4c+8.r>a8.r<]
+;
+
+{4}
+'horn' p48 l12
+;1
+
+{5}
+%g1 v80v48,60 l48"rrrrrrr r24r24r"
+$
+l24 "!v s^^ ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
+l24 "!v s^s ^s^ s^s ^ss48s48 s^^ ^s^ s^s ^s^"
+l24 "!v s^^ ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
+l24 "!v s^s ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
+
+[l24 "!v s^^ ^s^"v48,60l48"rrrrrrrrrrss" l24"!v s^s- ^s^" v48,60 l48"rrrrrrr r24r24."
+l24 "!v s^^ ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."]
+
+l24 "!v s^^ ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
+l24 "!v s^s ^s^ s^^ ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
+
+l24 "!v s^^ ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
+l24 "!v s^s ^s^ s^s ^ss48s48 s^^ ^s^ s^s ^s^"
+l24 "!v s^^ ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
+l24 "!v s^s ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
+;
+
+{6}
+'tpet' p80 l12
+;2
+
+{7}
+l4 r
+$
+"ef+df+ ff+df+ ff+df+ ff+df+"
+"ef+a+f+ ef+a+f+ ef+a+f+ ef+a+f+"
+"ef+df+ ff+df+"
+"ff+df+ ff+df+ ff+df+ ff+df+"
+;
+
+{8}
+l4 r
+$
+l2 r4
+$
+"yd+ zy zd+ ^y"
+"zy zy zy zy"
+"yd+ zd+ zd+ zd+ zd+ zy"
+;

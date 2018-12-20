@@ -1,0 +1,76 @@
+#TITLE Hurry! Hurry!!
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 -- ~0x43~ /0x0D/
+#WAVE 0x21 -- ~0x58~ /0x18/
+#WAVE 0x22 -- 0x0F
+#WAVE 0x23 -- ~0x68~ /0x11/
+#WAVE 0x24 -- 0x23
+#WAVE 0x25 -- 0x22
+#WAVE 0x26 -- 0x14
+#WAVE 0x27 -- ~0x76~ /0x1B/
+#WAVE 0x28 -- ~0x6B~ /0x02/
+#WAVE 0x29 -- ~0x6D~ /0x12/
+
+
+{1}
+l16t180%b0,70%v50%x170p65|0m12,20,195%r27%e1r2 $1 ~o4%a11v72~/o5%a15v120/
+[2[2brbrbrbr  
+<crcrcrcr>]<[2c+rc+rc+rc+r  drdrdrdr]>]<[2drdrdrdr  drc+rcr>bra+ra+ra+ra+r  
+a+rbr<crc+r]
+;1
+
+l16
+{2}
+l16p55|0m12,20,195%r27%e1r2   $2 ~o4%a11v72~/o5%a15v120/
+[2[2g+rg+rg+rg+rarararar  
+][2a+ra+ra+ra+rbrbrbrbr  ]][2brbrbrbrbra+rarg+r  grgrgrgrgrg+rara+r  
+]
+;2
+
+l16
+{3}
+l16~v104~/v115/p25|1m12,20,195r2 $3 ~o3~/o5/[2[2f8<frdrfr  >f+8<f+rd+rf+r>][2g8<grergr  
+>g+8<g+rfrg+r>]]g+rg+r<g+r>g+r  <g+rgrf+r>e8^8er<er>er  <erfrf+rgr>g+rg+r<g+r>g+r  
+<g+rgrf+r>e8^8er<er>er  <erfrf+rgr
+;3
+
+l16
+{7}
+l16v125p75|2m12,20,195o5|9r4a4  
+ $5 ^1  v60[28|2a4][2[6|2a8aa $4 ]aa|3a8j2 |2a8aa  ]|9v125a4
+;5
+
+l16
+{8}
+l16p45|4r2 $7 o6[2v75dv45ddd  
+v75a8v45ddv75d8v45ddj2 v75av45ddd]v75av45dv75av45d  
+;7
+
+l16
+{6}
+l16v125p60o5[2|6a8|5a8] $8 [8|5a4|6a4|5a8a8  
+|6a4][2|5a8a8|6a8|5a8|6a8|5a8  a8a8^8a8|6a8|5a8|6a8|5a8  |6a8|5a8]
+;8
+
+l16
+{4}
+l16v90p65|7%e1r2 $9 o4[2[2p65p96,110dfg+b  
+<dfg+b>p65p96,110d+f+a<cd+f+a<c>>][2p65p96,110ega+<c+  ega+<c+>>p65p96,110fg+b<dfg+b<d>>]]<<[2p110p96,65d>bg+f  
+d>bg+fp65p96,110d>ba+gf+d+d>b<<<p110p96,65a+gec+  >a+gec+>p65p96,110a+<a+>b<bc<c>c+<c+<]
+;9
+
+l16
+{5}
+l16v120p65|8r4  
+o6f8m24,-13^8 $10 o5[2[2[2f8<fr>][2f+8<f+r>]][2[2g8<gr  >][2g+8<g+r>]]][2g+8g+8<g+8>g+8<g+8g8  
+f+8e4e8e8e8e8f8  f+8g8>]
+;10
+
+l16

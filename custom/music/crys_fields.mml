@@ -1,0 +1,175 @@
+#TITLE Fields
+#ALBUM Crystalis
+#COMPOSER Yoko Osaka
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x3E~ /0x3E/
+#WAVE 0x21 ~0x82~ /0x0E/
+#WAVE 0x22 ~0x73~ /0x08/
+#WAVE 0x23 ~0x6B~ /0x02/
+#WAVE 0x24 ~0x87~ /0x33/
+
+#WAVE 0x27 ~0x59~ /0x22/
+#WAVE 0x28  0x21
+#WAVE 0x29  0x2A
+#WAVE 0x2A ~0x55~ /0x0F/
+
+#def global= t120 %v40 %x224 %b0,70
+
+#def xyl= |0 %e1 p48 v80 o5 m24,18,239 %y4%s2
+#def pet= |1 %e1 p80 v80 o6 m24,18,239
+#def horn= |2 %e1 p40 v96 ~o4~/o3/ m24,18,192
+#def bass= |3 %e1 p64 v96 o5 m 
+#def cord= |4 %e1 p96 v80 o5 m24,18,239
+
+#drum "k"=5g |7 %e1 v127 p64
+#drum "s"=5g |8 %e1 v127 p64
+#drum "p"=5e |9 %e1 v32 p96
+#drum "t"=5g |A %e1 v96 p96
+
+{1}
+'global'
+l16
+$ 'xyl'
+>b-8<df8a8. g8fe8d8. c8ec4^ >b-<c8>a4^
+ b-8<df8a8. g8fe8d8. <c4>g4 b-8ag8.f8
+>b-8<df8a8. g8fe8d8. c8ec4^ >b-<c8>a8^32aaa32
+ b-8<df8a8. g8fe8d8. v72,48[6e]v120,120[6e][4d+]
+ 
+dedc+de^8 ^8f4e8 dedc+de^8 f8e8g8f8
+efed+ef^8 ^8f4e8 f8e8d+8e8 f8e8a8g8
+
+v48 [12a][16g][4f]
+'xyl' d8d8ddd8 d8d8ddd8 f8f8fff8 e8e8eee8
+
+[<c>afd]bged bge->b<    a+gd>a+< a+fd>a+< aec>a< ae-c>a<
+[<c>afd]bged bge->b<    [afd>a<] a+fda+ <c>b-af
+[<c>afd]bged bge->b<    a+gd>a+< a+fd>a+< aec>a< ae-c>a<
+<[fd>ad<]fgae fd>ad<    [fd>ad<]f>a<d>f adf>a<
+defd gdad <c>dad gdfd   defd gdad <c>dad <c>d<d>d
+defd defd cdec defd     defd gdad cdec fcd8
+;
+
+{2}
+l8 $ 'xyl'
+>f.f.f b-.<c.>b- a.a.a g.f+.<d>
+f.f.f b-.<c.>b- a4<c4 d.e.c>
+f.f.f b-.<c.>b- a.a.a g.f+^32<d32d16d16>
+f.f.f b-.<c.>b- <v72,48c32[5c16]c32v120,120^32[9c16]c32>
+
+l16
+v48 [32a+]<[32c]
+
+&6[8f][8e][8c][8d]r32
+'xyl' >r32a8a8aaa8 a8a8aaa8 <c8c8ccc8> a+8a+8aaa16.
+
+'cord' %r15 l16
+d8fa8<c8.> b4g4 r8a+8<c>a+8%r2a ^2 %r15
+d8fa8<c8.> b4g4 frfrf4 grgrg4
+d8fa8<c8.> b4g4 r8a+8<c>a+8%r2a ^2 %r15
+v64 r8ddef8r dd8d8.ef r8ddef8c ^8f8gf8.
+r8ddga8. dd8d8.ga r8ddad8c ^8>a8ag+8.
+<d8.e8.f8 ^8e4d+8 r8>aa8a8a <d2
+;
+
+{3}
+l16 $ 'horn'
+[8r1] %r22
+[6a+]^8 ^8a+4a+8 [6a+]^8 [4a+8]
+<[6c]^8 ^8c4c8 [6c]^8 [4c8] %r
+
+frfrf4 erere4 crcrc4 drdrd4
+r8a8aa+8a ^8a8a<c8. ^8>a8<cd8e ^8>a+8<d>a8^
+
+'cord' %r16
+>a8a<c8f8. g4d4 r8f8fd8%r2e ^2 %r16
+>a8a<c8f8. g4d4 drdrd4 crcre4
+>a8a<c8f8. g4d4 r8f8fd8%r2e ^2 %r16
+>r8ffed8r ff8f8.ed r8ffef8g ^8f8ef8.
+'horn' l16 r8<<ffed8. ff8f8.ed r8ddcd8e ^8d8c>b8.
+a+8.a8.g+8 ^8g4f+8 r8<dd8d8d d2
+;
+
+{4}
+l16 $ 'horn'<
+[31r4] d+4
+dedc+de^8 ^8f4e8 dedc+de^8 f8e8g8f8
+efed+ef^8 ^8f4e8 f8e8d+8e8 f8e8a8g8
+
+arara4 ararg4 grgrg4 grgrf4
+<r8d8ef8d ^8d8ef8. ^8e8fg8a ^8g8fe8^>
+
+frfrf4 frfrd4 drdrg4 ererf4
+frfrf4 frfrd4 a4.aa a+4a4
+frfrf4 frfrd4 drdrg4 ererf4
+drdrd4 drdrd4 drdrd4 drcra4
+'horn'r8<<aagf8. aa8a8.gf r8ffef8g ^8f8ed+8.
+d8.c+8.c8 ^8>b4a+8 r8<ff8f8f f2
+;
+
+{5}
+l16 $ 'pet'
+[31r4] d+4
+dedc+de^8 ^8f4e8 dedc+de^8 f8e8g8f8
+efed+ef^8 ^8f4e8 f8e8d+8e8 f8e8a8g8
+
+a4^%g1>a+<df%g0 a4g4 g4^%g1>a<ce %g0g4f4
+%r20 d8d8ddd8 d8d8ddd8 f8f8fff8 e8e8eee8 %r
+
+'horn' l32 [3d16.r<d16.r>f16.r<f16.r> e16.r<e16.r>d+16.r<d+16.r>]
+'pet' l16 <d4.c>b< f4e4
+'horn' l32 [2d16.r<d16.r>f16.r<f16.r> e16.rj2<e16.r>d+16.r<d+16.r>]
+'pet' l16 <d4e8
+r8ffed8r ff8f8.ed r8ffef8g ^8f8ef8.
+'horn' <r8ddga8. dd8d8.ga r8ddad8c ^8>a8ag+8.
+<d8.e8.f8 ^8e4d+8 'pet' r8ff8f8f f2
+;
+
+{6}
+l16 $ 'bass'
+[a+r<a+r>]<[cr<cr>]>[ar<ar>]gr<grdrcr>
+[a+r<a+r>]<[cr<cr>][er<er>][fr<fr>]>
+[a+r<a+r>]<[cr<cr>]>[ar<ar>]gr<grdrcr>
+[a+r<a+r>]<[cr<cr>][er<er>]cr<cr>>br<br
+
+%r21 
+a+a+8a+^4 >a+8<a+a+>a+8<a+a+
+a+a+8a+^4 >a+8<a+a+>b+8<b+b+
+<cc8c^4 >c8<cc>c8<cc>
+c8ccc8cc c8ccc8cc
+
+a+a+8a+<dd8d> d8d8c8c8
+aa8a<cc8c> c8c8d8d8>
+a8<a8>a8<a8> a8<aa>a8<a8
+c8a+8>a+8<<c8> >a+8<a+a+c8c8
+%r
+
+l32
+[3d16.r<d16.r>f16.r<f16.r> e16.r<e16.r>d+16.r<d+16.r>]
+[d16.r<d16.r>] c16.r<c16.r>c+16.r<c+16.r>
+d16.r<d16.r>f16.r<f16.r> e16.r<e16.r>d+16.r<d+16.r>
+d16.r<d16.r>f16.r<f16.r> [g16.r<g16.r>]
+>[7a+16.r<a+16.r>]< c16.r<c16.r>
+[12d16.r<d16.r>] [3d16.r^8]d16.rc16.r
+;
+
+{7}
+$
+[8r1]
+l16
+[3"tt8.p4" r8"t4t8"] ["!!tt8t8.k8"]
+l32 [7"t8t8tt"r"t^8"] "t8t8tt8.t"
+    [23"t8t8tt"r"t^8"] "t8t8tt"r16"tttt"
+
+;
+
+{8}
+l8 $
+[4[3"kpsp"]"kps16k16p16k16"]
+l16 [3"ss8.k4" ^8"k4k8"] ["ss8s8^32k32s8" ]
+l16 [7"kk8.s8.k"] "k8k8ssss"
+    [23"kk8.s8.k"] "kk8.s8s8"
+;

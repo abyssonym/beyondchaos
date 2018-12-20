@@ -1,0 +1,228 @@
+#TITLE Fort Dragonia
+#ALBUM Chrono Cross
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+# via vgmtrans
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 --  0x06          #Choir
+#WAVE 0x21 --  0x3B          #Organ
+#WAVE 0x22 -- ~0x7b~ /0x1B/  #Piano
+#WAVE 0x23 -- ~0x62~ /0x20/  #Celesta
+#WAVE 0x24 --  0x1C          #Synth Bass
+#WAVE 0x25 --  0x22          #Kick
+#WAVE 0x26 -- ~0x71~ /0x21/  #Snare
+#WAVE 0x27 -- ~0x66~ /0x2E/  #Tom
+#WAVE 0x28 --  0x0F          #Hi-Hat
+#WAVE 0x29 -- ~0x88~ /0x11/  #Ride
+#WAVE 0x2A -- ~0x5f~ /0x2F/  #Shakes
+#WAVE 0x2B -- ~0x42~ /0x3E/  #Fake Tubes
+#WAVE 0x2C --  0x23          #Cowbell
+
+
+{1}
+l16t143%v80%x192%b0,58%e1%k0v8p56@32o3r8.v192,74f1  ^1  ^1  
+^1  ^f+1  ^1  ^1  
+^1  f1  ^1  ^1  
+^1   $1 @34v93o3f8<v42crv69grf8>v93d+8<fr8.r2  v69f+rr8>v93f+8<g+4>f8<v42crv69gr  
+f8>v93d+8<fr8.r2  >v69cr8.<v76d4cr>f8<v42crv69gr  f8>v93d+8<fr8.r2  
+>v42f+8<v93g+8r8v69g+4>f8<v42crv69gr  f8>v93d+8<fr8.r2  v33g+r8.>v45a+4.v69f8<crv93gr  
+v69f8>v76d+8<v93fr8.r2  v33c+v49a+r8a+8v75f+8v93g+8>f8<v60crv96gr  
+v60f8>v76d+8<v93fr8.r2  >v55cr8.<v75g4v62cr>v75f8<crv96gr  v66f8>v85d+8<v75fr8.r2  
+>v45f+8<v93g+8v66f+rv72g+4>f8<crv90gr  v39f8>v81d+8<v93fr8.r2  v33d+r8.v45>a+4.@35v40p56o4f2  
+a+2f2  a+2f2  a+2f2  a+2f2  
+a+2f2  a+2f2  a+2f2  a+2f2  
+a+2f2  a+2f2  a+2@33p72v52o6f1  ^2v36f+4d+4  
+v52f2v36a2  ^2^4g+8f+8  v52f1  ^2v36d+2  
+v52f2v39c2  ^2^8>a+8<v45c8v39c+8  v52c1  ^1  
+^1  ^1  v29p76o6c1  >b1  
+<c2d+2  >b1  <c1  >b1  
+a+1  a1  v192,20a+1  v128,36^2^4o5[2<v37c>v47f<c>v51f  
+v47a+v51fv47d+v51dv44d+v46fv51a+v54f<v51c>v47f<c>v51fv47a+v51fv47d+v51d  
+v44d+v46fv51a+v54f<v51c>v47f<c>v51fv47a+v51fv47d+v51dv44d+v46fv51a+v54f  
+<v51c>v47f<c>v51fv47a+v51fv47d+v51dv44d+v46fv51a+v54f<v34c>v46f<c>v38f  
+v44a+fd+v38c+v44d+fa+f<v46c>v34f<v46c>v41fv44a+v41fv38d+c+  v36d+v38fa+v44f<c>f<c>fa+fv41d+c+v46d+fa+f  
+<v51c>v46f<v51c+>v47f<v44d+>f<v46c+>v47f<v44c+>v41fv47a+f]v80c1  
+^1  ^1  ^1  
+;1
+
+l16
+{2}
+l16%e1%k0v8p72@32o4r8.r1  
+r1  v192,74c1  ^1  ^>a+1  
+^1  ^1  ^1  <c1  
+^1  ^1  ^1   $2 @34v69o5r4cr>r4v93a+r8.r2  
+<v69c+rr4v93c+4r4cr  >r4a+r8.r2  ^4v69g4r8<r4cr  >r4v93a+r8.r2  
+v42c+r<v93c+8>v69f+ra+4<r4cr  >r4v93a+r8.r2  <v33d+r8.v45d+4.r4v93cr  
+>r4a+r8.r2  rv49f+<v69c+8r4.r4v96cr  >r4a+r8.r2  ^4v75d4r8<r4v96cr  
+>r4v75a+r8.r2  v45c+8<v93c+8>r8v72a+4<r4v90cr  >r4v93a+r8.r2  v33g+r8.<v45d+4.@32v62p64o4c1  
+c+1  >a+1  <c1  c1  
+c+1  >a+1  a1  ^1  
+^1  ^1  @33p60v33o4f1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  v29p58o5g+1  f+1  
+g+1  f+1  g+1  f+1  
+f+1  f1  v192,20e1  v128,36^2^4p70v37o4g1  
+^2g1  ^2g+1  ^2g+1  
+^2g1  ^2g1  ^2g+1  
+^2g+1  ^2v64r1  a+1  
+^1  ^1  
+;2
+
+l16
+{3}
+l16%e1%k0v32p96@35o6r4r1  r1  
+r1  r1  r2c2  c+2d+2  
+c1  >a+1  r2g4g+4  a+2<c2  
+>g2g+1  r2 $3 v127p64@38o5r1  r1  
+r1  r1  r1  r1  
+r1  r2^4v80f4  @37v106c4c4@38v64f2  r4.@37v86c4@38v58f4@37v111c8  
+v106c4v86c4@38v64f4@37v86c8@38v76f2  @37v96c4v86c8@38v64f4@37v106c4c4  
+@38v64f8@37v127c2v86c8@38v50f4  f4@37v86c8@38v64f8@37v106c4v86c4  
+@38v64f4@37v106c8@38v76f2@37v84c4  c8@38v64f8@37v111c8@32v62o3f1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  @33p68v33f1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  ^1  ^1  
+^1  ^1  v29p52o3f1  e1  
+f1  e1  f1  e1  
+<d+1  d1  v192,20c1  v128,36^2^4@32p48v67o4c1  
+^1  ^1  c1  ^1  
+^1  c1  ^1  ^1  
+c1  ^1  ^1  @33v80r1  
+r1  <f1  ^1  
+;3
+
+l16
+{4}
+l16%e1%k0v8p64@32o5r4r1  
+r1  r1  r1  r1  
+r2r4r8rv192,74c+  ^1  ^1  v192,37^1  
+v192,0^1  r1  r1   $4 @36v36p64o4r1  
+r1  r1  r1  r1  
+r1  r1  r1  f8<crd+rfrd+8>a+rr2  
+r8g+8r8a+8r8<c8>f8<cr  d+rfrd+ra+rr2  r8crd+8>a+r<f+8fr>f8<cr  d+rfrd+8>a+rr2  
+r8f+r<g+8f+rg+4>f8<cr  d+rfrd+r>a+r<a+8frr4.  d+r8.>a+4.@35v40p80o5f4c4  
+c+4c4f4c4  c+4c4f4c4  c+4c4f4c4  c+4c4f4c4  
+c+4c4f4c4  c+4c4f4c4  c+4c4f4c4  c+4c4f4c4  
+c+4c4f4c4  c+4c4f4c4  c+4c8.^32v64c32v48f4c8.^32c32  c+4c8.^32c32f4c8.^32c32  
+c+4c8.^32c32f4c8.^32c32  c+4c8.^32c32f4c8.^32c32  c+4c8.^32c32f4c8.^32c32  
+c+4c8.^32c32f4c8.^32c32  c+4c8.^32c32f4c8.^32c32  c+4c8.^32c32f4c8.^32c32  
+c+4c8.^32c32f4c8.^32c32  c+4c8.^32c32f4c8.^32c32  c+4c8.^32c32f4c8.^32c32  
+c+4c8.^32c32f4c8.^32c32  c+4c4@36p64o5f2  ^8a+8<c8f8e2  >b4<e4>f4a+4  
+<c4f4e2  ^8>b8<e8>b8f2  ^8a+8<c8f8e2  >b4<e4d+2  
+>a+2<d2  ^4>a4<c+1  ^2^4o5v64c2  ^8g8<c4.^1  
+>g8<c8d4c4>g8c+2  ^8g+8<c+8^1  c+8d+8f8g8g+4g4  f8g4c2^4  
+^1  ^8>c8g8<c8d8d+4c8  f4.g4.d+4.  f4.c+4.d+4  
+>c+8g+8<c+8g+8a+8g+8c+8g1  ^1  ^1  ^1  
+
+;4
+
+l16
+{5}
+l16%e1%k0v8p40@40o5r4r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r2^4r8r24v46,98f24f24  
+ $5 v49p40@40o5f8f8@41a8@40v38v24,59f8f8f2  @41p88v13g8v38g8v59g2r24@40p40v8v46,49f24f24f8  
+f8@41a8@40v38v24,59f8f8@41a8@40v38f8v69f2  @41p88v13g4v49g4r24@40p40v8v46,49f24f24f8f8@41a8  
+@40v38v24,59f8f8f2@41p88v13g8v38g8  v59g2r24@40p40v8v46,49f24f24f8f8@41a8  
+@40v38v24,59f8f8f2r24@41p88v13g24v38g24v59g2  r4@40p20v38f4f8v18f8v38f8v18f8  
+f8v59f8r8v18f8v38f8v18f8v38f8v18f8  @41a8@40v43f8v38f4v18f8f8v28f8.v9f  
+v18f8v59f8r4.v28f4v18f8  @41v28a8@40f8v38f8v18f8v38f8v18f8f8v59f2  
+v18f8f8v38f8v18f8f8f8@41a8@40v38f4  v18f8f8@41v38a8@40f8f8v59f4r4  
+v18f8f8@41a8@40f8v43f^48^48@43v64p16o4c1  ^1  ^1  ^1  
+r1  r1  r1  r1  
+r2r8@39p76o7v4f^32v14f^32v26f^32v36f12v42f12  v56f^32v58f^24v50f8v42f6v28f12^^32v22f8.v18f6  
+^32v10f6^32v2f12^^32r2@43v64p16o4c1  ^1  c1  ^1  
+c1  ^1  c1  ^1  
+c1  ^1  c1  ^1  
+c1  >b1  <c2d+2  >b1  
+<c1  >b1  a+2<c+2  c2f2  
+d+1  ^2^4v40f1  ^2f1  
+^2f1  ^2f1  ^2f1  
+^2f1  ^2f1  ^2f1  
+^2f1  ^1  ^1  ^1  
+r48
+;5
+
+l16
+{6}
+l16%e1%k0v127p64@38o5r4r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+ $6 @34v69p68o4r1  r4.g+rr2  r1  r1  
+r1  r1  r1  r4.v33a+r8.v45f4.  
+r1  r4.r24r24v49g+r24rr4.  r1  r2r8v75d+4r8  
+r1  r1  r1  r4.v33a+r8.v45f4.  
+@37p64v111c1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  @32v32p74o5f4r4f4r4  
+f4r4f8r4.  f4r4f4r4  f4r4f8r4.  f4r4f8r4.  
+f4r4f8r4.  f4r4f8r4.  f4r4f8r4.  f4r4f4r4  
+f4r4f4r4  f4r4f4r4  f4r4f4r4  @33p70v29o5f1  
+e1  f1  e1  f1  
+e1  f1  f2<f2  v192,20d+1  
+v128,36^2^8.^48^48@41v38f4<@44p24v24c8  >@41p70v38f8<<@37p24v24c8>>@41p70v49f8v59f4<<@37p24v24c8>>@41p70v49f8<@44p24v24c8  
+>@41p70v38f8f4f4f8v49f8v59f8.  v28fv38f8v59f8<@44p24v24c8>@41p70v38f8f4f8f8  
+<<@37p24v24c8>>@41p70v49f8f4v38f8v49f8<@44p24v24c8>@41p70v38f8  
+f4f4f4v49f8.v28f  v38f8v49f8<@44p24v24c8>@41p70v38f8f4f8f8  <<@37p24v24c8>>@41p70v49f8v59f4v38f4v49f8.v38f  
+f8v49f8v28f8v38f8<<@37p24v24c8>>@41p70v49f8v59f8v38f8  ffv49f8<@44p24v24c8>@41p70v38f8f8v49f8f8v38f8  
+<<@37p24v24c8>>@41p70v49f8v59f4v38f4v49f8v38f8  f4f8f8<<@37p24v24c8>>@41p70v49f8v59f4  
+v38ffv49f8<@44p24v24c8>@41p70v38f8v49f1  r1  r1  r1  
+r48
+;6
+
+l16
+{7}
+l16%e1%k0p64@39o5r4r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+ $7 @34v69p60o4r1  r4.c+rr2  r1  r1  
+r1  r1  r1  r4.v33d+r8.v45a+4.  
+r1  r1  r1  r1  
+r1  r1  r1  r2r8a+4.  
+g1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  @32v16p80o6f4r4f4r4  
+f4r4v12f4r4  v16f4r4f4r4  f4r4v12f4r4  v16f4r4v12f4r4  
+v16f4r4v12f4r4  v16f4r4v12f4r4  v16f4r4v12f4r4  v16f4r4f4r4  
+f4r4f4r4  f4r4f4r4  f4r4f4r4  @33p64v29o6r1  
+r1  r1  r1  r1  
+r1  r2c+2  c1  >v192,20g+1  
+v128,36^2^4p74o5@38v64f4  v76f8@37v82c4c4c8^8@38v64f8  @37v66c8v74c8v82c4v66c8v82c8^8v66c8  
+v82c8@38v64f4v16b8v50f8v58f8@37v74c8.v66c8.  v74c4v66c8v82c8@38v64f8^4v76f8.  
+v16b@37v66c4c8@38v64f8^8v16b8@37v96c8@39v64p127p96,0<c4  >a8g8a8p74@37v66c8.c8.@38v58f8@37v66c8  
+@38v64f8@37v66c8.c^8c8c8@38v64f8@37v66c8.  c8.@38v58f8@37v66c8@38v64f8@37v66c8.c8.@38v64f8  
+v8bv16bv24bv40fv64f4f8@37v66c4c8  @38v64f8@37v66c8@38v16b8v50f4v16b8@37v66c8.c8.  
+@38v64f8@37v66c8@38v64f8@37v66c8@39v64p127p120,0<c4>a8g8  aa@38f1  
+r1  r1  r1  
+;7
+
+l16
+{8}
+l16%e1%k0v48p64@32o7r4r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1   $8 @34v45p64o5r1  
+r1  r1  r1  r1  
+r1  r1  r2r8c4.  r1  
+r1  r1  r1  r1  
+r1  r1  r4.v33d+r8.v45c4.  >g+1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  @35v48p56o4v60f2a+2  f2a+2  
+f2a2  f2a2  v48f2a+2  f2a+2  
+f2a+2  f2a+2  f2a+2  f2a+2  
+f2a+2  f2a+2  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r2r8r48v28p70@41o5a24v38a24r48p16o7@37v10c8v16c8  
+>>@42v57g8<@44v16f8<[23@42v57g8<<@37v16c8>>@42v57g8<@44v16f8>]@33p64v80o3f1  
+^1  ^1  ^1  
+;8
+
+l16

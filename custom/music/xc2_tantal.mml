@@ -1,0 +1,413 @@
+#TITLE Tantal
+#ALBUM Xenoblade Chronicles 2
+#COMPOSER ACE
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+#SFXV ` *
+
+#WAVE 0x20 ~0x64~/0x06/
+#WAVE 0x21 ~0x61~/0x36/
+#WAVE 0x22 ~0x46~/0x0D/
+#WAVE 0x23 ~0x60~/0x18/
+#WAVE 0x24 ~0x79~/0x1B/
+#WAVE 0x25 ~0x62~/0x3E/
+#WAVE 0x28 ~0x00~/0x2C/
+
+#WAVE 0x2A 0x22
+#WAVE 0x2B ~0x7E~/0x14/
+#WAVE 0x2C ~0x6D~/0x12/
+#WAVE 0x2F 0x0F
+
+#def global=t162 %v70 %x224 %b0,70
+
+#def v=m48,18,239
+#def v-=m48,18,207
+
+#drum "a+"=4a @4 %r24 v96
+#drum "a"=4a @4 %r28 v76
+#drum "b"=4g @4 %r28 v66
+#drum "c"=4f @4 %r28 v56
+#drum "d"=4e @4 %r28 v46
+#drum "a-"=4d @4 %r26 v76
+#drum "g"=5f |F v68
+#drum "h"=5e |F v64
+#drum "i"=5e |F v52
+#drum "j"=5e |F v40
+
+#drum "k"=5c |A v127
+#drum "s"=5b |B v112
+#drum "s-"=5c |B v127
+#drum "s+"=5b |B v127
+#drum "t"=5b |B v104
+#drum "u"=5b |B v96
+#drum "q"=5f |C %a3 v60
+#drum "r"=5f |C %a3 v96
+#drum "r+"=5f |C %a4 v96
+#drum "r-"=3f |C %a3 v127
+#drum "y"=5f |C %a v96
+#drum "y+"=5f |C %a v127
+
+*{1}*`{3}`
+%e1 l1
+## 1 bass choir
+|0 ~o2 v127~/o3 v127/ p88 'v-' 
+%a4 a^g+^
+##5 cymbals
+p64 [3"y..r+4"]"yr"
+##13 bass strings, rev.cym
+[|2 ~o2 v127~/o2 v127/ p96 'v-' l1
+a^g^f^d j2 p64 "!!!or-"]
+##21 bass strings
+e
+##29 bass strings, rev.cym
+$1 |2 ~o2 v127~/o2 v127/ p96 'v-'
+f^e^d^e^4 p64 "!!!or2."
+##37 cymbal, 38-54 soprano strings (44 baritone)
+%a"y" |2 ~o6 v72~/o6 v72/ 'v' p52 l16
+%a1 e1^1.. %l1%y edc>b %l0 b2.a8 %r5 a8^1^1
+~o3 v127~/o3 v127/ p88 l4 %a12%r15 f<c>ba+
+~o6 v72~/o6 v72/ p52 l2 %y
+m1,18,239 %a8e1^1^%ydgb b<cde e1f. l16 %g1 ec>fc %g0
+##53 cymbal, violin
+p64 "!!!oy1" ^1^1^1
+|1 ~o5~/o6/ p36 %r3 'v'
+v24 ~v192,96~/v192,80/ l8 frff rger4
+[j2,159;458 $159
+## THE DROP
+p64 "!!!oq1"
+## 62-77 percussion
+l8 %g1 [[4"k4skk4s4"j4"k4sk4ks4"] l16 "k8k8s8ka-s8s8utss+"]
+## 78-81 violin, percus2
+|1 ~o4 v96~/o5 v80/ p20 'v' %r11 b1^1 r1 l8 p64 m "!!!os-s-s-s-" r2
+## 82-97 cymbal -> nothing -> low piano -> drum roll
+"y1" [11r1]
+|4 ~o3 v96~/o3 v96/ p96 l8 [5b4.] r8
+o5 p64 [j2,198;859 $198
+## 98 
+~@3 o5 v68 %a13%y6%s3%r12~/|4 o5 v96/ p92
+[15r1] l16 r2 f4^<d8.
+;1
+
+{2}
+'global' %e1 l1
+## 1 baritone choir
+|0 ~o3 v127~/o4 v127/ p80 'v-' 
+%a4 a^g+^
+## 5 alto choir A
+l8 r1r1r1..
+|0 ~o5 v80~/o6 v80/ p64 'v' %y%r11
+l8 ef e4.d4.c1^1.
+l4 ecd
+##13 contrabass
+|1 ~o2 v40~/o3 v32/ p24 'v-' l1
+a^g^f^de
+##21 alto choir
+|0 ~o5 v80~/o6 v80/ p64 'v' %r11 l8
+[4r1]g4gg4f4e d4e1^1^2.
+##29 alto choir, piano at 32, viola 34-36
+$2 |0 ~o5 v80~/o6 v80/ p64 'v' %r11
+g4gg4f4e d4 efe4>b1^
+|4 ~o4 v96~/o5 v96/ p96 m l16 eab1 l8
+|0 ~< v80~/< v80/ p64 l8 g4ga4f4e
+|1 ~> v80~/> v72/ p36 %r11 l2 %a4f1%a15abg+e
+##37-52 bass strings
+|2 ~o2 v127~/o2 v127/ p96 l1
+[a^^^f^^j2 l4 %r15 ffgg+ %y]^1
+##53 lower strings
+< ~%a10~/|8 %a10 <</%r20 l8
+%k5 $253 [[4~v127~/v127/c~v96~/v112/c~v64~/v96/c][~v127~/v127/c~v96~/v112/c]] j1,0
+%k11 [j2,261;253 $261 %k0
+## THE DROP
+r4 p64p0,24,96 "!!!oq2." p
+## 62-77 low strings
+|2 ~o2 v127~/o2 v127/ p96 'v-' l1
+[a^g^f^de]
+## 78-81 low strings
+~%a11~/|8 %a11 <</%r19 l4
+a.a.<c.>b.bb8b8 a4.a4.<c4> g8g8g8g8 r2
+## 82-97 low strings
+%r13 l4
+[[5f.]^8 [5d.]^8 j2,296 [5b.]^8 [4a+.]g4<c4>]
+$296 [5b.]^8 a.a.g+.g+.g+2
+## 98 low choir
+|0 ~o3 v96~/o4 v96/ p58 %a8%r7 'v-'
+[13r2] f2e1
+a1^1g1^1f1^1d1e1
+;2
+
+*{3}*`{1}`
+%e1 l4
+## 1 tenor choir
+|0 ~o4 v80~/o5 v80/ p72 'v' 
+f2.ed2c2 e2.dc2>b2
+## 5 violin
+|1 ~o4 v80~/o5 v72/ p36 %r11
+[7r1 $0] l4 r $312 [[<ecd
+##13 violin
+>b1 ^]ab<c j2,325 l8 >b4ag4.fe4.a1..     l4 r]
+##21 violin
+$325 l8 grgg4f4e d4e2.
+j1,0 ^1^1
+##29 violin
+$3 |1 ~o5 v80~/o6 v72/ p36 %r11
+$329 g4gg4f4e d4efe4>b4^1^1     <g4ga4f4ed1 f2e2d2e2 j1,0
+##37, 45 alto choir, rev.cym
+|0 ~o4 v100~/o5 v100/ p48 %r10
+l4 [<rc>b<c dc>b<f8 e1^ l8 c>b<cdc>b<c >b2.aa^1^1j2^1] ^4 "!!!or2."
+##53 higher strings
+~|2 o4 %a10~/|8 o6 %a10/ %r20 p80
+%k9 [j2,357;253 $357
+%k4 [j2,361;253 $361 %k0
+## THE DROP
+|2 o7 v0 m1,9,255
+%p1 m96,-12 a2 m96,-24 ^2 %p0
+## 62-77 violin
+#def 62vs= %r20
+#def 62vl= %r11
+|1 ~o4 v96~/o5 v80/ p20 'v' l8
+$362
+[['62vs'bb[3ab4]abbb<c '62vl'j2 d4e>b2.'62vs'bbbb'62vl'a4.]
+j2 d4ef4.ge^2dc4.>]
+g4fe4d4.f4ed4c4. j1,0
+## 78-81 high strings (new)
+~|2 o4 v96~/|8 o6 v127/ p72 %a11%r20 l4
+b.<c.>g.a.aa8a8 b.<c.>g a8a8a8a8 r2
+## 82-97 melody strings
+~o6~/|2 o6 v96 %a11/ p100 l8
+$382 %r19 [ [ee[3de4]deefg] j2,394 [a4aa4gf4. %r11f4edefg%r19] ] $394
+b4bb4ag4. %r11g4fefga %r19b4bb4a %r11g+2f4e4d4 j1,0
+## 98 mid choir
+|0 ~o5 v96~/o6 v96/ p68 %a7%r9 'v-' l1
+c^>b^a^%r13f^   %r9g^d^ %y%r19 c4c8f4c4c8 %r9c> %a7ag+
+;3
+
+*{4}*`{8}`
+%e1 l4
+## 1 alto choir
+|0 ~o5 v80~/o6 v80/ p64 'v' 
+f2.ed2c2 e2.dc2>b2
+## 5 tenor strings
+|2 ~o4 v96~/o4 v127/ p48 %r18 l4
+[4b.<c.>g.a.aa8a8]
+##13 treble piano, tenor choir at 17-18
+|4 ~o3 v96~/o4 v96/ p96 m l8
+$413 ab<ceab<cea1>>  gab<dgab<ed1 j1,0
+|0 ~o4 v24~/o5 v24/ p72
+v192,127 f1 v24,0 ^1
+|4 ~v96~/v96/ p96 m l8 f1b1
+##21 treble piano
+l8 >[j2,425j1,413 $425 >r1r1f1b1
+##29 piano, viola at 31-32
+r2.. $4 |4 ~o4 v96~/o5 v96/ p96 m
+l16 da<c1
+|1 ~o4 v80~/o5 v72/ p36 %r11 'v' l2 fede
+|4 ~v96~/v96/ p96 m l2 f1^1 abg+e
+##37, 45 tenor choir, piano at 51
+|0 ~o4 v48~/o5 v48/ p70 'v' %r10
+$437 l4 rede feda8 g1^ l8 edegede d2.cc^1 j1,0 ^1^1
+[j2,451;437$451 l4 ^.
+|4 ~o4 v96~/o5 v96/ p96 m f8^1.
+##53 choir
+#def 53ch= ~v127~/v127/
+#def 53cl= ~v96~/v96/
+|0 ~o5~/o6/ p64 'v' %r3 l8
+['53ch'er'53cl'e'53ch'er'53cl'd'53ch'dr4  dr'53cl'dc+'53ch'dr4]
+'53ch'fr'53cl'f'53ch'fr'53cl'g'53ch'er4
+$458 er'53cl'ed'53ch'er'53cl'e
+~v255,96~/v255,96/ f4ef4ge4^1 j1,0
+## THE DROP
+@3 o3 v96 p0 %a11 m
+%p1 m96,-5 a2 m96,-7 ^2 %p0
+## 62-77 high strings
+|2 ~o5 v80~/o5 v80/ p107 'v' %a11
+[j2,477;362 $477
+## 78-81 continue old high strings -> mid piano
+%r11 >b1^1
+|4 ~> v96~/> v96/ p96 m l8 b4.<c4.c4 dddd r2
+## 82-97 violin -> high piano
+|1 ~o4 v64~/o5 v56/ p36 'v' l8
+[[cc[3>b<cr]>b<ccde] j2 frffrd>br4 b4agb<cd  frffrd>a+r4 a+4agb<cd]
+|4 ~o5 v96~/o6 v96/ p96 m [5f4.]^8 [5e4.]^8
+## 98 low piano -> high choir
+|3 ~o3 v96~/o4 v127/ p76 l1
+a^g^f^fe
+|0 ~o5 v44~/o6 v44/ p96 l1
+%a4%r10 a^g^ %a12%r19 f4f8a4f4f8 %r10e %a5>ag+
+~@3 o7 v68 %a13%y5%s3%r11~/|4 o7 v96/ p92 g2..
+;4
+
+{5}
+%e1 l1
+## 1 bass strings
+|2 ~o2 v64~/o2 v64/ p96 'v-' %a4 
+rr g+4 ~v48,127~/v48,127/ ^1..
+## 5 bass strings
+/|8 <</ p80 %y%r17 l4
+[4a.a.<c.>b.bb8b8]
+##13~21 bass piano
+|3 ~o3 v96~/o4 v127/ p76 l1
+[a^g^f^<de>]
+##29 bass piano
+$5 |3 ~o3 v96~/o4 v127/ p76
+f^e^d^e^
+##37, 45 bass piano
+[a^a^f^fj2 l4 %r17 f<c>ba+ %y]^1
+##53 higher piano
+|4 ~o5~/o6/ p96 l8
+%k9 $553 [[4~v76~/v76/c~v52~/v52/c~v32~/v32/c][~v76~/v76/c~v52~/v32/c]] j1,0
+%k11 [j2,561;553 $561 %k0
+## THE DROP
+@4 o5 v0 m4,11,255
+%p1 m96,-12 d+2 m96,-24 ^2 %p0
+## 62-77 low piano
+|3 ~o3 v96~/o4 v127/ p76 l4 m %r11
+[[4a.]aa [4g.]gg [4f.]ff d.d.d e.j2e.e] g+8eg+
+## 78-81 low piano
+%r13 a.a.a.a.aa8a8 a.a.a b8b8b8b8 r2
+## 82-97 high strings
+~|2 o4 v96~/|8 o6 v127/ p88 ~%a12~%r20 l4
+[[5f.]^8] [5b.]^8 [4a+.]g<c>    [3[5f.]^8] [5e.]^8
+## 98 piano -> choir melody
+~|4 o5 v72~/|3 o6 v112/ p52 l4
+r1r ecd>b1 ^ab<c> ba8g.f8e.a1^2.
+|0 ~o4 v96~/o5 v96/ p80 'v' %r11
+$5105 [<^ecd>b1] ^ab<c gg8gfe8 de1.. j1,0
+~@3 o4 v68 %a13%y5%s3%r11~/|4 o4 v96/ p92 r4 b4^16 <g4^16 <e8
+;5
+
+{6}
+%e1 l1
+## 1 alto strings
+|2 ~o5 v32~/o5 v32/ p64 'v-' %a2 
+rr g+ ~v96,127~/v96,127/ ^
+## 5 alto choir B
+|0 ~o5 v80~/o6 v80/ p72 'v' %r11
+[5r1]r2. l8 ef e4.d4.c1^4
+##13 alto choir, alto strings
+l4 >b1 ^<ecd> b1 ^1
+|2 ~o5 v16~/o5 v32/ p56 ~%a8~%r17 l8
+~v255,34~/v255,56/ [4e>a<ef] [d>a<ef]e>a<fg<c>bae
+##21 alto strings
+[4a>a<ab][4g>b<ab][4e>a<ef][d>a<ef][>ba<de] >
+##29 alto strings
+$6 |2 ~o4 v34~/o4 v56/ p56 ~%a8~%r17
+~v255,52~/v255,72/ [[4a4b<c>]j2,633[4g+4ab]] $633 a4ab[3g+4ab]
+##37-41 piano, 42-44 tenor strings
+|4 ~o3 v96~/o4 v96/ p96 m l8
+[ab<ce^1.>] ab<cg^2.
+|2 ~o4 v72~/o4 v72/ p72 'v' %r10 l4 bagf1^1
+##45 piano
+|4 ~o3 v96~/o4 v96/ p96 m l8
+[ab<ce^1.>] [ab<cg^1.>]
+##53 lower piano
+|4 ~o5~/o6/ p92
+%k4 [j2,657;553 $657
+%k5 [j2,661;553 $661 %k0
+## THE DROP
+@3 o3 v96 p127 %a11
+%p1 m96,-5 a2 m96,-7 ^2 %p0
+## 62-77 high piano
+#def 62ph= v80
+#def 62pl= v64
+|4 ~o4 v96~/o5 v96/ p96 m l8
+['62ph'[4e4.]e4e4 [4d4.]d4d4
+[4c4'62pl'c'62ph'][c'62pl'c'62ph']
+>[a'62pl'aa'62ph']a'62pl'a'62ph' [b'62pl'bb'62ph']b'62pl'b<]
+## 78-81 high piano
+'62ph' < l4
+b.<c.>g.a.aa8a8 b.<c.>g b8b8b8b8 r2
+## 82-97 mid strings -> mid piano
+~|2 o3 v112~/|8 o5 v127/ p88 ~%a11~%r18 l4
+[[5f.]^8 [5d.]^8 j2,694 [5f.]^8 [4f.]gg]
+$694 |4 ~o4 v96~/o5 v96/ p96
+[5b.]^8 a.a.g+.g+.g+g+
+## 98 harp
+~@3 o5 v68 %a13%y5%s3%r11~/|4 o5 v96/ p92 l8
+b4<c>aab4<e1^>  garggb4<e1^>    fgbf4.fa1^  fga<e2^> e4a4<e2>
+b4<c>aab4<e1^>  gag+g4b4<e1^>   fg<c>f4a4<cc1>  fga<c2^>
+l16 e4^c4^a4^<f
+;6
+
+{7}
+%e1 l1
+## 1 soprano strings
+|2 ~o6 v32~/o6 v32/ p56 'v-' %a2
+rr g+ ~v96,127~/v96,127/ ^
+## 5 glockenspiel
+|5 ~o6 v48~/o6 v32/ p48 m
+[7r1] l4 r
+##13 glockenspiel
+[j2,727;312 $727
+##21 at 27 piano
+|4 ~o4 v96~/o5 v96/ p96 d1e1
+##29 glockenspiel
+$7 |5 ~o7 v48~/o7 v32/ p48 m
+[j2,737;329 $737
+##37-42 glockenspiel, 43-44 piano
+~v24~/v16/> %a10
+[j2,742;437 $742
+|4 ~o3 v96~/o4 v96/ p96 l8 ab<cg^1.
+##45 glockenspiel, 51-52 soprano string 2
+|5 ~o6 v24~/o6 v16/ %a10 p48
+[j2,751;437 $751 l1
+|2 ~o6 v64~/o6 v64/ p56 'v' %a3 a1^1
+##53 glockenspiel
+#def 53gh= ~v48~/v32/
+#def 53gl= ~v32~/v24/
+|5 ~o6~/o6/ p48 l8 m
+['53gh'er'53gl'e'53gh'er'53gl'd'53gh'dr4  dr'53gl'dc+'53gh'dr4]
+'53gh'fr'53gl'f'53gh'fr'53gl'g'53gh'er4 er'53gl'ed'53gh'er'53gl'e
+~v255,48~/v255,32/ f4ef4ge4^1
+## THE DROP
+~|3 o3 v80~/|8 o5 v80/ p64 'v'
+%p1 m96,-5 a2 m96,-7 ^2 %p0
+## 62-77 choir
+|0 ~o5 v80~/o6 v80/ p72 %a11%r20 l4
+[e.f.e.f.ef  f.d.f.d.cd  c.f.c.g.fc j2 l8>b4<cd4ef4ga4b %r11 e2 %r20]
+d4cd4.d4e4eg+4.b4
+## 78-81 choir -> rev.cym
+%r11 a1^1 r1r4 p64 "!!!or2."
+## 82-97 choir
+|0 ~o5 v96~/o6 v80/ p26
+[j2,797;382 $797
+## 98 extra harp -> glock
+~@3 o5 v68 %a13%y6%s3%r12~/|4 o5 v96/ p92 m
+[4r1] r4. a2 r1r1r8
+|5 ~o6 v32~/o6 v24/ p48
+[j2,7113;5105 $7113
+~@3 o5 v68 %a13%y6%s3%r12~/|4 o5 v96/ p92
+l16 ^4. d4^ b4^
+;7
+
+*{8}*`{4}`
+%e1 l16
+## 1 tinkle bell (piano) -> rev.cymbal
+|4 ~o6 v48~/o7 v48/ p104
+r1...d24f24g24a1^4 p64 "r2."
+## 5 percussion
+l16 %g1 > $805 [4"4a+8c8c8a+4 cbacba a+8cbc8a+8 cbacacba"] j1,0
+## 13 crash, percussion, piano 19-20
+"y1" l16 p64p0,24,96 [3r4"i8j8j8hi8ijj"j3r1]  p
+|4 ~o4 v96~/o5 v96/ p96 d1e1 p64
+## 21~29 percussion
+$821 l8 [["!!!ok4.ka+2"j2"k4.kk4k4"]"4!!k4k4kk4."] j1,0
+$8 [j2,837;821 $837
+##37, 45 percussion
+l16 [8"!!k8h8h8h8 a+8h8h8h8 k8b8bdb8 g8k8h8h8"]
+##53 percussion
+l16 [6"a8gig8a8 i8hgagig"]
+$859 v32 v192,80 [[16"\s"] v192,127] j1,0
+## THE DROP
+"k2.s-4"
+## 62-77 cymbal, hihats
+"y+1" l8 [60"gi"]
+## 78-81 percus1
+l4 "s+.s+.s+.s+.s+s+ s+.s+.s+" l8 "s+s+s+s+" r2
+## 82-105 percus
+[3[j2,8106;805 $8106]
+## 98 at 106
+~@3 o5 v68 %a13%y6%s3%r12~/|4 o5 v96/ p92
+[7r1] l16 r4.. e4^<c4
+;8

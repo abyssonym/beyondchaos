@@ -1,0 +1,136 @@
+#TITLE First Step Towards Wars
+#ALBUM Ys I: Ancient Ys Vanished
+#COMPOSER Yuzo Koshiro
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x7C~/0x00/
+#WAVE 0x21 ~0x4A~/0x02/
+#WAVE 0x22 ~0x89~/0x1c/
+#WAVE 0x23 0x22
+#WAVE 0x24 ~0x84~/0x17/
+#WAVE 0x25 ~0x5A~/0x2F/
+#WAVE 0x26 ~0x56~/0x21/
+#WAVE 0x27 ~0x68~/0x11/
+#WAVE 0x28 ~0x41~/0x06/
+#WAVE 0x29 ~0x44~/0x04/
+
+{1}
+l16t140%v50%b0,70%x224%e1%k2 $1 v80p50~|0o5~/@5o4/c2r4cdd+f  g2f4d+d8^  d+dc4^8r4cdd+f  
+g2f4d+d8^  d+8c<c2^c4  d1  ^1  
+c2r4cdd+f  g2f4d+d8^  d+dc4^8r4cdd+f  g2f4d+d8^  
+c1  d2>g4<d4  c1^2  |8> d+8f8ga+8^  
+<c2^4>g+8a+8  <c2d+2  d4^8>a+4<c8>g1  r4g+2^4  
+f8g8g+2a+4  <c4>a+4^8d+4^8  f8g1  ^8<c2^4>g+8  
+a+8<c2d+2  d4^8>a+4<c8>g1  <f8g8g+2^4  f8g8g+2^8g8  
+g8d+8f4^8>a+2  b1  ^8c>gd+<c>gd+cd+<c>gd+<c>gd+  cd+<c>gd+<c>gd+cd+<c>gd+<c>gd+  
+cd+<cr8c2^4  ^>br8b2^4  ^<g4>g8r8g8r8g8r8  
+;1
+
+l16
+{2}
+l16%e1%k2 $2 v120p64|1o6crcccrcccrcccrcc  
+d+rd+d+d+rd+d+frfffrff  crcccrcccrcccrcc  d+rd+d+d+rd+d+frfffrff  
+g+rg+g+g+rg+g+g+rg+g+g+rg+g+  grgggrgggrgggrgg  grgggrgggrgggrgg  
+crcccrcccrcccrcc  d+rd+d+d+rd+d+frfffrff  crcccrcccrcccrcc  d+rd+d+d+rd+d+frfffrff  
+g+rg+g+g+rg+g+g+rg+g+g+rg+g+  grgggrgggrgggfdg  crcr>a+8<cr>cc<d+rd>a+8^  
+<crcr>a+8<cr>cc<ddd+d+gg  g+rg+g+g+rg+g+g+rg+g+g+rg+g+  g+rg+g+g+rg+g+g+rg+g+g+rg+g+  
+grgggrgggrgggrgg  grgggrgggrgggrgg  frfffrfffrfffrff  frfffrfffrfffrff  
+d+rd+d+d+rd+d+d+rd+d+d+rd+f  grgggrgggrgggrgg  g+rg+g+g+rg+g+g+rg+g+g+rg+g+  
+g+rg+g+g+rg+g+g+rg+g+g+rg+g+  grgggrgggrgggrgg  grgggrgggrgggrgg  
+frfffrfffrfffrff  c+rc+c+c+rc+c+c+rc+c+c+rc+c+  >a+ra+a+a+ra+a+a+ra+a+a+ra+a+  
+grgggrgggrgggrga+  <crcr>a+8<cr>cc<frga+8^  crcr>a+8<cr>cc<frga+8^  
+>g+r8g+2^4^  gr8gg8grgrgrgrgr  grgrgrgrgrgrga+8^  
+;2
+
+l16
+{3}
+l16%e1%k2 $3 ~v127~/v50/p50|2o5/<%r9/>gccg2^4^  
+a+2c4f4  gccg2^4^  a+2c4f4  g+d+cd+2^f4  
+g8cg4^b8gb4^  <d8>b<d4^g8dg4^  >gccg2^4^  a+2c4f4  
+gccg2^4^  a+2c4f4  d+2g+4<c4  >a+2a+8g8d>a+8^  
+<c2d+8f8ga+8^  <c2r< |9~v60%a12<~/>%a10v50/ c8rc8c8  > g+4g+8d+4^8c2  d+4>g+4<c4>g8a+8  
+<d8g4d8>a+4g8a+8  <d8g4d8>a+8g8f4  c8f4^8g+8a+8<c2  f2d+8>a+8g8<d+8  
+>a+8g8<d+8>a+8<d8>b8g8<d8  >b8g8<d8>b8g+4^8d+4  ^8c2d+4g+4  <c4>g8a+8<d8g4d8  
+>a+4g8a+8<d8g4d8  >a+8g8f4f8<f2  ^8>f4^8<f4^8d+8  c8d4^8f2  
+g4d8d+8d8f8d+8d8  d+8>c2d+8f8ga+8  ^c2d+8f8ga+8  ^<g+8rg+8rccd+d+g+g+<ccd+  
+d+>g+8rg+8r>bb<ddggbb<d  d>gd>bg<gd>bg<gd>bg<gd>b  g
+;3
+
+l16
+{4}
+l16%e1%k2 $4 ~v107~/v30/p80|2o5/<%r8/r32>gccg2^4  
+^a+2c4f4  gccg2^4^  a+2c4f4  g+d+cd+2^f4  
+g8cg4^b8gb4^  <d8>b<d4^g8dg4^  >gccg2^4^  a+2c4f4  
+gccg2^4^  a+2c4f4  d+2g+4<c4  >a+2a+8g8d>a+8^  
+<c2d+8f8ga+8^  <c2r<c8rc8c8  >g+4g+8d+4^8c2  d+4>g+4<c4>g8a+8  
+<d8g4d8>a+4g8a+8  <d8g4d8>a+8g8f4  c8f4^8g+8a+8<c2  f2d+8>a+8g8<d+8  
+>a+8g8<d+8>a+8<d8>b8g8<d8  >b8g8<d8>b8g+4^8d+4  ^8c2d+4g+4  <c4>g8a+8<d8g4d8  
+>a+4g8a+8<d8g4d8  >a+8g8f4f8<f2  ^8>f4^8<f4^8d+8  c8d4^8f2  
+g4d8d+8d8f8d+8d8  d+8>c2d+8f8ga+8  ^c2d+8f8ga+8  ^<g+8rg+8rccd+d+g+g+<ccd+  
+d+>g+8rg+8r>bb<ddggbb<d  d>gd>bg<gd>bg<gd>bg<gd>b  g32
+;4
+
+l16
+{5}
+l16%e1%k2 $5 v50p74~|0o5~/@5o4/%a6rc2r4cdd+  
+fg2f4d+d8  ^d+dc4^8r4cdd+  fg2f4d+d8  ^d+8c<c2^c4  
+d1  ^1  c2r4cdd+f  g2f4d+d8^  
+d+dc4^8r4cdd+f  g2f4d+d8^  c1  d2>g4<d4  
+c1^4.. %r d+8f8ga+8^  <c2^4>g+8a+8  <c2d+2  
+d4^8>a+4<c8>g1  r4g+2^4  f8g8g+2a+4  <c4>a+4^8d+4^8  
+f8g1  ^8<c2^4>g+8  a+8<c2d+2  d4^8>a+4<c8>g1  
+<f8g8g+2^4  f8g8g+2^8g8  g8d+8f4^8>a+2  b1  
+^8c>gd+<c>gd+cd+<c>gd+<c>gd+  cd+<c>gd+<c>gd+cd+<c>gd+<c>gd+  cd+<cr8c2^4  
+^>br8b2^4  ^<g4>g8r8g8r8g8r  r
+;5
+
+l16
+{6}
+l16%e1%k2 $6 v80p64|3o5[3b32r^32b32r32b32r32b32r^32b32r32b32r32b32r^32b32r32b32r32b32r^32b32r32b32r32  
+b32r^32b32r32b32r32b32r32b32r32b32r32b32r32b32r^32b32r32b32r32b32r32b32r32b32r32b32r32  
+]b32r8^^32b32r8^^32b32r8^^32b32r8^^32  [3b32r^32b32r32b32r32b32r^32b32r32b32r32b32r^32b32r32b32r32b32r^32b32r32b32r32  
+b32r^32b32r32b32r32b32r32b32r32b32r32b32r32b32r^32b32r32b32r32b32r32b32r32b32r32b32r32  
+][2b32r8^^32b32r8^^32b32r8^^32b32r8^^32  ][2[7b32r^32b32r32b32r32b32r8^^32b32r^32b32r32b32r32b32r8^^32  
+]b32r8^^32b32r8^^32b32r^32b32r8^32b32r8^32  ][3b32r8^^32b32r8^^32b32r8^^32b32r8^^32  
+]b32r8^^32b32r8^^32b32r8^^32b32r8^32b32r32  b32r8^32b32r8^^32b32r32b32r8^32b32r32b32r8^32b32r32  
+
+;6
+
+l16
+{7}
+l16%e1%k2 $7 v60p64|4o5[3|4f32^^32f32^32f32^32v104|6d32^^32v60|4f32^32f32^32f32^^32f32^32f32^32v104|6d32^^32v60|4f32^32f32^32  
+f32^^32f32^32f32^32v104|6d32^32v60|4f32^32f32^32f32^32f32^^32f32^32f32^32v104|6d32^32v60|4f32^32f32^32f32^32  
+]|7f32^8^^32f32^8^^32f32^^32v104|6d32^32d32^32d32^32d32^32d32^32d32^32  
+[3v60|4f32^^32f32^32f32^32v104|6d32^^32v60|4f32^32f32^32f32^^32f32^32f32^32v104|6d32^^32v60|4f32^32f32^32  
+f32^^32f32^32f32^32v104|6d32^32v60|4f32^32f32^32f32^32f32^^32f32^32f32^32v104|6d32^32v60|4f32^32f32^32f32^32  
+]f32^8^32v104|6d32^32v60|4f32^32v104|6d32^32d32^^32v60|4f32^8^32v104|6d32^32v60|4f32^32v104|6d32^8^32  
+d32^^32d32^^32v60|4f32^32v104|6d32^32d32^32d32^32d32^32v60|4f32^32v104|6d32^32d32^32d32^32d32^32d32^32d32^32  
+[2[7v60|4f32^^32f32^32f32^32|7f32^8^^32v100v60|4f32^^32f32^32f32^32v104|6d32^8^^32  
+]v80|7f32^8^^32f32^8^^32v100v60|4v104|6d32^32d32^32d32^32d32^32d32^32v60|4f32^32v104|6d32^32d32^32  
+]v60|4f32^8^32v104|6d32^32v60|4f32^32v104|6d32^32d32^^32v60|4f32^8^32v104|6d32^32v60|4f32^32v104|6d32^8^32  
+d32^^32d32^^32v60|4f32^32v104|6d32^32d32^32d32^32d32^32v60|4f32^32v104|6d32^32d32^32d32^32d32^32d32^32d32^32  
+v80|7[7f32^8^^32]v100v60|4f32^8^32f32^32f32^8^32|7f32^8^^32v100v60|4f32^32  
+f32^32v104|6d32^32d32^32v60|4f32^32f32^32v104|6d32^^32v60|4f32^32
+;7
+
+l16
+{8}
+l16%e1%k2 $8 v40p64|5o5[3g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32  
+g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32  
+g+32r^32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32][3g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32  
+g+32r^32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32  
+g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32][10g+32r^32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32  
+g+32r^32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32]g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32  
+g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32[7g+32r^32g+32r32g+32r32v80|7d+32^32v40|5g+32r32g+32r32g+32r32  
+g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32][2g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32  
+g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32]g+32r^32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32  
+g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32[2v80|7d+32^32v48|5g+32r^32v80|7d+32^32v48|5g+32r^32g+32r32g+32r32  
+g+32r^32g+32r32g+32r32g+32r^32g+32r32g+32r32]g+32r^32g+32r32g+32r8^32g+32r32g+32r32  
+g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32g+32r32
+;8
+
+l16

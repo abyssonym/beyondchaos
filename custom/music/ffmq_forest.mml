@@ -1,0 +1,101 @@
+#TITLE Beautiful Forest
+#ALBUM Final Fantasy Mystic Quest
+#COMPOSER Yasuhiro Kawakami
+#ARRANGED emberling
+## via ff5~ff6mcs2
+## Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+#SFXV ` *
+
+#WAVE 0x20 --  0x22          ##Kick
+#WAVE 0x21 --  0x14          ##Snare
+#WAVE 0x22 --  0x0F          ##HiHat
+#WAVE 0x23 --  0x17          ##Tom
+#WAVE 0x24 -- ~0x6D~ /0x12/  ##Cymbal
+#WAVE 0x26 -- ~0x61~ /0x0D/  ##Violin/Strings
+#WAVE 0x27 --  0x32          ##AcGuitar
+#WAVE 0x28 -- ~0x42~ /0x1B/  ##Celesta/Harp
+
+
+{1}
+l16t90%x224%b50,48%v48v42p64@38%e1%a11%y2%s6%r4 ~o3~/o4/ $2 b8<c8e8b8a8< $1 d2  
+^8c8d8e8>b2  ^8a8b8<c8>g2  ^8f+8g8a8e4.>b8  <c8e8b8a8<d2  
+^8c8d8e8>b2  ^8a8b8<c8>g2  ^8f+8g8a8e4.e8  f8a8<c8>a8<e2  
+^8d8e8f8g2  ^8f8e8f8e2  ^8d8c8d8c4.>e8  f8a8<c8>a8<e2  
+^8d8e8f8g2  ^8f8e8>g+8b1  r1  r8a8b8<c8d4e8f8  
+g2c2  f2>a+4b4  <d2c2  r8>a8b8<c8d4e8f8  
+g2a4<c4  d2>a2  b4.>>b8<c8e8b8a8  <
+;1
+
+l16
+{2}
+l16v72p56@40%a15%y6%s2%r17o3
+;2
+
+l16
+{3}
+l16v80p64@38%e1%a12%y2%s6%r8r2  
+r8 $3 ~o2~/o3/ a8<c8e8a2  ^8>a8<c8e8g+2  ^8>a8<c8e8g2  ^8>a8<c8e8g+4e8b8  
+a8>a8<c8e8a2  ^8>a8<c8e8g+2  ^8>a8<c8e8g2  ^8>a8<c8e8g+4a8<c8  
+>a8d8f8a8<c2  ^8>d8f8g+8b2  ^8>a8<c8e8a2  ^8>a8<c8e8g+4a8<c8  
+>a8d8f8a8<c2  ^8>d8f8g+8b2  ^8>a8<c8e8a2  ^8>a8<c8e8a2  
+^8d2g2  c2>a2  b2<e2  >a2a2  
+<d2g2  c2>a2  b2<d2  e1  
+
+;3
+
+l16
+*{4}*`{7}`
+l16v30p112@38%e1%a12%y2%s5%r4r2r8 $4 ~o4~/o5/
+e1  ^1  ^1  
+^1  e1  ^1  ^1  
+^1  a1  g+1  e1  
+^1  a1  g+1  e1  
+^1  a2b2  g2e2  a2g+2  
+g2e2  a2b2  g2<c2  >a2f+2  
+g+1  
+;4
+
+l16
+*{5}*`{8}`
+l16v30p16@38%e1%a12%y2%s5%r4r2r8 $5 ~o4~/o5/
+c1  ^1  
+^1  ^1  c1  ^1  
+^1  ^1  f1  f1  
+c1  ^1  f1  f1  
+c1  ^1  f2g2  e2c2  
+f2e2  e2c2  f2g2  e2a2  
+f+2d2  e1  
+;5
+
+l16
+{6}
+l16v75p72@39%e1%s3%r18o4b8<c8e8b8a12r24> $6 a8<c8e8  
+a4c8e8c8>a8<c8e8  g+4c8e8c8>a8<c8e8  g4c8e8c8>a8<c8e8  g+4>e8b8a8a8<c8e8  
+a4c8e8c8>a8<c8e8  g+4c8e8c8>a8<c8e8  g4c8e8c8>a8<c8e8  g+4>a8<c8>a8<d8f8a8  
+<c4>a8<c8>a8d8f8g+8  b4g+8b8g+8>a8<c8e8  a4c8e8c8>a8<c8e8  g+4>a8<c8>a8<d8f8a8  
+<c4>a8<c8>a8d8f8g+8  b4g+8b8g+8>a8<c8e8  a4c8e8c8>a8<c8e8  a4c8e8c32c32d32f32a4>b8  
+<c8d8>b8<f8d8c8e8g8  e8g8c8e8c8>b8<d8f8  d8>a+4b4a8<d8e8  d8a8e8c8>a32<c32d32f32a4>b8  
+<c8d8>b8<f8d8c8e8g8  e8a8e8<c8>e8>b8<d8f+8  d8a8d8f+8d8e1  
+;6
+
+l16
+*{7}*`{3}`
+l16p64o5r2r8 $7 [3v80@32c8r8r8  
+v70@32c8r8r8v127@33e4]v80@32c8r8r8  v70@32c8r8r8v127@33e8v100p96@35>e8p64<
+;7
+
+l16
+*{8}*`{4}`
+l16p64o6r2  
+r8 $8 v95@36 ~%y2~/%y7/
+%s0c4@34         v57%yc8 v77%y6c8 %yv57c8 v37%y6c8 %yv77c8 v37c v37%y6c
+%yv77c8 v37%y6c8 %yv57c8 v77%y6c8 %yv57c8 v37%y6c8 %yv77c8 v77%y2%s0c8 %y
+[3v77c8 v37%y6c8 %yv57c8 v77%y6c8 %yv57c8 v37%y6c8 %yv77c8  
+v37c v37%y6c %yv57c8 v37%y6c8 %yv57c8 v67%y6c8 %yv57c8 v37%y6c8 %yv77c8  
+v77%y2%s0c8 %y]
+;8
+
+l16

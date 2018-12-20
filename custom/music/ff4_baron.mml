@@ -1,0 +1,86 @@
+#TITLE Kingdom of Baron
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED tsushiy
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 -- ~0x80~ /0x02/
+#WAVE 0x21 -- ~0x46~ /0x0D/
+#WAVE 0x22 -- ~0x81~ /0x14/
+#WAVE 0x23 -- ~0x7F~ /0x0E/
+
+
+{1}
+l16t109%x232%v88%b0,70%f0,0v112p66|0%e0r1  [4~o4~/o5/f8r8f8r8f8r8f8f+8  
+] $1 [2[2f8r8f8r8f8r8f8f+8  ][2e8r8e8r8e8r8e8d+8  ]][2[4g4r4][2a8r4a8  
+a4a4]]
+;1
+
+l16
+{7}
+l16v72p61|1%e1r1  [4~o4~/o4/c8r8c8r8c8r8c8>a+8  ] $2 [2[2<c8r8c8r8c8r8c8>a+8  
+][2b8r8b8r8b8r8b8<c+8  >]][2<d4r4d4r4  d4r4d4r4  e8r4e8e4e4  
+e8r4e8e4e4  >]
+;2
+
+l16
+{2}
+l16v32p48|2%e0o5r1  o5 $3 a8aaaaaaa8aaaaaa  
+
+;3
+
+l16c1  c1  c1  c1  
+c1  c1  
+{3}
+l16v48p56|1%e1
+m90,50,20~o7~/o7/%k0c+8>g+8d+8>a+8f8c8>g8d8  
+[2<c2^4cc+d+c+  c2^4c>a+g+a+  ]<< $4 [2r4c4f4c4  g+4c4a+4c4  
+b1  ^2^4r4  ][2>d3^24e8f+3^24e8  d4c+4>b4<g4  
+<e8cdergrf+4e8c8  e8cdergrf+4e4  ]
+;4
+
+l16c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  
+{4}
+l16v48p40|1%e1m90,50,20~o4~/o4/%k0r1  [2~o4~/o4/g+2^4g+a+<c>a+  
+g+2^4g+f+ff+  ]< $5 [2r4c4f4c4  g+4c4a+4c4  b1  
+^2^4r4  ][2>b3^24<c+8d3^24c+8  >b4a4g4<d4  a8ab<crerd4c8>a8  
+a8ab<crerd4c4  >]
+;5
+
+l16c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  
+{5}
+l16v40p96|3%e1%k0m90,50,15~o5~/o6/r1  r1  r1  
+r1  r1   $6 [2r8~o5~/o6/g+r8.gr8.g+r8.f8  r8g+r8.gr8.g+r8.f8  
+~v32~e2^4v48a+32r32b32r32<c+8  >b4a+32r32b32r32<c+8>b4a+32r32b32r32<c+8  
+v40][2v48d8dddrc+rd4>br<c+r  d4c+8er8.d8r8>b8  v52e2f+2  g2f+2  
+<]
+;6
+
+l16c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+
+{6}
+l16v40p80|3%e1%k0m95,50,20~o5~/o6/r1  r1  r1  r1  
+r1   $7 [2r8~o5~/o6/fr8.fr8.fr8.d+8  r8fr8.fr8.fr8.d+8  ~v32~d2^4v48g+32r32g+32r32g+8  
+g+4g+32r32g+32r32g+8g+4g+32r32g+32r32g+8  v40][2v48b8bbbrarb4grar  
+b4a8<c+r8.>b8r8g8  v52c2d2  e2d2  ]
+;7
+
+l16

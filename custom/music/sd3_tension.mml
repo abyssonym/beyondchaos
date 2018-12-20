@@ -1,0 +1,116 @@
+#TITLE High Tension Wire
+#ALBUM Seiken Densetsu 3
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x1F~/0x1F/
+#WAVE 0x21 ~0x82~/0x0E/
+#WAVE 0x22 ~0x1A~/0x1A/
+#WAVE 0x23 ~0x44~/0x04/
+#WAVE 0x24 ~0x8C~/0x0C/
+#WAVE 0x25 ~0x4D~/0x02/
+#WAVE 0x26 ~0x60~/0x1B/
+#WAVE 0x27 ~0x41~/0x03/
+#WAVE 0x2A ~0x59~/0x22/
+#WAVE 0x2B ~0x21~/0x21/
+#WAVE 0x2C ~0x55~/0x0F/
+
+#def global= t89 %x224 %v50 %b0,70
+
+#def pfl= |0 o5 %e1 v80 m48,18,239 %r6
+#def pf2= |7 ~o5~/o5/ %e1 v40 m48,18,239 %a11%r15
+#def br1= |1 ~o6~/o7/ %e1 v104 m24,18,231 %r9
+#def br2= |2 o7 %e1 v48 m24,18,223 %r9
+#def plk= |3 o5 %e1 v80 m48,18,207
+#def pl2= |6 o5 %e1 v48 m %a10~%y3%s3~%r16
+#def pia= |4 o6 %e1 ~v80~/v64/ m
+#def bas= |5 ~o4~/o5/ %e1 v112 m
+
+#drum "h"=5f |A v93 p64 %e0
+#drum "i"=5f |A v102 p64 %e0
+#drum "j"=5f |A v110 p64 %e0
+#drum "k"=5f |A v127 p64 %e0
+#drum "r"=5e |B v119 p64 %e0
+#drum "s"=5e |B v127 p64 %e0
+#drum "t"=5g+ |C v50 p64 %e0
+#drum "u"=5g+ |C v60 p64 %e0
+#drum "v"=5g+ |C v70 p64 %e0
+
+{1}
+'global'
+r1r4."s"
+$
+l16 [["!!!ok8sjk8s8k8sk8ks8 k8sjk8s8khsk8ks8 k8sjk8s8k8sk8ksj k8sjk8s8khskk32j32ssr32k32"]
+"s8.k8.s8si8k8isi32i32 s8.k8.s8si8k8i32i32s8 s8.k8.s8si8k8isi32i32 si8s8^2"j2"i32i32s8"] ^8.
+[3"!!!ok8.ik8.k8k8ik8.i"]"k8.ik8.k8k8i"l32"iiiis8"l16
+["!!!o k8sik8s8k8si8ksi" "k8sik8s"j2"^k8si8ksi32i32"] "k8isik32j32isi32i32"
+"s8.k8.k8sk8k8kk48k48k48s"
+;
+
+{2}
+'bas' l16 p64
+r4. v80 [3a<d gcdg>]
+$
+['bas' l16
+[[3a8a<d8dgg+ae8>g8j3f+<dg>]<c>d+g f8<c>g8g<d>ef<cf>gg<d>bg]
+f8<f>g8<gd>ga<ded8c+>ae f8<f>g8<gd>ga<de>a8a<e>a f8<f>g8<gd>ga<dedc+ae>a <cdef^2.]>
+[4r1] [4aa<c+dd+ef+>g8gb<d8egr>] f8.<c8.f>fggb<d8eg>g
+;
+
+{3}
+'plk' l32 p48
+~%g1~[4>aa<ddggccddgg]~%g0~
+$
+['plk' p96 l16 [[3readgf+c+d8e8r8cf8] rcfredr>e<rcfred>b8<]
+rf8.b8gdrdegaedc+ rf8.b8gdrdega4 rf8.b8gdrdegaedc+ gd>g<f^2.]
+'pia' [8<adeg>b<c+ad eg>b<c+bad>b] 'plk' >ra<cf8>a<cr >rb<dg8cdr
+;
+
+{4}
+'plk' l16 p80
+>[4>a<dgcdg]
+$
+['plk'> p80 [[3a2^8.g4g]f8.g8.g8f8.g4g]
+f8fg8g8.a2 f8fg8g8.a8.ba4 f8fg8g8.a2 r8.a^2.]
+'pfl'> [3[ar8bbr8grgrbbj2r8g]<e>rb ][ar8bbr8gggrbj2br8b]r<e>rb  'plk'>f4f8.fg4g8.g
+;
+
+{5}
+'br1' l32 p64
+>>%a2a2.%a< />/1aa<ddggccddggaa<ddggccddgg
+$
+['br1' l16 p32
+[a8.g8.f+8.g8.f+rdr ef+de2^8. l32>a<deg   l16  b8.g8.f+8.g8.f+rdr edc>a2.^<]
+['pfl' <fedc>b<c+d~%g1~c+48d48c+48~%g0~ ^>aedc+j2a8.  <fedc>b<c+d~%g1~c+48d48c+48~%g0~ ^>ageaedc+] ea<c>  b8.a^2.]
+'pfl' [3[c+r8ddr8>brbr<j2ddr8>b<]eeard] [c+r8ddr8>bbb<rej2er8d]rard   c>bab<cdgb<c>bab<cd>bg
+;
+
+{6}
+r1.
+$
+[l16 [32"ttvt"]
+l32 [3[3"vtttv16"]l16"ttvttvt"] l32 [["vttttt"]"vttt"]]
+[[7"!!!o u^ttv^tt"]"u^ttvttt"] l16 [16"!!!outvt"] "vttvttvt vvtvtvv48v48v48v"
+;
+
+{7}
+'br2' l32 p64
+>>%a2a2.%a< >aa<ddggccddggaa<ddggccddgg
+$
+['br2' l16 p32
+[a8.g8.f+8.g8.f+rdr ef+de2^8. l32>a<deg   l16  >b8.<g8.f+8.g8.f+rdr edc>a2.^<]
+['pf2' <fedc>b<c+d~%g1~c+48d48c+48~%g0~ ^>aedc+j2a8.  <fedc>b<c+d~%g1~c+48d48c+48~%g0~ ^>ageaedc+] ea<c>  b8.a^2.]
+'pf2' [3[c+r8ddr8>brbr<j2ddr8>b<]eeard] [c+r8ddr8>bbb<rej2er8d]rard   c>bab<cdgb<c>bab<cd>bg
+;
+
+{8}
+'pl2' l32 p48
+~%g1~[4>aa<ddggccddgg]~%g0~
+$
+['pl2' p96 l16 [[3readgf+c+d8e8r8cf8] rcfredr>e<rcfred>b8<]
+rf8.b8gdrdegaedc+ rf8.b8gdrdega4 rf8.b8gdrdegaedc+ gd>g<f^2.]
+'pf2'> p80 [3[ar8bbr8grgrbbj2r8g]<e>rb ][ar8bbr8gggrbj2br8b]r<e>rb 'pl2'p96 >ra<cf8>a<cr >rb<dg8cdr
+;

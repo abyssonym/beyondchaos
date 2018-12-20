@@ -1,0 +1,99 @@
+Song conversions:
+    emberling -- bof2_battle
+                 cc_dragonia, cc_home, cc_hydra
+                 crys_fields
+                 ct_battle, ct_battle2, ct_bobonga, ct_fair, ct_keeper,
+                 ct_night, ct_revolution, ct_schala, ct_theme, ct_truth,
+                 ct_tylair, ct_tyran
+                 cv4_beginning
+                 ds4_lyll
+                 eo3_waves
+                 ff2_battleb
+                 ff3_warrior
+                 ff5_battle, ff5_cave, ff5_curse, ff5_excastle, ff5_final,
+                 ff5_home, ff5_hurry, ff5_lenna, ff5_library, ff5_theme,
+                 ff5_void, ff5_world1
+                 ff7_battle, ff7_corel, ff7_hurry, ff7_rebirth, ff7_reunion,
+                 ff7_snow
+                 ff8_battle, ff8_horizon, ff8_lion, ff8_witches
+                 ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
+                 ffx_battle, ffx_gagazet, ffx_via, ffx_zanarkand
+                 ff12_barheim, ff12_paramina
+                 ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
+                 ffmq_fossil, ffmq_gale, ffmq_lava, ffmq_light, ffmq_rock,
+                 ffmq_tower, ffmq_tristam, ffmq_victory
+                 fz_white1
+                 iog_whispers
+                 lo_battle
+                 lu2_battle
+                 met3_surface
+                 ob_battle
+                 sd2_8bells, sd2_always, sd2_angel, sd2_city, sd2_desert,
+                 sd2_eternal, sd2_flammie, sd2_forest, sd2_forget, sd2_ghost,
+                 sd2_hope, sd2_intruder, sd2_jema, sd2_legend, sd2_lofty,
+                 sd2_mana, sd2_matango, sd2_memories, sd2_meridian, sd2_popoi,
+                 sd2_prayer, sd2_prophecy, sd2_scorpion, sd2_sea, sd2_spirit,
+                 sd2_star, sd2_steel, sd2_tasnica, sd2_thanatos, sd2_thunder,
+                 sd2_tomorrow, sd2_town, sd2_wish
+                 sd3_angels, sd3_flight, sd3_tension, sd3_winter
+                 sdlm_snowfield
+                 sf2_balrog
+                 so2_rescue
+                 top_cold, top_mint, top_world1, top_world3
+                 totr_arrow
+                 xc1_valakn
+                 xc2_morardain, xc2_tantal
+                 xg_boss, xg_flight
+    Gi Nattak -- cc_arni, cc_flame, cc_miguel
+                 ct_boss2
+                 cv3_aquarius
+                 evo_boss
+                 ff1_battle, ff1_dungeon
+                 ff3_darkworld, ff3_eureka
+                 ff4_airship, ff4_babil, ff4_giant, ff4_giant_remix,
+                 ff4_golbez, ff4_longway, ff4_overworld, ff4_prologue,
+                 ff4_redwings, ff4_restless, ff4_somewhere, ff4_sorrow,
+                 ff4_town, ff4_troia, ff4_underworld, ff4_zeromus, ff4_zot
+                 ff5_exdeath, ff5_world2
+                 ff6_town2
+                 ff7_5years, ff7_costa, ff7_temple, ff7_tifa
+                 ff8_laguna, ff8_oath
+                 ff9_blackmage, ff9_blackwaltz, ff9_dali, ff9_eiko,
+                 ff9_home, ff9_memoria
+                 ffx_decision
+                 ffmq_gale
+                 iog_boss, iog_womb
+                 jts_stage1
+                 lagoon_spirits
+                 lu1_boss
+                 lu2_battle3, lu2_boss, lu2_map, lu2_mountain, lu2_narvick
+                 met3_brain
+                 rs3_underwater
+                 rsms_battle
+                 sd1s_boss, sd1s_courage, sd1s_decision, sd1s_fate, sd1s_field,
+                 sd1s_risingsun
+                 sd2_fortress, sd2_pureland, sd2_thick
+                 sd3_faith, sd3_paths
+                 sdlm_nostalgic
+                 tn_evergreen
+                 xg_chuchu, xg_mermaid
+                 ys1_wars
+                 ys3_wings
+                 zaol_overworld
+                 zoot_storms
+    Jackimus -- ffx_seymour
+    MetroidQuest -- ff4_boss, ff4_cave
+                    ff5_bridge
+    Royaken -- ff4_bomb, ff4_mysidia, ff4_whale
+               ff7_hurry2, ff7_judgment, ff7_materia, ff7_planet
+               ff8_heresy
+               ff9_messenger
+               ffx_ambition
+    tsushiy -- ff1_bossb
+               ff4_baron, ff4_illusion
+Tierboss segments:
+    emberling -- ffmq_lava_dm, ff8_witches
+    Gi Nattak -- cc_flame_dm
+    emberling, Gi Nattak, tsushiy -- ff3_eureka_dm
+    Nobuo Uematsu -- ff6_tier1_dm, ff6_tier2_dm, ff6_tier3_dm
+Samples provided by madsiur and tsushiy

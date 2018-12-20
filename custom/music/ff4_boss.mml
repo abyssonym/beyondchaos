@@ -1,0 +1,148 @@
+#TITLE Fight 2
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED MetroidQuest
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x0E
+#WAVE 0x22 -- 0x01
+#WAVE 0x23 -- 0x12
+#WAVE 0x24 -- 0x11
+#WAVE 0x25 -- 0x14
+#WAVE 0x26 -- 0x22
+#WAVE 0x27 -- 0x24
+#WAVE 0x28 -- 0x1C
+
+
+{1}
+l16t172%v70%x255%b0,70%f0,0v64p20@32%e1m90,50,20p96,110o4g24a+24<c+24e24g24a+24<c+24e24g24o4r1  
+^2gaa+<cc+d+ef  p64 $2 [2g4<g4f+2  ^4d8d+8f4d+8d8  d+8c2^4^8  
+^4d4d+4a+4  a1  ^1  ^1  
+^2^8f+8g8d+8  d8cr2r4r  r2r8>f+8g8d+8  d8crd8cr2r  
+j2,1 r1  ] $1 r2d+fgg+b<cdd+  f4g+4g4g+4  <c8>g+8g8g+8g4f4  
+>a+8<c8c+2c+8d+8  f4.f+8g+8f+8f8f+8  g+4<c2^4  ^1  
+^1  ^1  >f+1  ^1  
+d+1  ^1  d1  ^2d4e4  
+f1  ^2f4g4  g+1  ^1  
+g8r4g8r4g8r8  r8g8r4g8r8g8r8  >
+;2
+
+l16c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  
+{2}
+l16v64p20@32%e1m92,50,20p96,110o5r24r48g24a+24<c+24e24g24a+24<c+24e24g24o4r48r8.r2  
+r4r1  p64 $4 [2<crd+rdrd+rf+rd+rdrd+r  crd+rdrd+rdrfrd+rfr  crd+rdrd+rgrd+rdrd+r  
+crd+rf+4g4<d+4  d+1  d1  c+1  
+c1  >f+8gr2r4r  r1  >f+8gr>b8<cr2r  
+j2,3 r1  ] $3 r2<cdd+fgg+b<c  c+2d+2  f2d+2  
+>f+1  a+1  <c1  f4g+2^4  
+^1  ^1  >a+1  ^1  
+f+1  ^1  a1  ^1  
+a1  ^2a4b4  <c1  ^1  
+c8r4c8r4c8r8  r8c8r4c8r8c8r8  >>
+;4
+
+l16c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  
+{3}
+l16v71p108@33%e1m90,50,20p96,18o3g24a+24<c+24e24g24a+24<c+24e24g24o6r1  
+r1   $5 [2>grgr8.grf+rf+r8.f+r  grgr8.grg+rg+r8.g+r  grgr8.grgrgr8.gr  
+g4<d4d+4a+4  <c1  >b1  a+1  
+a1  r1  r1  c4>br<crd4crdr  
+d+4drd+rf4d+rfr  ][4c+rc+r4r]>a+1  <c+2f+4c+4  f1  
+^1  <c4v112f2^4  ^1  >f+4a+4g+4a+4  
+<c+8>a+8g+8a+8g+4f+4  d+4f+4f4f+4  a+8f+8f8f+8f4d+4  f+8g+8a2^4  
+^2a4b4  <c1  ^2c4d4  d+1  
+^1  d8r4d8r4d8r8  r8d8r4d8r8d8r8  >v71
+;5
+
+l16c1  
+c1  c1  c1  c1  
+c1  c1  
+{4}
+l16v71p108@33%e1m95,50,20p96,18o4r24r48g24a+24<c+24e24g24a+24<c+24e24g24o6r48r8.r2  
+r4r1  > $6 [2d+rd+r8.d+rd+rd+r8.d+r  d+rd+r8.d+rfrfr8.fr  d+rd+r8.d+rd+rd+r8.d+r  
+d+4a4a+4<g4  f+1  f1  e1  
+d+1  r1  r1  >g2f2  
+d+2d2  ]frfr4rgrgr4r  g+rg+r4rgrgr4r  f+1  
+^2a+4f+4  g+1  ^1  ^1  
+<g+4<c2^4  >>v112[22f+rf+f+]f+4f+4f1  ^2f4f4  d+1  
+^2d+fgg+a+<cdd+  f8r4f8r4f8r8  r8f8r4f8r8f8r8  >v71
+;6
+
+l16c1  
+c1  c1  c1  c1  
+
+{5}
+l16v80p72@34%e0o3r4.[2g8g8g8g8g8  g8f8f8]< $7 [24>c8<c8>b8<c8>d+8  
+<c8>d8<c8]>[4c+8c+8r4][2f+4.  <c+4f+8>a+8<c8>][4f4.  <c4f8>a+8<c8>][7f+8<f+r>]f8  
+<fr[8>d+8<d+r][7>d8<dr]>e8<er[7>f8  <fr]>g8<gr[8>g+8<g+r]>g4<d8  
+g4g+8g8d8>g8<c8d8  g4g+8g4
+;7
+
+l16c1  c1  c1  
+c1  c1  c1  c1  
+
+{8}
+l16v80p48@35%e1o4r4.r1  r1   $8 [2a1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  ]r4a4r4a4  r4a4r4a4.  
+r1  r1  r1  r1  
+r1  r2r4.a1  r1  r1  
+r1  a1  r1  a1  
+r1  a1  r1  a4.a4.a4  
+^8a4.a4a4  
+;8
+
+l16c1  c1  c1  
+c1  c1  c1  c1  
+c1  
+{7}
+l16v29p80@36%e0r4.o5[8a4] $9 [96a8aa]a4  r4a4r4a4  r4a4r4[24a4  
+][80a8]r1  r1  
+;9
+
+l16c1  c1  
+c1  c1  c1  c1  
+c1  c1  
+{6}
+l16v80p69@38%e0o5r4.[6a4][2@37a8@38a8] $10 [24@38a4  
+@37a4@38a4@37a4][4@38a8a8  @37a4][3@38a4@37a8@38a4a8  @37a4@38a4@37a8@38a4a8  
+@37a8@38a8][5@38a4@37a4@38a8a8  @37a4@38a8a8@37a8@38a8r8a8  @37a4]a8@38a8a8@37a8@38a8 $11 a8  
+@37a8@38a8a8@37a8@38a8a8@37a8@38a8  @37a8@38a8
+;10
+
+l16c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+@38a@37a@38a@37a@38a@37ra@38a8ra@37a8a8@38a8  [5@37aa@38a8]@37ra@38a8.a@37a8a8@38a8  
+@37aa@38a8[6@37aa32a32a@38a@37a@38a@37aa32a32a@38a@37a@38a  @37a@38a@37a@38a]@37a8a@38a@37aa8@38a@37ara@38a  
+@37aa8@38a@37r4ra@38a@37a4.  a@38a@37a[2@37a8a8a@38a@37aaara@38a@37a  
+@38a@37aa]@37a8a@38a@37aa8@38a@37ara@38a@37a  a8@38a@37r4ra@38a@37a4.  
+a@38a@37a[2@37a8a8a@38a@37a8a8a8a  @38a@37a@38a]@37r8a8a8a8a8@38a8@37a  
+@38a@37a8r8a8a8a8a8@38a8@37a  @38a@37a8
+;11
+
+l16v120@32p64%e0 $12 o5@39a1  
+a8.ar2r4  a8.a8.a8.a8.@40a@39a@40a@39a  [4@40a@39aa]@40a@39a@40a@39a@40a@39a8a@40a@39aa@40a8  
+@39a8aa8@40a@39aa8@40a8@39a@40a@39aa8  a@40a8@39a8@40a8a@39a8a@40a@39aa@40a8  
+@39a8aa8@40a@39aa8.a8.a8.  a8.@40a@39a@40a@39aa8.a8.a8.  a8@40aaaaa[4@39a8.a8.@40a8.  
+@39a8.a8@40a8]@39a8@40a4a8@39a8  @40a@39a8.@40a8@39a8@40a@39a8.@40a8@39a8  
+@40a@39a8.@40a@39a@40r8a4a8@39a8  @40a@39a8.@40a8@39a8@40a@39a8.@40a4  
+a8@39a8@40a8@39a8@40a4a8@39a8  @40a@39a8.@40a8@39a8@40a@39a8.@40a8@39a8  
+@40a@39a8.@40a8[2@39a8@40a4a8@39a8  @40a@39a8.@40a8][2@39a8@40a@39a8.@40a8@39a8.  
+a8.@40a8]
+;12
+
+l16

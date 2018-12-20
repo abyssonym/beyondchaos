@@ -1,0 +1,122 @@
+#TITLE Unknown Lands
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED Gi Nattak
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x03
+#WAVE 0x21 -- 0x0D
+#WAVE 0x22 -- 0x1B
+#WAVE 0x23 -- 0x02
+#WAVE 0x24 -- 0x11
+#WAVE 0x25 -- 0x0F
+#WAVE 0x26 -- 0x22
+#WAVE 0x27 -- 0x21
+#WAVE 0x28 -- 0x14
+
+#SFXV ` *
+
+{1}
+l16t135%b100,0%v50%x185v90p50@32m12,20,195%e1r1  r1   $1 o5c2d4d+4  
+a+2^4a4  g+1  f2c+2  c2c+4d+4  
+>a+2g+4a+4  <c1  r1  c4c+4>a+2  
+<d+2c+4c4  c4c+4>a+2  ^1  <c4c+4>a+2  
+<f2d+4c+4  c4d+4>g+2  ^1  r1  
+<<c+2c4c+4  c2>a+2  ^1  r2<c+2  
+d+2c+4c4  c4c+4>a+2  ^2a+4g+8f+8  g+2f2  
+^2g+4f+8f8  f8f+8d+2^4  ^4r4d+4f4  c+1  
+f+4f4d+4c+4  c+1  >b2<d+2  c+1  
+^1  
+;1
+
+l16
+{2}
+l16v50p65@33m12,20,195%e1o6[4d+rd+r8.d+r] $2 [4d+rd+r8.d+r  
+][8c+rc+r8.c+r]d+1  ^1  >a+1  ^1  
+^1  <f2c+2  >a+1  ^1  
+d+2^4f4  f+4g+4a+4<c4  c+1  f1  
+f+1  ^1  c+1  f1  
+f+1  ^1  c+1  ^1  
+c+2>b2  ^1  a+1  ^1  
+a1  b1  <c+1  ^1  
+
+;2
+
+l16
+*{3}*`{5}`
+l16v55p70@33m12,20,195%e1o5[4grgr8.gr] $3 [4grgr8.gr  
+][8frfr8.fr]r2  <c2>g+2  g2f+1  ^2f+4d+4  
+f1  ^1  f+1  ^1  
+c2^4c+4  d+4f4f+4g+4  f1  a+1  
+^1  ^1  f1  a+1  
+^1  ^1  g+1  ^1  
+a1  ^1  f+1  ^1  
+e1  d+1  f1  ^1  
+
+;3
+
+l16
+*{4}*`{7}`
+l16v60p75@33m12,20,195%e1r1  r1   $4 r1  r1  
+r1  r1  r1  r1  
+r1  o4g+2g2  <c+1  ^2c+4c4  
+c+1  ^1  c+1  ^1  
+>g+1  ^1  a+1  ^1  
+f+1  ^2f+8g+8a+8<c8  c+1  >a+1  
+f+1  ^1  f1  <c+1  
+>b1  ^1  <c+1  ^1  
+c+1  c+1  c+1  ^1  
+
+;4
+
+l16
+*{5}*`{8}`
+l16v75p60@34%e1o4v57cd+g<c>v50cd+g<c>v42cd+g<c>v35cd+g<c  
+>v27cd+g<c>v22cd+g<c>v17cd+g<c>v15cd+g<c  > $5 v57cd+g<c>v50cd+g<c>v42cd+g<c>v35cd+g<c  
+>v27cd+g<c>v22cd+g<c>v17cd+g<c>v15cd+g<c  >v57c+fg+<c+>v50c+fg+<c+>v42c+fg+<c+>v35c+fg+<c+  
+>v27c+fg+<c+>v22c+fg+<c+>v17c+fg+<c+>v15c+fg+<c+  >>v57a+<c+fa+>v50a+<c+fa+>v42a+<c+fa+>v35a+<c+fa+  
+>v27a+<c+fa+>v22a+<c+fa+>v17a+<c+fa+>v15a+<c+fa+  >v57g+<cd+g+>v50g+<cd+g+>v42g+<cd+g+>v35g+<cd+g+  
+>v27g+<cd+g+>v22g+<cd+g+>v17g+<cd+g+>v15g+<cd+g+  >v57f+a+<c+f+>v50f+a+<c+f+>v42f+a+<c+f+>v35f+a+<c+f+  
+>v27f+a+<c+f+>v22f+a+<c+f+>v17f+a+<c+f+>v15f+a+<c+f+  >v57a+<c+fa+>v50a+<c+fa+>v42a+<c+fa+>v35a+<c+fa+  
+>v27a+<c+fa+>v22a+<c+fa+>v17a+<c+fa+>v15a+<c+fa+  ><v57d+f+a+<d+>v50d+f+a+<d+>v42d+f+a+<d+>v35d+f+a+<d+  
+>v27d+f+a+<d+>v22d+f+a+<d+>v17d+f+a+<d+>v15d+f+a+<d+  >>v57g+<cd+g+>v50g+<cd+g+>v42g+<cd+g+>v35g+<cd+g+  
+>v27g+<cd+g+>v22g+<cd+g+>v17g+<cd+g+>v15g+<cd+g+  >v57[2a+<c+fa+<c+>fa+<c+f>a+<c+fa+c+fa+  
+<c+>a+fc+a+fc+>a+<fc+>a+f<c+>a+fc+  >a+<c+f+a+<c+>f+a+<c+f+>a+<c+f+a+c+f+a+  
+<c+>a+f+c+a+f+c+>a+<f+c+>a+f+<c+>a+f+c+  >]<c+fg+<c+f>g+<c+fg+c+fg+<c+>fg+<c+  
+fc+>g+f<c+>g+fc+g+fc+>g+<fc+>g+f  >b<d+f+b<d+>f+b<d+f+>b<d+f+bd+f+b  
+<d+>bf+d+bf+d+>b<f+d+>bf+<d+>bf+d+  >a+<c+f+a+<c+>f+a+<c+f+>a+<c+f+a+c+f+a+  
+<c+>a+f+c+a+f+c+>a+<f+c+>a+f+<c+>a+f+c+  >a<c+ea<c+>ea<c+e>a<c+eac+ea  
+bf+d+>b<f+d+>bf+<d+>bf+d+bf+d+>b  <c+fg+<c+fc+>g+fg+<c+fg+<c+>g+fc+  
+<fc+>g+f<c+>g+fc+g+fc+>g+<fc+>g+f  
+;5
+
+l16
+{6}
+l16v125p55@35m12,20,195r1  
+r1   $6 o6c1  ^1  c+1  
+^1  >a+1  ^1  g+1  
+<g+2g2  f+1  ^1  >a+1  
+^1  <d+1  ^1  >g+1  
+^1  a+1  ^1  <f+1  
+^1  >a+1  ^1  <f+1  
+^1  c+1  ^1  >b1  
+^1  <f+1  ^1  >a1  
+b1  <c+1  ^1  
+;6
+
+l16
+*{7}*`{3}`
+l16p62r1  
+r1  o5 $7 @36v70a8@37v60g+g+v50ggv40f+f+@36v30f8@37v40ee@36v50d+8@37v60dd  
+@36v70c+8@37v60ddv50d+d+v40ee@36v30f8@37v40f+f+@36v50g8@37v60g+g+  
+
+;7
+
+l16
+*{8}*`{4}`
+l16p60r1  r1   $8 o5[8@38v125%e0a8a8^2^4  a8a8^4@40a2  
+@38a8a8^2^4  a8a8^4@39%e1v125a6v87a6v50a6  ]@38v125%e0a8a8^2^4  
+a8a8^4@40a2  
+;8
+
+l16

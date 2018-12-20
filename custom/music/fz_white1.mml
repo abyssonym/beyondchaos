@@ -1,0 +1,108 @@
+#TITLE White Land 1
+#ALBUM F-Zero
+#COMPOSER Yumiko Kanki
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+#SFXV ` *
+
+#WAVE 0x20 ~0x80~/0x02/ bass
+#WAVE 0x21 ~0x72~/0x0E/ trumpet
+#WAVE 0x22 ~0x7c~/0x0B/ saw
+#WAVE 0x23 ~0x89~/0x2C/ buzzy synth
+#WAVE 0x24 ~0x76~/0x20/ glock
+#WAVE 0x2A ~0x22~/0x22/ kick
+#WAVE 0x2B ~0x21~/0x21/ snare
+#WAVE 0x2C ~0x0F~/0x0F/ hi-hat
+#WAVE 0x2D ~0x66~/0x17/ tom
+
+#def global= t95 %x224 %v50 %b0,70
+
+#def bass= |0 v80 p64 ~o5~/o6/ %e0 m
+#def trumpet= |1 ~v80~/v64/ ~o5~/o6/ %e1 /m48,18,207/
+#def saw= |2 ~v64~/v72/ ~o5~/o5/ %e1 m48,18,223
+#def buzz= |3 ~v80~/v80/ ~o5~/o6/ %e1 m48,18,207
+#def glock= |4 ~v64~/v40/ ~o4~/o6/ %e1 m
+
+#drum "k"=5g |A v96 p50 %e0
+#drum "s"=5a |B v127 p50 %e0
+#drum "h"=5g |C v64 p50 %e0
+#drum "t"=~5f~/4f+/ |D v96 p105 %e0
+#drum "u"=~5g~/4g+/ |D v96 p75 %e0
+#drum "v"=~5a~/4a+/ |D v96 p45 %e0
+#drum "w"=~5f~/4f+/ |D v96 p15 %e0
+
+#def s= m12,-5
+#def s16= 's'^16
+
+#def tvs4= ~v40~/v32/~v48,96~/v48,76/
+#def tvs2= ~v40~/v32/~v96,96~/v96,76/
+#def svs4= ~v32~/v36/~v48,76~/v48,88/
+#def svs2= ~v32~/v36/~v96,76~/v96,88/
+
+{1}
+'global'
+'glock' l32 < p127 %a13%r28
+edeg b<d>bg bge>b< ge>bg< d+c+d+f+ a+<c+>a+f+ a+f+d+>a+< d+>a+f+a+<
+c>b<ce gbge ge>bg bgb<e [4d+c+d+f+]
+'bass' l16 p89
+g+.g+.d+ f+.f+.a+ g+.g+.d+ rf+r32fd+32
+$
+g+.g+.d+ f+.f+.a+ g+.g+.d+ rf+r32fd+32
+;
+
+{2}
+'glock' l32 < p0 %a12
+edeg b<d>bg bge>b< ge>bg< d+c+d+f+ a+<c+>a+f+ a+f+d+>a+< d+>a+f+a+<
+c>b<ce gbge ge>bg bgb<e [4d+c+d+f+]
+r1
+$
+r1r1 'saw' l16 p127 < %a11%r24
+[4f+>a+<f+g+>a+<g+8. a+>a+<a+g+j4>a+<g+8.] %rp64 ^8g+32f32c+
+##10
+[a+4^g+f+g+ ^f+ff+8fd+f ^d+c+d+8c+c>a+ ^4^<crd+>
+g+4.r8.a+<cd+rg+8a+8r2...]
+##18
+>>r1.r f+g+a+<cc+d+f   l8 a+.g+16r4'svs2'f+2 g+.f+16r4'svs4'g+4r16g+.
+;
+
+*{3}*`{6}`
+'glock' l16 p64 %a14
+cegbgece >b<d+f+a+f+d+>b<d+ >a<cegec>a<c >g+b<d+fd+>bg+b
+'trumpet' l8 p3 d+'s'^16 r2.^16
+$
+'trumpet' p3
+[4>a+'s16'<c's16'r c+'s16'c's16'r]<[>a+'s16'<c's16'r c+'s16'c's16'r]
+##10
+'buzz'p113> l16 r1r1r1r2  ra+<cd+g+a+<c+d+
+l8 f+.f.d+ c+.c.>a+ g+.a+.<c c+.d+.f f+.f.d+ c+.c.>a+ g+.a+.<c c+.d+.f
+##18
+'trumpet' l8 <
+[f+.f16r4d+2] c+.c16r4>'tvs2'a+2< c+.>a+16r4'tvs4'a+4r16a+.
+;
+
+*{4}*`{7}`
+'trumpet' l8 p39
+r1. d+ff+g+
+p78 a+'s16' r2.^16
+$
+'trumpet' p78
+[4d+'s16'f's16'r f+'s16'f's16'r]<[d+'s16'f's16'r f+'s16'f's16'r]>
+##10
+[8f+'s16'g+'s16'r f+'s16'f's16'r]
+##18
+< [a+.g+16r4f+2] f+.f16r4'tvs2'd+2 f+.f16r4'tvs4'd+4r16d+.
+;
+
+{5}
+l16 [8r"h"] [13"kh"] [3"!! ks32s32"]
+$
+[11"!!!o k8skkksk"]"k8sk8"[6"s32"]
+##10
+[16"k8skkksk"]
+##18
+[7"k8skkksk"] "k8sk"l32"tuuvvww16"
+;
+
+`{3} {4} {8} r;`

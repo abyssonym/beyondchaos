@@ -1,0 +1,132 @@
+#TITLE Battle 1
+#ALBUM Chrono Trigger
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x26 -- ~0x4a~ /0x02/
+#WAVE 0x27 -- ~0x41~ /0x06/
+#WAVE 0x28 -- ~0x42~ /0x3E/
+#WAVE 0x29 -- ~0x7c~ /0x0B/
+
+#WAVE 0x20 0x22
+#WAVE 0x21 0x21
+#WAVE 0x22 0x0F
+#WAVE 0x23 ~0x68~ /0x11/
+#WAVE 0x24 ~0x6d~ /0x12/
+#WAVE 0x25 ~0x66~ /0x17/
+
+#drum "c"= 5g |2 p121
+#drum "c+"=5g |4 p64 
+#drum "d"= 5g |0 p64
+#drum "e"= 5g |3 p121
+#drum "f"= 5b |1 p81
+#drum "g"= ~5d~/4d/ |5 p10
+#drum "a"= ~5f~/4a/ |5 p40 
+#drum "b"= ~5a~/5e/ |5 p71
+#drum "r"= 5r
+
+{1}
+l16t160%v20%x224%b0,90%f0,0v127"fff8"%e1|6v120p64o5d4f8dr8.  
+d8f8d8d4f8dr8.  d8a<cd8>d4f8dr8.  d8f8d8d4f8d8<d8  c8>agf8 $1 [7d4f8dr8.  
+d8f8d8d4f8dr8.  d8a<cd8>d4f8dr8.  d8f8d8d4f8d8<d8  c8>agf8]
+;1
+
+l16
+{2}
+l16%e1rrr8[4r1  
+] $2 |7v120p64o5%r6[2d1  e1  f1  g1  
+]a1  ^1  ^1  ^1  
+|8 %a14%s28 v48p64o6p0,192,127[8<d8>dgca<c>dgcad<c>dgc  ad<d>dgcad<c>dgcad<c>d  
+]p
+;2
+
+l16
+{3}
+l16%e1r4[4r1  ] $3 |7v90p34o5%r6[2>a1  <c1  
+c1  d1  ]e1  ^1  
+^1  ^1  |9v80p44o7m6,16,201d2c2  >b4<c4>b4g4  
+a2g2  f4g4e4c4  >a1  ^1  
+^1  ^1  <<d2c2  >b4<c4>b4g4  
+a2g2  f4g4e4c4  d1  ^1  
+^1  ^1  m
+;3
+
+l16
+{4}
+l16%e1r4[4^1  ]%e1 $4 |7v80p94o4%r6[2f1  
+g1  a1  b1  ]<d1  
+^1  ^1  ^1  |9v70p84o6m6,16,201a2a2  
+g4g4g4d4  e2d2  c4d4c4>a4  f1  
+^1  ^1  ^1  <a2a2  
+g4g4g4d4  e2d2  c4d4c4>a4  a1  
+^1  ^1  ^1  m
+;4
+
+l16
+{5}
+l16r4v127"d4f8d4d8  
+f8d8^8d8f8d8df8d  f8d8d4f8d4d8  f8d8d8.df8d8d8d8  f8df" $5 "d4f8d4d8  
+f8d8d8.df8d8d8d8  f8d8d8.df8d4d8  f8d8d8.df8d8d8d8  f8dfd8.df8d4d8  
+f8d8d8.df8d8d8d8  f8d8d8.df8d4d8  f8d8d8.df8d8d8d8  f8dfd8.df8d4d8  
+f8d8d8.df8d4d8  f8d8d8.df8d8d8.d  f8d8^8d8f8d8df8d  f8dfd8.df8d8d8d8  
+f8dfd4f8d4d8  f8d8d8.df8d8d8d8  f8d8d8.df8d4d8  f8d8d8.df8d4d8  
+f8d8d8.df8d4d8  f8d8d8.df8d8d8.d  f8d8d8.df8d4d8  f8d8d8.df8d8d8d8  
+f8dfd4f8d4d8  f8d8d8.df8d8d8d8  f8d8d8.df8d4d8  f8d8d8.df8d4d8  
+f8d8d8.df8d4d8  f8d8d8.df8d8d8.d  f8d8^8d8f8d8df8d  f8df"
+;5
+
+l16
+{6}
+l16r4v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v100"e8"v120"c8"v100"e8"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc" $6 v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"c32"v80"c32"v90"c  
+"v120"c8"v70"cc"v100"c8e8"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v100"e8"v120"c8"v100"e8"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"c32"v80"c32"v90"c  
+"v120"c8"v70"cc"v100"c8e8"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"c32"v80"c32"v90"c  
+"v120"c8"v70"cc"v100"c8e8"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v127"g4"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"c32"v80"c32"v90"c  
+"v120"c8"v70"cc"v100"c8e8"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"c32"v80"c32"v90"c  
+"v120"c8"v70"cc"v100"c8e8"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v127"g4"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"c32"v80"c32"v90"c  
+"v120"c8"v70"cc"v100"c8e8"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"c32"v80"c32"v90"c  
+"v120"c8"v70"cc"v100"c8e8"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc"v120"c8"v70"cc  
+"v120"c8"v70"cc"v120"c8"v70"cc"
+;6
+
+l16
+{7}
+l16"d4"v127"c+1  
+^1  ^1  r2bb8b8aa8"   $7 "c+1  
+^1  ^1  r1  c+1  
+^1  ^1  r2bb8b8aa8  c+1  
+^1  ^1  r4b4a4c+4  ^1  
+^1  ^1  r2bb8b8aa8  c+1  
+r1  r1  r4b4a4c+4  ^1  
+^1  ^1  r2bb8b8aa8  c+1  
+r1  r1  r4b4a4g4  "
+;7
+
+l16

@@ -1341,7 +1341,6 @@ def manage_commands_new(commands):
         # Disable menu screens for replaced commands.
         for i, name in enumerate(['swdtech', 'blitz', 'lore', 'rage', 'dance']):
             if c.name == name:
-                print(c.name, newname)
                 fout.seek(0x34D7A + i)
                 fout.write(chr(0xFF))
 

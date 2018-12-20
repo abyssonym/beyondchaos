@@ -19,6 +19,7 @@ cc_dragonia:    H2, omen3, train, zozo, magitek, kefkastower, owzer
 cc_flame:       I75, G95, grandfinale, metamorphosis, catastrophe*2, fanatics*2
 cc_home:        prelude, balance, relm*2
 cc_hydra:       H2, kefka, shadow, what, umaro*2, zozo, owzer, veldt*2, serpent
+cc_life:        omen3, rachel*2
 cc_miguel:      train, grandfinale, ruin*2, rachel
 crys_fields:    chocobo, johnny, gogo, moogles*2, mountain, setzer
 ct_battle:      I05, G20, battle*2, unforgiven
@@ -30,6 +31,7 @@ ct_keeper:      espers, fanatics, ruin, owzer
 ct_night:       coin*2, daryl, celes*2, ruin
 ct_revolution:  I80, G90, atma*2, dmad5, metamorphosis
 ct_schala:      H2, awakening, relm*2, strago, espers, H:prelude, H:omen3, H:celes, H:daryl, H:shadow, H:gogo, H:owzer, H:martiallaw, H:falcon
+ct_spekkio:     spinachrag*2, moogles*2, what, grandfinale
 ct_theme:       I45, G80, locke, savethem, grandfinale
 ct_truth:       kefka, grandfinale, catastrophe
 ct_tylair:      I85, G75, atma, metamorphosis*2, catastrophe*2, savethem, grandfinale

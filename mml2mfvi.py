@@ -331,15 +331,27 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                         else:
                             params[k] = v
                     s = ""
-                    for k, v in params.items():
-                        t = (re.sub('[0-9,]', '', k) + v).strip()
-                        s = t + s if k == "@0" else s + t
-                        if k == "%y" or k == "@0":
+                    if "%y" or "@0" in params.items():
                             state.pop("%a0", None)
                             state.pop("%y0", None)
                             state.pop("%s0", None)
                             state.pop("%r0", None)
-                        if k != "%y": state[k] = v
+                            #print "reset adsr"
+                    for k, v in params.items():
+                        #print "processing {}, {}".format(k,v)
+                        t = (re.sub('[0-9,]', '', k) + v).strip()
+                        s = t + s if k == "@0" else s + t
+                        #print "added {} to string ({})".format(t, s)
+                        #if k == "%y" or k == "@0":
+                        #    state.pop("%a0", None)
+                        #    state.pop("%y0", None)
+                        #    state.pop("%s0", None)
+                        #    state.pop("%r0", None)
+                        #    print "reset adsr"
+                        if k != "%y":
+                            state[k] = v
+                            #print "added {} to state ({})".format(v, state)
+                        
                     if 'o0' in state:
                         if isinstance(state['o0'], str): state['o0'] = int(state['o0'])
                         ochg = drumset[dcom].octave - int(state['o0'])

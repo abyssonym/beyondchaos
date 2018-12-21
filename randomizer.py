@@ -6536,7 +6536,7 @@ k   Randomize the clock in Zozo
     secret_codes['randombosses'] = "RANDOM BOSSES MODE"
     secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
     secret_codes['notawaiter'] = "CUTSCENE SKIPS"
-    secret_codes['theoldways'] = "OLD BALANCE MODE"
+    secret_codes['rushforpower'] = "OLD VARGAS FIGHT MODE"
     secret_codes['johnnydmad'] = "MUSIC REPLACEMENT MODE"
     secret_codes['johnnyachaotic'] = "MUSIC MANGLING MODE"
     s = ""
@@ -6677,7 +6677,7 @@ k   Randomize the clock in Zozo
 
     if 'm' in flags or 'o' in flags or 'w' in flags:
         for m in monsters:
-            m.screw_tutorial_bosses(old_vargas_fight='the old ways' in activated_codes)
+            m.screw_tutorial_bosses(old_vargas_fight='rushforpower' in activated_codes)
             m.write_stats(fout)
 
     if 'c' in flags and 'm' in flags:

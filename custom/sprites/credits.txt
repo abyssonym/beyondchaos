@@ -105,7 +105,7 @@ Scarabenigma: Eiko
 
 Yoshivoodoo: Agrias, Refia
 
-Lijj: Male red mage portrait
+Lijj: Bangaa portrait, Basch portrait, Tifa portrait, barret portrait, RedXIII portrait, Male red mage portrait
 
 Mav: Guardian Male portrait (Onion Knight)
 

@@ -456,23 +456,24 @@ class CharacterBlock:
         run = level_run & 0x03
         level = (level_run & 0x0C) >> 2
         run_map = {
-            0: [70, 90, 99, 100],
-            1: [10, 80, 90, 100],
-            2: [10, 20, 90, 100],
-            3: [1, 10, 20, 100]
+            0: [70, 20, 9, 1],
+            1: [13, 70, 13, 4],
+            2: [4, 13, 70, 13],
+            3: [1, 9, 20, 70]
         }
 
         level_map = {
-            0: [70, 80, 90, 100],  # avg. level + 0
-            1: [10, 80, 90, 100],  # avg. level + 2
-            2: [9,29,99,100],  # avg. level + 5
-            3: [20,29,30,100]   # avg. level - 3
+            0: [70, 15, 5, 10],  # avg. level + 0
+            1: [15, 70, 10, 5],  # avg. level + 2
+            2: [9, 20, 70, 1],  # avg. level + 5
+            3: [20, 9, 1, 70]   # avg. level - 3
         }
 
         if not read_only:
             run_chance = random.randint(0,99)
-            for i, c_prob in enumerate(run_map[run]):
-                if run_chance < c_prob:
+            for i, prob in enumerate(run_map[run]):
+                run_chance -= prob
+                if prob < 0:
                     run = i
                     break
 
@@ -482,8 +483,9 @@ class CharacterBlock:
             if ('worringtriad' not in activated_codes or
                (self.id != 0x07 and self.id != 0x0a)):
                 level_chance = random.randint(0,99)
-                for i, c_prob in enumerate(level_map[level]):
-                    if level_chance < c_prob:
+                for i, prob in enumerate(level_map[level]):
+                    level_chance -= prob
+                    if level_chance < 0:
                         level = i
                         break
             fout.seek(self.address + 21)

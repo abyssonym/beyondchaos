@@ -331,33 +331,26 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                         else:
                             params[k] = v
                     s = ""
-                    if "%y" or "@0" in params.items():
-                            state.pop("%a0", None)
-                            state.pop("%y0", None)
-                            state.pop("%s0", None)
-                            state.pop("%r0", None)
-                            #print "reset adsr"
+                    if "%y" in params or "@0" in params:
+                        state.pop("%a0", None)
+                        state.pop("%y0", None)
+                        state.pop("%s0", None)
+                        state.pop("%r0", None)
                     for k, v in params.items():
-                        #print "processing {}, {}".format(k,v)
                         t = (re.sub('[0-9,]', '', k) + v).strip()
                         s = t + s if k == "@0" else s + t
-                        #print "added {} to string ({})".format(t, s)
-                        #if k == "%y" or k == "@0":
-                        #    state.pop("%a0", None)
-                        #    state.pop("%y0", None)
-                        #    state.pop("%s0", None)
-                        #    state.pop("%r0", None)
-                        #    print "reset adsr"
                         if k != "%y":
                             state[k] = v
-                            #print "added {} to state ({})".format(v, state)
                         
                     if 'o0' in state:
                         if isinstance(state['o0'], str): state['o0'] = int(state['o0'])
                         ochg = drumset[dcom].octave - int(state['o0'])
-                        if ochg < 0:
-                            s += ">" * abs(ochg)
-                        else: s += "<" * ochg
+                        if abs(ochg) <= 1:
+                            if ochg < 0:
+                                s += ">" * abs(ochg)
+                            else: s += "<" * ochg
+                        else:
+                            s += "o{}".format(drumset[dcom].octave)
                         state['o0'] += ochg
                     else:
                         s += "o{}".format(drumset[dcom].octave)

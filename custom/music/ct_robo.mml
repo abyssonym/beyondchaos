@@ -23,7 +23,7 @@
 #DRUM "c"=5d |C p120 %e0
 #drum "d"=2g |C p44 %e0
 #drum "e"=6d+ |B p120 /%r24/
-#drum "f"=6f+ |A p80 %e1 %a
+#drum "f"=6f+ |A p80 %e1 %y
 #drum "g"=5c |A p64 %e1 %a12
 
 {1}

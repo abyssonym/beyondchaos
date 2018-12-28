@@ -14,7 +14,7 @@
 #WAVE 0x27 -- 0x3A
 
 
-{1}
+{2}
 l16t164%v24%x192%b0,70%f0,0%e1v50p62@32o5r1  ^1  ^1  <a+1  
 <c1  ^1  ^1  ^1  
 > $1 v80c8d8d+8d8c8d+8d8d+8  c8d8d+8d8f8d+8d8c8  >b8<d8g+8g8f8g8g+8g8  
@@ -33,7 +33,7 @@ d+8f+8a8f+8a8b8a8b8  <c1  ^4^8^r>b1  ^4^8^rd8r8c8r8
 ;1
 
 l16
-{2}
+{3}
 l16%e1v80p62@33o7c2^4^8^r1  
 ^1  ^1  ^c2^4^8^  r1  
 ^c1  ^2^4^8^r   $2 o7c2^4^8^r1  
@@ -51,7 +51,7 @@ r1  ^
 ;2
 
 l16
-{3}
+{4}
 l16%e1v80p62@34o5>c1  ^1  ^1  
 ^1  ^1  ^1  ^1  
 ^2^4^8^r   $3 o4c1  ^2^4^8^r  >b1  
@@ -68,7 +68,7 @@ l16%e1v80p62@34o5>c1  ^1  ^1
 ;3
 
 l16
-{4}
+{6}
 l16%e1v80p62@34o3c1  
 ^1  ^1  ^1  ^1  
 ^1  ^1  ^2^4^8^r   $4 o3c1  
@@ -86,7 +86,7 @@ e1  ^2^4^8^r
 ;4
 
 l16
-{5}
+{1}
 l16%e1v50p62@32o5<g1  ^1  
 f1  ^1  ^1  ^1  
 ^1  ^1   $5 o6v127p62@39>m16,16,201d2^4c4  g2^4c4  
@@ -104,19 +104,18 @@ f1  ^1  ^1  ^1
 ;5
 
 l16
-{6}
-l16%e1v80p62@33o5<c2^4^8^r1  ^1  ^1  
-^c2^4^8^  r1  ^v80p62@36o4c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32  
-c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32  
-c32c32 $6 v80p62@33o6c2^4^8^  r1  ^>b2^4^8^  r1  
+{7}
+l16%e1v50p62@32o5<c1  ^1  ^1  
+^1  ^1  ^1 ^1 ^1
+$6 v80p62@33o6c2^4^8^  r1  ^>b2^4^8^  r1  
 ^<c2^4^8^  r1  ^>b2^4^8^  r1  
 ^<c2^4^8^  r1  ^>b2^4^8^  r1  
 ^<c2^4^8^  r1  ^>b2^4^8^  r1  
 ^f+1  ^2v50p62@32<d+1  ^2e1  
 ^1  ^4g2^4  >a1  ^2<d+1  
-^2v96p62@36o4c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32  c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32  
-c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32  
-c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32v80p62@33<f2  ^4^8^r1  
+^2
+v60p64@32o5f+1  ^2d1  ^2
+v80p62@33<f2  ^4^8^r1  
 ^e2^4^8^  r1  ^f2^4^8^  r1  
 ^e2^4^8^  r1  ^f2^4^8^  r1  
 ^e2^4^8^  r1  ^f2^4^8^  r1  
@@ -124,7 +123,7 @@ c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32v80p62@33<f2  ^4^8^r1
 ;6
 
 l16
-{7}
+{8}
 l16%e1v120p62@35o5c+2^4^8^  r1  
 ^1  ^1  ^1  ^1  
 ^1  ^1  ^ $7 c+2^4^8^  r8^v104p62@37o4b8r4b8r8b8r8  
@@ -142,17 +141,20 @@ r4b8r4b8r4  b8r8b8r8b8r4b8  r4b8r4b8r4  b8r8b8r8v120p62o5@35c+2
 ;7
 
 l16
-{8}
-l16%e1v50p62@32o5<c1  ^1  ^1  
-^1  ^1  ^1  ^1  
-^1   $8 v120p62@38o5d8r4d8r8d8r8dd  d8r8d8d8r8d8d8dd  d8r8d8d8r8d8d8dd  
+{5}
+l16%e1v80p62@33o5<c2^4^8^r1  ^1  ^1  
+^c2^4^8^  r1  ^ 
+v80p62@36o4[64c32]
+$8 v120p62@38o5d8r4d8r8d8r8dd  d8r8d8d8r8d8d8dd  d8r8d8d8r8d8d8dd  
 d8r8d8d8r8d8d8dd  d8r4d8r8d8r8dd  d8r8d8d8r8d8d8dd  d8r8d8d8r8d8d8dd  
 d8r8d8d8r8d8d8dd  d8r4d8r8d8r8dd  d8r8d8d8r8d8d8dd  d8r8d8d8r8d8d8dd  
 d8r8d8d8r8d8d8dd  d8r4d8r8d8r8dd  d8r8d8d8r8d8d8dd  d8r8d8d8r8d8d8dd  
 d8r8d8d8r8d8d8dd  r1  ^1  ^1  
-^1  ^1  ^1  ^1  
-^1  ^1  v60p64@32o5f+1  ^2d1  
-^2v120p62@38d8r4d8  r8d8r8ddd8r8d8d8  r8d8d8ddd8r8d8d8  r8d8d8ddd8r8d8d8  
+^1  ^1  ^1 ^1 ^1 ^1
+v96p62@36o4c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32  c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32  
+c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32  
+c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32
+v120p62o5@38d8r4d8  r8d8r8ddd8r8d8d8  r8d8d8ddd8r8d8d8  r8d8d8ddd8r8d8d8  
 r8d8d8ddd8r4d8  r8d8r8ddd8r8d8d8  r8d8d8ddd8r8d8d8  r8d8d8ddd8r8d8d8  
 r8d8d8ddd8r4d8  r8d8r8ddd8r8d8d8  r8d8d8ddd8r8d8d8  r8d8d8ddd8r8d8d8  
 r8d8d8ddd8r4d8  r8d8r8ddd8r8d8d8  r8d8d8ddv85p62@36o4c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32c32  

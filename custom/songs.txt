@@ -15,21 +15,25 @@
 #custom songs
 bof2_battle:    I65, G05, unforgiven, grandfinale, battle
 cc_arni:        town*2
-cc_dragonia:    H2, omen3, train, zozo, magitek, kefkastower, owzer
+cc_dragonia:    H2, omen3, zozo, magitek, kefkastower, owzer
+cc_dragonia_tr: H2, train
 cc_flame:       I75, G95, grandfinale, metamorphosis, catastrophe*2, fanatics*2
 cc_home:        prelude, balance, relm*2
 cc_hydra:       H2, kefka, shadow, what, umaro*2, zozo, owzer, veldt*2, serpent
 cc_life:        omen3, rachel*2
-cc_miguel:      train, grandfinale, ruin*2, rachel
+cc_miguel:      grandfinale, ruin*2, rachel
+cc_miguel_tr:   train
 crys_fields:    chocobo, johnny, gogo, moogles*2, mountain, setzer
 ct_battle:      I05, G20, battle*2, unforgiven
 ct_battle2:     I05, G40, battle*2, grandfinale
-ct_bobonga:     I00, G50, strago, veldt*2, zozo, gogo, umaro*2
+ct_bobonga:     I00, G51, strago, veldt*2, zozo, gogo, umaro*2
 ct_boss2:       I95, G75, atma*2, metamorphosis, grandfinale, catastrophe
 ct_fair:        johnny, spinachrag, moogles*2, town
 ct_keeper:      espers, fanatics, ruin, owzer
 ct_night:       coin*2, daryl, celes*2, ruin
 ct_revolution:  I80, G90, atma*2, dmad5, metamorphosis
+ct_robo:        
+ct_robo_vic:    fanfare*2
 ct_schala:      H2, awakening, relm*2, strago, espers, H:prelude, H:omen3, H:celes, H:daryl, H:shadow, H:gogo, H:owzer, H:martiallaw, H:falcon
 ct_spekkio:     spinachrag*2, moogles*2, what, grandfinale
 ct_theme:       I45, G80, locke, savethem, grandfinale
@@ -37,7 +41,8 @@ ct_truth:       kefka, grandfinale, catastrophe
 ct_tylair:      I85, G75, atma, metamorphosis*2, catastrophe*2, savethem, grandfinale
 ct_tyran:       catastrophe, umaro*2, floatingcont, kefkastower
 cv3_aquarius:   H2, I35, G55, magitek, floatingcont, kefkastower
-cv4_beginning:  H2, I00, G35, battle, locke, falcon, train, serpent, floatingcont
+cv4_beginning:  H2, I00, G35, battle, locke, falcon, serpent, floatingcont
+cv4_beginning_tr: train
 ds4_lyll:       blackjack, falcon, mountain, serpent, setzer
 eo3_waves:      I50, G99, atma*2, kefkastower, dmad5
 evo_boss:       I85, G40, boss*2, unforgiven

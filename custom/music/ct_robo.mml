@@ -1,0 +1,124 @@
+#TITLE Robo's Theme
+#ALBUM Chrono Trigger
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~_ enh
+#VARIANT /_ nat
+#VARIANT ~! vic
+
+#WAVE 0x20 ~0x4F~/0x0E/
+#WAVE 0x21 ~0x67~/0x0C/
+#WAVE 0x22 ~0x04~/0x04/
+#WAVE 0x23 ~0x80~/0x02/
+#WAVE 0x27 ~0x45~/0x0D/
+
+#WAVE 0x2A ~0x5C~/0x21/
+#WAVE 0x2B ~0x68~/0x12/
+#WAVE 0x2C ~0x0F~/0x0F/
+
+#WAVE _0x22 0x1D_
+
+#DRUM "c"=5d |C p120 %e0
+#drum "d"=2g |C p44 %e0
+#drum "e"=6d+ |B p120 /%r24/
+#drum "f"=6f+ |A p80 %e1 %a
+#drum "g"=5c |A p64 %e1 %a12
+
+{1}
+l16t116%v15%b0,60%x208{FD}120%e1_[4r1  ]_ $1 |7v100p64~o6~/o7/m48,18,211v24,9,255%a10%r8d8rd8rere4r8er  
+e8re8rf+rf+8.re8.r  d8rd8rere8.rd8c+>a  ^2^4.^r  <d8rd8rere4r8er  
+e8re8rarf+8.re8.r  d8rd8rere8.r>a4  b2^4.|0v100p64o6vm48,16,211d8  
+f+6r48f+6r48g8g+64a4rr32r64ar  a8.g8.f+8e3r24de  f+6r48f+6r48g8g+64a4rr32r64>a8  
+b2<c+3r24de  f+6r48f+6r48g8g+64a4rr32r64g+64ar32r64  a6r48b6r48a8a6r48g6r48f+8  
+^1  ^2^4.r8  
+;1
+
+l16
+{2}
+l16{FD}120%e1_r1  r1  
+r1  r1_   $2 |1v80p64o5%r13d8rd8rere4r8er  e8re8rf+rf+8.re8.r  
+d8rd8rere8.rd8c+>a  ^2^4.^r  <d8rd8rere4r8er  e8re8rarf+8.re8.r  
+d8rd8rere8.r>a4  b1  <f+8rf+r8g8r8ar8a8.  r8.b6r48ara6r48g6r48f+8  
+^24r12f+8r8gra4.^r  r8<c+8.rdrc+8r>b8ra8  ^r8f+6r48gra4r8ar  a6r48b6r48a4r8g12r24f+8  
+^1  ^1  
+;2
+
+l16
+{6}
+l16{FD}120%e1_r1  r1  
+r1  r1_   $3 |1v60p94o4%r13b8rb8r<c+rc+4r8c+r  c+8rc+8rdrd8.rc+8.r  
+>b8rb8r<c+rc+8.r>b8<c+>f+  ^2^4.^r  b8rb8r<c+rc+4r8c+r  c+8rc+8rf+rd8.rc+8.r  
+>b8rb8r<c+rc+8.r>e4  f+1  <d8rdr8d8r8er8e8.  r8.g6r48f+re6r48d6r48d8  
+^24r12d8r8dre4.^r  r8a8.rara8ra8re8  ^r8d6r48dre4r8er  f+6r48g6r48f+4.d12r24d8  
+^4.r8e2  d+1  
+;3
+
+l16
+{7}
+l16{FD}120%e1_r1  r1  
+r1  r1_   $4 |1v60p34o4%r13g8rg8rara4r8ar  a8ra8rara8.ra8.r  
+g8rg8rara8.rg8ed  ^2^4.^r  g8rg8rara4r8ar  a8ra8r<dr>a8.ra8.r  
+g8rg8rara8.rc+4  d+1  a8rar8b8r8<c+r8c+8.  r8.d6r48drc+6r48>b6r48a8  
+^24r12a8r8br<c+4.^r  r8e8.rf+re8re8rc+8  ^r>a4ar<c+4r8c+r  d6r48d6r48d4.>b12r24a8  
+^4.r2r8  b1  
+;4
+
+l16
+{8}
+l16{FD}100%e1_r1  r1  
+r1  r1_   $5 |2v78%r26p20o5d8d8c+8c+8>b8ba8a8a  <d8d8c+8c+8>b8ba8a8a  
+<d8d8c+8c+8>b8ba8a8a  f+8f+8f+8f+8g8gg8f+8f+  <d8d8c+8c+8>b8ba8a8a  
+<d8d8c+8c+8>b8ba8a8a  <d8d8c+8c+8>b8ba8a8a  b8b8b8a8ba8b8bab  <f+8f+8f+8f+8f+8ee8e8e  
+f+8f+8f+8f+8f+8gg8g8g  f+8f+8f+8f+8f+8ee8e8e  f+8f+8f+8f+8f+8aa8a8a  
+f+8f+8f+8f+8f+8ee8e8e  f+8f+8f+8f+8f+8gg8g8g  f+8f+8f+8f+8f+8f+f+8f+8f+  
+d+8d+8d+8d+8d+8d+d+8d+8d+  
+;5
+
+l16
+{4}
+l16{FD}120%e1_r1  r1  r1  
+_r1   $6 |3p64~o4~/o5/
+v127g24r12v100g24r48v127g24r48g24r12v100g24r48v127g24r48a24r12v100a24r48v127a24r48a24r12v100a24r48v127a24r48  
+b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48a24r12v100a24r48v127a24r48  
+g24r12v100g24r48v127g24r48g24r12v100g24r48v127g24r48a24r12v100a24r48v127a24r48a24r12v100a24r48v127a24r48  
+<d24r12v100d24r48v127d24r48d24r12v100d24r48v127d24r48d24r12v100d24r48v127d24r48d24r12v100d24r48v127d24r48  
+>g24r12v100g24r48v127g24r48g24r12v100g24r48v127g24r48a24r12v100a24r48v127a24r48a24r12v100a24r48v127a24r48  
+b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48a24r12v100a24r48v127a24r48  
+g24r12v100g24r48v127g24r48g24r12v100g24r48v127g24r48a24r12v100a24r48v127a24r48a24r12v100a24r48v127a24r48  
+b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48  
+<d24r12v100d24r48v127d24r48d24r12v100d24r48v127d24r48>f+24r12v100f+24r48v127f+24r48f+24r12v100f+24r48v127f+24r48  
+g24r12v100g24r48v127g24r48g24r12v100g24r48v127g24r48a24r12v100a24r48v127a24r48a24r12v100a24r48v127a24r48  
+<d24r12v100d24r48v127d24r48d24r12v100d24r48v127d24r48>f+24r12v100f+24r48v127f+24r48f+24r12v100f+24r48v127f+24r48  
+g24r12v100g24r48v127g24r48g24r12v100g24r48v127g24r48a24r12v100a24r48v127a24r48a24r12v100a24r48v127a24r48  
+b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48b24r12v100b24r48v127f+24r48f+24r12v100f+24r48v127f+24r48  
+g24r12v100g24r48v127g24r48g24r12v100g24r48v127g24r48a24r12v100a24r48v127a24r48a24r12v100a24r48v127a24r48  
+b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48  
+b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48b24r12v100b24r48v127b24r48  
+
+;6
+
+l16
+{3}
+l16_{FD}127v120"g8d8f8g8g4f4  g8"v124"d8"v120"f8g8g4f4  "
+"g8d8f8g8g4f4  g8"v124"d8"v120"f8g8gf8.f8"v80"f"v120"f"_
+!v120!   $7 [8"!!!o g8d8f8g8g4f4  
+g8d8f8g8g4f4"  ]
+;7
+
+l16
+{5}
+l16_{FD}100v115"c8"v90"c8"v110"c8"v96"c8"v103"c8"v81"c"v64"c"v110"c8"v111"e8  
+"v103"c8c8"v117"c8"v83"c8"v119"c8"v103"c8"v118"c8"v110"e8  "v106"c8"v110"c8"v113"c8"v101"c8"v111"c8"v97"c"v51"c"v70"c8"v110"e8  
+"v102"c8"v101"c8"v112"c8"v99"c"v65"c"v94"c8"v86"c"v74"c"v109"c8"v93"e8"   _
+$8 v115"c8"v90"c8"v110"c8"v96"c8"v103"c8"v81"c"v64"c"v110"c8"v111"e8  
+"v103"c8c8"v117"c8"v83"c8"v119"c8"v103"c8"v118"c8"v110"e8  "v115"c8"v90"c8"v110"c8"v96"c8"v103"c8"v81"c"v64"c"v110"c8"v111"e8  
+"v103"c8c8"v117"c8"v83"c8"v119"c8"v103"c8"v118"c8"v110"e8  "v115"c8"v90"c8"v110"c8"v96"c8"v103"c8"v81"c"v64"c"v110"c8"v111"e8  
+"v103"c8c8"v117"c8"v83"c8"v119"c8"v103"c8"v118"c8"v110"e8  "v106"c8"v110"c8"v113"c8"v101"c8"v111"c8"v97"c"v51"c"v70"c8"v110"e8  
+"v102"c8"v101"c8"v112"c8"v99"c"v65"c"v94"c8"v86"c"v74"c"v109"c8"v93"e8  "v115"c8"v90"c8"v110"c8"v96"c8"v103"c8"v81"c"v64"c"v110"c8"v111"e8  
+"v103"c8c8"v117"c8"v83"c8"v119"c8"v103"c8"v118"c8"v110"e8  "v115"c8"v90"c8"v110"c8"v96"c8"v103"c8"v81"c"v64"c"v110"c8"v111"e8  
+"v103"c8c8"v117"c8"v83"c8"v119"c8"v103"c8"v118"c8"v110"e8  "v115"c8"v90"c8"v110"c8"v96"c8"v103"c8"v81"c"v64"c"v110"c8"v111"e8  
+"v103"c8c8"v117"c8"v83"c8"v119"c8"v103"c8"v118"c8"v110"e8  "v106"c8"v110"c8"v113"c8"v101"c8"v111"c8"v97"c"v51"c"v70"c8"v110"e8  
+"v102"c8"v101"c8"v112"c8"v99"c"v65"c"v94"c8"v86"c"v74"c"v109"c8"v93"e8"
+;8

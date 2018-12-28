@@ -146,40 +146,38 @@ r2r g+a+<cc+d+e d+4c+4c4d4>g4<c4>f4a+4d+4g4c
 ^1
 ##28
 '23'< l8 [<d>dd+<d4>dd+ <c4>dd+ <d+4>dg [<d4>dd+] <c4>dd+ a4da+4]
-%a12k1v32 <c4.>a+f4 a+4.g+d+4 g+4.f+c+4  [3c4.>a+<f4]
-^2. r2. k0
+'02'%e1%r11 v80 <c2>f4 a+2d+4 g+2c+4 [3c2f4]
+^4 m255,-3 ^4^1
 ;
 
 {3}
 '19' %a2%r8%e1
 r1r1 d1...r
 $ '19' %a5%r8
-[d1...r]
-'15'%r20< [16^4g4]
+d1...r d1...
+'22'<%e1 %r11 m24,18,239 l8 [4k2dd+>a+4k0a1.<]^ m
 ##17
-'10'< 'pv'r4c4.d+2c+2c2
-'19'%a4 v24 l1 c+2..^ %a6 c^ c+^ c^
-^1
+'10'< 'pv'r4c4.d+2c+2c4.
+'23'<l8 %a12k1v40[[^d+c+d+g+d+c+d+][^dcdgdcd]]^dcdgdcd k0
 ##28
 '01'< l8 m48,18,231
 [%r12d4%r25d+c %r9g4%r25d+d %r9f4%r25d+d %r12d+d24d+24d24%r23c>a+<
  %r9d4%r25d+c %r9g4%r25g+%r7a2%r12a+2^] m
-'02'%e1%r11 v80 <c2>f4 a+2d+4 g+2c+4 [3c2f4]
-^4 m255,-3 ^4^1
+l16 [3 "k8a8bcd8efe8dcf8 k8a8bcd8"]
+'09'<%e1m48,18,223 v40 c4 m255,-3 ^4^1 m
 ;
 
 {4}
 l16
 ["j^^t^^u^ j^^t^^u^ j^^tj^u^ ju^tj^u^"]
 $
-r1r1r1r1
-'16'%r20%e1< [16^4d4]
+l16 [6 "!!!o k8a8bcd8efe8dcf8 k8a8bcd8e24e-24e24cdefe8" ]
 ##17
 l8 '14'da'11''pv'a'14'af'11''pv'<c4'14'f  d+'11''pv'a+4'14'd+d'11''pv'a4'14'd
 '16'%a3< v24 m48,18,207 d+1[7^1] m
 l16 ["!!!o p8.qr8s8"]
 ##28
-[[3"!!!op8.qr8x8 p8.qr8y8"]"p8.qr8x8pq+kr-s8y8"]
+l16 [4 "!!!o k8a8bcd8efe8dcf8 k8a8bcd8e24e-24e24cdefe8" ]
 '07'%e1%r11> v80 a+4.<a+4.>g+4.<g+4.>f+4.<f+4.>[3f4.a+4.]
 '08'<%e1m48,18,223 v40 g4 m255,-3 ^4^1 m
 ;
@@ -188,26 +186,28 @@ l16 ["!!!o p8.qr8s8"]
 l16
 [7"p8.qr8s8"]"pq+8r-s8s8"
 $
-r1r1r1r2..
-'22'<%e1 %r11 m24,18,239 l8 [4k2dd+>a+4k0a1.<]^ m
+r1r1r1r1
+'15'%r20< [16^4g4]
 ##17
 '12''pv' r4f4.g+2f+2f2
 '15'%a4< v24 l1 g+2..^ %a6 g^ g+^ g^
 ^1
 ##28
-l16 [4 "!!!o k8a8bcd8efe8dcf8 k8a8bcd8e24e-24e24cdefe8" ]
-[3 "k8a8bcd8efe8dcf8 k8a8bcd8"]
-'09'<%e1m48,18,223 v40 c4 m255,-3 ^4^1 m
+l16 [[3"!!!op8.qr8x8 p8.qr8y8"]"p8.qr8x8pq+kr-s8y8"]
+'23'< l8 %a12k1v32 <c4.>a+f4 a+4.g+d+4 g+4.f+c+4  [3c4.>a+<f4]
+^2. r2. k0
 ;
 
 {6}
 l8
 ["k4.kk4.kk4.k4k4k"]
 $
-l16 [6 "!!!o k8a8bcd8efe8dcf8 k8a8bcd8e24e-24e24cdefe8" ]
+r1r1r1r1
+'16'%r20%e1< [16^4d4]
 ##17
-'13''pv' r4e4.g2f2e4.
-'23'<l8 %a12k1v40[[^d+c+d+g+d+c+d+][^dcdgdcd]]^dcdgdcd k0
+'13''pv' r4e4.g2f2e2
+'19'%a4 v24 l1 c+2..^ %a6 c^ c+^ c^
+^1
 ##28
 [4"!!!o v4g8h8k8w8!m0,0g8h8 v4!m0,0g8h4w8!m0,0g8h8"]
 [6"!!!oi4g8h8!m0,0g8h8"]

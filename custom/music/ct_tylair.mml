@@ -34,7 +34,7 @@ g4a4a+4<c4
 ;1
 
 l16
-{2}
+{5}
 l16|0v100p95%e1r4r4~v127o4~/|7o4/c8f8a+8d+8  g+8<c+8c8r8>c8f8a+8d+8  
 g+8<c+8c8>f8a+8<d+8>g+8<c+8  c8f+8g8r2r4.  r4>c8f8a+8d+8g+8<c+8  
 c8r8>c8f8a+8d+8g+8<c+8  c8>f8a+8<d+8>g+8<c+8f+8b8  r1   $2 |0v100p95%e1r4~v127o4~/o5/gr8g<d4^r8>g  
@@ -52,7 +52,7 @@ fed+dc+c>ba+aa+b<cc+dd+e  ff+%g0
 ;2
 
 l16
-{3}
+{6}
 l16|1v60p50%e1r4o7c8r8c8r8c4.  
 r8c8r8c8r8c4.  r8>f4.g24b24<c24f2  g24r24g24r24g24r24g24r24g24r24g24r24a+8a24r3  
 c8r8c8r8c4.r8  c8r8c8r8c4.r8  >f4.g24b24<c24f2  g24r24g24r24g24r24g24r24g24r24g24r24a+8a24r3  
@@ -70,7 +70,7 @@ d+24r48f4r8f24r48f24r48d+4f4  f+4g+4
 ;3
 
 l16
-{4}
+{2}
 l16|1v60p40%e1r4o6g8r8  
 a+8r8g+4.r8g8r8  a+8r8g+4.r8r4  >f8a+8d+8g+8<c+8f+8<d24r24d24r24d24r24  
 d24r24d24r24d24r24f8e24r3>g8r8  a+8r8g+4.r8g8r8  a+8r8g+4.r8r8>c8  
@@ -89,7 +89,7 @@ r24a24r24a+4r8a+24r48a+24r48<c4r8  c24r48c24r48>a+4<c4c+4d+4
 ;4
 
 l16
-{5}
+{7}
 l16|1v60p30%e1r4[2r1  
 r1  r4o4p10p120,120v120f8a+8d+8d+8g+8<c+8  <p30v65a24r24a24r24a24r24a24r24a24r24a24r24<c8>b24r3  
 ] $5 |1v60p30%e1o6cr4rcr4rcr4  rcr4rcr8.c+4c  r4rcr4rcr4  rcr4rcr8.d+4c  
@@ -107,7 +107,7 @@ f+4<c4
 ;5
 
 l16
-{6}
+{8}
 l16|4v120p64%e0r4o5a1  a1  r1  r1  
 a1  a1  r1  r1  
  $6 |3v126p64%e0~o3~/v72 o5/gr4rgr4rgr4  rgr4rgr8.g+4g  r4rgr4rgr4  rgr4rgr8.a+4g  
@@ -123,7 +123,7 @@ r4ra+r4ra+r4  ra+r8.<c+4>d+1  ^1  a1
 ;6
 
 l16
-{7}
+{4}
 l16|5p85%e0r4o5[2v100a2r4.  
 v30v24,100a24a24a24a2r2  v30v192,100[4a8aa]a12a12a12a12a12a12a8a8  
 r4] $7 [2v100a8v30aaa8v100aav30a8a8  v100a8v30aaa8v100aav30a8a8v100a8v30aa  
@@ -139,7 +139,7 @@ v30a8a8v100a8v30aaa8v100aav30a8a8  v100a8v30aaav100av30aa]v30v192,50[4a8aa]v192,
 ;7
 
 l16
-{8}
+{3}
 l16|6p40%e0~o3~/o3/v50v48,100g24g24g24g24g24g24<c1  
 c1  c1  ^2^4cc>g8  <c1  
 c1  c1  ^2c8>g8<cc>g8   $9 [2~o3~/o3/g4.g4.g4.  

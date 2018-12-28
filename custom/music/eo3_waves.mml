@@ -34,8 +34,8 @@
 #def lead4= p48 |1 v72 o6 m36,17,216
 #def celesta_solo= @3 v64p96v24,20,255%y0%s0%r0 o4
 #def celesta_duo= @3 v64p64v24,20,255%y0%s0%r0 o6
-#def deepness= v ~|5 v112 o4 %r6 m96,32,192~ /|2 v72 o6/
-#def deepness2= v ~|5 v80 o4 %a0%r6 m96,15,255~ /|2 v72 o6/
+#def deepness2= v ~|5 v112 o4 %r6 m96,32,192~ /|2 v72 o6/
+#def deepness= v ~|5 v80 o4 %a0%r6 m96,15,255~ /|2 v72 o6/
 #def atmosynth= p80 |2 ~v56 o6 %a6%s7%r1~ /v36 o7/
 #def atmosynth2= p80 |2 ~v64 o6~ /v72 o7/
 #def pad1= ~|3 v60 %a3%y4%s4 o5~ /|2 v96 %a2%y4%s4 o6/
@@ -190,7 +190,7 @@ $49
 ;48
 
 ##### ATMOSPHERE HIGH #####
-{6} l8 %e1
+{8} l8 %e1
 'atmosynth'
 p0,83,104
 [4 [5dfe]d ] 
@@ -286,7 +286,7 @@ $79 l8
 ;78
 
 ##### CYMBALS #####
-{8} l8
+{6} l8
 v96p56 o5
 [4r1]
 'cv'|Cg4.'hv'|Bg|Agg|Bg|Ag g|Bg|Agg|Bg|Ag|Bg|Ag |Bg|Agg|Bg|Agg|Bg|Ag g1

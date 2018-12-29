@@ -40,6 +40,7 @@ ct_theme:       I45, G80, locke, savethem, grandfinale
 ct_truth:       kefka, grandfinale, catastrophe
 ct_tylair:      I85, G75, atma, metamorphosis*2, catastrophe*2, savethem, grandfinale
 ct_tyran:       catastrophe, umaro*2, floatingcont, kefkastower
+ct_zeal:        relm*2, awakening, owzer, strago*2
 cv3_aquarius:   H2, I35, G55, magitek, floatingcont, kefkastower
 cv4_beginning:  H2, I00, G35, battle, locke, falcon, serpent, floatingcont
 cv4_beginning_tr: train
@@ -227,7 +228,7 @@ top_world1:     omen3, shadow, cyan, narshe, ruin, balance, falcon, serpent
 top_world3:     I00, G85, johnny, umaro, zozo, falcon, serpent*2, floatingcont, kefkastower
 totr_arrow:     I75, G60, boss, grandfinale
 xc1_valakn:     W4, omen3, celes, daryl, narshe, ruin*2, forest*2, W:prelude, W:coin, W:shadow, W:zozo, W:town_ruin, W:falcon, W:balance, W:mountain, W:espers
-xc2_morardain:  fanfare, grandfinale, setzer*2, moogles, umaro, martiallaw*2, falcon
+xc2_morardain:  fanfare, grandfinale, setzer*2, moogles, umaro, martiallaw, falcon
 xc2_tantal:     W4, omen3, gestahl, zozo, narshe*2, train*2, ruin*2, serpent, espers, W:celes, W:cyan, W:gogo, W:umaro*2, W:owzer, W:balance, W:forest, W:floatingcont, W:kefkastower
 xg_boss:        I85, G50, boss*2, metamorphosis, grandfinale, troops, savethem
 xg_chuchu:      spinachrag*2, what*2, moogles, gogo, strago

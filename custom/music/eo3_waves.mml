@@ -34,8 +34,8 @@
 #def lead4= p48 |1 v72 o6 m36,17,216
 #def celesta_solo= @3 v64p96v24,20,255%y0%s0%r0 o4
 #def celesta_duo= @3 v64p64v24,20,255%y0%s0%r0 o6
-#def deepness2= v ~|5 v112 o4 %r6 m96,32,192~ /|2 v72 o6/
-#def deepness= v ~|5 v80 o4 %a0%r6 m96,15,255~ /|2 v72 o6/
+#def deepness= v ~|5 v112 o4 %r6 m96,32,192~ /|2 v72 o6/
+#def deepness2= v ~|5 v80 o4 %a0%r6 m96,15,255~ /|2 v72 o6/
 #def atmosynth= p80 |2 ~v56 o6 %a6%s7%r1~ /v36 o7/
 #def atmosynth2= p80 |2 ~v64 o6~ /v72 o7/
 #def pad1= ~|3 v60 %a3%y4%s4 o5~ /|2 v96 %a2%y4%s4 o6/
@@ -45,7 +45,7 @@
 #def lowpluck= ~|3 v56 %a5%s4 o6~ /|2 v96 o5 %a >/ 
 #def secretharmony= ~|0 v64 o6~ /|0 v56 o6/
 #def cv=v127
-#def hv=v96
+#def hv=v64
 
 ##### ORGAN #####
 {1} 'global' %e1 'organ' l8
@@ -115,14 +115,14 @@ m
 
 ##### ATMOSPHERE MID #####
 {3} l1 %e1
-'deepness2' p112
+'deepness' p112
 d^^^ >b-^^^
 $[2
-'deepness2' p112
+'deepness' p112
 d^^^ >b-^
 'celesta_duo'
 c4.d8^2^1 v
-'deepness2' p112
+'deepness' p112
 d^^^ >b-^
 'celesta_duo'
 c4.d4.a4.g4.f4e4
@@ -153,13 +153,14 @@ v p112 'pad2' L1 >
 
 ##### ATMOSPHERE LOW #####
 {7} l1 %e1
-'deepness' p16 
+'deepness2' p16 
 d^^^ >b-^^^
 $[2
-~'deepness'd^^^>b-^~ /[6r1]/
+'deepness2'~d^^^>b-^~ /[6r1]/
 'celesta_duo'>
 a4.a4.a4^1
-~'deepness'd^^^>b-^'celesta_duo'>~ /[6r1]/
+'deepness2'~d^^^>b-^~ /[6r1]/
+'celesta_duo'>
 a4.b-4.<f4.e4.d4c4
 
 $48

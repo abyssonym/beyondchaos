@@ -171,7 +171,20 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
         
 def mml_to_akao_main(mml, ignore='', fileid='mml'):
     mml = copy.copy(mml)
-    #final bit of preprocessing
+    ##final bit of preprocessing
+    #single character macros
+    cdefs = {}
+    for line in mml:
+        if line.lower().startswith("#cdef"):
+            li = line[5:]
+            li = li.split('#')[0].lower().strip()
+            li = li.split(None, 1)
+            if len(li) < 2: continue
+            if len(li[0]) != 1:
+                warn(fileid, line, "Expected one character for cdef, found {} ({})").format(len(li[0]), li[0])
+                continue
+            cdefs[li[0]] = li[1]
+    #single quote macros
     macros = {}
     for line in mml:
         if line.lower().startswith("#def"):
@@ -190,15 +203,6 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     post = "".join(post.split())
                 macros[pre] = post.lower()
     
-    #stillmacros = True
-    #while stillmacros:
-    #    stillmacros = False
-    #    for i, line in enumerate(mml):
-    #        for k, v in macros.items():
-    #            if "'{}'".format(k) in line:
-    #                stillmacros = True
-    #                line = line.replace("'{}'".format(k), v)
-    #        mml[i] = line
     for i, line in enumerate(mml):
         while True:
             r = re.search("'(.*?)'", line)
@@ -241,7 +245,11 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
     
     while len(m):
         command = m.pop(0)
-
+        
+        #single character macros
+        if command in cdefs:
+            repl = list(cdefs[command] + " ")
+            m = repl + m
         #conditionally executed statements
         if command in ignore:
             while len(m):

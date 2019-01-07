@@ -14,8 +14,8 @@
 #WAVE 0x27 -- 0x11
 
 
-{1}
-l16t165%v25%x192%b0,70%f0,0v104p80%e1@32o6^8d+32f+32a32r32d+32f+32rf+32a32f+32a32<cc32c32r1  
+{4}
+l16v104p80%e1@32o6^8d+32f+32a32r32d+32f+32rf+32a32f+32a32<cc32c32r1  
 ^1  ^1  ^1  ^1  
 ^1  ^1  ^1  ^1  
 ^1  ^8 $1 >a+agf+d+dc>a+agf+d+d4  <drdrf+rf+rarar4^  a+agf+d+dc>a+agf+d+d4  
@@ -27,7 +27,7 @@ drdr8^d+4frdr2  ^4^8^d+rd+rd+rd+r8  ^f4grdr1  ^1
 ;1
 
 l16
-{2}
+{7}
 l16v104p80%e1@32o6^8^^32c32rc32d+32r1  
 ^1  ^1  ^1  ^1  
 ^1  ^1  ^1  ^1  
@@ -56,7 +56,7 @@ c+2>a+8a8g8r8  g8a8a+8r8a8f8gr<dr  c+4^8>a8a+r<fre2  ^4^8>f8gr<drc+2
 ;3
 
 l16
-{4}
+{5}
 l16v60p24%e1@33o5^8^<d+32f+32r32f+32r32d+d+32r32f+32r1  
 ^2^4^8>f8  gr<drc+2>a+8a8  g8r8g8a8a+8r8a8f8  gr<drc+4^8>a8a+r<fr  
 e2^4^8>f8  gr<drc+2>a+8a8  g8r8g8a8a+8r8a8f8  gr<drc+4^8>a8a+r<fr  
@@ -70,7 +70,7 @@ a8f8gr<drc+4^8>a8  a+r<fr
 ;4
 
 l16
-{5}
+{2}
 l16v60p24%e1@33o5^8^^32<c32d+32c32c32r32c32r32c32r32@37o5v80p64g8g8  
 g8g8g8g8f8f8g8g8  g8g8g8g8f8f8g8<gr  >a8<ar>a+8<a+rc8ar $5 >g8<gr  
 >a8<ar>a+8<a+r>a8<ar[3>g8<gr  >a8<ar>a+8<a+rc8ar>g8<gr  >a8<ar>a+8<a+r>a8<ar]d+rd+r  
@@ -83,7 +83,8 @@ d8<d8>drd8<d8>d8grg8  <g8>g8gr<g8>g8g8<gr>g8  g8<g8>grg8<g8>g8drd8
 ;5
 
 l16
-{6}
+{1}
+t165%v25%x192%b0,70
 l16v104p64%e1@34r2o6c4c4  c4c4 $6 c4c4  @38d8@34c8@38d8@34c@38d[2@34c4@38d4  
 @34c4@38d4@34c4@38d4  @34c4@38d4@34c4@38d4  @34c4@38d4@34c4@38d4  
 @34c4@38d8dd]@34c8c8@38d8@34c8  c8@38d8@34c8c8c8c8@38d8@34c8  c8c8@38d8dd@34c8c8@38d8@34c8  
@@ -94,7 +95,7 @@ r8c8@38d8@34c8
 ;6
 
 l16
-{7}
+{6}
 l16v68p64%e1@35r2  o5g+8r8g+8r8g+8r8g+8r8  
 g+8r8g+8r8g+8r8g+8r8   $7 g+8g+8g+8g+8g+8g+8g+8g+8  [7g+8g+8g+8g+8g+8g+8g+8g+8  
 ]g+8g+8g+8r4g+8r4  g+8g+8g+8g+8g+8g+8g+8g+8  g+8g+8g+8r4g+8r4  [12g+8g+8g+8g+8g+8g+8g+8g+8  

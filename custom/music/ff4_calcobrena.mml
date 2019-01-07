@@ -1,0 +1,126 @@
+#TITLE Dancing Calcobrena
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 0x3B
+#WAVE 0x21 ~0x87~/0x08/
+#WAVE 0x22 ~0x80~/0x02/
+#WAVE 0x23 0x07
+#WAVE 0x24 ~0x83~/0x36/
+#WAVE 0x2A ~0x81~/0x14/
+
+#def global= t163 %x224 %v50 %b0,70
+
+#cdef ( %l1
+#cdef ) %l0
+
+#def org= |0 v40 o6
+#def aco= |1 v64 o5 %r11 m48,18,239
+#def gtr= |2 v56 ~o5~/o6/ %r13 m12,18,209
+#def flt= |3 v64 o4 %r11 m48,18,223
+#def cal= |4 v56 ~o4~/o5/ %r11 m48,18,231
+
+#drum "s"=5a |A p41
+
+#def 'op1'= p21p192,48
+#def 'op2'= p192,77
+#def 'op3'= p192,105
+#def 'lp1'= p118p192,87
+#def 'lp2'= p192,56
+#def 'lp3'= p192,25
+
+{1}
+'global'
+$
+'flt'< %e1 p64 l8
+r1. [4(d+d)](c>a<)cd
+r1. [5(fe)]fg
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+'aco'
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+r1. [4(d+d)](c>a<)cd
+r1. [5(fe)]fg
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+'cal'<
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+r1. [4(d+d)](c>a<)cd
+r1. [5(fe)]fg
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+'flt'<
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+;
+
+{2}
+$
+'gtr' %e1 p66 l4
+a2<ea2gf2.>f2g a2<ea2gf2.<c2.>>
+[a.<d+8e>a <g8rf+8f2.>f2g
+a.<d+8e>a <c8r8e8r8g2 f+f>f2]
+;
+
+{3}
+$
+'org' %e1 l8
+'op1'>a4<erer >a4<'op2'erer >f4<fr'op3'fr >f4<frfr
+;
+
+{4}
+[6r1] v64
+$
+"s4s2s4s2"v72,16[9"s24"]v72,64[9"s24"]"s4s2"
+;
+
+{5}
+$
+'aco'v48 %e1<
+'op1'r4c8r8c8r8 r4'op2'c8r8c8r8 r4c8r8'op3'c8r8 r4c8r8c8r8
+;
+
+{6}
+$
+'org' %e1
+'op1'r4a8r8a8r8 r4'op2'a8r8a8r8 r4a8r8'op3'a8r8 r4a8r8a8r8
+;
+
+{7}
+'global'
+$
+'aco'<v24 %e1 p64 l8
+r1. [4(d+d)](c>a<)cd
+r1. [5(fe)]fg
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+'cal'<v24
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+r1. [4(d+d)](c>a<)cd
+r1. [5(fe)]fg
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+'aco'<v24
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+r1. [4(d+d)](c>a<)cd
+r1. [5(fe)]fg
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+'aco'v24<
+'lp1'<d4(c+c)>(ba+)ag+ 'lp2'gf+(fe)d+(ef)e 'lp3'(gf+)f4er4.
+'lp1'd+4er4gf4 'lp2'er4.(dd+)(ad+) 'lp3'(<c>a)<f2.>
+;
+
+{8}
+$
+'aco'v32 %e1
+'op1'r4erer r4'op2'erer r4fr'op3'fr r4frfr
+;

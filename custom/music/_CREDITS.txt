@@ -2,14 +2,15 @@ Song conversions:
     emberling -- bof2_battle
                  cc_dragonia, cc_home, cc_hydra, cc_life
                  crys_fields
-                 ct_battle, ct_battle2, ct_bobonga, ct_fair, ct_keeper,
-                 ct_night, ct_revolution, ct_robo, ct_schala, ct_theme,
-                 ct_truth, ct_tylair, ct_tyran, ct_zeal
+                 ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair,
+                 ct_keeper, ct_night, ct_revolution, ct_robo, ct_schala,
+                 ct_theme, ct_truth, ct_tylair, ct_tyran, ct_zeal
                  cv4_beginning
                  ds4_lyll
                  eo3_waves
                  ff2_battleb
                  ff3_warrior
+                 ff4_calcobrena
                  ff5_battle, ff5_cave, ff5_curse, ff5_excastle, ff5_final,
                  ff5_home, ff5_hurry, ff5_lenna, ff5_library, ff5_theme,
                  ff5_void, ff5_world1
@@ -65,7 +66,7 @@ Song conversions:
                  iog_boss, iog_womb
                  jts_stage1
                  lagoon_spirits
-                 lu1_boss
+                 lu1_boss, lu1_spoils
                  lu2_battle3, lu2_boss, lu2_map, lu2_mountain, lu2_narvick
                  met3_brain
                  rs3_underwater
@@ -91,6 +92,7 @@ Song conversions:
                ffx_ambition
     tsushiy -- ff1_bossb
                ff4_baron, ff4_illusion
+    emberling & Gi Nattak -- totr_spirit
 Tierboss segments:
     emberling -- ffmq_lava_dm, ff8_witches
     Gi Nattak -- cc_flame_dm

@@ -47,7 +47,7 @@ r2f+rf+rf+rf+4  r8
 ;2
 
 l16
-{3}
+{8}
 l16%e1 $3 v120p80@32o6r1  ^1  
 ^1  ^1  ^1  ^1  
 ^1  ^1  ^1  ^1  
@@ -122,7 +122,7 @@ g+rg+4r8
 ;6
 
 l16
-{7}
+{3}
 l16%e1 $7 v104p64@35o5[14d4^8d8  d8d8d4^8dddddd  
 d4^8d4^8d8d8  d8d8d8d8]v80b4^8f4  ^8b8b8b8f4^8f8  rfffb8b8b8f4^8  
 b4^8f4^8b8b8  b8f4^8f8rfffb8  b8b8f4^8b4^8  f4^8b8b8b8f4  
@@ -131,7 +131,7 @@ r8b4r8ffffffb4  r8ffffffbrbrbrb4  r8
 ;7
 
 l16
-{8}
+{7}
 l16%e1 $8 v120p64@36o5r1  
 ^1  ^1  ^1  ^1  
 ^1  >a2^4r1  ^1  ^4a2^4  

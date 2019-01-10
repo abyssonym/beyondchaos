@@ -477,11 +477,8 @@ class CharacterBlock:
                     run = i
                     break
 
-            # Don't randomize Strago and Mog's level average values
-            # if worringtriad is active because they're used to set
-            # the starting level.
-            if ('worringtriad' not in activated_codes or
-               (self.id != 0x07 and self.id != 0x0a)):
+            # Don't randomize level average values if worringtriad is active
+            if 'worringtriad' not in activated_codes:
                 level_chance = random.randint(0,99)
                 for i, prob in enumerate(level_map[level]):
                     level_chance -= prob

@@ -1,9 +1,7 @@
-FF6 Beyond Chaos Randomizer
-Version:    64 BETA
-Date:       May 03, 2018
-URL:        https://github.com/abyssonym/beyondchaos
-Contact:    https://twitter.com/abyssonym
-            https://www.twitch.tv/abyssonym
+FF6 Beyond Chaos EX Randomizer
+Version:    1
+Date:       January 11, 2019
+URL:        https://github.com/subtractionsoup/beyondchaos
 Discord:    https://discord.gg/S3G3UXy
 
 --- QUICKSTART ---
@@ -12,7 +10,7 @@ Requirements:
 	If not running Windows, install Python 2.7. (NOT python 3.0+)
 
 Running the randomizer:
-    Windows users: run beyondchaos.exe.
+    Windows users: run beyondchaosex.exe.
 	Other users: run "randomizer.py" using Python version 2.7 (It DOES NOT work with python 3.)
 
 Source ROM file:
@@ -22,6 +20,7 @@ Source ROM file:
 	If you prefer to keep the ROM in a different folder, enter the full path. e.g., "C:\Users\Kefka\Documents\snes\ff3.smc"
 	
 	The ROM used should be the FF3 US 1.0 ROM. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
+
     MD5 - e986575b98300f721ce27c180264d890
     CRC32 - a27f1c7a
 
@@ -47,15 +46,8 @@ Output rom file:
 
 --- OVERVIEW ---
 
-    Beyond Chaos is a randomizer, a program that remixes game content randomly, for FF6. Every time you run Beyond Chaos, it will generate a completely unique, brand-new mod of FF6 for you to challenge and explore. There are over 10 billion different possible randomizations! Nearly everything is randomized, including treasure, enemies, colors, graphics, character abilities, and more.
-    Beyond Chaos is also customizable. Using the flags in the above section, you can choose to only randomize certain parts of the game. Every flag you select will make the game a little more random, and also a little more difficult. Therefore, even experienced players should be able to find some challenge in the resulting game. As the game progresses, enemies may become more and more difficult, so that it becomes necessary to develop specialized strategies for individual formations.
-    Because of the extent and the severity of the modifications made by Beyond Chaos, it is not recommended for competitive play. It is mainly intended for casual play, though if you would like to play it competitively anyway, go for it. Also note that there is another FF6 randomizer intended for races, made by Dessyreqt and Lenophis, that makes more conservative changes. That one is simply called "FF6 Randomizer", or "FF6 Rando Classic Original Flavor".
-
---- OBJECTIVES ---
-
-1. To remix game content so thoroughly that even veteran FF6 fans can feel as though they are playing the game for the first time all over again.
-2. To create a challenging and festive result that encourages memorable scenarios, without making the game impossible for a casual player to complete.
-3. To create a tool that is useful to the FF6 rom hacking community by being both open source and accessible, and by showing off a wide variety of potential mods.
+    Beyond Chaos EX is a randomizer, a program that remixes game content randomly, for FF6. It is a fork of Abyssonym's Beyond Chaos randomizer with even more features. Every time you run Beyond Chaos EX, it will generate a completely unique, brand-new mod of FF6 for you to challenge and explore. There are over 10 billion different possible randomizations! Nearly everything is randomized, including treasure, enemies, colors, graphics, character abilities, and more.
+    Beyond Chaos EX is also customizable. Using the flags in the above section, you can choose to only randomize certain parts of the game. Every flag you select will make the game a little more random, and also a little more difficult. Therefore, even experienced players should be able to find some challenge in the resulting game. As the game progresses, enemies may become more and more difficult, so that it becomes necessary to develop specialized strategies for individual formations.
 
 --- FAQ/KNOWN ISSUES ---
 Q: How do I play Beyond Chaos Ancient Cave mode?
@@ -175,19 +167,20 @@ A: Maybe. I'm open to suggestions, but things that require a lot of effort proba
 Q: Can I add X feature?
 A: Possibly! Even if I don't think it's a good idea for the standard settings, it could be a secret code. Send me a pull request to the project's Github.
 
-Q: Does Beyond Chaos work with X mod?
+Q: Does Beyond Chaos EX work with X mod?
 A: Probably not, especially if the mod makes large changes. But try Beyond Chaos Gaiden, which does work with Brave New World.
 
-Q: Does Beyond Chaos work on a real Super Nintendo?
+Q: Does Beyond Chaos EX work on a real Super Nintendo?
 A: Absolutely! Beyond Chaos has been tested on both Super Everdrive and SD2SNES, and it works 100% perfectly.
 
 Q: I found a bug!
-A: The best thing to do is open an issue on the Beyond Chaos github page, but if that's too much of a hassle you can also send me a tweet and I might check it out. Note that by this point A LOT of the bugs have been discovered, but if you just want to show it off or something that's cool too.
+A: The best thing to do is report it on the Beyond Chaos Discord.
 
 --- CONTRIBUTORS ---
+	Abyssonym - original Beyond Chaos creator
+	subtractionsoup - maintainer of Beyond Chaos EX
     CtrlxZ - fixed up sprites for Beyond Chaos
     myself086 - new menu features and natural magic expansion
-    subtractionsoup - TONS of features in v62 and v63
     Lockirby2 - The worringtriad and notawaiter codes
     glennmatthews - Command descriptions in logfile
 	DarkSlash - madworld and beyondtierless codes
@@ -203,6 +196,3 @@ A: The best thing to do is open an issue on the Beyond Chaos github page, but if
     Synchysi - esper restriction patch
     ff6hacking.com community - additional sprites, see custom/sprites/credits.txt for details
     AND YOU
-
-Like this randomizer? Then check out my other projects! I've made like a billion randomizers!
-    http://www.abyssonym.com

@@ -1,0 +1,184 @@
+#TITLE Where Angels Fear to Tread
+#ALBUM Seiken Densetsu 3
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x53~ /0x0c/ Piano
+#WAVE 0x21  0x03         Flute
+#WAVE 0x22 ~0x06~ /0x06/ Choir
+#WAVE 0x23 ~0x42~ /0x20/ Vibraphone
+#WAVE 0x24  0x0D         Strings
+#WAVE 0x25 ~0x6B~ /0x02/ Bass
+#WAVE 0x26  0x07         Also Flute
+#WAVE 0x28 ~0x81~ /0x14/ Snare
+
+#def global= t144 %v50 %x224 %b0,70
+
+#def piano= |0 v96 o5 %r6 m
+#def flute= |1 v64 o5 %a10 %r10 m48,18,192
+#def flute2= |6 v92 o5 %a15 %r10 m48,18,192
+#def choir= |2 v48 o4 %a12 %r9 m48,18,217
+#def vibe=  |3 ~v80~/v127/ o5 m
+#def string=|4 v64 o5 %a10 %r8 m48,18,192
+#def bass=  |5 ~v88~/v112/ o5 m
+
+#drum "s"=~5b~/5f/ |8 v104
+#drum "t"=~5b~/5f/ |8 v88
+#drum "u"=~5b~/5f/ |8 v72
+#drum "v"=~5b~/5f/ |8 v56
+
+#def bl= ~v61~/v72/
+#def bm= ~v74~/v96/
+#def bh= ~v88~/v112/
+#def vl= ~v40~/v48/
+#def vm= ~v72~/v88/
+#def vh= ~v104~/v127/
+
+{1}
+'global'
+%e1 p64 'piano' l4
+[[rded ec+.c+c+ c+c+d d.ded ec+.c+c+ c+c+dd8] ##12 / 36
+rgag r8dc.f+. a.f+2 d2..d c+.f+. c+.f+.>b.< ##18 / 42
+re>b<c+2f+a. ^d.a2 c+.c+.f+. c+.c+. c+.f+.c+j2c+8]f+8 ##24 / 48
+l8 v255,104
+[g4d4.b<dc+>a4ea4de>b< c+a4>b<c+de4. g+4f+4e4d+ e>b<c+d+e4g+d+ e4j2d+4c+4.c+]
+t144,123 d+4c+4rc+ ##60
+l4 da t144,100 gdgf+dag t144,50 dga2 ##64.1
+'bass' t150 v44b2 v55b2 v66b2 v77b2 ##66.1
+$l16 [[4'bh'b4'bl'b8'bm'bb] [3'bh'a4'bl'a8'bm'aa]'bh'<c+dc+>aef+aj2a+]g+ ##74
+[3'bh'g4'bl'g8'bm'gg]'bh'g8'bm'gg'bh'gab<c+ ##76
+[3'bh'd4'bl'd8'bm'dd]'bh'def+agf+dc+ ##78
+[3'bh'c4'bl'c8'bm'cc]'bh'c8'bm'ccc'bh'cc+c+ ##80
+[2'bh'd4'bl'd8'bm'dd]'bh'd8'bm'dd'bl'e8'bm'ee'bh'f8'bm'ffa8aa ##82
+[[['bh'a+8'bm'>a+a+a+r<]'bh'a+8'bm'>a+a+<][['bh'a8'bm'>aaar<]'bh'a8'bm'>aa<]] ##90
+>'bh'g8'bm'g<d8'bl'd>'bm'g8 'bh'a8'bm'a<e8'bl'e>'bm'a8 ##91
+'bh'b-8'bm'b-<f8'bl'f>'bm'b-8 <'bh'c8'bm'cg8'bl'g'bm'c8 ##92
+'bh'd8'bm'db-8'bl'b-'bm'd8 'bh'e8'bm'e<c8'bl'c>'bm'e8 ##93
+'bh'f8'bm'f<d8'bl'd>'bm'ef 'bh'g8.a8.<c8 ##94
+'bass' <d2 d2 d2 d2>
+;
+
+{2}
+%e1 p64 'piano' l4
+[[r8c+c+c+c+ dd.d edec+. c+c+c+c+ dd.d edec+] ##12 / 36
+r8f+f+f+r8 f+^.e. e.e.e. eee. e.>b.<e. a.c+.d8 ##18 / 42
+r8d>a2a a<c+d> a2aa a.<e.a. e.>b.<e. a.e2] ##24 / 48
+l8 [r8>b4<f+g2^ f+4.g2. g2^g f+4a4g+4f+2.. v255,100 f+2c+4>b4<d+e4] ##60
+l4 r8 eec+ed>b<eec+e8de2 ##64.1
+'piano' l16 > v104b4.v88bb v96b4.v80bb v88b4.v64bb v80b4.v48bb  ##66.1
+$'vibe' l4
+f+'vm'f+>'vh'b'vm'b< 'vh'a'vm'a'vl'a'vh'd e'vm'e'vh'ef+ edc+>a< ##70
+f+'vm'f+>'vh'b'vm'b< 'vh'a'vm'a'vl'a'vh'd ef+ed e'vm'e'vl'e'vh'f+ ##74
+g'vm'g'vh'd'vm'd 'vh'b'vm'b'vl'b'vh'g af+ef+ d'vm'd'vl'd'vh'd ##78
+fdcd >a'vm'a'vl'a'vh'<c d'vm'd'vl'dv192,0ddddr'vh' ##82
+'flute' %a13 v80 l16
+[[[f8dddr]f8dd][[e8cccr]e8cc]] ##90
+>b-8.<d8.>b-b-<c8.e8.cc d8.f8.dde8.g8.ee f8.b-8.ffg8.<c8.>gg b-8.<d8.>b-b-<c8.d8.e8 ##94
+'piano' l16 v104f+4.v88f+f+ v96f+4.v80f+f+ v88f+4.v64f+f+ v80f+4.v48f+f+
+;
+
+{3}
+%e1 p64 'piano' l4
+[>[8b1.]< ##12 / 36
+e2.. e.eg. d.g.d c.f+gf+2 d.d. d.d.e ##18 / 42
+c+^.d. e2.e >b<c+2e. d.d. d.d.d. d.d.d ]##24 / 48
+l8 'string'p84[f+ef+2.. e>b<ef+bf+e >b<ed4e4f+4j2 ef+ed+c+4.d+ c+>ba4.bag+ab<d+4e4c+4] ##54
+c+dec+>a4b^2 ag+abg+ v192,80 Sf+ef+g+ag+a<c+ ##60
+l4 d2.c+ >b<c+d2. c+>b<e2 ##64.1
+'string'v80 d+1^1 ##66.1
+$v72 %a9%r8 l4 >b2f+2 <d2.>b <c+2c+d c+>baf+ b2f+2 <d2.>b <c+dc+>b <c+>baf+ ##74
+b2g2 <d2.c+ d>aga f+2.a <c>aga f2.g a1 a<cde ##82
+%a13 l16 >[[3<fd>b-aj3fr]] [[3<ec>agj3er]] [[3<fd>b-aj3fr]] [3<ec>agj3er][3<ec>aj3ger]f ##90
+[gab-<d>][ab-<ce>][b-<cdf>]<[cdeg][defb-][efg<c>][fab-<d>]g8.a8.<c8 ##94
+'string'v80 <d1^1>
+;
+
+{4}
+%e1 p72 'flute' l8
+[d1.e4f+4 a4g+2c+e1^4. dc+1.^] ##12
+ef+g1^ f+g2^f+g4a4g4 f+1^4 >b<c+d1. ##18
+c+de1 >a4<a2.g4f+4e4 dedc+>b2..ab1.< ##24
+f+1.a4b4 <c+4d2c+> a1^4. ec+1^4.f+e f+1.a4b4 <c+4d2e c+1^4.> ae^1. ##36
+gab1^ab2^ ab4<c4>a4 f+1^4 def+1.  c+de1 >a4<a2. g4f+4e4 dedc+>b2.. ab1. ##48
+%a14 <[bab2.. aeab<d>ba eaf+4a4b4 j2 abag+f+2^1^1] ab<c+>ae2^1^1 ##60
+v80 l4 >b2.af+ab2.af+<c+2 ##64.1
+l16 p64 %e0["v8vvs8vvv8vvsvvv"]%e1 ##66.1
+$'flute'v80%a14 l4 f+2>b2< a2.d e2ef+ edc+>a< f+2>b2< a2.d ef+ed e2.f+ ##74
+g2d2 b2.g af+ef+ d2.d fdcd >a2.<c d1 l8 defga.<c.>a ##82
+'flute2'[[[3l24a+<c>a+l16ffj3fr]][[3l24gagl16eej3er]]] ##90
+>g8.b-8.gg a8.<c8.>aa b-8.<d8.>b-b- <c8.e8.cc d8.f8.dd e8.g8.ee f8.b-8.ff g8.a8.<c8 ##94
+'flute' <d1^1>
+;
+
+{5}
+%e1 p96 'choir' l1
+>[[b.b.a.a.] ##12 / 36
+<c.c.>b.b.a.a.b.bj2^2] ^4 l16 %a13%r10 v40v48,48 <def+a ##24 / 48
+l8 [g4g4f+4g4 gg4f+g4g4 f+4g4gg4e f+4f+4e4f+4 f+f+4ef+4f+4 j2 e4f+4f+f+4e] ##54
+v144,72 e4f+gab<c+e ##60
+l4 d2.c+>a<c+d2.c+>a<e2 ##64.1
+'choir'%a13 <d+1^1 ##66.1
+$l8 %a15 >b2a2 b2f+.f+.f+16f+16 a2e2 a4f+4e4aa16a16 ##70
+b2a2 b2f+.a.b16b16 a2e2 ab16a16gf+ef+gb ##74
+<d2.c+>a g4f+4g4<c+c+16c+16 d4>a4g4a4 def+ga.<d.>a16a16 ##78
+g1 <dc>b-ag4b-4 a1 a2a4<c4 ##82
+l4 d1^dc>b-< c1^cec d1^dcd c1^c>b-a ##90
+l2 gab-<cdefg8.a8.<c8 ##94
+'choir'%a13 <<d1^1>
+;
+
+{6}
+%e1 p32 'choir' l1
+[[f+.f+.e.e.] ##12 / 36
+g.g.f+.f+.e.e.f+.f+j2^2] l16 'string'%a13%r10 v96,80 >ab<c+d>b<c+de ##24 / 48
+'choir'%a14%r10< l8
+[d4d4c+4d4 dd24e24d24^c+d4d4 c+4d4dd24e24d24^>b< ##51 / 57
+ c+4c+4>b4<c+4 c+c+24d24c+24^>ba4a4j2 b4<c+4c+c+24d24c+24^>a<]v144,72 g+4ab<c+d+ea ##54 / 60
+l4 b2.af+ab2.af+<c+2 ##64.1
+'choir'%a13 <b1^1 ##66.1
+$l8 %a15 d2c+2 d2>b.<d.>b16b16< c+2>b2< c+4>b4a4<c+c+16c+16 ##70
+d2c+2 d2>b.<c+.d16d16 c+2>b2< c+d16c+16>bagab<d ##74
+f+2^gf+d >b4a4b4<gg16g16 f+4d4c+4d4 >f+gab<d.f+.d16d16 ##78
+c2^def g2f4e4 d1 d2d4e4 ##82
+l4 f1^fed e1^ege f1^fef e1^edc ##90
+l2 >b-<cdefgb-<c8.d8.e8 ##94
+'choir'%a13 <e1^1
+;
+
+{7}
+%e1 p44 'string' l8
+[24r1]
+[[>b<c+1^4.]>[ab1^4.]<] ##36
+d2.e2.f+2. g4f+4e4 dc+>a2. bag+4ag+f+1^4 ##42
+e4.f+g<c+de dc+>af+e4. f+4g<c+4>a4<c+4> b2.<c+2.d4c+4> a4
+l16 v120,80 %a13%r10 b<c+dec+def+def+a ##48
+l8 %a10%r8 [bab2.. aeab<d>ba eag4a4b4j2 abag+ f+1ef+ed+ ef+g+4a4f+4] ##54
+ab<c+>ae4.f+ g+ec+2.>b4 v144,96 ab<c+d+ef+ ##60
+l4 g2.f+df+g2.f+da2 ##64.1
+'string'v96%a10%r8 f+1^1 ##66.1
+$v88%a9 f+2>b2<a2.d e2ef+ edc+>a< f+2>b2< a2.d ef+ed edc+>a< ##74
+g2d2b2.g af+ef+d2.d fdcd>a2.<c d1l8defga.<c.>a ##82
+%a13 l16 [[[3b-afdj3>b-r<]][[3agecj3>ar<]]] ##90
+[>b-<cdf][cdeg][defb-][efg<c>][fgb-<d>][ga<ce>][b-<cdf>]<c8.d8.e8
+'string'v96%a10%r8 a1^1
+;
+
+{8}
+%e1 p56 'flute' l8
+[24r1]
+d1.e4f+4 a4b2a e1^4. c+>a1^4.<dc+ d1.e4f+4 a4b2<c+> a1^4. ec+^1. ##36
+ef+g1^f+g2^ f+g4a4e4 d1^4 >b<c+d1.  >ab<c+1 >e4<e2.e4d4c+4 >b<c+>baf+2.. ef+1. ##48
+<[f+ef+2.. e>b<ef+bf+e >b<ed4e4f+4j2 c+dc+>ba1^1.<]c+dec+>a1^1. ##60
+'string'> l4
+b2.agab2.ag<c+2> ##64.1
+'string' b1^1 ##66.1
+$%e0 l16 "u8vvs8vvv8vvsvvv" ["v8vvs8vvv8vvsvvv"] "v8vvs8vvv8vvs24t24u24vv" ##70
+[[3"v8vvs8vvv8vvsvvv"] "v8vvs8vvv8vvs24t24u24vv"] ##78
+[3"v8vvs8vvv8vvsvvv"] "v24v24v24svs8vvtvv24v24v24tvvv"
+[8"s24t24u24vvv8s24t24u24vvv8svvv"] ##90
+[7"v8vvs8vv"]"svvss24u24u24s8" ##94
+["!!!ov8vvs8vvv8vvsvvv"]
+;

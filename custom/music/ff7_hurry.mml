@@ -1,0 +1,243 @@
+#TITLE Hurry!
+#ALBUM Final Fantasy VII
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x45~ /0x0d/
+#WAVE 0x21 ~0x60~ /0x1e/
+#WAVE 0x22 ~0x74~ /0x1f/
+#WAVE 0x23  0x19
+#WAVE 0x24  0x02
+#WAVE 0x25  0x1C
+
+#WAVE 0x27  0x22
+#WAVE 0x28  0x16
+#WAVE 0x29 ~0x66~ /0x00/
+#WAVE 0x2A  0x0F
+#WAVE 0x2B ~0x68~ /0x11/
+#WAVE 0x2C ~0x5E~ /0x30/
+#WAVE 0x2D ~0x55~ /0x00/
+
+#def global=t162 %v24 %x224 %b0,100
+
+#def sbass=  |5 p75 v64 o5
+#def ebass=  |4 p64 v127 o6
+#def pizza=  |3 p74 v112 o4 vm
+#def string= |0 v32 %a4 %y0 %s6 %r9 m144,24,234v0,16,255
+#def st1= 'string' p8 ~o6~/o7/
+#def st2= 'string' p46 ~o6~/o7/
+#def st3= 'string' p84 ~o5~/o6/
+#def st4= 'string' p123 ~o4~/o5/
+#def syn1= |2 v64 p40 o5 %r0 vm0,8,222 /%a13/
+#def syn2= @3 v64 p0  o6 %p1 %a15 %r0 %l1 v0,8,222m0,16,192
+#def pan= |1 ~v112~/v72/ p20 ~o3~/o4 %r9/ vm48,24,192
+#def revc= @7 %p1%g1 p127 p192,64 v16 v192,80 o3 %a15 %r20 l32 [32a+] p192,0 v192,8 [32a+] %p0%g0
+#def buzz= @0 o7 v48 p0,192,127 %p1 %a15%r21
+
+#drum "a"=~6f |9~/4b |8/ p96 ~v127~ /v72/ %p0
+#drum "b"=~6c |9~/4g |8/ p64 ~v127~ /v72/ %p0
+#drum "c"=~5f |9~/4e|8/ p32 ~v127~ /v72/ %p0
+#drum "h"=5f  |A p64 v96 %p0
+#drum "i"=5f  |B p64 v96 %p0
+#drum "k"=5f  |7 p64 v96 %p0
+#drum "s"=4c  @7 p64 v127 %a15 %r20 %p1
+#drum "t"=3f  |8 p52 v127 vm %p0
+#drum "w"=~5c+~/4d/ |C p24 v64 %p0
+#drum "x"=~4g+~/3a/ |C p104 v64 %p0
+#drum "z"=~5f |D~/4f @7 %a15 %r27/ p64 v96 %p0
+
+
+{1}
+'global' %e1
+$
+'sbass' l8
+[4
+ %a15 ff %a14 ff %a13 ff %a12 ff
+ %a11 ff %a10 ff %a9  ff %a8  ff
+ %a7  ff %a8  ff %a9  ff %a10 ff
+ %a11 ff %a12 ff %a13 ff %a14 ff
+]
+##17
+[3
+ %a15 f+f+ %a14 f+f+ %a13 f+f+ %a12 f+f+
+ %a11 f+f+ %a10 f+f+ %a9  f+f+ %a8  f+f+ j3
+ %a7  f+f+ %a8  f+f+ %a9  f+f+ %a10 f+f+
+ %a11 f+f+ %a12 f+f+ %a13 f+f+ %a14 f+f+
+]
+##27
+'ebass'
+[7f+] a4[6a] g+4[6g+] b4[6b]
+a+4[6a+] f4[6f] g+4[6g+] d+4[6d+]
+##35
+"!!!oa4ab"'ebass'f+"!!!ob"'ebass'f+f+
+"!!!oa4ab"'ebass'a"!!!ob"'ebass'aa
+"!!!oa4ab"'ebass'g+"!!!ob"'ebass'g+g+
+"!!!oa4ab"'ebass'b"!!!ob"'ebass'bb
+"!!!oa4ab"'ebass'a+"!!!ob"'ebass'a+a+
+"!!!oa4ab"'ebass'f"!!!ob"'ebass'ff
+"!!!oa4ab"'ebass'g+"!!!ob"'ebass'g+g+
+"!!!oa4ab"'ebass'd+"!!!ob"'ebass'd+d+
+"!!!oa"
+##43
+'sbass' l8
+ %a15 ee %a14 ee %a13 ee %a12 ee
+ %a11 ee %a10 ee %a9  ee %a8  ee
+ %a7  ee %a8  ee %a9  ee %a10 ee
+ %a11 ee %a12 ee %a13 ee %a14 ee
+;
+
+{2}
+$
+'ebass' %e1 l8
+v0
+v192,64 [8f]
+v192,127 [8f]
+v192,64 [8f]
+v192,0 [8f]
+'pizza' l8
+r4fr4a- r2 gr4g-r4 f1 ^1 ^1
+r v64v168,118o3[7"3\t"]
+'pizza' l8
+r4fr4a- r2 gr4g-r4 f1 ^1 ^1 ^1
+##17
+r4f+r4a r2 a-r4gr4 f+1 ^1 ^1
+r v64v168,118o3[7"!@3\t"]
+'pizza' l8
+r4f+r4a r2 a-r4gr4 f+1 ^1
+##27
+'pan' l1
+f+2..ag+b a+fg+d+
+##35
+f+ag+b a+fg+d+
+##43
+##%r0 %m192,16,255
+e^^^ ^8
+;
+
+{3}
+$
+[4r1]
+'pizza' %e1 l8
+r4cr4e- r2 dr4c+r4 c
+'st2' %a7 l1
+f2.. %a4 ee-^
+'pizza' l8
+r4cr4e- r2 dr4c+r4 c1 ^1 ^1 ^1
+##17
+r4c+r4e r2 e-r4dr4 c+
+'st2' %a7 l1
+f+2.. %a4 fe^
+'pizza' l8
+r4c+r4e r2 e-r4dr4 c+1 ^1
+##27
+'st2' l1
+e2..gf+a f+c+e>b<
+##35
+egf+a f+c+e>b
+##43
+b^^^ ^8
+;
+
+{4}
+$
+[4r1]
+'pizza' %e1 l8
+>r4g+r4<c> r2 br4a+r4 g+
+'st3' %a7 l1
+b2.. %a4 b-a^
+'pizza' l8
+>r4g+r4<c> r2 br4a+r4 g+1 ^1 ^1 ^1
+##17
+>r4ar4<c+ r2 c>r4br4 a
+'st3' %a7 l1
+<c2..> %a4 ba+^
+'pizza' l8
+>r4ar4<c+ r2 c>r4br4 a1 ^1
+##27
+'st3' l1
+b2..<dc+e fcd+>a+
+##35
+b<dc+e fcd+>a+
+##43
+g^^^ ^8
+;
+
+{5}
+$
+[4r1] %e1 l1
+"t"r
+'st1' l1
+bb-a^
+"!!!ot"r
+'syn1' l16 %l1
+[fga-b- bb-a-g]
+fga-b- b<cde- fefg a-ga-b-
+bb-a-f <c>b-a-g <c+c>b-a- ga-gf
+efgf ecde fc>b-<c> b-a-gf %l0
+##17
+l1 "!!!ot"r
+'st1' l1
+<c>ba+^
+"!!!ot"r
+'revc'
+##27
+'st1' l1
+a2..<c>b<d c+>g+bf+
+##35
+a<c>b<d c+>g+bf+
+##43
+g^^^ ^8
+;
+
+{6}
+$
+[4r1] %e1 l8
+v127 p64 "!!!oz"v168,32[7"\z"] r1
+'st4' l1
+fa+<d+^
+v127 p64 l8 "!!!oz" v168,32[7"\z"] [5r1]
+##17
+"!!!oz" v168,32[7"\z"] r1
+'st4' l1
+f+b<e^
+l8 "!!!oz" v168,32[7"\z"] [3r1]
+##27
+'st4' l1
+<f+2..ag+b a+fg+d+ 
+##35
+l8
+[8"!!!ob4bc4c4."]"c"
+##43
+r1r1
+'syn2' l16
+[egb<c> bgeg b<c>bg ec>bg] %l0%p0
+;
+
+{7}
+$ l8 %e1
+[16"kh"]
+[3["khihkikh"]"ih" [15"kh"]]
+["khihkikh"]"ih" [7"kh"]
+##27, 35
+[16"khihkiki"]
+##43
+[3"khikkhi4"]"khikkhs4"
+;
+
+{8}
+$ l4 %e1 %p0 k0 p
+[52"wx"]
+##27
+'buzz' l32
+##l16 [20[4ffr][2fr]]
+l16
+[5
+ k0 [4ffr][2fr]
+ k2 [4ffr][2fr]
+ k4 [4ffr][2fr]
+ k2 [4ffr][2fr]
+]
+;

@@ -1,0 +1,57 @@
+#TITLE Prophecy
+#ALBUM Secret of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x1B
+#WAVE 0x21 -- 0x06
+#WAVE 0x22 -- 0x3E
+#WAVE 0x23 -- 0x07
+#WAVE 0x24 -- 0x0D
+
+
+{1}
+l16t120%x170%v24%b0,70 $1 [4p64v60@32%e1o5dg<c>gd<c>gd<c>gdg<c>gd<c  
+>gd<c>gdg<c>gd<c>gd<c>gdg  <c>gd<c>gd<c>g][2p64v72@36o6f8f8dddf8  
+dddf8f8dddf8dg8a8  a8fffa8fgea8a8gg  ga8<c>ba]
+;1
+
+l16
+{2}
+l16 $2 [4p64v60@33%e1o5dg<c>gd<c>gd<c>g  
+dg<c>gd<c>gd<c>gdg<c>gd<c  >gd<c>gdg<c>gd<c>gd<c>g][2p64v75@33o4a+32^64r64a+32^64r64  
+a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64  
+a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64a+32^64r64<d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64  
+d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d32^64r64d]
+;2
+
+l16
+{3}
+l16 $3 [4p64v90@34%e1o7dr  
+drddrdrddrdrddrd  rddrdrddrdrdd24d24d24dr  ddrdrd][2p64v82@34o5ffffffffff  
+ffffffffffffffaa  aaaaaaaaaaaaaaaa  aaaaaa]
+;3
+
+l16
+{4}
+l16 $4 [4p64v37@35%e1o7d24e24d24>agdrfrgr  
+a24<c24>a24gdcr>ar<crdefgad  gferde>ga<c>bga<ce][2p64v72@36o6d8  
+d8>a+a+a+<d8>a+a+a+<d8d8>a+a+  a+<d8>a+<e8f8f8dddf8d  d8f8f8eeef8agf]
+;4
+
+l16
+{5}
+l16 $5 [4p64v85@36%e1o4a2  
+^8f2^8g2  ^8d2^8][2p64v72@36o5a+8a+8  ggga+8ggga+8a+8ggga+8  g<c8d8d8cccd8>a<c8d8  
+d8dddd8fed]
+;5
+
+l16
+{6}
+l16 $6 [4p64v85@36%e1o4d2  ^8>a+2^8<c2  
+^8>g2^8][2p64v40@35o5a+<dfa  a+r<c>a8a+gf>a+<dfaa+r<c>a8  a+gedga<cdrfe8fc>ad  
+ga<cdrgf8ec>a]
+;6
+
+l16

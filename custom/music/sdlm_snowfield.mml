@@ -1,0 +1,166 @@
+#TITLE Passing Memories
+#ALBUM Legend of Mana
+#COMPOSER Yoko Shimomura
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+#SFXV ` *
+
+#WAVE 0x20 ~0x46~/0x0D/
+#WAVE 0x21 ~0x41~/0x06/
+#WAVE 0x22 ~0x0A~/0x0A/
+#WAVE 0x23 ~0x19~/0x19/
+#WAVE 0x24 ~0x7B~/0x1B/
+#WAVE 0x25 ~0x00~/0x36/
+#WAVE 0x2A ~0x16~/0x16/
+#WAVE 0x2B ~0x81~/0x14/
+#WAVE 0x2C ~0x5F~/0x2F/
+#WAVE 0x2D ~0x4C~/0x12/
+#WAVE 0x2F ~0x55~/0x0F/
+
+#def global= t136 %v50 %b0,70 %x224
+
+#def string= |0 o5 %e1 m48,18,207
+#def bright= ~|1~/|5/ o5 v54 %e1 %r15 m
+#def choir= |1 %a6 o5 v20 %e1 m48,18,192
+#def oboe= |2 o5 v64 %e1 m48,18,223
+#def pizza= |3 v127 %e1 m
+#def piano= |4 o5 %e1 m
+#def timp= |A o4 v80 %e1 m
+
+#def 01= 'oboe' p64
+#def 02= 'timp' p64
+#def 03= 'pizza' o4 p55
+#def 04= 'pizza' o5 p55
+#def 05= 'pizza' o2 p64
+#def 06= 'string' p85 %r9 v40
+#def 07= 'string' p85 %r9 v40
+#def 08= 'piano' p100
+#def 09= 'piano' p90
+#def 10= 'piano' p64
+#def 11= 'piano' p80
+#def 12= 'string'< p50 %a4%r6 v20
+#def 13= 'string'< p78 %a4%r6 v20
+#def 14= 'choir' p85
+#def 15= 'choir' p90
+#def 16= 'bright' p10
+#def 17= 'piano' p40 <<
+#def 18= 'choir' p80
+#def 19= 'choir' p85
+#def 20= 'choir' p90
+#def 21= 'choir' p30
+
+#drum "m"=5a |F v56 p64 %e0
+#drum "n"=5e |F v56 p64 %e0
+#drum "o"=5d+ |F v48 p64 %e0 
+#drum "q"=5b |B v39 p64 %e0
+#drum "r"=5b |B v47 p64 %e0
+#drum "s"=5b |B v54 p64 %e0
+#drum "t"=5b |B v60 p64 %e0
+#drum "y"=5e |D v96 p64 %e1
+
+#def ph= v40
+#def pl= v32
+
+#def u= p40<
+#def d= p64>
+
+{1}
+'global'
+r1r1 '12' <c1^1
+$
+['01' %a6%r10 l8 <c4>%a12a+4g+4%a5g1 %a12g+a+ f4g4g+4%a5d1 %a12g+a+
+                 <c4>a+4g+4<%a5d+1%a12dd+ f4d+4d.d+32d32%a5c1%a12>g+a+]
+##21
+l16 <crc>a+<cr f1.r8 r8c>a+<cr f1.r8
+'18' f1 [5^1] '20'<f1^1
+;
+
+{2}
+r1r1 '13' f1^1
+$
+l4 [4'02'f.f2.'05'f.fj4f]f8 '02' l32 <v45cv54cv63cv72c
+##13
+'07' l8 < g+4g4f4d+1fg c4c4f4>g+1<fg  g+4g4f4<c1>a+<c c4c4>a+4g+1r4
+##21
+'21' c+1^1 >f+1^1
+f1^1^1^1
+'19'<c1^1^1^1
+;
+
+*{3}*`{7}`
+'03' l8 f<f4>g<g4> r4r1 f<f>g<g4> r4.r1
+$
+'03' l8 [f<f4>g<g4> r4r1 f<f>g<g4> r1j2r4.]r8 '06' < g+a+
+##13
+'06' l8 < <c4>a+4g+4g1g+a+ f4g4g+4d1g+a+  <c4>a+4g+4<d+1dd+ f4d+4d.d+32d32c1r4
+##21
+'14'> g+1^1 '15'> a+1^1
+'05' l4 [f.f2.f.ff]
+'03' l8 f<f4>g<g4> r4r1 f<f>g<g4> r2r l8 "!!!o mm4m4m"
+;
+
+*{4}*`{8}`
+'04' l4 r8cr8c rr1 r8c8r8c r.r1
+$
+l8 ['17''ph'c'04'c'17''pl'c'ph'c'04'c'17''pl'c'ph'c4c4'pl'c'ph'dd+d+dr
+    '17''ph'c'04'c'17''pl'c'04'c4'17''pl'c'ph'c4c4'pl'c'ph'dd+d+j2dr]d'10'<d
+##13
+'17'  [4['ph'c'pl''d'd'u'c]'ph'c'pl''d'd'ph''u'c'd'd'pl''u'c'ph'dd+d+d'pl''d'd'u']
+##21
+'17' [3'ph'c'pl''d'd+'u'c]c'd'd+'ph''u'c>fgg+<'d'd+
+'17' [3'ph'c'pl''d'c'u'c]c'd'c'ph''u'c>d+ff+<'d'c
+[3'17' l8 'ph'cr'pl'c'ph'cr'pl'c'ph'c r4. "!!!o mm4m4m"]
+'17' ['ph'c'pl''d'c'u'c]'ph'c'pl''d'cc'ph'c'pl'cc['ph'c'pl'c]
+;
+
+{5}
+'09' l8 < [[4'ph'g'pl'gg]['ph'g'pl'g]]
+$
+'09' l8 < [4[4'ph'g'pl'gg]['ph'g'pl'g]]
+##13
+'02' l4 [4f.f2.f.fj4f]f8 l24v54g+v63f+v72f+
+##21
+l4 '02'< c+.c+2. '05'c+.c+c+   '02'f+.f+2. '05'f+.f+f+8 '02'l24v54g+v63f+v72f+
+l4 ['02'f.f8^1.] ['02'f.f2.'05'f.ff]
+;
+
+{6}
+'10' l8 < [[4 'ph'd'pl'dd]['ph'd'pl'd]]
+$
+'10' l8 < [3[4 'ph'd'pl'dd]['ph'd'pl'd]] [4'ph'd'pl'dd] 'ph'd'pl'd '07'<fg
+##13
+l16 [6"!!!o s8sss8s8 sss8s8ss  s8s8sss8 s8sss8ts"]
+##25
+"y1^1^1^1"
+'04' l4 r8cr8c rr1
+l8 '11''ph'<c'04'c'11''pl'<c'04'c4'11''pl'<c'ph'c rr2r16
+l16 '16'>> p10f <p30c p55f <p64c p75f <p90c p100f
+;
+
+*{7}*`{3}`
+'11' l8 < [[4'ph'c'pl'cc]['ph'c'pl'c]]
+$
+'11' l8 < [3[4'ph'c'pl'cc]['ph'c'pl'c]] [4'ph'c'pl'cc] l16 "q8qrsst32s32s"
+##13
+l8 '16'<<p120c '09'< 'pl'gg[3'ph'g'pl'gg]['ph'g'pl'g] [3[4'ph'g'pl'gg]['ph'g'pl'g]]
+##21
+'09' l8 < [4'ph'g'pl'gg]'ph'g'10''pl'<d+'09''ph'<g'pl'g
+'09' l8 < [4'ph'f+'pl'f+f+]'ph'f+'pl'f+'10''ph'<c'09''pl'<f+
+[4r1]
+'05' f4.f8^1.
+'09' l8 < [4'ph'g'pl'gg]['ph'g'pl'g]
+;
+
+*{8}*`{4}`
+'16' l16 r1.. >>f<p30cp50f<p55cp64f<p80cp90f<p110c8rv20c4^&252r
+$
+'12' c1^1^1^1 c1^1^1^2^16 l16
+'16'>>p10f <p30c p75f <p55c p64f <p90c p100f
+##13
+l8 "y2 mm4m m4mm4mon" [5"^mm4mm4m m4mm4mon"]
+##25
+[4r1]
+r1r1 '10' < [4'ph'd'pl'dd]['ph'd'pl'd]
+;

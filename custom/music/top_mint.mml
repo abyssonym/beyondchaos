@@ -1,0 +1,127 @@
+#TITLE Mint
+#ALBUM Tales of Phantasia
+#COMPOSER Motoi Sakuraba, Shinji Tamura
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x0D~/0x0D/
+#WAVE 0x21 ~0x06~/0x06/
+#WAVE 0x22 ~0x1B~/0x1B/
+#WAVE 0x23 ~0x0A~/0x0A/
+#WAVE 0x24 ~0x78~/0x05/
+#WAVE 0x25 ~0x40~/0x08/
+#WAVE 0x26 ~0x02~/0x02/
+#WAVE 0x2A ~0x59~/0x22/
+#WAVE 0x2B ~0x2A~/0x2A/
+#WAVE 0x2C ~0x5A~/0x11/
+
+#def global= t108 %v64 %b0,156 %x224
+
+#def oboe= |3 %a7%r10 p72 ~o6~/o6/ ~v64~/v64/ %e1 m48,18,231 ## tone 22
+#def harp= |2 %r12 p76 o5 v56 %e1 m ## tone 46
+#def bass= |6 %r12 p64 o6 v80 %e0 m ## tone 34
+#def choir1= |1 %a8%r7 p20 o5 v40 %e1 m48,18,207 ## tone 50 (ch4/lower)
+#def choir2= |1 %a8%r7 p107 o5 v40 %e1 m48,18,207 ## tone 50 (ch5/higher)
+#def string= |0 %a6%r10 p84 o5 v40 %e1 m48,18,207 ## tone 49
+#def string2= |0 %a13%r10 p84 o5 v80 %e1 m
+#def soon= |4 %a8%r10 p64 ~o6~/o5/ v64 %e1 m48,18,231 ## tone 42
+#def clari= |5 %a8%r10 p80 ~o4~/o5/ v80 %e1 m48,18,231 ## tone 63
+
+#def ocho= |3 %a7%r10 p30 ~o6~/o6/ ~v16~/v16/ %e1 m48,18,231
+#def echa= |2 %r12 p50 o5 v30 %e1 m
+#def eclair= |5 %a8%r10 p20 ~o4~/o5/ v30 %e1 m48,18,231 ## tone 63
+
+#drum "k"=~5c~/5f/ |A p64 v96 %e0 ## tone 25
+#drum "a"=5g |C %r28 p90 v64 %e1 ## tone 28
+#drum "b"=5g |C %r28 p90 v52 %e1 ## tone 28
+#drum "c"=5g |C %r28 p90 v40 %e1 ## tone 28
+#drum "d"=5g |C %r28 p90 v28 %e1 ## tone 28
+#drum "h"=5b |C %r p90 v48 %e1 ## tone 29
+#drum "s"=5a |B p64 v24 %e1 ## tone 22
+
+#def a= v64
+#def b= v58
+#def c= v52
+#def d= v46
+#def e= v24
+#def f= v21
+#def g= v18
+#def h= v15
+
+{1}
+'global'
+$
+'oboe' [[>g+a+<  c2.f4 d+2.>a+<c c+2.>g+4<c2.]
+>a+<c  c+4>g+2gg+ a+2.gg+ a+4g2<d+c+ c2.>  fg  g+4f2gg+ a+4g2g+a+ <d+4c+4>g+4a+4 <c2.]^4
+'soon' &172>fr24<c+12 &92r&40cr6&28d+ >&164rg12r24 &172gr24g12
+&92rm20,2&196b <r6&40d+&20r &124c>&20r&28e &164r 'clari' l8 fg
+g+1.g+.a+.<c> a+1g2..g+16g16 f2<c2 d+4c+4>g+4a+4< c1..
+;
+
+{2}
+r4 $
+'harp' [[fcfgg+4<c4> a+d+gg+a+4g4 g+c+fgg+4a+4 gceg<c>a+g+a+]
+<c+>c+fg+<c+>c+f<c+ [c+>c+eg<] c>ceg<c>ce<c> fcfg+<c>fg+<c>
+    [a+>a+<c+f] a+cd+ga+cd+a+ <d+c+>g+ec+eg+<c+ cc+>a+<cj2>g+a+gg+]
+    l12 <v50c>v47g+v45fv43c+>v40a+v37g
+'soon' &168rc12r24 &100cr6&40c+&20r >&172a+r24g+12 &164rg+12r24
+&100f<&188r&40c+r6&28c+ &116r>&28g&20r <&172c &20r 'eclair' f8
+'string2' l16 [4<'a'cr>'b'g+r'c'fr'd'cr] [4<'a'cr>'b'g+r'c'd+r'd'cr]
+[4<'a'cr>'b'g+r'c'fr'd'c+r] [4<'a'cr>'b'gr'c'er'd'cr]
+;
+
+{3}
+r4 $
+'bass' l1 fd+c+c fd+c+c2m24,3a2
+c+ c+ c f   a+ <c c+2c+2 c2c8>a+8g+8g8
+l8 f2..f d+1 c+2..c+ c2e2    f2..f d+1 c+2.c+4 c2m24,3a2
+l1 c+ c+ c f a+ <c c+ c
+'string2'>> l1 [f f d+ d+ c+ c+ c c]
+;
+
+{4}
+r4 $
+'choir1' l1 [fd+fg2e2 fd+ff2e2 j2
+c+ e e f   >a+< c e2c+2 g]
+c+ e c f   >a+< c e g2 'harp'l12 r48 <v45a+v42gv40d+v38c>v35g+v32f16
+'choir1'v28 l1 <c^ d+^ c+^ cc c^ d+^ c+^ cc
+;
+
+{5}
+r4 $
+'choir2' l1 g+ga+2.<c4c2>g2 g+ga+2.<c4>g+2g2
+f g g g+   c+ d+ g+2e2 <c
+'string' l4 <c2.>g+ a+2.<d+ c+2.>g+ g+2g2  f2.<c> a+2.<d+ c+2d+c+ c+2c2>
+l1 g+ a+ a+ <c>   l2 c+1 fd+ g+e g<c
+'choir2'v28 l1 <f^ g^ g+^ a+<c> f^ g^ g+^ fe
+;
+
+{6}
+r4 $
+[15"k2abcd"]"k4.a4.s4"
+[16"!!!o kaha"j16"s2"] ":a:s16" 'harp' l12 <v35gv32d+v30c>v28g+v25fv22c+48
+'string2' l16 [4<'a'cr>'b'g+r'c'fr'd'cr] [4<'a'cr>'b'g+r'c'd+r'd'cr]
+[4<'a'cr>'b'g+r'c'fr'd'c+r] [4<'a'cr>'b'gr'c'er'd'cr]
+'eclair' l8 g
+g+1.g+.a+.<c> a+1g2..g+16g16 f2<c2 d+4c+4>g+4a+4< c1...
+;
+
+{7}
+r4. $
+'echa' [[fcfgg+4<c4> a+d+gg+a+4g4 g+c+fgg+4a+4 gceg<c>a+g+a+]
+<c+>c+fg+<c+>c+f<c+ [c+>c+eg<] c>ceg<c>ce<c> fcfg+<c>fg+<c>
+    [a+>a+<c+f] a+cd+ga+cd+a+ <d+c+>g+ec+eg+<c+ cc+>a+<cj2>g+a+gg+]
+    l48 v28v24,14<c>a+g+g v26v24,13g+gfd+ v24v24,12fd+c+c
+    v22v24,11c+c>a+g+ v20v24,10a+g+gf v18v24,9gfd+c+
+'string2'p40 l16 [[4<'e'cr>'f'g+r'g'fr'h'cr] [4<'e'cr>'f'g+r'g'd+r'h'cr]
+[4<'e'cr>'f'g+r'g'fr'h'c+r] [4<'e'cr>'f'gr'g'er'h'cr]]
+;
+
+{8}
+r $ 'ocho' [[>g+a+<  c2.f4 d+2.>a+<c c+2.>g+4<c2.]
+>a+<c  c+4>g+2gg+ a+2.gg+ a+4g2<d+c+ c2.>  fg  g+4f2gg+ a+4g2g+a+ <d+4c+4>g+4a+4 <j2c2.]
+&80c 'harp' l12 <v40g+v37fv35c+>v33a+v30gv27d+24
+[15r1]r2..
+;

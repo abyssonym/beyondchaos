@@ -161,3 +161,6 @@ Ryoma
 Eiji
 Ankh
 Genta
+Lupin
+Jigen
+Goemon

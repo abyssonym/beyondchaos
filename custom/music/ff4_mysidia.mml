@@ -1,0 +1,112 @@
+#TITLE Mystic Mysidia
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED MetroidQuest
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x3E
+#WAVE 0x21 -- 0x07
+#WAVE 0x22 -- 0x0D
+#WAVE 0x23 -- 0x01
+#WAVE 0x24 -- 0x11
+#WAVE 0x25 -- 0x24
+#WAVE 0x26 -- 0x26
+#WAVE 0x27 -- 0x21
+
+
+{1}
+l16t96%x232%v70%b0,70%f0,0v60p64@32%e0o5[3drar]dr<de $2 [2f8f8fedc+  
+>b8<d8c+8>a8b8g+8a2  r4r1  r1  r1  
+j2,1 r2r4r8<de  ] $1 r1  b4g+8r8<c4>a8r8  g+8e8g+8b8a4b8<c8  
+d4>b8r8<e4c8r8  d+8>b8<d+8f+8e2  [8f32][8e32][8d+32]e32e32e32e32de
+;2
+
+l16c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  
+{2}
+l16v60p64@32%e0o4[4ar<er>] $3 [48ar<er>][3br<dr>br<dr  
+crercrer>]>br<d+r>br<d+r  e2[8a32][8g+32][8g32][8g+32]
+;3
+
+l16c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  
+{3}
+l16v60p64@32%e0o4[4drar] $4 [48drar][2erg+rerg+r  erarerar]drgrdrgr  
+ergrergrf+rarf+rar  g+2<[8c32]>[8b32][8a+32][8b32]
+;4
+
+l16c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  
+{4}
+l16v60p64@33%e1m90,50,30r1   $5 [2r1  
+r2r4r8o5gf  ere8efgae4.gf  ere8efgad8frc+rer  d1  
+r1  ]b4g+8r8<c4>a8r8  g+8e8g+8b8a4b8<c8  d4>b8r8<e4c8r8  
+d+8>b8<d+8f+8e2  >f4e8r8d+4e8r8  
+;5
+
+l16c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+
+{7}
+l16v64p64@34%e1m90,50,10r1   $6 [11r1  ]v72r2r4o5efg+a  v64b2<c2  
+d2e2  f2e2  d+2e2  r1  
+
+;6
+
+l16c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  
+{8}
+l16v64p64@34%e1m90,50,10r1  
+ $7 [11r1  ]v72r2r4o5cdef+  v64g+2a2  b2<c2  
+d2c2  >b2b2  r1  
+;7
+
+l16c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  
+{5}
+l16v112p64@35%e0r1  o3 $8 [24d8m64,-1a8>a8m64,-1<e8]e8d8c8>b8  
+a4b8<c8d8e8f+8g+8  a4>a4g4.ab  <c4>g4b4<c+8d+8  e2f4e4  
+d+4e4
+;8
+
+l16c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+
+{6}
+l16v60p64@36r1   $9 [16%e0o4@36aaaap16%e0o5@37a4p64%e0o4@38a8c8p112%e1@39a4  
+p64]r1  
+;9
+
+l16

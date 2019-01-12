@@ -1,0 +1,86 @@
+#TITLE Bone Dungeon // Fossil Labyrinth
+#ALBUM Final Fantasy Mystic Quest
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x21 -- ~0x81~ /0x14/
+#WAVE 0x24 -- 0x17
+#WAVE 0x25 -- 0x06
+#WAVE 0x26 -- 0x1C
+#WAVE 0x27 -- ~0x6A~ /0x0D/
+#WAVE 0x28 -- 0x07
+#WAVE 0x29 -- ~0x7A~ /0x1F/
+#WAVE 0x2A -- ~0x7F~ /0x08/
+
+
+{1}
+l16t120%x200%b60,0%v60v55p32%e1r2 $1 @41%s3v98p32[2r2  r4r8.o5d+a+4.^d+  
+a+8.d+a+4r1  r1  ]@42%s7%r25>[4g+8g+4g+g+8g+8g+g+8g+8  ]@39%s5%r8<[2c4.cc8c8cc8c8  
+>a+4.a+a+8a+8a+a+8a+8  <c4.cc8c8cc8c8  d+4.d+d+8d+8d+d+8d+8  ]
+;1
+
+l16
+{2}
+l16%e1r2 $2 @42%a15%s3%r10v75p64[2o5c4>a+2  
+^4^1  a4g2^4  ^1  ]v55%s5%r21[4d+8d+4d+d+8d+8d+d+8d+8  
+]@39[2f4.ff8f8ff8f8  d+4.d+d+8d+8d+d+8d+8  f4.ff8f8ff8f8  a+4.a+a+8a+8a+a+8a+8  
+]
+;2
+
+l16
+{3}
+l16%e1r2 $3 r1  @42%s3%a15%r10r1  v65p96r2r4r8o5c24c24c24  
+g4.c24c24c24g2  r1  r1  r2r4r8c24c24c24  
+g4.c24c24c24g2  @42v55%s5%r21[4c+8c+4c+c+8c+8c+c+8c+8  ]@39>[2g4.gg8g8gg8g8  
+f4.ff8f8ff8f8  g4.gg8g8gg8g8  g+4.g+g+8g+8g+g+8g+8  ]
+;3
+
+l16
+{4}
+l16p64%e1r2 $4 v54@42%a15%s3o5f4d+2  
+^4^1  d4c2^4  ^1  f4d+2^4  
+^1  d4c2^4  ^2^4^8@39<cc+  g+4.cc+g+4.cc+  
+g+rd+rf2^4  r8c+c+g+r<d+rc8.c+>a+8.d+  g+1  v69d4g2^8fe  
+c4g2^4  >g4<c4f8.e8.d8  d+4.cdd+4c8.c  d4g2^8fe  
+c4g2^4  >g4<c4f8.e8.d8  c1  
+;4
+
+l16
+{5}
+l16v45p70@40%e1r2 $5 r1  
+r8o5[3a+r]a+24<c24>a+24ara24a+24a24gfr1  r8[3gr]d+>gaa+<cdc4r1  
+[3a+r]a+24<c24>a+24ara24a+24a24gfr1  r8[3gr]d+>gaa+<cdc8frfg  g+8gg+frd+rc+rd+rfd+fg  
+g+2<c24c+24c24>a+g+c+rg+r  g+ra+r<c8.c+>a+8.d+g+a+g+2  ^4^8r1  r1  
+r1  r1  r1  r1  
+r1  g+rg+a+g+a+<cdd+8d24d+24d24c>a+g+a+  
+;5
+
+l16
+{6}
+l16v90p64%e1r2 $6 @38%r15[8o5c4.c4.  
+>g4]<[4c+4.c+4.  c+4]@39v125o4%r0>[2g1  a+1  g1  
+g+1  ]
+;6
+
+l16
+{7}
+l16v100p64@33~%k3~%e0o5e24e24e24e8eeee $7 [8[2v100e8v65e24e24e24e8]v100ev65e  
+ee][2[3v100e8v65e8e8v100e24v65e24e24]v100e8v65e8[2v100e24v65e24e24  
+]]v70@37>%y0%s7%r16~%k0~c1  ^1  c1  c1  
+c1  ^1  c1  v100%y<@33~%k3~[2e8e24e24e24e8]eeee
+;7
+
+l16
+{8}
+l16v110p64@36%e1r4r8  
+o5c24c24c24 $8 [7o5d4.d4.>a4  ]<d4.d4.>a8a24a24a24  >[3f+4.f+4.f+4  
+]f+4.f+4.f+8<<d+d+  >g+1  ^2^4^8<d+d+  >g+2^4^8>g+24g+24g+24  
+g+1  <g+1  ^2^4^8<d+d+  >g+2^4^8>g+24g+24g+24  
+<<d4.d4.>a4  
+;8
+
+l16

@@ -1,0 +1,90 @@
+#TITLE Rock 'n' Roll
+#ALBUM Final Fantasy Mystic Quest
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- 0x22
+#WAVE 0x21 -- ~0x7E~ /0x14/
+#WAVE 0x22 -- 0x0F
+#WAVE 0x23 -- 0x17
+#WAVE 0x25 -- ~0x50~ /0x12/
+#WAVE 0x26 -- 0x1C
+#WAVE 0x28 -- 0x1E
+#WAVE 0x2A -- ~0x42~ /0x0C/
+
+
+{1}
+l16t170%x200%b60,32%v28v45p55%e1@40o3%r0r4.o4a8r2  r4r8r2r4  
+r8a8^8.rb8r8<c8r8  c+8m64,36,191d4.^4^4  mm24,-6^8> $2 [3a4r8<a8r4a8  
+r8>]a4^8b4<c4  c+8d8^4.r8d8c+8  c8>b4<b8r4b4  r8a4r8a8r4a8  
+r8>a4<e8r8e2  r8[2r4a8r4a8r4  r4e8r4e8r4  r4d8r4d8r4  
+j2,1 r4e8r4e8 $1 r4  ]r4e8r4e8r8>
+;2
+
+l16
+{2}
+l16v25p81@5%e1m24,20,211o4r4.  
+r1  r1  r2r4m96,+12d8^2  ^2v45 $3 p64@42o6d+4erer  
+erc+8>a8r8<g8r8g8f+8  e4.r8c4c+8>a8  g8arar8.a8^2  ^4^r<e4d8r4  
+d8c+rcr>b4f+8r4  <d8e8r8>a4<d+8e8>a8  <g8f+r8.e8r8e8r8e8  r8ererc+4>a8r2  
+r8b4g+8r2  r8a4f+8r2  r8b4g+8r2  r8<c+4cr>bra2  
+b4a+rarg+2  a8r8f8f+8<c+8r8c8r8  >b8^2^4^8  
+;3
+
+l16
+{3}
+l16v45p80@42%e1%s7%r18r4.o5d+32e^32e8e8e8e8  
+e8e8e8e8r2  r4>e8^4f+4g4  g+8a8^2^4  ^8 $5 o4[3a8^4a4a4  
+a8]e4e8f+8e8g8e8  g+8a8^2a8g+8  g8f+4<f+4.f+8f+4  >>a8^4a4a4a8  
+a4<b4b2  >a4[2a4.a4.  e4e4.e4.  d4d4.d4.  
+e4j2,4 e4.e4.  a4] $4 e4.e8<c+8e8  
+;5
+
+l16
+{4}
+l16v45p80@42%e1%s7%r18o5c+8e8f+8[9a8]g8f+8e8c8  
+c+8>af+a8^8e8b8e8<c8  >e8<c+8d8^2^4  ^8 $7 o4e8^4f+4g4  f+8e8^4f+4g8c8  
+c+8e8^4f+4g8c8  c+8>a4a8b8a8<c8>a8  <c+8d8^2d8c+8  c8>b4<<b4.b8b4  
+>e8^4f+4g4f+8  e4<e4e2  >e4[2e8c8c+8e4.  >b4b8g8g+8b4.  
+a4a8f8f+8a4.  b4j2,6 b8g8g+8b4.  <e4] $6 b8g8g+8b4.  
+;7
+
+l16
+{5}
+l16v40p64%e1@42%e1m24,20,211r4.r1  
+r1  r1  r2r4r8 $8 [7r1  ]r8r2r4r8  
+o5a4e8r2r8  g+4e8r2r8  f+4d8r2r8  g+4e8r2r8  
+a4arare2  e4erere2  f+8r8d8d8a8r8a8r8  g+8^2^4^8  
+
+;8
+
+l16
+{6}
+l16v80p64@38%e0r4.o4a8r2  r4r8r2r4  e8a4a8b8a8<c8>a8  
+<c+8d8^2^4  ^8> $10 a4a8<a8>a8<c8c+8  >a8a4<a8g8f+8e8c8  c+8>a4a8<a8>a8<c8c+8  
+>a8a8^4b8a8<c8>a8  <c+8d4>a8<d4d8c+8  c8>b4br<c+rc+rdrdr  er>a4a8<a8>a8<c8c+8  
+>a8a4<ererererer  er>a8[2r8a8<a8>a8<g8f+8  r8>e8r8e8<e8>e8b8<c+8  
+r8d8r8drc+rc+r>brbr  are8j2,9 r8e8g8g+8<e8>g8  g+8a8] $9 r8e8g8g+8<e8>g8  
+g+8
+;10
+
+l16
+{7}
+l16v100p64@37%e1r4.o5g+8r8@34c4  c4c4c4c4  c4r8@37f8^2  
+^4^8f8^4@34%y2%r0c4  r4. $11 @37f4@34[30c8]f4  c8c8c8@37f4.f4  @34c8c8c8c8c8c8@37f4  
+@34c8c8c8c8c8c8@37d+4  f8@34c8^2@37f4  @34[30c8]@37f4@34[30c8]
+;11
+
+l16
+{8}
+l16v127p64@32r4.o5@32c8  
+r2r4r8r2  r4@33d8@32c8^8@33d8dd8.  @35ffeedd@32c8^2  @33dd8dd8 $12 @32[3c4c8@33d4  
+@32c8c8@33d8@32][3c4c8@33d4  @32c8@33d8d8@32]c4c8@33d4  @32c8c8@33d8@32c4c8@33d8d8  
+d8d8d8@32[7c4c8@33d4  @32c8c8@33d8@32]c4c8@33d4  @35f8e8d8
+;12
+
+l16

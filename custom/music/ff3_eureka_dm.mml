@@ -1,0 +1,175 @@
+#TITLE Forbidden Land Eureka (Dancing Mad remix)
+#ALBUM Final Fantasy III
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling, based on previous arrangements by Gi Nattak and tsushiy
+
+#VARIANT ~_
+#VARIANT ~! tier1
+#VARIANT ?! tier2
+#VARIANT ?_ tier3
+
+#WAVE 0x20 -- 0x25  #C.Organ
+#WAVE 0x21 -- 0x3b  #P.Organ
+#WAVE 0x22 -- 0x3a  #Maria
+#WAVE 0x23 -- 0x39  #Draco
+#WAVE 0x24 -- 0x14  #Snare
+#WAVE 0x25 -- 0x16  #Timpani
+#WAVE 0x26 -- 0x12  #Cymbal
+#WAVE 0x27 -- 0x24  #Bells
+#WAVE 0x28 -- 0x1C  #Bass
+
+l16
+{1} 
+$4441
+%b0,70%v70%x232
+%e1 |0v70p64 o4
+%k10
+? t255,160
+[[4afef][2bfef]afefafge]
+t255,130 d1^1
+? ~t130~
+$ 
+[ [3
+[[4afef][2bfef]afefafge [3fdcd]fdge[4afef]]
+[2 m12,11,255v12,11,255 e4.def4.ef g4.f+g<c4>g4 mv j2,11
+fdgdadfd ecfcgcec   d>a+<e>a+<f>a+<d>a+ <f>b<g>b<a>b<f>b<]
+$11 a+4a8g4f8e8d8 c+4d4e4a4
+!:12! ] <]o4
+;
+! $12
+o4 l16 t255,110
+[[4afef][2bfef]afefafge [3fdcd]fdge[4afef] t255,80]
+<d1^1^1r1
+%k0 ;4441 !
+
+{2}
+$4442
+%e1 |2v64p80o4
+%k10
+?
+[6r1]
+? $
+[2r4d8e8f4d4g4f8e8f4d4r4>a+8<c8d4>a+4r4
+j2,21
+<d8e8f4d4]
+$21 <f8g8a4f4
+[2r4e8f8g4a4a+4a8g8e4a4 j2,22
+g4f8d2^8^1]
+$22 g2r8g8a8g8e1
+!:23!
+;
+! $23
+[12r1]
+%k0 ;4442 !
+
+{3}
+$4443
+%e1 |0v32p72o4
+%k10
+?
+[4r1]
+r4b-4a2^1
+?
+|1o5 $ l8
+[[4ar] brbrarar [4dr] j2,31 [4ar]]
+                      $31  <[4cr]
+>g1 a+1  a2g2  f2r2
+g1 a+1  a+1  e1  
+!:32!
+;
+! $32
+|0o3 d1 [11^1]
+%k0 ;4443 !
+
+{4}
+$4444
+%e1 |0v32p56o5
+%k10
+?
+[4r1]
+r2.c4d1
+?
+|1o4 $ l8
+[4fr] grgr [14fr]
+      grgr [6fr] [4ar]
+e1  g1  f2e2  d2r2
+e1  g1  g1  c+1  
+!:41!
+;
+! $41 l1
+|0o5 d [7^]
+>c> g+ g a
+%k0 ;4444 !
+
+{5}
+$4445
+%e1 |8v32p64o5
+%k10
+? [6r1]
+? l16
+$ [7d8>a8<]d8c8  [4>a+8<f8]  [8d8>a8<]  [3d8>b8<]d8c8  [4>a+8<f8]
+[4f8c8]  [4c8gg]  [4e8>a+8<]
+d8d4d8c8c4c8  >a+8a+4a+8b8b4b8  <[4c8gg]  [4e8>a+8<]  
+[4d+8>a+8<]  [4>a8<e8]
+!:51!
+;
+! $51 [12r1]
+%k0 ;4445 !
+
+{6}
+$4446 
+%e1 |4v64p64o5
+?
+[6r1]
+? l16
+$ [14r1]
+[4f4] [4fffr]
+!:61!
+[
+|6f4 |4 [2f8[4f32]f4] [3f8[4f32]]
+[3[3f4f8[4f32]] [2f8[4f32]]]
+]
+!:61!
+;
+! $61
+|6f1 [11^1]
+;4446 !
+
+{7}
+$4447
+%e1 v104p48
+%k10 
+?
+[6r1]
+? l1
+$ |7o5 [2
+[4d ^]
+[2e2 f2 g2 a2 d ^]
+!:72!
+] 
+|5o3 l8
+[4ddr j4,71 >a<] $71 c
+>[2a+a+rf] < ddrdddrc  [3ddr>a<] ddrc
+>a+a+rfa+a+r<c  [2ffrc]  [4eerc]
+ddrdeere  ffrfddrd  [2eerc]
+ggrcggr4  [3gd]ag  eeffggee  
+!:72!
+;
+! $72
+|7o5 [6d1^1]
+;4447 !
+
+{8}
+$4448
+%e1 @3v48p64m4,9,222v4,7,222
+%k10
+?
+[6r1]
+? l16
+$ o5
+[11r1]r2  f8g8a8f8r1  
+^1  a+2..r8  <c+1
+!:81!
+;
+! $81 [12r1]
+;4448 !

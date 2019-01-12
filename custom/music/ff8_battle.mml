@@ -1,0 +1,276 @@
+#TITLE Don't Be Afraid
+#ALBUM Final Fantasy VIII
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x49~/0x0D/
+#WAVE 0x21 ~0x0E~/0x0E/
+#WAVE 0x22 ~0x7A~/0x08/
+#WAVE 0x23 ~0x1A~/0x1A/
+#WAVE 0x25 ~0x4D~/0x1C/
+
+#WAVE 0x28 ~0x81~/0x14/
+#WAVE 0x29 ~0x75~/0x16/
+#WAVE 0x2A ~0x55~/0x0F/
+#WAVE 0x2B ~0x8D~/0x24/
+#WAVE 0x2C ~0x12~/0x12/
+
+#def global= t165 %b0,70 %v50 %x224
+#def hit= ~|0 o4~ /|1 o5/ %r20%s4%y6 %e1
+#def hh= v100
+#def hm= v80
+#def hl= v60
+#def str= |0 ~o4~/o5/ v64 m48,18,223 %r10 %e1
+#def pet= |1 ~o6~/o6/ v64 m48,18,239 %e1
+#def pets= ~|1o5~/|1o5/ v72 m48,18,239 %e1
+#def hrn= |2 ~o5~/o5/ ~v88~/v64/ m48,18,223 %r8 %e1
+#def tub= |3 ~o5~/o5/ v56 m48,18,191 %r10 %e1
+#def bass= |5 ~o5~/o5/ ~v64~/v40/ %r19 %e0
+#def timp= |9 ~o3~/o3/ 'c17' m v80 %e0
+#def bell= |B ~o5~/o6/ 'c12' m %r12%y6%s1 v96 %e1
+
+#drum "a"=5a+ |8 v50 %e0 p64
+#drum "b"=5a+ |8 v60 %e0 p64
+#drum "c"=5a+ |8 v70 %e0 p64
+#drum "d"=5a+ |8 v80 %e0 p64
+#drum "e"=5a+ |8 v90 %e0 p64
+#drum "f"=5a+ |8 v100 %e0 p64
+#drum "g"=5a+ |8 v110 %e0 p64
+#drum "h"=5a |A v28 %e0 p100
+#drum "i"=5a |A v10 %e0 p100
+#drum "w"=5c @4 v50 %r30 %e1
+#drum "x"=5c @4 v30 %r30 %e1
+#drum "y"=5f |C v127 %e0
+
+## pan position by MIDI channel (for easier transcription)
+#def c2= p24
+#def c3= p54
+#def c4= p84
+#def c5= p114
+#def c6= p4
+#def c7= p34
+#def c8= p64
+#def c9= p94
+#def c10= p124
+#def c11= p110
+#def c12= p20
+#def c13= p100
+#def c14= p20
+#def c15= p64
+#def c16= p64
+#def c17= p75
+#def c18= p64
+
+##temp pattern
+$99 ['hh'c4'hl'c8]'hh'c4c4 ]
+
+{1}
+'global'
+r4
+##
+'hit'p44 l8 [8['hh'd'hl'd'hm'd]['hh'd'hl'd]$0]
+$1##10
+[
+ ['hit''c10' > %k9[j2,113;99$113 j2
+ %k0 'pet''c4'l16 'hh'er'hm'erer'hh'gr'hm'grgr'hh'f+r'hm'f+r'hh'f8.r]
+ j2,121 c4 %k0 'tub''c5' l4 <dc>ba
+##14 c5
+ g1. g8defg8 l8 arr1 ar4ar4arar
+]
+##22 c7 c7 c5 c5
+$121 [j2,122;99$122 %k0
+'str''c7' l4 b.a.g1..
+'tub''c5' l8 r1r4 ar4ar4arar
+##26 c2/c4 merge, crash at 32
+'hrn'p54 l4 >a2.<ed e1g f+1^ d2.ef  e1^ >a1^
+p64"!!!oy2." 'hrn'p54 c>b<c1^
+##34 c2
+'c2' l4 e1^g1^f+1^f1^
+##38 c6
+'str''c6'< l4 v40 d1^a1^g1^f1^
+##42 c2/c4 merge
+'hrn'p54 l4 >a2.<ed e1g f+1^ d2.c>b
+##44 c2/c4 merge into c17
+a1^1^ 'timp''c17' <c f1^1.
+;1
+
+{2}
+r4
+##
+l8 'hit''c9'> [ %k9[j2,203;99$203 <%k0 [j2,204;99$204 >
+%k11 [j2,205;99$205 %k10 [j2,206;99$206 ] %k0
+$2##10
+[
+ 'str''c8' l4 e.e.ee e1^ f.b.<cd f1^ j2,222
+##14 c9
+ 'hit''c9'> l8 [4'hh'g4'hm'g]'str'>gd4e4f4g
+ 'hit'> %k9[ [j2,217;99$217 ]%k0
+]
+$222 ##22 c9 c5 c9 c9
+'hit''c9'> %k7[j2,223;99$223%k0
+'tub''c5' g1^4
+'hit''c9'> %k9[[j2,225;99$225]%k0
+##26 c7
+'str''c7' l4 [e1^g1^a1^<c1j2^>]>l16 ab<cd
+##34 c4
+'hrn''c4' l4 >a1^<c1^d1^1.
+##38 c4 merged with c9
+l8 p89 $238 [|1'hm'%r19a4 ~>>|0~'hl'%r20a~<<~]|1'hm'%r19a4a4 j1,0
+%k3[j2,240;238$240 %k2[j2,241;238$241 %k1[j2,242;238$242 %k0
+##42 c9
+'hit''c9'>%k4[j2,243;99$243 %k7[j2,244;99$244 %k6[j2,245;99$245 %k5[j2,246;99$246 %k0
+##44 c3
+'pet''c3' l4 <c1^d1^e1^f1^
+;2
+
+{3}
+r4
+'hit'p104> l8 [6['hh'd'hl'd'hm'd]j6,307['hh'd'hl'd]]$307'hh'd'hl'd
+'str' l16 <'c6'edef g1^4 a+1^4
+$3##10
+[ 'str''c6'<
+ l4 a.b.<cd> a1^ a.<gd8eb <d1^> j2,322
+##14 c6
+l8 >b4<c>b4ag4ag4df4e4d4 'hit'l16 v56 b<cdg l4 a.a.aa a.a.aa ]
+$322 ##22 c6
+l4 >d1.^8c.>b l16 v56 b<cdg 'hit' l4 <a.a.aa a.a.aa
+##26 c8
+'str''c8' l4 c1^e1^d1^1ed  c1^e1^d1^1^ l16 cdef
+##34 c5 + crash
+"!!!oy2." 'tub''c5'< v40 l4 ed e1g f+1^ d2.fg
+##38 c5, c10
+a1^1. 'hit''c10''hh' l4 >[d.d.dd]
+##42 c18
+'bass''c18'l8 [4['hh'a'hl'aa]['hh'a'hl'a]]
+##44 c18
+[4['hh'f'hl'ff]['hh'f'hl'f]]
+;3
+
+{4}
+'timp' l16 v52av74av91av105a
+'timp' a1[4r1]
+'str' l16 'c7'r1agab<c1^4 d1dcde f1^4 
+$4##10
+[ 'str''c7' l4 a.b.<cd
+'pet''c3'< l16 'hh'er'hm'erer'hh'd+r'hm'd+rd+r'hh'dr'hm'dr'hh'c8>br
+'str''c7' l4 a.<gd8eb <d1^ j2,422
+##14 c7 c7 c8 c8
+>l8 d4ed4c>b4<c>b4fa4g4f4d4
+'hit''c8'<l4 v96 [c.d.ef+v64] ]
+$422 ##22 c8
+'str''c8' l4 g.d.>b2..<c.d 'hit''c8' v96 l16 gaa+b l4 <[c.d.ef+v64]
+##26 c9, c3
+'hit''c9'> %k4[j2,426;99$426 %k7[j2,427;99$427 %k6[j2,428;99$428
+%k5[j2,429;99$429 %k4[j2,430;99$430 l8%k0 ['hh'g4'hl'g]
+'pet''c3'l4 aga1^1^r
+##34 c3
+a2.<ed e1g f+1^ d2.fg
+##38 c3, c8
+a1^1. 'str''c8'd1^1.
+##42 c8 into c6
+l4 c1^e1^d1^1^ 'c6'%r17 v48 l16 ab<cf
+##44 c6
+l8 [4agafc fagaf]
+;4
+
+{5}
+l16 'c16'"aceg" "!!g1" [4r1]
+'tub' l4 'c5' v40 d1^f1^g1^g+1^
+$5##10
+['bass''c18' [4%k9[j2,514;99$514]%k0 j2,522
+##14 c3 c3 c10 c2
+'pet''c3'l8 b4<c>b4ag4ag4df4e4d4>b4
+'hit''c10'>> %k9[j2,517;99$517%k0
+'pets''c2'%r18 l8 cr4dr4erf+r ]
+$522 ##22 c3 c3 c10 c2
+'pet''c3' l8 ba+b<c>b<cdgaf+ gf+gagab<cd>b
+'hit''c10'>> %k9[j2,525;99$525%k0
+'pets''c2'%r18 l8 cr4dr4erf+r
+##26 c18
+'bass''c18'l8 [8['hh'a'hl'aa]['hh'a'hl'a]]
+##34 c7
+'str''c7'~v80~/v127/%r20 l8
+<[4e<c>cb<c> ae<c>ca]
+##38 crash, c7
+l4 "!!!oy1^" 'str''c7' <c1^>b1^a+1^
+##42 c7
+e1^g1^a1^<c1^>
+##44 c8
+'c8'>a1^b1^<c1^d1^
+;5
+
+{6}
+r4 [4"!!ihiihiihih"]
+'pets''c3'< l16 [4['hm'dr'hl'drdr]['hm'dr'hl'dr]]
+$6##10
+[ 'timp''c17' a1^4
+'pet''c2' [3'hh'ar'hm'arj3ar]
+'timp''c17'l16 aaaa a1^4 j2,621 ^1aaaa
+##14 c17
+g1^4 r4.g4g4g8gggg  l4 [a.a.aa] ]
+$621 ##22 c17
+l4 a.aa8a<e>
+g1<d> g1 l16 gggg
+l4 [a.a.aa]
+##26 c17, c10 in interim
+a1^4 'hit''c10'>> %k9[4[j2,628;99$628]%k0l8['hh'a4'hl'a]
+'timp''c17' a4g4 a1^1^4 l16aaaa
+##34 c17
+[4 l4 a.a.aa]
+##38 c17
+<[3d.d.dd]d.d.d l16 dddd
+##42 c17
+l4 >a1^1^ l16 aaaa l4 a1^1^a
+##44 c17 into c9
+<f1^ 'hit''c9'> %k2[j2,648;99$648 %k4[j2,649;99$649 %k5[j2,650;99$650 %k0
+;6
+
+{7}
+r4
+l16 'c14'[8["w8xxx8"]["w8xx"]]
+$7##10
+[
+'hit''c9'>l8 [['hh'e4'hl'e8]'hh'e4j2e4 ] 'pet''c2'a8.r16
+'c16'"!!!og4" 'hit''c9'l8 ['hl'f8'hh'f4]f4 %k5[j2,714;99$714%k0 j2,722
+##14 c16
+'c16'l8[4"!!!of4c"]"ff4f4f"l16"cdef"    l4["f.f.ff"] ]
+$722 ##22 c16
+l16 [["!!!of8aaa8"]["f8aa"]] l4["f.f.ff"]
+##26 c16
+l8 [[3"!!ghichbidgh"]"ghichbgh"l24"gfedcb"]
+##34 c16
+l8 [8"wccwccwcwc"]
+##42 c16+c13
+[3"!!ghichbidgh"]"ghichbgh"l24"gfedcb"
+##44 c16
+l16 [4["!!f8aaa8"]["f8aa"]]
+;7
+
+{8}
+r4
+l1 'c15'"y^4" [3^^4] "y^4" 'bell''c12' d^.d^4
+$8##10
+['c15'"!!!oy^4" l8 ["faa"]"fa"l16"aceg y1^1" j2,821 ^2
+##14: c15 c8 c15 c3
+"y1^1^4" 'hit''c8'l16 gaa+b "!!!oy1^4" 'pets''c3'%r18 l8 <er4f+r4grar ]
+$821 ##22 c15 c4 c15 c3
+^4 "!!!oy1."
+'hrn''c4' l4 d.c.>b2
+"!!!oy1^4"
+'pets''c3'%r18 l8 <er4f+r4grar
+##26 crash, c5
+"!!!oy2." l8 [3"!!^hih i4.i4i"] "i4ih i4.i4i" "!!^hih i4.i4i"
+'tub''c5'l4 aga1^1.
+##34 c8
+'str''c8'~v80~/v127/%r20 l8
+[4a<e>e<de c>a<e>e<c>]
+##38 c2 merged with c10
+l8 [4 ['pet''c2'%r19 d4 'hit''c10''hl'> a] 'pet''c2'%r19 d4d4]
+##42 crash, c10
+"!!!oy1^4" 'hit''c10'>> %k9[3[j2,844;99$844]%k0
+##44 crash, bell
+"!!!oy2." 'bell''c12'l4 c1^d1^e1^f2
+;8

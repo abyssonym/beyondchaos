@@ -1,0 +1,112 @@
+#TITLE Phantom and... A Rose... // Rose and Ghost
+#ALBUM Secret of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x1B
+#WAVE 0x22 -- ~0x40~ /0x0A/
+#WAVE 0x23 -- 0x07
+#WAVE 0x24 -- ~0x42~ /0x20/
+#WAVE 0x25 -- 0x06
+#WAVE 0x26 -- 0x3E
+
+#SFXV ` *
+
+*{1}*`{3}`
+l16%e1r64v62@32r1  r1   $1 p38v60@32%a6%r7r1  
+r1  r1  r1  r1  
+r1  o5a1  ^1  %a8a1  
+v55a+1  v60a1  ^1  p50v55@34%a7%r6>g1  
+^1  f1  ^1  g1  
+^1  f1  ^1  p64v27@36r1  
+r2r4r4  <<<c8>b8a8g8a8f+8g8a8  g8f+8e4c4
+;1
+
+l16
+*{2}*`{4}`
+l16r48%e1p64r1  
+r1   $2 r1  r1  r1  
+r1  r1  r1  p86v60@32%a6%r7o5e1  
+^1  %a8e1  v55f1  v60f1  
+^1  p80v52@38f8g8<d8>b8f8g8<d8>b8  f8g8<d8>b8f8g8<d8>b8  e8f8<c8>a8e8f8<c8>a8  
+e8f8<c8>a8e8f8<c8>a8  f8g8<d8>b8f8g8<d8>b8  f8g8<d8>b8f8g8<d8>b8  
+f8g8<f8e8>f8g8<f8e8  >f8g8<f8e8>f8g8<f8e8  p88v45@35%a8%r7m31,18,195>a8g8e4.e8g8f8  
+d8e8d4>b4<c1  ^1  
+;2
+
+l16
+*{3}*`{1}`
+l16t89%v50%x125%b0,70
+l16r64%e1p64v55@35r1  r1  
+ $3 p64v42@35%a8%r7m31,17,195o6d8e8g4.a8e8c8  d8e8e2^4  d8e8g4.a8e8>a8  
+<c8d8d2c8d8  e1  ^1  mp55v60@32%a6%r7>c1  
+^1  %a8c1  v55d1  v60c1  
+^1  %yp64%a8%r6<d8c8d8e8f4.e8  d4.c8e4>b8a8  b4e2^4  
+^1  <d8c8d8e8f4.e8  d2e4g4  a1  
+^1  p85v42@35%a8%r7m31,17,195f8e8c4.c8e8d8  >b8<c8>b4g4a1  ^1  
+m
+;3
+
+l16
+*{4}*`{2}`
+l16r48%e1p64v60@37r1  r1   $4 p88v65@37%r6o5d8e8g4.a8e8c8  
+d8e8e2^4  d8e8g4.a8e8>a8  <c8d8d2c8d8  e1  
+^1  v72p64%r5<d8e8g4.a8e8c8  d8e8e2^4  d8e8g4.a8e8>a8  
+<c8d8d2c8d8  e1  ^1  %yp104v55>d8e8f8a8d8e8f8a8  
+d8e8f8a8d8e8f8a8  c8d8e8g8c8d8e8g8  c8d8e8g8c8d8e8g8  d8e8f8a8d8e8f8a8  
+d8e8f8a8d8e8f8a8  f8g8a8b8f8g8a8b8  f8g8a8b8f8g8a8b8  p64>g8<c8g4.g8b8a8  
+f+8g8f+8e8d8>b8a1  ^1  
+;4
+
+l16
+{5}
+l16r64%e1p40v75@33r4.o5a4.d4  
+r4.a4.d4   $5 p40v75@33o5r4.a4.d4  r4.a4.d4  r4.a4.d4  
+r4.a+4.g4  r4.f4.e4  r4.f4.e4  r4.a4.b4  
+r4.a4.b4  r4.a4.b4  r4.a+4.<c4  r4.>f4.e4  
+r4.f4.e4  p24v55@37>b8<c8d8e8>b8<c8d8e8  >b8<c8d8e8>b8<c8d8e8  >a8b8<c8d8>a8b8<c8d8  
+>a8b8<c8d8>a8b8<c8d8  >b8<c8d8e8>b8<c8d8e8  >b8<c8d8e8>b8<c8d8e8  
+d8e8f8g8d8e8f8g8  d8e8f8g8d8e8f8g8  p40v75@33r4.<d2f8  e8d8>b8a8g8e8r4.  
+a4.b4r4.  a4.b4
+;5
+
+l16
+{6}
+l16r64%e1p41v75@33o4a2  ^4g4a2  ^4g4 $6 p41v75@33o4a2  
+^4g4a2  ^4g4a2  ^4g4a+2  ^4a+8g8a2  
+^4g4a2  ^4g4a2  ^4g4a2  ^4g4a2  
+^4g4a+2  ^4a+8g8a2  ^4g4a2  ^4g4<g8a8b8e8  
+g8a8b8e8g8a8b8e8  g8a8b8e8f8g8a8e8  f8g8a8e8f8g8a8e8  f8g8a8e8g8a8b8e8  
+g8a8b8e8g8a8b8e8  g8a8b8e8a8b8<c8>f8  a8b8<c8>f8a8b8<c8>f8  a8b8<c8>f8c2  
+<e4.>e8>b2  b4a2^4  b4a2^4  b4
+;6
+
+l16
+{7}
+l16r48%e1p43v75@33r8o5d4.<c4  
+>b4r8d4.<c4  >b4 $7 p43v75@33o5r8d4.<c4  >b4r8d4.<c4  >b4r8d4.<c4  
+>b4r8d4.<d4  c4r8>c2^8  >b4r8<c2^8  >b4r8<d4.<c4  
+>c4r8d4.<c4  >c4r8d4.<c4  >c4r8d4.<d4  >d+8d8r8c2^8  
+>b4r8<c2^8  >b4<e2d4  r4e2d4  r4e2d4  
+r4f2g4  r4e4a4c4  r4e4a4c4  r4r1  
+r1  r8g2^8g4  r8e4.d4r8d4.  <c4>d4r8d4.  
+<c4>d4
+;7
+
+l16
+{8}
+l16r64%e1p44v75@33r4o5e2  c4r4e2  c4 $8 p44v75@33o5r4e2  
+c4r4e2  c4r4e2  c4r4f2  d+8d8r4e4a4  
+c4r4e4a4  c4r4e2  d4r4e2  d4r4e2  
+d4r4f2  g4r4e4a4  c4r4e4a4  c4r1  
+r1  r1  r1  r1  
+r1  r1  r1  r4<c4.c4.  
+>b8<c8>g4r4r4  f+2g4r4  f+2g4
+;8
+
+l16

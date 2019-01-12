@@ -1,0 +1,94 @@
+# this file is not intended for user editing, do so at your own risk!
+# the purpose of this file is to make sure each default songid is still
+# connected to an identifier (e.g. because external filenames are needed
+# to be able to move songs around effectively) even if song slots are
+# deleted from songs.txt.
+
+[SongSlots]
+00: sfxsilence, 0
+01: prelude,    0
+02: omen1,      0
+03: omen2,      0
+04: omen3,      0
+05: awakening,  0
+06: balance,    0
+07: shadow,     0
+08: strago,     0
+09: gau,        0
+0A: figaro,     0
+0B: coin,       0
+0C: cyan,       0
+0D: locke,      0
+0E: rachel,     0
+0F: relm,       0
+10: setzer,     0
+11: daryl,      0
+12: celes,      0
+13: chocobo,    0
+14: boss,       0
+15: johnny,     0
+16: kefka,      0
+17: narshe,     0
+18: forest,     0
+19: veldt,      0
+1A: savethem,   0
+1B: gestahl,    0
+1C: troops,     0
+1D: martiallaw, 0
+1E: sfxwater,   0
+1F: metamorphosis,0
+20: train,      0
+21: espers,     0
+22: grandfinale,0
+23: mountain,   0
+24: battle,     0
+25: fanfareslow,0
+26: wed_dance,  0
+27: aria,       0
+28: serpent,    0    
+29: zozo,       0
+2A: town,       0
+2B: what,       0
+2C: sfxcrowd,   0
+2D: gogo,       0
+2E: returners,  0
+2F: fanfare,    0
+30: umaro,      0
+31: moogles,    0
+32: unforgiven, 0
+33: atma,       0
+34: town_ruin,  0
+35: blackjack,  0
+36: catastrophe,0
+37: owzer,      0
+38: sleep,      0
+39: sfxwind,    0  
+3A: sfxwaves,   0
+3B: dmad123,    0
+3C: sfxtrain,   0
+3D: spinachrag, 0
+3E: death,      0
+3F: sfxchocobo, 0
+40: sfxrain,    0
+41: opera_intro,0
+42: opera_draco,0
+43: opera_overture,0
+44: wed_attack, 0
+45: wed_duel,   0
+46: wed_rafters,0
+47: magitek,    0
+48: sfxespers,  0
+49: sfxcranes,  0
+4A: sfxfire,    0
+4B: floatingcont,0
+4C: falcon,     0
+4D: fanatics,   0
+4E: kefkastower,0
+4F: ruin,       0
+50: dmad5,      0
+52: dmad4,      0
+53: ending1,    0  
+54: ending2,    0
+
+[TierBoss]
+dmad123: ff6_tier1, ff6_tier2, ff6_tier3

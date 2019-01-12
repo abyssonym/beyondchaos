@@ -1,0 +1,192 @@
+#TITLE Via Purifico
+#ALBUM Final Fantasy X
+#COMPOSER Nobuo Uematsu
+
+#VARIANT ~ enh
+#VARIANT / nat
+#SFXV ` *
+
+#WAVE 0x20 ~0x58~/0x18/
+#WAVE 0x21 ~0x8A~/0x01/
+#WAVE 0x22 ~0x8B~/0x00/
+#WAVE 0x23 ~0x8C~/0x00/
+
+#def o3= ~|0 o3%r10~
+#def o4= ~|1 o4~
+#def o5= ~|2 o5~
+#def o6= ~|3 o6~
+#def low= /|0 <</
+#def high= /|1 /
+
+#def >3= ~|0%r10~>
+#def >4= ~|1~>
+#def >5= ~|2~>
+#def <4= ~|1~<
+#def <5= ~|2~<
+#def <6= ~|3~<
+
+#def global= t130 %v50 %b0,70 %x224
+
+{5}
+'global' %e1
+$[p64 /o3/'low''o3' 
+ v96f+2. v98f+2.
+ v103b2. v89b2.
+ v100g2. v98g2.
+ v101f+2. v91f+2.
+ v89e2. v94e2.
+ v92b2. v96b2.
+ v98b2. v84b2.
+]
+'<4'v106d2. v99d2.
+v104c+1^ a+4 v108g+
+e2. v106e2.
+'>3'v96b2. v86b2.
+v100f+2. v104f+2.
+v106g+2. v98g+2.
+v92b2. v81b2^ '<4'v103d'>3'
+v100f+2. v96f+2. v98f+2. v92f+2.
+;
+
+{6}
+$[p64 /o4/'low''o4' %e1
+ r v89c+4 v87c+4 v91c+4 v95c+4 v96c+4 v103c+8
+ r v101f+4 v89f+4 v83f+4 v103f+4 v96f+4 v89f+8
+ r v96d4 d4 v92d4 v98d4 v94d4 v76d8
+ r v94c+4 v89c+4 c+4 v94c+4 v89c+4 v84c+8
+ r '>3'v100b4 v98b4 v91b4 v98b4 v94b4 v91b8
+ r '<4'v94f+4 v96f+4 v104f+4. v103f+2
+ r v96f+4 v100f+4 v92f+4. v100f+2
+]
+r v105a2 v98a4 v106a4 v98a4 v101a8
+r2. b2 v108a4
+r v96b4 v94b4 v86b4 v94b4 v98b4 v95b8
+r v98f+2 v92f+4 v98f+2 v100f+8
+r v88c+4 v100c+4 v96c+4 v88c+4 v100c+4 v98c+8
+r v104d+4 v100d+4 v96d+4 d+4 v93d+4 v102d+8
+r v102f+4 v95f+4 v100f+4 v98f+4 v100f+4.
+r v102c+4 v95c+4 v100c+4 v102c+4 v95c+4 v92c+4 v88c+4 v96c+4 v95c+4 v96c+4 v95c+4 v96c+8
+;
+
+*{7}*`{3}`
+$[p64 /o4/'high''o4' %e1
+ r4 v77f+2. v89f+2
+ r4 v96b2. v110b2
+ r4 v106g1 v89g4
+ r4 v101f+2. v96f+4 v89f+4
+ r4 v106g2. v89f+2
+ r4 v96b2^ v100b4 v89b4 v87b8
+ r4 v95b2^ v100b4 v89b4 v100b8
+]
+r4 '<5'v105d4 v112d2. '>4'v102b4
+r '<5'v77c+2. v98c+2^
+r4 v101c4 v98c2 v105c4 v103c4
+r4 '>4'v103g4 v96g2 v101g4 g4
+r4 v106f+2. v95f2
+r4 v103g2. v102g2
+r4 v105b2. a2
+r4 v106g+2. v98f2. v104g+2. v99f2
+;
+
+*{8}*`{4}`
+$[p64 /o4/'high''o4' %e1
+ r2 v96g+2. v108f4
+ '<5' r2 v84c+2. '>4' v94a+4
+ r2 v100a2 v89a2
+ r2 v92g+1
+ r2 v101a2. v87e4
+ r2 '<5'v100c+2 v97c+4 '>4'v106g4
+ r2 '<5'v98c+2 v100c+4 '>4'v106g4
+]
+r4. '<5'v96c+2^ v106c+2
+r2 v98c1
+r2 v92f+1
+r4. '>4'v100g+2. v106g+4.
+r2 v110g+2. v106f+4
+r2 v104g+2. v110g+4
+r2 '<5'v108c+2.'>4' v104g+4
+r2 v96f+2. v106f+2. v102f+2. v104f+4
+;
+
+{1}
+$[p64 /o5/'high''o5' %e1
+ v98g+4. v112g+4. v115g+2.
+ '<6' v115c+4. v119c+4. v117c+2.
+ v113f+4. v111f+4. v117f+2.
+ v115e4. v109e4. v117e2.
+ v105c+4. v111c+4. v113c+2 v117c+4
+ '>5'v107b4. v109b4. v111b2.
+ v119b4. v109b4. v107b2.
+]
+'<6'v110f+4. v102f+4. v104f+2 v99d4
+v112c+1.
+v113e4. v106e4. v103e2 v115c4
+'>5'v105b4. v106f+4. f+4. f+4.
+'<6'c+4. v104c+4. v96c+2 v98c+4
+v96c4. '>5'v102g+4. v104g+4. v102g+4.
+v106b4. v101b4. v93b2 v95b4
+v110a+4. f+4. v106f+4. v104f+4. v98f+4. v102f+4. v106f+4. v100f+4.
+;
+
+{2}
+$[p64 /o5/'high''o5' %e1
+ r4 v111c+4. v113c+2^ v119f+4
+ r4 v98f+4. v113f+2^ v119b4
+ r4 v101b4. v100b2^ '<6'v111d4'>5'
+ r4 v103a2. '<6'v119d2'>5'
+ r4 v100g4. v111g2..
+ r4 v93f+4. v98f+2..
+ r4 f+4. v97f+2..
+]
+r4 v94a4. v105a2..
+r4. v104g+4. v98g+4. v100g+4.
+r4 v103g4. v108g2..
+r4 v102d4. v95d4. v105d4. v92d
+r4 v92a2^ v104c+4 v96c+4 v98c+
+r4 v85d+4. v96d+4. v102d+4. v108d+
+r4 v106f+4. v98f+4. '<6'v100c+2'>5'
+r4 v95c+4. c+4. v102c+4. c+4. v98c+4. v100c+4. v106c+4. v100c+
+;
+
+*{3}*`{7}`
+$[p64 /o4/'high''o4' %e1
+ r2 v109b2 '<5'v115f2
+ r2 v107e2 v113a+2
+ r2 v103a2 '<6'v113e2'>5'
+ r2^ v105g+2^ '<6'v117c+4'>5'
+ r2 v111f+2 '<6'v119d2'>5'
+ r2 v105e2. v97e4
+ r2 v103e2. v100e4
+]
+r2 v104g+2 '<6'v99e2'>5'
+r4 v98e4. v95e4. v103e4. v86e
+r v91e2. v80e4 v101e4 v106e
+r2 v98c+2. v95c+4
+r v100f+2 v108f+4. '<6'v103d2'>5'
+r2 v98d2. v102d4
+r v96d2. v101d4 v102d4 v108d8
+r2 v94c2. v92c2. v95c2. v92c4
+;
+
+*{4}*`{8}`
+$[p64 /o4/'high''o4' %e1
+ r v105a2. v113a4 v109a4 v117a8
+ r '<5'v98d2. v105d4 v113d4 v115d8
+ r v109g2. v103g4 g4 v107g8
+ r v101e4. v89e4. v105e4 e4 v101e8
+ r v100d2. v101d4 v98d4 v101d8
+ r v103d2. v109d4 v98d4 v100d8
+ r v103d2. v96d4 v103d4 103d8
+]
+r v106f+2. v108f+4 v114f+4 v110f+
+r2 v93d+2. v106d+4
+r1 '<6'v103d2
+r /o4/'high''o4' v94b2. v96b2^'<5'
+r2 v99f1
+r v79c2. v80c2^
+r2 v102f1
+r '>4'v100a+2. v96a+2. a+2. a+2^
+;
+
+
+

@@ -1,0 +1,91 @@
+#TITLE Prelude to the Void
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 -- 0x22
+#WAVE 0x21 -- ~0x6B~/0x02/
+#WAVE 0x22 -- ~0x0D~/0x0D/
+#WAVE 0x23 -- ~0x0E~/0x0E/
+#WAVE 0x24 -- ~0x07~/0x07/
+#WAVE 0x25 -- ~0x5E~/0x30/
+#WAVE 0x26 -- ~0x51~/0x3D/
+#WAVE 0x27 -- ~0x50~/0x12/
+
+
+{8}
+l16t90%b100,0%v50%x170v127p60|0%e0o5[2aar4.aar4.  aar4.aar4.  
+] $1 v127p60|0%e1%e0o5aav90p60p72,20|5%e0o6ao5ao4ao3ao2ao1av127p60|0%e0o5aav127p100|6%e1o5a8v90p20|7%e1%r21o6a4  
+v127p60|0%e0o5aav90p60p72,100|5%e1o6ao5ao4ao3ao2ao1av127p60|0%e0o5aav105p100|7%e1m96,+12o4a4.  
+
+;1
+
+l16
+{7}
+l16v127p65|1%e1o6[2ddr4.ddr4.  ddr4.ddr4.  ] $2 v127p65ddv115p67dv107p62dv100p70dv92p60dv85p72dv77p57d
+;2
+
+l16
+{5}
+l16v90p45@4%e1o1r2  
+r4 $3 %a4e2%a15%r10c1  ^2%a4e2  %a15%r10c1  ^2
+;3
+
+l16
+{6}
+l16v60p90@5%e1%r20o6r1  
+r4 $4 v10raa4v17raa4  v25raa4v32raa4v40raa4  v47raa4v55raa4v62raa4  
+v62raa4v55raa4v47raa4  v40raa4v32raa4v25raa4  v17raa4v10raa4
+;4
+
+l16
+{4}
+l16v75p52|2m12,20,195%e1r1  
+r1  r1  r1   $5 [2v90p52|2m12,20,195%e1o5a+2<d+2  
+c1  >g2f2  g+1  ]<[2v127p52|3m12,20,199%e1a4<d8g8f+8d8a8f8  
+<c8.>b32a+32a2gaa+8  a1  r1  >a4<d8g8f+8d8a8f8  
+<c8.>b32a+32a2gaa+8  <c+8.>ae2a8<c+8  e8.c>g2f8e8  d1  
+r1  >]v105p52|4m12,20,201%e1c4>b4<c4>b4  a8<c8>b8g+8a2  v120d8c+rv25v144,105c+rc+rc+rc+rc+rc+r  
+v120e8d+rv25v144,105d+rd+rd+rd+rd+rd+r  d4c+4d4c+4  >b8<d8c+8>a+8b2  
+
+;5
+
+l16
+{3}
+l16p57|2m12,20,195%e1r1  r1  r1  r1  
+ $6 [2v100o5d+2g+2  f1  c2>a+2  <c+1  
+][2v90<d1  >a+1  <c+1  c1  
+d1  >a+1  <c+1  c1  
+>a+1  a1  ]<<c4>b4<c4>b4  a8<c8>b8g+8a2  
+v105>d8c+8v25v144,90c+rc+rc+rc+rc+rc+r  v105<e8d+8v25v144,90d+rd+rd+rd+rd+rd+r  
+d4c+4d4c+4  >b8<d8c+8>a+8b2  
+;6
+
+l16
+{2}
+l16p62|2m12,20,195%e1r1  
+r1  r1  r1   $7 [2v110o5d2g2  
+e1  >b2a2  <c1  ][2v100a1  
+g1  a1  g1  a1  
+g1  a1  g1  g1  
+^1  ]a4g4a4g4  f8a8g8e8f2  v115>a+8a8v25v144,100arararararar  
+v115b8a+8v25v144,100a+ra+ra+ra+ra+ra+r  a+4a4a+4a4  g8a+8a8f+8g2  
+
+;7
+
+l16
+{1}
+l16p67|2m12,20,195%e1r1  r1  r1  r1  
+ $8 [2v120o4g2<c2  >a1  e2d2  f1  
+]<[2v110g2f+4f4  d+1  e1  e1  
+g2f+4f4  d+1  e1  e1  
+d+1  d1  ]<e4d4e4d4  c8e8d8>b8<c2  
+v125>f8e8v25v144,110erererererer  v125g+8g8v25v144,110grgrgrgrgrgr  
+f4e4f4e4  d8f8e8c+8d2  
+;8
+
+l16

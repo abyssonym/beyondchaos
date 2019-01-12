@@ -1,0 +1,116 @@
+#TITLE Battle #1
+#ALBUM Lufia II: Rise of the Sinistrals
+#COMPOSER Yasunori Shiono
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- ~0x4E~ /0x0D/ #strings
+#WAVE 0x21 --  0x08         #clarinet
+#WAVE 0x22 --  0x1D         #banjo
+#WAVE 0x23 -- ~0x4A~ /0x1C/ #bass
+#WAVE 0x24 -- ~0x52~ /0000/ #dist.guitar
+#WAVE 0x25 -- ~0x77~ /0x1E/ #orch.hit
+#WAVE 0x26 --  0x22         #kick
+#WAVE 0x27 --  0x14         #snare
+#WAVE 0x28 -- ~0x66~ /0x17/ #tom
+#WAVE 0x29 --  0x0F         #hihat
+#WAVE 0x2A -- ~0x6D~ /0x12/ #cymbal
+
+
+{1}
+l16t180%v32%x192%b0,40%e1%k0v100p68@39o5v255,100ccccccc@38a@40a+32a+32a+a+a+ggc@38a  
+ $1 p60v127@38[6a4@39c8@38a4a8@39c8@38a8  ]a4@39c8.@38a8.a8@39c8@38a8  
+a4@39c4@38a@39cc8c8cc  [7@38a4@39c8@38a4a8@39c8@38a8  ]a8r2aa@39c4  
+[10@38a4@39c8@38a4a8@39c8@38a8  ][2@39c8@38a8a8]@39c8@38a8@39c8@38a8a8  
+@39c@38aa8a8@39cccc[3@38a4@39c8  @38a4a8@39c8@38a8]a4a4  a8aac4
+;1
+
+l16
+{2}
+l16%e1%k0v76p60o5r1  
+ $2 @42a2@41v48[60c8]@42v76a2  @41v48[52c8]r1  @42v76a2@41v48[60c8]@42v76a2  
+@41v48[12c8]@42v76[2a4.a4.a4  ][3a2@41v48[4c8]@42v76]r1  
+;2
+
+l16
+{3}
+l16%e1v72p56@32o4d+a+<d+f+>f<cfg+>f+<c+f+a+>g+<d+g+<c  
+ $3 @32v%k0o5f2^8%l1d+8c+8d+8  %l0f4a+4<%l1c4>a+4  %l0f1  ^2%l1f8d+8c+8c8  
+%l0d+2^4>%l1a+4  <d+4.%l0%l1f4.d+4  %l0c1  ^2c+4d+4  
+f2^8%l1d+8c+8d+8  %l0f4%l1a+4<c4c+4  d+1  %l0^2%l1d+8c+8c8>g+8  
+%l0<%l1c4.>a+8%l0^2  <%l1c4d+4c4>g+4  %l0<c1  >a+8[5r8]@33%k4p72v16,4,32e4d2  
+^8c+8>b8a8g+2  ^4<f+4e4.c+4.  e4>a4.b4.  <c+4d2^8c+8  
+>b8a8g+2^4  <d4c+1  ^2^4e4  f+2^8e8d8c+8  
+>b2^4<f+4  e4.c+4.e4  a4.b4.<c+4  c+2^4>f+8a8  
+<c+2^8>f+8f+8a8  <c+1  r1  
+;3
+
+l16
+{4}
+l16%e1%k1v48p64@34%y7r1  
+ $4 o4a8<e8a8<c8e8c8>a8e8  >a8<e8a8<c8>>g8<d8g8b8  >f8<c8f8g8a8g8f8c8  
+>f8<c8f8g8a8f8g8e8  >d8a8<d8e8f8e8d8>a8  d8a8<d8e8f8g8a8<c8  e8>b8a8b8e8>b8a8b8  
+e8g+8b8g+8b8<e8g+8b8  >a8<e8a8<c8e8c8>a8e8  a8<e8a8<c8>>g8<d8g8b8  
+>f8<c8f8g8a8g8f8c8  >f8<c8f8g8a8f8g8e8  >d8a8<d8e8f8e8d8>a8  e8b8<e8g8b8<d8>b8g8  
+<c8>b8<c8d8c8>b8a8g8  a8r8r2^4  >f8a8<c8f8a8f8c8>a8  g8b8<d8g8b8g8d8>b8  
+<c8e8g8<c8>>b8<d8g8b8  >a8<c8e8a8>g8b8<d8g8  >f8a8<c8f8a8f8c8>a8  
+g8b8<d8g8b8g8d8>b8  <c8e8g8<c8e8c8>g8e8  c8e8g8<c8>e8g8<c8e8  >>f8a8<c8f8a8f8c8>a8  
+g8b8<d8g8b8g8d8>b8  <<e8c8d8>b8<c8>a8b8g8  a8f8g8e8f8d8e8c8  [4>f8a8<c8e8]g+8e8b8g+8  
+<d8>b8<g+8e8>b8<g+8e8d8  c8>b8a8g+8
+;4
+
+l16
+{5}
+l16%e1%k0 ~v112~/v36/ p64@35o5d+a+<d+f+>f<cfg+  
+>f+<c+f+a+>g+<d+g+<c $5 o5a+4<a+8>a+4  a+8<a+8>a+8a+8a+8<a+8>a+8g+8  
+g+8<g+8>g+8f+4<f+8>f+4  f+8<f+8>f+8f+8f+8<f+8>f+8f+8  <f+8>f8f8d+4<d+8>d+4  
+d+8<d+8>d+8d+4<d+8>d+4  d+8<d+8>e8f4<f8>f4  f8<f8>f8f8f8<<c8>>f8<a+8  
+>f8<a8<c8>>a+4<a+8>a+4  a+8<a+8>a+8a+8a+8<a+8>a+8g+8  g+8<g+8>g+8f+4<f+8>f+4  
+f+8<f+8>f+8f+8f+8<f+8>f+8f+8  <f+8>f8f8d+4<d+8>d+4  d+8<d+8>e8f8f8<f8>f8f8  
+<f8>f8g+8a+4<a+8>a+4  a+8<a+8>a+8a+8ff<a+<c>d+f>a+8  <a+8>g+8<g+8>f+4<f+8>f+4  
+f+8<f+8>f+8g+4<g+8>g+4  g+8<g+8>g+8<c+8c+8<c+8>c+8c8  <c8>c8<c8>>a+8a+8<a+8>a+8g+8  
+<g+8>g+8<g+8>f+4<f+8>f+4  f+8<f+8>f+8g+4<g+8>g+4  g+8<g+8>g+8<c+4<c+8>c+4  
+c+8<c+8>c+8>c+8<c+8>d+8<d+8>f8  <f8>g+8<g+8>f+4<f+8>f+4  f+8<f+8>f+8g+4<g+8>g+4  
+g+8g+8<g+8c+8c+8<c+8>c8c8  <c8>c8<c8>>a+8a+8<a+8>g+8g+8  <g+8>g+8<g+8>[2f+4<f+8>f+4  
+f+8<f+8>f+8]f4<f8>d+4  d+8<d+8>e8f8cc<fg>a+<c>f8  <f8>a8<a8
+;5
+
+l16
+{6}
+l16%e0%k5p80 /v32@1k1v0,41,64m0,12,200/ ~|4v64~
+r1  
+ $6 ~o5~/o4/ f8>frfr<f8>frfr<f8>fr  <f8>frfr<f8>d+rd+r<d+8>d+8  <c+8>c+rc+r<c+8>c+rc+r<c+8>c+r  
+<c+8>c+rc+r<c+8>crcr<c8>c8  a+8>a+ra+r<a+8>a+ra+r<a+8>a+r  <a+8a+ra+ra+8a+ra+ra+8a+8  
+<c8crcrc8crcrc8cr  crcrc8crc8crc8c8  f8>frfr<f8>frfr<f8>fr  <f8>frfr<f8>d+rd+r<d+8>d+8  
+<c+8>c+rc+r<c+8>c+rc+r<c+8>c+r  <c+8>c+rc+r<c+8>crcr<c8>c8  a+8>a+ra+r<a+8>a+ra+r<a+8>br  
+<<c8>crcr<c8>crcr<c8d+8  f8>frfr<f8>frfr<f8>fr  <f8r8r2d+4  c+8>c+rc+r<c+8>c+rc+r<c+8>c+r  
+<d+8>d+rd+r<d+8>d+rd+r<d+8>d+r  p192,64g+4.g8^2  p192,48f4.d+8^2  
+<c+8>c+rc+r<c+8>c+rc+r<c+8>c+r  <d+8>d+rd+r<d+8>d+rd+r<d+8>d+r  
+[2g+8g+rg+rg+8g+rg+rg+8g+r  ]<c+8>c+rc+r<c+8>c+rc+r<c+8>c+r  <d+8>d+rd+r<d+8>d+rd+r<d+8>d+r  
+p192,64g+4.g8^2  p192,80f4.d+8^2  <c+8>c+rc+r<c+8>c+rc+r<c+8>c+r  
+<d+8>c+rc+r<c+8>c+rc+ra+8b8  <c8>crcr<c8>crcr<c8>cr  c8r8r2^4  
+;6
+
+l16
+{7}
+l16%e0%k5p48 /v32@1k2v0,63,64m0,6,200/ ~|4v64~
+r1
+ $7 ~o5~/o4/ c8crcrc8crcrc8cr  c8crcrc8cr>a+ra+8a+8  g+8g+rg+rg+8g+rg+rg+8g+r  
+g+8c+rc+rg8c+rcra+8c8  f8frfrf8frfrf8fr  f8frfrf8frfrf8f8  g8grgrg8grgrg8gr  
+frfr<a+8>fr<g+8>fr<g8a+8  c8crcrc8crcrc8cr  c8crcrc8cr>a+ra+8a+8  
+g+8g+rg+rg+8g+rg+rg+8g+r  g+8c+rc+rg8c+rc+r>a+8<c8  f8frfrf8frfrf8fr  
+g8grgrg8grgrg8g8  <c8crcrc8crcrc8cr  c8r8r2>a+4  g+8g+rg+rg+8g+rg+rg+8g+r  
+a+8a+ra+ra+8a+ra+ra+8a+r  <p192,64g+4.g8^2  p192,80f4.d+8^2  >g+8g+rg+rg+8g+rg+rg+8g+r  
+a+8a+ra+ra+8a+ra+ra+8a+r  <[2d+8d+rd+rd+8d+rd+rd+8d+r  ]>g+8g+rg+rg+8g+rg+rg+8g+r  
+a+8a+ra+ra+8a+ra+ra+8a+r  <p192,64g+4.g8^2  p192,48f4.d+8^2  >[2g+8g+rg+rg+8g+rg+rg+8g+r  
+]e8erere8erere8er  e8r8r2^4  
+;7
+
+l16
+{8}
+l16%e1v78p8@37 o4 d+4p120f4p24f+4p86g+4  
+ $8 p64a+4r2^4  [31r1  ]
+;8

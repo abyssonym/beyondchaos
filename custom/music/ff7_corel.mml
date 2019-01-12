@@ -1,0 +1,140 @@
+#TITLE Mining Town
+#ALBUM Final Fantasy VII
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x78~ /0x0A/ bassoon
+#WAVE 0x21 ~0x08~ /0x08/ clarinet
+#WAVE 0x22 ~0x0D~ /0x0D/ strings
+#WAVE 0x23 ~0x63~ /0x1F/ whistle
+#WAVE 0x24 ~0x60~ /0x00/ synth
+#WAVE 0x25 ~0x54~ /0x01/ guitar
+#WAVE 0x26 ~0x19~ /0x19/ pizza
+#WAVE 0x27 ~0x24~ /0x24/ bell
+
+#def global= t120 %v50 %x224 %b0,70
+
+#def soon= |0 p20 v32 ~o6~/o4/ %e1 m
+#def net= |1 p100 v72 o4 %e1 m
+#def str= |2 v56 o5 %e1 %a4 %r8 m
+#def st1= 'str' p30
+#def st2= 'str' p64
+#def st3= 'str' p110
+#def whis= |3 ~v48~/v72/ p95 o5 %e0 m
+#def syn= ~|4 v96 o6 %a9 %r11~ /@6 v56 o5 %a9 %r11/ p64 m32,18,237 %e1
+#def tar= |5 p64 v127 o5 %e1 m48,18,237
+#def za= |6 p64 v104 o4 %e1 m
+#def tube= |7 p64 v96 o6 %e1 %r14 m k2
+
+{1}
+'global'
+$
+'net' l4
+[40abr]
+##41
+[a<c>r] [abr] [b<d>r] [a<c+>r]
+[a<c>r] [g<c>r] [4abr]
+;
+
+{2}
+$
+'soon' l4
+[20d %l1 e>b< %l0 d e r]
+##41
+   e %l1 f c  %l0 e f r
+   d %l1 e>b< %l0 d e r
+   d %l1 f+>b<%l0 d f+r
+   c+%l1 f+>a<%l0 c+f+r
+   e %l1 f c  %l0 e f r
+   d %l1 e c  %l0 d e r
+  [d %l1 e>b< %l0 d e r]
+;
+
+{3}
+$
+'za' l8
+[37r4]
+gbae gba r2 egbaegba r
+[14r4]
+gbae gba r2 egbaegba r
+[13r4]
+##29
+'st1' l2
+g.f+.e4^1^1 r4^1^1
+g.a.b2^1
+##41
+l1
+a. g. b. a.
+a. g. a^^
+;
+
+{4}
+$
+'tar' l8 %a7
+&49[23r4]
+ga b2. r2ag f+2.
+r2ef+ g2.
+r1r1
+ga b2. r2ag f+2.
+r2ed e2.
+&23[42r]
+##29
+'st2' l2
+e.d.c+4^1^1 r4^1^1
+e.f+.g2^1
+##41
+l1
+c. d. d. c+.
+c. c. d^^
+;
+
+{5}
+$
+'tar' l8
+[23r4]
+ga b2. r2ag f+2.
+r2ef+ g2.
+r1r1
+ga b2. r2ag f+2.
+r2ef+ g2.
+[19r]
+'whis' l8
+egb<d c+>b4a<c+>b4 g4a4.f+ g l24 ^f+fe2 l8
+##29
+[25r]
+egb<d c+>b4a<c+>b4 g4a4.f+ g l24 ^f+fe2 l8
+[18r]
+##40
+'syn' l8
+rrrr ab<c1^4> bag1^4 b<c+d1^4 c+>ba1^4 ab<c1^4> bag1^4 egf+1^1^1
+;
+
+{6}
+$
+'za' l4 < v44
+[37r4]
+##gbae gba r2 egbaegba r
+  e>b< d e r2 e>b<d e
+[14r4]
+  e>b< d e r2 e>b<d e
+[13r4]
+##29
+'st3' l2
+d.c+.>b4^1^1< r4^1^1
+d.e.f+2^1
+##41
+> l1
+f. e. f+. f+.
+f. e. f+^^
+;
+
+{7}
+$
+'tube' l1
+r2[9brr]br2.
+##40
+[51r4]
+;

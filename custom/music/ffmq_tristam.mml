@@ -1,0 +1,84 @@
+#TITLE Tristam's Theme // Rock's Theme
+#ALBUM Final Fantasy Mystic Quest
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- ~0x59~ /0x22/
+#WAVE 0x21 -- ~0x81~ /0x14/
+#WAVE 0x22 -- 0x0F
+#WAVE 0x24 -- 0x12
+#WAVE 0x25 --  0x1C
+#WAVE 0x26 -- ~0x80~ /0x1C/
+#WAVE 0x27 -- ~0x82~ /0x0E/
+#WAVE 0x28 -- 0x1E
+#WAVE ~0x2A -- 0x74~
+
+
+{1}
+l16t128%x200%b50,40%v27 ~%k3~
+p64o5v127@33%s7%r20dv100@33%s7%r24dv100@33%s7%r24dv100@33%s7%r24dv127@33%s7%r20dv100@33%s7%r24dv75@32cv127@33%s7%r20dv75@32cv127@33%s7%r20dv75@32cv100@33%s7%r24dv127@33%s7%r20dv100@33%s7%r24dv100@33%s7%r24dv100@33%s7%r24d  
+ $3 [2v100@32c8v75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24dv100@32cv100@33%s7%r24dv75@32c8v127@33%s7%r20d8v75@32c8  
+j2 v100@32c8v75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24dv100@32cv100@33%s7%r24dv75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24 $1 d  
+]v100@32c8v75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24dv100@32cv100@33%s7%r24dv75@32c8v127@33%s7%r20d8v100@33%s7%r24dv100@33%s7%r24d  
+[2v100@32c8v75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24dv100@32cv100@33%s7%r24dv75@32c8v127@33%s7%r20d8v75@32c8  
+j2 v100@32c8v75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24dv100@32cv100@33%s7%r24dv75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24 $2 d  
+]v127@33%s7%r20dv100@33%s7%r24dv100@33%s7%r24dv100@33%s7%r24dv127@33%s7%r20dv100@33%s7%r24dv75@32cv127@33%s7%r20dv75@32cv127@33%s7%r20dv75@32cv100@33%s7%r24dv127@33%s7%r20dv100@33%s7%r24dv100@33%s7%r24dv100@33%s7%r24d  
+
+;3
+
+l16
+{2}
+l16p64%e1r1   $4 [2v60@40o5c4v55@39o6fr8.f12r24er8.dr  
+r8ere2^4  v60@40o5c4v55@39o6fr8.f12r24er8.ar  r8grg2^4  ][2v60@40o5c4r2r4  
+r1  v60@40o5c4r2r4  r1  ]
+;4
+
+l16
+{3}
+l16%e1r1  
+ $5 v30p48@39[2o5r4<dr8.d12r24cr8.>a+r  r8<crc2^4  o5r4<dr8.d12r24cr8.fr  
+r8ere2^4  ]>v22p64@0~|Av32<~m0,13,255[4o5r4c4r4r4  r1  ]m
+;5
+
+l16
+{4}
+l16%e1r1  
+ $6 v30p80@39[2o4r4<a+r8.a+12r24ar8.gr  r8ara2^4  o4r4<a+r8.a+12r24ar8.<dr  
+r8crc2^4  ]>v10p64@1~|Av32<~m0,11,255[4o5r4e4r4r4  r1  ]m
+;6
+
+l16
+{5}
+l16p72o5@34v110c8v100%y6c8%yv100c8v100%y6c32%yc32c32c32v100ccv100%y6c8%yv100c8v100%y2%s0c8  
+%y $7 v127@36c4@34[2v100c8v100%y6c8%y]v100c8v100%y2%s0c8%yv110c8v100%y6c8  
+%y[2v100c8v100%y6c8%y]v100c8v100%y2%s0c8%yv110c8v100%y6c8%y[2v100c8v100%y6c8  
+%y]v100c8v100%y2%s0c8%yv110c8v100%y6c8%yv100c8v100%y6c32%yc32c32c32v100ccv100%y6c8  
+%yv100c8v100%y2%s0c8%y
+;7
+
+l16
+{6}
+l16v127p64@37%y6%s1%r0r1   $8 o5c8r8>g8r8a8r8a+8<c8  
+r8c8>g8r8a8r8a+8r8  <c8r8>g8r8a8r8a+8<c8  r8c8>g8r8a<a>ara+<a+>a+r  
+
+;8
+
+l16
+{7}
+l16v127p64@38o5%a15%y4%s0%r0r1   $9 r4r8.cr8crr4  r4rrrcr2  
+
+;9
+
+l16
+{8}
+l16p64%e1r1   $10 v40@39[2o5r4gr8.g12r24gr8.fr  r8ere2^4  
+o5r4gr8.g12r24gr8.a+r  r8grg2^4  ]r1  r1  
+r1  r1  r1  r1  
+r1  r1  
+;10
+
+l16

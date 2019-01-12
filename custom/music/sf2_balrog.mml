@@ -1,0 +1,169 @@
+#TITLE Balrog
+#ALBUM Street Fighter II
+#COMPOSER Yoko Shimomura
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x89~/0x0B/
+#WAVE 0x21 ~0x41~/0x35/
+#WAVE 0x22 ~0x72~/0x0E/
+#WAVE 0x23 ~0x62~/0x20/
+#WAVE 0x24 ~0x4a~/0x1c/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x7e~/0x14/
+#WAVE 0x2A ~0x68~/0x11/
+#WAVE 0x2B ~0x6d~/0x12/
+#WAVE 0x2C ~0x51~/0x3D/
+#WAVE 0x2D ~0x66~/0x17/
+
+#def global=t139 %v50 %b0,70 %x224
+
+#def lead=|0 ~o5~/o6/ ~v127~/v48/ m0,48,239 %r1
+#def pad=|1 ~o5~/o6/ v44 m0,48,207
+#def pet=|2 ~o5~/o6/ v64 ~m~/m0,48,223/
+#def bell=|3 ~o4~/o5/ v56 m %y5%s3
+#def bass=|4 ~o5~/o4/ ~v80~/v60/ m
+
+#drum "k"=5g |8 v96 p64
+#drum "s"=5b |9 v96 p64
+#drum "t"=~6a~/5a+/ |D v96 p96
+#drum "u"=~6d~/5d+/ |D v96 p64
+#drum "v"=~5a~/4a+/ |D v96 p32
+#drum "h"=5f |A v64 p96 %r29
+#drum "o"=5g |A v64 p96 %r
+#drum "y"=5g+ |B v96 p16 %r17
+#drum "z"=5g+ |B v96 p112 %r17
+#drum "c"=~5g~/6b/ |C v64 p16
+#drum "d"=~5g~/6b/ |C v64 p112
+
+{1}
+'global' %e1
+'bass' p64 l16
+[4g+8$0]g+<g+>g+8g+8g+8
+[4g+8][g+<g+>g+8]
+$'bass' p64
+[3<[4c+8]c+c+c+8c+8c+8>
+[4a8]j3,108[b<b>b8]]$108 [a<a>a8]   [4b8]bbb8b8b8 [4e8]g+<g+>g+g+<g+8f+8
+[4c+8]c+c+c+8c+8c+8> [4a8][a<a>a8]  [4b8]bbb8b8b8 [4g+8]g+<g+>g+g+<g+8>g+8
+##15
+[[a8<a8>]aa<a8>a8<a8> [f+8<f+8>]f+f+<f+8>f+8<f+8> 
+[4g+8<g+8>] j2,122 [e8<e8>]e<e>e8.<e8e>]$122 [g+8<g+8>]g+8<g+g+>[g+<g+>]
+##23
+<[[4c+8]c+c+c+8c+8c+8> [4a8]aaa8a8a8
+[4f+8]f+f+f+8f+8f+8 [4g+8]g+<g+>g+g+<j2g+8f+8]g+g+>rg+
+<[4c+8]c+c+[7c+8]c+rc+8rc+c+r
+;
+
+{2}
+%e1
+$
+'pad' p110 l4 $201
+r1  rd+g+b8. j1,0
+$'pad' p110 $203
+<c+1r16 f+ed+>b8.
+<c+1r16 f+ef+g+8.r16 j1,0
+'lead' p63 l16 $207
+c+c+d+e rc+d+e g+8.f+8.e8  f+8.e8.d+8 c+8.d+32c+32>b4<
+d+4e4f+4br a4g+8f+8g+4 f+ref+32e32d+8
+c+rd+e rc+d+e g+8.f+8.e8  f+8.e8.d+8 c+8.d+32c+32>b4<
+b4a4g+4f+r a4g+8f+8g+4 f+ref+32e32d+8
+##15
+e4d+4e8.f+r8 f+8e4d+4c+8.d+r8 d+8>b2^8g+8a8 b2.^rb4<
+e4d+4e8.f+r8 f+8e4d+4c+8.d+r8 %r12d+8%r1d+2^8c+8d+8e8 f+8g+ra8g+4f+8ef+32e32d+8
+##23
+[g+g+f+rerc+r e8.f+j2r8.>g+<]r4  e4d+re4d+8c+8%r12d+8%r1  d+4.g+4f+ref+32e32d+8
+[g+g+f+rerc+r e8.f+j2r8.>g+<]r4  f+4g+4a8.g+r8g+8  g+g+f+rg+rf+re8.f+8.e8
+d+ed+r c+1^2^8.
+j1,0;
+
+{3}
+%e1
+$
+'pad' p44 l4
+r1 r>b<d+g+8.
+
+$'pad' p44
+e1r16 d+2bd+8.
+e1r16 d+2b2
+
+%r11 g+1^4a2. b1<g+4f+4e4d+4>
+     g+1^4a2. b1<g+4f+4e4f+4>
+##15
+'bell'l16 [>a<a<c+eg+4r2   >>a<a<c+ef+4r2   l8 brarg+rf+rj2f+4.g+2^>]arg+rf+rg+r
+##23
+'pad' l16
+[&180er &180c+r >&180ar b2<d+2]
+&180er 'bell'>>b<c+eg+b<c+eg+b<c+eg+b<c+e
+;
+
+{4}
+%e1 r1r1
+$
+'pet' p119 l16
+[[r<c+>bg+b<c+rc+>]   r8f+g+b<d+re red+8f+ed+j2c+>]>b
+
+r4g+4 ^rg+rg+g+g+r   r2.g+8ar
+r4f+4 ^rf+rf+f+f+r   'bell'<r8[b8bb8] 'pet'f+8g+r
+r4g+4 ^rg+rg+g+g+ 'bell'<<c+8   [4c+>bj4g+<]'pet'g+8ar
+r4f+4 ^rf+rf+f+f+r   r8[brbbr]f+8g+r
+##15
+[[<r4c+4c+rc+c+r4>] r4b4brbbr8. a rabra8j2br8 b<c+d+c+>baf+]
+b8f+g+b<d+> l24 f+g+b<d+f+g+ l16
+##23
+[[c+[c+>bg+b<c+r]c+r8] [r8>f+g+b<d+ r8>g+b<d+f+ j2rf+8.]^ed+c+]
+c+1^1
+;
+
+{5}
+%e1 r1r1
+$
+'pet' p18 l16
+[[rg+f+ef+g+rg+]   r8d+eg+br<c+ rc+>b8<d+c+>bg+]
+
+[4r4e4 ^rereeej4r   r2.d+8er] 'bell'<<c+8   [4c+>bj4g+<]<c+4
+##15
+'pet'[[r4a4araar4] r4g+4g+rg+g+r8. f+ rf+g+rf+8j2g+r8 g+abag+f+d+]
+g+8d+eg+b l24 d+eg+b<d+e> l16
+##23
+[[g+[g+f+ef+g+r]g+r8] [r8d+eg+b r8eg+b<d+ j2rd+8.>]^c+>ba]
+g+1^.
+'bell'>>b<c+eg+b<c+eg+b<c+eg+b<c+e32
+;
+
+{6}
+l16 "k4k4k8.ss4" "k4k4k8t8uuv8"
+$
+[23"!!!ok4s4"] "ktu8s4"
+##15
+[15"!!!ok4s4"] "kss8 ssss"
+##23
+[7"!!!ok4s4"] "k8.ss4"
+[7"!!!ok4s4"] "kss8s8.s"
+[6"k4"]"kss8s8ss"
+;
+
+{7}
+l8 [7"h"]"o"  [6"h"]"oh"
+$
+l16"!!!oy4."[5"h"]^"o8hh" ["h8c8dd8c8dd8.c8c" j2,706 "h8hho8"[5"h"]^"o8hh"]$706
+[":c:y4."[5"h"]^"o8hh" [3"h8hho8"[5"h"]^j3"o8hh"]j2"h8o8"]"y4"
+##15
+"y2^8d8dd8d" "z2^8c8ccc8" "h8hho8"[5"h"]^"o8hh"  "h8c8dd8c8dd8.c8c"
+"y2^8d8dd8d" "z2^8c8ccc8" ["!!!oh8hho8"[5"h"]^"o8hh"]
+##23
+["!!!oy4."[5"h"]^"o8hh" [3"h8hho8"[5"h"]^j3"o8hh"]"h8o8"]
+":o:y4."[5"h"]^"o8hh" "h8hho8"[5"h"]^"h4"
+;
+
+{8}
+%e1
+r16
+'pad' p100 %a7
+[j2,801%j201$801
+$'pad' p100 %a7
+[j2,803%j203$803
+'lead' p100 %a8
+[j2,807%j207$807
+;

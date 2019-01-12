@@ -59,7 +59,7 @@ Output rom file:
 
 --- FAQ/KNOWN ISSUES ---
 Q: How do I play Beyond Chaos Ancient Cave mode?
-A: There are two codes you can use. "ancientcave" is for the standard Ancient Cave mode with ~200 maps and takes a very long time to complete. "speedcave" is a shorter, faster mode (~100 maps) that is designed to be completed in one sitting. Input the code in the flags. For vanilla Ancient Cave mode, I recommend using "ancientcavez".
+A: There are three codes you can use. "ancientcave" is for the standard Ancient Cave mode with ~200 maps and takes a very long time to complete. "speedcave" is a shorter, faster mode (~100 maps) that is designed to be completed in one sitting. "racecave" is even shorter (~50 maps) and can be completed in one relatively short sitting. Input the code in the flags. For vanilla Ancient Cave mode, I recommend using "ancientcavez".
 
 Q: How do I play Beyond Chaos Bingo?
 A: The code is "bingoboingo". Use the code in the flags and the randomizer will ask you some more questions when the randomization is complete.
@@ -176,7 +176,7 @@ Q: Can I add X feature?
 A: Possibly! Even if I don't think it's a good idea for the standard settings, it could be a secret code. Send me a pull request to the project's Github.
 
 Q: Does Beyond Chaos work with X mod?
-A: Maybe, maybe not. I haven't tested Beyond Chaos with anyone else's mods. If it's an elaborate, full-game mod than the answer is no. Some small mods might be compatible, since Beyond Chaos doesn't do rom expansion or anything like that... but it uses up a lot of commonly used free space, so conflicts are likely.
+A: Probably not, especially if the mod makes large changes. But try Beyond Chaos Gaiden, which does work with Brave New World.
 
 Q: Does Beyond Chaos work on a real Super Nintendo?
 A: Absolutely! Beyond Chaos has been tested on both Super Everdrive and SD2SNES, and it works 100% perfectly.

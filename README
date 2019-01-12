@@ -56,6 +56,9 @@ A: There are three codes you can use. "ancientcave" is for the standard Ancient 
 Q: How do I play Beyond Chaos Bingo?
 A: The code is "bingoboingo". Use the code in the flags and the randomizer will ask you some more questions when the randomization is complete.
 
+Q: How do I use different sprites?
+A: Use the code "makeover" to randomly replace sprites. You can customize which sprites are available by checking custom/spritereplacements.txt.
+
 Q: I lost my seed number but I still have the rom. Can I find my seed number again?
 A: The seed is displayed in the auto-generated guide, in the rom's SNES header, and in the opening sequence with the magitek armor.
 

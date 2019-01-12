@@ -14,7 +14,8 @@ from utils import (ESPER_TABLE,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes, set_randomness_multiplier,
-                   mutate_index, utilrandom as random, open_mei_fallback)
+                   mutate_index, utilrandom as random, open_mei_fallback,
+                   dialogue_to_bytes)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              RandomSpellSub, MultipleSpellSub, ChainSpellSub,
                              get_ranked_spells, get_spell)
@@ -1675,6 +1676,7 @@ def manage_sprint():
     autosprint.set_location(0x4E2D)
     autosprint.bytestring = [0x80, 0x00]
     autosprint.write(fout)
+
 
 def manage_skips():
     # To identify if this cutscene skip is active in a ROM, look for the bytestring:
@@ -6237,6 +6239,32 @@ def nerf_paladin_shield():
     paladin_shield.mutate_learning()
     paladin_shield.write_stats(fout)
 
+    
+def sprint_shoes_hint():
+    sprint_shoes = get_item(0xE6)
+    spell_id = sprint_shoes.features['learnspell']
+    spellname = get_spell(spell_id).name
+    hint = "Equip relics to gain a variety of abilities!<EOP>These teach me {}!".format(spellname)
+    sprint_sub = Substitution()
+    sprint_sub.set_location(0xD2099)
+    sprint_sub.bytestring = dialogue_to_bytes(hint)
+    sprint_sub.write(fout)
+
+
+def sabin_hint(commands):
+    sabin = get_character(0x05)
+    command_id = sabin.battle_commands[1]
+    if not command_id or command_id == 0xFF:
+        command_id = sabin.battle_commands[0]
+
+    command = [c for c in commands.values() if c.id == command_id][0]
+    hint = "My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {}.".format(command.name)
+    sabin_hint_sub = Substitution()
+    sabin_hint_sub.set_location(0xD20D0)
+    sabin_hint_sub.bytestring = dialogue_to_bytes(hint)
+    
+    sabin_hint_sub.write(fout)
+
 
 # Moves check for dead banon after Life 3 so he doesn't revive and then game over.
 def manage_banon_life3():
@@ -6950,6 +6978,12 @@ k   Randomize the clock in Zozo
         manage_spookiness()
 
     manage_banon_life3()
+
+    if 'w' in flags or 'o' in flags:
+        sabin_hint(commands)
+        
+    if 'z' in flags:
+        sprint_shoes_hint()
 
     rewrite_title(text="FF6 BC %s" % seed)
     fout.close()

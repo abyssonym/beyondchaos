@@ -20,6 +20,7 @@ COMMAND_TABLE = path.join(tblpath, "commandcodes.txt")
 CHAR_TABLE = path.join(tblpath, "charcodes.txt")
 TEXT_TABLE = path.join(tblpath, "text.txt")
 SHORT_TEXT_TABLE = path.join(tblpath, "shorttext.txt")
+DIALOGUE_TEXT_TABLE = path.join(tblpath, "dialoguetext.txt")
 ENEMY_NAMES_TABLE = path.join(tblpath, "enemynames.txt")
 MODIFIERS_TABLE = path.join(tblpath, "moves.txt")
 MOVES_TABLE = path.join(tblpath, "moves.txt")
@@ -110,10 +111,41 @@ shorttexttable[' '] = 'FF'
 f.close()
 
 
+dialoguetexttable = {}
+f = open(DIALOGUE_TEXT_TABLE)
+for line in f:
+    line = line.strip('\n')
+    value, string = tuple(line.split('=', 1))
+    dialoguetexttable[string] = value
+f.close()
+
+
 def hex2int(hexstr):
     return int(hexstr, 16)
 
 
+def dialogue_to_bytes(text):
+    bytes = []
+    i = 0
+    while i < len(text):
+        if text[i] == "<":
+            j = text.find(">", i) + 1
+            hex = dialoguetexttable.get(text[i:j], "")
+            i = j
+        elif i < len(text) - 1 and text[i:i+2] in dialoguetexttable:
+            hex = dialoguetexttable[text[i:i+2]]
+            i += 2
+        else:
+            hex = dialoguetexttable[text[i]]
+            i += 1
+
+        if hex != "":
+            bytes.append(hex2int(hex))
+
+    bytes.append(0x0)
+    return bytes
+
+    
 battlebg_palettes = {}
 f = open(BATTLE_BG_PALETTE_TABLE)
 for line in f:

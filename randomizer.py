@@ -37,9 +37,9 @@ from menufeatures import (improve_item_display, improve_gogo_status_menu, improv
 from decompress import Decompressor
 
 
-VERSION = "64"
-BETA = True
-VERSION_ROMAN = "LXIV"
+VERSION = "1"
+BETA = False
+VERSION_ROMAN = "I"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False
@@ -4238,7 +4238,7 @@ def manage_opening():
         else:
             midtext = len(text)/2
             midlength = length / 2
-            a, b = text[:midtext], text[midtext:]
+            a, b = text[:midtext].strip(), text[midtext:].strip()
             text = ""
             for t in (a, b):
                 margin = (midlength - len(t)) / 2
@@ -4254,23 +4254,30 @@ def manage_opening():
 
     from string import letters as alpha
     consonants = "".join([c for c in alpha if c not in "aeiouy"])
-    replace_credits_text(0x659C, "ffvi")
-    replace_credits_text(0x65A9, "BEYOND CHAOS")
-    replace_credits_text(0x65C0, "creator")
-    replace_credits_text(0x65CD, "Abyssonym")
-    replace_credits_text(0x65F1, "seed")
-    text = "".join([consonants[int(i)] for i in str(seed)])
-    replace_credits_text(0x6605, text.upper())
-    replace_credits_text(0x6625, "flags")
     display_flags = sorted([a for a in alpha if a in flags.lower()])
-    display_flags = "".join(display_flags).upper()
-    replace_credits_text(0x663A, display_flags, split=True)
+    text = "".join([consonants[int(i)] for i in str(seed)])
     codestatus = "CODES ON" if activated_codes else "CODES OFF"
+    display_flags = "".join(display_flags).upper()
+    replace_credits_text(0x659C, "ffvi")
+    replace_credits_text(0x65A9, "BEYOND CHAOS EX")
+    replace_credits_text(0x65C0, "by")
+    replace_credits_text(0x65CD, "SubtractionSoup")
+    replace_credits_text(0x65F1, "Based on")
+    replace_credits_text(0x6605, "Beyond Chaos by Abyssonym", split=True)
+    replace_credits_text(0x6625, "flags")
+    replace_credits_text(0x663A, display_flags, split=True)
     replace_credits_text(0x6661, codestatus)
-    replace_credits_text(0x6682, "ver.")
-    replace_credits_text(0x668C, VERSION_ROMAN)
+    replace_credits_text(0x6682, "seed")
+    replace_credits_text(0x668C, text.upper())
+    replace_credits_text(0x669E, "ver.")
+    replace_credits_text(0x66B1, VERSION_ROMAN)
+    replace_credits_text(0x66C5, "")
+    replace_credits_text(0x66D8, "")
+    replace_credits_text(0x66FB, "")
+    replace_credits_text(0x670D, "")
+    replace_credits_text(0x6732, "")
 
-    for address in [0x669E, 0x66B1, 0x66C5, 0x66D8, 0x66FB, 0x670D, 0x6732,
+    for address in [
                     0x6758, 0x676A, 0x6791, 0x67A7, 0x67C8, 0x67DE, 0x67F4,
                     0x6809, 0x6819, 0x6835, 0x684A, 0x6865, 0x6898, 0x68CE,
                     0x68F9, 0x6916, 0x6929, 0x6945, 0x6959, 0x696C, 0x697E,
@@ -6154,7 +6161,7 @@ def randomize():
         args[1] = TEST_FILE
         args[2] = TEST_SEED
     sleep(0.5)
-    print 'You are using Beyond Chaos randomizer version "%s".' % VERSION
+    print 'You are using Beyond Chaos EX randomizer version "%s".' % VERSION
     if BETA:
         print "WARNING: This version is a beta! Things may not work correctly."
 
@@ -6323,9 +6330,9 @@ k   Randomize the clock in Zozo
     s = "Using seed: %s.%s.%s" % (VERSION, flags, seed)
     print s
     log(s, section=None)
-    log("This is a game guide generated for the Beyond Chaos FF6 randomizer.",
+    log("This is a game guide generated for the Beyond Chaos EX FF6 randomizer.",
         section=None)
-    log("For more information, visit https://github.com/abyssonym/beyondchaos",
+    log("For more information, visit https://github.com/subtractionsoup/beyondchaos",
         section=None)
 
     commands = commands_from_table(COMMAND_TABLE)
@@ -6777,7 +6784,7 @@ k   Randomize the clock in Zozo
     elif 'halloween' in activated_codes:
         manage_spookiness()
 
-    rewrite_title(text="FF6 BC %s" % seed)
+    rewrite_title(text="FF6 BCX %s" % seed)
     fout.close()
     rewrite_checksum()
 
@@ -6808,7 +6815,7 @@ k   Randomize the clock in Zozo
 
 if __name__ == "__main__":
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if True:#len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

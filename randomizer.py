@@ -4406,6 +4406,9 @@ def manage_auction_house():
             write_multi(fout, dest, 2)
             pointer += 3
 
+    if 't' not in flags:
+        return
+
     auction_items = [(0xbc, 0xB4EF1, 0xB5012, 0x0A45, 500), # Cherub Down
                      (0xbd, 0xB547B, 0xB55A4, 0x0A47, 1500), # Cure Ring
                      (0xc9, 0xB55D5, 0xB56FF, 0x0A49, 3000), # Hero Ring

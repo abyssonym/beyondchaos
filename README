@@ -10,7 +10,7 @@ Requirements:
 	If not running Windows, install Python 2.7. (NOT python 3.0+)
 
 Running the randomizer:
-    Windows users: run beyondchaosex.exe.
+    Windows users: run beyondchaos_ex.exe.
 	Other users: run "randomizer.py" using Python version 2.7 (It DOES NOT work with python 3.)
 
 Source ROM file:

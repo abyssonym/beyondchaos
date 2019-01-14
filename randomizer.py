@@ -5670,10 +5670,12 @@ def manage_dances():
         log(dancestr, "dances")
 
 class WoRRecruitInfo(object):
-    def __init__(self, event_pointers, recruited_bit_pointers, location_npcs, prerequisite=None, special=None):
+    def __init__(self, event_pointers, recruited_bit_pointers, location_npcs,
+                 dialogue_pointers, prerequisite=None, special=None):
         self.event_pointers = event_pointers
         self.recruited_bit_pointers = recruited_bit_pointers
         self.location_npcs = location_npcs
+        self.dialogue_pointers=dialogue_pointers
         self.prerequisite = prerequisite
         self.special = special
 
@@ -5690,6 +5692,9 @@ class WoRRecruitInfo(object):
             npc = location.npcs[npc_id]
             npc.graphics = self.char_id
             npc.palette = get_character(self.char_id).palette
+        for location in self.dialogue_pointers:
+            fout.seek(location)
+            fout.write(chr(self.char_id + 2))
         if self.special:
             self.special(self.char_id)
 
@@ -5704,25 +5709,50 @@ def gau_recruit(char_id):
     gau_recruit_sub.write(fout)
 
 def manage_wor_recruitment():
-    candidates = [0x00, 0x01, 0x02, 0x05, 0x07, 0x08, 0x0B]
+    candidates = [0x00, 0x01, 0x02, 0x05, 0x07, 0x08]
     recruit_info = [
         # Phoenix Cave / Locke
-        WoRRecruitInfo([0xc2c48, 0xc2c51, 0xc2c91, 0xc2c9d, 0xc2caf, 0xc2cb8, 0xc2cc5, 0xc2cca, 0xc2cd8, 0xc2ce3, 0xc2ce9, 0xc2cee, 0xc2cf4, 0xc2cfa, 0xc2d0b, 0xc2d33, 0xc2e32, 0xc2e80, 0xc2e86, 0xc2e8b, 0xc2e91, 0xc2ea5, 0xc2eb1, 0xc2ec4, 0xc2f0b, 0xc2fe1, 0xc3102, 0xc3106, 0xc3117, 0xc311d, 0xc3124, 0xc3134, 0xc313d, 0xc3163, 0xc3183, 0xc3185, 0xc3189, 0xc318b, 0xc318e, 0xc3191, 0xc3197, 0xc31c7, 0xc31cb, 0xc31e2, 0xc31e8, 0xc31ed, 0xc31f2, 0xc31f8, 0xc3210, 0xc3215, 0xc312d, 0xc3229, 0xc322f, 0xc3235, 0xc323b, 0xc3244, 0xc324a, 0xc324f, 0xc3258, 0xc326a], [0xc3195], [(0x139, 0)]),
+        WoRRecruitInfo(
+            event_pointers=[0xc2c48, 0xc2c51, 0xc2c91, 0xc2c9d, 0xc2c9e, 0xc2caf, 0xc2cb8, 0xc2cc5, 0xc2cca, 0xc2cd8, 0xc2ce3, 0xc2ce9, 0xc2cee, 0xc2cf4, 0xc2cfa, 0xc2d0b, 0xc2d33, 0xc2e32, 0xc2e4a, 0xc2e80, 0xc2e86, 0xc2e8b, 0xc2e91, 0xc2ea5, 0xc2eb1, 0xc2ec4, 0xc2f0b, 0xc2fe1, 0xc3102, 0xc3106, 0xc3117, 0xc311d, 0xc3124, 0xc3134, 0xc313d, 0xc3163, 0xc3183, 0xc3185, 0xc3189, 0xc318b, 0xc318e, 0xc3191, 0xc3197, 0xc31c7, 0xc31cb, 0xc31e2, 0xc31e8, 0xc31ed, 0xc31f2, 0xc31f8, 0xc3210, 0xc3215, 0xc321d, 0xc3229, 0xc322f, 0xc3235, 0xc323b, 0xc3244, 0xc324a, 0xc324f, 0xc3258, 0xc326a],     recruited_bit_pointers=[0xc3195],
+            location_npcs=[(0x139, 0)],
+            dialogue_pointers=[0xe8a06, 0xe8a44, 0xe8ae6, 0xe8b2d, 0xea365, 0xea368, 0xea3ad, 0xea430, 0xea448, 0xea528, 0xea561, 0xea5f1, 0xea617, 0xea668, 0xea674, 0xea6d4, 0xea6e7, 0xea7ac, 0xea7af, 0xea7ba, 0xea7bd, 0xea86c, 0xea886]),
         # Mt. Zozo / Cyan
-        WoRRecruitInfo([0xc429c, 0xc429e, 0xc42a2, 0xc42a4, 0xc42a7, 0xc42aa], [0xc42ae], [(0xb4, 8), (0xb5, 2)]),
+        WoRRecruitInfo(
+            event_pointers=[0xc429c, 0xc429e, 0xc42a2, 0xc42a4, 0xc42a7, 0xc42aa],
+            recruited_bit_pointers=[0xc42ae],
+            location_npcs=[(0xb4, 8), (0xb5, 2)],
+            dialogue_pointers=[0xe9a1e, 0xe9b85, 0xe9bdf, 0xe9c31, 0xe9c34, 0xe9c46, 0xe9c49, 0xe9ca0, 0xe9cc9, 0xe9cde, 0xe9cf4, 0xe9cff, 0xe9d67, 0xe9f53, 0xe9fc5, 0xe9fde]),
         # Collapsing House / Sabin
-        WoRRecruitInfo([0xc5aa8, 0xc5aaa, 0xc5aae, 0xc5ab0, 0xc5ab3, 0xc5ab6], [0xc5aba], [(0x131, 1)]),
+        WoRRecruitInfo(
+            event_pointers=[0xc5aa8, 0xc5aaa, 0xc5aae, 0xc5ab0, 0xc5ab3, 0xc5ab6],
+            recruited_bit_pointers=[0xc5aba],
+            location_npcs=[(0x131, 1)],
+            dialogue_pointers=[0xe6326, 0xe6329, 0xe6341, 0xe6349, 0xe634d, 0xe636e, 0xe63ce, 0xe63f7, 0xe6400, 0xe640c, 0xe6418, 0xe6507, ]),
         # Fanatics' Tower / Strago
-        WoRRecruitInfo([0xc5418, 0xc541a, 0xc541e, 0xc5420, 0xc5423, 0xc5426], [0xc542a], [(0x16a, 3)], prerequisite=[0x08]),
+        WoRRecruitInfo(
+            event_pointers=[0xc5418, 0xc541a, 0xc541e, 0xc5420, 0xc5423, 0xc5426],
+            recruited_bit_pointers=[0xc542a],
+            location_npcs=[(0x16a, 3)],
+            prerequisite=[0x08],
+            dialogue_pointers=[0xe680d, 0xe6841, 0xe687e, 0xe68be]),
         # Owzer's House / Relm
-        WoRRecruitInfo([0xb4e09, 0xb4e0b, 0xb4e0f, 0xb4e11, 0xb4e14, 0xb4e17], [0xb4e1b], [(0x161, 3), (0x15d, 21), (0xd0, 3)]),
+        WoRRecruitInfo(
+            event_pointers=[0xb4e09, 0xb4e0b, 0xb4e0f, 0xb4e11, 0xb4e14, 0xb4e17],
+            recruited_bit_pointers=[0xb4e1b],
+            location_npcs=[(0x161, 3), (0x15d, 21), (0xd0, 3)],
+            dialogue_pointers=[0xea190, 0xeb351, 0xeb572, 0xeb6c1, 0xeb6d2, 0xeb6fc, 0xeb752, 0xeb81b, 0xebd2b, 0xebd7a, 0xebdff, 0xebe31, 0xebe72, 0xebe9c]),
         # Mobliz / Terra
-        WoRRecruitInfo([0xc49d1, 0xc49d3, 0xc49da, 0xc49de, 0xc49e2, 0xc4a01, 0xc4a03, 0xc4a0c, 0xc4a0d, 0xc4a2b, 0xc4a37, 0xc4a3a, 0xc4a43, 0xc4a79, 0xc4a7b, 0xc4ccf, 0xc4cd1, 0xc4cd5, 0xc4cd7, 0xc4cdb, 0xc4cde, 0xc4ce1, 0xc4ce5, 0xc4cf4, 0xc4cf6, 0xc5040, 0xc5042, 0xc5048, 0xc504a, 0xc504d, 0xc5050], 
-        [0xc4cd9, 0xc4cfa, 0xc5046],
-        [(0x09A, 1), (0x09A, 2), (0x096, 0), (0x09E, 13)]),
-        WoRRecruitInfo([], [], [], special=gau_recruit)
+        WoRRecruitInfo(
+            event_pointers=[0xc49d1, 0xc49d3, 0xc49da, 0xc49de, 0xc49e2, 0xc4a01, 0xc4a03, 0xc4a0c, 0xc4a0d, 0xc4a2b, 0xc4a37, 0xc4a3a, 0xc4a43, 0xc4a79, 0xc4a7b, 0xc4ccf, 0xc4cd1, 0xc4cd5, 0xc4cd7, 0xc4cdb, 0xc4cde, 0xc4ce1, 0xc4ce5, 0xc4cf4, 0xc4cf6, 0xc5040, 0xc5042, 0xc5048, 0xc504a, 0xc504d, 0xc5050], 
+            recruited_bit_pointers=[0xc4cd9, 0xc4cfa, 0xc5046],
+            location_npcs=[(0x09A, 1), (0x09A, 2), (0x096, 0), (0x09E, 13)],
+            dialogue_pointers=[0xe6ae1, 0xe6af9, 0xe6b1f, 0xe6b48, 0xe6b4d, 0xe6b6b, 0xe6bc5, 0xe6c05, 0xe6c36, 0xe6c5d, 0xe6cb7, 0xe6d26, 0xe6d58, 0xe6d71, 0xe6d9c, 0xe6de0, 0xe6de5, 0xe6ea3, 0xe6f63, 0xe6f70, 0xe702e, 0xe70f7, 0xe70ff, 0xe7103, 0xe7110, 0xe7189, 0xe720f, 0xe7230, 0xe72c0, 0xe72ff, 0xe7347, 0xe73ba, 0xe746d]),
     ]
-    
+
+    if 'o' in flags or 'w' in flags or 't' in flags:
+        candidates.append(0x0B)
+        recruit_info.append(WoRRecruitInfo([], [], [], [0xe9dd2], special=gau_recruit))
+        
     restricted_info = [info for info in recruit_info if info.prerequisite]
     unrestricted_info = [info for info in recruit_info if not info.prerequisite]
     recruit_info = restricted_info + unrestricted_info
@@ -5739,23 +5769,6 @@ def manage_wor_recruitment():
         info.write_data(fout)
         
     return wor_free_char
-    #Dialogue 08a7, 08a8, 08a9, 08aa, 08ab, 08ac, 08ad, 08ae, 08b1
-    #Sabin
-    #Event CC5aa8, cc5aaa, cc5aae, cc5ab0 cc5ab3 cc5ab6
-    #Eventbit CC5AB9
-    #map 0x131, npc 1
-
-    #Strago
-    #dialogue 08c2, 08c3,
-    #event cc5418, cc541a, cc541e, cc5420, cc5423, cc5426
-    #eventbit CC542A
-    #map 0x16a, npc 3
-
-    #Cyan
-    #dialogue *09e8, 09ec, 09f2, 09f9, 09fb, 09fe, 09ff, 0a00, 0a01, 0a02, 0a03, 0a04, 0a05, 0a06, *0a07, 0a08, 0a0b, 0a0c
-    #event cc429c, cc429e, cc42a2, cc42a4, cc42a7, cc42aa,
-    #eventbit cc42ad
-    #map 0xb4, npc 8, 0xb5, npc 2
     
     #Locke
     # dialogue 0a20, 0a21, 0a22, 0a23, 0a24, 0a2a, 0a28, 0a2c, 0a2d, 0a2e, 0a30, 0a31, 0a34, 0a35, 
@@ -5763,24 +5776,7 @@ def manage_wor_recruitment():
         # fix for event items
     #eventbit c3195
     #map 0x139, npc 0
-    
-    #Relm
-    #dialogue *0a13, 0a8d, 0a99, 0aa1, 0a9d, 0a9f, 0aa0, 0ac2, 
-    #event b4e09, b4e0b, b4e0f, b4e11, b4e14, b4e17,
-    #eventbit b4e1b
-    #map 161, npc 3, map 15d, npc 21, map 0d0 npc 3
-    
-    #Terra
-    # dialogue 08cf, 08d1, 08d2, 08d3, 08d4, 08d5, 08d6, 08d7, 08d8, 08d9, 08db, 08dc, 08dd, 08df, 08e0, 08e5, 08eb, 08ec, 08f0, 08f6, 08f7, 08f8, 08f9, 08fa, 08fb, 08fc, 08fe, 0900, 0903, 0906, 090b, *more for kefka's tower w/o terra
-    # event c49d1, c49d3, c49da, c49de, c49e2, c4a01, c4a03, c4a2b, c4a37, c4a3a, c4a43, c4a79, c4a7b, c4ccf, c4cd1, c4cd5, c4cd7, c4cdb, c4cde, c4ce1, c4ce5, c4cf4, c4cf6, c5040, c5042, c5048, c504a, c504d, c5050, *more for kefka's tower w/o terra
-    #eventbit c4cd9, c4cfa, c5045
-    #map 09A npc 1, 09A npc 2, 096 npc 0, 09E npc 13, *0b7 npc 0, *0b8 npc 0
-    
-    #Gau
-    #if 'o' in flags or 'w' in flags or 't' in flags:
-    #eventbit A5325 but not really
-    #else:
-    #exclude gau?
+
 
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE

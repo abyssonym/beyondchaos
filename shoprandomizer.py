@@ -76,9 +76,18 @@ class ShopBlock:
                 self.misc &= 0x0F
                 break
 
-    def mutate_items(self, fout):
+    def mutate_items(self, fout, crazy_shops=False):
         items = get_ranked_items()
-        if self.shoptype == 1:
+        if crazy_shops:
+            weapons_tools = [i for i in items if i.is_weapon or i.is_tool]
+            armors = [i for i in items if i.is_armor]
+            relics = [i for i in items if i.is_relic]
+            consumables = [i for i in items if i.is_consumable]
+            
+            types = [weapons_tools, armors, relics, consumables]
+            
+            valid_items = items
+        elif self.shoptype == 1:
             valid_items = [c for c in items if c.is_weapon or c.is_tool]
         elif self.shoptype == 2:
             valid_items = [c for c in items if c.is_armor]
@@ -103,24 +112,29 @@ class ShopBlock:
         average_item += -1
         average_item = valid_items[average_item]
 
-        while random.randint(1, 3) == 3 and len(old_items) < 8:
+        while (crazy_shops or random.randint(1, 3) == 3) and len(old_items) < 8:
             old_items.append(average_item)
         new_items = []
+
         for item in old_items:
-            if random.randint(1, 10) == 10:
-                candidates = items
+            if crazy_shops:
+                item_type = random.choice(types)
+                new_items.append(random.choice(item_type))
             else:
-                candidates = valid_items
+                if random.randint(1, 10) == 10:
+                    candidates = items
+                else:
+                    candidates = valid_items
 
-            try:
-                index = candidates.index(item)
-            except ValueError:
-                continue
+                try:
+                    index = candidates.index(item)
+                except ValueError:
+                    continue
 
-            while random.randint(1, 3) < 3:
-                index += random.randint(-2, 2)
-                index = max(0, min(index, len(candidates)-1))
-            new_items.append(candidates[index])
+                while random.randint(1, 3) < 3:
+                    index += random.randint(-2, 2)
+                    index = max(0, min(index, len(candidates)-1))
+                new_items.append(candidates[index])
 
         if not new_items:
             return
@@ -158,3 +172,7 @@ class ShopBlock:
         items = [i for i in items if i]
         priciest = max(items, key=lambda i: i.price)
         return priciest.price
+
+def buy_owned_breakable_tools(fout):
+    fout.seek(0x3b7f4)
+    fout.write(chr(0x27))

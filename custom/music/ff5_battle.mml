@@ -1,0 +1,103 @@
+#TITLE Battle 1
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+## via ff5~ff6mcs2
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- ~0x49~ /0x0D/
+#WAVE 0x21 -- ~0x7F~ /0x08/
+#WAVE 0x22 -- ~0x6B~ /0x02/
+#WAVE 0x23 -- ~0x6D~ /0x12/
+#WAVE 0x24 -- 0x0F
+#WAVE 0x25 -- ~0x68~ /0x11/
+#WAVE 0x26 -- 0x22
+#WAVE 0x27 -- 0x14
+#WAVE 0x28 -- ~0x76~ /0x3E/
+
+
+{1}
+l16t160%b100,0%v50%x190v100p70|8%e1o4f24g+24b24<d24f24g+24b24<d24f24g+24b24<d24r1  
+v75p70|0~>~m12,20,195%e1r2cccccccc ~<~  $1 v104p70|1m12,20,195%e1o5a8br<crerdrcr>brar  
+g4.f4g4e8  ^1  ^2^4r4  a8br<crerdrcr>brar  
+g4.<g4f4g8  e1  ^2^4r4  v72>arar8.<cr8.er8.cr  
+>b4.<c8d4>b4  arar8.<cr8.er8.cr  >b4<d4c+2  v104>a2^4ab<c8  
+>b4a4g4b4  <c2^4cde8  d4c4>b4<d4  e2^8c8c8d8  
+e2g4f4  e1  ^2^4r4  
+;1
+
+l16
+{2}
+l16v100p67|8%e1o4d24f24g+24b24<d24f24g+24b24<d24f24g+24b24r1  
+v75p67|0~>~m12,20,195%e1gggggggggggggggg ~<~  $2 v104p67|1m12,20,195%e1o5c8drergrfrerdrcr  
+>b4.a4b4<c8  ^1  ^2^4r4  c8drergrfrerdrcr  
+>b4.<b4a4b8  g1  g+2^4r4  v72frfr8.ar8.<cr8.>ar  
+g4.a8b4g4  frfr8.ar8.<cr8.>ar  g4b4a2  v104f2^4fga8  
+g4f4e4g4  a2^4ab<c8  >b4a4g4b4  <c2^8>a8a8b8  
+<c2e4d4  >b1  ^2^4r4  
+;2
+
+l16
+{3}
+l16v50p67@2%r18o3f24g+24b24<d24f24g+24b24<d24f24g+24b24<d24<v75p55|0~>~m12,20,195%e1r2  
+>dddddddddddddddd  dddddddd $3 v65o5~>~a4.b24<c24d24  e2d2  ^4f4e4.d+e  
+f4d4e4<c4  >b4a4>a4.b24<c24d24  e2d2  ^4f4v75e4.d+e  
+f4d4>b4v100<e4  f+4g+4arfr<er>fr  arfrb8<c8>b8<c8>b8a8  g4e4arfr<er>fr  
+arfrb8<c8>b8<c8>b8a8  g4e4v65>a1  b1  <c1  
+d1  c1  c1  >b1  
+<e4d4c4>b4  
+;3
+
+l16
+{4}
+l16v50p67@2%r18o3d24f24g+24b24<d24f24g+24b24<d24f24g+24b24<v75p52|0m12,20,195%e1~>~>aaaaaaaa  
+aaaaaaaaaaaaaaaa  aaaaaaaa $4 o5v65~>~c4.e24a24b24  <c2>b2  ^4b4<c4.>b<c  
+d4>b4<c4e4  d4c4>c4.e24a24b24  <c2>b2  ^4b4v75<c4.>b<c  
+d4>b4g+4v100b4  <d4e4frcr<cr>cr  frcrg8a8g8a8g8f8  e4>b4<frcr<cr>cr  
+frcrg8a8g8a8g8f8  e4c+4v65>f1  g1  a1  
+b1  a1  g+1  a1  
+g+4f4e4d4  
+;4
+
+l16
+{5}
+l16v125p62|2m12,20,195r2o5a8a8a8a8  a8a8g8g8a8a8a8a8  
+a8a8g8g8 $5 o5a8a8<a8>a8  a8<a8>g8f8^8f8<f8>f8  f8<f8>g8<g8>a8a8a8a8  
+a8a8g8g8a8a8a8a8  a8a8g8g8a8a8<a8>a8  a8<a8>g8f8^8f8<f8>f8  f8<f8>g8<g8c4.>g4  
+<c8d4e4.>b4  b8<e8>b8f8f8<e8f8r8  >f8<e8f8e4.>a+8b8  e4<d+8d8d8>g+8a4  
+f8<f8c8>g4<g8g+8a8.  e8.>a8<dr>a8<dr>a8<dr>a8  <dr>a8<er>b8<er>b8<er>b8  
+<er>b8f8<fr>f8<fr>f8<fr  >f8<fr>g8<gr>g8<gr>g8<gr  >g8<gr>f8r4f2  
+<ef>f8r4f2  <ef>e4.<d+4.e4  >a+4.b4.g+4  
+;5
+
+l16
+{6}
+l16v125p60r2o5|6a4a4  
+a4a4a4a4  |7a8|6a8|7a8|6a8 $6 |6a4|7a4  |6a8a8|7a8|6a4a8|7a8|6a8  
+a4|7a4[2|6a4|7a4  |6a8a8|7a4]|6a4|7a4  |6a8a8|7a8|6a4a8|7a8|6a8  
+a4|7a4|6a4|7a8|6a4  a8|7a4|6a4|7a8|6a4  a8|7a8|6a8[2|6a8a8|7a8a8|6a4  
+|7a4|6a4|7a8|6a4a8  |7a8|6a8][4|6a4|7a4|6a8a8  |7a4][4|6a4|7a8|6a4a8  
+|7a8|6a8]
+;6
+
+l16
+{7}
+l16v125p57|3%e1r2r1  r2r4o5a4   $7 ^1  r1  
+r1  r1  r1  r1  
+r1  r1  a1  ^1  
+r1  r1  a1  ^1  
+r1  r1  r2r4a4  ^2^4a4  
+^1  ^4a4^4a4  
+;7
+
+l16
+{8}
+l16v60p65|4r2o5[8a4] $8 [3|4a8aa  ]a8|5a8[4|4a8aa]a4a4  
+a4a4[4|4a8|5a8][2[3|4a8aa  ]a8|5a8[4|4a8aa]][14a4]a8|5a8  |4a8|5a8[16|4a8aa][4a8aaa8aa  
+a8|5a8|4a8aa]
+;8
+
+l16

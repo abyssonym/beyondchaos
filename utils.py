@@ -4,9 +4,11 @@ import random
 
 try:
     from sys import _MEIPASS
+    MEI = True
     tblpath = path.join(_MEIPASS, "tables")
 except ImportError:
     tblpath = "tables"
+    MEI = False
 
 ENEMY_TABLE = path.join(tblpath, "enemycodes.txt")
 ITEM_TABLE = path.join(tblpath, "itemcodes.txt")
@@ -18,6 +20,7 @@ COMMAND_TABLE = path.join(tblpath, "commandcodes.txt")
 CHAR_TABLE = path.join(tblpath, "charcodes.txt")
 TEXT_TABLE = path.join(tblpath, "text.txt")
 SHORT_TEXT_TABLE = path.join(tblpath, "shorttext.txt")
+DIALOGUE_TEXT_TABLE = path.join(tblpath, "dialoguetext.txt")
 ENEMY_NAMES_TABLE = path.join(tblpath, "enemynames.txt")
 MODIFIERS_TABLE = path.join(tblpath, "moves.txt")
 MOVES_TABLE = path.join(tblpath, "moves.txt")
@@ -26,8 +29,6 @@ LOCATION_PALETTE_TABLE = path.join(tblpath, "locationpaletteswaps.txt")
 BATTLE_BG_PALETTE_TABLE = path.join(tblpath, "battlebgpalettes.txt")
 CHARACTER_PALETTE_TABLE = path.join(tblpath, "charpaloptions.txt")
 EVENT_PALETTE_TABLE = path.join(tblpath, "eventpalettes.txt")
-MALE_NAMES_TABLE = path.join(tblpath, "malenames.txt")
-FEMALE_NAMES_TABLE = path.join(tblpath, "femalenames.txt")
 MAP_NAMES_TABLE = path.join(tblpath, "mapnames.txt")
 USED_LOCATIONS_TABLE = path.join(tblpath, "usedlocs.txt")
 UNUSED_LOCATIONS_TABLE = path.join(tblpath, "unusedlocs.txt")
@@ -45,7 +46,25 @@ LOCATION_MAPS_TABLE = path.join(tblpath, "locationmaps.txt")
 WOB_TREASURE_TABLE = path.join(tblpath, "wobonlytreasure.txt")
 WOR_ITEMS_TABLE = path.join(tblpath, "worstartingitems.txt")
 WOB_EVENTS_TABLE = path.join(tblpath, "wobeventbits.txt")
-SPRITE_REPLACEMENT_TABLE = path.join(tblpath, "spritereplacements.txt")
+RIDING_SPRITE_TABLE = path.join(tblpath, "ridingsprites.txt")
+SKIP_EVENTS_TABLE = path.join(tblpath, "skipevents.txt")
+
+custom_path = "custom"
+MALE_NAMES_TABLE = path.join(custom_path, "malenames.txt")
+FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
+SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
+MOOGLE_NAMES_TABLE = path.join(custom_path, "mooglenames.txt")
+DANCE_NAMES_TABLE = path.join(custom_path, "dancenames.txt")
+
+def open_mei_fallback(filename, mode='r'):
+    if not MEI:
+        return open(filename, mode)
+
+    try:
+        f = open(filename, mode)
+    except IOError:
+        f = open(path.join(_MEIPASS, filename), mode)
+    return f
 
 
 class Substitution(object):
@@ -92,10 +111,41 @@ shorttexttable[' '] = 'FF'
 f.close()
 
 
+dialoguetexttable = {}
+f = open(DIALOGUE_TEXT_TABLE)
+for line in f:
+    line = line.strip('\n')
+    value, string = tuple(line.split('=', 1))
+    dialoguetexttable[string] = value
+f.close()
+
+
 def hex2int(hexstr):
     return int(hexstr, 16)
 
 
+def dialogue_to_bytes(text):
+    bytes = []
+    i = 0
+    while i < len(text):
+        if text[i] == "<":
+            j = text.find(">", i) + 1
+            hex = dialoguetexttable.get(text[i:j], "")
+            i = j
+        elif i < len(text) - 1 and text[i:i+2] in dialoguetexttable:
+            hex = dialoguetexttable[text[i:i+2]]
+            i += 2
+        else:
+            hex = dialoguetexttable[text[i]]
+            i += 1
+
+        if hex != "":
+            bytes.append(hex2int(hex))
+
+    bytes.append(0x0)
+    return bytes
+
+    
 battlebg_palettes = {}
 f = open(BATTLE_BG_PALETTE_TABLE)
 for line in f:

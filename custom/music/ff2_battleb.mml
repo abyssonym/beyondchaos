@@ -1,0 +1,133 @@
+#TITLE Battle Scene B
+#ALBUM Final Fantasy II
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x46~/0x0D/
+#WAVE 0x21 ~0x69~/0x33/
+#WAVE 0x22 ~0x7D~/0x35/
+#WAVE 0x23 ~0x7F~/0x0E/
+#WAVE 0x24 ~0x63~/0x34/
+#WAVE 0x25 ~0x48~/0x04/
+#WAVE 0x26 ~0x02~/0x02/
+#WAVE 0x2E ~0x5B~/0x2E/
+#WAVE 0x2F ~0x85~/0x14/
+
+#def global= t130 %v50 %b0,70 %x224
+
+#def str= |0 o5 v64 m48,18,223 %e1 
+#def fid= |1 o5 v48 m0,18,231 %e1
+#def vox= |2 ~o5~/o7/ v64 /m0,24,255/~m~ %e1 ~%a8~
+#def pet= |3 ~o5~/o6/ v64 m48,18,239 %e1
+#def flt= |4 ~o3~/o4/ v40 m48,18,223 %e1
+#def sit= |5 ~o4~/o5/ v56 m48,18,223 %e1
+#def bas= |6 o5 v96 m %e0
+
+#def 01= 'vox' p64
+#def 02= 'bas' p64
+#def 03= 'fid' p34 %a12
+#def 04= 'str' p30
+#def 05= 'str' p26
+#def 06= 'sit' p72
+#def 07= 'sit' p68
+#def 08= 'sit' p64
+#def 09= 'str' p84
+#def 10= 'str' p88
+#def 11= 'flt' p44
+#def 12= 'pet' p34
+#def 13= 'str' p64
+
+#drum "c"=5c |E v127 %y3%s3 %e0 p76
+#drum "d"=~5a+~/6a+/ |F v90 %a %e1 p72
+#drum "e"=~5e~/6e/ |F v80 %a11 %e0 p72
+#drum "x"=5c |E v96 %y3%s3 %e0 p84
+#drum "y"=~5a+~/6a+/ |F v66 %a %e1 p72
+#drum "z"=~5e~/6e/ |F v60 %a11 %e0 p72
+
+{1}
+'global'
+'06'<< l8 a.>a+.c+.>e.
+$
+'02' l8 [20agaa+ag]
+##17
+[[e<ed>][f<fe>][g<gf>][f<fe>]] d4.e4.f4.gdb  
+##24
+[[a<e>a]<cggcgc>a<ee>g<d>gf<c>fdgd]  [agaa+ag]
+;
+
+{2}
+'07' r16 <<e.>g.>a+.a
+$
+'01' l2 e.d.c+.>a+.< l8 [c+4.d4gf4.edc+d2.>a2. a4.a+4<ddc+ defec+2.j2^2.]d4.e4.
+##17
+'03'< l2 [g+.a.b.a.] l16 >>a<dfa<dfe>b<egb<e fc>afc>ag32b32gb<dgb
+##24
+'11'<< l8 [baebae %y3%s5%r24 <c>bagab %yl16 a4gab4ab<c4>b<cd4cd>] %y2%s5%r24<[8e8]
+'06'<<dc+>fefgaa+
+;
+
+{3}
+'08' r <<c+.>e.>g.a+16
+$
+'13'< l2 e.d.c+.>a+.< l8 [c+4.d4gf4.edc+d2.>a2. a4.a+4<ddc+ defec+2.j2^2.]d4.e4.
+##17
+'10' l2 [e.f.g.f.] l16 '11'<< a4gab4.<c4>b<cd4.
+##24
+[l8 '13'<baebae l16 <cr>brargrarbr '09'c4.d4.f4.g4.] '01' %y2%s5%r24[8e8]r2
+;
+
+{4}
+r2.
+$
+'05' l2 c+.>a+.a.g. l16 [4'03'<[4k1arar>k0ar<] edc+>a+<c+d edc+>a+ag agfefg j4 fedc+>a+a]aa+<c+def
+##17
+['01' l16 >>b<eg+b<e>b <eg+bg+e>b <d4.c8d8c8> bgb<dgb<d>bgd>bg<c4.>b8<c8>b8] a4gab4.<c4>b<cd4.
+##24
+'03' [b8a8e8b8a8e8 <cd>b<d>a<d>g<d>a<d>b<d> a4gab4ab<c4>b<cd4cd>] <%y2%s5%r24[8e8]r2
+;
+
+{5}
+r2"ce"
+$
+'06' l2 <<e.d.c+.>a+4. l16 fefgaa+< e1^1^1 l8 '04' >a4.a+4<ddc+ defec+1.
+'07'<< c+4.d4gf4.edc+d2.>a2. a4.a+4<ddc+ defec+2. '04' d4.e4.
+##17
+l16 [>g+b<eg+bg+ b<eg+e>bg+ b4.a8b8a8 gdgb<dg bgd>bgd a4.g8a8g8] >fa<dfa<d >bgb<egb <c>afc>afd32g32dgb<dg
+##24
+'04' [e8e8c8e8e8c8 cd>b<d>a<d>g<d>a<d>b<d f4efg4fga4gab4ab] [8br]r2
+;
+
+{6}
+r2.
+$
+l16 [10"c8e8cz c8d8c8  c8e8cx c8d8c8"]
+##17
+['13' l16 >b<eg+b<e>b <eg+bg+e>b <d4.c8d8c8> bgb<dgb<d>bgd>bg<c4.>b8<c8>b8] a4gab4.<c4>b<cd4.
+##24
+l16 [5"!!!o c8e8cz c8d8c8  c8e8cx c8d8c8"]
+;
+
+{7}
+r2.
+$
+'07' r32 l2 <<c+.>a+.a.g4.r4. <c+1^1^2.... r1r1r1
+l8 '04' c+4.d4gf4.edc+d2.>a2. a4.a+4<ddc+ defdc+2. r2.
+##17
+l16 [5"!!!o c8e8cz c8d8c8  c8e8cx c8d8c8"]
+##24
+'13'< l16 [r1. a4gab4ab<c4>b<cd4j2cd>] '01' %r24%y2%s5 cd '13'<< [8er]r2
+;
+
+{8}
+r2.
+$
+'08' r16 l2 <e.e.e.e4.r4. e1^1^2... r1r1r1
+l8 '06'< c+4.d4gf4.edc+d2.>a2. a4.a+4<ddc+ defdc+2. r2.
+##17
+'12'%y3%s5%r24 l8 >[[e<ed>][f<fe>][g<gf>][f<fe>]] %y d4.e4.f4. %r24%y2%s5 gdb  
+##24
+[[a<e>a]<cggcgc>a<ee>g<d>gf<c>fdgd] '09'a8 r1r4.
+;

@@ -1,0 +1,186 @@
+#TITLE Raising a Curtain
+#ALBUM Tales of Phantasia
+#COMPOSER Motoi Sakuraba, Shinji Tamura
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 0x0D
+#WAVE 0x21 0x33
+#WAVE 0x22 0x0A
+#WAVE 0x23 ~0x58~/0x00/
+#WAVE 0x24 ~0x4D~/0x02/
+
+#WAVE 0x28 ~0x81~/0x14/
+#WAVE 0x2B ~0x68~/0x11/
+#WAVE 0x2C ~0x50~/0x12/
+
+#def global= t114 %v50 %b0,100 %x224
+
+#def hst= |0 o5 p60 %r14 v40 m16,18,207
+#def lst= |0 o2 p70 v48 m96,18,223
+#def hrp= ~|3~ o6 p56 %r18 /@6 %y7%s1/
+#def ld= |1 o4 p50 %a8 %r9 v64 m48,18,239
+#def lds= |0 o4 p50 %r7 v64 m48,18,239
+#def ldo= |2 o5 p50 %a12 %r9 v48 m48,18,239
+#def bas= |4 ~o5~/o6/ p64 v56
+
+#def hv= v40
+#def he= v18
+#def hvl= v32
+#def hel= v14
+#def hrpv= 'hv'v192,32
+#def hrpe= 'he'v192,14
+#def hrpq= v48v48,36
+#def hreq= v20v48,15
+#def hh= v40 %r
+#def hm= v24 %r16
+#def hl= v32 %r19
+
+#drum "c"=5f |C v56 p64 %r17
+#drum "h"=5g |B v32 p85 ~%r26~/%r25/
+#drum "r"=5a |8 v30 p64 ##77
+#drum "s"=5a |8 v32 p64 ##87
+#drum "t"=5a |8 v34 p64 ##92
+#drum "u"=5a |8 v36 p64 ##97
+#drum "w"=5a |8 v40 p64 ##107
+#drum "x"=5a |8 v44 p64 ##117
+#drum "y"=5a |8 v46 p64 ##122
+#drum "z"=5a |8 v48 p64 ##127
+
+{1}
+$'global' %e1
+'ld' l16
+[a2.<g4  e4.c2>b<c  d4.>b4.g4  j2a1] <e2..>b<c
+d2.e4  >b2..g+a  b2.<d4  c2..>b<c
+d2.e4  >b2..gf+  f2.<e4  >b1
+##17
+%b0,70
+'lds' l8 [a4<c4b4.a j2e1>] d2.>ab     <c2f4.c> b4g4b4<f4 f1 e1
+[>a4<c4b4.a j2e1] <d2>a4ab      <c2f4.c> b4g4b4<f4 f1 e1
+##33
+%b0,100
+'ldo' l4 [a2b<c dc>b<d e>gab <dc>b<c>   a2.b8<c8> b.j2g.d e1 <e1>] <c.d e1^1>
+##49
+%b0,70
+'lds'< l4 c.d.e f+.d.>b< c1 d1   c.d.e f+.d.>b< c1 dgb<d   l1 cdcd
+;
+
+{2}
+$ 'bas' l4
+a1 f2.f g1 a2.a     a1 f2..f8 g1 <c2..c8>
+d2.d e1 e2.e a1     <d2..d8> e2.e d1 e1
+##17
+#def bh=v56
+#def bl=v44
+l8 [[4'bh'a'bl'a] [4'bh'b'bl'b] <[4'bh'c'bl'c] [4'bh'd'bl'd]
+[4'bh'c'bl'c] >[4'bh'b'bl'b] <[4'bh'c'bl'c] >[['bh'e'bl'e]<]>>]
+##33
+[[4'bh'f'bl'f] [4'bh'g'bl'g] [4'bh'e'bl'e] ['bh'a'bl'a]['bh'g'bl'g]
+[4'bh'f'bl'f] [4'bh'g'bl'g] [4'bh'e'bl'e] [4'bh'e'bl'e]]
+##49
+[28'bh'a'bl'a]['bh'g'bl'g]['bh'e'bl'e] [16'bh'a'bl'a]
+;
+
+{3}
+$ 'lst' %e1 l1
+afga afg<c> deea <dede>
+##17
+<<v28[ab<c>a fg<c>b]
+##33
+>v38  [fgea2g2  fgee]
+##49
+%r11 [3a1]<d1>[3a1]g2e2[4a1]
+;
+
+{4}
+$ 'hst' %e1 l8
+[aec<ercr>a  afc<ercr>a  gd>b<<dr>brg  j2aecarbr<c>] <c>eg<ercre>
+[3'hh'<d>'hm'aj3'hl'f][3'hh'b'hm'gj3'hl'd]
+[3'hh'b'hm'g+j3'hl'e][3'hh'<c>'hm'aj3'hl'e]
+[3'hh'<d>'hm'aj3'hl'f][3'hh'<e>'hm'bj3'hl'g]
+[2'hh'<d>'hm'a'hl'f]'hh'<d>'hl'f [2'hh'<e>'hm'b'hl'g+]%y<e'hh'g+>
+##17
+%r7 l8
+a2.b<c> b2<d.c.>b <c2.de d4>a4f+4<d4>    f2a4<c4> g4d4g4<d4 c2>g4<c4 d2>b2
+<a1 g+1 g1 f+1  f2a4<c4> b2g2 <c1> b1
+##33
+>> l4
+[a<cfe d2gf e1 c2cd    e1 d.g.b a1 g+1>] 
+##49
+[a.b.<c d.>a.f+ a1 j2 g1]b<dgb      acea f+1 e1 f+1
+;
+
+{5}
+$ 'hrp' %e1 l16
+['hrpv'[4aec>a<] 'hrpv'[4fc>af<] 'hrpv'[3d>bgd<]d>bg<d
+j2,508'hrpv'[c>aec<]c>a<ec>aec>a<<] $508 'hrpv'[3ec>ge<]'hv'eceg>
+[[f<d>a]f<d>] [[e<d>b]e<d>] [e[<d>bg+]<d>] e[<ec>b]<e>b<aec>aece
+[afa<dfd>af]  gegb<e>bge gebg<e>bge  [afa<dfd>aj2f]<f> eg+b<de>bg+e<e>be<eg+eg+b>
+##17
+[[4'hrpq'aec>a<][4'hrpq'bg+e>b<][4'hrpq'<c>gec][4'hrpq'<d>af+d]
+[4'hrpq'<c>afc][4'hrpq'bgfd][4'hrpq'<c>gec]j2,532[3'hrpq'<d>bg+f]'hv'<e>bg+<e>]
+$532 'hv'g+'hvl'e'hv'b'hvl'g+ 'hv'<d>'hvl'b'hv'<f'hvl'd
+'hv'g+'hvl'f'hv'b'hvl'g+ 'hv'<d>'hvl'b'hv'<e>b
+##33
+[>[4'hrpq'<c>acf] 'hrpq'g>b<dg'hrpq'bdgb'hrpq'<d>gb<d'hrpq'g>b<dg>
+[4'hrpq'bgfg] 'hv'c'hvl'>a<'hv'c'hvl'd'hv'e'hvl'c'hv'e'hvl'a
+'hv'<c>'hvl'a'hv'<c'hvl'd'hv'e'hvl'c'hv'e'hvl'a
+'hrpq'<c>aec'hrpq'aec>a<'hrpq'ec>ae'hrpq'<c>aec
+'hrpq'>bgb<d'hrpq'g>b<dg'hrpq'bdgb'hrpq'<d>gb<d [8'hrpq'e>eab<]]
+##49
+'hv' >> [aeab <c>a<cd ecea <c>ab<c>      d>f+a<d f+>a<df+ adf+a <d>f+a<d>
+aeab <c>a<cd edc>b agf+e    [4gd>b<d]>]
+<e>a<ce acea <c>ea<c edc>b   a>a<df+ adf+a <d>f+a<d f+edf+
+ec>ae <c>aec aec>a< ec>ae   f+a<df+> a<df+a df+a<d> f+a<df+
+;
+
+{6}
+$
+%e1%g1 l16
+[8"z8ss"[3"x8ss"]  "z8ss" l48"z8stw"l16"s  xwx8 z8wx"
+"z8ss"["x8ss"] "xwxy"   "z8ss z8"l48"stwz^32wx^32"l16"xx8 z8wu"]
+##33
+[4"z8ss"["x8ss"] "xwxy"   "z8ss z8"l48"stwz^32wx^32"l16"xx8"j4"z8wu"]"zxwu"
+[4"z8ss"["x8ss"] "xwxy"   "z8ss z8"j4l48"stwz^32wx^32"l16"xx8 z8wu"]
+"zrzzzrzwxy"
+##49
+[12"z8zxz8zxz8"j12"zxzxxw"]v72,26[6"\z"]
+;
+
+{7}
+$
+%e1 [32"h4"]
+[6[14"h4"]r4"h4"]
+##33
+[7[6"h4"]r4"h4"] [8"h4"]
+##49
+"c2"[14"h4"] "c2"[10"h4"] "c2c2"
+["c2"[6"h4"]]
+;
+
+{8}
+r4...
+$ 'hrp' %e1 l16 p80
+['hrpe'[4aec>a<] 'hrpe'[4fc>af<] 'hrpe'[3d>bgd<]d>bg<d
+j2,808'hrpe'[c>aec<]c>a<ec>aec>a<<] $808 'hrpe'[3ec>ge<]'he'eceg>
+[[f<d>a]f<d>] [[e<d>b]e<d>] [e[<d>bg+]<d>] e[<ec>b]<e>b<aec>aece
+[afa<dfd>af]  gegb<e>bge gebg<e>bge  [afa<dfd>aj2f]<f> eg+b<de>bg+e<e>be<eg+eg+b>
+##17
+[[4'hreq'aec>a<][4'hreq'bg+e>b<][4'hreq'<c>gec][4'hreq'<d>af+d]
+[4'hreq'<c>afc][4'hreq'bgfd][4'hreq'<c>gec]j2,832[3'hreq'<d>bg+f]'he'<e>bg+<e>]
+$832 'he'g+'hel'e'he'b'hel'g+ 'he'<d>'hel'b'he'<f'hel'd
+'he'g+'hel'f'he'b'hel'g+ 'he'<d>'hel'b'he'<e>b
+##33
+[>[4'hreq'<c>acf] 'hreq'g>b<dg'hreq'bdgb'hreq'<d>gb<d'hreq'g>b<dg>
+[4'hreq'bgfg] 'he'c'hel'>a<'he'c'hel'd'he'e'hel'c'he'e'hel'a
+'he'<c>'hel'a'he'<c'hel'd'he'e'hel'c'he'e'hel'a
+'hreq'<c>aec'hreq'aec>a<'hreq'ec>ae'hreq'<c>aec
+'hreq'>bgb<d'hreq'g>b<dg'hreq'bdgb'hreq'<d>gb<d [8'hreq'e>eab<]]
+##49
+'he' >> [aeab <c>a<cd ecea <c>ab<c>      d>f+a<d f+>a<df+ adf+a <d>f+a<d>
+aeab <c>a<cd edc>b agf+e    [4gd>b<d]>]
+<e>a<ce acea <c>ea<c edc>b   a>a<df+ adf+a <d>f+a<d f+edf+
+ec>ae <c>aec aec>a< ec>ae   f+a<df+> a<df+a df+a<d> f+a<df+
+;

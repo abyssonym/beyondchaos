@@ -1,68 +1,63 @@
-FF6 Beyond Chaos Randomizer
-Version:    63
-Date:       January 27, 2018
-URL:        https://github.com/abyssonym/beyondchaos
-Contact:    https://twitter.com/abyssonym
-            https://www.twitch.tv/abyssonym
+FF6 Beyond Chaos EX Randomizer
+Version:    1
+Date:       January 11, 2019
+URL:        https://github.com/subtractionsoup/beyondchaos
+Discord:    https://discord.gg/S3G3UXy
 
 --- QUICKSTART ---
-Running the randomizer:
-    Windows users may use the executable file, "beyondchaos.exe". Other users, please run "randomizer.py" using Python version 2.7
+Requirements:
+	FF3 US 1.0 ROM
+	If not running Windows, install Python 2.7. (NOT python 3.0+)
 
-Source rom file:
-    The randomizer will ask for a rom file. Beyond Chaos does not provide this rom. Put the file in the same directory as Beyond Chaos and simply input the file name. The rom used should be the FF3 US 1.0 rom. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
+Running the randomizer:
+    Windows users: run beyondchaosex.exe.
+	Other users: run "randomizer.py" using Python version 2.7 (It DOES NOT work with python 3.)
+
+Source ROM file:
+    The randomizer will ask for a ROM file. Beyond Chaos does not provide this ROM. The simplest thing is to put the ROM in the same directory as Beyond Chaos and simply input the file name.
+	e.g., "ff3.smc"
+	
+	If you prefer to keep the ROM in a different folder, enter the full path. e.g., "C:\Users\Kefka\Documents\snes\ff3.smc"
+	
+	The ROM used should be the FF3 US 1.0 ROM. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
+
     MD5 - e986575b98300f721ce27c180264d890
     CRC32 - a27f1c7a
 
 Seed value:
-    Next, the randomizer will ask for a seed value. If you don't know which seed you want, just leave this blank and the randomizer will choose one for you. The seed value is an integer number that can be used to share the same randomization with other people. It's like a signature for the game that Beyond Chaos creates. If you want to play the game along with a friend, you can use the same seed.
+    Next, the randomizer will ask for a seed value. The seed value is an integer number that can be used to share the same randomization with other people. If you don't know which seed you want, just leave this blank.
 
 Flags:
-    Finally, the randomizer will ask for a list of flags. If you don't know which flags you want, just leave this blank and the randomizer will give you the standard setting: all flags. If you would like to customize your experience, here is a list of flags and what they do:
-    o   Shuffle characters' in-battle commands.
-    w   Generate new commands for characters, replacing old commands.
-    z   Always have "Sprint Shoes" effect.
-    b   Make the game more balanced by removing exploits such as Joker Doom,
-            Vanish/Doom, and the Evade/Mblock bug.
-    m   Randomize enemy stats.
-    c   Randomize palettes and names of various things.
-    i   Randomize the stats of equippable items.
-    q   Randomize what equipment each character can wear and character stats.
-    e   Randomize esper spells and levelup bonuses.
-    t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
-    u   Umaro risk. (Random character will be berserk)
-    l   Randomize blitz inputs.
-    n   Randomize window background colors.
-    f   Randomize enemy formations.
-    s   Swap character graphics around.
-    p   Randomize the palettes of spells and weapon animations.
-    d   Randomize final dungeon.
-    a   Organize rages alphabetically (default)
-    h   Organize rages by highest level first
-    g   Randomize dances
-    k   Randomize the clock in Zozo
+    Finally, the randomizer will ask for a list of flags. These allow you to customize what it randomizes.
+	
+	* If this is your first seed, I recommend typing:
+	-dfklu partyparty makeover
+	
+	This will give you a good taste of Beyond Chaos while leaving out a few things that can sometimes be frustrating for new players. (partyparty and makeover are "secret" codes that randomize the sprites even more.)
+	
+	* If you find that too hard, try:
+	-dfklmu partyparty makeover
+	
+	* The "typical" flags used by veterans are:
+	-lk partyparty makeover
 
 Output rom file:
     The randomizer generates two files, a patched rom file, and a mini-FAQ. Both files will have the seed value in their name. To play the game, load the patched rom file in your emulator. The mini-FAQ is a text file that mainly includes information about where to get items; colosseum rewards, monster steals and drops, shop info, and monster rages are all included.
 
 --- OVERVIEW ---
 
-    Beyond Chaos is a randomizer, a program that remixes game content randomly, for FF6. Every time you run Beyond Chaos, it will generate a completely unique, brand-new mod of FF6 for you to challenge and explore. There are over 10 billion different possible randomizations! Nearly everything is randomized, including treasure, enemies, colors, graphics, character abilities, and more.
-    Beyond Chaos is also customizable. Using the flags in the above section, you can choose to only randomize certain parts of the game. Every flag you select will make the game a little more random, and also a little more difficult. Therefore, even experienced players should be able to find some challenge in the resulting game. As the game progresses, enemies may become more and more difficult, so that it becomes necessary to develop specialized strategies for individual formations.
-    Because of the extent and the severity of the modifications made by Beyond Chaos, it is not recommended for competitive play. It is mainly intended for casual play, though if you would like to play it competitively anyway, go for it. Also note that there is another FF6 randomizer intended for races, made by Dessyreqt and Lenophis, that makes more conservative changes. That one is simply called "FF6 Randomizer", or "FF6 Rando Classic Original Flavor".
-
---- OBJECTIVES ---
-
-1. To remix game content so thoroughly that even veteran FF6 fans can feel as though they are playing the game for the first time all over again.
-2. To create a challenging and festive result that encourages memorable scenarios, without making the game impossible for a casual player to complete.
-3. To create a tool that is useful to the FF6 rom hacking community by being both open source and accessible, and by showing off a wide variety of potential mods.
+    Beyond Chaos EX is a randomizer, a program that remixes game content randomly, for FF6. It is a fork of Abyssonym's Beyond Chaos randomizer with even more features. Every time you run Beyond Chaos EX, it will generate a completely unique, brand-new mod of FF6 for you to challenge and explore. There are over 10 billion different possible randomizations! Nearly everything is randomized, including treasure, enemies, colors, graphics, character abilities, and more.
+    Beyond Chaos EX is also customizable. Using the flags in the above section, you can choose to only randomize certain parts of the game. Every flag you select will make the game a little more random, and also a little more difficult. Therefore, even experienced players should be able to find some challenge in the resulting game. As the game progresses, enemies may become more and more difficult, so that it becomes necessary to develop specialized strategies for individual formations.
 
 --- FAQ/KNOWN ISSUES ---
 Q: How do I play Beyond Chaos Ancient Cave mode?
-A: There are two codes you can use. "ancientcave" is for the standard Ancient Cave mode with ~200 maps and takes a very long time to complete. "speedcave" is a shorter, faster mode (~100 maps) that is designed to be completed in one sitting. Input the code in the flags. For vanilla Ancient Cave mode, I recommend using "ancientcavez".
+A: There are three codes you can use. "ancientcave" is for the standard Ancient Cave mode with ~200 maps and takes a very long time to complete. "speedcave" is a shorter, faster mode (~100 maps) that is designed to be completed in one sitting. "racecave" is even shorter (~50 maps) and can be completed in one relatively short sitting. Input the code in the flags. For vanilla Ancient Cave mode, I recommend using "ancientcavez".
 
 Q: How do I play Beyond Chaos Bingo?
 A: The code is "bingoboingo". Use the code in the flags and the randomizer will ask you some more questions when the randomization is complete.
+
+Q: How do I use different sprites?
+A: Use the code "makeover" to randomly replace sprites. You can customize which sprites are available by checking custom/spritereplacements.txt.
 
 Q: I lost my seed number but I still have the rom. Can I find my seed number again?
 A: The seed is displayed in the auto-generated guide, in the rom's SNES header, and in the opening sequence with the magitek armor.
@@ -103,7 +98,6 @@ A: Va gur svany qhatrba, gurer'f n fznyy vagrevbe ebbz jvgu n qbbe cnfg n pbairl
 Q: I heard that there are secret codes. What are they?
 A: I'll give you the codes, but be aware that these are codes that were used during development for testing the randomizer. I make no guarantees about their playability, and it's recommended that you play through the randomizer without codes at least once before you use them. Here they are, as always, in ROT13:
     nvefuvc
-    phgfprarf
     cneglcnegl
     oenirahqrjbeyq
     fhcyrkjerpxf
@@ -128,6 +122,14 @@ A: I'll give you the codes, but be aware that these are codes that were used dur
     ercynprrirelguvat
     nyypbzobf
     enaqbzobbfg
+    qnapvatznqhva
+    znffrssrpg
+    fhcreangheny
+    znqjbeyq
+	ryrpgevpobbtnybb
+    abgnjnvgre
+    qnexjbeyq
+    enaqbzobffrf
 
 Q: What level should I be for the final dungeon?
 A: It really depends on your gear and what builds you have access to. I usually end up going there around level 35-40, but it doesn't hurt to have a few absurdly high level characters to tank hits.
@@ -141,9 +143,6 @@ A: No.
 Q: I can't choose my party for the final battle. Is this a bug?
 A: No.
 
-Q: It says my character can use Blitz/Lore/etc. in their skills menu, but they don't actually know it.
-A: This is a side effect of replacing the old commands. I'm not sure how to fix it, but it doesn't really affect the game so I haven't really looked into it.
-
 Q: I used Control on an enemy and ordered him to use a skill on his own party, but he attacked me instead!
 A: Some skills are just like that. They're flagged to never be used on your own party.
 
@@ -155,9 +154,6 @@ A: Gur pynffvp fgengrtl bs Enfcvat uvz gb qrngu fgvyy jbexf, naq ur vf bsgra ihy
 
 Q: Dude I've got like six cursed shields.
 A: Fun fact, if you equip cursed shields on multiple party members, you can uncurse one of them 2x or 3x or 4x as quickly.
-
-Q: Why can't Gogo select X ability?
-A: It's probably there. You just have to scroll past the edge of the menu. Unless it's an ability Shadow had and you let him die, in which case, it won't be there.
 
 Q: I just got a Game Over, but I didn't get to keep my experience levels.
 A: This feature was removed because it didn't work properly with one of the new esper boosts. I also wasn't very fond of it to begin with, because I would often get a Game Over and forget to reset so I don't miss out on valuable esper levels.
@@ -174,19 +170,23 @@ A: Maybe. I'm open to suggestions, but things that require a lot of effort proba
 Q: Can I add X feature?
 A: Possibly! Even if I don't think it's a good idea for the standard settings, it could be a secret code. Send me a pull request to the project's Github.
 
-Q: Does Beyond Chaos work with X mod?
-A: Maybe, maybe not. I haven't tested Beyond Chaos with anyone else's mods. If it's an elaborate, full-game mod than the answer is no. Some small mods might be compatible, since Beyond Chaos doesn't do rom expansion or anything like that... but it uses up a lot of commonly used free space, so conflicts are likely.
+Q: Does Beyond Chaos EX work with X mod?
+A: Probably not, especially if the mod makes large changes. But try Beyond Chaos Gaiden, which does work with Brave New World.
 
-Q: Does Beyond Chaos work on a real Super Nintendo?
+Q: Does Beyond Chaos EX work on a real Super Nintendo?
 A: Absolutely! Beyond Chaos has been tested on both Super Everdrive and SD2SNES, and it works 100% perfectly.
 
 Q: I found a bug!
-A: The best thing to do is open an issue on the Beyond Chaos github page, but if that's too much of a hassle you can also send me a tweet and I might check it out. Note that by this point A LOT of the bugs have been discovered, but if you just want to show it off or something that's cool too.
+A: The best thing to do is report it on the Beyond Chaos Discord.
 
 --- CONTRIBUTORS ---
-    subtractionsoup - TONS of features in v62 and v63
-    Lockirby2 - The worringtriad code
+	Abyssonym - original Beyond Chaos creator
+	subtractionsoup - maintainer of Beyond Chaos EX
+    CtrlxZ - fixed up sprites for Beyond Chaos
+    myself086 - new menu features and natural magic expansion
+    Lockirby2 - The worringtriad and notawaiter codes
     glennmatthews - Command descriptions in logfile
+	DarkSlash - madworld and beyondtierless codes
 
 --- SPECIAL THANKS ---
     cecil188 - OG beyond chaos fan
@@ -196,8 +196,6 @@ A: The best thing to do is open an issue on the Beyond Chaos github page, but if
     kupofasa - original permadeath runner
     quikdraw7777 - permadeath community leader and pioneer
     tenkarider - romhacker who gave me lots of early feedback, and creator of the Ultimate Czar Dragon hack, FF6 Curse of the Gods, and many other challenges
-    badass, dr blank, matthew50, metroidquest, sutebenukun, and zeemis - additional sprites
+    Synchysi - esper restriction patch
+    ff6hacking.com community - additional sprites, see custom/sprites/credits.txt for details
     AND YOU
-
-Like this randomizer? Then check out my other projects! I've made like a billion randomizers!
-    http://www.abyssonym.com

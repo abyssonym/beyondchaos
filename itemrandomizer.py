@@ -1,7 +1,8 @@
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,
-                   name_to_bytes, utilrandom as random)
-from skillrandomizer import SpellBlock
+                   name_to_bytes, utilrandom as random,
+                   Substitution)
+from skillrandomizer import SpellBlock, get_ranked_spells
 # future blocks: chests, morphs, shops
 
 ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
@@ -12,14 +13,14 @@ ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
               "hitmdef", "elemabsorbs", "elemnulls", "elemweaks",
               "statusacquire2", "mblockevade", "specialaction"]
 
-STATPROTECT = {"fieldeffect": 0x5c,
+STATPROTECT = {"fieldeffect": 0xdc,
                "statusprotect1": 0x00,
                "statusprotect2": 0x00,
                "statusacquire3": 0x00,
                "statboost1": 0x00,
                "special1": 0x00,
                "statboost2": 0x02,
-               "special2": 0xa8,
+               "special2": 0x28,
                "special3": 0x60,
                "otherproperties": 0xdf,
                "statusacquire2": 0x00}
@@ -85,6 +86,33 @@ def bit_mutate(byte, op="on", nochange=0x00):
     return byte
 
 
+def extend_item_breaks(fout):
+    break_sub = Substitution()
+    break_sub.set_location(0x22735)
+    break_sub.bytestring = [0x22, 0x13, 0x30, 0xF0]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x22743)
+    break_sub.bytestring = [0x30, 0x05]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x2274A)
+    break_sub.bytestring = [0xAD, 0x10, 0x34]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x229ED)
+    break_sub.bytestring = [0x22, 0x00, 0x30, 0xF0, 0xEA, 0xEA]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x23658)
+    break_sub.bytestring = [0xAD, 0x7E, 0x3A]
+    break_sub.write(fout)
+    
+    break_sub.set_location(0x303000)
+    break_sub.bytestring = [0xBD, 0xA4, 0x3B, 0x29, 0x0C, 0x0A, 0x0A, 0x0A, 0x0A, 0x8D, 0x89, 0x3A, 0xBD, 0x34, 0x3D, 0x8D, 0x7E, 0x3A, 0x6B, 0x08, 0xBF, 0x12, 0x50, 0xD8, 0x8D, 0x10, 0x34, 0xBF, 0x13, 0x50, 0xD8, 0x0A, 0x0A, 0x0A, 0x0A, 0x28, 0x29, 0xC0, 0x6B]
+    break_sub.write(fout)
+
+
 class ItemBlock:
     def __init__(self, itemid, pointer, name):
         self.itemid = hex2int(itemid)
@@ -134,11 +162,17 @@ class ItemBlock:
         stats = map(ord, f.read(len(ITEM_STATS)))
         self.features = dict(zip(ITEM_STATS, stats))
 
+        # move flags for "randomly cast" and "destroy if used"
+        # so breakeffect can use the full range of spells
+        if not self.is_consumable:
+            break_flags = self.features["breakeffect"] & 0xC0
+            self.features["otherproperties"] |= break_flags >> 4
+            self.features["breakeffect"] &= ~0xC0
+
         self.price = read_multi(f, length=2)
 
         if all_spells is None:
-            all_spells = sorted([SpellBlock(i, filename) for i in xrange(0xFF)],
-                                key=lambda s: s.rank())
+            all_spells = get_ranked_spells(filename)
             all_spells = filter(lambda s: s.valid, all_spells)
 
         f.seek(0x2CE408 + (8*self.itemid))
@@ -147,16 +181,24 @@ class ItemBlock:
         f.seek(0x12B300 + (13*self.itemid))
         self.dataname = map(ord, f.read(13))
 
+        # unhacked tintinabar patch moves the tintinabar flag
+        if self.features["fieldeffect"] & 0x80:
+            self.features["fieldeffect"] &= ~0x80
+            self.features["special2"] |= 0x80
+
         f.close()
 
     def ban(self):
         self.banned = True
 
-    def become_another(self, customdict=None):
+    def become_another(self, customdict=None, tier=None):
         customs = get_custom_items()
         if customdict is None:
-            customdict = random.choice(
-                [customs[key] for key in sorted(customs)])
+            if tier is None:
+                candidates = [customs[key] for key in sorted(customs)]
+            else:
+                candidates = [customs[key] for key in sorted(customs) if customs[key]["tier"] == tier]
+            customdict = random.choice(candidates)
 
         for key in self.features:
             self.features[key] = 0
@@ -182,6 +224,8 @@ class ItemBlock:
                 name = name + name_to_bytes(value, 12)
             elif key == "description":
                 pass
+            elif key == "tier":
+                pass
             else:
                 value = convert_value(value)
                 if key == "name_icon":
@@ -206,8 +250,11 @@ class ItemBlock:
 
         write_multi(fout, self.price, length=2)
 
-        if self.is_weapon:
-            fout.seek(0x2CE408 + (8*self.itemid))
+        if self.is_weapon or (self.itemtype & 0x0f) == 0x01:
+            if self.itemid < 93:
+                fout.seek(0x2CE408 + (8*self.itemid))
+            else:
+                fout.seek(0x303100 + (8*(self.itemid -93)))
             fout.write("".join(map(chr, self.weapon_animation)))
 
         fout.seek(0x12B300 + (13*self.itemid))
@@ -283,7 +330,7 @@ class ItemBlock:
         self.features[feature] = bit_mutate(self.features[feature], op="on",
                                             nochange=STATPROTECT[feature])
 
-    def mutate_break_effect(self, always_break=False):
+    def mutate_break_effect(self, always_break=False, wild_breaks=False):
         global effects_used
         if self.is_consumable:
             return
@@ -292,8 +339,9 @@ class ItemBlock:
             effects_used = []
 
         success = False
+        max_spellid = 0xFE if wild_breaks else 0x50
         for _ in xrange(100):
-            spell, _ = self.pick_a_spell(custom=lambda x: x.spellid <= 0x3F)
+            spell, _ = self.pick_a_spell(custom=lambda x: x.spellid <= max_spellid)
             if spell.spellid not in effects_used:
                 effects_used.append(spell.spellid)
                 success = True
@@ -302,22 +350,27 @@ class ItemBlock:
         if not success:
             return
 
+        # swdtechs, blitzes, superball, and slots don't seem to work 
+        # correctly with procs, but they work with breaks.
+        # (Mostly they just play the wrong animation, but a couple
+        # softlock.)
+        no_proc_ids = range(0x55, 0x66) + range(0x7D, 0x82)
         self.features['breakeffect'] = spell.spellid
-        if not self.is_weapon or random.randint(1, 2) == 2 or always_break:
+        if not self.is_weapon or random.randint(1, 2) == 2 or always_break or spell.spellid in no_proc_ids:
             # always make armors usable in battle; weapons, only sometimes
             self.itemtype = self.itemtype | 0x20
 
         # flag to break when used as an item
         if random.randint(1, 20) == 20:
-            self.features['breakeffect'] &= 0x7F
+            self.features['otherproperties'] &= 0xF7
         else:
-            self.features['breakeffect'] |= 0x80
+            self.features['otherproperties'] |= 0x08
 
         # flag to set chance to proc a spell
-        if self.is_weapon and (not self.itemtype & 0x20 or random.randint(1, 2) == 2):
-            self.features['breakeffect'] |= 0x40
+        if self.is_weapon and spell.spellid not in no_proc_ids and (not self.itemtype & 0x20 or random.randint(1, 2) == 2):
+            self.features['otherproperties'] |= 0x04
         else:
-            self.features['breakeffect'] &= 0xBF
+            self.features['otherproperties'] &= 0xFB
 
         self.features['targeting'] = spell.targeting & 0xef
 
@@ -365,14 +418,17 @@ class ItemBlock:
         self.features['learnspell'] = spell.spellid
 
     def mutate_special_action(self):
-        if self.features['specialaction'] != 0 or not self.is_weapon:
+        if self.features['specialaction'] & 0xf0 != 0 or not self.is_weapon:
             return
 
         new_action = random.randint(1, 0xf)
-        if new_action == 8:
+        if new_action == 0xA: # make random valiant knife effect rare
+            new_action = random.randint(1, 0xf)
+            
+        if new_action == 9: # no random dice effect
             return
 
-        self.features['specialaction'] = new_action
+        self.features['specialaction'] = (new_action << 4) | (self.features['specialaction'] & 0x0f)
 
     def mutate_stats(self):
         if self.is_consumable:
@@ -447,7 +503,10 @@ class ItemBlock:
         mblock = evade_is_screwed_up(mblock)
         self.features['mblockevade'] = evade | (mblock << 4)
 
-    def mutate_price(self, undo_priceless=False):
+    def mutate_price(self, undo_priceless=False, crazy_prices=False):
+        if crazy_prices:
+            self.price = random.randint(20, 500)
+            return
         if self.price <= 2:
             if undo_priceless:
                 self.price = self.rank()
@@ -470,17 +529,17 @@ class ItemBlock:
 
         self.price = min(self.price, 65000)
 
-    def mutate(self, always_break=False):
+    def mutate(self, always_break=False, crazy_prices=False, extra_effects=False, wild_breaks=False):
         global changed_commands
         self.mutate_stats()
-        self.mutate_price()
+        self.mutate_price(crazy_prices=crazy_prices)
         broken, learned = False, False
         if always_break:
-            self.mutate_break_effect(always_break=True)
+            self.mutate_break_effect(always_break=True, wild_breaks=wild_breaks)
             broken = True
         for command, itemids in break_unused_dict.items():
             if command in changed_commands and self.itemid in itemids:
-                self.mutate_break_effect()
+                self.mutate_break_effect(wild_breaks=wild_breaks)
                 broken = True
         if self.itemid == 0xE6:
             self.mutate_learning()
@@ -492,7 +551,7 @@ class ItemBlock:
             if 10 <= x < 20 and not learned:
                 self.mutate_learning()
             if 20 <= x < 50 and not broken:
-                self.mutate_break_effect()
+                self.mutate_break_effect(wild_breaks=wild_breaks)
                 broken = True
             if 50 <= x < 80:
                 self.mutate_elements()
@@ -501,6 +560,15 @@ class ItemBlock:
         if not self.heavy and random.randint(1, 20) == 20:
             self.heavy = True
 
+        if extra_effects:
+            if random.randint(1,3) == 3:
+                self.mutate_special_action()
+            
+            if random.randint(1, 2) == 2:
+                self.mutate_feature()
+            while random.randint(1, 3) == 3:
+                self.mutate_feature()
+            
     def rank(self):
         if hasattr(self, "_rank"):
             return self._rank
@@ -885,3 +953,27 @@ def get_secret_item():
 def get_ranked_items(filename=None, allow_banned=False):
     items = get_items(filename, allow_banned)
     return sorted(items, key=lambda i: i.rank())
+
+    
+def unhack_tintinabar(fout):
+    # Apply Lenophis's unhacked tintinabar patch (solo version)
+    tintinabar_sub = Substitution()
+    tintinabar_sub.set_location(0x4A57)
+    tintinabar_sub.bytestring = [0x89, 0x40, 0xF0, 0x59, 0x29, 0x07, 0xCD, 0x6D, 0x1A, 0xD0, 0x52, 0x20, 0xE8, 0xAE, 0xB9, 0x14, 0x16, 0x89, 0xC2, 0xD0, 0x48, 0x20, 0x0D, 0xDF, 0xF0, 0x16, 0xB9, 0x1C, 0x16, 0x4A, 0x4A, 0xC2, 0x21, 0x79, 0x09, 0x16, 0xC5, 0x1E, 0x90, 0x02, 0xA5, 0x1E, 0x99, 0x09, 0x16, 0x7B, 0xE2, 0x20, 0xB9, 0x14, 0x16, 0x29, 0x04, 0xF0, 0x26, 0x7B, 0xA9, 0x0F, 0x8D, 0xF0, 0x11, 0xC2, 0x20, 0xEB, 0x8D, 0x96, 0x07, 0xC2, 0x20, 0xA5, 0x1E, 0x4A, 0x4A, 0x4A, 0x4A, 0x4A, 0x85, 0x1E, 0xB9, 0x09, 0x16, 0x38, 0xE5, 0x1E, 0xF0, 0x02, 0xB0, 0x02, 0x7B, 0x1A, 0x99, 0x09, 0x16, 0xC2, 0x21, 0x98, 0x69, 0x25, 0x00, 0xA8, 0x7B, 0xE2, 0x20, 0xE8, 0xE0, 0x10, 0x00, 0xD0, 0x90, 0xFA, 0x86, 0x24, 0xFA, 0x86, 0x22, 0xFA, 0x86, 0x20, 0xFA, 0x86, 0x1E, 0x28, 0x6B, 0x7B, 0xE2, 0x20, 0xE8, 0xE0, 0x10, 0x00, 0xF0, 0x03, 0x4C, 0x54, 0x4A, 0xFA, 0x86, 0x24, 0xFA, 0x86, 0x22, 0xFA, 0x86, 0x20, 0xFA, 0x86, 0x1E, 0x28, 0x6B]
+    tintinabar_sub.write(fout)
+    
+    tintinabar_sub.set_location(0x6CF8)
+    tintinabar_sub.bytestring = [0x8C, 0x48, 0x14, 0x64, 0x1B, 0xB9, 0x67, 0x08, 0x0A, 0x10, 0x11, 0x4A, 0x29, 0x07, 0xCD, 0x6D, 0x1A, 0xD0, 0x09, 0xA5, 0x1B, 0x22, 0x77, 0x0E, 0xC2, 0x20, 0xF6, 0xDE, 0xC2, 0x21, 0x98, 0x69, 0x29, 0x00, 0xA8, 0xE2, 0x20, 0xE6, 0x1B, 0xC0, 0x90, 0x02, 0xD0, 0xD9, 0x7B, 0x60]
+    tintinabar_sub.write(fout)
+    
+    tintinabar_sub.set_location(0xDEF6)
+    tintinabar_sub.bytestring = [0xAD, 0xD8, 0x11, 0x10, 0x11, 0xA5, 0x1B, 0x5A, 0x1A, 0xA8, 0xC2, 0x20, 0x38, 0x7B, 0x2A, 0x88, 0xD0, 0xFC, 0x0C, 0x48, 0x14, 0x7A, 0x60, 0x8C, 0x04, 0x42, 0xA9, 0x25, 0x8D, 0x06, 0x42, 0x22, 0xD1, 0x4A, 0xC0, 0x7B, 0xAD, 0x14, 0x42, 0xDA, 0x1A, 0xAA, 0xC2, 0x20, 0x38, 0x7B, 0x2A, 0xCA, 0xD0, 0xFC, 0xFA, 0x2C, 0x48, 0x14, 0xE2, 0x20, 0x60]
+    tintinabar_sub.write(fout)
+    
+    tintinabar_sub.set_location(0x31DA9)
+    tintinabar_sub.bytestring = [0x10, 0x03, 0x4C, 0x62, 0x2E, 0xA5, 0x09, 0x89, 0x02, 0xF0, 0x03, 0x4C, 0xC6, 0x2E, 0x10, 0x0F, 0x9C, 0x05, 0x02, 0x20, 0xA9, 0x0E, 0x20, 0xC9, 0x1D, 0x7B, 0x3A, 0x85, 0x27, 0x64, 0x26, 0x60, 0x9C, 0xDF, 0x11, 0x9C, 0x48, 0x14, 0x9C, 0x49, 0x14, 0xA2, 0x03, 0x00, 0xB5, 0x69, 0x30, 0x07, 0x22, 0x77, 0x0E, 0xC2, 0x20, 0x6C, 0xF1, 0xCA, 0x10, 0xF2, 0x60, 0x00, 0xD0, 0xF0, 0x60, 0x20]
+    tintinabar_sub.write(fout)
+    
+    tintinabar_sub.set_location(0x3F16C)
+    tintinabar_sub.bytestring = [0xAD, 0xD8, 0x11, 0x10, 0x12, 0x7B, 0xB5, 0x69, 0x1A, 0xA8, 0x38, 0x7B, 0xC2, 0x20, 0x2A, 0x88, 0xD0, 0xFC, 0x0C, 0x48, 0x14, 0xE2, 0x20, 0x60]
+    tintinabar_sub.write(fout)

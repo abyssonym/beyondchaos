@@ -1,0 +1,165 @@
+#TITLE The Flame and the Arrow
+#ALBUM Treasure of the Rudras
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x46~/0x0D/
+#WAVE 0x21 ~0x3A~/0x3A/
+#WAVE 0x22 ~0x5D~/0x00/
+#WAVE 0x23 ~0x6C~/0x00/
+#WAVE 0x24 ~0x6b~/0x1C/
+#WAVE 0x2A ~0x22~/0x22/
+#WAVE 0x2B ~0x56~/0x21/
+#WAVE 0x2C ~0x68~/0x0F/
+#WAVE 0x2D ~0x8E~/0x12/
+#WAVE 0x2E ~0x84~/0x17/
+
+#def global= t131 %x224 %v50 %b0,70
+
+#def str= |0 v96 o5 %e1 m48,18,239 %k-1
+#def vox= |1 v80 o4 %e1 m48,18,207 %k-1 %a9%r7
+#def odr= ~|2 o5~/@0 o4/ %e1 m24,18,191 ~v52~/v32/ /%y3/ %k-1 
+#def dis= ~|3 o5~/@2 o4/ %e1 m48,18,191 ~v52~/v32/ /%y3/ ~%y7%s7~ %k-1
+#def bas= |4 /o4/~o5~ ~v80~/v48/ %e0 m %k0
+
+#drum "k"=5g |A v88 p64 %e0 %k0
+#drum "s"=5e |B v88 p64 %e1 %k0 /%y4%s3/
+#drum "r"=6d+ |D ~v32~/v48/ p48 %e0 %k0 %y4%s0%r31
+#drum "h"=5f |C v48 p64 %e0 %k0 %y5%s0%r31
+#drum "y"=5g |D v112 p64 %e0 %k0 %y7%s7%r18 
+#drum "z"=5f |D v112 p64 %e0 %k0 %y7%s7%r18
+#drum "a"=~5f~/5c+/ |E v88 p85 %e0 %k0
+#drum "b"=~5d+~/4a+/ |E v88 p55 %e0 %k0
+#drum "c"=~5c~/4f+/ |E v88 p25 %e0 %k0
+
+#def o= /%s5/%r15
+#def m= /%s7/%r25
+#def n= /%s7/%r28
+
+{1}
+'global'
+l16 "ssssssss"
+$
+"!!!o k8s8k8s8 k8sk8ks8" "k8s8k8s8 k8s8ks8."
+"k8s8k8s8 k8sk8ks8" "k8s8kks8 k8s8sk8."
+##2.22
+"k8s8k8s8 k8sk8ks8" "k8s8k8s8 k8s8sk8."
+"k8s8k8s8 k8sk8ks8" "k8s8kks8 a32a32abbcccc"
+##3.196
+"k8s8kks8 k8s8kks8"    "k8s8kks8 k8s8kks8"
+"k8s8kks8 k8s8kks8"    "k8s8kks8 k8s8ksss"
+##5.171
+"k8s8kks8 k8s8kks8"    "k8s8kks8 kksk8ks8"
+"k8s8kks8 kks8kss8"    "k8s8kks8 kk8a8bcc"
+;
+
+{3}
+'str' l8 p64 rc+f+g+
+$
+'str' p64 a2g+4e4  f+4c+2.
+d4ef+e4g+4 a4b4g+2
+##2.22
+a4g+f+e4c+4     d4ef+e2
+a4b4g+4f+e    f+2. 'vox'ab
+##3.196
+<c+2c+.d.e>    b2..a16g+16
+a2a.b.<c+    c+2..>a16g+16
+##5.171
+f+2<f+2    e2e.d.c+>
+b2b.a.b    <c+2 ^'str'c+f+g+
+;
+
+{2}
+r2
+$
+'bas' p64 l8 f<fc>f g<c>a+16g+16g    f4g4g+4a+16<c.
+c+>g+f<c+ d+>a+g<d+   >g+.<d+.g+ l16 gd+>a+g+g<d+8.>
+##2.22
+l8 f<fcf >g.<d+.c     c+>g+f<c+ d+>a+g16<d+.>
+l16 f8<c8fc>g+f <d+>a+g<d+8gg+a+>    fg+gf<c>a+g+g f<cfc>fgg+a+
+##3.196
+[11g+]<c8cc+8    [11d+]f8fg8
+>[11f]a+8a+b8    <[11c]c8cc+d+
+##5.171
+[5c+]fg+c+ >fffg+g+g+<c+c+    [11d+]>g8gg+a+
+[11a+]fffa+a+    <[16c]
+;
+
+{4}
+r2
+$
+'dis' p96 l16 'o'f+8'n'[6f+] 'o'c+8'n'[6c+]   'o'f+8'n'[6f+] 'odr''o'ag+f+edc+8.
+'dis''o'd8'n'[6d] 'o'e8'n'[6e]    'odr''o'abag+ ag+f+g+ 'dis''o'e8'n'eee'o'e8.
+##2.22
+f+8'n'[6f+] 'o'c+8'n'[6c+]    'o'd8'n'[6d] 'odr''o'g+f+e>bb<b8.
+'dis''o'f+8'n'[6f+] 'o'e8'n'[6e]    'odr''o'c+f+ec+ag+f+e dc+def+ef+g+
+##3.196
+'str'p95p192,75 l8 a4e4c+eab    p96,65 g+2 p96,75 f+4e4
+p192,95 c+.f+.a c+.f+.a    p192,75 g+2f+4e4
+##5.171
+p96,65 d2 p96,75 <d2>    p192,95 bag+e >b<c+de
+p192,75 f+edc+ >b<def+    g+1
+;
+
+{5}
+r2
+$
+'odr' p32 l16 'o'f+8'm'[6f+] 'o'g+8'm'[6g+]   'o'c+8'm'[6c+] 'o'<c+>bag+f+c+8.
+f+8'm'[6f+] 'o'g+8'm'[6g+]    'o'<c+dc+>b <c+>bab e8'm'eee'o'e8.
+##2.22
+f+8'm'[6f+] 'o'g+8'm'[6g+]    'o'd8'm'[6d] 'o'bag+eee8.
+f+8'm'[6f+] 'o'e8'm'[6e]    'o'f+ag+f+c+bag+ f+ff+g+ag+ab
+##3.196
+%r10 e1    e1
+f+1    c+1
+##5.171
+'o'd8'm'[14d]    'o'e8'm'[14e]
+'o'>b8'm'[14b]<    %r10g+2g+2
+;
+
+{6}
+r2
+$
+'odr'k1 p32 l16 'o'a8'm'[6a] 'o'b8'm'[6b] 'o'f+8'm'[6f+] 'o'<c+>bag+f+f+8.
+a8'm'[6a] 'o'b8'm'[6b]    'o'<c+dc+>b <c+>bab g+8'm'g+g+g+'o'b8.
+##2.22
+<c+8'm'[6c+]> 'o'b8'm'[6b]    'o'f+8'm'[6f+] 'o'bag+eeb8.
+<c+8'm'[6c+]> 'o'b8'm'[6b]    'o'f+ag+f+c+bag+ f+ff+g+ag+ab
+##3.196
+'dis'k0 p96 %r13 >a1<     e1
+f+1    c+1
+##5.171
+'o'd8'n'[14d]    'o'e8'n'[14e]
+'o'>b8'n'[14b]<    %r13c+2c+2
+;
+
+{7}
+r2
+$
+l8 %y"z4"[12"!oh"]"h16z8."
+"y4"[6"!oh"]    [6"h"]"h16y8."
+##2.22
+"y4"[6"!oh"]    [6"h"]"h16y8."
+"y4"[6"!oh"]    [4"h"] ^2
+##3.196
+'odr'k1 p32 %r10 a1    b1
+<c+1>    g+1
+##5.171
+l16 'o'a8'm'[14a]    'o'b8'm'[14b]
+'o'f+8'm'[14f+]    <%r10f+2f2 k0
+;
+
+{8}
+r2
+$
+[8r1]
+##3.196
+l8"z4"[6"!or"]    [8"r"]
+[8"r"]    [8"r"]
+##5.171
+"z4"[6"!or"]    [8"r"]
+[8"r"]    "z4"[6"!or"]
+;

@@ -1,0 +1,100 @@
+#TITLE The Color of the Summer Sky
+#ALBUM Secret of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+
+#WAVE 0x20 -- ~0x65~ /0x22/
+#WAVE 0x21 -- 0x21
+#WAVE 0x22 -- ~0x40~ /0x0A/
+#WAVE 0x23 -- 0x07
+#WAVE 0x24 -- 0x0D
+#WAVE 0x25 -- ~0x53~ /0x31/
+#WAVE 0x26 -- 0x1B
+#WAVE 0x27 -- 0x3E
+#WAVE 0x28 -- 0x08
+
+
+{1}
+l16t62%v50p64r64%x125%b0,32r1  o5@32g4g4g4gg48g48g48v127@33g8  
+ $1 o5@32g8v127@33g8@32g8v127@33g@32gg8v127@33g8@32g8v127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g@32gg8v127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g8@32g8v127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g@32gg8v127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g8@32g8v127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g@32gg8v127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g8@32g8v127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g@32ggv127@33gg@32g  
+g8v127@33g8@32g8v127@33g8@32g8v127@33g8@32g8v127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g8@32ggv127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g@32gg8v127@33g8  
+@32g8v127@33g8@32g8v127@33g8@32g8v127@33g8@32gv127@33ggg  
+r1  r1  r1  r2r4r@32g48g48g48v127@33g8  
+
+;1
+
+l16
+{2}
+l16%e1p41v55@37r48r8o6ar8.gr8.fr8.gr  r8ar8.gr8.fr8.gr  
+ $2 p41v55@37[12o6r8ar8.gr8.fr8.gr  ]p64v57cdf<c>cdf<c>cdf<c>cdf<c  
+>cdf<c>cdf<c>cdf<c>cdf<c  >cdf<c>cdf<c>cdf<c>cdf<c  >cdf<c>cdf<c>cdf<c>a+r8r  
+
+;2
+
+l16
+{3}
+l16%e1r48r1  r1   $3 p45v45@35m20,19,196o5cdfrfgf<c4>aa+8<d8  
+c2^4^8.r  >cdfrfgf<c4>aa+8a8  f2^4^8.r  cdfrfgf<c4>aa+<cd8  
+c2^4^8.r  >cdfrfgf<c4>aa+afg  f2^4^8.r  <e64f4^^32^64re8dc8d8>a+8  
+<c2^8.ra+afd  e64f4^^32^64re8dc8dfg8  f1  p88v40a8a+af8dcdfa+af8.r  
+a8a+af8dcdf<dc>afdg  a8a+af8dcdfa+af8.r  a8a+af8dcdf<dc>a+agc  
+;3
+
+l16
+{4}
+l16%e1r64r1  
+r1   $4 p64v50@40o5cdfrfgf<c4>aa+8<d8  c2^4^8.r  >cdfrfgf<c4>aa+8a8  
+f2^4^8.r  cdfrfgf<c4>aa+<cd8  c2^4^8.r  >cdfrfgf<c4>aa+afg  
+f2^4^8.r  <f4.re8dc8d8>a+8  <c2^8.ra+afd  f4.re8dc8dfg8  
+f1  p40v40@35m20,18,196f8gfc8>a+aa+<dfec8.r  f8gfc8>a+aa+<ca+afd>a+<e  
+f8gfc8>a+aa+<dfec8.r  f8gfc8>a+aa+<da+agfe>g  m
+;4
+
+l16
+{5}
+l16%e1r64r1  
+r1   $5 p64v47@34o4ccrcddrdeereffrf  ccrcddrd>aaraa+a+ra+  <ccrcddrdeereffrf  
+ccrcddrd>a+a+raggrg  <ccrcddrdeereffrf  ccrcddrd>aaraa+a+ra+  <ccrcddrdeereffrf  
+ccrcddrd>a+a+raggrg  <c4d4e4f4  c4d4e4g4  c4d4e4f4  
+c4d4a4g4  v45@38p96p0,192,192r8.<f4fr8.a+4a+  r8.f4fr8.a+8.a+8  
+r8.f4fr8.a+4a+  r8.f4fr8.a+8.a+8  p
+;5
+
+l16
+{6}
+l16%e1p104v50@39r48o6aaraggrgffrfggrg  
+aaraggrgffrfggrg   $6 p88v57@36[2o4a8<c>aa+8<d>a+<c8ec>a+8<d>a+  
+a8<c>aa+8<d>a+<c8ec>a+8<d>a+  a8<c>aa+8<d>a+<c8ec>a+8<d>a+  a8<c>aa+8<d>a+<c8ec>a+<cd>a+  
+][4o4a8<c>aa+8<d>a+<c8ec>a+8<d>a+  ]v45@38p80p0,192,192r8<d8a+a8.r8d8<dc8.  
+r8>d8a+a8.r8f8<dcr>g  r8d8a+a8.r8d8<dc8.  r8>d8a+a8.r8f8<dcr>g  
+p
+;6
+
+l16
+{7}
+l16%e1p40v55@37r64o5f<cfc>f<cec>f<cdc>f<cec  >f<cfc>f<cec>f<cdc>f<cec  
+ $7 p40v55@37[12o5f<cfc>f<cec>f<cdc>f<cec  ]v45@38p48p0,192,192r>c4.^rc4.^  
+rc4.^rd4.e  rc4.^rc4.^  rc4.^rd4.e  p
+;7
+
+l16
+{8}
+l16%e1p24v50@39r64o6ffrfeereddrdeere  
+ffrfeereddrdeere   $8 p85v57@36[12o4f4g4a4g4  ]v50@38p32p0,192,192[4f2f2  
+]p
+;8
+
+l16

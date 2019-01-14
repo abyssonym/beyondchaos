@@ -1,0 +1,111 @@
+#TITLE Rescue Operation
+#ALBUM Star Ocean: The Second Story
+#COMPOSER Motoi Sakuraba
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x89~/0x0B/
+#WAVE 0x21 ~0x43~/0x0D/
+#WAVE 0x22 ~0x82~/0x00/
+#WAVE 0x23 ~0x72~/0x0E/
+#WAVE 0x24 ~0x00~/0x00/
+#WAVE 0x25 0x1C
+#WAVE 0x26 ~0x0B~/0x00/
+#WAVE 0x2A ~0x65~/0x22/
+#WAVE 0x2B ~0x7E~/0x21/
+#WAVE 0x2C ~0x50~/0x12/
+#WAVE 0x2F 0x0F
+
+#def global= t124 %x224 %b0,70 %v50
+
+#def org= ~|0~/@5/ ~o5~/o4/ ~v127~/v72/ p68 m24,18,239   %e1 %y4%s6%r5
+#def or2= ~|6~/|0/ o6       v44         p84 m            %e1
+#def str= |1       ~o4~/o5/ v32         p52 m48,18,207   %e1
+#def hst= |1       ~o3~/o4/ v24         p40 m48,18,239   %e1
+#def brs= ~|2~/@6/ ~o6~/o5/ ~v48~/v28/  p48 m48,18,223   %e1
+#def pet= |3       ~o5~/o6/ v88         p60 /m48,18,239/ %e1
+#def hch= @0       o5       v10v192,40  p80 m            %e1 %y5%s2%r12
+#def bas= |5       o5       v32         p64 m            %e1
+
+#drum "k"=5g |A v80 p64 %e0
+#drum "r"=6d+ |B v80 p64 %e0 /%y4%s5%r18/
+#drum "s"=5b |B v112 p64 %e0 /%y4%s5%r18/
+#drum "t"=5g+ |B v80 p64 %e0 /%y4%s5%r18/
+#drum "h"=5a |F v48 p72 %e0
+#drum "y"=5f |C ~v80~/v96/ p54 %e0 %r
+#drum "z"=5f |C ~v80~/v96/ p50 %e0 %r18
+
+{1}
+'global'
+$
+l16 [3[7"k8s8kksk"] "k8s8kkst"
+[7"!!!o k8s8kksk"]"k8s8ttst"]
+[7"!!!o k8s8kksk"] "k8s8kkst"    [3"!!!o k8s8kksk"] "k8stttst"
+;
+
+{2}
+$
+[l16 'org' e8.b4^ebr<d8c+>ba <c8.>f2.r    e8.b4^ebr<d8c+de f4..rg8.d4r>
+e8.b4^ebr<d8c+>ba <c8.>f2.r    e8.b4^ebr<d8c+de f4..r eeee8e.r32e
+'pet'< f4redc e4..r  f4redc >a4..r<  f4redc d8.>a8.<d8  d+8.e8.f+8 b4..r]
+c+8.>b8.<c+8d8>a.r32  a8.g+8.a8b8f+.r32  <c+8.>b8.<c+8d8>a.r32  ag+f+fdc+dff+g+ac+
+<c+8.>b8.<c+8d8>a.r32  a8.g+8.a8b8f+.r32  <c+8.>b8.<c+8d8>a.r32  g+8.<c+8.f.r32>g+8..r32
+;
+
+{3}
+$
+[l2 'str' e1f1e1fd  e1f1e1f 'brs' l16 aaaa8a8a
+'str' l2 fe fe ff+ ab]
+'org' l16
+a8.g+8.a8brf+r  <c+8.>b8.<c+8dr>ar  a8.g+8.a8brf+r  <c+>bag+f+ff+g+ab<c+>f
+a8.g+8.a8brf+r  <c+8.>b8.<c+8dr>ar  a8.g+8.a8brf+r  f8.g+8.<c+.r32>f4
+;
+
+{4}
+$
+[l4 'hst' < [b2^8<c+. c2ed> b2^8<c+. c2>j2b2] 'brs' l16 bbbb8b8b
+'str' < c1 c1 c2d2 'bas' l16 bb<b>b<a>b<b>b <bf+d+e>bf+gb]
+'brs'< [4c+>br<c+rdrc+r>b<c+r j4 c+>br<c+rdrc+r>b<c+8] >g+8.<c+8.f8g+4
+;
+
+{5}
+$
+[l16 'or2' >>
+[ee<e>e<d>e<e>e ee<a>a<ga>a<a>  ff<f>f<e>f<f>f ff<f>f<efef>
+ee<e>e<d>e<e>e ee<a>a<ga>a<a>  ff<f>f<efef> j2 gg<g>g<f>g<g>g] b<e<eb<e>be>e
+f>ff<f>ff<f>f <a>aa<a>aa<ga  f>ff<f>ff<f>f <a>aa<ga>a<ga
+f>ff<f>ff<f>f <<d>dd<d>dd<cd>  b>bb<b>bb<ab ab>b<ab>b<ab]
+[f+>f+f+<f+>f+f+<ef+>f+<f+ef+> f+f+<f+>f+<f+>f+f+<f+>f+f+<ef+
+dd<d>dd<d>dd<d>d<d>d <c+>c+c+<c+>c+c+<c+>c+b<c+>b<c+>]
+;
+
+{6}
+$
+[l16 'bas' 
+[ee<e>e<d>e<e>e eea<ae>a<ae>  ff<f>f<e>f<f>f <fedc>bagf
+ee<e>e<d>e<e>e eeac+eaec+  ff<f>f<e>f<f>f j2 <g8gd8d>gf] ee<e>ee<ee>e
+f8ff8efe <a8.e8.>a8  f8ff8efe a8aa8<ae>a  ff<f>f<e>f<f>f <dd<d>dad<d>d
+'hch' l32 >b<d+ef+b> b<d+efb<d+ >b<f+> f+b<d+f+> b<d+ef+> b<d+f+b df+b<d+> f+b<f+]
+['bas' l16
+f+f+<f+>f+ef+ef+ <f+>f+ef+f+f+<f+>f+  <ef+ef+>f+<f+ef+ dd<d>dc+dc+d
+d<d>a<d>c+c+<c+>c+ b<c+>b<c+>c+<c+>g+<c+]
+;
+
+{7}
+$
+[l8 "y2hhhh" [24"h"] "y2hhhh" "hhhhz.z.z" "y2hhhh" "y2y2"
+"y2hhhh" [8"h"] "y2hhhh" "y2z.z.z"]
+'brs' l16 [4ag+rarbrarg+ar j4 ag+rarbrarg+a8] f8.g+8.<c+8f4
+;
+
+{8}
+$
+[l16 'or2' >>
+[r8brarbr r8<erdere  r8cr>br<cr r8cr>b<c>b<c>
+r8brarbr r8<erdere  r8cr>b<c>b<c j2 r8drcrdr>] >eb<b<ebe>b>b
+<cr8cr8cr er8er8de  cr8cr8cr er8derde    cr8cr8cr ar8ar8ga  f+r8f+r8ef+ ef+ref+ref+]
+l8 ["!!!o y2hh hhhhhh y2hh y2hh"]
+;
+

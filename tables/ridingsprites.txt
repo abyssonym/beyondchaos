@@ -1,0 +1,6 @@
+16,leo_riding.bin
+17,banon_riding.bin
+18,esperterra_riding.bin
+19,merchant_riding.bin
+20,ghost_riding.bin
+21,kefka_riding.bin

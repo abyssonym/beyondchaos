@@ -1,0 +1,60 @@
+#TITLE Victory Fanfare
+#ALBUM Final Fantasy Mystic Quest
+#COMPOSER Yasuhiro Kawakami
+#ARRANGED emberling
+# via ff5~ff6mcs2
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x22
+#WAVE 0x21 -- 0x14
+#WAVE 0x22 -- 0x11
+#WAVE 0x23 -- 0x17
+#WAVE 0x24 -- 0x20 
+#WAVE 0x26 -- 0x02
+#WAVE 0x27 -- 0x0E
+
+
+{1} t140%x232
+l16%b60,0%v75v80p64@39o6%e1c6r12c24r24c24r24c24r24e12r12c12r12e12r12  
+g12rr24<c24r48c2r4  $ >erererdr4rfrfr  frer4rdr8.er8.  dr8.dr8.c4r8er  
+r8erdr8.cr8.dr8.  <
+;
+
+{2}
+l16v50p80@39o5%e1g6r12g24r24g24r24g24r24<c12r12>g12r12<c12r12  
+e12rr24g24r48g2r4  $ crcrcr>br4r<drdr  drcr4r>br8.<cr8.  >a+r8.a+r8.a4r8<cr  
+r8cr>a+r8.ar8.a+r8.  <
+;
+
+{3}
+l16v127p64@32o5c4c12c12c12c6c6c6  c8.cc2@33d4  $
+@32c4@33d8r8@32c8c8@33d8@32c8  r8c8@33d8@32c8c8c8@33d8@32c8  
+;
+
+{4}
+l16v104p64@38o6c6r12c24r24c24r24c24r24e12r12c12r12e12r12  
+g12rr24<c24r48c2r4> $[6crcr]crcrcr<cr>>[6a+ra+r  ]a+r<a+r>br<br
+;
+
+{5}
+l16v50p96@39o5%e1c6r12c24r48c24rc24r24  
+c12r12c12r12c12r12c12rr24c24r48c2  r4 $v32p32 @5 o4%a8%y7%s7%r8m96,43,192g1  
+^2^4a4  f1  ^2^4d4  
+;
+
+{6}
+l16v80p72@34o6%y6%s0 c4c4c4c4  
+c8.cv55p0>%yg2v80p72<%y6%s0c4 $ c8c8c8ccc8c8c8c8  c8ccc8c8c8c8c8%yc8  
+%y6%s0c8c8c8ccc8c8c8c8  c8ccc8c8[2c8%yc8%y6%s0]
+;
+
+{7}
+l16v25p127@35o6r2  
+e6v50p64c6v25p0>g6r4v55p127@34o4%a15%y7%s7%r20g+2   r4 $v32p56 |4 o6%e1%a15%y6%s3%r20%rerererdrdrdr  
+frfrfrerererdrdr  ererdrdrdrdrcrcr  crerererdrdrcrcr  drdr
+;
+
+{8}
+l16v50p32@39o5%e1e6r12e24r48e24re24r24g12r12e12  
+r12g12r12<c12rr24e24r48e2  r4 $v32p48 |4 o6%a15%y6%s3%r20%r>[8grgr][8frfr]
+;

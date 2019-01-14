@@ -1,0 +1,285 @@
+#TITLE Flight
+#ALBUM Xenogears
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x46~/0x0D/ strings
+#WAVE 0x21 ~0x6a~/0x1A/ deep brass
+#WAVE 0x22 ~0x73~/0x08/ horn
+#WAVE 0x23 ~0x0E~/0x0E/ trumpet
+#WAVE 0x24 ~0x1B~/0x1B/ harp
+#WAVE 0x28 ~0x16~/0x16/ timpani
+#WAVE 0x29 ~0x81~/0x14/ snare
+#WAVE 0x2A ~0x12~/0x12/ crash
+
+#def global= t147%v50%x224%b0,70
+
+{ mixer }
+#def h= %r22
+#def str= |0 o6 m48,18,207
+#def oct= |1 ~o3~/o5/ m48,18,239
+#def horn= |2 o5 %s5 m48,18,207
+#def pet= |3 o6 m48,18,239
+#def harp= |4 o4 m
+#def timp= |8 o4 m
+
+{ shortcuts }
+#def brha= |3 < p64v127 'h'
+#def brhb= |0 > p88v96 'h'
+
+{ patterns }
+#def p_intro= 'h'[[v112c8v80c8c8]v112c8v80c8]
+
+{ drums }
+#drum "a"=~5f~/5f/ |9 v55
+#drum "b"=~5f~/5f/ |9 v69
+#drum "c"=~5f~/5f/ |9 v81
+#drum "j"=~5g~/5g/ |9 v79
+#drum "k"=~5g~/5g/ |9 v93
+#drum "l"=~5g~/5g/ |9 v105
+#drum "p"=~5g~/5g/ |9 v64
+#drum "q"=~5g~/5g/ |9 v87
+#drum "r"=~5g~/5g/ |9 v101
+#drum "s"=~5g~/5g/ |9 v113
+
+#drum "y"=5f |A %y
+#drum "z"=5f |A %a3
+
+{1}
+'global'
+%e1 'str' > p104 l8
+%k0 'p_intro' > %k8 'p_intro' %k5 'p_intro' %k7 'p_intro' <%k0
+[ ##9 -- burgundy + gray (green is dropped)
+[v112p72<c>p104v80ccv112c p72<c>p104v80cv112cv80c]
+[v112p72<c>>p104v80g+g+v112g+ <p72<c>>p104v80g+v112g+v80g+<]
+[v112p72<c>>p104v80ffv112f <p72<c>>p104v80fv112fv80f<] j2,10
+[v112p72<d>>p104v80ggv112g <p72<d>>p104v80gv112gv80g<]
+]$10
+v112p72<d->>p104v80d-d-v112d- <p72<d->>p104v80d-v112d-v80d-<
+v112p72<e->>p104v80e-e-v112d- <p72<e->>p104v80e-v112e-v80e-
+$[##25 -- pink + gray (yellow is dropped)
+'str''h' >> v112 l8
+[[p36<a-4>p104e-]e-e-]
+[p36<b-4>p104e-]e-e- p36<b-4>p104e-p36<b-4>p104d-d-d-
+[[p36<a-4>p104c]cc]
+[[p36<f4>p104>a-<]>a-a-<]
+##33
+[[p36<a-4>p104e-]e-e-]
+[[p36<g-4>p104d-]d-d-]
+[p36<f4>p104c]cc p36<g4>p104>a-<p36<f4>p104>a-a-a-<
+[[p36<b-4>p104>b-<]>b-b-<]
+##41 -- dark green + dark red
+'str' p48 v112 > l4
+a-1g1f1e-2a-g   a-1^1g1.fg
+##49
+a-1g1f1e-2a-g   a-2b-2a-2.b-g1...r8
+]##89 -- green/red/blue/brown
+p32 l8
+c1^4..r16>b-.<c.d-1.^16r16d-.e-. >a-1.^16r16f.a-.b-2..a-4g2f4r4
+;
+
+{2}
+%e1 'oct' p90
+##9 after 1st loop -- navy + gray
+[3%k0 < 'p_intro' > %k8 'p_intro' %k5 'p_intro' j3,20 %k7 'p_intro']$20
+%k1 [v112c8v80c8c8]v112c8v80c8 %k3 [v112c8v80c8c8]v112c8v80c8 %k0
+$[##25 -- dk.green/navy (follow green)
+l8 p70 v112
+[[a-4a-]a-a-] [[b-4b-]b-b-]
+[a-4a-]a-a- a-4a-a-4ggg   [f4f]ff f4ff4ggg
+##33
+[[a-4a-]a-a-] [[b-4b-]b-b-]
+[a-4a-]a-a- g4ff4fff       [[g4g]gg]
+##41 -- gray evoking navy
+p90 v127 <
+[c.c.c4ccc] d-.d-.d-4d-d-d- [e-.e-.e-]
+c.c.c4ccc >a-.a-.a-4a-a-a- [b-.b-.b-4b-b-b-]<
+##49
+[c.c.c4ccc] d-.d-.d-4d-d-d- [e-.e-.e-]
+c.c.c>b-.b-.b-< c.c.c4c>b-b- [b-.b-.b4-b-b-b-]
+]##89 -- gray evoking navy
+%k5 'p_intro' %k6 'p_intro' %k1 'p_intro' %k3 'p_intro' %k0
+;
+
+{3}
+[15r2]
+%e1 'harp' p0 v60 v96,84 l16
+c.f.<c.f.<c8
+##9 -- teals high
+g4. 'horn' p88 v96 l4
+[e-1.r8 c.g1.r8 c^16r16f1^16r16e-f j2g1d2..r8
+c.]     g.a-.b- <c>b-<e-d->
+$[##25 -- teals high
+'horn' p88 v96 l4
+a-1g2a-b-  e-1^.r8d-2  c1f2g2 a-1^..r16a-8.b-8.e-8
+##33
+^1....r16 d-1....r16 c2f2gfg.a-8 b-1....r16
+##41
+a-2^8.r16a- g2^8.r16e- f2^8.r16f e-2...r16
+f2g2 a-2^8.r16d- e-1....r16
+##49
+a-2^8.r16a- g2^8.r16e- f2^8.r16f e-2...r16
+f2g2 a-2^8.r16b- b-1...r8
+]##89 -- burgundy + a higher teal
+< 'brha' l8
+c4'brhb'c4'brha'c'brhb'c4.          'brha'c4.'brhb'c'brha'c2
+d-4'brhb'd-4'brha'd-'brhb'd-4.      'brha'd-4.'brhb'd-'brha'd-2
+d-4'brhb'>a-4<'brha'd-'brhb'>a-4.<  'brha'd-4.'brhb'>a-<'brha'd-2
+e-4'brhb'>b-4<'brha'e-'brhb'>b-4.<  'brha'e-4.'brhb'>b-<'brha'e-2
+;
+
+{4}
+[15r2]
+%e1 'harp' p0 v60 v96,84 l16
+r32 d.g.<d.g.<d.
+##9 -- teals low
+'horn' p88 v96 l4
+>[g.b-1.r8 g.<c1.r8> g.<c1^16r16>b-<c j2d1>b2..r8]
+        e-.f.g a-g<c>b-
+$[##25 -- teals low
+'horn' p88 v96 l4
+e-1....r16 >b-1....r16 a-1<c2e-2 f1^..r16f8.g8.c8
+##33
+^1....r16 >b-1....r16 a-2<c2e-d-e-.f8 g1....r16
+##41
+f2^8.r16f e-2^8.r16c d-2^8.r16d- >b-2...r16<
+c2e-2 f2^8.r16>a- b-1....r16<
+##49
+f2^8.r16f e-2^8.r16c d-2^8.r16d- >b-2...r16<
+c2e-2 f2^8.r16g g1...r8
+]##89 -- dk.green + a lower teal
+ 'brha' l8
+f4'brhb'f4'brha'f'brhb'f4.      f4.f'brha'f2
+g-4'brhb'g-4'brha'g-'brhb'g-4.  g-4.g-'brha'g-2
+a-4'brhb'f4'brha'a-'brhb'f4.    f4.f'brha'a-2
+b-4'brhb'g4'brha'b-'brhb'g4.    g4.g'brha'b-2
+;
+
+{5}
+[15r2]
+%e1 'harp' p0 v60 v96,84 l16
+r e-.b.<e-.b.<e-
+##9 -- yellow + pink
+'str' p40 v112 l8 'h' >
+[
+[g<c>g<d>g<e->g<f> g<e->g<d>g<c>g<d>]
+[a<c>a<f>a<g>a<f>] j2
+g<c>g<d>g<e->g<f> g<e->g<d>g<c>g<d>
+] g<d->a-<e->a-<f>a-<g> a-<a->a-<g>a-<f>a-<e-
+$[##25 -- blue/brown/red/lt.green
+'str' p32 v112 l4
+c.e-1.r8 >b-.<e-1^8fg a-8.b-8.g.e-2. c8.e-8.f1.r8 f8.g8.e-8
+##33
+^4>a-8b-8<c2...r16ce-  d-2>b-1a-b-
+a-2<a-2gfe-.d-8e-1^..r16 >a-b-<
+##41
+c2f2e-2.c   d-8.e-8.f.c >b-8.<c8.>a-.g
+a-2<e-..r16 e-2.d-  >b-1^..r16a-b-<
+##49
+c2f2e-2.c   d-8.e-8.f.c >b-8.<c8.>a-.g
+a-2<e-2 a-2.b-8.r16 b-1...r8
+]##89 -- yellow + pink
+'h'> l8
+[5fg<c>]f   [5g-a-<d->]g-
+[fa-<d->a-<e->a-<d->a-] [gb-<e->b-<f>b-<e->b-]
+;
+
+{6}
+'timp' p64 v127 %e1 l8
+c1 c.>g.<c4>g<c>g   a-2..v104a- v127a-2v104v96,127^a-a-a-
+f2.<c4.>f4.<c4>f4   g4.<d4.>g4.<d4.>g4<d4
+##9
+[c1.v104v96,127^ccc  >a-1.v104v96,127^a-a-a-
+f2.<c4.>f4.<c4>f4   j2  g4.<d4.>g4.g4.v104v96,127gggg<]
+<d-4.>a-4.<d-4e-4.>b-4.<e-4>
+$[##25
+l16
+a-2..v96v24,127a-a- a-2^8a-4.   g2..v96v24,127gg g2^8g4.
+f2..v96v24,127ff f4.<c4.>f4     <d-4.>a-4.<d-4.>a-4.<d-4>a-8v96v24,127<d-d->
+a-2..v96v24,127a-a- a-2^8a-4.   g-2..v96v24,127g-g- g-2^8g-4.
+f4.<c4.>f4 <d-4.>a-4.<d-4       e-4.>b-4.<e-4.>b-4.<e-4>b-4
+##41
+l8
+f4.f2v112fv127 <c4.>g4.<c4     d-4.>a-4.<d-4> a-4.a-g4.g
+f4.<c4.>f4 <d-4.>a-4.<d-4       e-4.>b-4.<e-4.>b-4.<e-4>b-4
+f4.f2v112fv127 <c4.>g4.<c4     d-4.>a-4.<d-4> a-4.a-g4.g
+f4.v96v24,126f16f16<e-.e-.e- d-4.>a-4.<d-4      e-4.>b-4.<e-4.>b-4.<e-4>b-4
+]##89
+f1.v96v96,127^fff g-1.v96v96,127^g-g-g-
+<d-1.v96v96,127^d-d-d- e-4.>b-4.<e-4.>b-4.<e-4>b-4
+;
+
+{7}
+%e1 v127 p64 l1
+[3"y^y^y^y^2z2"]
+$[##25
+[2"y"[6^]^2"z2"]
+##41
+"y^^y2y2yy^^2z2" "y^^y2y2y2y2y^^2z2"
+]##89
+"y^y^y^y^2z2"
+;
+
+{8}
+$
+### |.8.4.8.2.8.4.8.|.8.4.8.2.8.4.8.
+### c  a a  a b c  b  a b c  a a  a
+###   a b c  a a  a c  a a  a b c  b
+### s     s       s s     s       s 
+%e1%g1 p64 l16
+ [7"s8aabas8aabac8qb"]
+### |.8.4.8.2.8.4.8.
+###   a b c b b a c
+### c  a a a a a b c
+### s     s   q r s 
+   "s8aabasabakaqbsc"
+## ~~9~~
+ [[7"s8aabas8aabac8qb"]   "s8aabasabakaqbsc"]
+$[## ~~25~~
+## |.8.4.8.2.8.4.8. (1-4) |.8.4.8.2.8.4.8. (5) |.8.4.8.2.8.4.8. (6)
+## c     c     c b        c  b    b  b a c        a  c     c  b
+##    a      a  a c         a   c   a c b      c   b     c   a
+## s     s       s        s     s       s      s     s       s 
+##  | . 8 . 4 . 8 . 2 . 8 . 4 . 8 . (7) | . 8 . 4 . 8 . 2 . 8 . 4 . 8 . (8)
+##   b~ a   c     a     b     b         b       c ~a  b     c     a   c
+##  c ~b  a     c   a       c     c         c    b~ a   c       a   b
+##  s           s               s       s           s               s
+[4"s8.a8.s4a8carc"] "s8ab8.s8b8abcarc" "s8.ab8s4c8c8qb"
+"s24b24b24aac8saa8b8cbpc" "r8c8c24b24a24qbc8c8aarc"
+## |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8.
+##  a    c   b  b   c     c     c b  c     c     c b  c   b     c   a
+## c  b    a   c  c    a      a  a c    a      a  a c    a  c     c  b
+## s     s       s  s     s       s  s     s       s  s     s       s
+  "sa8b8.s8a8b8cbpc" ["s8.a8.s4  a8carc"]            "s8.ab8s4  c8c8qb"
+## |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8.
+## c  b    b  b a c    a  c     c  b  a    c   b  b   c   b   b c c  c
+##   a   c   a c b  c   b     c   a  c  b    a   c  c    a  c  a b  b
+## s     s       s  s     s       s  s     s       s  s     s       s
+  "s8ab8.s8b8abcarc s8.ab8s4  c8c8qb sa8b8.s8a8b8cbpc s8.ab8s8bacbc8rc"
+## ~~41~~
+## |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8.
+##    a  c   b   b  c   b   a   c  c    a  c   b   b  c   b   a   c  c
+## c   b   a   c  c    a  c   b   b  c   b   a   c  c    a  c   b   b
+## s     s       s  s     s       s  s     s       s  s     s       s
+[4"s8.ab8s8a8b8c8rc"]
+## |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8.
+##    a  c   c   a  c   b   a   c  c    a  c   b   b  c   b  b  a c a 
+## c   c    a  c  c    a  c   b   b  c   b   a   c  c    a  c c  b a b
+## s     s       s  s     s       s  s     s       s  s     s       s
+  "s8.ac8s8.ac8c8qc" ["s8.ab8s8a8b8c8rc"]            "s8.ab8sbc8abcaqb"
+## |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8.
+## c   b   a   c  c    a  c   b   b  c   b   a   c  c    a  c   b   b
+##    a  c   b   b  c   b   a   c  c    a  c   b   b  c   b   a   c  c
+## s     s       s  s     s       s  s     s       s  s     s       s
+[4"s8.ab8s8a8b8c8rc"]
+## |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8. |.8.4.8.2.8.4.8.
+## c     c    c     c   c    a  c  c     b   a   c  b   a c  b  a c b
+##    b    c     c     a  c   c   a  c     c   b   a  c  b  a c  b a c
+## s     s       s  s     s       s  s     s       s  s     s       s
+  "s8.b8.s8c8.c8.s8 s8.ac8s8.ac8c8qc s4  b8s8a8b8c8qb s8abc8qbc8abcarc"
+]## ~~89~~
+[7"s8aabas8aabac8qb"]   "s8aabasabakaqbsc"
+;

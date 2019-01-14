@@ -1,0 +1,186 @@
+#TITLE Beginning
+#ALBUM Super Castlevania 4
+#COMPOSER Masanori Adachi, Taro Kudou
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x08~/0x08/
+#WAVE 0x21 ~0x0D~/0x0D/
+#WAVE 0x22 ~0x07~/0x07/
+#WAVE 0x23 ~0x6b~/0x02/
+#WAVE 0x24 ~0x3B~/0x3B/
+#WAVE 0x25 ~0x7F~/0x0E/
+#WAVE 0x26 ~0x74~/0x0A/
+#WAVE 0x27 ~0x7B~/0x1D/
+#WAVE 0x2A ~0x22~/0x22/
+#WAVE 0x2B ~0x56~/0x21/
+#WAVE 0x2C ~0x84~/0x17/
+
+#def global= t122 %v30 %b0,70 %x224
+
+#def hrn= |0 o5 %e1 m48,18,231 %r10
+#def str= |1 o4 %e1 m48,18,207
+#def flt= |2 o5 %e1 m48,18,231 %s5%r11
+#def bas= |3 ~o5~/o5/ %e0 m
+#def org= |4 o5 %e1 m48,18,223
+#def pet= |5 ~o5~/o6/ %e1 m48,18,239 %r12
+#def cla= |6 ~o5~/o5/ %e1 m48,18,231
+#def pia= |7 o4 %e1 m
+
+#drum "t"=5b |C v73 p30 %e0
+#drum "u"=5g |C v73 p64 %e0
+#drum "v"=5e |C v43 p98 %e0
+#drum "w"=5e |C v61 p98 %e0
+#drum "x"=5e |C v78 p98 %e0
+#drum "y"=5e |C v82 p98 %e0
+#drum "z"=5d+ |B v73 p60 %e0 'snr'
+
+#drum "a"=5f |A v86 p60 %e0
+#drum "b"=5f |A v82 p60 %e0
+#drum "c"=5f |A v78 p60 %e0
+#drum "d"=5f |A v73 p60 %e0
+#drum "e"=5f |A v69 p60 %e0
+#drum "f"=5f |A v65 p60 %e0
+#drum "g"=5f |A v61 p60 %e0
+#drum "h"=5f |A v56 p60 %e0
+#drum "i"=5f |A v52 p60 %e0
+#drum "j"=5f |A v48 p60 %e0
+#drum "k"=5f |A v43 p60 %e0
+#drum "l"=5f |A v38 p60 %e0
+
+#drum "a+"=5g |B v86 p60 %e0 'snr' ## N-SPC vel 15= 126/127
+#drum "b+"=5g |B v82 p60 %e0 'snr' ## N-SPC vel 14= 121/127
+#drum "c+"=5g |B v78 p60 %e0 'snr' ## N-SPC vel 13= 114/127
+#drum "d+"=5g |B v73 p60 %e0 'snr' ## N-SPC vel 12= 108/127
+#drum "e+"=5g |B v69 p60 %e0 'snr' ## N-SPC vel 11= 101/127
+#drum "f+"=5g |B v65 p60 %e0 'snr' ## N-SPC vel 10=  95/127
+#drum "g+"=5g |B v61 p60 %e0 'snr' ## N-SPC vel 9 =  89/127
+#drum "h+"=5g |B v56 p60 %e0 'snr' ## N-SPC vel 8 =  82/127
+#drum "i+"=5g |B v52 p60 %e0 'snr' ## N-SPC vel 7 =  76/127
+#drum "j+"=5g |B v48 p60 %e0 'snr' ## N-SPC vel 6 =  70/127
+#drum "k+"=5g |B v43 p60 %e0 'snr' ## N-SPC vel 5 =  63/127
+#drum "l+"=5g |B v38 p60 %e0 'snr' ## N-SPC vel 4 =  57/127
+#def snr= /%r21/
+
+{1}
+'global' $
+l24 "ddd"l16"ddc+ccc+8e32e32dc" "c+ccc+j+d+c+cc+ccc+cc+i+c+"
+l24 "tttuuu"l16"vwxy c+ccc+i+c+cc" "c+ccccj+f+i+c+d+cc+bzzz" "a2^8.k+32i+32g+c+c+c+"
+##6
+l24 "b+12j+g+i+e+"l16"b+c8d+8.ccc+c8." "c8c8c+c8d8.cc+gc8e"
+"c8c8c+8c8.c8.c+c8b" "^c8c8c+a8a8ah+e+b+c+b+"
+"c8c8c+e8c8.ci+32h+32c+c8." "c8cc+c8c+8c8cc+c8c+c+"
+"cc8.c+8c8c8.cc+8c8" "c8e8c+c8.a8c+f+32f+32d+b+8c+"
+##14
+[3"ccc+c8cc+4^c8cc+c"] "g+l+l+e+ j+j+d+e dk+g+c+ d24c24c24c+c+"
+##18
+'hrn' p64 l16 >v45d+2f2  a+4^<fg+a+ v40f+8.d+8.>a+8
+v45g+4^b<d+f+> a4^<d+g+a    <d+4.fd+v51d2
+##22
+[16"!!!o ccc+c"] "ccd+c c+c+cc+ cc+c+c"l24"d+j+e+j+c+i+"
+l16 "cc+c+c ccc+c ci+32i+32g+24e+24c+24 cccc"
+;
+
+{2}
+$
+'bas' l16 p64 v85 [d+d+d+d+ v90<d+8>d+<d+8>d+d+d+ <d+8>d+<d+8>d+d+d+<d+>d+[d+<d+>]d+d+
+j2 d+<f>a+<a+>] v85a+2. v76<a+a+a+a+>
+##6
+v91d+8d+d+<d+r>d+d+rd+8<d+>d+<d+>e<e> f8.<f8>f<f8>e8.<e8>e<e8>
+d+8.d+8<d+r>d+8<<v61c+v57d+>v61g+a+v66fv71f+v91d+> f8.f8f<g+a+>a+8a+a+8.<d>a+
+d+8d+d+<d+r>d+d+r<d+c+>g+a+d+<c+d+> f8.<f8>f<f8>e8.<e8>e<e8>
+d+8d+8<d+r>d+d+r<<v61c+v66d+>>v91a+<<v61d+>>v91a+<v61g+v66a+> v91f8.f8f<g+a+>a+8.a+8.a+8
+##14
+b8.b8v85b<v76ab>r8.v91b8.b8  a+8.a+8v85a+<v76g+a+>r8.v91a+8.a+8
+a8.a8a<v81a>v91a8r8a8.a8  v76a+8.v81a+8.v85a+8.a+8.v91a+8a+8
+##18
+'str' l2 p78 v28a+v30a v32a+v34a v36g+a v40a+1
+##22
+'bas' l16 p64
+v88d+d+d+d+ d+d+<d+>d+ <c+c+c+c+ c+c+<c+>c+    cccc ccv83a+<c> >v88b<v83a+b>v88a+ v83g+<g+>v88g+<g+>
+d+d+d+d+ d+d+<d+>d+ <c+c+c+c+ c+c+<c+>c+    cccc ccv83a+<c> >v88b<v83a+ba+ <v60c+d+>v83g+a>
+v88a+a+a+a+ <v78a+a+>v88a+a+ a+<v78a+a+>v88a+ a+12a+12a+12    a+<v78a+a+>v88a+ a+a+a+a+ a+a+a+<v73a+ a+a+a+a+
+;
+
+{3}
+$
+'pet' l8 p64 v43 [r4 f+.f^.f.d+^.d+.d+j2^. l16 fg+b<d>] 'org' p15v28 r4.. <g+fd>bg+fd v32 ba+g+f+f
+##6
+'str' l4 p50 v26 <d+1 f2e2 v28d+1 &2rv36&94f2>v43a+<d>
+l8 r. v49d+2^^. v56f2v52g+2 v63d+1 v56c.f.d+ l16 <v56a+v53g+f+fv49d+d>ba+
+##14
+'str' p64 v45 f+1^1^1
+l8 v47f+.v50g.v53g+.v57a.<v60dd
+##18
+'str' l2 p50 v28<d+1 v32dv34d+ ^1 ^v40d
+##22
+'str' l4 p64 <v47d+2c+2 c2>ba+<  v41d+2c+2 c2>v47g+a    a+1..<v31v48,63a+
+;
+
+{4}
+$
+'hrn' l8 p50 v43 [r4 a+.g+^.g+.g+^.j2v48g+.v43g+^. l16 g+b<df>]
+l8 g+.g+^. r2 'flt'p113 l16 <g+fd>v40bg+fd>b
+##6
+'str'< l8 p78 v26f+1 c2>b2< v28f+1 v27f.v40d+.aa+2
+v42f+1 v52f.c.fe.>b.<e v30f+.g+.v33a+4f+4. v47f.d+.a>v62a+.>a+^.
+##14
+'pia'< l16 p78 <v47d+d+v36d+>v47bbv36bv47f+f+ v36f+v47bbv36b<v47d+v36d+v47fv36f
+v47d+d+v36d+>v47a+a+v36a+v47f+f+ v36f+v47a+<d+>a+<d+v36d+v47fv36f
+v47d+d+v36d+>v47aav36av47f+f+ v36f+v47a<c>a<d+c>a<c>
+'str' l8 v47a+.v50b.<v53c.v57c+.v60ff
+##18
+'str' l2 p64 v28<f+v32f ^1 fv34f v40f1
+##22
+'pet' l16 p64 v47 [d+f+a+<d+4^>][d+f+a+<d+8.>]fg+b<f> [d+f+a+<d+4^>][d+f+a+<d+8j2^>]>fg+b<f8>
+v26a+ v31ba+ v36ba+b v41a+b l24 a+ v47[5ba+]b a+2
+'flt' p89 v46 l32 a+<dfa+^8r4
+;
+
+{5}
+$
+'hrn'< l8 p64 v54 [r4 d+.c+^.c+.c^.c.>bj2l16ba+g+ba+<df]
+v53 g+<dfv47g+fd bg+fd>bg+fd v53 <ba+g+f+f
+##6
+'cla'< l16 p64 v39f+fd+>a+4.a+<d+ff+fd+a+  a8.f8.a8g+8.e8.g+8
+f+fd+>a+4.a+<d+ff+fd+a+  a8.f8.<d+8dd+f>a+8^8.
+f+fd+>a+4.a+<d+ff+fd+a+  a8.f8.a8g+8.e8.g+8
+f+fd+>a+4.a+<d+ff+fd+a+  >a8.<d+8.f+8d8.f8.a+8
+##14
+'pia'< l16 p50 <v47f+f+v36f+v47d+d+v36d+>v47bbv36b<v47d+d+v36d+v47f+v36f+v47g+v36g+
+v47f+f+v36f+v47d+d+v36d+>v47a+a+ v36a+<v47d+f+d+f+v36f+v47g+v36g+
+v47f+f+v36f+v47d+d+v36d+>v47aa v36av47<cd+cf+d+cd+>
+'str'< l8 v47d.v50d+.v53e.v57f.v60g+a+
+##18
+'flt' l8 p89 <v40f+.d+.>a+a.<f.d+ d2d+2    >g+.b.<d+f+.f.d+
+a+12b24^32a+24^32b16a+16b32^48a+32^48b24v45a+2
+##22
+'pet' l16 p78 v20 r8 [d+f+a+<d+4^>][d+f+a+<d+8.>]fg+
+v36 [f+a+<d+f+4^>][f+a+<d+f+8j2^>]>g+b<fg+8>
+
+r1 'org' l24 p50 v36 <[6a+b] l32 p15p96,113 v44 a+g+f+f d+d>ba+ g+f+fd+ d>ba+b
+;
+
+{6}
+$
+r8r24 'hrn'< l8 v33p78 [r4 d+.c+^.c+.c^.c.>l16bj2^ba+g+ba+<df] r12
+r 'cla' p64 v32 < g+fdfd>bg+fd>bg+<a+<cc+d
+##6
+'cla'< l16 p64 r8 v30f+fd+>a+4.a+<d+ff+fd+a+  a8.f8.a8g+8.e8.g+8
+f+fd+>a+4.a+<d+ff+fd+a+  a8.f8.<d+8dd+f>a+8^8.
+f+fd+>a+4.a+<d+ff+fd+a+  a8.f8.a8g+8.e8.g+8
+f+fd+>a+4.a+<d+ff+fd+a+  >a8.<d+8.f+8d8.f8.
+##14
+'hrn' %r23 l16 p15p192,113 v45   >b<d+f+d+bf+<d+>bf+b<d+f+bf+d+>b
+>a+<d+f+d+a+f+<d+>a+d+f+a+f+<f+d+>a+>a+    a<d+f+a<v48c>f+a<cd+>a<cd+ad+v51c>a    r1
+##18
+'flt' l8 p39 r<v24f+.d+.>a+a.<f.d+ d2d+2    >g+.b.<d+f+.f.
+l16 [3"!!!o ccc+c"]"f24b24b24c+48h+24c"
+##22
+'pet' l16 p50 v33 r12 [d+f+a+<d+4^>][d+f+a+<d+8.>]fg+b<f> [d+f+a+<d+4^>][d+f+a+<d+8j2^>]>fg+b<f8>
+
+r16 'pet' l16 p78 v27a+ba+ v32ba+b v36a+b l24 a+ v40[5ba+]b&88a+
+'flt' l32 p39 v33 a+<dfa+^8 r12r16
+;

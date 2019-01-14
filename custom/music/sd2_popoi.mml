@@ -1,0 +1,112 @@
+#TITLE The Little Sprite // The Fairy Child
+#ALBUM Secret of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~
+#VARIANT / nopatch
+#DEVIANT popoi is a little jerk and i love them
+
+#WAVE 0x21 -- 0x3E
+#WAVE 0x22 -- ~0x5E~ /0x30/
+#WAVE 0x23 -- 0x07
+#WAVE 0x24 -- ~0x57~ /0x2E/
+#WAVE 0x25 -- ~0x59~ /0x22/
+#WAVE 0x26 -- ~0x51~ /0x2A/
+#WAVE 0x27 -- ~0x40~ /0x0A/
+#WAVE 0x28 -- 0x33
+#WAVE 0x29 -- 0x2D
+#WAVE 0x2A -- 0x0F
+#WAVE 0x2B -- ~0x68~ /0x11/
+
+
+{1}
+l16%x150%v8t120%b0,70r64p64v65 $1 
+~[2[4o4@37br@36aa@37br@36aa@37br@36aa@37bb@36aa]~
+/[2[4o5@37gr@36aa@37gr@36aa@37gr@36aa@37gg@36aa]/
+~[@37gr@36a@37brb@36aa@37br@36a@37brb@36aa~
+/[@37gr@36a@37grg@36aa@37gr@36a@37grg@36aa/
+~@37br@36aa@37br@36aa@37br@36aj2a@37bb@36aa]@37brb@36aa]~
+/@37gr@36aa@37gr@36aa@37gr@36aj2a@37gg@36aa]@37grg@36aa]/
+~@37bbrb@36gr8.@37bbrb@36gr8.  @37bbrbr8@36gr@37bbrb@36gr8.~
+/@37ggrg@36gr8.@37ggrg@36gr8.  @37ggrgr8@36gr@37ggrg@36gr8./
+~@37bbrb@36gr8.@37bbrb@36gr8.  @37bbrbr8@36gr@37bbrb@36gr@37br~ 
+/@37ggrg@36gr8.@37ggrg@36gr8.  @37ggrgr8@36gr@37ggrg@36gr@37gr/
+;1
+
+l16
+{2}
+l16r64p64v65 $2 o6@42[2[4grgggrgggrgggggg  
+][3ggrggggrggrggggr  ]ggrggrgrggrggggr  ][4gg@43g@42ggg@43g@42ggg@43g@42ggg@43g@42g  
+]
+;2
+
+l16
+{3}
+l16r64p72v122@38o5 $3
+~[2[2r8er8.er8.er8.er  r8er8.er8.er8.ee]~
+/[2[2r8ar8.ar8.ar8.ar  r8ar8.ar8.ar8.aa]/
+~[2@34p55<er@38p72>er@34p55<er~
+/[2@34p55<er@38p72>ar@34p55<er/
+~@38p72>er @34<p55ee @38>p72er @34<p55er @38>p72er]~
+/@38p72>ar @34<p55ee @38>p72ar @34<p55er @38>p72ar]/
+~@34p55<er @38>p72er @34<p55er @38>p72er @34<p55ee @38>p72er8 @34<p55e @38>p72er~ 
+/@34p55<er @38>p72er @34<p55er @38>p72er @34<p55ee @38>p72er8 @34<p55e @38>p72er/
+~@34<p55ee @38>p72er @34<p55ee @38>p72er @34<p55eeeeee @38>p72er]~
+/@34<p55ee @38>p72er @34<p55ee @38>p72er @34<p55eeeeee @38>p72er]/
+~r8er8.er8.er8.er  r8er8.er8.er8eee  r8er8.er8.er8.er  r8er8.er8eere32e32eee~ 
+/r8ar8.ar8.ar8.ar  r8ar8.ar8.ar8aaa  r8ar8.ar8.ar8.ar  r8ar8.ar8aara32a32aaa/
+;3
+
+l16
+{4}
+l16r48p95v23@33 $4 [2o6eeredrdrccrcdrdr  
+eeredrdrc>ar<dgrgr  eeredrdrccrcdrer  f+f+rf+drdr>aara<cr>ar  <ccrcfrfraarafrfr  
+ggrgererddrd>grgr  <ccrcfrfraarafrfr  <ccrc>bragrfredr>gr  ]@41v95<fr8fr4fr8fr4  
+@33v23c>b<cd>agabaeab<cdeg  @41v95fr8fr4fr8fr4  @33v23eeefdddecccd>b<e>g+e  
+
+;4
+
+l16
+{5}
+l16r64v23 $5 @33p33[2o5aaragrgrffrfgrgr  aaragrgref+rg<drdr  
+>aaragrgrffrfgrar  <ddrd>ararf+f+rf+grf+r  aara<crcrffrfcrcr  eerecrcr>bbrbdrdr  
+aara<crcrffrfcrcr  eeredrd>brbrbdrdr  ]@41v57<cr8cr4cr8cr4  @40v57p80%e1>agab<c>bagagab<d>bag  
+@41v57%e0<cr8cr4cr8cr4  @40v57%e1>bab<cdc>bab<c>bab8.r  %e0
+;5
+
+l16
+{6}
+l16r48p80v42@35%e1 $6 o5edeae8drerecrcdr  
+edeae8dre8.r4r  edeab8<crdrd>b32<c32>bag8  aaaba8gra8.r4r  <crc>ara<c8frfered8  
+erecrc>gr<drd>brbgr  <crc>ara<c8aragrgf8  grgdrc>brg8.<<gdc>bg  
+>cr8.>br8.aarabrbr  <cr8.>br8.ar8<<gf+ad>b  cr8.>br8.aarabrar  <dr8.er8.f+r8<gf+af+d  
+@39v30p64r64crc>a48<c48>a12gfr<frfe48f48e12d>br  <crcgrc>argabg<gd>bg  
+<crc>a48<c48>a12gfr<frfe48f48e12d>br  <crcgrc>argab<dg8rr32r64@35v42p80f  
+rferedr>a4<d4c  >b<cdedc>b<c>b<cegec>b<f  rferedr>a4<d4e  degbgf+def+ede8.r
+;6
+
+l16
+{7}
+l16r64p48v42@35%e1 $7 o5c  
+>b<cec8>br<crc>arabr<c  >b<cec8>br<c8.r4rc  >b<ceg8arbrbg8ed8f+  
+f+f+gf+8drf+8.r4ra  rafrfa8<crccrc>b8<c  rc>grgerbrbgrgdra  rafrfa8<frfered8e  
+re>brggrd8.r4rr1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  agab<c>bagagab<d>bag  r1  bab<cdc>bab<c>bab8.r  
+
+;7
+
+l16
+{8}
+l16r64p48v57@40%e1 $8 r1  r1  r1  r1  
+r1  r1  r1  r1  
+o4agab<c>a<cdedeaedc>b  agab<c>b<cde8r4.  >agab<c>a<cdedeaedcc+  
+def+a<c>baf+d8r4.  p64<crc>a48<c48>a12gfr<frfe48f48e12d>br  <crcgrc>argabg<gd>bg  
+<crc>a48<c48>a12gfr<frfe48f48e12d>br  <crcgrc>argab<dg8r8  p48>frferedr>a4<d4  
+<c>b<cdedc>b<c>b<cegec>b  frferedr>a4<d4  <edegbgf+def+ede32f32e32f32e32f32e32r32  
+
+;8
+
+l16

@@ -1,0 +1,128 @@
+#TITLE The Hidden Truth
+#ALBUM Chrono Trigger
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x45~ /0x0D/
+#WAVE 0x21 ~0x53~ /0x31/
+#WAVE 0x22 ~0x60~ /0x1C/
+#WAVE 0x23 0x03
+#WAVE 0x24 ~0x16~ /0x16/
+#WAVE 0x25 0x12
+
+{1} 
+l16t123%v20%b0,60%f0,0%e1r2 $21 |0v90p64o5%a8%r4a+1  g+1  
+f+1  g+1  v192,100a+1  v192,110^1  
+v70p30o5%a10r8a+12r24a+r4ra+12r24a+r8.  r8a+12r24a+r8.<cr8.c+4  
+>r8a+12r24a+r4ra+12r24a+r8.  r8a+12r24a+r8.<cr8.c+4  > $2[ r8a+12r24a+r4ra+12r24a+r8.  
+r8a+12r24a+r8.br8.a+4  r8a+12r24a+r4rb12r24br8.  r8a+12r24a+r8.br8.a+4  
+r8a+12r24a+r4ra+12r24a+r8.  r8a+12r24a+r8.br8.a+4  r8a+12r24a+r4rb12r24br8.  
+r8a+12r24a+r8.br8.a+4  j2,1 ]
+;2
+
+l16 $1 p64%a8v70v255,127g+1
+;21
+
+l16
+{2} 
+l16%e1r2 $22 |0v80p100o5%a8%r4f+1  f1  d+1  f1  
+v192,90f+1  v192,100^1  v60p30o5%a10r8f+12r24f+r4rf+12r24f+r8.  
+r8f+12r24f+r8.ar8.a+4  r8f+12r24f+r4rf+12r24f+r8.  r8f+12r24f+r8.ar8.a+4  
+ $4 [r8f+12r24f+r4rf+12r24f+r8.  r8f+12r24f+r8.f+r8.f+4  r8f+12r24f+r4rf+12r24f+r8.  
+r8f+12r24f+r8.f+r8.f+4  r8f+12r24f+r4rf+12r24f+r8.  r8f+12r24f+r8.f+r8.f+4  
+r8f+12r24f+r4rf+12r24f+r8.  r8f+12r24f+r8.f+r8.f+4  j2,3 ]
+;4
+
+l16 $3 p100%a8v60v255,120f1
+;22  
+
+l16
+{3} 
+l16%e1r2 $23 |0v70p27o5%a8%r4d+1  c+1  >b1  
+<c+1  v192,80d+1  v192,80^1  r1  
+r1  r1  r1   $6[ |3v80p64o6m12,24,201%r7r8a+24r12a8a+24r12b4^ra+24r12  
+a8a+24r12f24r8.r48g+4^rf+24r12  r8d+rd8d+24r12fr8.f+r8.  >b4.a+ba+4.r8  
+r8<a+24r12a8a+24r12b4^ra+24r12  a8a+24r12f24r8.r48g+4^rf+24r12  
+r8d+rd8d+24r12fr8.f+r8.  d+1  j2,5 ]
+;6
+
+l16 $5 |0p27o5%a8v50v255,110d1
+;23  
+%r12^1  
+;23
+
+l16
+{4} 
+l16%e1r2 $24 |1v120p64o6p0,192,127[6d+8a+8g+8a+8  
+f+8g+8f8f+8]pv80p100>r8a+24r12a+24r3  a+24r12a+24r8.r48r8a+24r12a+24r8.r48<c24r8.  
+r48c+8.^48r24>r8a+24r12a+24r3a+24r12  a+24r8.r48r8a+24r12a+24r8.r48<c24r8.r48  
+c+8.^48r24> $8[ r8a+24r12a+24r3a+24r12  a+24r8.r48r8a+24r12a+24r8.r48b24r8.r48  
+a+8.^48r24r8a+24r12a+24r3b24r12  b24r8.r48r8a+24r12a+24r8.r48b24r8.r48  
+a+8.^48r24r8a+24r12a+24r3a+24r12  a+24r8.r48r8a+24r12a+24r8.r48b24r8.r48  
+a+8.^48r24r8a+24r12a+24r3b24r12  b24r8.r48r8a+24r12a+24r8.r48b24r8.r48  
+a+4p64j2,7 ]
+;8
+
+l16 $7 |3v70p64o5v60v255,120d1
+;24
+  %r12^1  
+;24
+
+l16
+{5}
+l16%e1r2 $25 |0v45p64o2%a8d+1  
+[5^1  ]|1v70p100o5[2r8d+rd+r4rd+rd+r8.  r8d+rd+r8.fr8.f+4  ] $10[ r8d+rd+r4rd+rd+r8.  
+r8d+rd+r8.dr8.d4  r8d+rd+r4rd+rd+r8.  r8drdr8.dr8.d4  r8d+rd+r4rd+rd+r8.  
+r8d+rd+r8.dr8.d4  r8d+rd+r4rdrdr8.  r8d+rd+r8.d+r8.d+4  j2,9 ]
+;10
+
+l16 $9 |2p64~o2~/o4/~v60v255,120~/v30v255,60%r10/%a8g1  
+;25
+%r12^1  
+;25
+
+l16
+{6}
+l16|4v1v96,127p64o2r48 g+24g+24g+24g+24g+24g+24g+24g+24g+24g+24g+24g+48 $26 |2~v127~/v64%r12/p64~o3~/o5/%e1[6d+1  
+]v100d+4.d+8d+4.d+8  d+4.d+4d+4f+8  d+4.d+8d+4.d+8  d+4.d+4d+4f+8  
+ $12[ d+4.d+8d+4.d+8  d+4.d+4a+4a+8  d+4.d+8g+4.g+8  a+4.a+4a+4a+8  
+d+4.d+8d+4.d+8  d+4.d+4a+4a+8  d+4.d+8a+4.a+8  d+4.d+8d+4.d+8  
+j2,11 ]
+;12
+
+l16 $11 |4p64o2v60v255,127r48[5g+24g+24g+24g+24]g+24g+24g+24g+48
+;26
+[3g+24g+24g+24g+24]v96,60g+24g+24g+24g+24g+24g+24g+24g+24g+24g+24g+24g+48
+;26
+
+l16
+{7}
+l16|4v1v96,127p64o2[2g+24g+24g+24g+24  
+g+24g+24] $27 <[2d+2^4.d+  d+d+2^4.d+8  ]v70v192,100d+4d+4d+4d+4  v192,127d+4d+4d+4d+4  
+[2d+4.d+d+d+4.d+d+  d+4.d+d+d+4f+4  ] $14[ d+4.d+d+d+4.d+d+  d+4.d+d+d+4f+4  
+d+4.d+d+>g+4.g+g+  a+4.a+a+a+4a+4  <d+4.d+d+d+4.d+d+  d+4.d+d+d+4f+4  
+d+4.d+d+>a+4.a+a+  <d+4.d+d+d+4f+4  j2,13 ]
+;14
+
+l16 $13 >v60v255,127%e1[6g+24g+24g+24g+24]
+;27
+[3g+24g+24g+24g+24]v96,60[3g+24g+24g+24g+24]
+;27
+
+l16
+{8} 
+l16|5v100p64o5%a2%g1g2 $28 
+%yv100[4g1  ]vv40v192,70g4g4g4g4  v192,100g4g4g4g4  [4g2g2  
+] $16[ [8g2g2  ]j2,15] 
+;16
+
+l16 $15 v120%a2%r13g1
+;28
+  ^1  
+;28
+
+l16

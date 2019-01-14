@@ -1,0 +1,87 @@
+#TITLE Ominous Whispers
+#ALBUM Illusion of Gaia
+#COMPOSER Yasuhiro Kawasaki
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+#SFXV ` *
+
+#WAVE 0x20 ~0x41~/0x06/
+#WAVE 0x21 ~0x03~/0x03/
+#WAVE 0x22 ~0x0D~/0x0D/
+#WAVE 0x23 ~0x54~/0x32/
+#WAVE 0x24 ~0x75~/0x16/
+
+#def global= t30 %x224 %v50 %b0,100
+
+#def ch1= |0 o5 v20 p64 %a7 m
+#def ch2= |0 o5 v20 p107 %a7 m1,17,239
+#def ch3= |0 o5 v20 p21 %a7 m2,33,239
+#def pfl= |1 o6 v64 p64 %r10 m12,18,223
+#def str= |2 o5 v40 p64 %a9 m
+#def gtr= |3 o5 v64 p64 %r12 m
+#def tmp= |4 o3 v96 p64 m
+
+#def 62= v42
+#def 75= v55
+#def 85= v65
+#def 92= v72
+#def 100= v80
+#def 106= v86
+#def 112= v92
+
+{1}
+'global' %e1
+$
+'ch1'> a1.^8.r8. d1^4.r4 e4.>a4.<e4.a1^1^16r8. d1^4.r4
+e4.a4.e4. ^32 [8a2]
+;
+
+{2}
+%e1
+$
+'ch2'> b1.^8.r8. a1^4.r4 g+4.b4.g+4.b1^1^16r8. a1^4.r4
+g+4.b4.g+4. ^32 [8b2]
+;
+
+*{3}*`{6}`
+%e1
+$
+'ch3' e1.^8.r8. e1^4.r4 e4.e4.e4.e1^1^16r8. e1^4.r4
+e4.e4.e4. ^32 [8e2]
+;
+
+{4}
+%e1
+$
+&126[10r1] 'str'>> [4f2e2]
+;
+
+{5}
+%e1
+$
+['pfl'> &51r '92'c48>b48<'85'c3 r6
+>'100'&5ar48 '85'&7b&2r <'92'c24&1r &5dr64 &5d+&5r '85'&5er64 &5fr48 '92'd+48r48 &5er48 '85'f48r48 '75'&9d+ '85'e8&1r
+>&75a&9r   <'112'f48'100'e48'92'f3r8
+'100'd32&2r '92'e32r64 &5fr64 &5gr48 &5g+r64 &7ar64 '85'a+32r64 '75'&5g+&5r '92'a32&2r '75'a+32r48 '62'&7g+r48 '92'a3&13r
+&14a '75'&13g+ '92'a16 '100'b8. '92'g+8 '85'e16 a4r64
+'62'e32 '75'&5f '85'&5g+ '92'&5a '106'b8. j2 '92'g+8 e16 '100'&70a&2r]
+<'92'c8> &18b
+['92'e48 d48 e4r12 a8 e2   e48 d48 e4r12 b8 e2]
+;
+
+*{6}*`{7}`
+%e1
+$
+&168[9r1] 'gtr' l24 >ab<c eab ae>b eg+b <eg+b g+e>b^32<
+[32e>b<d]
+;
+
+*{7}*`{8}`
+%e1
+$
+&126[10r1] 'tmp' [3v92 c2.. v75 c24c24c24] v92 c1
+;
+
+*{8}*`{3}` r;

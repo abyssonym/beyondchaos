@@ -1,0 +1,106 @@
+#TITLE Lenna's Theme
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 -- ~0x4F~ /0x0A/
+#WAVE 0x21 -- 0x0D
+#WAVE 0x22 -- ~0x42~ /0x1B/
+#WAVE 0x23 -- ~0x6B~ /0x02/
+#WAVE 0x24 -- ~0x76~ /0x20/
+#WAVE 0x25 -- ~0x78~ /0x35/
+
+#DEF fla= |5 ~o6~/o6/
+#DEF flb= |0 ~o6~/o5/
+#DEF flc= |5 ~o7~/o7/
+
+{1}
+l16%b100,0%v80t83%x180v110p50|0%a13%r10m12,20,201%e1r1  r1  
+'fla'c4g4f4e4  %l1d8e8%l0>b2^8.r  <%l1d8e8%l0>b4.a8%l1b8<d8%l0  c8>%r14a8%r10a2^8r8  
+%l1d8e8%l0a4.e8%l1d8e8%l0  b2^4^8r8  %l1d8e8%l0b4.g8%l1e8g8%l0  <c+2^8r8'flb'>%l1a8b8%l0  
+ $1 t83'flb'[c4g4f4e4  %l1d8e8%l0>b2^8.r  <%l1d8e8%l0>b4.a8%l1b8<d8%l0  c8>%r14a8%r10a2^8r8  
+%l1d8e8%l0a4.e8%l1d8e8%l0  b2^4^8r8  %l1d8e8%l0b4.g8%l1e8g8%l0  a2^4^8r8  
+r1  r1  r1  t81r8t79r8t77r8t75r8t73r2 t83'flc']  
+
+;1
+
+l16
+{2}
+l16v40p65|1m12,20,195%e1%a5%r7r1  r1  o5r1  r1  
+r1  r1  r1  r1  
+r1  r2g2  < $2 e1  ^2d2  
+^1  c2d2  e1  ^2d2  
+^1  c1  c1  c1  
+c2d2  g1  
+;2
+
+l16
+{3}
+l16v45p70|1m12,20,195%e1%a5%r7r1  r1  
+o5r1  r1  r1  r1  
+r1  r1  r1  r2a2  
+^1   $3 g1  ^1  ^1  
+a1  g1  ^1  ^1  
+e2f+2  g2f2  e2f2  <c1  
+>a1  
+;3
+
+l16
+{4}
+l16v50p75|1m12,20,195%e1%a5%r7r1  r1  o5r1  
+r1  r1  r1  r1  
+r1  r1  r2e2   $4 o5c1  
+>b1  ^1  a2b2  <c1  
+>b1  ^1  a1  g2a2  
+a+2a2  g2a2  <d+1  
+;4
+
+l16
+{5}
+l16v90p40|2%e1 %a13%y6%s1%r13
+o4f8<e8a8<c8^2  
+>>f8<d8g8b8^2  o4f8<c8e8a8^2  >f8b8<d8g8^2  >e8b8<e8g8^2  
+>a8<c8e8a8^2  >f8<c8e8a8^2  >f8b8<d8g8^2  >e8b8<e8g8^2  
+>a8<c+8e8a8^2   $5 o4f8<c8e8a8^2  >f8b8<d8g8^2  >e8b8<e8g8^2  
+>a8<c8e8a8^2  >f8<c8e8a8^2  >f8b8<d8g8^2  >e8b8<e8g8^2  
+>f8a8<c8f8^2  >c8g8<c8e8f+8d8>a8f+8  c8a+8<d+8g8a8f8c8>a8  c8g8<c8e8f8d8>a+8f8  
+>g+8<d+8g+8<c8d+2  
+;5
+
+l16
+{6}
+l16v115p65|3m24,24,197%a11%r8r1  
+r1  o5r1  r1  r1  
+r1  r1  r1  r1  
+r1   $6 f1  f1  e1  
+a8<v105e8v90a8m24,-5^8v115>g8<v105d8v90g8m24,-5^8  >v115f1  f1  
+e1  f1  <c2^4^8c8  c2^4^8c8  
+c2>a+2  g+1  
+;6
+
+l16
+{7}
+l16v100p80|4m12,20,195%e1r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+ $7 r1  r1  r1  r1  
+r1  r1  r1  r1  
+~o5~/o7/g4>b8<c8d4.a8  g2d+2  g4>b8<c8d4a4  g1  
+
+;7
+
+l16
+{8}
+l16v90p50|3k2m20,24,199%a11%r8r64r1  r1  o5r1  r1  
+r1  r1  r1  r1  
+r1  r1   $8 f1  f1  
+e1  a8<v105e8v90a8m24,-5^8v115>g8<v105d8v90g8m24,-5^8  >v115f1  
+f1  e1  f1  <c2^4^8c8  
+c2^4^8c8  c2>a+2  g+1  
+;8
+
+l16

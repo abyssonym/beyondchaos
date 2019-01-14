@@ -1,0 +1,115 @@
+#TITLE Fisherman's Horizon
+#ALBUM Final Fantasy VIII
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x21 ~0x1F~/0x1F/
+#WAVE 0x22 ~0x74~/0x33/
+#WAVE 0x23 ~0x03~/0x03/
+
+#def global= t74 %v50 %b0,70 %x224
+
+#def pno= @3 %y1%s3%r7 o5 v64 p68
+#def oca= |1 %r8 pvm48,18,231 o4 v64 p30 p
+#def aco= |2 %r8 pvm48,18,223 o5 ~v32~/v24/ p100 p
+#def pfl= |3 %r8 pvm48,18,215 o5 v64 p64 p
+
+#def p1= 'pno' m28,18,192 v12,16,255 p0,16,32
+#def p2= 'pno' m24,18,192 v13,16,255 p0,14,32
+#def p3= 'pno' m20,18,192 v14,16,255 p0,12,32
+#def p4= 'pno' m26,18,192 v15,16,255 p0,15,32
+#def p5= 'pno' m22,18,192 v16,16,255 p0,13,32
+#def p6= 'pno' m27,18,192 v11,16,255 p0,17,32
+#def p7= 'pno' m23,18,192 v17,16,255 p0,18,32
+#def p8= 'pno' m25,18,192 v18,16,255 p0,19,32
+
+{1}
+'global'
+%e1 'p1' l4 >d+2<fd+2c>g+2 d+2g+fr8d+2.. d+1
+$
+'oca'< l8 rd+d+fg4d+>a+ b<d+fd+d+2 rd+d+fg4d+g a+2.ra+
+<c4>a+4d+4.f g4d+gfd+c4 rd+d+fg4d+c d+1 'p1'a+1
+##15
+'aco'< l8 rd+d+fg4d+>a+ b<d+fd+d+2 rd+d+fg4d+g a+2.ra+
+<c4>a+4d+4.f g4d+gfd+c4 rd+d+fg4d+>b< d+1 'p1'<r2c+2
+##24
+'pfl' g4<d+d>a+4.<c> a+2...r16 g4<c>a+g4.a g2.^16r16f
+d+dd+g<d4>a+g g+gg+<cg4d4 d+2^.r16f4 d+2.f4
+d+1 'p1'<d+2c>a+g+4
+;
+
+{2}
+%e1 'p2' l8 >ra+4.<g+2 g4f4d+4c+4 >ra+4.<d+4>a+4 r4a+4r4.f <d+4>a+g+g2
+$
+'p2' l4 >d+2c+2 g+2f2 d+2c2 g1      g+fc+2 fcg+2 f2g+2 d+2c+2 >b1
+##15 o3
+<d+2c+2 g+2f2 d+2c2 g1    g+fc+2 fcg+2 f2b2 c1   c+1
+##24 o4
+d+2f2 g2g+2 c2d2 g1    c2f+2 ffa2 g+1 c+1
+d+1.r4d4
+;
+
+{3}
+%e1 'p3' l8 rga+<d+dd+cd+ >a+4<c>aa+4f4 <d+4fdd+4d4 d+1 r1
+$
+'p3' >ra+4.<rc4. >rb4.<rc+4>b ra+4.<d4f4 d1
+d+4c4>rg+4. <c4>a+4<rc4. rc4.d4c4 >ra+4.<rc4.    c+1
+##15 o5
+>ra+4.<rc4. >rb4.<rc+4>b ra+4.<d4f4 d1
+d+4c4>rg+4. <c4>a+4<rc4. rc4.rd+4. >rg2.g   rg+2..
+##24 o4
+ra+4.<rc4. rd4drc+4. >rg4.ra4.< rcdc>b2
+d+2g+2 g+4g+4<d2> rb2.b rg+2..
+ra+2.. ^2g+2
+;
+
+{4}
+%e1 'p4' l8 r4d+4<cr>a+r r1 g4g+fg4a+g+ g1 g4dd+d+2
+$
+'p4' r4d+4f2 r4d+4r4f4 r4d+4d+4g4 rg4g4g4g   f4d+4r4c4 d+4d+4r4d+4 r4d+4f4d+4 r4d+4f2  r4d+2.
+##15 o5
+r4d+4f2 r4d+4r4f4 r4d+4d+4g4 rg4g4g4g    f4d+4r4c4 d+4d+4r4d+4 r4d+4r4f4 r4c4r2   r4d+2.
+##24 o5
+r4d+4r4f4 r4f4r4f4 r4d4r4c4 r1
+>g2<c2 c4c4f2 r4d+2d+4 r4c+2.
+r4d+4.d+2..d2
+;
+
+{5}
+%e1 'p5' l8 r4.gr2 r1 r4d4r2 r4.d+f2 r1
+$
+'p5' r4a+g<c4>a+g+ r4.fg+2 r4gg+a+4<d4> a+4<d4c4>a+4
+<c4>a+4d+4.f g4g4f+4.a+ r4.g+a+4g+4 r4a+g<c4>a+g+ rf+2..
+##15 o5
+r4a+g<c4>a+g+ r4.fg+2 r4gg+a+4<d4> a+4<d4c4>a+4
+<c4>a+4d+4.f g4g4f+4.a+ r4.g+r4.b r4.d+dd+cr    r4.f^2
+##24 o5
+r4f4g+2 g2..g+ d+2e2 f2..r
+>a+2<f2 d+4e4<c2> r2g+2 r2g+2 r2a+4.a+^2f2
+;
+
+{6}
+%e1 'p6' l8 r1 r1 r1 r2rd4. r1
+$
+'p6' [8r1] >rf+2..
+##15 o4
+[9r1]
+##24 o4
+< g4<d+d>a+4.<c> a+1 g4<c>a+g4.a g2..f
+d+dd+g<d4>a+g g+gg+<cg4d4 d+2.f4 d+2.f4
+d+1 r1
+;
+
+{7}
+%e1 'p7' l8 r1 r1 r1 >r2.g+4 r1
+$
+'p7' [8r1] >r4b2.
+##15 o4
+[9r1]
+##24 o4
+< r1 r1 r1 r1    r2d+2 r2a2 r4.f4f4. r4.f2^
+r4.g4.g2.r2
+;

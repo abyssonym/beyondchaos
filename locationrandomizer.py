@@ -614,7 +614,7 @@ class Location():
         else:
             return self.fset.rank()
 
-    def mutate_chests(self, guideline=None):
+    def mutate_chests(self, guideline=None, crazy_prices=False):
         for c in self.chests:
             if self.fset.setid == 0:
                 c.set_rank(None)
@@ -643,7 +643,10 @@ class Location():
             elif self.locid == 0x147:
                 pass
 
-            c.mutate_contents(guideline=guideline)
+            # No monster-in-a-box in the ZoneEater falling ceiling room.
+            # It causes problems with the ceiling event.
+            monster = False if self.locid == 280 and c.memid in range (232, 235) else None
+            c.mutate_contents(guideline=guideline, crazy_prices=crazy_prices, monster=monster)
             if guideline is None and hasattr(c, "value") and c.value:
                 guideline = value
 

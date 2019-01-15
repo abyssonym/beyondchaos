@@ -699,7 +699,7 @@ class MonsterBlock:
         self.stats['mp'] = int(
             round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
 
-    def mutate_ai(self, change_skillset=True, itembreaker=False, randombosses=False, madworld=False, darkworld=False):
+    def mutate_ai(self, change_skillset=True, itembreaker=False, randombosses=False, madworld=False, darkworld=False, safe_solo_terra=True):
         if self.name[:2] == "L." and randombosses == False:
             change_skillset = False
         elif "guardian" in self.name.lower():
@@ -722,13 +722,14 @@ class MonsterBlock:
 
         banned = restricted
         # No blizzard or tek laser in solo terra
-        from formationrandomizer import get_fset
-        for id in [0x39, 0x3A]:
-            fset = get_fset(id)
-            for f in fset.formations:
-                if self in f.present_enemies:
-                    banned.extend([0xB5, 0xBA])
-                    break
+        if safe_solo_terra:
+            from formationrandomizer import get_fset
+            for id in [0x39, 0x3A]:
+                fset = get_fset(id)
+                for f in fset.formations:
+                    if self in f.present_enemies:
+                        banned.extend([0xB5, 0xBA])
+                        break
             
         oldskills = sorted([s for s in all_spells if s.spellid in skillset],
                            key=lambda s: s.rank())
@@ -1606,7 +1607,7 @@ class MonsterBlock:
 
         self.special = special
 
-    def mutate(self, change_skillset=None, itembreaker=False, randombosses=False, madworld=False, darkworld=False):
+    def mutate(self, change_skillset=None, itembreaker=False, randombosses=False, madworld=False, darkworld=False, safe_solo_terra=True):
         if change_skillset is None:
             change_skillset = randombosses or not (self.is_boss or self.boss_death)
             manual_change = False
@@ -1631,10 +1632,10 @@ class MonsterBlock:
         if value > 1:
             if value == 2:
                 self.mutate_ai(change_skillset=False,
-                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
             else:
                 self.mutate_ai(change_skillset=change_skillset,
-                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
         self.mutate_control()
 
     def swap_ai(self, other):
@@ -1787,7 +1788,7 @@ def get_ranked_monsters(filename=None, bosses=True):
     return monsters
 
 
-def shuffle_monsters(monsters):
+def shuffle_monsters(monsters, safe_solo_terra=True):
     monsters = sorted(monsters, key=lambda m: m.rank())
     monsters = [m for m in monsters if m.name.strip('_')]
     monsters = [m for m in monsters if m.display_name[:2] != "L."]
@@ -1821,6 +1822,10 @@ def shuffle_monsters(monsters):
             to_swap = get_swap_index(index)
             n = candidates[to_swap]
             
+            if not safe_solo_terra:
+                m.swap_ai(n)
+                continue
+
             # No blizzard or tek laser in solo terra
             banned_narshe_skills = [0xB5, 0xBA]
             

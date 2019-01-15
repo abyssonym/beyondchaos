@@ -2020,6 +2020,7 @@ def manage_monsters():
     randombosses = "randombosses" in activated_codes
     madworld = "madworld" in activated_codes
     darkworld = "darkworld" in activated_codes
+    safe_solo_terra = "ancientcave" not in activated_codes
     change_skillset = True if darkworld in activated_codes else None
     final_bosses = (range(0x157, 0x160) + range(0x127, 0x12b) +
                     [0x112, 0x11a, 0x17d])
@@ -2034,27 +2035,27 @@ def manage_monsters():
                 m.randomize_boost_level()
                 if darkworld:
                     m.increase_enemy_difficulty()
-                m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+                m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=False)
             else:
-                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=False)
             if 0x127 <= m.id < 0x12a or m.id == 0x17d or m.id == 0x11a:
                 # boost statues, Atma, final kefka a second time
                 m.randomize_boost_level()
                 if darkworld:
                     m.increase_enemy_difficulty()
-                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=False)
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         else:
             if darkworld:
                 m.increase_enemy_difficulty()
-            m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+            m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
 
         m.tweak_fanatics()
         m.relevel_specifics()
 
     change_enemy_name(fout, 0x166, "L.255Magic")
 
-    shuffle_monsters(monsters)
+    shuffle_monsters(monsters, safe_solo_terra=safe_solo_terra)
     for m in monsters:
         m.randomize_special_effect(fout)
         m.write_stats(fout)
@@ -7007,12 +7008,12 @@ r   Randomize character locations in the world of ruin.
         manage_suplex(commands, monsters)
     reseed()
 
-    if 'strangejourney' in activated_codes:
+    if 'strangejourney' in activated_codes and 'ancientcave' not in activated_codes:
         create_dimensional_vortex()
         manage_strange_events()
     reseed()
 
-    if 'notawaiter' in activated_codes:
+    if 'notawaiter' in activated_codes and 'ancientcave' not in activated_codes:
         print "Cutscenes are currently skipped up to Kefka @ Narshe"
         manage_skips()
     reseed()
@@ -7021,11 +7022,11 @@ r   Randomize character locations in the world of ruin.
     if 'r' in flags and 'ancientcave' not in activated_codes:
         wor_free_char = manage_wor_recruitment()
 
-    if 'worringtriad' in activated_codes:
+    if 'worringtriad' in activated_codes and 'ancientcave' not in activated_codes:
         manage_wor_skip(wor_free_char)
     reseed()
 
-    if 'k' in flags:
+    if 'k' in flags and 'ancientcave' not in activated_codes:
         manage_clock()
     reseed()
 

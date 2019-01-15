@@ -1,0 +1,162 @@
+#TITLE Life ~ Faraway Promise
+#ALBUM Chrono Cross
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x49~/0x0D/
+#WAVE 0x21 ~0x64~/0x06/
+#WAVE 0x22 0x00
+#WAVE 0x23 0x0A
+#WAVE 0x24 ~0x8B~/0x1B/
+#WAVE 0x28 ~0x8D~/0x24/
+#WAVE 0x2A 0x16
+#WAVE 0x2B ~0x8E~/0x12/
+
+#def global= t90 %x224 %v50 %b0,70
+
+#def string= |0 ~o4~/o5/ %e1 v m48,18,207
+#def choir= |1 ~o3~/o4/ %e1 v m48,18,223
+#def horn= |3 o5 %e1 v m48,18,223
+#def oboe= |3 o5 %e1 v m48,18,239
+#def piano= |4 o5 %e1 vm
+
+#def 02= 'choir' p44 v80 %r6
+#def 03= 'choir' p84 v64 %r5
+#def 04= 'piano' p90 v64
+#def 05= 'piano' p90 v64
+#def 06= 'string' p40 v52
+#def 07= 'oboe' p74 v64
+#def 08= 'horn' p84 v64
+#def 09= 'horn' p84 v64
+#def 10= 'string' p20 v64 %r7
+#def 11= 'string' p44 v52 %r3
+#def 12= 'string' p64 v52 %a7%y0%s6%r2
+#def 13= 'string' p80 v52 v0,9,255 m12,18,239 %r7
+#def 14= 'string' p120 v52 %r6
+#def 15= 'string' p80 v52
+#def 16= 'piano' p17 v80
+#def 17= 'piano' p17 v80
+#def 18= 'piano' p17 v80
+#def 19= 'piano' p17 v80
+#def 20= 'piano' p17 v80
+#def 21= |A p64 o3 v96
+#def 26= |8 p48 o5 v105 %y2%s1%r12
+
+#drum "z"=5f+ |B p64 v96 %a3
+#drum "y"=5f+ |B p64 v96 %y
+
+{1}
+'global'
+'03' %a2 f+1^1^1^1
+'10' < l2 d1.c+ c+1de f+1ba4.g8 f+1.c+
+>b<f+ea f+c+d.c+4 >b<f+ea f+<c+>b1
+>b<f+ea f+c+d.c+4 >b<f+ed4c+4 >b1^1    ^1
+$
+'10' l4 b.<f+^.e.a^. f+.c+.c+ dc+d>a    b.<f+^.e.a^. f+.<c+.>b^1
+>b.<f+^.e.a^. f+.c+.c+ dc+d>a    b.<f+^.e.d.c+ >b1^1
+'07' l8 r4.a<f+g4a4e4d4c+.r16 c+4.>b<f+1.^  ^16r16r4>a<f+g4a4e4d4c+4. e4.>b4.<e4 f+4.g16f+16e2
+^.r.>a<f+g4a4e4d4c+.r16 c+4.>b<f+1^16r16def+ d2^16r16def+e2^16r16e4dc+1^1r8
+
+'10' l4 b.<f+^.e4.a^. f+.c+.c+ dc+d>a    b4.<f+^.e4.a^. f+4.<c+4.>b^1
+>b.<f+^.e.a^. f+.c+.t192,76c+ dc+d>t90a    b.<f+^. e.d^16c+^16 >b1^1
+;
+
+{2}
+r1r1 '02' %a4 b1^1
+'02' < l2 d1.c+ c+1de f+1f+e f+1.c+
+d1c+1 ^1d.c+4 >b1<c+1 ded.c+4
+>b1<c+1 dc+de f+1ed4c+4 >b1^1    ^1
+$
+'12' l4 >b1<c+1 ^1def+d >b1<c+1 d.e.c+d2c+2
+>b1<c+1 ^1def+d  >b1<c+.d.e e1^1
+'10' l2 b1.a <c+1dc+> b1.a b1a+4.b4.<c+4>
+b1.a <c+1dc+> b1<e1 f+1^1
+
+'02'v64 << l4 d1c+1 ^1dc+e2  d1c+1 d.e.d^2c+2
+d1c+1 ^1dc+de d1c+1 e1^1
+;
+
+{3}
+'12' %y%a0%r8 >b1^1^1^1
+'13'> l2 [5d1e1 f+1.e] d1e1f+1^1    ^1
+$
+'13'> l4 d1e1 c+1f+2af+  d1e1 f+1.e2
+d1e1 c+1f+2af+  d1e1 b1^1
+'12' l2 >b1.<e1f+1g4f+4 d1dc+ e1c+1
+>b1.<e1f+1a4f+4 d1c+>ba+1.. "!!!o z4"
+
+'03' <l1 a^f+a ^aa^
+a^f+a ^^b^
+;
+
+{4}
+'11' %a3 r1r2. e4^1^1
+'14'>> l2 [5g1a1 b1.a] g1a1b1^1    ^1
+$
+'14'>> l2 g1a1 f+1ba g1a1 b1.a
+g1a1 f+1ba  g1a1 e1^1
+'13'> l2 d1e1f+1.e d1e1>b1<c+1
+d1e1f+1.e d1e1c+1^1
+
+'12' l4 >b1<c+1 ^1def+d    >b1<c+1 d.e.c+d2c+2
+>b1<c+1 ^1def+d    >b1<c+.d.e e1^1
+;
+
+{5}
+'04'l12 v0 v192,40 [b<f+eaf+c+>] v192,56 [b<f+eaf+c+>] v192,70 [b<f+eaf+c+>] v192,80 [b<f+eaf+c+>]
+[48b<f+eaf+c+>] b1
+$
+[8r1]
+r2. t192,79 r1 t192,68 r1 r2. t58 r8. t50 r16 t68 r8 t74 r8 t82 r8 t90 r2..r1r1r1
+'14'>> l1 gab.a2 gaef+
+gab.a2 gaf+^
+
+'14'>> gaf+b2a2 gab.a2
+g1^16a2... f+1b2a2  g1a1 e1^1
+;
+
+{6}
+'10' r1r1r2. %a4 a4^1
+[5"y1^1^1^2.z4"] "y1" '11' e2d4c+4d1^1   ^1
+$
+&184[16r1]
+'16' l12 >g<&176b >a<<&176c+ >>b<<&160d >b2.>a4.
+<b4.a8^2 >a4.<b2b8 >e4.<b8^2 a+4.b4.<c+4>
+>g4.<a8^2 >a4.<b8^2 >b4.<<d4.c+2d2c+4
+'08' l1 baa+ l2 b<c+
+
+'16' l16 [[>g<dgabagd] [>a<eab<c+>bae] [>f+<c+f+a+<c+>a+f+c+] >b<f+b<c+dc+>bf+ >a<f+b<c+dc+>bf+
+[>g<dgabagd] [>a<eab<c+>bae] j2,679 [>b<f+b<c+dc+>bf+] >b<f+b<c+dc+>bf+ >a<f+b<c+dc+>bf+]
+$679 [>eb<ea<e>bae]>e1
+;
+
+{7}
+r1r1r1r2. "z4"
+[5'21' g1^1^1 v105v48,26[12g48]v144,127[36g48]] g1 '03' <c+2>a2f+1^1  ^1
+$
+&189[16r1]
+'16' l8 d1 e1 &123f+ f+4. <e4d4 c+4.>a8
+>g4<g2. r8e2e4. >r8b8^2<g4 >f+4<f+2^8f+8
+r8d2.. r8e2<d4c+8> r8f+2f+4f+4f+4f+4f+4f+8
+>g4<g4.e8b4 >a4<a4.e4e8 >f+4<f+4.f+4f+ <c+>c+<d>f+<e>f+<c+4
+
+"!!!o y1" '11' l1 ef+^ ^e^^2. "!!!o z4"
+"y1" '11' ef+^ ^e4.d4.c+4 >b1^1
+;
+
+{8}
+r1r1r1 '21' v105v48,26[12g48]v144,127[36g48]
+'26' [24b1]    r1
+$
+&195[16r1]
+'16' g1 a1 &141b a4. f+4f+4.f+4
+r8d2.. r4a2a4 r4e4.e2 c+2c+4.
+r4g2. r4a2e4 r4b2.>b4<b4>a4<a4
+r8d4a4.g8d8 r8e4b4.a4 r8c+4a+4.b4 '21' v105v48,26[12g48]v144,127[36g48]
+
+g1 '13'> l1 ef+.e2 def+ '21' v105v48,26[12g48]v144,127[36g48]
+g1 '13'> ef+.e2 ef+>b^
+;

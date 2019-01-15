@@ -42,7 +42,7 @@ d+1  c1  ^1
 ;2
 
 l16
-{3}
+{6}
 l16%e1@33v68p62o5r1  
 ^1  d+1  ^1   $3 o5g1  
 ^1  g+1  ^1  g1  
@@ -57,7 +57,7 @@ a1
 ;3
 
 l16
-{4}
+{7}
 l16%e1@33v68p62o5r1  ^1  >a+1  
 ^1  < $4 o5d1  ^1  d+1  
 ^1  d1  ^1  d+1  
@@ -71,25 +71,15 @@ f+1  f1  ^1
 ;4
 
 l16
-{5}
-l16%e1v80p50@34o8>cccc+cccc+cccc+cccc+  
-cccc+cccc+cccc+cccc+  cccc+cccc+cccc+cccc+  cccc+cccc+cccc+cccc+  
-> $5 gggg+gggg+gggg+gggg+  gggg+gggg+gggg+gggg+  g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  
-g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  gggg+gggg+gggg+gggg+  gggg+gggg+gggg+gggg+  
-g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  
-gggg+gggg+gggg+gggg+  gggg+gggg+gggg+gggg+  g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  
-g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  d+d+d+fd+d+d+fd+d+d+fd+d+d+f  
-fffgfffgfffgfffg  gggagggagggaggga  gggagggagggaggga  g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  
-g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  gggg+gggg+gggg+gggg+  gggg+gggg+gggg+gggg+  
-fffgfffgfffgfffg  fffgfffgfffgfffg  gggg+gggg+gggg+gggg+  gggg+gggg+gggg+gggg+  
-g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  g+g+g+a+g+g+g+a+g+g+g+a+g+g+g+a+  
-gggg+gggg+gggg+gggg+  gggg+gggg+gggg+gggg+  fffgfffgfffgfffg  fffgfffgfffgfffg  
-<c+c+c+d+c+c+c+d+c+c+c+d+c+c+c+d+  >bbb<c+>bbb<c+>bbb<c+>bbb<c+  
->fffgfffgfffgfffg  fffgfffgfffgfffg  
+{3}
+l16%e1v80p50@34o8>[16ccc+c]
+> $5 [3[8ggg+g] [8g+g+a+g+]] [4d+d+fd+] [4ffgf] [8ggag]
+[8g+g+a+g+] [8ggg+g] [8ffgf] [8ggg+g] [8g+g+a+g+] [8ggg+g] [8ffgf]
+<[4c+c+d+c+]> [4bb<c+>b] [8ffgf]
 ;5
 
 l16
-{6}
+{5}
 l16%e1r1  ^1  
 ^1  ^1   $6 @35v100p64o5b1  ^1  
 r1  ^1  b1  ^1  
@@ -106,7 +96,7 @@ r1  ^1  v60p62@38o4g+<cd+g+<cd+g+<cd+c>g+d+c>g+d+c  >g+<cd+g+<cd+g+<cd+c>g+d+c>g
 ;6
 
 l16
-{7}
+{4}
 l16%e1v127p64@36o5r1  ^1  ^1  ^1  
  $7 c4c4@39d4r4  @36c4c4@39d8@36c8r8c8  c4c4@39d4r8@36c4  r8c8c8@39d8@36c8r8c8c4  
 c4@39d4r4@36c4  c4@39d8@36c8r8c8c4  c4@39d4r8@36c4r8  c8c8@39d8@36c8r8c8c4  

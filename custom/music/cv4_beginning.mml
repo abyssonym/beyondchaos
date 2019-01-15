@@ -3,8 +3,9 @@
 #COMPOSER Masanori Adachi, Taro Kudou
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT ~! enh
+#VARIANT /! nat
+#VARIANT ~_ tr
 
 #WAVE 0x20 ~0x08~/0x08/
 #WAVE 0x21 ~0x0D~/0x0D/
@@ -18,7 +19,7 @@
 #WAVE 0x2B ~0x56~/0x21/
 #WAVE 0x2C ~0x84~/0x17/
 
-#def global= t122 %v30 %b0,70 %x224
+#def global= !t122 %v30 %b0,70! %x224 _t110t255,122 %v255,30 %b255,70_
 
 #def hrn= |0 o5 %e1 m48,18,231 %r10
 #def str= |1 o4 %e1 m48,18,207
@@ -104,9 +105,14 @@ d+d+d+d+ d+d+<d+>d+ <c+c+c+c+ c+c+<c+>c+    cccc ccv83a+<c> >v88b<v83a+ba+ <v60c
 v88a+a+a+a+ <v78a+a+>v88a+a+ a+<v78a+a+>v88a+ a+12a+12a+12    a+<v78a+a+>v88a+ a+a+a+a+ a+a+a+<v73a+ a+a+a+a+
 ;
 
-{3}
+{5}
+_@4%s0 v69p64 %n1%c22 %e1%g1_
+_v144,54 c16c2c16c8 v144,41 c16c2c16c8 v144,27 c16c2c16c8_
+_v144,14 c16c2c16c8 v144,0 c16c2c16c8_
+_%n0%c0 %g0_
 $
-'pet' l8 p64 v43 [r4 f+.f^.f.d+^.d+.d+j2^. l16 fg+b<d>] 'org' p15v28 r4.. <g+fd>bg+fd v32 ba+g+f+f
+!'pet' l8 p64 v43 [r4 f+.f^.f.d+^.d+.d+j2^. l16 fg+b<d>] r8.!
+'org' l16 p15v28 r4 <g+fd>bg+fd v32 ba+g+f+f
 ##6
 'str' l4 p50 v26 <d+1 f2e2 v28d+1 &2rv36&94f2>v43a+<d>
 l8 r. v49d+2^^. v56f2v52g+2 v63d+1 v56c.f.d+ l16 <v56a+v53g+f+fv49d+d>ba+
@@ -117,6 +123,8 @@ l8 v47f+.v50g.v53g+.v57a.<v60dd
 'str' l2 p50 v28<d+1 v32dv34d+ ^1 ^v40d
 ##22
 'str' l4 p64 <v47d+2c+2 c2>ba+<  v41d+2c+2 c2>v47g+a    a+1..<v31v48,63a+
+##
+_'pet' l8 p64 v43 [r4 f+.f^.f.d+^.d+.d+j2^. l16 fg+b<d>] r8._
 ;
 
 {4}
@@ -139,7 +147,7 @@ v26a+ v31ba+ v36ba+b v41a+b l24 a+ v47[5ba+]b a+2
 'flt' p89 v46 l32 a+<dfa+^8r4
 ;
 
-{5}
+{3}
 $
 'hrn'< l8 p64 v54 [r4 d+.c+^.c+.c^.c.>bj2l16ba+g+ba+<df]
 v53 g+<dfv47g+fd bg+fd>bg+fd v53 <ba+g+f+f
@@ -164,9 +172,13 @@ r1 'org' l24 p50 v36 <[6a+b] l32 p15p96,113 v44 a+g+f+f d+d>ba+ g+f+fd+ d>ba+b
 ;
 
 {6}
+_@4%s0 v69p64 %p1 %e1%g1_
+_v144,54 d16d2d16d8 v144,41 d16d2d16d8 v144,27 d16d2d16d8_
+_v144,14 d16d2d16d8 v144,0 d16d2d16d8_
+_%p0 %g0_
 $
-r8r24 'hrn'< l8 v33p78 [r4 d+.c+^.c+.c^.c.>l16bj2^ba+g+ba+<df] r12
-r 'cla' p64 v32 < g+fdfd>bg+fd>bg+<a+<cc+d
+!r8r24 'hrn'< l8 v33p78 [r4 d+.c+^.c+.c^.c.>l16bj2^ba+g+ba+<df] r12!
+l16 r 'cla' p64 v32 < g+fdfd>bg+fd>bg+<a+<cc+d
 ##6
 'cla'< l16 p64 r8 v30f+fd+>a+4.a+<d+ff+fd+a+  a8.f8.a8g+8.e8.g+8
 f+fd+>a+4.a+<d+ff+fd+a+  a8.f8.<d+8dd+f>a+8^8.
@@ -180,7 +192,19 @@ f+fd+>a+4.a+<d+ff+fd+a+  >a8.<d+8.f+8d8.f8.
 l16 [3"!!!o ccc+c"]"f24b24b24c+48h+24c"
 ##22
 'pet' l16 p50 v33 r12 [d+f+a+<d+4^>][d+f+a+<d+8.>]fg+b<f> [d+f+a+<d+4^>][d+f+a+<d+8j2^>]>fg+b<f8>
-
 r16 'pet' l16 p78 v27a+ba+ v32ba+b v36a+b l24 a+ v40[5ba+]b&88a+
 'flt' l32 p39 v33 a+<dfa+^8 r12r16
+_r8r24 'hrn'< l8 v33p78 [r4 d+.c+^.c+.c^.c.>l16bj2^ba+g+ba+<df] r12_
 ;
+
+{7}
+_|F v69p64 o4 %e1_
+_v144,60 a16a2a16a8 v144,51 a16a2a16a8 v144,43 a16a2a16a8 v144,34 a16a2a16a8_
+_v144,26 a16a2a16a8 v144,17 a16a2a16a8 v144,9 a16a2a16a8 v144,0 a16a2a16a8_
+!r!;
+
+{8}
+_|F v69p64 o5k2 %e1 &1r_
+_v144,60 a16a2a16a8 v144,51 a16a2a16a8 v144,43 a16a2a16a8 v144,34 a16a2a16a8_
+_v144,26 a16a2a16a8 v144,17 a16a2a16a8 v144,9 a16a2a16a8 v144,0 a16a2a16a8_
+!r!;

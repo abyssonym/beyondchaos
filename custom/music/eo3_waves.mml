@@ -45,7 +45,7 @@
 #def lowpluck= ~|3 v56 %a5%s4 o6~ /|2 v96 o5 %a >/ 
 #def secretharmony= ~|0 v64 o6~ /|0 v56 o6/
 #def cv=v127
-#def hv=v96
+#def hv=v64
 
 ##### ORGAN #####
 {1} 'global' %e1 'organ' l8
@@ -115,14 +115,14 @@ m
 
 ##### ATMOSPHERE MID #####
 {3} l1 %e1
-'deepness2' p112
+'deepness' p112
 d^^^ >b-^^^
 $[2
-'deepness2' p112
+'deepness' p112
 d^^^ >b-^
 'celesta_duo'
 c4.d8^2^1 v
-'deepness2' p112
+'deepness' p112
 d^^^ >b-^
 'celesta_duo'
 c4.d4.a4.g4.f4e4
@@ -153,13 +153,14 @@ v p112 'pad2' L1 >
 
 ##### ATMOSPHERE LOW #####
 {7} l1 %e1
-'deepness' p16 
+'deepness2' p16 
 d^^^ >b-^^^
 $[2
-~'deepness'd^^^>b-^~ /[6r1]/
+'deepness2'~d^^^>b-^~ /[6r1]/
 'celesta_duo'>
 a4.a4.a4^1
-~'deepness'd^^^>b-^'celesta_duo'>~ /[6r1]/
+'deepness2'~d^^^>b-^~ /[6r1]/
+'celesta_duo'>
 a4.b-4.<f4.e4.d4c4
 
 $48
@@ -190,7 +191,7 @@ $49
 ;48
 
 ##### ATMOSPHERE HIGH #####
-{6} l8 %e1
+{8} l8 %e1
 'atmosynth'
 p0,83,104
 [4 [5dfe]d ] 
@@ -286,7 +287,7 @@ $79 l8
 ;78
 
 ##### CYMBALS #####
-{8} l8
+{6} l8
 v96p56 o5
 [4r1]
 'cv'|Cg4.'hv'|Bg|Agg|Bg|Ag g|Bg|Agg|Bg|Ag|Bg|Ag |Bg|Agg|Bg|Agg|Bg|Ag g1

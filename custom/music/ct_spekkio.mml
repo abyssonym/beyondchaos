@@ -1,0 +1,133 @@
+#TITLE Delightful Spekkio
+#ALBUM Chrono Trigger
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x83~/0x36/ +1, -1
+#WAVE 0x21 0x18
+#WAVE 0x22 ~0x7B~/0x31/ 0, +1
+#WAVE 0x23 ~0x86~/0x3E/ 0, -1 (adsr on nat)
+
+#WAVE 0x2A 0x2A
+#WAVE 0x2B ~0x57~/0x2E/
+#WAVE 0x2C ~0x5B~/0x00/
+#WAVE 0x2D ~0x5E~/0x30/
+#WAVE 0x2E ~0x55~/0x2F/
+#WAVE 0x2F 0x13
+
+# drums
+#c: 3C b6, 2B e5, 85 a5
+#d: 57 d+5, 2E a4
+#e: 2E c+5, 57 g5
+#f: 5E f+5, 30 g+4
+#f+: 2F g5, 55 b5
+#g: 5B e5, 2E f4
+#a: 13 g6
+
+#drum "c"=5f |A p48
+#drum "d"=~5d+~/4a/ |B p64
+#drum "e"=~5g~/5c+/ |B p80
+#drum "f"=~5f+~/4g+/ |D p64
+#drum "f+"=~5b~/5g/ |E p93
+#drum "g"=~5e~/3f/ ~|C~/|B m12,12/ p41
+#drum "a"=6g |F p35
+#drum "r"=5r
+
+#drum "h"=~5d+~/4a/ |B p64 v70
+#drum "i"=~5d+~/4a/ |B p64 v50
+#drum "j"=~5d+~/4a/ |B p64 v30
+#drum "k"=~5g~/5c+/ |B p80 v70
+#drum "l"=~5e~/4f/ ~|C~/|B m12,12/ p41 v115
+#drum "m"=6g |F p35 v40
+#drum "n"=6g |F p35 v20
+#drum "o"=~5b~/5g/ |E p93 v120
+
+{1}
+l16t96%v20%b0,48%f0,0%x224%e1v127[4"!!!or8f+4f+4f+4f+8  "] $3 r1  
+r1  r1  |0~v120~/v64/p64~o4~/o6/m12,24,205%r8r2r4.fr  [2[2<%l1e48f8.r24%l0c^64r64r32>a12<%l1c+48d4r48%l0cr>a+r  
+a8.a+32a32f8g4.^rfr  j2,1 <%l1e48f8.r24%l0c^64r64r32>a12<%l1c+48d4r48%l0cr>a+r  
+a8.a+32a32g8f4.^rfr  ] $1 <%l1e48f8.r24%l0c^64r64r32>a12<%l1c+48d4r48%l0cr>a+r  
+a8.a+32a32g8f4.^rr8  j2,2 |3~o5~/o6 %y5%s1/v10v48,127%g1a48<c48>a48<c48>a48<c48>a48<c48>a48<c48>a48<c48>a48%g0<c^24>v40v32,127%g1a+48<d48>a+48<d48>a+48<d48>a+48<d48>%g0a+12a48<c^24>v40v24,127g48a+48g48a+48g48a+48g8  
+g+48a^24a+8<c8d12e48f^24f24d8f8g8  a8f8g8d12f8f24d8f12g24a8  <c8>a+8a8g12v10v56,127%g1f48c48f48c48f48c48f48c48f48c48f48c48f48c48f8%g0|0~v120~/v64/~o4~/o6/m12,24,205fr  
+] $2 v120[4"!!!o r8f+4f+4f+4f+8 " ]
+;3
+
+l16
+{2}
+l16%e1[3r1  
+]|1v115p64o6r2r12f24>a12r24a+12r24b12<c24  > $4 [2f^48r8frr24fr48r8f24r8f8.^48r24  
+f^48r8frr24fr48r8<c24r8c8.^48r24  >][5f^48r8frr24fr8r48a+24r8a+8.^48r24  
+f^48r8frr24fr8r48<c24r8c8.^48r24  >f^48r8frr24fr8r48a+24r8a+8.^48r24  
+<c^48r8crr24cr8r48>f24r8f8.^48r24  ][2f12r8f12r12f12r8f24a+8b8<c8  
+>f12r8f12r12f12r8f24c8d+8e8  ]
+;4
+
+#def 110=~v60~/v110/
+#def 45=~v24~/v45/
+
+l16
+{3}
+l16%e1"h8j12h8j24i12d8j24h12j24i12k24c12i24  
+h8j12i8j24h12i8j24i12k24c12i24h12j24  
+h8j12h8j24h12j24d12i24h12i24h12k24c12j24  
+h8j12h8j24i12k8j24h12j24h12j24k12c24  
+" $5 |2'110'p64~o5~/o4/[2a24r6a24r12'45'a24'110'a24r6a24r12'45'a24'110'a24r24'45'a24'110'a24r12  
+a+24r6a+24r12'45'a+24'110'a+24r6a+24r12'45'a+24'110'a+24r24'45'a+24'110'a+24r12  
+][5a24r6a24r12'45'a24'110'a24r6a+24r12'45'a+24'110'a+24r24'45'a+24'110'a+24r12  
+a24r6a24r12'45'a24'110'a24r6g24r12'45'g24'110'g24r24'45'g24'110'g24r12  
+a24r6a24r12'45'a24'110'a24r6a+24r12'45'a+24'110'a+24r24'45'a+24'110'a+24r12  
+a24r6g24r8f24r6f24r12'45'f24'110'f24r8.r48  ][4r1  ]
+;5
+
+#def 105=~v57~/v105/
+#def 40=~v22~/v40/
+
+l16
+{5}
+l16%e1v80[4"!!!o f8.^48f6  
+f8.^48f6f4"] $6 |2'105'p94~o5~/o4/[2f24r6f24r12'40'f24'105'f24r6f24r12'40'f24'105'f24r24'40'f24'105'f24r12  
+g24r6g24r12'40'g24'105'g24r6g24r12'40'g24'105'g24r24'40'g24'105'g24r12  
+][5f24r6f24r12'40'f24'105'f24r6f24r12'40'f24'105'f24r24'40'f24'105'f24r12  
+f24r6f24r12'40'f24'105'f24r6e24r12'40'e24'105'e24r24'40'e24'105'e24r12  
+f24r6f24r12'40'f24'105'f24r6f24r12'40'f24'105'f24r24'40'f24'105'f24r12  
+f24r6e24r8c24r6c24r12'40'c24'105'c24r8.r48  ][4r1  ]
+;6
+
+#def 100=~v55~/v100/
+
+l16
+{8}
+l16%e1[4r1] $7 |2'100'p34~o5~/o4/[2c24r6c24r8c24r6c24r8c24r8.r48  d24r6d24r8d24r6d24r8d24r8.r48  
+][5c24r6c24r8c24r6d24r8d24r8.r48  c24r6c24r8c24r6c24r8c24r8.r48  
+c24r6c24r8c24r6d24r8d24r8.r48  c24r6c24r8>a24r6a24r12'40'a24'100'a24r8.r48  
+<]"!!!o h8j12h8j24i12d8j24h12j24i12k24c12i24  
+h8j12i8j24h12i8j24i12k24c12i24h12j24  
+h8j12h8j24h12j24d12i24h12i24h12k24c12j24  
+h8j12h8j24i12k8j24h12j24h12j24k12c24  
+"
+;7
+
+l16
+{6}
+l16%e1v115[4"!!!o !m0,0g1"  ] $8 [6"!!!o !m0,0l8j12h8j24i12h8i24h12j24i12k24c12j24  
+!m0,0l8j12i8j24h12i8j24i12k24c12j24h12j24  
+!m0,0l8j12h8i24h12i24j12i24h12j24i12k24c12j24  
+!m0,0l8j12h8j24i12k8j24h12i24h12j24k12c24  "
+][4"!!!o !m0,0g1"  ]
+;8
+
+l16
+{4}
+l16%e1[4[4"!!!o m8n12a24"]] $9 [24[4"!!!o m8o12n24"]][4[4"!!!o m8n12a24"]]
+;9
+
+l16
+{7}
+l16%e1v80[4r1] $10 v80[28"!!!o f8.^48f6  f8.^48f6f4"]
+;10
+
+l16

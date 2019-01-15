@@ -24,7 +24,7 @@
 #WAVE _0x2D 0x8E_
 #WAVE _0x2F 0x0F_
 
-#def global= t120 %x224 %b0,70 %v50
+#def global= t120 %x160 %b0,70 %v50
 
 #def tpet= |0 ~v96~/v64/ ~o5~/o6/ /m48,18,239/~m~ %e1
 #def horn= |1 ~v112~/v64/ ~o5~/o5/ m48,18,223 %e1
@@ -73,10 +73,6 @@ f+4e4c+4>a+4 b4<b.r32r24br48b2
 ;
 
 {4}
-'horn' p48 l12
-;1
-
-{5}
 %g1 v80v48,60 l48"rrrrrrr r24r24r"
 $
 l24 "!v s^^ ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
@@ -96,11 +92,7 @@ l24 "!v s^^ ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
 l24 "!v s^s ^s^ s^s ^ss48s48 s^^ ^s^" v48,60 l48"rrrrrrr r24r24."
 ;
 
-{6}
-'tpet' p80 l12
-;2
-
-{7}
+{5}
 l4 r
 $
 "ef+df+ ff+df+ ff+df+ ff+df+"
@@ -109,7 +101,7 @@ $
 "ff+df+ ff+df+ ff+df+ ff+df+"
 ;
 
-{8}
+{6}
 l4 r
 $
 l2 r4
@@ -118,3 +110,11 @@ $
 "zy zy zy zy"
 "yd+ zd+ zd+ zd+ zd+ zy"
 ;
+
+{7}
+'horn' p48 l12
+;1
+
+{8}
+'tpet' p80 l12
+;2

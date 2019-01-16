@@ -5,7 +5,6 @@
 Dump the spellsets that skillrandomizer uses for generating new PC commands
 (R-Nuke, 3xBeast, W-Sword, etc.)
 """
-from __future__ import print_function
 
 import os
 import sys

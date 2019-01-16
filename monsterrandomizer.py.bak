@@ -83,7 +83,7 @@ ranked = ["casting", "near death", "floating", "regen", "poison", "blind",
           "morph", "frozen", "death", "interceptor", "magitek",
           "rage", "dance", "disappear"]
 specialdict = [k for (k, v) in sorted(statusdict.items(),
-               key=lambda k_v: k_v[1])]
+               key=lambda (k, v): v)]
 specialdict = dict([(k, i) for (i, k) in enumerate(specialdict)])
 specialdict["rage"] = 0x18
 specialdict["dance"] = 0x10
@@ -1888,7 +1888,7 @@ class MonsterGraphicBlock:
         if self.graphics not in palette_pools:
             palette_pools[self.graphics] = set([])
         for p in palette_pools[self.graphics]:
-            if all(map(lambda a_b: a_b[0] == a_b[1], zip(self.palette_data, p))):
+            if all(map(lambda (a, b): a == b, zip(self.palette_data, p))):
                 return
         palette_pools[self.graphics].add(self.palette_data)
 

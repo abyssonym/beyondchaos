@@ -1,4 +1,3 @@
-from __future__ import print_function
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,
                    UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
@@ -1029,5 +1028,5 @@ if __name__ == "__main__":
     locations = get_locations("program.rom")
     zones = get_zones("program.rom")
     for l in locations:
-        print("%x" % (l.layers_to_animate & 2), l, end=' ')
-        print()
+        print "%x" % (l.layers_to_animate & 2), l,
+        print

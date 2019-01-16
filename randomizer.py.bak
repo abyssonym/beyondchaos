@@ -1,4 +1,3 @@
-from __future__ import print_function
 from time import time, sleep, gmtime
 from sys import argv, exit
 from shutil import copyfile
@@ -175,7 +174,7 @@ def log_break_learn_items():
 
 def rngstate():
     state = sum(random.getstate()[1])
-    print(state)
+    print state
     return state
 
 
@@ -564,7 +563,7 @@ class WindowBlock():
             return clusters
 
         ordered_palette = zip(range(8), self.palette)
-        ordered_palette = sorted(ordered_palette, key=lambda i_c1: sum(i_c1[1]))
+        ordered_palette = sorted(ordered_palette, key=lambda (i, c): sum(c))
         newpalette = [None] * 8
         clusters = cluster_colors(ordered_palette)
         prevdarken = random.uniform(0.3, 0.9)
@@ -576,7 +575,7 @@ class WindowBlock():
                 hueswap = lambda w: w
             else:
                 hueswap = generate_swapfunc()
-            for i, cs in sorted(cluster, key=lambda i_c: sum(i_c[1])):
+            for i, cs in sorted(cluster, key=lambda (i, c): sum(c)):
                 newcs = shift_middle(cs, degree, ungray=True)
                 newcs = map(darkener, newcs)
                 newcs = hueswap(newcs)
@@ -691,7 +690,7 @@ def randomize_colosseum(filename, fout, pointer):
         results.append((wager_obj, opponent_obj, win_obj, hidden))
 
 
-    results = sorted(results, key=lambda a_b_c_d: a_b_c_d[0].name)
+    results = sorted(results, key=lambda (a, b, c, d): a.name)
 
     coliseum_run_sub = Substitution()
     coliseum_run_sub.bytestring = [0xEA] * 2
@@ -2137,8 +2136,7 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True, s
             palette[:2], palette[2:4], palette[4:6], palette[6:8],
             palette[8:10], palette[10:12], palette[12:])
         new_palette = []
-        def components_to_color(xxx_todo_changeme):
-            (red, green, blue) = xxx_todo_changeme
+        def components_to_color((red, green, blue)):
             return red | (green << 5) | (blue << 10)
 
         if not flesh:
@@ -2608,7 +2606,7 @@ def manage_character_appearance(preserve_graphics=False):
                     h = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].portrait_palette_filename), "rb")
                 except IOError:
                     use_fallback = True
-                    print("failed to load portrait %s for %s, using fallback" %(swap_to[c].portrait_filename, swap_to[c].name))
+                    print "failed to load portrait %s for %s, using fallback" %(swap_to[c].portrait_filename, swap_to[c].name)
                 else:
                     new_portrait_data = g.read(0x320)
                     new_portrait_palette_data = h.read(0x20)
@@ -3959,7 +3957,7 @@ def manage_encounter_rate():
         rates = [i for sublist in rates for i in sublist]
         return rates
 
-    base4 = map(lambda b_t: b_t[0]*b_t[1], zip([0xC0]*4, [1, 0.5, 2, 1]))
+    base4 = map(lambda (b, t): b*t, zip([0xC0]*4, [1, 0.5, 2, 1]))
     bangle = 0.5
     moogle = 0.01
     overworld_rates = (
@@ -4463,8 +4461,8 @@ def manage_auction_house():
 
 def manage_bingo():
     target_score = 200.0
-    print("WELCOME TO BEYOND CHAOS BINGO MODE")
-    print("Include what type of squares? (blank for all)")
+    print "WELCOME TO BEYOND CHAOS BINGO MODE"
+    print "Include what type of squares? (blank for all)"
     print ("    a   Abilities\n"
            "    i   Items\n"
            "    m   Monsters\n"
@@ -4474,7 +4472,7 @@ def manage_bingo():
         bingoflags = "aims"
     bingoflags = [c for c in "aims" if c in bingoflags]
 
-    print("What size grid? (default: 5)")
+    print "What size grid? (default: 5)"
     size = raw_input("> ").strip()
     if not size:
         size = 5
@@ -4482,7 +4480,7 @@ def manage_bingo():
         size = int(size)
     target_score = float(target_score) * (size**2)
 
-    print("What difficulty level? Easy, Normal, or Hard? (e/n/h)")
+    print "What difficulty level? Easy, Normal, or Hard? (e/n/h)"
     difficulty = raw_input("> ").strip()
     if not difficulty:
         difficulty = "n"
@@ -4491,13 +4489,13 @@ def manage_bingo():
         if difficulty not in "enh":
             difficulty = "n"
 
-    print("Generate how many cards? (default: 1)")
+    print "Generate how many cards? (default: 1)"
     numcards = raw_input("> ").strip()
     if not numcards:
         numcards = 1
     else:
         numcards = int(numcards)
-    print("Generating Bingo cards, please wait.")
+    print "Generating Bingo cards, please wait."
 
     skills = get_ranked_spells()
     spells = [s for s in skills if s.spellid <= 0x35]
@@ -6479,16 +6477,16 @@ def randomize():
         args[1] = TEST_FILE
         args[2] = TEST_SEED
     sleep(0.5)
-    print('You are using Beyond Chaos EX randomizer version "%s".' % VERSION)
+    print 'You are using Beyond Chaos EX randomizer version "%s".' % VERSION
     if BETA:
-        print("WARNING: This version is a beta! Things may not work correctly.")
+        print "WARNING: This version is a beta! Things may not work correctly."
 
     if len(args) > 2:
         sourcefile = args[1].strip()
     else:
         sourcefile = raw_input("Please input the file name of your copy of "
                                "the FF3 US 1.0 rom:\n> ").strip()
-        print()
+        print
 
     try:
         f = open(sourcefile, 'rb')
@@ -6522,7 +6520,7 @@ def randomize():
                 raise Exception("File not found.")
         else:
             raise Exception("File not found.")
-        print("Success! Using valid rom file: %s\n" % sourcefile)
+        print "Success! Using valid rom file: %s\n" % sourcefile
     del(f)
 
     flaghelptext = '''o   Shuffle characters' in-battle commands.
@@ -6556,7 +6554,7 @@ r   Randomize character locations in the world of ruin.
     else:
         fullseed = raw_input("Please input a seed value (blank for a random "
                              "seed):\n> ").strip()
-        print()
+        print
         if '.' not in fullseed:
             try:
                 with open('savedflags.txt', 'r') as sff:
@@ -6568,11 +6566,11 @@ r   Randomize character locations in the world of ruin.
             except IOError:
                 pass
 
-            print(flaghelptext + "\n")
-            print("Save frequently used flag sets by adding 0: through 9: before the flags.")
+            print flaghelptext + "\n"
+            print "Save frequently used flag sets by adding 0: through 9: before the flags."
             for k, v in sorted(speeddial_opts.items()):
-                print("    %s: %s" % (k, v))
-            print()
+                print "    %s: %s" % (k, v)
+            print
             flags = raw_input("Please input your desired flags (blank for "
                               "all of them):\n> ").strip()
             if ":" in flags:
@@ -6580,11 +6578,11 @@ r   Randomize character locations in the world of ruin.
                 dial = ''.join(c for c in flags[0] if c in '0123456789')
                 if len(dial) == 1:
                     speeddial_opts[dial] = flags[1]
-                    print('\nSaving flags "%s" in slot %s' % (flags[1], dial))
+                    print '\nSaving flags "%s" in slot %s' % (flags[1], dial)
                     saveflags = True
                 flags = flags[1]
             fullseed = ".%s.%s" % (flags, fullseed)
-            print()
+            print
 
     try:
         version, flags, seed = tuple(fullseed.split('.'))
@@ -6604,7 +6602,7 @@ r   Randomize character locations in the world of ruin.
                 for k, v in speeddial_opts.items():
                     if v: sff.write("%s: %s" % (k, v) + '\n')
         except:
-            print("Couldn't save flag string\n")
+            print "Couldn't save flag string\n"
 
     if '.' in sourcefile:
         tempname = sourcefile.rsplit('.', 1)
@@ -6614,7 +6612,7 @@ r   Randomize character locations in the world of ruin.
     outlog = '.'.join([tempname[0], str(seed), 'txt'])
 
     if len(data) % 0x400 == 0x200:
-        print("NOTICE: Headered ROM detected. Output file will have no header.")
+        print "NOTICE: Headered ROM detected. Output file will have no header."
         data = data[0x200:]
         sourcefile = '.'.join([tempname[0], "unheadered", tempname[1]])
         f = open(sourcefile, 'w+b')
@@ -6645,7 +6643,7 @@ r   Randomize character locations in the world of ruin.
         print ("WARNING! Version mismatch! "
                "This seed will not produce the expected result!")
     s = "Using seed: %s.%s.%s" % (VERSION, flags, seed)
-    print(s)
+    print s
     log(s, section=None)
     log("This is a game guide generated for the Beyond Chaos EX FF6 randomizer.",
         section=None)
@@ -6717,7 +6715,7 @@ r   Randomize character locations in the world of ruin.
         activated_codes.add('halloween')
         s += "ALL HALLOWS EVE MODE ACTIVATED\n"
 
-    print(s.strip())
+    print s.strip()
 
     if 'randomboost' in activated_codes:
         x = raw_input("Please enter a randomness "
@@ -6743,7 +6741,7 @@ r   Randomize character locations in the world of ruin.
     allFlags = 'abcdefghijklmnopqrstuvwxyz'
 
     if '-' in flags:
-        print("NOTE: Using all flags EXCEPT the specified flags.")
+        print "NOTE: Using all flags EXCEPT the specified flags."
         newFlags = allFlags
         for f in flags.strip():
             newFlags = newFlags.replace(f,"")
@@ -7016,7 +7014,7 @@ r   Randomize character locations in the world of ruin.
     reseed()
 
     if 'notawaiter' in activated_codes and 'ancientcave' not in activated_codes:
-        print("Cutscenes are currently skipped up to Kefka @ Narshe")
+        print "Cutscenes are currently skipped up to Kefka @ Narshe"
         manage_skips()
     reseed()
 
@@ -7124,7 +7122,7 @@ r   Randomize character locations in the world of ruin.
     fout.close()
     rewrite_checksum()
 
-    print("\nWriting log...")
+    print "\nWriting log..."
     for c in sorted(characters, key=lambda c: c.id):
         c.associate_command_objects(commands.values())
         if c.id > 13:
@@ -7144,7 +7142,7 @@ r   Randomize character locations in the world of ruin.
     f.write(get_logstring())
     f.close()
 
-    print("Randomization successful. Output filename: %s\n" % outfile)
+    print "Randomization successful. Output filename: %s\n" % outfile
 
     if 'bingoboingo' in activated_codes:
         manage_bingo()
@@ -7158,12 +7156,12 @@ if __name__ == "__main__":
     try:
         randomize()
         raw_input("Press enter to close this program. ")
-    except Exception as e:
-        print("ERROR: %s" % e)
+    except Exception, e:
+        print "ERROR: %s" % e
         if fout:
             fout.close()
         if outfile is not None:
-            print("Please try again with a different seed.")
+            print "Please try again with a different seed."
             raw_input("Press enter to delete %s and quit. " % outfile)
             os.remove(outfile)
         else:

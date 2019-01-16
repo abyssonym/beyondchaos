@@ -1829,13 +1829,16 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
             # No blizzard or tek laser in solo terra
             banned_narshe_skills = [0xB5, 0xBA]
             
-            banned_from_narshe = banned_narshe_skills in m.get_skillset()
-            banned_from_narshe |= banned_narshe_skills in n.get_skillset()
-            
+            banned_from_narshe = any(b in m.get_skillset()
+                                     for b in banned_narshe_skills)
+            banned_from_narshe |= any(b in n.get_skillset()
+                                      for b in banned_narshe_skills)
+
             if banned_from_narshe:
                 in_narshe_caves = False
-            
+
                 for id in [0x39, 0x3A]:
+                    from formationrandomizer import get_fset
                     fset = get_fset(id)
                     for f in fset.formations:
                         if m in f.present_enemies or n in f.present_enemies:

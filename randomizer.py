@@ -1343,7 +1343,7 @@ def manage_commands_new(commands):
         for i, name in enumerate(['swdtech', 'blitz', 'lore', 'rage', 'dance']):
             if c.name == name:
                 fout.seek(0x34D7A + i)
-                fout.write(chr(0xFF))
+                fout.write(chr(0xEE))
 
         c.newname(newname, fout)
         c.unsetmenu(fout)

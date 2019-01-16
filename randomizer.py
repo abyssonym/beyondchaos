@@ -465,8 +465,8 @@ class CharacterBlock:
         }
 
         level_map = {
-            0: [70, 15, 5, 10],  # avg. level + 0
-            1: [15, 70, 10, 5],  # avg. level + 2
+            0: [70, 20, 5, 5],  # avg. level + 0
+            1: [18, 70, 10, 2],  # avg. level + 2
             2: [9, 20, 70, 1],  # avg. level + 5
             3: [20, 9, 1, 70]   # avg. level - 3
         }

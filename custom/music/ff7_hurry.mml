@@ -21,7 +21,7 @@
 #WAVE 0x2C ~0x5E~ /0x30/
 #WAVE 0x2D ~0x55~ /0x00/
 
-#def global=t162 %v24 %x224 %b0,100
+#def global=t162 %v24 %x224 %b0,100 %f0,0
 
 #def sbass=  |5 p75 v64 o5
 #def ebass=  |4 p64 v127 o6
@@ -32,7 +32,7 @@
 #def st3= 'string' p84 ~o5~/o6/
 #def st4= 'string' p123 ~o4~/o5/
 #def syn1= |2 v64 p40 o5 %r0 vm0,8,222 /%a13/
-#def syn2= @3 v64 p0  o6 %p1 %a15 %r0 %l1 v0,8,222m0,16,192
+#def syn2= @3 v64 p0  o6 %a15 %r0 %l1 v0,8,222m0,16,192
 #def pan= |1 ~v112~/v72/ p20 ~o3~/o4 %r9/ vm48,24,192
 #def revc= @7 %p1%g1 p127 p192,64 v16 v192,80 o3 %a15 %r20 l32 [32a+] p192,0 v192,8 [32a+] %p0%g0
 #def buzz= @0 o7 v48 p0,192,127 %p1 %a15%r21
@@ -113,11 +113,12 @@ f+2..ag+b a+fg+d+
 ##35
 f+ag+b a+fg+d+
 ##43
-##%r0 %m192,16,255
-e^^^ ^8
+"!!!o c8^1^1"
+'syn2' l16
+[egb<c> bgeg b<c>bg ec>bg] %l0
 ;
 
-{3}
+{7}
 $
 [4r1]
 'pizza' %e1 l8
@@ -141,7 +142,7 @@ egf+a f+c+e>b
 b^^^ ^8
 ;
 
-{4}
+{8}
 $
 [4r1]
 'pizza' %e1 l8
@@ -165,7 +166,7 @@ b<dc+e fcd+>a+
 g^^^ ^8
 ;
 
-{5}
+{3}
 $
 [4r1] %e1 l1
 "t"r
@@ -209,14 +210,13 @@ l8 "!!!oz" v168,32[7"\z"] [3r1]
 <f+2..ag+b a+fg+d+ 
 ##35
 l8
-[8"!!!ob4bc4c4."]"c"
+[8"!!!ob4bc4c4."]
 ##43
-r1r1
-'syn2' l16
-[egb<c> bgeg b<c>bg ec>bg] %l0%p0
+'pan' l1
+e^^^ ^8
 ;
 
-{7}
+{4}
 $ l8 %e1
 [16"kh"]
 [3["khihkikh"]"ih" [15"kh"]]
@@ -227,7 +227,7 @@ $ l8 %e1
 [3"khikkhi4"]"khikkhs4"
 ;
 
-{8}
+{5}
 $ l4 %e1 %p0 k0 p
 [52"wx"]
 ##27

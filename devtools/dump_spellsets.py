@@ -22,7 +22,8 @@ all_spells = [SpellBlock(i, sourcefile) for i in xrange(0xFF)]
 for s in all_spells:
     spelldict[s.spellid] = s
 
-spellsets = get_spellsets(all_spells)
+valid_spells = [s for s in all_spells if s.valid]
+spellsets = get_spellsets(valid_spells)
 
 for name in sorted(spellsets.keys()):
     desc, spells = spellsets[name]

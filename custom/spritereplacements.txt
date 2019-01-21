@@ -109,7 +109,7 @@ kimhari.bin,Kimhari,male,true,1,kimhari-p.bin
 kirby.bin,Kirby,neutral,true,1,kirby-p.bin
 knight.bin,Knight (FFT),male,true,1,knight-p.bin
 krile.bin,Krile,female,true,0,krile-p.bin
-lttp.bin,Link LTTP,male,true,1,link-portrait.bin
+lttp.bin,Link LTTP,male,true,1,lttp-p.bin
 lady.bin,Lady,female,true,6,lady-p.bin
 leila.bin,Leila,female,true,0,leila-p.bin
 lenna.bin,Lenna,female,true,0,lenna-p.bin

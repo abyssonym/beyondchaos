@@ -450,8 +450,8 @@ class FormationSet():
             candidates.remove(highother)
         random.shuffle(candidates)
         formids = [f.formid for f in candidates]
-        self.formids = formids[:len(formids)/2]
-        other.formids = formids[len(formids)/2:]
+        self.formids = formids[:len(formids)//2]
+        other.formids = formids[len(formids)//2:]
         if len(formids) == 6:
             self.formids.append(highself.formid)
             other.formids.append(highother.formid)

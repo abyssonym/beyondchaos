@@ -65,7 +65,7 @@ def get_new_formations(areaname, supplement=True):
         supplemental = sorted(supplemental, key=lambda f: f.rank())
         formations |= set([f for f in supplemental if
                            f.ambusher or f.inescapable])
-        supplemental = supplemental[len(supplemental)/2:]
+        supplemental = supplemental[len(supplemental)//2:]
         formations |= set(supplemental)
 
     return sorted(formations, key=lambda f: f.formid)

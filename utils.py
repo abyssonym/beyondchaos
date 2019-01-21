@@ -401,7 +401,7 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
             values.append(index)
         values = sorted(values)
         low, high = min(values), max(values)
-        median = values[len(values)/2]
+        median = values[len(values)//2]
         clusters = [set([low]), set([high])]
         done = set([low, high])
         if median not in done and random.choice([True, False]):
@@ -418,7 +418,7 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
 
             def cluster_distance(cluster):
                 distances = [abs(index-i) for i in cluster]
-                return sum(distances) / len(distances)
+                return sum(distances) // len(distances)
                 nearest = min(cluster, key=lambda x: abs(x-index))
                 return abs(nearest-index)
 

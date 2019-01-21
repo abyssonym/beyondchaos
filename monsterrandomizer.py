@@ -1,3 +1,4 @@
+from __future__ import print_function
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    make_table, utilrandom as random)
@@ -118,7 +119,7 @@ def read_ai_table(table):
 
 def get_item_normal():
     items = get_ranked_items()
-    base = ((len(items)-1) / 2)
+    base = ((len(items)-1) // 2)
     index = random.randint(0, base) + random.randint(0, base)
     if len(items) > (base * 2) + 1:
         index += random.randint(0, 1)
@@ -214,9 +215,9 @@ class MonsterBlock:
         if self.physspecial:
             power = ((self.special & 0x2F) - 0x20) + 2
             if power % 2:
-                power = (power / 2) + 1
+                power = (power // 2) + 1
             else:
-                power = str(power / 2) + ".5"
+                power = str(power // 2) + ".5"
             s = "attack x%s" % power
         elif special & 0x3F > 0x31:
             s = "reflect break?"
@@ -506,7 +507,7 @@ class MonsterBlock:
     def randomize_boost_level(self, limit=99):
         level = self.stats['level']
         diff = limit - level
-        level += random.randint(0, diff/2) + random.randint(0, diff/2)
+        level += random.randint(0, diff//2) + random.randint(0, diff//2)
         if diff % 2 == 1:
             level += random.randint(0, 1)
         assert self.stats['level'] <= level <= limit
@@ -821,9 +822,9 @@ class MonsterBlock:
                             # battle timer greater than value
                             # global timer greater than value
                             value = action[2]
-                            step = value / 2
+                            step = value // 2
                             value = (step + random.randint(0, step) +
-                                     random.randint(0, step/2))
+                                     random.randint(0, step//2))
                             value = min(0xFF, max(0, value))
                             action[2] = value
                         if action[1] in [0x0C, 0x0D]:
@@ -1176,7 +1177,7 @@ class MonsterBlock:
         self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFFFF)
 
         def fuddle(value, limit=0xFFFF):
-            low = value / 2
+            low = value // 2
             value = low + random.randint(0, low) + random.randint(0, low)
             if value & 0xFF == 0xFF:
                 value = value - 1
@@ -1414,7 +1415,7 @@ class MonsterBlock:
 
     def treasure_boost(self):
         def fuddle(value, limit=0xFFFF):
-            low = value / 2
+            low = value // 2
             value = low + random.randint(0, low) + random.randint(0, low)
             while random.choice([True, True, False]):
                 value += random.randint(0, low)
@@ -1910,7 +1911,7 @@ class MonsterGraphicBlock:
 
     def set_palette_pointer(self, palette_pointer):
         self.palette_pointer = palette_pointer
-        palette = (palette_pointer - 0x127820) / 0x10
+        palette = (palette_pointer - 0x127820) // 0x10
         self.palette = palette
 
     def write_data(self, fout, palette_pointer=None, no_palette=False):
@@ -1919,7 +1920,7 @@ class MonsterGraphicBlock:
             palette = self.palette
         else:
             self.set_palette_pointer(palette_pointer)
-            palette = (palette_pointer - 0x127820) / 0x10
+            palette = (palette_pointer - 0x127820) // 0x10
 
         if self.large:
             palette |= 0x8000

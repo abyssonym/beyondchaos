@@ -103,7 +103,7 @@ def get_logstring(ordering=None):
     global randlog
     s = ""
     if ordering is None:
-        ordering = sorted(randlog.keys())
+        ordering = sorted([o for o in randlog.keys() if o is not None])
     ordering = [o for o in ordering if o is not None]
 
     for d in randlog[None]:
@@ -419,13 +419,13 @@ class CharacterBlock:
 
         def mutation(base):
             while True:
-                value = max(base / 2, 1)
+                value = max(base // 2, 1)
                 if self.beserk:
                     value += 1
 
                 value += random.randint(0, value) + random.randint(0, value)
                 while random.randint(1, 10) == 10:
-                    value = max(value / 2, 1)
+                    value = max(value // 2, 1)
                     value += random.randint(0, value) + random.randint(0, value)
                 value = max(1, min(value, 0xFE))
 
@@ -705,8 +705,8 @@ def randomize_slots(filename, fout, pointer):
     spells = get_ranked_spells(filename)
     spells = [s for s in spells if s.spellid >= 0x36]
     attackspells = [s for s in spells if s.target_enemy_default]
-    quarter = len(attackspells) / 4
-    eighth = quarter / 2
+    quarter = len(attackspells) // 4
+    eighth = quarter // 2
     jokerdoom = ((eighth * 6) + random.randint(0, eighth) +
                  random.randint(0, eighth))
     jokerdoom += random.randint(0, len(attackspells)-(8*eighth)-1)
@@ -718,13 +718,13 @@ def randomize_slots(filename, fout, pointer):
         elif i == 3:
             return None
         elif i in [4, 5, 6]:
-            half = len(spells) / 2
+            half = len(spells) // 2
             index = random.randint(0, half) + random.randint(0, half)
         elif i == 2:
-            third = len(spells) / 3
+            third = len(spells) // 3
             index = random.randint(third, len(spells)-1)
         elif i == 7:
-            twentieth = len(spells)/20
+            twentieth = len(spells)//20
             index = random.randint(0, twentieth)
             while random.randint(1, 3) == 3:
                 index += random.randint(0, twentieth)
@@ -1054,7 +1054,7 @@ def manage_commands_new(commands):
             scount = 9
 
         def get_random_power():
-            basepower = POWER_LEVEL / 2
+            basepower = POWER_LEVEL // 2
             power = basepower + random.randint(0, basepower)
             while True:
                 power += random.randint(0, basepower)
@@ -3165,7 +3165,7 @@ def manage_treasure(monsters, shops=True):
                 candidates.append(intermediate)
 
         candidates = sorted(candidates, key=lambda c: c.rank())
-        candidates = candidates[len(candidates)/2:]
+        candidates = candidates[len(candidates)//2:]
         wager = random.choice(candidates)
         buycheck = [get_item(b).name for b in buyables
                     if b in wagers and wagers[b] == wager]
@@ -3292,8 +3292,8 @@ def manage_blitz():
         # skip pummel
         current = blitzspecptr + (i * 12)
         fout.seek(current + 11)
-        length = ord(fout.read(1)) / 2
-        halflength = max(length / 2, 2)
+        length = ord(fout.read(1)) // 2
+        halflength = max(length // 2, 2)
         newlength = (halflength + random.randint(0, halflength) +
                      random.randint(1, halflength))
         newlength = min(newlength, 10)
@@ -3543,7 +3543,7 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None, form_m
                                  (-2, 2), (-1, 1))
             boss2 = sorted_bosses[index]
             ue.copy_all(boss2, everything=False)
-            ue.stats['level'] = (boss.stats['level']+boss2.stats['level']) / 2
+            ue.stats['level'] = (boss.stats['level']+boss2.stats['level']) // 2
 
             if ue.id in mutated_ues:
                 raise Exception("Double mutation detected.")
@@ -3605,7 +3605,7 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None, form_m
 
     boss_candidates = list(safe_boss_formations)
     boss_candidates = random.sample(boss_candidates,
-                                    random.randint(0, len(boss_candidates)/2))
+                                    random.randint(0, len(boss_candidates)//2))
     rare_candidates = list(repurposed_formations + boss_candidates)
 
     zones = get_zones()
@@ -3981,8 +3981,8 @@ def manage_encounter_rate():
     moogle = 0.01
     normal = [base, base*bangle, base*moogle, base*bangle*moogle]
 
-    half = base / 2
-    quarter = base / 4
+    half = base // 2
+    quarter = base // 4
     unaffected = [base, half+quarter+(quarter*bangle),
                   half+quarter+(quarter*moogle),
                   half + (quarter*bangle) + (quarter*moogle)]
@@ -4305,16 +4305,16 @@ def manage_opening():
             raise Exception("Text too long to replace.")
         if not split:
             remaining = length - len(text)
-            text = (" " * (remaining/2)) + text
+            text = (" " * (remaining//2)) + text
             while len(text) < len(original):
                 text += " "
         else:
-            midtext = len(text)/2
-            midlength = length / 2
+            midtext = len(text)//2
+            midlength = length // 2
             a, b = text[:midtext].strip(), text[midtext:].strip()
             text = ""
             for t in (a, b):
-                margin = (midlength - len(t)) / 2
+                margin = (midlength - len(t)) // 2
                 t = (" " * margin) + t
                 while len(t) < midlength:
                     t += " "
@@ -5056,7 +5056,7 @@ def manage_ancient(form_music_overrides={}):
     blank_sub = Substitution()
     blank_sub.set_location(0x2D76C1)
     blank_sub.bytestring = [0xFF] * (0x2D76F5 - blank_sub.location)
-    blank_sub.bytestring[blank_sub.size/2] = 0
+    blank_sub.bytestring[blank_sub.size//2] = 0
     blank_sub.write(fout)
 
     goddess_save_sub = Substitution()
@@ -5158,14 +5158,14 @@ def manage_ancient(form_music_overrides={}):
     shadow_leaving_sub = Substitution()
     shadow_leaving_sub.set_location(0x248A6)
     shadow_leaving_sub.bytestring = [
-        0x1C, 0xDE + (runaway/8), 0x1E,     # TRB $1ede
+        0x1C, 0xDE + (runaway//8), 0x1E,     # TRB $1ede
         0x20, 0xE3, 0x47,
-        0xAD, 0xFB + (runaway/8), 0x1E,     # LDA $1efb
+        0xAD, 0xFB + (runaway//8), 0x1E,     # LDA $1efb
         0x09, 1 << (runaway % 8),           # ORA #$08
-        0x8D, 0xFB + (runaway/8), 0x1E,     # STA $1efb
-        0xAD, 0xDE + (runaway/8), 0x1E,     # LDA $1ede
+        0x8D, 0xFB + (runaway//8), 0x1E,     # STA $1efb
+        0xAD, 0xDE + (runaway//8), 0x1E,     # LDA $1ede
         0x29, 0xFF ^ (1 << (runaway % 8)),  # AND #$F7
-        0x8D, 0xDE + (runaway/8), 0x1E,     # STA $1ede
+        0x8D, 0xDE + (runaway//8), 0x1E,     # STA $1ede
         ]
     while len(shadow_leaving_sub.bytestring) < 23:
         shadow_leaving_sub.bytestring.append(0xEA)
@@ -5188,9 +5188,9 @@ def manage_ancient(form_music_overrides={}):
         0x89, 0xC2,
         0xD0, 0x0C,
         0xA9, 1 << (runaway % 8),
-        0x2C, 0xBD + (runaway/8), 0x3E,
+        0x2C, 0xBD + (runaway//8), 0x3E,
         0xD0, 0x05,
-        0x2C, 0xDE + (runaway/8), 0x1E,
+        0x2C, 0xDE + (runaway//8), 0x1E,
         ]
     shadow_leaving_sub.write(fout)
     shadow_leaving_sub.set_location(0x10A851)
@@ -5232,13 +5232,13 @@ def manage_ancient(form_music_overrides={}):
         event_value = esperevents[esper.name] + 0x36
         startsub.bytestring += [0x86, event_value]
     for i in xrange(27):  # espers
-        byte, bit = i / 8, i % 8
+        byte, bit = i // 8, i % 8
         mem_addr = ((0x17+byte) << 3) | bit
         startsub.bytestring += [0xD6, mem_addr]
     for i in xrange(16):  # characters
         if i in starting:
             continue
-        byte, bit = i / 8, i % 8
+        byte, bit = i // 8, i % 8
         mem_addr = ((0x1b+byte) << 3) | bit
         startsub.bytestring += [0xD6, mem_addr]
     startsub.bytestring += [0xB2, 0x09, 0x21, 0x02,  # start on airship
@@ -5439,7 +5439,7 @@ def manage_ancient(form_music_overrides={}):
 
     espersubs = {}
     for esper, event_value in esperevents.items():
-        byte, bit = event_value / 8, event_value % 8
+        byte, bit = event_value // 8, event_value % 8
         mem_addr = ((0x17+byte) << 3) | bit
         espersub = Substitution()
         espersub.set_location(pointer)
@@ -5524,7 +5524,7 @@ def manage_ancient(form_music_overrides={}):
         timer = max(timer, 3600)
         half = None
         while half is None or random.randint(1, 5) == 5:
-            half = timer / 2
+            half = timer // 2
             timer = half + random.randint(0, half) + random.randint(0, half)
         if reverse:
             timer = 65535 - timer
@@ -5554,7 +5554,7 @@ def manage_ancient(form_music_overrides={}):
     itemshops = [s for s in shops
                  if s.shoptype_pretty in ["items", "misc"]]
     othershops = [s for s in shops if s not in itemshops]
-    othershops = othershops[random.randint(0, len(othershops)/2):]
+    othershops = othershops[random.randint(0, len(othershops)//2):]
     itemshops = sorted(random.sample(itemshops, 5), key=lambda p: p.rank())
     othershops = sorted(random.sample(othershops, 7),
                         key=lambda p: p.rank())
@@ -5620,7 +5620,7 @@ def manage_ancient(form_music_overrides={}):
     pointer += len(num_in_party_sub.bytestring)
     ally_addrs = {}
     for chosen in sorted(set(optional_chars)):
-        byte, bit = chosen.slotid / 8, chosen.slotid % 8
+        byte, bit = chosen.slotid // 8, chosen.slotid % 8
         mem_addr = ((0x1b+byte) << 3) | bit
         allysub = Substitution()
         for party_id in range(1, 4):
@@ -5779,7 +5779,7 @@ def manage_ancient(form_music_overrides={}):
             if chosen.id >= 14 and False:
                 byte, bit = 0, 0
             else:
-                byte, bit = (chosen.slotid / 8) + 0x1b, chosen.slotid % 8
+                byte, bit = (chosen.slotid // 8) + 0x1b, chosen.slotid % 8
             event_addr = ally_addrs[chosen.id, l.party_id, len(l.npcs)]
             ally = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
@@ -5842,7 +5842,7 @@ def manage_ancient(form_music_overrides={}):
             espersub.write(fout)
             event_addr = (espersub.location - 0xa0000) & 0x3FFFF
             event_value = esperevents[esper.name]
-            byte, bit = event_value / 8, event_value % 8
+            byte, bit = event_value // 8, event_value % 8
             magicite = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
                 "graphics": 0x5B, "palette": 2, "x": 44+i, "y": 16,
@@ -6186,7 +6186,7 @@ def manage_dances():
         spells = [s for s in spells
                   if s.valid and s.spellid >= 0x36
                   and s.spellid not in geo and s.spellid not in beasts]
-        half = len(spells) / 2
+        half = len(spells) // 2
 
         other = []
         for i in range(8):

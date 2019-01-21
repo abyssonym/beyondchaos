@@ -275,7 +275,7 @@ class CommandBlock:
     def set_bit(self, pointer, fout, unset=False):
         bit = self.id % 8
         byte = 1 << bit
-        offset = self.id / 8
+        offset = self.id // 8
         fout.seek(pointer + offset)
         old = ord(fout.read(1))
         if unset:

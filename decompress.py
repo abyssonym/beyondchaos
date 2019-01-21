@@ -102,7 +102,7 @@ def recompress(bytestring):
                 searchstr = bytestring[:k]
                 for h in xrange(1, len(searchstr)+1):
                     loopstr = searchstr[:h]
-                    mult = (len(searchstr) / len(loopstr)) + 1
+                    mult = (len(searchstr) // len(loopstr)) + 1
                     if searchstr == (loopstr * mult)[:len(searchstr)]:
                         if loopbuff.endswith(loopstr):
                             j = k

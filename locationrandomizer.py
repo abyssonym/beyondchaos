@@ -167,7 +167,7 @@ class Zone():
         if self.zoneid < 0x80:
             index = self.zoneid % 0x40
             x = index % 8
-            y = index / 8
+            y = index // 8
             quadrants = [["NW", "NE"],
                          ["SW", "SE"]]
             quadrant = quadrants[int(y >= 4)][int(x >= 4)]
@@ -560,7 +560,7 @@ class Location():
         f.seek(self.chestpointer)
         begin = read_multi(f, length=2)
         end = read_multi(f, length=2)
-        numchests = (end - begin) / 5
+        numchests = (end - begin) // 5
         self.chests = []
         for i in xrange(numchests):
             pointer = begin + (i*5) + 0x2d8634
@@ -626,7 +626,7 @@ class Location():
             if len(self.chests) > 0:
                 values = [c.get_current_value(guideline=100)
                           for c in self.chests]
-                average_value = (sum(values)*100) / len(values)
+                average_value = (sum(values)*100) // len(values)
                 guideline = average_value
             else:
                 guideline = 100
@@ -654,8 +654,8 @@ class Location():
     def unlock_chests(self, low, high, monster=False,
                       guarantee_miab_treasure=False, enemy_limit=None):
         if len(self.chests) == 1:
-            low = (low + high) / 2
-        dist = (high - low) / 2
+            low = (low + high) // 2
+        dist = (high - low) // 2
         for c in self.chests:
             c.set_content_type(0x80)
             c.contents = None
@@ -860,7 +860,7 @@ class EntranceSet():
         start = read_multi(f, length=2)
         end = read_multi(f, length=2)
         f.close()
-        n = (end - start) / 6
+        n = (end - start) // 6
         assert end == start + (6*n)
         self.entrances = []
         for i in xrange(n):
@@ -876,7 +876,7 @@ class EntranceSet():
         start = read_multi(f, length=2)
         end = read_multi(f, length=2)
         f.close()
-        n = (end - start) / 7
+        n = (end - start) // 7
         assert end == start + (7*n)
         self.longentrances = []
         for i in xrange(n):

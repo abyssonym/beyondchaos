@@ -242,13 +242,13 @@ class ChestBlock:
             itemids = [i.itemid for i in items]
             try:
                 index = itemids.index(self.contents)
-                value = items[index].rank() / 100
+                value = items[index].rank() // 100
             except ValueError:
                 value = 100
         elif self.gold or self.empty:
             if self.empty:
                 if guideline is not None:
-                    value = guideline / 100
+                    value = guideline // 100
                 else:
                     raise Exception("No guideline provided for empty chest.")
             else:
@@ -263,7 +263,7 @@ class ChestBlock:
                     items.append(min(mitems, key=lambda i: i.rank()))
             if items:
                 highest = max(items, key=lambda i: i.rank())
-                value = highest.rank() / 100
+                value = highest.rank() // 100
             else:
                 value = 1
 
@@ -392,7 +392,7 @@ class ChestBlock:
             if crazy_prices:
                 value = random.randint(10, 50)
             else:
-                value = value / 2
+                value = value // 2
                 value += (random.randint(0, value) + random.randint(0, value))
             self.contents = min(0xFF, max(1, value))
             if self.contents == 0xFF:

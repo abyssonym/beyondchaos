@@ -142,7 +142,7 @@ class ShopBlock:
         for i in new_items:
             if i.price < 3:
                 price = i.rank()
-                modifier = price / 2
+                modifier = price // 2
                 price += random.randint(0, modifier)
                 while random.randint(1, 4) < 4:
                     price += random.randint(0, modifier)
@@ -151,7 +151,7 @@ class ShopBlock:
 
                 zerocount = 0
                 while i.price > 100:
-                    i.price = i.price / 10
+                    i.price = i.price // 10
                     zerocount += 1
 
                 while zerocount > 0:

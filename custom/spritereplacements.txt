@@ -89,7 +89,7 @@ gestahl.bin,Gestahl,male,true,7,gestahl-p.bin
 gilgamesh.bin,Gilgamesh,male,true,1,gilgamesh-p.bin
 girl.bin,Girl,female,true,1,girl-p.bin
 goku.bin,Goku,male,true,1,goku-p.bin
-golbez.bin,Golbez,male,true,4,oldgolbez-p.bin
+golbez.bin,Golbez,male,true,4,golbez-p.bin
 gordon.bin,Gordon,male,true,1,gordon-p.bin
 grandma.bin,Grandma,female,true,7,grandma-p.bin
 guy.bin,Guy,male,true,1,guy-p.bin

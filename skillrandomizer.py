@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from utils import (hex2int, int2bytes, Substitution, SPELL_TABLE,
                    SPELLBANS_TABLE, name_to_bytes, utilrandom as random)
 
@@ -275,7 +277,7 @@ class CommandBlock:
     def set_bit(self, pointer, fout, unset=False):
         bit = self.id % 8
         byte = 1 << bit
-        offset = self.id / 8
+        offset = self.id // 8
         fout.seek(pointer + offset)
         old = ord(fout.read(1))
         if unset:

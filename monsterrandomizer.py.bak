@@ -1,5 +1,3 @@
-from __future__ import division
-from __future__ import print_function
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    make_table, utilrandom as random)
@@ -85,7 +83,7 @@ ranked = ["casting", "near death", "floating", "regen", "poison", "blind",
           "morph", "frozen", "death", "interceptor", "magitek",
           "rage", "dance", "disappear"]
 specialdict = [k for (k, v) in sorted(statusdict.items(),
-               key=lambda k_v: k_v[1])]
+               key=lambda (k, v): v)]
 specialdict = dict([(k, i) for (i, k) in enumerate(specialdict)])
 specialdict["rage"] = 0x18
 specialdict["dance"] = 0x10
@@ -120,7 +118,7 @@ def read_ai_table(table):
 
 def get_item_normal():
     items = get_ranked_items()
-    base = ((len(items)-1) // 2)
+    base = ((len(items)-1) / 2)
     index = random.randint(0, base) + random.randint(0, base)
     if len(items) > (base * 2) + 1:
         index += random.randint(0, 1)
@@ -216,9 +214,9 @@ class MonsterBlock:
         if self.physspecial:
             power = ((self.special & 0x2F) - 0x20) + 2
             if power % 2:
-                power = (power // 2) + 1
+                power = (power / 2) + 1
             else:
-                power = str(power // 2) + ".5"
+                power = str(power / 2) + ".5"
             s = "attack x%s" % power
         elif special & 0x3F > 0x31:
             s = "reflect break?"
@@ -508,7 +506,7 @@ class MonsterBlock:
     def randomize_boost_level(self, limit=99):
         level = self.stats['level']
         diff = limit - level
-        level += random.randint(0, diff//2) + random.randint(0, diff//2)
+        level += random.randint(0, diff/2) + random.randint(0, diff/2)
         if diff % 2 == 1:
             level += random.randint(0, 1)
         assert self.stats['level'] <= level <= limit
@@ -518,22 +516,22 @@ class MonsterBlock:
         level = self.stats['level']
         diff = limit - level
         
-        level_add = diff//2
+        level_add = diff/2
         if level <=7:
-            level_add = diff//16
+            level_add = diff/16
         elif level <= 15:
-            level_add = diff//8
+            level_add = diff/8
         elif level <=30:
-            level_add = diff//4
+            level_add = diff/4
 
         factors = {
-            'mpow': 5//4,
-            'attack': 5//4,
-            'def': 5//4,
-            'mdef': 5//4,
-            'speed': 5//4,
-            'evade%': 5//4,
-            'mblock%': 9//8,
+            'mpow': 5/4,
+            'attack': 5/4,
+            'def': 5/4,
+            'mdef': 5/4,
+            'speed': 5/4,
+            'evade%': 5/4,
+            'mblock%': 9/8,
         }
 
         hp_add = (750, 1500) if level <= 30 else (2500, 5000)
@@ -544,24 +542,24 @@ class MonsterBlock:
         if self.is_boss and self.id not in early_bosses:
             hp_add = (0, 0)
             factors = {
-                'hp': 5//2,
-                'mpow': 3//2,
-                'attack': 3//2,
-                'def': 5//4,
-                'mdef': 5//4,
-                'speed': 3//2,
-                'evade%': 4//4,
-                'mblock%': 9//8,
+                'hp': 5/2,
+                'mpow': 3/2,
+                'attack': 3/2,
+                'def': 5/4,
+                'mdef': 5/4,
+                'speed': 3/2,
+                'evade%': 4/4,
+                'mblock%': 9/8,
             }
 
         for stat in self.stats:
             self.stats[stat] *= factors.get(stat, 1)
             
         if self.stats['evade%'] == 0:
-            self.stats['evade%'] = level//2
+            self.stats['evade%'] = level/2
 
         if self.stats['mblock%'] == 0:
-            self.stats['mblock%'] = level//4
+            self.stats['mblock%'] = level/4
         
         stat_max = {
             'hp': 65535,
@@ -823,9 +821,9 @@ class MonsterBlock:
                             # battle timer greater than value
                             # global timer greater than value
                             value = action[2]
-                            step = value // 2
+                            step = value / 2
                             value = (step + random.randint(0, step) +
-                                     random.randint(0, step//2))
+                                     random.randint(0, step/2))
                             value = min(0xFF, max(0, value))
                             action[2] = value
                         if action[1] in [0x0C, 0x0D]:
@@ -1178,7 +1176,7 @@ class MonsterBlock:
         self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFFFF)
 
         def fuddle(value, limit=0xFFFF):
-            low = value // 2
+            low = value / 2
             value = low + random.randint(0, low) + random.randint(0, low)
             if value & 0xFF == 0xFF:
                 value = value - 1
@@ -1416,7 +1414,7 @@ class MonsterBlock:
 
     def treasure_boost(self):
         def fuddle(value, limit=0xFFFF):
-            low = value // 2
+            low = value / 2
             value = low + random.randint(0, low) + random.randint(0, low)
             while random.choice([True, True, False]):
                 value += random.randint(0, low)
@@ -1890,7 +1888,7 @@ class MonsterGraphicBlock:
         if self.graphics not in palette_pools:
             palette_pools[self.graphics] = set([])
         for p in palette_pools[self.graphics]:
-            if all(map(lambda a_b: a_b[0] == a_b[1], zip(self.palette_data, p))):
+            if all(map(lambda (a, b): a == b, zip(self.palette_data, p))):
                 return
         palette_pools[self.graphics].add(self.palette_data)
 
@@ -1912,7 +1910,7 @@ class MonsterGraphicBlock:
 
     def set_palette_pointer(self, palette_pointer):
         self.palette_pointer = palette_pointer
-        palette = (palette_pointer - 0x127820) // 0x10
+        palette = (palette_pointer - 0x127820) / 0x10
         self.palette = palette
 
     def write_data(self, fout, palette_pointer=None, no_palette=False):
@@ -1921,7 +1919,7 @@ class MonsterGraphicBlock:
             palette = self.palette
         else:
             self.set_palette_pointer(palette_pointer)
-            palette = (palette_pointer - 0x127820) // 0x10
+            palette = (palette_pointer - 0x127820) / 0x10
 
         if self.large:
             palette |= 0x8000

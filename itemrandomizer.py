@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,
                    name_to_bytes, utilrandom as random,
@@ -436,7 +438,7 @@ class ItemBlock:
 
         def mutate_power_hitmdef():
             diff = min(self.features['power'], 0xFF-self.features['power'])
-            diff = diff / 3
+            diff = diff // 3
             self.features['power'] = self.features['power'] - diff
             self.features['power'] = self.features['power'] + random.randint(0, diff) + random.randint(0, diff)
             self.features['power'] = int(min(0xFF, max(0, self.features['power'])))
@@ -445,7 +447,7 @@ class ItemBlock:
                 return
 
             diff = min(self.features['hitmdef'], 0xFF-self.features['hitmdef'])
-            diff = diff / 3
+            diff = diff // 3
             self.features['hitmdef'] = self.features['hitmdef'] - diff
             self.features['hitmdef'] = self.features['hitmdef'] + random.randint(0, diff) + random.randint(0, diff)
             self.features['hitmdef'] = int(min(0xFF, max(0, self.features['hitmdef'])))
@@ -513,14 +515,14 @@ class ItemBlock:
             else:
                 return
 
-        normal = self.price / 2
+        normal = self.price // 2
         self.price += random.randint(0, normal) + random.randint(0, normal)
         while random.randint(1, 10) == 10:
             self.price += random.randint(0, normal) + random.randint(0, normal)
 
         zerocount = 0
         while self.price > 100:
-            self.price = self.price / 10
+            self.price = self.price // 10
             zerocount += 1
 
         while zerocount > 0:

@@ -1,5 +1,3 @@
-from __future__ import division
-from __future__ import print_function
 from utils import read_multi, write_multi, utilrandom as random
 from math import log
 from monsterrandomizer import monsterdict
@@ -318,8 +316,8 @@ class Formation():
 
     def get_special_ap(self):
         levels = [e.stats['level'] for e in self.present_enemies if e]
-        ap = int(sum(levels) // len(levels))
-        low = ap // 2
+        ap = int(sum(levels) / len(levels))
+        low = ap / 2
         ap = low + random.randint(0, low) + random.randint(0, low)
         ap = random.randint(0, ap)
         self.ap = min(100, max(ap, 0))
@@ -451,8 +449,8 @@ class FormationSet():
             candidates.remove(highother)
         random.shuffle(candidates)
         formids = [f.formid for f in candidates]
-        self.formids = formids[:len(formids)//2]
-        other.formids = formids[len(formids)//2:]
+        self.formids = formids[:len(formids)/2]
+        other.formids = formids[len(formids)/2:]
         if len(formids) == 6:
             self.formids.append(highself.formid)
             other.formids.append(highother.formid)
@@ -515,7 +513,7 @@ if __name__ == "__main__":
     formations = get_formations(filename=filename)
     fsets = get_fsets(filename=filename)
     for f in formations:
-        print(f, f.ap)
+        print f, f.ap
 
     #for f in fsets:
     #    print f

@@ -1,3 +1,4 @@
+from __future__ import division
 from __future__ import print_function
 # quick and EXTREMELY messy hack to run nascentorder functions in beyondchaos
 # hopefully, this will allow updates on one end to easily copypasta
@@ -351,7 +352,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
     # figure out what instruments are available
     sampleptrs = [s.strip() for s in CONFIG.get('MusicPtr', 'brrpointers').split(',')]
     if len(sampleptrs) != 2: sampleptrs = to_default('brrpointers')
-    instcount = (int(sampleptrs[1],16) + 1 - int(sampleptrs[0],16)) / 3
+    instcount = (int(sampleptrs[1],16) + 1 - int(sampleptrs[0],16)) // 3
     
     ## figure out what music to use
     # build dict of original music from ROM
@@ -572,8 +573,8 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         return (battleids, bossids)
     
     def check_ids_fit():
-        n_by_isets = (isetlocs[1] - isetlocs[0] + 1) / 0x20
-        n_by_sptrs = (songptraddrs[1] - songptraddrs[0] + 1) / 3
+        n_by_isets = (isetlocs[1] - isetlocs[0] + 1) // 0x20
+        n_by_sptrs = (songptraddrs[1] - songptraddrs[0] + 1) // 3
         if len(songtable) > n_by_isets or len(songtable) > n_by_sptrs:
             return False
         return True

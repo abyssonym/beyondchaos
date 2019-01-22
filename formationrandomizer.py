@@ -1,3 +1,4 @@
+from __future__ import division
 from __future__ import print_function
 from utils import read_multi, write_multi, utilrandom as random
 from math import log
@@ -317,8 +318,8 @@ class Formation():
 
     def get_special_ap(self):
         levels = [e.stats['level'] for e in self.present_enemies if e]
-        ap = int(sum(levels) / len(levels))
-        low = ap / 2
+        ap = int(sum(levels) // len(levels))
+        low = ap // 2
         ap = low + random.randint(0, low) + random.randint(0, low)
         ap = random.randint(0, ap)
         self.ap = min(100, max(ap, 0))

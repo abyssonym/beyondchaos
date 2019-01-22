@@ -1,3 +1,4 @@
+from __future__ import division
 from __future__ import print_function
 from time import time, sleep, gmtime
 from sys import argv, exit
@@ -5152,7 +5153,7 @@ def manage_ancient(form_music_overrides={}):
     runaway = random.choice([c for c in characters if hasattr(c, "slotid")
                              and c.id == c.slotid]).slotid
     if runaway in starting:
-        byte, bit = runaway / 8, runaway % 8
+        byte, bit = runaway // 8, runaway % 8
         mem_addr = ((0x1b+byte) << 3) | bit
         startsub.bytestring += [0xD7, mem_addr]
     shadow_leaving_sub = Substitution()
@@ -5429,7 +5430,7 @@ def manage_ancient(form_music_overrides={}):
             leader_sub.bytestring += [0x3F, c, i+1]
         leader_sub.bytestring += [0x99, 0x03, locked & 0xFF, locked >> 8]
         for i in [14, 15]:
-            byte, bit = i / 8, i % 8
+            byte, bit = i // 8, i % 8
             mem_addr = ((0x1b+byte) << 3) | bit
             leader_sub.bytestring += [0xD6, mem_addr]
         leader_sub.bytestring += [0x96, 0xFE]
@@ -5799,7 +5800,7 @@ def manage_ancient(form_music_overrides={}):
                     if chosen.id >= 14 and False:
                         byte, bit = 0, 0
                     else:
-                        byte, bit = (chosen.slotid / 8) + 0x1b, chosen.slotid % 8
+                        byte, bit = (chosen.slotid // 8) + 0x1b, chosen.slotid % 8
                     event_addr = ally_addrs[chosen.id, l.party_id, len(l.npcs)]
                     attributes = {
                         "graphics": chargraphics[chosen.id],
@@ -5933,8 +5934,8 @@ def manage_ancient(form_music_overrides={}):
                 mr = min(maxrank, 0xFF)
                 r = max(0, min(r, mr))
                 if "racecave" in activated_codes:
-                    half = r/2
-                    quarter = half/2
+                    half = r//2
+                    quarter = half//2
                     r = (half + random.randint(0, quarter) +
                          random.randint(0, quarter))
                 if r <= 0:

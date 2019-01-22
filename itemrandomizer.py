@@ -1,3 +1,4 @@
+from __future__ import division
 from __future__ import print_function
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,

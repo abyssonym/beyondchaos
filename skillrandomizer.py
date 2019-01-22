@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from utils import (hex2int, int2bytes, Substitution, SPELL_TABLE,
                    SPELLBANS_TABLE, name_to_bytes, utilrandom as random)
 

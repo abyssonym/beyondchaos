@@ -1,3 +1,4 @@
+from __future__ import division
 from __future__ import print_function
 from utils import read_multi, write_multi
 from sys import argv

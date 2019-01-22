@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from utils import utilrandom as random
 from itemrandomizer import get_ranked_items, get_item
 

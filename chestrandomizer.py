@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution
 from itemrandomizer import get_ranked_items, get_item
 from formationrandomizer import get_formations, get_fsets
@@ -360,7 +362,7 @@ class ChestBlock:
                     candidates = [f for f in candidates
                                   if f.rank() <= enemy_limit]
                     candidates = sorted(candidates, key=lambda f: f.rank())
-                    half = len(candidates) / 2
+                    half = len(candidates) // 2
                     candidates = candidates[half:]
                     index = random.randint(0, half) + random.randint(0, half)
                     index = min(index, len(candidates)-1)

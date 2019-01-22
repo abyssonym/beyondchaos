@@ -1,3 +1,4 @@
+from __future__ import division
 from __future__ import print_function
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
@@ -517,22 +518,22 @@ class MonsterBlock:
         level = self.stats['level']
         diff = limit - level
         
-        level_add = diff/2
+        level_add = diff//2
         if level <=7:
-            level_add = diff/16
+            level_add = diff//16
         elif level <= 15:
-            level_add = diff/8
+            level_add = diff//8
         elif level <=30:
-            level_add = diff/4
+            level_add = diff//4
 
         factors = {
-            'mpow': 5/4,
-            'attack': 5/4,
-            'def': 5/4,
-            'mdef': 5/4,
-            'speed': 5/4,
-            'evade%': 5/4,
-            'mblock%': 9/8,
+            'mpow': 5//4,
+            'attack': 5//4,
+            'def': 5//4,
+            'mdef': 5//4,
+            'speed': 5//4,
+            'evade%': 5//4,
+            'mblock%': 9//8,
         }
 
         hp_add = (750, 1500) if level <= 30 else (2500, 5000)
@@ -543,24 +544,24 @@ class MonsterBlock:
         if self.is_boss and self.id not in early_bosses:
             hp_add = (0, 0)
             factors = {
-                'hp': 5/2,
-                'mpow': 3/2,
-                'attack': 3/2,
-                'def': 5/4,
-                'mdef': 5/4,
-                'speed': 3/2,
-                'evade%': 4/4,
-                'mblock%': 9/8,
+                'hp': 5//2,
+                'mpow': 3//2,
+                'attack': 3//2,
+                'def': 5//4,
+                'mdef': 5//4,
+                'speed': 3//2,
+                'evade%': 4//4,
+                'mblock%': 9//8,
             }
 
         for stat in self.stats:
             self.stats[stat] *= factors.get(stat, 1)
             
         if self.stats['evade%'] == 0:
-            self.stats['evade%'] = level/2
+            self.stats['evade%'] = level//2
 
         if self.stats['mblock%'] == 0:
-            self.stats['mblock%'] = level/4
+            self.stats['mblock%'] = level//4
         
         stat_max = {
             'hp': 65535,

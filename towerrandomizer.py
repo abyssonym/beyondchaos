@@ -1,3 +1,4 @@
+from __future__ import division
 from __future__ import print_function
 from utils import (ANCIENT_CHECKPOINTS_TABLE, TOWER_CHECKPOINTS_TABLE,
                    TOWER_LOCATIONS_TABLE, TREASURE_ROOMS_TABLE,

@@ -1,6 +1,5 @@
-from __future__ import print_function
+
 import sys, os, re, traceback, copy
-from string import maketrans
 from mmltbl import *
 
 mml_log = "\n" if __name__ == "__main__" else None
@@ -84,7 +83,7 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
                     tokens[1] = tokens[1][0:len(tokens[2])]
                 else:
                     tokens[2] = tokens[2][0:len(tokens[1])]
-            transes.append(maketrans(tokens[1], tokens[2]))
+            transes.append(str.maketrans(tokens[1], tokens[2]))
     for trans in transes:
         newmml = []
         for line in mml:
@@ -113,7 +112,7 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
             all_delims.update(tokens[0])
             variants[tokens[1]] = tokens[0]
             if makedefault: variants["_default_"] = tokens[0]
-    for k, v in variants.items():
+    for k, v in list(variants.items()):
         variants[k] = "".join([c for c in all_delims if c not in variants[k]])
     if not variants:
         variants['_default_'] = ''.join([c for c in all_delims])
@@ -124,7 +123,7 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
         
     #generate instruments
     isets = {}
-    for k, v in variants.items():
+    for k, v in list(variants.items()):
         iset = {}
         for line in mml:
             skip = False
@@ -145,26 +144,26 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
                     except:
                         warn(fileid, "#WAVE {}, {}".format(tokens[0], tokens[1]), "Couldn't parse token {}".format(t))
                         continue
-                if numbers[0] not in range(0x20,0x30):
+                if numbers[0] not in list(range(0x20,0x30)):
                     warn(fileid, "#WAVE {}, {}".format(hex(numbers[0]), hex(numbers[1])), "Program ID out of range (expected 0x20 - 0x2F / 32 - 47)")
                     continue
-                if numbers[1] not in range(0, 256):
+                if numbers[1] not in list(range(0, 256)):
                     warn(fileid, "#WAVE {}, {}".format(hex(numbers[0]), hex(numbers[1])), "Sample ID out of range (expected 0x00 - 0xFF / 0 - 255)")
                     continue
                 iset[numbers[0]] = numbers[1]
         raw_iset = "\x00" * 0x20
-        for slot, inst in iset.items():
+        for slot, inst in list(iset.items()):
             raw_iset = byte_insert(raw_iset, (slot - 0x20)*2, chr(inst))
         isets[k] = raw_iset
                 
             
     #generate data
     datas = {}
-    for k, v in variants.items():
+    for k, v in list(variants.items()):
         datas[k] = mml_to_akao_main(mml, v, fileid)
         
     output = {}
-    for k, v in variants.items():
+    for k, v in list(variants.items()):
         output[k] = (datas[k], isets[k])
     
     return output
@@ -329,7 +328,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     mls.extend(dcom)
                 elif dcom in drumset:
                     params = {}
-                    for k, v in drumset[dcom].params.items():
+                    for k, v in list(drumset[dcom].params.items()):
                         if lockstate and k != "@0": continue
                         if k in state:
                             if state[k] != v:
@@ -345,7 +344,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                         state.pop("%y0", None)
                         state.pop("%s0", None)
                         state.pop("%r0", None)
-                    for k, v in params.items():
+                    for k, v in list(params.items()):
                         t = (re.sub('[0-9,]', '', k) + v).strip()
                         s = t + s if k == "@0" else s + t
                         if k != "%y":
@@ -543,7 +542,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             data += "\xFC" + int_insert("  ",0,target,2)
     
     #insert pending jumps
-    for k, v in pendingjumps.items():
+    for k, v in list(pendingjumps.items()):
         if v in targets:
             data = int_insert(data, k, targets[v], 2)
         else:
@@ -552,10 +551,10 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
     header = int_insert("\x00"*0x26, 0, len(data)-2, 2)
     header = int_insert(header, 2, 0x26, 2)
     header = int_insert(header, 4, len(data), 2)
-    for i in xrange(0,8):
+    for i in range(0,8):
         if i not in channels:
             channels[i] = len(data)
-    for k, v in channels.items():
+    for k, v in list(channels.items()):
         header = int_insert(header, 4 + k*2, v, 2)
         if k <= 8 and k+8 not in channels:
             header = int_insert(header, 4 + (k+8)*2, v, 2)
@@ -565,7 +564,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
     
 def clean_end():
     print("Processing ended.")
-    raw_input("Press enter to close.")
+    input("Press enter to close.")
     quit()
     
 if __name__ == "__main__":
@@ -578,7 +577,7 @@ if __name__ == "__main__":
         fn = sys.argv[1]
     else:
         print("Enter MML filename..")
-        fn = raw_input(" > ").replace('"','').strip()
+        fn = input(" > ").replace('"','').strip()
     
     try:
         with open(fn, 'r') as f:
@@ -594,7 +593,7 @@ if __name__ == "__main__":
         clean_end()
     
     fn = os.path.splitext(fn)[0]
-    for k, v in variants.items():
+    for k, v in list(variants.items()):
         vfn = ".bin" if k in ("_default_", "") else "_{}.bin".format(k)
         
         thisfn = fn + "_data" + vfn

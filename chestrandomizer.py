@@ -1,10 +1,10 @@
-from __future__ import division
-from __future__ import print_function
+
+
 from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution
 from itemrandomizer import get_ranked_items, get_item
 from formationrandomizer import get_formations, get_fsets
 
-valid_ids = range(1, 0x200)
+valid_ids = list(range(1, 0x200))
 banned_formids = [0]
 extra_miabs = []
 orphaned_formations = None
@@ -475,7 +475,7 @@ class EventItem:
         event_item_sub = Substitution()
         location = self.cutscene_skip_pointer if cutscene_skip and self.cutscene_skip_pointer else self.pointer
         event_item_sub.set_location(location)
-        event_item_sub.bytestring = []
+        event_item_sub.bytestring = bytearray([])
         
         if self.contenttype in content_command_dict:
             if not self.text or (cutscene_skip and self.cutscene_skip_pointer):
@@ -496,9 +496,9 @@ class EventItem:
             self.write_data(fout)
             self.pointer = prev_pointer
         elif self.pointer == 0xCD59E:
-            event_item_sub.bytestring = [0x94, # Pause 60 frames
+            event_item_sub.bytestring = bytes([0x94, # Pause 60 frames
             0x66, 0xE5, 0xC6, self.contents,  # Show text 0x06E5 at bottom, no text box, with item self.contents
-            0xFE] # return
+            0xFE]) # return
             event_item_sub.set_location(0x10CF4A)
             event_item_sub.write(fout)
 
@@ -584,14 +584,14 @@ def get_event_items():
 def mutate_event_items(fout, cutscene_skip=False):
     event_item_sub = Substitution()
     event_item_sub.set_location(0x9926)
-    event_item_sub.bytestring = [0x8A, 0xD6] # pointer to new event command 66
+    event_item_sub.bytestring = bytes([0x8A, 0xD6]) # pointer to new event command 66
     event_item_sub.write(fout)
     event_item_sub.set_location(0x9934)
-    event_item_sub.bytestring = [0x13, 0xD6, 0x26, 0xD6, 0x71, 0xD6] # pointers to new event commands 6D, 6E, and 6F
+    event_item_sub.bytestring = bytes([0x13, 0xD6, 0x26, 0xD6, 0x71, 0xD6]) # pointers to new event commands 6D, 6E, and 6F
     event_item_sub.write(fout)
 
     event_item_sub.set_location(0xD613)
-    event_item_sub.bytestring = [
+    event_item_sub.bytestring = bytes([
     # 6D : (2 bytes) Give item to party and show message "Received <Item>!"
     0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x83, 0x05, 0x20, 0xFC, 0xAC, 0x20, 0x06, 0x4D, 0xA9, 0x08, 0x85, 0xEB, 0x80, 0x59, 
     
@@ -606,7 +606,7 @@ def mutate_event_items(fout, cutscene_skip=False):
     
     # 66 : (4 bytes) Show text $AAAA with item name $BB and wait for button press
     0xA5, 0xED, 0x85, 0x1A, 0x8D, 0x83, 0x05, 0xA9, 0x01, 0x20, 0x70, 0x9B, 0x4C, 0xBC, 0xA4,
-    ]
+    ])
     event_item_sub.write(fout)
     
     fout.seek(0xC3243)
@@ -615,19 +615,19 @@ def mutate_event_items(fout, cutscene_skip=False):
     fout.write(phoenix_events)
     
     # End some text boxes early so they don't show the item.
-    event_item_sub.bytestring = [0x00]
+    event_item_sub.bytestring = bytes([0x00])
     for location in [0xD3376, 0xD345C, 0xD848D, 0xE14A7, 0xE291E, 0xE299F]:
         event_item_sub.set_location(location)
         event_item_sub.write(fout)
 
     # Change Lone Wolf text to say item placeholder instead of gold hairpin
-    event_item_sub.bytestring = [0x1A, 0x62, 0x5E, 0x00]
+    event_item_sub.bytestring = bytes([0x1A, 0x62, 0x5E, 0x00])
     event_item_sub.set_location(0xE1936)
     event_item_sub.write(fout)
     
     # Because it takes up more slightly space
     # move Lone Wolf talking into a subroutine
-    event_item_sub.bytestring = [0xB2, 0x4A, 0xCF, 0x06]
+    event_item_sub.bytestring = bytes([0xB2, 0x4A, 0xCF, 0x06])
     event_item_sub.set_location(0xCD581)
     event_item_sub.write(fout)
     

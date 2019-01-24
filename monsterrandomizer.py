@@ -1,5 +1,5 @@
-from __future__ import division
-from __future__ import print_function
+
+
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    make_table, utilrandom as random)
@@ -65,7 +65,7 @@ statusdict = {"blind": (0, 0x01),
               "interceptor": (3, 0x40),
               "floating": (3, 0x80)}
 reverse_statusdict = dict([(value, key) for (key, value)
-                           in statusdict.items()])
+                           in list(statusdict.items())])
 
 early_bosses = [
 308, # head
@@ -84,7 +84,7 @@ ranked = ["casting", "near death", "floating", "regen", "poison", "blind",
           "sleep", "confuse", "stop", "petrify", "zombie",
           "morph", "frozen", "death", "interceptor", "magitek",
           "rage", "dance", "disappear"]
-specialdict = [k for (k, v) in sorted(statusdict.items(),
+specialdict = [k for (k, v) in sorted(list(statusdict.items()),
                key=lambda k_v: k_v[1])]
 specialdict = dict([(k, i) for (i, k) in enumerate(specialdict)])
 specialdict["rage"] = 0x18
@@ -94,7 +94,7 @@ del(specialdict["cover"])
 specialdict["frozen"] = 0x19
 specialdict["hp drain"] = 0x30
 specialdict["mp drain"] = 0x31
-reverse_specialdict = dict([(v, k) for (k, v) in specialdict.items()])
+reverse_specialdict = dict([(v, k) for (k, v) in list(specialdict.items())])
 ranked = [specialdict[key] for key in ranked]
 
 
@@ -110,10 +110,11 @@ def read_ai_table(table):
             aiscripts[name] = []
         else:
             line = line.split()
-            line = map(lambda i: int(i, 0x10), line)
+            line = [int(i, 0x10) for i in line]
             aiscripts[name].append(line)
-    for key, aiscript in aiscripts.items():
-        aiscript = ["".join(map(chr, action)) for action in aiscript]
+    for key, aiscript in list(aiscripts.items()):
+        print(aiscript)
+        aiscript = [bytes(action) for action in aiscript]
         aiscripts[key] = aiscript
     return aiscripts
 
@@ -247,7 +248,7 @@ class MonsterBlock:
             on_equals = True
         statuses = []
         for index, byte in enumerate(self.immunities):
-            for i in xrange(8):
+            for i in range(8):
                 bit = 1 << i
                 if bool(byte & bit) == on_equals:
                     statcode = (index, bit)
@@ -257,7 +258,7 @@ class MonsterBlock:
         s += ", ".join(sorted(statuses)) + "\n"
         statuses = []
         for index, byte in enumerate(self.statuses):
-            for i in xrange(8):
+            for i in range(8):
                 bit = 1 << i
                 if bool(byte & bit) is True:
                     statcode = (index, bit)
@@ -273,14 +274,14 @@ class MonsterBlock:
         weak = self.weakness
         s = ""
         elements = []
-        for i in xrange(8):
+        for i in range(8):
             if nullify & (1 << i):
                 elements.append(elemlist[i])
         if elements:
             s += "NULLIFY: "
             s += ", ".join(elements)
         elements = []
-        for i in xrange(8):
+        for i in range(8):
             if nullify & (1 << i):
                 continue
             if weak & (1 << i):
@@ -317,7 +318,7 @@ class MonsterBlock:
                 value = self.stats[name]
                 values[newname] = value
 
-            valuewidth = max(len(str(v)) for v in values.values())
+            valuewidth = max(len(str(v)) for v in list(values.values()))
             substr = "{0:%s} {1:%s}" % (namewidth, valuewidth)
             for name in statnames:
                 name = get_shortname(name)
@@ -430,8 +431,8 @@ class MonsterBlock:
 
     @property
     def boss_death(self):
-        return ("".join(map(chr, [0xF5, 0x0C, 0x01, 0xFF])) in self.aiscript or
-                "".join(map(chr, [0xF5, 0x0C, 0x01, 0x00])) in self.aiscript)
+        return (bytes([0xF5, 0x0C, 0x01, 0xFF]) in self.aiscript or
+                bytes([0xF5, 0x0C, 0x01, 0x00]) in self.aiscript)
 
     @property
     def battle_event(self):
@@ -635,7 +636,7 @@ class MonsterBlock:
         self.misc2 = ord(f.read(1))
 
         f.seek(self.pointer + 20)
-        self.immunities = map(ord, f.read(3))
+        self.immunities = list(f.read(3))
         self.absorb = ord(f.read(1))
         self.null = ord(f.read(1))
         self.weakness = ord(f.read(1))
@@ -644,21 +645,21 @@ class MonsterBlock:
         self.attackanimation = ord(f.read(1))
 
         f.seek(self.pointer + 27)
-        self.statuses = map(ord, f.read(4))
+        self.statuses = list(f.read(4))
         self.special = ord(f.read(1))
 
         f.seek(self.itemptr)
-        self.items = map(ord, f.read(4))
+        self.items = list(f.read(4))
 
         f.seek(self.controlptr)
-        self.controls = map(ord, f.read(4))
+        self.controls = list(f.read(4))
 
         f.seek(self.sketchptr)
-        self.sketches = map(ord, f.read(2))
+        self.sketches = list(f.read(2))
 
         if not self.is_boss:
             f.seek(self.rageptr)
-            self.rages = map(ord, f.read(2))
+            self.rages = list(f.read(2))
         else:
             self.rages = None
 
@@ -678,7 +679,6 @@ class MonsterBlock:
         skillset.add(0xEF)
         skillset.add(0xFE)
         for action in self.aiscript:
-            action = map(ord, action)
             if action[0] & 0xF0 == 0xF0:
                 if action[0] == 0xF0:
                     for s in action[1:]:
@@ -688,11 +688,11 @@ class MonsterBlock:
 
         if not ids_only:
             skillset = [s for s in all_spells if s.spellid in skillset]
-        return sorted(skillset)
+        return skillset
 
     def get_lores(self):
         skills = self.get_skillset()
-        skills = [get_spell(s) for s in skills if s in xrange(0x8B, 0xA3)]
+        skills = [get_spell(s) for s in skills if s in range(0x8B, 0xA3)]
         return sorted(skills, key=lambda s: s.name)
 
     def set_minimum_mp(self):
@@ -797,7 +797,6 @@ class MonsterBlock:
         targeting = None
         newscript = []
         for action in self.aiscript:
-            action = map(ord, action)
             if action[0] & 0xF0 == 0xF0:
                 if action[0] in [0xFC, 0xF1]:
                     targeting = random.choice([True, None])
@@ -882,9 +881,9 @@ class MonsterBlock:
                         action[2], action[3] = c1.itemid, c2.itemid
                     else:
                         if len(set(action[1:])) != 1 or change_skillset:
-                            for j in xrange(100):
+                            for j in range(100):
                                 newaction = list(action)
-                                for i in xrange(1, 4):
+                                for i in range(1, 4):
                                     a = newaction[i]
                                     if a == 0xFE:
                                         a = random.choice(action[1:])
@@ -899,10 +898,10 @@ class MonsterBlock:
                 if s in skillmap:
                     s = skillmap[s]
                     action[0] = s
-                assert 0x81 not in action
-            newscript.append("".join(map(chr, action)))
+                assert 0x81 not in actions
+            newscript.append(action)
 
-        assert len("".join(newscript)) == len("".join(self.aiscript))
+        assert len(b"".join(newscript)) == len(b"".join(self.aiscript))
         self.aiscript = newscript
 
     def read_ai(self, filename):
@@ -917,7 +916,7 @@ class MonsterBlock:
                 numargs = AICODES[ord(value)]
                 args = f.read(numargs)
             except KeyError:
-                args = ""
+                args = b""
             script.append(value + args)
             if ord(value) == 0xFF:
                 if seen:
@@ -938,20 +937,20 @@ class MonsterBlock:
 
     @property
     def aiscriptsize(self):
-        return len("".join(self.aiscript))
+        return len(b"".join(self.aiscript))
 
     def write_ai(self, fout):
         for (i, action) in enumerate(self.aiscript):
-            if (len(action) == 4 and action[0] == chr(0xf0) and
-                    action[1] == chr(0x55)):
+            if (len(action) == 4 and action[0] == 0xf0 and
+                    action[1] == 0x55):
                 # fix Cyan's AI at imperial camp
-                action = "".join(map(chr, [0xF0, 0xEE, 0xEE, 0xEE]))
+                action = b"".join(bytes([0xF0, 0xEE, 0xEE, 0xEE]))
                 self.aiscript[i] = action
         fout.seek(self.aiptr)
         write_multi(fout, self.ai, length=2)
         pointer = self.ai + 0xF8700
         fout.seek(pointer)
-        fout.write("".join(self.aiscript))
+        fout.write(b"".join(self.aiscript))
 
     @property
     def humanoid(self):
@@ -1025,44 +1024,44 @@ class MonsterBlock:
 
         fout.seek(self.pointer)
         for key in stat_order:
-            fout.write(chr(self.stats[key]))
+            fout.write(bytes((self.stats[key],)))
         write_multi(fout, self.stats['hp'], length=2)
         write_multi(fout, self.stats['mp'], length=2)
         write_multi(fout, self.stats['xp'], length=2)
         write_multi(fout, self.stats['gp'], length=2)
-        fout.write(chr(self.stats['level']))
+        fout.write(bytes((self.stats['level'],)))
 
-        fout.write(chr(self.morph))
-        fout.write(chr(self.misc1))
-        fout.write(chr(self.misc2))
+        fout.write(bytes((self.morph,)))
+        fout.write(bytes((self.misc1,)))
+        fout.write(bytes((self.misc2,)))
 
         fout.seek(self.pointer + 20)
         for i in self.immunities:
-            fout.write(chr(i))
-        fout.write(chr(self.absorb))
-        fout.write(chr(self.null))
-        fout.write(chr(self.weakness))
+            fout.write(bytes((i,)))
+        fout.write(bytes((self.absorb,)))
+        fout.write(bytes((self.null,)))
+        fout.write(bytes((self.weakness,)))
 
         fout.seek(self.pointer + 26)
-        fout.write(chr(self.attackanimation))
+        fout.write(bytes((self.attackanimation,)))
 
         fout.seek(self.pointer + 27)
         for s in self.statuses:
-            fout.write(chr(s))
-        fout.write(chr(self.special))
+            fout.write(bytes((s,)))
+        fout.write(bytes((self.special,)))
 
         fout.seek(self.itemptr)
-        fout.write(''.join(map(chr, self.items)))
+        fout.write(bytes(self.items))
 
         fout.seek(self.controlptr)
-        fout.write(''.join(map(chr, self.controls)))
+        fout.write(bytes(self.controls))
 
         fout.seek(self.sketchptr)
-        fout.write(''.join(map(chr, self.sketches)))
+        fout.write(bytes(self.sketches))
 
         if not self.is_boss:
             fout.seek(self.rageptr)
-            fout.write(''.join(map(chr, self.rages)))
+            fout.write(bytes(self.rages))
 
         self.write_ai(fout)
 
@@ -1212,9 +1211,9 @@ class MonsterBlock:
 
         new_immunities = [0x00] * 3
         new_statuses = [0x00] * 4
-        bitdict = dict((y, x) for (x, y) in statusdict.items())
+        bitdict = dict((y, x) for (x, y) in list(statusdict.items()))
 
-        for _ in xrange(100):
+        for _ in range(100):
             if stacount <= 0:
                 break
 
@@ -1250,7 +1249,7 @@ class MonsterBlock:
             new_statuses[byte] |= bit
             stacount += -1
 
-        for _ in xrange(100):
+        for _ in range(100):
             if immcount <= 0:
                 break
 
@@ -1271,7 +1270,7 @@ class MonsterBlock:
             index = random.randint(0, 2)
             bit = 1 << random.randint(0, 7)
             self.immunities[index] ^= bit
-            for i in xrange(len(self.immunities)):
+            for i in range(len(self.immunities)):
                 self.immunities[i] |= new_immunities[i]
         else:
             self.immunities = new_immunities
@@ -1479,7 +1478,7 @@ class MonsterBlock:
             self.controls += [random.choice(candidates)]
         if 0xEE not in self.controls and 0xEF not in self.controls:
             self.controls[random.randint(0, 3)] = random.choice([0xEE, 0xEF])
-        self.controls = [c if c not in range(0x7D, 0x83) else 0xEE
+        self.controls = [c if c not in list(range(0x7D, 0x83)) else 0xEE
                          for c in self.controls]
         self.controls = sorted(self.controls)
 
@@ -1512,7 +1511,7 @@ class MonsterBlock:
                 value = spell.spellid
                 candidates.append(value)
                 candidates = sorted(set(candidates))
-            for _ in xrange(2):
+            for _ in range(2):
                 selection = random.sample(candidates, numselect)
                 if not self.physspecial:
                     break
@@ -1717,7 +1716,7 @@ class MonsterBlock:
         elif isinstance(weights, int):
             weights = [50 for _ in avgs]
 
-        weights = dict(zip(sorted(avgs.keys()), weights))
+        weights = dict(list(zip(sorted(avgs.keys()), weights)))
         LEVELFACTOR, HPFACTOR = len(avgs)*2, len(avgs)
         total = 0
         for key in sorted(avgs):
@@ -1760,7 +1759,7 @@ def monsters_from_table(tablefile):
 
 def get_monsters(filename=None):
     if monsterdict:
-        return sorted(monsterdict.values(), key=lambda m: m.id)
+        return sorted(list(monsterdict.values()), key=lambda m: m.id)
 
     get_ranked_items(filename)
     monsters = monsters_from_table(ENEMY_TABLE)
@@ -1785,7 +1784,7 @@ def get_monster(monster_id):
 def get_ranked_monsters(filename=None, bosses=True):
     monsters = get_monsters(filename=filename)
     if not bosses:
-        monsters = filter(lambda m: m.id <= 0xFF, monsters)
+        monsters = [m for m in monsters if m.id <= 0xFF]
     monsters = sorted(monsters, key=lambda m: m.rank())
     return monsters
 
@@ -1877,7 +1876,7 @@ class MonsterGraphicBlock:
         self.palette_values = []
         numcolors = 0x20
 
-        for i in xrange(numcolors):
+        for i in range(numcolors):
             color = read_multi(f, length=2)
             blue = (color & 0x7c00) >> 10
             green = (color & 0x03e0) >> 5
@@ -1890,7 +1889,7 @@ class MonsterGraphicBlock:
         if self.graphics not in palette_pools:
             palette_pools[self.graphics] = set([])
         for p in palette_pools[self.graphics]:
-            if all(map(lambda a_b: a_b[0] == a_b[1], zip(self.palette_data, p))):
+            if all([a_b[0] == a_b[1] for a_b in zip(self.palette_data, p)]):
                 return
         palette_pools[self.graphics].add(self.palette_data)
 
@@ -1956,15 +1955,15 @@ class MetamorphBlock:
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
-        self.items = map(ord, f.read(4))
+        self.items = list(f.read(4))
         f.close()
 
     def write_data(self, fout):
         fout.seek(self.pointer)
-        fout.write("".join(map(chr, self.items)))
+        fout.write(bytes(self.items))
 
     def mutate_items(self):
-        for i in xrange(4):
+        for i in range(4):
             self.items[i] = get_item_normal().itemid
 
     def dummy_item(self, item):
@@ -1972,7 +1971,7 @@ class MetamorphBlock:
             while item.itemid in self.items:
                 self.items = [i for i in self.items if i != item.itemid]
                 if self.items == []:
-                    self.items = [get_item_normal().itemid for _ in xrange(4)]
+                    self.items = [get_item_normal().itemid for _ in range(4)]
 
             while len(self.items) < 4:
                 self.items.append(random.choice(self.items))

@@ -1,9 +1,9 @@
-from __future__ import division
-from __future__ import print_function
+
+
 # quick and EXTREMELY messy hack to run nascentorder functions in beyondchaos
 # hopefully, this will allow updates on one end to easily copypasta
 # to the other.
-import ConfigParser, os.path, re
+import configparser, os.path, re
 from copy import copy
 
 from utils import (utilrandom as rng, open_mei_fallback as open)
@@ -18,7 +18,7 @@ except ImportError:
 HIROM = 0xC00000
 MUSIC_PATH = os.path.join('custom','music')
 INST_METADATA_OFFSET = 0x310000    #0x600 bytes
-CONFIG = ConfigParser.RawConfigParser({
+CONFIG = configparser.RawConfigParser({
         'free_rom_space': '310600-380000',
         'allow_music_repeats': 'False',
         'preserve_song_data': 'False',
@@ -196,7 +196,7 @@ def claim_space(startc, endc):
     
 def insert_instruments(data_in, metadata_pos= False):
     data = data_in
-    samplecfg = ConfigParser.ConfigParser()
+    samplecfg = configparser.ConfigParser()
     samplecfg.read(safepath(os.path.join('tables', 'samples.txt')))
         
     #pull out instrument infos
@@ -319,7 +319,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
     starts = songdatalocs[::2]
     ends = songdatalocs[1::2]
     if len(ends) < len(starts): ends.append(0x3FFFFF)
-    songdatalocs = zip(starts, ends)
+    songdatalocs = list(zip(starts, ends))
     native_prefix = "ff6_"
     isetsize = 0x20
     
@@ -373,7 +373,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         i += 1
         
     # build identifier table
-    songconfig = ConfigParser.ConfigParser()
+    songconfig = configparser.ConfigParser()
     songconfig.read(safepath(os.path.join('tables','defaultsongs.txt')))
     songconfig.read(safepath(os.path.join('custom', 'songs.txt' if not f_altsonglist else 'songs_alt.txt')))
     songtable = {}
@@ -386,7 +386,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
     # determine which songs change
     used_songs = []
     songs_to_change = []
-    for ident, s in songtable.items():
+    for ident, s in list(songtable.items()):
         if rng.randint(1, 100) > s.chance:
             if not f_repeat: used_songs.append(native_prefix + ident)
             songtable[ident].changeto = native_prefix + ident
@@ -403,7 +403,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         intense, epic = 0, 0
         event_mults = {}
         if f_mchaos:
-            for ident, s in songtable.items():
+            for ident, s in list(songtable.items()):
                 s.choices.append(song[0])
         for c in canbe:
             if not c: continue
@@ -413,7 +413,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                 except ValueError:
                     print("WARNING: in songs.txt: could not interpret '{}'".format(c))
         static_mult = 1
-        for k, v in event_mults.items():
+        for k, v in list(event_mults.items()):
             static_mult *= v
         for c in canbe:
             if not c: continue
@@ -438,7 +438,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         if (intense or epic):
             intensitytable[song[0]] = (intense, epic)
     
-    for ident, s in songtable.items():
+    for ident, s in list(songtable.items()):
         spooler("{} pool ({}/{}): {}".format(ident, len([i for i in s.choices if i == native_prefix + ident]), len(s.choices), s.choices))
         
     # battle select
@@ -486,7 +486,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         # 4. battle0 and battle1 chosen from I<boss0, G<max(50,boss1), sorted by G
         # 5. battle2 and battle3 chosen from I<boss2, G>battle1
         def intensity_subset(imin=0, gmin=0, imax=99, gmax=99):
-            return {k: v for k, v in intensitytable.items() if v[0] >= imin and v[0] <= imax and v[1] >= gmin and v[1] <= gmax and usage_id(k) not in used_songs}
+            return {k: v for k, v in list(intensitytable.items()) if v[0] >= imin and v[0] <= imax and v[1] >= gmin and v[1] <= gmax and usage_id(k) not in used_songs}
             
         battlecount = len(battleids) + len(bossids)
         while len(intensitytable) < battlecount:
@@ -498,7 +498,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             retry = True
             while retry:
                 retry = False
-                battlechoices = rng.sample([(k, sum(intensitytable[k]), intensitytable[k][0]) for k in intensitytable.keys()], battlecount)
+                battlechoices = rng.sample([(k, sum(intensitytable[k]), intensitytable[k][0]) for k in list(intensitytable.keys())], battlecount)
                 for c in battlechoices:
                     if usage_id(battlechoices[0]) in used_songs: retry = True
             battlechoices.sort(key=operator.itemgetter(1))
@@ -506,7 +506,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             bossprog = [None]*len(bossids)
             bosschoices = []
             battlechoices.sort(key=operator.itemgetter(2))
-            for i in xrange(0, len(bossids)):
+            for i in range(0, len(bossids)):
                 bosschoices.append(battlechoices.pop(-1))
             bosschoices.sort(key=operator.itemgetter(1))
             while None in bossprog:
@@ -521,20 +521,20 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             tries=0
             while True:
                 try:
-                    event, (ei, eg) = rng.choice(intensity_subset(imin=33, gmax=33).items())
+                    event, (ei, eg) = rng.choice(list(intensity_subset(imin=33, gmax=33).items()))
                     bt = min(ei,60) 
 
-                    super, (si, sg) = rng.choice(intensity_subset(imin=bt, gmin=66).items())
-                    boss, (bi, bg) = rng.choice(intensity_subset(imin=bt, gmin=max(22,eg), gmax=sg).items())
+                    super, (si, sg) = rng.choice(list(intensity_subset(imin=bt, gmin=66).items()))
+                    boss, (bi, bg) = rng.choice(list(intensity_subset(imin=bt, gmin=max(22,eg), gmax=sg).items()))
                     wt = min(80,max(bg, 50))
-                    balance = rng.sample(intensity_subset(imax=bt, gmax=wt).items(), 2)
+                    balance = rng.sample(list(intensity_subset(imax=bt, gmax=wt).items()), 2)
                     if balance[0][1][0] + balance[0][1][1] > balance[1][1][0] + balance[1][1][1]:
                         boutside, (boi, bog) = balance[1]
                         binside, (bii, big) = balance[0]
                     else:
                         boutside, (boi, bog) = balance[0]
                         binside, (bii, big) = balance[1]
-                    ruin = rng.sample(intensity_subset(imax=min(bi, si), gmin=max(bog,big)).items(), 2)
+                    ruin = rng.sample(list(intensity_subset(imax=min(bi, si), gmin=max(bog,big)).items()), 2)
                     if ruin[0][1][0] + ruin[0][1][1] > ruin[1][1][0] + ruin[1][1][1]:
                         routside, (roi, rog) = ruin[1]
                         rinside, (rii, rig) = ruin[0]
@@ -548,7 +548,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                         continue
                 except IndexError as e:
                     print("DEBUG: new battle prog mode failed {}rd attempt: {}".format(tries, e))
-                    raw_input("press enter to continue>")
+                    input("press enter to continue>")
                     if tries >= 500:
                         FLAGS.append("battlebylevel")
                         print("WARNING: couldn't find valid configuration of battle songs by area.")
@@ -561,7 +561,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     
         fightids = [(id, False) for id in battleids] + [(id, True) for id in bossids]
         for id, is_boss in fightids:
-            for ident, s in songtable.items():
+            for ident, s in list(songtable.items()):
                 if s.id == id:
                     if is_boss:
                         changeto = bossprog[bossids.index(id)]
@@ -588,7 +588,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         elif id == 0x20:
             sfx = "sfx_train.mmlappend"
             mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", "$888\g<1>", mml)
-            for i in xrange(1,9):
+            for i in range(1,9):
                 if "$888{}".format(i) not in mml:
                     mml = mml + "\n$888{} r;".format(i)
         if sfx:
@@ -713,7 +713,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             continue
         
         #get data now, so we can keeptrying if there's not enough space
-        for ident, s in songtable.items():
+        for ident, s in list(songtable.items()):
             if s.changeto == '!!tierboss':
                 s.data, s.inst = process_tierboss(tierboss[ident])
                 s.is_pointer = False
@@ -753,7 +753,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     s.data = akao['_default_'][0]
                     s.inst = akao['_default_'][1]
                 s.is_pointer = False
-                if max(map(ord, s.inst)) > instcount:
+                if max(list(map(ord, s.inst))) > instcount:
                     if 'nopatch' in akao:
                         s.inst = akao['nopatch'][1]
                         s.data = akao['nopatch'][0]
@@ -795,7 +795,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     print("couldn't open {}_inst.bin".format(s.changeto))
                     keeptrying = True
                     break
-                if max(map(ord, s.inst)) > instcount:
+                if max(list(map(ord, s.inst))) > instcount:
                     # case: get nopatch version
                     try:
                         fi = open(os.path.join(MUSIC_PATH, s.changeto + "_inst_nopatch.bin"), "rb")
@@ -867,7 +867,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         songinst = data[isetlocs[0]:isetlocs[1]+1]    
         if f_moveinst: free_space(isetlocs[0], isetlocs[1])
         claim_space(songptraddrs[0], songptraddrs[0] + 3*(len(songtable)+1))
-        for ident, s in songtable.items():
+        for ident, s in list(songtable.items()):
             if not s.is_pointer:
                 try:
                     data, start, end = put_somewhere(data, s.data, "  (song) [{:02x}] {}".format(s.id, s.changeto), True)
@@ -931,13 +931,13 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
 
     # make spoiler
     changed_songs = {}
-    for ident, s in songtable.items():
+    for ident, s in list(songtable.items()):
         if s.changeto != native_prefix + ident:
             changed_songs[s.id] = (ident, s.changeto)
     spoiltext = []
     for id, s in sorted(changed_songs.items()):
         spoiltext.append(hex(id)[2:] + " : " + s[0] + " ")
-    arrowpos = max(map(len, spoiltext))
+    arrowpos = max(list(map(len, spoiltext)))
     for i, (id, s) in enumerate(sorted(changed_songs.items())):
         while len(spoiltext[i]) < arrowpos:
             spoiltext[i] += " "
@@ -946,10 +946,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
     
     if DEBUG:
         fullsonglist = {}
-        for ident, s in songtable.items():
+        for ident, s in list(songtable.items()):
             fullsonglist[s.id] = (ident, s.changeto, songlocations[s.id])
         despoil("song data locations")
-        for id, (ident, newsong, loc) in fullsonglist.items():
+        for id, (ident, newsong, loc) in list(fullsonglist.items()):
             despoil("{} ({}) -----> {} at {}".format(hex(id), ident, newsong, hex(loc)))
     return data
 
@@ -972,7 +972,7 @@ def process_formation_music_by_table(data, form_music_overrides={}):
         if len(line) == 3: table.append(line)
     
     event_formations = set()
-    for i in xrange(0,256):
+    for i in range(0,256):
         loc = o_epacks + i*4
         event_formations.add(bytes_to_int(data[loc:loc+2]))
         event_formations.add(bytes_to_int(data[loc+2:loc+4]))
@@ -1019,7 +1019,7 @@ def process_formation_music_by_table(data, form_music_overrides={}):
             if fid in event_formations:
                 force_music = True
             else:
-                for m in xrange(0,6):
+                for m in range(0,6):
                     fpos = o_forms + fid*15
                     if (ord(data[fpos+1]) >> m) & 1:
                         mid = ord(data[fpos+2+m]) + (((ord(data[fpos+14]) >> m) & 1) << 8)

@@ -1,5 +1,5 @@
-from __future__ import division
-from __future__ import print_function
+
+
 from utils import read_multi, write_multi
 from sys import argv
 from shutil import copyfile
@@ -12,7 +12,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
 
     while bytestring:
         flags, bytestring = ord(bytestring[0]), bytestring[1:]
-        for i in xrange(8):
+        for i in range(8):
             if not bytestring:
                 break
 
@@ -78,9 +78,9 @@ def recompress(bytestring):
     while bytestring:
         control = 0x00
         subresult = ""
-        for i in xrange(8):
+        for i in range(8):
             searchbuff = "".join(buff + buff)
-            for j in xrange(3, 35):
+            for j in range(3, 35):
                 searchstr = bytestring[:j]
                 if searchstr not in searchbuff:
                     break
@@ -99,9 +99,9 @@ def recompress(bytestring):
             loopbuff = "".join(buff[:buffaddr])
             #if len(loopbuff) < 35:
             #    loopbuff = "".join(buff) + loopbuff
-            for k in xrange(j+1, 35):
+            for k in range(j+1, 35):
                 searchstr = bytestring[:k]
-                for h in xrange(1, len(searchstr)+1):
+                for h in range(1, len(searchstr)+1):
                     loopstr = searchstr[:h]
                     mult = (len(searchstr) // len(loopstr)) + 1
                     if searchstr == (loopstr * mult)[:len(searchstr)]:
@@ -190,7 +190,7 @@ class Decompressor():
     def get_bytestring(self, address, length):
         if self.fakeaddress:
             address = address - self.fakeaddress
-        return map(ord, self.data[address:address+length])
+        return list(map(ord, self.data[address:address+length]))
 
     def compress_and_write(self, fout):
         compressed = recompress(self.data)

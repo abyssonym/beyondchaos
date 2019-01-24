@@ -1,5 +1,5 @@
-from __future__ import division
-from __future__ import print_function
+
+
 from utils import (ANCIENT_CHECKPOINTS_TABLE, TOWER_CHECKPOINTS_TABLE,
                    TOWER_LOCATIONS_TABLE, TREASURE_ROOMS_TABLE,
                    ENTRANCE_REACHABILITY_TABLE,
@@ -9,7 +9,7 @@ from locationrandomizer import (get_locations, get_location, Location,
                                 add_location_map, update_locations)
 from formationrandomizer import get_fsets, get_formations
 from chestrandomizer import ChestBlock
-from itertools import izip_longest
+from itertools import zip_longest
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 1000
@@ -32,8 +32,8 @@ PROTECTED = [0, 1, 2, 3, 0xB, 0xC, 0xD, 0x11,
              0x18f,  # same
              0x189, 0x18a,  # floating continent
              0x150, 0x164, 0x165, 0x19a, 0x19e]
-PROTECTED += range(359, 371)  # Fanatics Tower
-PROTECTED += range(382, 387)  # Sealed Gate
+PROTECTED += list(range(359, 371))  # Fanatics Tower
+PROTECTED += list(range(382, 387))  # Sealed Gate
 FIXED_ENTRANCES, REMOVE_ENTRANCES = [], []
 
 locexchange = {}
@@ -80,7 +80,7 @@ def get_new_fsets(areaname, number=10, supplement=True):
     fsets = get_fsets()
     unused = [fs for fs in fsets if fs.unused and len(fs.formations) == 4]
     tempforms = []
-    for _ in xrange(number):
+    for _ in range(number):
         if len(tempforms) < 4:
             tempforms = list(formations)
         setforms = random.sample(tempforms, 4)
@@ -152,7 +152,7 @@ def remap_maps(routes):
 
     newlocations = []
     for newlocid in sorted(set(locexchange.values())):
-        keys = [key for (key, value) in locexchange.items()
+        keys = [key for (key, value) in list(locexchange.items())
                 if value == newlocid]
         assert len(set([a for (a, b) in keys])) == 1
         copylocid = keys[0][0]
@@ -231,7 +231,7 @@ def remap_maps(routes):
                 assert clust.locid == newlocation.copied
                 if clust.has_adjacent_entrances:
                     x, y = ent.x, ent.y
-                    for ent2 in clust.entgroups.keys():
+                    for ent2 in list(clust.entgroups.keys()):
                         if ent2.x == ent.x and ent2.y == ent.y:
                             break
                     else:
@@ -274,7 +274,7 @@ def remap_maps(routes):
     ranked_clusters = []
     for n in range(len(routes[0].segments)):
         rankedcsets = [route.segments[n].ranked_clusters for route in routes]
-        for tricluster in izip_longest(*rankedcsets, fillvalue=None):
+        for tricluster in zip_longest(*rankedcsets, fillvalue=None):
             tricluster = list(tricluster)
             random.shuffle(tricluster)
             for cluster in tricluster:
@@ -319,12 +319,12 @@ def remap_maps(routes):
     segments = [s for route in routes for s in route.segments]
     for segment in segments:
         for cluster in segment.ranked_clusters:
-            for key in swd.keys():
+            for key in list(swd.keys()):
                 locid, entid = key
                 if cluster.locid == locid and entid in cluster.entids:
                     assert swd[key] is None
                     swd[key] = (segment, cluster)
-    assert None not in swd.values()
+    assert None not in list(swd.values())
 
     s292segment, s292cluster = swd[switch292]
     s334segment, s334cluster = swd[switch334]
@@ -389,7 +389,7 @@ class Cluster:
                 assert self.entgroups[e1] == self.entgroups[e2]
 
         entgroups = []
-        keys = sorted(self.entgroups.keys(), key=lambda k: k.entid)
+        keys = sorted(list(self.entgroups.keys()), key=lambda k: k.entid)
         entids = [k.entid for k in keys]
         assert len(entids) == len(set(entids))
         for key in keys:
@@ -462,7 +462,7 @@ def get_clusters():
     for i, line in enumerate(open(ENTRANCE_REACHABILITY_TABLE)):
         locid, entids = line.strip().split(':')
         locid = int(locid)
-        entids = map(int, entids.split(','))
+        entids = list(map(int, entids.split(',')))
         loc = get_location(locid)
         entrances = [e for e in loc.entrances if e.entid in entids]
         c = Cluster(locid=locid, clusterid=i)
@@ -581,7 +581,7 @@ class Segment:
             if a.singleton:
                 previnter = self.intersegments[i-1] if i > 0 else None
                 thresh = 3
-                for j in xrange(thresh):
+                for j in range(thresh):
                     k = thresh-j
                     intercands = []
                     excands = inter.get_external_candidates(num=k, test=True)
@@ -767,7 +767,7 @@ class InterSegment(Segment):
     def calculate_distance(self, a, b):
         reachable = [a]
         done = []
-        for i in xrange(20):
+        for i in range(20):
             for r in list(reachable):
                 for c, d in self.links:
                     if c in done or d in done:
@@ -818,7 +818,7 @@ class InterSegment(Segment):
         done_clusts = set([])
         done_ents = set(self.linked_entrances)
 
-        for _ in xrange(num):
+        for _ in range(num):
             candclusts = [c for c in self.clusters
                           if set(c.entrances)-done_ents]
             tempclusts = [c for c in candclusts if c not in done_clusts]
@@ -1015,14 +1015,14 @@ def parse_checkpoints():
             entids = entids.split('>')[:1]
         else:
             entids = [entids]
-        entids = map(int, entids)
+        entids = list(map(int, entids))
         if single:
             assert len(entids) == 1
             entids = entids[0]
         return locid, entids
 
     done, fixed, remove, oneway = [], [], [], []
-    routes = [list([]) for _ in xrange(3)]
+    routes = [list([]) for _ in range(3)]
     for line in open(checkpoints):
         line = line.strip()
         if not line or line[0] == '#':
@@ -1240,7 +1240,7 @@ def randomize_fanatics(unused_locids):
     num_new_levels = random.randint(0, 1) + random.randint(1, 2)
     unused_locations = [get_location(l) for l in unused_locids]
     fsets = get_new_fsets("fanatics", 10, supplement=False)
-    for _ in xrange(num_new_levels):
+    for _ in range(num_new_levels):
         stair = unused_locations.pop()
         stop = unused_locations.pop()
         stair.copy(random.choice(stairs[1:-1]))

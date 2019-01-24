@@ -1,5 +1,5 @@
-from __future__ import division
-from __future__ import print_function
+
+
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,
                    UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
@@ -136,7 +136,7 @@ class Zone():
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
-        self.setids = map(ord, f.read(4))
+        self.setids = list(f.read(4))
         f.seek(self.ratepointer)
         self.rates = ord(f.read(1))
         f.close()
@@ -145,7 +145,7 @@ class Zone():
     def pretty_rates(self):
         temp = self.rates
         result = []
-        for i in reversed(range(4)):
+        for i in reversed(list(range(4))):
             temp = (self.rates >> (i*2)) & 0x3
             result.append(temp)
         return result
@@ -432,11 +432,11 @@ class Location():
         self.tileproperties = ord(f.read(1))  # mult by 2
         self.attacks = ord(f.read(1))
         self.unknown1 = ord(f.read(1))
-        self.graphic_sets = map(ord, f.read(4))
+        self.graphic_sets = list(f.read(4))
         self.tileformations = read_multi(f, length=2, reverse=True)
         self.mapdata = read_multi(f, length=4)
         self.unknown2 = ord(f.read(1))
-        self.bgshift = map(ord, f.read(4))
+        self.bgshift = list(f.read(4))
         self.unknown3 = ord(f.read(1))
         self.layer12dimensions = ord(f.read(1))
         self.unknown4 = ord(f.read(1))
@@ -563,7 +563,7 @@ class Location():
         end = read_multi(f, length=2)
         numchests = (end - begin) // 5
         self.chests = []
-        for i in xrange(numchests):
+        for i in range(numchests):
             pointer = begin + (i*5) + 0x2d8634
             c = ChestBlock(pointer, self.locid)
             c.read_data(filename)
@@ -579,7 +579,7 @@ class Location():
         assert numnpcs == round(numnpcs)
         numnpcs = int(numnpcs)
         self.npcs = []
-        for i in xrange(numnpcs):
+        for i in range(numnpcs):
             pointer = begin + (i*9) + 0x41a10
             e = NPCBlock(pointer, self.locid)
             e.read_data(filename)
@@ -595,7 +595,7 @@ class Location():
         assert numevents == round(numevents)
         numevents = int(numevents)
         self.events = []
-        for i in xrange(numevents):
+        for i in range(numevents):
             pointer = begin + (i*5) + 0x40000
             e = EventBlock(pointer, self.locid)
             e.read_data(filename)
@@ -684,7 +684,7 @@ class Location():
     def write_npcs(self, fout, nextpointer, ignore_order=False):
         fout.seek(self.npcpointer)
         write_multi(fout, (nextpointer - 0x41a10), length=2)
-        for i in xrange(len(self.npcs)):
+        for i in range(len(self.npcs)):
             if ignore_order:
                 e = self.npcs[i]
             else:
@@ -864,7 +864,7 @@ class EntranceSet():
         n = (end - start) // 6
         assert end == start + (6*n)
         self.entrances = []
-        for i in xrange(n):
+        for i in range(n):
             e = Entrance(0x1fbb00 + start + (i*6))
             e.set_id(i)
             self.entrances.append(e)
@@ -880,7 +880,7 @@ class EntranceSet():
         n = (end - start) // 7
         assert end == start + (7*n)
         self.longentrances = []
-        for i in xrange(n):
+        for i in range(n):
             e = LongEntrance(0x2DF480 + start + (i*7))
             e.set_id(i)
             self.longentrances.append(e)
@@ -1001,7 +1001,7 @@ def lookup_reachable_entrances(entrance):
         for line in open(ENTRANCE_REACHABILITY_TABLE):
             locid, ents = line.strip().split(':')
             locid = int(locid)
-            ents = map(int, ents.split(','))
+            ents = list(map(int, ents.split(',')))
             for ent in ents:
                 if (locid, ent) in reachdict:
                     raise Exception("Duplicate reachability in table.")

@@ -1,5 +1,5 @@
-from __future__ import division
-from __future__ import print_function
+
+
 from utils import utilrandom as random
 from itemrandomizer import get_ranked_items, get_item
 
@@ -27,7 +27,7 @@ class ShopBlock:
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.misc = ord(f.read(1))
-        self.items = map(ord, f.read(8))
+        self.items = list(map(ord, f.read(8)))
         f.close()
 
     def write_data(self, fout):

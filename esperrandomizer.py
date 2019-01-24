@@ -51,18 +51,18 @@ def get_candidates(myrank, set_lower=True):
         lower_bound = rankbounds[myrank-1]
     else:
         lower_bound = 0
-    candidates = filter(lambda s: s.rank() in
-                        range(lower_bound, upper_bound), spells)
+    candidates = [s for s in spells if s.rank() in
+                        range(lower_bound, upper_bound)]
     if not candidates:
         candidates = spells
-    fresh = filter(lambda s: s not in used, candidates)
+    fresh = [s for s in candidates if s not in used]
     if not fresh:
         fresh = candidates
 
     return fresh
 
 def allocate_espers(ancient_cave, espers, characters, fout):
-    char_ids = range(12) + [13] # everyone but Gogo
+    char_ids = list(range(12)) + [13] # everyone but Gogo
     
     characters = [c for c in characters if c.id in char_ids]
     
@@ -152,7 +152,7 @@ class EsperBlock:
         if spells is None:
             spells = get_ranked_spells(filename, magic_only=True)
         self.spells, self.learnrates = [], []
-        for i in xrange(5):
+        for i in range(5):
             learnrate = ord(f.read(1))
             spell = ord(f.read(1))
             if spell != 0xFF and learnrate != 0:
@@ -166,7 +166,7 @@ class EsperBlock:
         for learnrate, spell in zip(self.learnrates, self.spells):
             fout.write(chr(learnrate))
             fout.write(chr(spell.spellid))
-        for i in xrange(5 - len(self.spells)):
+        for i in range(5 - len(self.spells)):
             fout.write(chr(0x0))
             fout.write(chr(0xFF))
         fout.write(chr(self.bonus))
@@ -197,7 +197,7 @@ class EsperBlock:
                 used.add(s)
 
         rank = self.rank
-        for _ in xrange(random.randint(0, 2) + random.randint(0, 2)):
+        for _ in range(random.randint(0, 2) + random.randint(0, 2)):
             candidates = self.get_candidates(rank, set_lower=False, allow_quick=tierless)
             if candidates:
                 s = random.choice(candidates)
@@ -245,10 +245,10 @@ class EsperBlock:
 
     def add_spell(self, spellid, learnrate):
         spell = [s for s in spells if s.spellid == spellid][0]
-        spellrates = zip(self.spells, self.learnrates)
+        spellrates = list(zip(self.spells, self.learnrates))
         if len(spellrates) == 5:
             spellrates = sorted(spellrates, key=lambda s_l: s_l[0].rank())
             spellrates = spellrates[1:]
         spellrates.append((spell, learnrate))
         spellrates = sorted(spellrates, key=lambda s_l1: s_l1[0].spellid)
-        self.spells, self.learnrates = zip(*spellrates)
+        self.spells, self.learnrates = list(zip(*spellrates))

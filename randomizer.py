@@ -1684,7 +1684,7 @@ def manage_sprint():
 def manage_skips():
     # To identify if this cutscene skip is active in a ROM, look for the bytestring:
     # 41 6E 64 53 68 65 61 74 68 57 61 73 54 68 65 72 65 54 6F 6F
-    # at 0xCAAA1
+    # at 0xCAA9F
     characters = get_characters();
 
     def writeToAddress(address, event):

@@ -578,11 +578,24 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         return True
         
     def process_mml(id, mml, name):
+        def ruin_increment(m):
+            val = int(m.group(1))
+            if val in [3, 4, 5, 6, 11, 12, 13, 14]:
+                val += 2
+            elif val in [7, 8, 15, 16]: 
+                val -= 4
+            return "{{{}}}".format(val)
+            return m.group(0)
+            
         sfx = ""
         if id == 0x29:
             sfx = "sfx_zozo.mmlappend"
         elif id == 0x4F:
             sfx = "sfx_wor.mmlappend"
+            try:
+                mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", ruin_increment, mml)
+            except ValueError:
+                print "WARNING: failed to add wind sounds ({})".format(name)
         elif id == 0x20:
             sfx = "sfx_train.mmlappend"
             mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", "$888\g<1>", mml)
@@ -596,7 +609,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             except IOError:
                 print "couldn't open {}".format(sfx)
                 
-        return mml_to_akao(mml, name, True if (id == 0x4F) else False)
+        return mml_to_akao(mml, name, True if id in [0x29, 0x4F] else False)
     
     def process_tierboss(opts):
         opts = [o.strip() for o in opts.split(',')]
@@ -825,7 +838,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                         print "couldn't open {}_data.bin".format(s.changeto)
                         keeptrying = True
                         break
-        
+            
+            if len(s.data) > 0x1000 and "ending" not in ident:
+                print "WARNING: song data too large for {} (as {}), sfx glitches may occur".format(s.changeto, ident)
+                
         if keeptrying:
             dprint("failed music generation during data read")
             continue

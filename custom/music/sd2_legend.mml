@@ -17,9 +17,7 @@
 #WAVE 0x27 -- ~0x53~ /0x1B/
 #WAVE 0x28 -- ~0x62~ /0x3E/
 
-#SFXV ` *
-
-*{1}*`{3}`
+{1}
 l16p64r1  r1  r1  r1  
 r1  r1  r1  r2r4o5v127@33gr8.  
  $1 o4v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  
@@ -50,7 +48,7 @@ c+2^4<c+>g+d+>a+  <c2^4^rgr  <c2^4ccrc
 ;2
 
 l16
-*{3}*`{1}`
+{3}
 l16%e1p40v35@36m20,18,195%r4o6fec>g<cefec>g<cdfec>g  
 <fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  
 <dc>afa<cdc>afa<cdc>af  <dc>afa<cdc>afa<cdc>af  <fec>g<cefec>g<cdfec>g  
@@ -64,7 +62,7 @@ f<c>a2^8>a4  a+<cdrdefgf2  c+d+frfgg+a+g+4g+8a+8  <c2^4>g4
 ;3
 
 l16
-*{4}*`{8}`
+{4}
 l16%e1p88v57@37%r5o5d4.g2^8  ^4<c4>g4c4  
 d4.g2^8  ^4<c4>g4<c4  d1  ^2^4c4  
 >a4.e2^8  ^1   $4 v57@37o5p88%r5d4.g2^8  ^4<c4>g4c4  
@@ -114,7 +112,7 @@ fgg+a+fgg+a+fgg+a+fgg+a+  <c4>g4<c4f8ed  e4c4>g4c4
 ;7
 
 l16
-*{8}*`{4}`
+{8}
 l16%e1p43v35@36o6dc>gdg<cdc>gdgb<dc>gd  
 <dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  
 a+afdfaa+afdfaa+afd  a+afdfaa+afdfaa+afd  <dc>gdg<cdc>gdgb<dc>gd  

@@ -242,6 +242,7 @@ xg_boss:        I85, G50, boss*2, metamorphosis, grandfinale, troops, savethem
 xg_chuchu:      spinachrag*2, what*2, moogles, gogo, strago
 xg_flight:      I30, G90, grandfinale, locke*2, setzer, returners, savethem*2, falcon
 xg_mermaid:     daryl*2, coin, rachel, espers*2
+xg_tears:       celes*2, rachel, awakening, ruin
 ys1_wars:       I25, G90, battle, grandfinale, chocobo, falcon, magitek, floatingcont*2, kefkastower
 ys3_wings:      setzer*2, locke, savethem, blackjack, chocobo, serpent*2
 zaol_overworld: figaro, returners
@@ -277,7 +278,7 @@ ff6_metamorphosis: metamorphosis*2, catastrophe, grandfinale, unforgiven, floati
 ff6_train_ext:  H4, train*2, shadow, gau, gogo, umaro, owzer
 ff6_espers:     espers*2, omen3, narshe, forest*2
 ff6_grandfinale: I75, G30, grandfinale*2, kefka, gogo, umaro, savethem*2
-ff6_mountain:   mountain*2, returners, troops, umaro*2, serpent
+ff6_mountain:   mountain*2, returners, troops, umaro*2, serpent, veldt
 ff6_battle:     I20, G05, battle*2, unforgiven
 ff6_fanfareslow: fanfare
 ff6_serpent:    serpent*2, espers

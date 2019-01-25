@@ -5,7 +5,6 @@
 
 #VARIANT ~ enh
 #VARIANT / nat
-#SFXV ` *
 
 #WAVE 0x20 ~0x64~/0x06/
 #WAVE 0x21 ~0x61~/0x36/
@@ -49,7 +48,7 @@
 #drum "y"=5f |C %a v96
 #drum "y+"=5f |C %a v127
 
-*{1}*`{3}`
+{1}
 %e1 l1
 ## 1 bass choir
 |0 ~o2 v127~/o3 v127/ p88 'v-' 
@@ -137,7 +136,7 @@ $296 [5b.]^8 a.a.g+.g+.g+2
 a1^1g1^1f1^1d1e1
 ;2
 
-*{3}*`{1}`
+{3}
 %e1 l4
 ## 1 tenor choir
 |0 ~o4 v80~/o5 v80/ p72 'v' 
@@ -183,7 +182,7 @@ b4bb4ag4. %r11g4fefga %r19b4bb4a %r11g+2f4e4d4 j1,0
 c^>b^a^%r13f^   %r9g^d^ %y%r19 c4c8f4c4c8 %r9c> %a7ag+
 ;3
 
-*{4}*`{8}`
+{4}
 %e1 l4
 ## 1 alto choir
 |0 ~o5 v80~/o6 v80/ p64 'v' 
@@ -381,7 +380,7 @@ d4cd4.d4e4eg+4.b4
 l16 ^4. d4^ b4^
 ;7
 
-*{8}*`{4}`
+{8}
 %e1 l16
 ## 1 tinkle bell (piano) -> rev.cymbal
 |4 ~o6 v48~/o7 v48/ p104

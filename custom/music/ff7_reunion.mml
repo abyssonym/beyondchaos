@@ -14,7 +14,7 @@
 #WAVE 0x25  0x19        pizza
 #WAVE 0x26 ~0x74~/0x36/ synth+flute
 
-#def global= t150 %v50 %x224 %b0,70
+#def global= t150 %v50 %x224 %b0,70 %f0,0
 
 #def str= |0 v64 %r21 o5 m
 #def stl= |3 v112 o5 p64 m %a4%r4
@@ -67,7 +67,7 @@ rf+e v64rf+e v48rf+e v32rf+e ##54
 <e^^e.d. d+^^d^^ >a+^^<e^^ >g+^^<c.>b.
 ;
 
-{3}
+{6}
 $ %e1 'hrp' l4
 <[[4rd+d][4rd>b<]] ##16
 >[[4f+<c+c>][4f<c>a]] ##32
@@ -78,7 +78,7 @@ a<d>b v64a<d>b v48a<d>b v32a<d>b ##54
 g^^f^^ g^^f^^ a^^g^^ g^^f^^
 ;
 
-{4}
+{5}
 $ %e1 'stl' l1
 [16r2.] ##16
 [d+^^d^^] ##32
@@ -87,7 +87,7 @@ e^^f^^e^^c.>b. ##48
 <e^^d^^ c^^>a+^^< g^^a^^ f^^g^^
 ;
 
-{5}
+{3}
 $ %e1 'str' p20 l4
 ['sv1'd+d+d+'sv2'd+d+d+'sv3'd+d+d+'sv4'd+d+d+
 'sv3'ddd'sv2'ddd'sv1'ddd'sv0'ddd] ##16
@@ -109,29 +109,29 @@ p35 v64
 'sv3'ddd'sv2'ddd'sv1'ddd'sv0'ddd
 ;
 
-{6}
+{7}
 $ %e1 'str' p50 l4
 ['sv1'ccc'sv2'ccc'sv3'ccc'sv4'ccc
 >'sv3'bbb'sv2'bbb'sv1'bbb'sv0'bbb<] ##16
 >['sv1'a+a+a+'sv2'a+a+a+'sv3'a+a+a+'sv4'a+a+a+
 'sv3'aaa'sv2'aaa'sv1'aaa'sv0'aaa] ##32
->'sv1'bbb'sv2'bbb'sv3'bbb'sv4'bbb<
+'sv1'bbb'sv2'bbb'sv3'bbb'sv4'bbb<
 'sv3'ccc'sv2'ccc'sv1'ccc'sv0'ccc
 >'sv1'bbb'sv2'bbb'sv3'bbb'sv4'bbb
 'sv3'ggg'sv2'ggg'sv1'f+f+f+'sv0'f+f+f+ ##48
 'fo1'f+f+f+'fo2'f+f+f+'fo3'f+f+f+'fo4'f+f+f+ ##54
 p65 v64
 'sv1'bbb'sv2'bbb'sv3'bbb'sv4'bbb
->'sv3'aaa'sv2'aaa'sv1'aaa'sv0'aaa ##60
+'sv3'aaa'sv2'aaa'sv1'aaa'sv0'aaa ##60
 'sv1'd+d+d+'sv2'd+d+d+'sv3'd+d+d+'sv4'd+d+d+
 'sv3'ddd'sv2'ddd'sv1'ddd'sv0'ddd ##68
 'sv1'ggg'sv2'ggg'sv3'ggg'sv4'ggg
 'sv3'aaa'sv2'aaa'sv1'aaa'sv0'aaa ##76
 <'sv1'ccc'sv2'ccc'sv3'ccc'sv4'ccc
-'sv3'ddd'sv2'ddd'sv1'ddd'sv0'ddd ##84
+'sv3'ccc'sv2'ccc'sv1'>bbb'sv0'bbb ##84
 ;
 
-{7}
+{8}
 $ %e1 'str'> p80 l4
 ['sv1'g+g+g+'sv2'g+g+g+'sv3'g+g+g+'sv4'g+g+g+
 'sv3'ggg'sv2'ggg'sv1'ggg'sv0'ggg] ##16
@@ -143,7 +143,7 @@ $ %e1 'str'> p80 l4
 'sv3'eee'sv2'eee'sv1'eee'sv0'eee ##48
 'fo1'eee'fo2'eee'fo3'eee'fo4'eee ##52
 p95 v64
-<'sv1'eee'sv2'eee'sv3'eee'sv4'eee
+'sv1'eee'sv2'eee'sv3'eee'sv4'eee
 'sv3'ddd'sv2'ddd'sv1'ddd'sv0'ddd ##60
 'sv1'ccc'sv2'ccc'sv3'ccc'sv4'ccc
 >'sv3'b-b-b-'sv2'b-b-b-'sv1'b-b-b-'sv0'b-b-b-< ##68
@@ -153,7 +153,7 @@ p95 v64
 'sv3'ggg'sv2'ggg'sv1'ggg'sv0'ggg ##84
 ;
 
-{8}
+{4}
 $ %e1 'str'> p110 l4
 ['sv1'fff'sv2'fff'sv3'fff'sv4'fff
 'sv3'eee'sv2'eee'sv1'eee'sv0'eee] ##16

@@ -3,8 +3,8 @@
 #COMPOSER Yuko Takehara
 #ARRANGED emberling
 
-#VARIANT ~
-#VARIANT / nopatch
+#VARIANT ~ enh
+#VARIANT / nat
 
 #WAVE 0x20 ~0x82~ /0x0A/ brass section
 #WAVE 0x21 ~0x7F~ /0x08/ trumpet
@@ -20,7 +20,7 @@
 #WAVE 0x2B ~0x5A~ /0x11/ hihat
 #WAVE 0x2C ~0x12~ /0x12/ cymbal
 
-#def global= t178 %v48 %x224 %b00,70
+#def global= t178 %v48 %x224 %b0,70 %f0,0
 
 #def 1brass= |1 p13 v70 m22,12,224 o6
 #def 7brass= |0 p18 v90 m21,13,222 o6

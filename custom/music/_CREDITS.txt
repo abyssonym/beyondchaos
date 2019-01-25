@@ -11,11 +11,11 @@ Song conversions:
                  ff2_battleb
                  ff3_warrior
                  ff4_calcobrena
-                 ff5_battle, ff5_cave, ff5_curse, ff5_excastle, ff5_final,
-                 ff5_home, ff5_hurry, ff5_lenna, ff5_library, ff5_theme,
-                 ff5_void, ff5_world1
-                 ff7_battle, ff7_corel, ff7_hurry, ff7_rebirth, ff7_reunion,
-                 ff7_snow
+                 ff5_battle, ff5_bridge, ff5_cave, ff5_curse, ff5_excastle,
+                 ff5_final, ff5_home, ff5_hurry, ff5_lenna, ff5_library,
+                 ff5_theme, ff5_void, ff5_world1
+                 ff7_battle, ff7_corel, ff7_costa, ff7_hurry, ff7_rebirth,
+                 ff7_reunion, ff7_snow
                  ff8_battle, ff8_horizon, ff8_lion, ff8_witches
                  ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
                  ffx_battle, ffx_gagazet, ffx_via, ffx_zanarkand
@@ -44,7 +44,7 @@ Song conversions:
                  totr_arrow
                  xc1_valakn
                  xc2_morardain, xc2_tantal
-                 xg_boss, xg_flight
+                 xg_boss, xg_flight, xg_tears
     Gi Nattak -- cc_arni, cc_flame, cc_miguel
                  ct_boss2
                  cv3_aquarius
@@ -57,7 +57,7 @@ Song conversions:
                  ff4_town, ff4_troia, ff4_underworld, ff4_zeromus, ff4_zot
                  ff5_exdeath, ff5_world2
                  ff6_town2
-                 ff7_5years, ff7_costa, ff7_temple, ff7_tifa
+                 ff7_5years, ff7_temple, ff7_tifa
                  ff8_laguna, ff8_oath
                  ff9_blackmage, ff9_blackwaltz, ff9_dali, ff9_eiko,
                  ff9_home, ff9_memoria
@@ -84,7 +84,6 @@ Song conversions:
                  zoot_storms
     Jackimus -- ffx_seymour
     MetroidQuest -- ff4_boss, ff4_cave
-                    ff5_bridge
     Royaken -- ff4_bomb, ff4_mysidia, ff4_whale
                ff7_hurry2, ff7_judgment, ff7_materia, ff7_planet
                ff8_heresy

@@ -1,0 +1,122 @@
+#TITLE Tears of the Stars, Thoughts of the People // Earthly Tears, Mortal Thoughts
+#ALBUM Xenogears
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 0x0D
+#WAVE 0x21 ~0x61~/0x05/
+#WAVE 0x22 ~0x40~/0x0A/
+#WAVE 0x23 ~0x8B~/0x0C/
+#WAVE 0x24 0x1B
+#WAVE 0x25 ~0x4D~/0x18/
+#WAVE 0x2A ~0x8E~/0x12/
+
+#def str= |0 o5 %e1 %a4 %r4 m
+#def vio= |1 ~o4~/o6/ %e1 %r5 m48,18,192
+#def cla= |2 ~o4~/o5/ %e1 %r6 m48,18,223
+#def pia= |3 o5 %e1 m
+#def har= |4 o5 %e1 m
+#def bas= |5 ~o6~/o7/ %e1 m48,18,127
+
+#def 02= 'cla' p74
+#def 04= 'str' p64
+#def 06= 'bas' p64
+#def 07= 'vio' p52
+#def 09= 'str' p20
+#def 11= 'str' p76
+#def 13= 'str' p112
+#def pi= 'pia' p90
+#def ha= 'har' p20
+
+#drum "y"=5g |A %a3 v127 p64 %e1
+#cdef ( %l1
+#cdef ) %l0
+
+#def global= t68 %v50 %b0,70 %f0,0 %x224
+
+{1}
+'global'
+'06'> v113d
+$
+l16 '06'> >v123g4^rg4..rg8  f4^rf4.<c4>  g4^rg4.<d8>g8  f4^rf4.<c4>
+g4^rg4.^rg8  f4^rf4.<c8f8  d+4^r>a+4.<d+4  d4^r>a4.aa+b8
+<c4^r>g4.<c4>  a+4^r<f4.>a+4  a8<e4a4e4d+8  d4^rd4>a8<dad8>
+g4^rg4.<d8>g8  f4^rf4<c8g8c8  d+4^r>a+4.<d+4  d4^r>a4.aa+b8
+<c4^r>g4.<c4>  a+4^r<f4.>a+4  a8<e4a4e4d+8  d4^rd4>a8<dad8>
+d+4.a+4.<d+8>a+8  f4.<c4.>f4  g8<d4g4.d4>  g4.<d4.>g8f8
+d+4.<d+4.>a+4  f4.<c8f8c8.>f8.  g4.<d4.g4>  g4^rg4.<d4
+;
+
+{2}
+r$
+'07' l4 v50d1 v54(dc)(dd+) v50d1 v54(dc)(d+f)
+v59 l8 r4(ag)(aa+<cd>) l4 v50 a2.f (g2<c2>) a2.f
+(d+g)<d2 (cd)>a2 <c2>(a<c) d2>a2
+l8 ^r v59 (ag)(aa+<cd>)   l4 v50 a2.v59f   v50 (g2<c2>)   a2.v59f
+(v50d+v59g)v50<d2  (v59cv50d)>v59a2  <v50c2>(v59a<v50c)v59d1>
+l1 v44 g f l4 d2. v52 (aa+2)(af)
+v44 l1 g f a g
+;
+
+{3}
+r$
+'09'> v50 l1 a+g+a+g+
+l4 <d1 ^1 ^2g2 f2.>a
+l1 a+ a <e d
+d ^ ^2g2 f2.>a4
+a+ a <e   '02' ~v98~/v49/ l8 r2 (ga)(a+<c)
+d2.(f4 c2.)>a+4 a1 g2(ga)(a+<c)
+d2.(f4 c2.)>a+4 a1 g1
+;
+
+{4}
+r$
+'pi'< v76 l4 dddd dcdd+ dddd dcd+f
+l1 d '11'> v50 agf
+g f g ^2f+2
+a+ a g f
+g f g ^2 'ha' v38v96,46 l32 >def+g aa+<cd ef+ga a+<cdg>
+l16 d+[4ga+<v43dv46j4g>] >f[4a<cv43fv46j4a>] >g[7a+<dv43gv46a>]v43<gv46d>a+
+d+[4ga+<v43dv46j4g>] >f[4a<cv43fv46j4a>] >g[8a+<dv43gv46j8a>]
+;
+
+{5}
+r$
+'pi' v76 l4 agag fffg+ agag fffg+
+l1 a '13'>> v50 fd+d
+<c> a+ a <d>
+g f d+ d
+<c> a+ g '09'd
+d c >a+2.<c4 d2.c4
+d c d ^
+;
+
+{6}
+r$
+'11'> v50 l1 afaf
+a+ '04' v20v255,50 l4 a2.f g2<c2> a2.f
+d+g<d2 cd>a2 <c2>a<c d2>a2
+l8 ^4agaa+<cd> l4 a2.f g2<c2> a2.f
+d+g<d2 cd>a2  <c2>a<c  d2 '11' l1 f+2
+a+ a g ^2.g4
+a+ a a+ ^
+;
+
+{7}
+r$
+'pi' v76 l4 a+a+a+a+ g+g+g+<c> a+a+a+a+ g+g+<cc>
+l1 a+    [3r][4r][4r][3r]    '13'> l1 v50 d
+>d+ f g ^
+d+ f g ^
+;
+
+{8}
+r$
+'13'>> v50 l1 gfgf
+g     [3r][4r][4r][3r]     r2."!!!oy4"
+^2. '04'< v20v255,50 l4 f c2.>a+ a1 g2g8a8a+8<c8
+d2.f c2.>a+ a1 g1
+;

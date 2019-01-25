@@ -3,8 +3,8 @@
 #COMPOSER Yuzo Koshiro
 #ARRANGED emberling
 
-#VARIANT ~
-#VARIANT / nopatch
+#VARIANT ~ enh
+#VARIANT / nat
 
 {--------------- Instruments ---------------}
 #WAVE 0x20,  0x07         {Flute}
@@ -18,7 +18,7 @@
 #WAVE 0x28, ~0x50~ /0x12/ {Cymbal}
 
 {--------------- Track 1 ---------------}
-t136%v50%x180%b0,70%e1%k0
+t136%v50%x180%b0,70%f0,0%e1%k0
 v16,16,255m16,16,255p48@0x20o5l8
 [2ddgd16f16^^^r]vm
 $g.d.gf.c.f

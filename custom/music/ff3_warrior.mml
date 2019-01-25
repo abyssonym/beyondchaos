@@ -24,7 +24,7 @@
 #WAVE _0x2D 0x8E_
 #WAVE _0x2F 0x0F_
 
-#def global= t120 %x160 %b0,70 %v50
+#def global= t120 %x160 %b0,70 %v50 %f0,0
 
 #def tpet= |0 ~v96~/v64/ ~o5~/o6/ /m48,18,239/~m~ %e1
 #def horn= |1 ~v112~/v64/ ~o5~/o5/ m48,18,223 %e1

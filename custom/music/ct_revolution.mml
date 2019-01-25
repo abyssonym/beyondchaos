@@ -24,7 +24,7 @@
 #drum "r"=5r
 
 {1}
-l16t160%v20%b0,100%x224
+l16t160%v20%b0,100%x224%f0,0
 ##1 - 16 (flute)
 %e1r8|0v20p20o6%e1[2r8c8d8c8g8c8d8  
 c8g8c8d8c8g8c8d8  c8r8c8d8c8a8c8d8  c8a8c8d8c8a8c8d8  c8r8c+8d+8c+8g+8c+8d+8  

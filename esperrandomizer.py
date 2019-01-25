@@ -1,5 +1,6 @@
 from utils import hex2int, int2bytes, Substitution, utilrandom as random
 from skillrandomizer import get_ranked_spells, get_spell
+from functools import reduce
 
 items = None
 
@@ -246,8 +247,8 @@ class EsperBlock:
         spell = [s for s in spells if s.spellid == spellid][0]
         spellrates = zip(self.spells, self.learnrates)
         if len(spellrates) == 5:
-            spellrates = sorted(spellrates, key=lambda (s, l): s.rank())
+            spellrates = sorted(spellrates, key=lambda s_l: s_l[0].rank())
             spellrates = spellrates[1:]
         spellrates.append((spell, learnrate))
-        spellrates = sorted(spellrates, key=lambda (s, l): s.spellid)
+        spellrates = sorted(spellrates, key=lambda s_l1: s_l1[0].spellid)
         self.spells, self.learnrates = zip(*spellrates)

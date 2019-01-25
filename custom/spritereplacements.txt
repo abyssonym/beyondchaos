@@ -1,159 +1,227 @@
-Aerith.bin,Aerith,female,true,16,Aerith-P.bin
-Arvis.bin,Arvis,male,true,7,Arvis-P.bin
-Atma.bin,Atma,male,true,17,atmaweapon-P.bin
-Auron.bin,Auron,male,true,1,Auron-P.bin
-Ayla.bin,Ayla,female,true,1,Ayla-p.bin
-Baby.bin,Baby,neutral,true,8,baby-p.bin
-Barret.bin,Barret,male,true,2,Barret2-P.bin
-Bartz.bin,Bartz,male,true,1,bartz-p2.bin
-Batman.bin,Batman,male,true,1,Batman-P.bin
-Beatrix.bin,Beatrix,female,true,6,beatrix-portrait.bin
-Berserker.bin,Berserker,male,true,13,berserker-portrait.bin
-Bird.bin,bird,neutral,true,0,bird-portrait.bin
-BlackMage.bin,Black Mage,male,true,12,blackmage-p.bin
-BofRyu.bin,Ryu (Breath of Fire),male,true,1,Ryubof-P.bin
-Bomb.bin,Bomb,neutral,true,1,Bomb-p.bin
-Bowser.bin,Bowser,male,true,15,bowser-p.bin
-Bowserjr.bin,Bowser Jr,male,true,1,Bowserjr-P.bin
-Boy.bin,Boy,male,true,11,boy-p.bin
-BubbleDragon.bin,Bub,male,true,15,BubBobDrag-P.bin
-Byuu.bin,Byuu,male,true,1,byuu-p.bin
-Cat.bin,Cat,neutral,true,17,cat-portrait.bin
-Chancellor.bin,Chancellor,male,true,4,chancellor-p.bin
-Chocobo.bin,Chocobo,neutral,true,0,chocobo-P.bin
-Chupon.bin,Chupon,neutral,true,15,chupon-P.bin
-Cid.bin,Cid,male,true,3,Cid6-P.bin
-Cid4.bin,Cid4,male,true,3,Cid4-P.bin
-Cid7.bin,Cid7,male,true,1,Cid7-P.bin
-Clock.bin,Clock,neutral,true,1,Clock-p.bin
-Cloud.bin,Cloud,male,true,4,cloud-p.bin
-Clyde.bin,Clyde,male,true,3,clyde.bin
-Crono.bin,Crono,male,true,11,Crono-P.bin
-Cucco.bin,Cucco,neutral,true,1,cucco-p.bin
-Cultist.bin,Cultist,male,true,12,cultist-p.bin
-Cyrus.bin,Cyrus,male,true,2,cyrus-p.bin
-DKCecil.bin,Dark Knight Cecil,male,true,4,DKCecil-p.bin
-Dancer.bin,Dancer,female,true,10,dancer-p.bin
-Daryl.bin,Daryl,female,true,6,daryl-portrait.bin
-Delita.bin,Delita,male,true,1,Delita-P.bin
-Dogstahl.bin,Dogstahl,neutral,true,7,dogstahl-p.bin
-DonkeyKong.bin,Donkey Kong,male,true,1,donkeykong-P.bin
-Draco.bin,Draco,male,true,2,draco-portrait.bin
-Dragon.bin,Dragon,neutral,true,1,Dragont-p.bin
-Edge.bin,Edge,male,true,3,Edge-P.bin
-Edward.bin,Edward,male,true,4,edward-portrait.bin
-Eiko.bin,Eiko,female,true,0,Eiko9-p.bin
-Elder.bin,Elder,male,true,2,Elder-P.bin
-Elena.bin,Elena,female,true,0,Elena-P.bin
-Fairy.bin,Fairy,female,true,6,Fairy-P.bin
-Fang.bin,Fang,female,true,0,fang-p.bin
-Faris.bin,Faris,neutral,true,6,Faris-p.bin
-FigaroGuard.bin,Figaro Guard,male,true,1,figaroguard-p.bin
-Fish.bin,Fish,neutral,true,1,fish-portrait.bin
-Frog.bin,Frog,male,true,15,Frog-P.bin
-Froggy.bin,Froggy,neutral,true,15,frog-portrait.bin
-FuSoYa.bin,FuSoYa,male,true,7,fusoya-p.bin
-Gabranth.bin,Gabranth,male,true,1,gabranth-p.bin
-Gaffgarion.bin,Gaffgarion,male,true,1,Gaffgarion-P.bin
-GauSuit.bin,Gau in a suit,male,true,11
-Geno.bin,Geno,male,true,1,geno-p.bin
-Gestahl.bin,Gestahl,male,true,7,gestahl-p.bin
-Gilgamesh.bin,Gilgamesh,male,true,1,Gilgamesh-P2.bin
-Girl.bin,Girl,female,true,1,girl-p.bin
-Goku.bin,Goku,male,true,1,Goku-P.bin
-Golbez.bin,Golbez,male,true,4,OldGolbez-P.bin
-Grandma.bin,Grandma,female,true,7,grandma-p.bin
-HolyDragoon.bin,Holy Dragoon,male,true,5,HolyDragoon-P.bin
-Hope.bin,Hope,male,true,1,Hope-p.bin
-Impressario.bin,Impressario,male,true,1,Impressario-P.bin
-Interceptor.bin,Interceptor,male,true,3,interceptor-portrait.bin
-Johnny.bin,Johnny,male,true,1,Johnny-P.bin
-Kain.bin,Kain,male,true,5,kain-p.bin
-Katarin.bin,Katarin,female,true,0,katarin-p.bin
-Kelgar.bin,Kelgar,male,true,1,Kelgar-p.bin
-Kiki.bin,Kiki,neutral,true,1,kiki-p.bin
-Kirby.bin,Kirby,neutral,true,1,Kirby-p.bin
-LTTP.bin,Link LTTP,male,true,1,link-portrait.bin
-Lady.bin,Lady,female,true,6,lady-p.bin
-Lenna.bin,Lenna,female,true,0,lenna-p.bin
-Lightning.bin,Lightning,female,true,5,lightning-p.bin
-Link.bin,Link,male,true,1,link-p.bin
-LoneWolf.bin,Lone Wolf,male,true,1,lonewolf-p.bin
-Lucca.bin,Lucca,female,true,8,Lucca-P.bin
-Luigi.bin,Luigi,male,true,1,Luigi-P.bin
-Maduin.bin,Maduin,male,true,0,Maduin-P.bin
-Magus.bin,Magus,male,true,9,Magus-P.bin
-Mallow.bin,Mallow,male,true,1,mallow-p.bin
-Man.bin,Man,male,true,1,man-p.bin
-Mario.bin,Mario,male,true,2,Mario-P.bin
-Marle.bin,Marle,female,true,0,Marle-P.bin
-Matoya.bin,Matoya,female,true,0,Matoya-P.bin
-Maxim.bin,Maxim,male,true,1,maxim-p.bin
-MegaMan.bin,MegaMan,male,true,1,Megaman-P.bin
-Mini.bin,Mini,neutral,true
-MogFFIX.bin,Mog FFIX,neutral,true,10,Stilzkin-P.bin
-MrSaturn.bin,Mr Saturn,male,true,1,mr-saturn-portrait.bin
-NarsheGuard.bin,Narshe Guard,male,true,1,narsheguard-p.bin
-Ness.bin,Ness,male,true,1,ness-p.bin
-Noctis.bin,Noctis,male,true,1,Noctis-P.bin
-OldMan.bin,OldMan,male,true,1,oldmanhat-p.bin
-OnionKnight.bin,Onion Knight,male,true,16,onionknight-p.bin
-OperaCeles.bin,Maria,female,true,6
-Orlandu.bin,Orlandu,male,true,2,Orlandu-P.bin
-PaladinCecil.bin,Paladin Cecil,male,true,1,pcecil-p.bin
-Peach.bin,Princess Peach,female,true,0,Peach-P.bin
-Pig.bin,Pig,male,true,15,Pig-P.bin
-Potato.bin,Potato,neutral,true,1,Potato-P.bin
-Rachel.bin,Rachel,female,true,6,Rachel-P.bin
-Ramza.bin,Ramza,male,true,1,Ramza-P.bin
-Red.bin,Red,male,true,1,red-p.bin
-RedMage.bin,Red Mage,neutral,true,9,redmage-p.bin
-RedXII.bin,Red XII,male,true,1,red13-p.bin
-RelmAdult.bin,Relm Adult,female,true,8
-Reno.bin,Reno,male,true,1,reno-portrait.bin
-RetroPikachu.bin,Retro Pikachu,neutral,true,1,retropikachu-p.bin
-Returner.bin,Returner,male,true,17,returner-portrait.bin
-Robo.bin,Robo,male,true,1,robo-p.bin
-Rosa.bin,Rosa,female,true,6,rosa-p.bin
-Rude.bin,Rude,male,true,3,rude-p.bin
-Rydia.bin,Rydia,female,true,0,rydia-portrait.bin
-RydiaChild.bin,RydiaChild,female,true,0,rydiachild-p.bin
-Samus-zero.bin,Samus,female,true,0,navi-p.bin
-Samus.bin,Samus,female,true,0,samus-p.bin
-Sazh.bin,Sazh,male,true,1,sazh-p.bin
-Scholar.bin,Scholar,male,true,9,scholar-p.bin
-Seifer.bin,Seifer,male,true,5,seifer-p.bin
-Sephiroth.bin,Sephiroth,male,true,1,sephiroth-p.bin
-Shopkeeper.bin,Shopkeeper,male,true,1,shopkeeper-p.bin
-Siegfried.bin,Siegfried,male,true,1,siegfried-portrait.bin
-Sion.bin,Sion,male,true,1,Sion-P.bin
-Slash.bin,Slash,male,true,2,slash-portrait.bin
-Snow.bin,Snow,male,true,9,snow-p.bin
-SoEBoy.bin,Boy (Secret of Evermore),male,true,11,soeboy-p.bin
-Sonic.bin,Sonic,male,true,10,sonic-p.bin
-Squall.bin,Squall,male,true,3,squall-p.bin
-Stalfos.bin,Stalfos,neutral,true,
-Steiner.bin,Steiner,male,true,2,steiner-p.bin
-Tellah.bin,Tellah,male,true,7,tellah-p.bin
-Thief.bin,Thief,male,true,1,bandit-p.bin
-Tifa.bin,Tifa,female,true,0,tifa2-p.bin
-Tinymoogle.bin,Tiny Moogle,neutral,true,10
-TrainConductor.bin,Train Conductor,male,true
-Turtle.bin,Turtle,neutral,true,1,turtle2-p.bin
-Ultros.bin,Ultros,male,true,1,ultros-portrait.bin
-Vaan.bin,Vaan,male,true,1,vaan-p.bin
-Vader.bin,Vader,male,true,1,Vader-P.bin
-Valkyrie.bin,Valkyrie,female,true,6,valkyrie-p.bin
-Vargas.bin,Vargas,male,true,5,vargas-p.bin
-Vincent.bin,Vincent,male,true,9,vincent-portrait.bin
-Vivi.bin,Vivi,male,true,12,vivi-p.bin
-Vomammoth.bin,Vomammoth,neutral,true,8,vomammoth-p.bin
-WarriorOfLight.bin,Warrior of Light,male,true,16,wol-p.bin
-WhiteMage.bin,White Mage,neutral,true,18,whitemage-p.bin
-Yang.bin,Yang,male,true,1,yang-p.bin
-Yoshi.bin,Yoshi,neutral,true,15,yoshi-p.bin
-Yuffie.bin,Yuffie,female,true,8,yuffie-P.bin
-Yura.bin,Yura,male,true
-Zack.bin,Zack,male,true,1,Zack-P2.bin
-Zidane.bin,Zidane,male,true,1,zidane-p.bin
-Dekar.bin,Dekar,male,true,1,dekar-p.bin
+aerith.bin,Aerith,female,true,16,aerith-p.bin
+aerithdress.bin,Dressy Aerith,female,true,16,aerith-p.bin
+algus.bin,Algus,male,true,1,algus-p.bin
+alma.bin,Alma,female,true,0,alma-p.bin
+arc.bin,Arc,male,true,1,arc-p.bin
+arvis.bin,Arvis,male,true,7,arvis-p.bin
+ashe.bin,Ashe,female,true,0,ashe-p.bin
+atma.bin,Atma,male,true,17,atma-p.bin
+auron.bin,Auron,male,true,1,auron-p.bin
+ayla.bin,Ayla,female,true,1,ayla-p.bin
+baby.bin,Baby,neutral,true,8,baby-p.bin
+baku.bin,Baku,male,true,17
+balthier.bin,Balthier,male,true,1,balthier-p.bin
+bandit.bin,Bandit,male,true,1,bandit-p.bin
+bangaa-rinok.bin,Rinok,male,true,1,bangaa-p.bin
+bangaa.bin,Bangaa,male,true,1,bangaa-p.bin
+barbariccia.bin,Barbariccia,female,true,6,barbariccia-p.bin
+barret.bin,Barret,male,true,2,barret-p.bin
+bartz.bin,Bartz,male,true,1,bartz-p.bin
+basch.bin,Basch,male,true,1,basch-p.bin
+batman.bin,Batman,male,true,1,batman-p.bin
+beatrix.bin,Beatrix,female,true,6,beatrix-p.bin
+berserker.bin,Berserker,male,true,13,berserker-p.bin
+biggs.bin,Biggs,male,true,1
+bird.bin,bird,neutral,true,1,bird-p.bin
+blackmage.bin,Black Mage,male,true,12,blackmage-p.bin
+blackmagegirl.bin,Female Black Mage,female,true,0,blackmagegirl-p.bin
+bomb.bin,Bomb,neutral,true,1,bomb-p.bin
+bowser.bin,Bowser,male,true,15,bowser-p.bin
+bowserjr.bin,Bowser Jr,male,true,1,bowserjr-p.bin
+boy.bin,Boy,male,true,11,boy-p.bin
+bubbledragon.bin,Bub,male,true,15,bubbledragon-p.bin
+byuu.bin,Byuu,male,true,1,byuu-p.bin
+cat.bin,Cat,neutral,true,17,cat-p.bin
+chancellor.bin,Chancellor,male,true,4,chancellor-p.bin
+chocobo.bin,Chocobo,neutral,true,1,chocobo-p.bin
+chupon.bin,Chupon,neutral,true,15,chupon-p.bin
+Cid4.bin,Cid4,male,true,3,Cid4-p.bin
+Cid6.bin,Cid,male,true,3,Cid6-p.bin
+Cid7.bin,Cid7,male,true,1,Cid7-p.bin
+clock.bin,Clock,neutral,true,1,clock-p.bin
+cloud.bin,Cloud,male,true,4,cloud-p.bin
+cloudchild.bin,Cloud Child,male,true,1,cloud-p.bin
+clouddress.bin,Dressy Cloud,female,true,1,cloud-p.bin
+clyde.bin,Clyde,male,true,3,clyde-p.bin
+crono.bin,Crono,male,true,11,crono-p.bin
+cucco.bin,Cucco,neutral,true,1,cucco-p.bin
+cultist.bin,Cultist,male,true,12,cultist-p.bin
+cyrus.bin,Cyrus,male,true,2,cyrus-p.bin
+dkcecil.bin,Dark Knight Cecil,male,true,4,dkcecil-p.bin
+dajh.bin,Dajh,male,true,1,dajh-p.bin
+dancer.bin,Dancer,female,true,10,dancer-p.bin
+daryl.bin,Daryl,female,true,6,daryl-p.bin
+delita.bin,Delita,male,true,1,delita-p.bin
+dogstahl.bin,Dogstahl,neutral,true,7,dogstahl-p.bin
+doncorneo.bin,Don Corneo,male,true,1,doncorneo-p.bin
+donkeykong.bin,Donkey Kong,male,true,1,donkeykong-p.bin
+dorgann.bin,Dorgann,male,true,1,dorgann-p.bin
+draco.bin,Draco,male,true,2,draco-p.bin
+dragon.bin,Dragon,neutral,true,1,dragon-p.bin
+dycedarg.bin,Dycedarg,male,true,1,dycedarg-p.bin
+edge.bin,Edge,male,true,3,edge-p.bin
+edward.bin,Edward,male,true,4,edward-p.bin
+eiko.bin,Eiko,female,true,0,eiko-p.bin
+elder.bin,Elder,male,true,2,elder-p.bin
+elena.bin,Elena,female,true,0,elena-p.bin
+emperor.bin,Emperor,male,true,1,emperor-p.bin
+fairy.bin,Fairy,female,true,6,fairy-p.bin
+falco.bin,Falco,male,true,1,falco-p.bin
+fang.bin,Fang,female,true,0,fang-p.bin
+faris.bin,Faris,neutral,true,6,faris-p.bin
+figaroguard.bin,Figaro Guard,male,true,1,figaroguard-p.bin
+firion.bin,Firion,male,true,1,firion-p.bin
+fish.bin,Fish,neutral,true,1,fish-p.bin
+fran.bin,Fran,female,true,0,fran-p.bin
+frog.bin,Frog,male,true,15,frog-p.bin
+froggy.bin,Froggy,neutral,true,15,froggy-p.bin
+fusoya.bin,FuSoYa,male,true,7,fusoya-p.bin
+gabranth.bin,Gabranth,male,true,1,gabranth-p.bin
+gaffgarion.bin,Gaffgarion,male,true,1,gaffgarion-p.bin
+galuf.bin,Galuf,male,true,1,galuf-p.bin
+garland.bin,Garland,male,true,1,garland-p.bin
+garnet.bin,Garnet,female,true,0,garnet-p.bin
+garnetgown.bin,Garnet Gown,female,true,0,garnet-p.bin
+garnetwhitemage.bin,Garnet White Mage,female,true,0,garnet-p.bin
+gausuit.bin,Gau in a suit,male,true,11
+geno.bin,Geno,male,true,1,geno-p.bin
+gestahl.bin,Gestahl,male,true,7,gestahl-p.bin
+gilgamesh.bin,Gilgamesh,male,true,1,gilgamesh-p.bin
+girl.bin,Girl,female,true,1,girl-p.bin
+goku.bin,Goku,male,true,1,goku-p.bin
+golbez.bin,Golbez,male,true,4,golbez-p.bin
+gordon.bin,Gordon,male,true,1,gordon-p.bin
+grandma.bin,Grandma,female,true,7,grandma-p.bin
+guy.bin,Guy,male,true,1,guy-p.bin
+hilda.bin,Hilda,female,true,0,hilda-p.bin
+holydragoon.bin,Holy Dragoon,male,true,5,holydragoon-p.bin
+hope.bin,Hope,male,true,1,hope-p.bin
+impressario.bin,Impressario,male,true,1,impressario-p.bin
+ingus.bin,Ingus,male,true,1,ingus-p.bin
+interceptor.bin,Interceptor,male,true,3,interceptor-p.bin
+jessie.bin,Jessie,female,true,0
+johnny.bin,Johnny,male,true,1,johnny-p.bin
+kain.bin,Kain,male,true,5,kain-p.bin
+katarin.bin,Katarin,female,true,0,katarin-p.bin
+kelgar.bin,Kelgar,male,true,1,kelgar-p.bin
+kiki.bin,Kiki,neutral,true,1,kiki-p.bin
+kimhari.bin,Kimhari,male,true,1,kimhari-p.bin
+kirby.bin,Kirby,neutral,true,1,kirby-p.bin
+knight.bin,Knight (FFT),male,true,1,knight-p.bin
+krile.bin,Krile,female,true,0,krile-p.bin
+lttp.bin,Link LTTP,male,true,1,lttp-p.bin
+lady.bin,Lady,female,true,6,lady-p.bin
+leila.bin,Leila,female,true,0,leila-p.bin
+lenna.bin,Lenna,female,true,0,lenna-p.bin
+leon.bin,Leon,male,true,1,leon-p.bin
+lightning.bin,Lightning,female,true,5,lightning-p.bin
+link.bin,Link,male,true,1,link-p.bin
+lonewolf.bin,Lone Wolf,male,true,1,lonewolf-p.bin
+lucca.bin,Lucca,female,true,8,lucca-p.bin
+luigi.bin,Luigi,male,true,1,luigi-p.bin
+lulu.bin,Lulu,female,true,0,lulu-p.bin
+maduin.bin,Maduin,male,true,0,maduin-p.bin
+magissa.bin,Magissa,female,true,0,magissa-p.bin
+magus.bin,Magus,male,true,9,magus-p.bin
+mallow.bin,Mallow,male,true,1,mallow-p.bin
+man.bin,Man,male,true,1,man-p.bin
+marcus.bin,Marcus,male,true,1,marcus-p.bin
+maria.bin,Maria,female,true,0,maria-p.bin
+mario.bin,Mario,male,true,2,mario-p.bin
+marle.bin,Marle,female,true,0,marle-p.bin
+matoya.bin,Matoya,female,true,0,matoya-p.bin
+maxim.bin,Maxim,male,true,1,maxim-p.bin
+megaman.bin,MegaMan,male,true,1,megaman-p.bin
+miluda.bin,Miluda,female,true,0,miluda-p.bin
+mini.bin,Mini,neutral,true
+minwu.bin,Minwu,male,true,1,narsheguard-p.bin
+monkgirl.bin,Female Monk,female,true,0,monkgirl-p.bin
+mrsaturn.bin,Mr Saturn,male,true,1,mrsaturn-p.bin
+nabaat.bin,Nabaat,female,true,0
+narsheguard.bin,Narshe Guard,male,true,1,narsheguard-p.bin
+ness.bin,Ness,male,true,1,ness-p.bin
+noctis.bin,Noctis,male,true,1,noctis-p.bin
+nora.bin,Nora,female,true,0
+oldman.bin,OldMan,male,true,1,oldman-p.bin
+onionknight.bin,Onion Knight,male,true,16,onionknight-p.bin
+operaceles.bin,Maria,female,true,6
+orlandu.bin,Orlandu,male,true,2,orlandu-p.bin
+pcecil.bin,Paladin Cecil,male,true,1,pcecil-p.bin
+psicom.bin,PSICOM,male,true,3
+peach.bin,Princess Peach,female,true,0,peach-p.bin
+penelo.bin,Penelo,female,true,6
+pig.bin,Pig,male,true,15,pig-p.bin
+potato.bin,Potato,neutral,true,1,potato-p.bin
+profmog.bin,Professor Mog,male,true,10
+rachel.bin,Rachel,female,true,6,rachel-p.bin
+ramza.bin,Ramza,male,true,1,ramza-p.bin
+Ramza1.bin,Ramza Chapter 1,male,true,1,ramza1-p.bin
+red.bin,Red,male,true,1,red-p.bin
+redmage.bin,Red Mage,neutral,true,9,redmage-p.bin
+redxiii.bin,Red XIII,male,true,1,redxiii-p.bin
+relmadult.bin,Relm Adult,female,true,8
+reno.bin,Reno,male,true,1,reno-p.bin
+retropikachu.bin,Retro Pikachu,neutral,true,1,retropikachu-p.bin
+returner.bin,Returner,male,true,17,returner-p.bin
+ricard.bin,Ricard,male,true,1,ricard-p.bin
+rikku.bin,Rikku,female,true,0,rikku-p.bin
+rikkudivesuit.bin,Rikku Divesuit,female,true,0,rikku-p.bin
+robo.bin,Robo,male,true,1,robo-p.bin
+rosa.bin,Rosa,female,true,6,rosa-p.bin
+rude.bin,Rude,male,true,3,rude-p.bin
+rydia.bin,Rydia,female,true,0,rydia-p.bin
+rydiachild.bin,RydiaChild,female,true,0,rydiachild-p.bin
+ryubof.bin,Ryu (Breath of Fire),male,true,1,ryubof-p.bin
+samus-zero.bin,Samus,female,true,0,samus-zero-p.bin
+samus.bin,Samus,female,true,0,samus-p.bin
+sarah.bin,Princess Sarah,female,true,6
+sazh.bin,Sazh,male,true,1,sazh-p.bin
+scholar.bin,Scholar,male,true,9,scholar-p.bin
+seeq.bin,Seeq,male,true,1,seeq-p.bin
+seifer.bin,Seifer,male,true,5,seifer-p.bin
+sephiroth.bin,Sephiroth,male,true,1,sephiroth-p.bin
+shopkeeper.bin,Shopkeeper,male,true,1,shopkeeper-p.bin
+siegfried.bin,Siegfried,male,true,1,siegfried-p.bin
+sion.bin,Sion,male,true,1,sion-p.bin
+slash.bin,Slash,male,true,2,slash-p.bin
+snow.bin,Snow,male,true,9,snow-p.bin
+soeboy.bin,Boy (Secret of Evermore),male,true,11,soeboy-p.bin
+sonic.bin,Sonic,male,true,10,sonic-p.bin
+squall.bin,Squall,male,true,3,squall-p.bin
+stalfos.bin,Stalfos,neutral,true,1,stalfos-p.bin
+steiner.bin,Steiner,male,true,2,steiner-p.bin
+stilzkin.bin,Stilzkin,neutral,true,10,stilzkin-p.bin
+tellah.bin,Tellah,male,true,7,tellah-p.bin
+teta.bin,Teta,female,true,0,teta-p.bin
+thieffft.bin,Thief (FFT),male,true,1,thieffft-p.bin
+tidus.bin,Tidus,male,true,1,tidus-p.bin
+tifa.bin,Tifa,female,true,0,tifa-p.bin
+tifachild.bin,Tifa Child,female,true,0,tifa-p.bin
+tifadress.bin,Dressy Tifa,female,true,0,tifa-p.bin
+tinymoogle.bin,Tiny Moogle,neutral,true,10
+trainconductor.bin,Train Conductor,male,true
+turtle.bin,Turtle,neutral,true,1,turtle-p.bin
+ultros.bin,Ultros,male,true,1,ultros-p.bin
+vaan.bin,Vaan,male,true,1,vaan-p.bin
+vader.bin,Vader,male,true,1,vader-p.bin
+valkyrie.bin,Valkyrie,female,true,6,valkyrie-p.bin
+vanille.bin,Vanille,female,true,0
+vargas.bin,Vargas,male,true,5,vargas-p.bin
+vincent.bin,Vincent,male,true,9,vincent-p.bin
+vivi.bin,Vivi,male,true,12,vivi-p.bin
+vomammoth.bin,Vomammoth,neutral,true,8,vomammoth-p.bin
+wakka.bin,Wakka,male,true,1,wakka-p.bin
+warrioroflight.bin,Warrior of Light,male,true,16,warrioroflight-p.bin
+wedge.bin,Wedge,male,true,1,wedge-p.bin
+whitemage.bin,White Mage,neutral,true,18,whitemage-p.bin
+whitemagegirl.bin,Female White Mage,female,true,0,whitemagegirl-p.bin
+wiegraf.bin,Wiegraf,male,true,1,wiegraf-p.bin
+xezhat.bin,Xezhat,male,true,1,xezhat-p.bin
+yang.bin,Yang,male,true,1,yang-p.bin
+yoshi.bin,Yoshi,neutral,true,15,yoshi-p.bin
+yuffie.bin,Yuffie,female,true,8,yuffie-p.bin
+yuna.bin,Yuna,female,true,1,yuna-p.bin
+yura.bin,Yura,male,true
+zack.bin,Zack,male,true,1,zack-p.bin
+zalbag.bin,Zalbag,male,true,1,zalbag-p.bin
+zidane.bin,Zidane,male,true,1,zidane-p.bin

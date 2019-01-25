@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from os import path
 from collections import defaultdict
 import random
@@ -20,6 +22,7 @@ COMMAND_TABLE = path.join(tblpath, "commandcodes.txt")
 CHAR_TABLE = path.join(tblpath, "charcodes.txt")
 TEXT_TABLE = path.join(tblpath, "text.txt")
 SHORT_TEXT_TABLE = path.join(tblpath, "shorttext.txt")
+DIALOGUE_TEXT_TABLE = path.join(tblpath, "dialoguetext.txt")
 ENEMY_NAMES_TABLE = path.join(tblpath, "enemynames.txt")
 MODIFIERS_TABLE = path.join(tblpath, "moves.txt")
 MOVES_TABLE = path.join(tblpath, "moves.txt")
@@ -53,11 +56,12 @@ MALE_NAMES_TABLE = path.join(custom_path, "malenames.txt")
 FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
 SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
 MOOGLE_NAMES_TABLE = path.join(custom_path, "mooglenames.txt")
+DANCE_NAMES_TABLE = path.join(custom_path, "dancenames.txt")
 
 def open_mei_fallback(filename, mode='r'):
     if not MEI:
         return open(filename, mode)
-    
+
     try:
         f = open(filename, mode)
     except IOError:
@@ -109,10 +113,41 @@ shorttexttable[' '] = 'FF'
 f.close()
 
 
+dialoguetexttable = {}
+f = open(DIALOGUE_TEXT_TABLE)
+for line in f:
+    line = line.strip('\n')
+    value, string = tuple(line.split('=', 1))
+    dialoguetexttable[string] = value
+f.close()
+
+
 def hex2int(hexstr):
     return int(hexstr, 16)
 
 
+def dialogue_to_bytes(text):
+    bytes = []
+    i = 0
+    while i < len(text):
+        if text[i] == "<":
+            j = text.find(">", i) + 1
+            hex = dialoguetexttable.get(text[i:j], "")
+            i = j
+        elif i < len(text) - 1 and text[i:i+2] in dialoguetexttable:
+            hex = dialoguetexttable[text[i:i+2]]
+            i += 2
+        else:
+            hex = dialoguetexttable[text[i]]
+            i += 1
+
+        if hex != "":
+            bytes.append(hex2int(hex))
+
+    bytes.append(0x0)
+    return bytes
+
+    
 battlebg_palettes = {}
 f = open(BATTLE_BG_PALETTE_TABLE)
 for line in f:
@@ -213,11 +248,11 @@ def generate_swapfunc(swapcode=None):
     g = lambda w: w
     h = lambda w: w
     if swapcode & 1:
-        f = lambda (x, y, z): (y, x, z)
+        f = lambda x_y_z: (x_y_z[1], x_y_z[0], x_y_z[2])
     if swapcode & 2:
-        g = lambda (x, y, z): (z, y, x)
+        g = lambda x_y_z1: (x_y_z1[2], x_y_z1[1], x_y_z1[0])
     if swapcode & 4:
-        h = lambda (x, y, z): (x, z, y)
+        h = lambda x_y_z2: (x_y_z2[0], x_y_z2[2], x_y_z2[1])
     swapfunc = lambda w: f(g(h(w)))
 
     return swapfunc
@@ -268,7 +303,8 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
         red = color & 0x001f
         return (red, green, blue)
 
-    def components_to_color((red, green, blue)):
+    def components_to_color(xxx_todo_changeme):
+        (red, green, blue) = xxx_todo_changeme
         return red | (green << 5) | (blue << 10)
 
     if always is not None and basepalette is not None:
@@ -366,7 +402,7 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
             values.append(index)
         values = sorted(values)
         low, high = min(values), max(values)
-        median = values[len(values)/2]
+        median = values[len(values)//2]
         clusters = [set([low]), set([high])]
         done = set([low, high])
         if median not in done and random.choice([True, False]):
@@ -383,7 +419,7 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
 
             def cluster_distance(cluster):
                 distances = [abs(index-i) for i in cluster]
-                return sum(distances) / len(distances)
+                return sum(distances) // len(distances)
                 nearest = min(cluster, key=lambda x: abs(x-index))
                 return abs(nearest-index)
 
@@ -471,7 +507,7 @@ def decompress(bytestring, simple=False, complicated=False, debug=False):
                 if buffaddr == 0x800:
                     buffaddr = 0
                 if debug:
-                    print "%x" % ord(byte),
+                    print("%x" % ord(byte), end=' ')
             else:
                 low, high, bytestring = (
                     ord(bytestring[0]), ord(bytestring[1]), bytestring[2:])
@@ -492,7 +528,7 @@ def decompress(bytestring, simple=False, complicated=False, debug=False):
                 assert len(copied) == length
                 result += copied
                 if debug:
-                    print "%x" % seekaddr, length,
+                    print("%x" % seekaddr, length, end=' ')
                 while copied:
                     byte, copied = copied[0], copied[1:]
                     buff[buffaddr] = byte
@@ -500,9 +536,9 @@ def decompress(bytestring, simple=False, complicated=False, debug=False):
                     if buffaddr == 0x800:
                         buffaddr = 0
                     if debug:
-                        print "%x" % ord(byte),
+                        print("%x" % ord(byte), end=' ')
             if debug:
-                print
+                print()
                 import pdb; pdb.set_trace()
     return result
 
@@ -565,4 +601,4 @@ if __name__ == "__main__":
          [1,0,0,1]]
     M = get_matrix_reachability(M)
     for row in M:
-        print row
+        print(row)

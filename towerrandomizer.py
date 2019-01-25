@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from utils import (ANCIENT_CHECKPOINTS_TABLE, TOWER_CHECKPOINTS_TABLE,
                    TOWER_LOCATIONS_TABLE, TREASURE_ROOMS_TABLE,
                    ENTRANCE_REACHABILITY_TABLE,
@@ -64,7 +66,7 @@ def get_new_formations(areaname, supplement=True):
         supplemental = sorted(supplemental, key=lambda f: f.rank())
         formations |= set([f for f in supplemental if
                            f.ambusher or f.inescapable])
-        supplemental = supplemental[len(supplemental)/2:]
+        supplemental = supplemental[len(supplemental)//2:]
         formations |= set(supplemental)
 
     return sorted(formations, key=lambda f: f.formid)
@@ -534,7 +536,7 @@ class Segment:
         links = list(self.links)
         for inter in self.intersegments:
             links.extend(inter.links)
-        links = sorted(links, key=lambda (e, _): (e.location.locid, e.entid))
+        links = sorted(links, key=lambda e__: (e__[0].location.locid, e__[0].entid))
         return links
 
     @property
@@ -1383,6 +1385,6 @@ if __name__ == "__main__":
 
     routes = randomize_tower("program.rom", ancient=True)
     for route in routes:
-        print route
-        print
-        print
+        print(route)
+        print()
+        print()

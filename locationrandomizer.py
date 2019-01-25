@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,
                    UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
@@ -166,7 +168,7 @@ class Zone():
         if self.zoneid < 0x80:
             index = self.zoneid % 0x40
             x = index % 8
-            y = index / 8
+            y = index // 8
             quadrants = [["NW", "NE"],
                          ["SW", "SE"]]
             quadrant = quadrants[int(y >= 4)][int(x >= 4)]
@@ -559,7 +561,7 @@ class Location():
         f.seek(self.chestpointer)
         begin = read_multi(f, length=2)
         end = read_multi(f, length=2)
-        numchests = (end - begin) / 5
+        numchests = (end - begin) // 5
         self.chests = []
         for i in xrange(numchests):
             pointer = begin + (i*5) + 0x2d8634
@@ -625,7 +627,7 @@ class Location():
             if len(self.chests) > 0:
                 values = [c.get_current_value(guideline=100)
                           for c in self.chests]
-                average_value = (sum(values)*100) / len(values)
+                average_value = (sum(values)*100) // len(values)
                 guideline = average_value
             else:
                 guideline = 100
@@ -643,15 +645,18 @@ class Location():
             elif self.locid == 0x147:
                 pass
 
-            c.mutate_contents(guideline=guideline, crazy_prices=crazy_prices)
+            # No monster-in-a-box in the ZoneEater falling ceiling room.
+            # It causes problems with the ceiling event.
+            monster = False if self.locid == 280 and c.memid in range (232, 235) else None
+            c.mutate_contents(guideline=guideline, crazy_prices=crazy_prices, monster=monster)
             if guideline is None and hasattr(c, "value") and c.value:
                 guideline = value
 
     def unlock_chests(self, low, high, monster=False,
                       guarantee_miab_treasure=False, enemy_limit=None):
         if len(self.chests) == 1:
-            low = (low + high) / 2
-        dist = (high - low) / 2
+            low = (low + high) // 2
+        dist = (high - low) // 2
         for c in self.chests:
             c.set_content_type(0x80)
             c.contents = None
@@ -856,7 +861,7 @@ class EntranceSet():
         start = read_multi(f, length=2)
         end = read_multi(f, length=2)
         f.close()
-        n = (end - start) / 6
+        n = (end - start) // 6
         assert end == start + (6*n)
         self.entrances = []
         for i in xrange(n):
@@ -872,7 +877,7 @@ class EntranceSet():
         start = read_multi(f, length=2)
         end = read_multi(f, length=2)
         f.close()
-        n = (end - start) / 7
+        n = (end - start) // 7
         assert end == start + (7*n)
         self.longentrances = []
         for i in xrange(n):
@@ -1025,5 +1030,5 @@ if __name__ == "__main__":
     locations = get_locations("program.rom")
     zones = get_zones("program.rom")
     for l in locations:
-        print "%x" % (l.layers_to_animate & 2), l,
-        print
+        print("%x" % (l.layers_to_animate & 2), l, end=' ')
+        print()

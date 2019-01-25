@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    make_table, utilrandom as random)
@@ -83,7 +85,7 @@ ranked = ["casting", "near death", "floating", "regen", "poison", "blind",
           "morph", "frozen", "death", "interceptor", "magitek",
           "rage", "dance", "disappear"]
 specialdict = [k for (k, v) in sorted(statusdict.items(),
-               key=lambda (k, v): v)]
+               key=lambda k_v: k_v[1])]
 specialdict = dict([(k, i) for (i, k) in enumerate(specialdict)])
 specialdict["rage"] = 0x18
 specialdict["dance"] = 0x10
@@ -118,7 +120,7 @@ def read_ai_table(table):
 
 def get_item_normal():
     items = get_ranked_items()
-    base = ((len(items)-1) / 2)
+    base = ((len(items)-1) // 2)
     index = random.randint(0, base) + random.randint(0, base)
     if len(items) > (base * 2) + 1:
         index += random.randint(0, 1)
@@ -179,7 +181,6 @@ class MonsterBlock:
                         score += 1 * formation.present_enemies.count(self)
             score = score / float(len(fsets))
 
-        from formationrandomizer import get_fset
         locations = get_locations()
         fsets = set(fsets)
         locations = [l for l in get_locations()
@@ -215,9 +216,9 @@ class MonsterBlock:
         if self.physspecial:
             power = ((self.special & 0x2F) - 0x20) + 2
             if power % 2:
-                power = (power / 2) + 1
+                power = (power // 2) + 1
             else:
-                power = str(power / 2) + ".5"
+                power = str(power // 2) + ".5"
             s = "attack x%s" % power
         elif special & 0x3F > 0x31:
             s = "reflect break?"
@@ -507,7 +508,7 @@ class MonsterBlock:
     def randomize_boost_level(self, limit=99):
         level = self.stats['level']
         diff = limit - level
-        level += random.randint(0, diff/2) + random.randint(0, diff/2)
+        level += random.randint(0, diff//2) + random.randint(0, diff//2)
         if diff % 2 == 1:
             level += random.randint(0, 1)
         assert self.stats['level'] <= level <= limit
@@ -517,22 +518,22 @@ class MonsterBlock:
         level = self.stats['level']
         diff = limit - level
         
-        level_add = diff/2
+        level_add = diff//2
         if level <=7:
-            level_add = diff/16
+            level_add = diff//16
         elif level <= 15:
-            level_add = diff/8
+            level_add = diff//8
         elif level <=30:
-            level_add = diff/4
+            level_add = diff//4
 
         factors = {
-            'mpow': 5/4,
-            'attack': 5/4,
-            'def': 5/4,
-            'mdef': 5/4,
-            'speed': 5/4,
-            'evade%': 5/4,
-            'mblock%': 9/8,
+            'mpow': 5//4,
+            'attack': 5//4,
+            'def': 5//4,
+            'mdef': 5//4,
+            'speed': 5//4,
+            'evade%': 5//4,
+            'mblock%': 9//8,
         }
 
         hp_add = (750, 1500) if level <= 30 else (2500, 5000)
@@ -543,24 +544,24 @@ class MonsterBlock:
         if self.is_boss and self.id not in early_bosses:
             hp_add = (0, 0)
             factors = {
-                'hp': 5/2,
-                'mpow': 3/2,
-                'attack': 3/2,
-                'def': 5/4,
-                'mdef': 5/4,
-                'speed': 3/2,
-                'evade%': 4/4,
-                'mblock%': 9/8,
+                'hp': 5//2,
+                'mpow': 3//2,
+                'attack': 3//2,
+                'def': 5//4,
+                'mdef': 5//4,
+                'speed': 3//2,
+                'evade%': 4//4,
+                'mblock%': 9//8,
             }
 
         for stat in self.stats:
             self.stats[stat] *= factors.get(stat, 1)
             
         if self.stats['evade%'] == 0:
-            self.stats['evade%'] = level/2
+            self.stats['evade%'] = level//2
 
         if self.stats['mblock%'] == 0:
-            self.stats['mblock%'] = level/4
+            self.stats['mblock%'] = level//4
         
         stat_max = {
             'hp': 65535,
@@ -700,7 +701,7 @@ class MonsterBlock:
         self.stats['mp'] = int(
             round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
 
-    def mutate_ai(self, change_skillset=True, itembreaker=False, randombosses=False, madworld=False, darkworld=False):
+    def mutate_ai(self, change_skillset=True, itembreaker=False, randombosses=False, madworld=False, darkworld=False, safe_solo_terra=True):
         if self.name[:2] == "L." and randombosses == False:
             change_skillset = False
         elif "guardian" in self.name.lower():
@@ -719,8 +720,19 @@ class MonsterBlock:
         if madworld: 
             restricted = []
         else:
-            restricted = [0x13, 0x14]		
+            restricted = [0x13, 0x14]
 
+        banned = restricted
+        # No blizzard or tek laser in solo terra
+        if safe_solo_terra:
+            from formationrandomizer import get_fset
+            for id in [0x39, 0x3A]:
+                fset = get_fset(id)
+                for f in fset.formations:
+                    if self in f.present_enemies:
+                        banned.extend([0xB5, 0xBA])
+                        break
+            
         oldskills = sorted([s for s in all_spells if s.spellid in skillset],
                            key=lambda s: s.rank())
         if change_skillset:
@@ -741,7 +753,7 @@ class MonsterBlock:
                     if random.choice([True, False]):
                         candidates = [c for c in candidates if c.valid]
                     candidates = [c for c in candidates if
-                                  c.spellid not in restricted]
+                                  c.spellid not in banned]
                     if skill not in candidates:
                         candidates.append(skill)
                     candidates = sorted(candidates, key=lambda s: s.rank())
@@ -811,9 +823,9 @@ class MonsterBlock:
                             # battle timer greater than value
                             # global timer greater than value
                             value = action[2]
-                            step = value / 2
+                            step = value // 2
                             value = (step + random.randint(0, step) +
-                                     random.randint(0, step/2))
+                                     random.randint(0, step//2))
                             value = min(0xFF, max(0, value))
                             action[2] = value
                         if action[1] in [0x0C, 0x0D]:
@@ -1054,12 +1066,20 @@ class MonsterBlock:
 
         self.write_ai(fout)
 
-    def screw_tutorial_bosses(self):
+    def screw_tutorial_bosses(self, old_vargas_fight=False):
         name = self.name.lower().strip('_')
         tutmessage = None
         if name == 'vargas':
-            self.stats['hp'] = 900 + random.randint(0, 100) + random.randint(0, 100)
-            tutmessage = "".join(map(chr, [0xF7, 0x08]))
+            if old_vargas_fight:
+                self.stats['hp'] = 900 + random.randint(0, 100) + random.randint(0, 100)
+            else:
+                self.stats['hp'] = 1500 + random.randint(0, 150) + random.randint(0, 150)
+                tutmessage = "".join(map(chr, [0xF7, 0x08]))
+                # trigger phase change at 640 or 768 HP
+                for i, a in enumerate(self.aiscript):
+                    if a[0:3] == "".join(map(chr,[0xFC, 0x06, 0x36])):
+                        self.aiscript[i] = "".join(map(chr, [0xFC, 0x06, 0x36, random.randint(5,6)]))
+                        break
         if name == 'tunnelarmr':
             self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
             self.aiscript = self.aiscript[4:]
@@ -1158,7 +1178,7 @@ class MonsterBlock:
         self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFFFF)
 
         def fuddle(value, limit=0xFFFF):
-            low = value / 2
+            low = value // 2
             value = low + random.randint(0, low) + random.randint(0, low)
             if value & 0xFF == 0xFF:
                 value = value - 1
@@ -1396,7 +1416,7 @@ class MonsterBlock:
 
     def treasure_boost(self):
         def fuddle(value, limit=0xFFFF):
-            low = value / 2
+            low = value // 2
             value = low + random.randint(0, low) + random.randint(0, low)
             while random.choice([True, True, False]):
                 value += random.randint(0, low)
@@ -1554,7 +1574,7 @@ class MonsterBlock:
             valid = [r for r in ranked if r in valid]
             index = int(self.level_rank() * len(valid))
             index = mutate_index(index, len(valid), [False, True],
-                                 (-5, 5), (-3, 3))
+                                 (-5, 5), (-3, 3), disregard_multiplier=True)
             special = valid[index]
             if special == 0x07 or (special not in [0x30, 0x31] and
                                    random.choice([True, False])):
@@ -1589,7 +1609,7 @@ class MonsterBlock:
 
         self.special = special
 
-    def mutate(self, change_skillset=None, itembreaker=False, randombosses=False, madworld=False, darkworld=False):
+    def mutate(self, change_skillset=None, itembreaker=False, randombosses=False, madworld=False, darkworld=False, safe_solo_terra=True):
         if change_skillset is None:
             change_skillset = randombosses or not (self.is_boss or self.boss_death)
             manual_change = False
@@ -1614,10 +1634,10 @@ class MonsterBlock:
         if value > 1:
             if value == 2:
                 self.mutate_ai(change_skillset=False,
-                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
             else:
                 self.mutate_ai(change_skillset=change_skillset,
-                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
         self.mutate_control()
 
     def swap_ai(self, other):
@@ -1770,7 +1790,7 @@ def get_ranked_monsters(filename=None, bosses=True):
     return monsters
 
 
-def shuffle_monsters(monsters):
+def shuffle_monsters(monsters, safe_solo_terra=True):
     monsters = sorted(monsters, key=lambda m: m.rank())
     monsters = [m for m in monsters if m.name.strip('_')]
     monsters = [m for m in monsters if m.display_name[:2] != "L."]
@@ -1782,6 +1802,9 @@ def shuffle_monsters(monsters):
         else:
             candidates = nonbosses
         index = candidates.index(m)
+
+        candidates = [c for c in candidates
+                      if abs(c.stats["level"] - m.stats["level"]) <= 20]
 
         def get_swap_index(to_swap):
             to_swap = mutate_index(index, len(candidates),
@@ -1799,7 +1822,33 @@ def shuffle_monsters(monsters):
             pass
         else:
             to_swap = get_swap_index(index)
-            m.swap_ai(candidates[to_swap])
+            n = candidates[to_swap]
+            
+            if not safe_solo_terra:
+                m.swap_ai(n)
+                continue
+
+            # No blizzard or tek laser in solo terra
+            banned_narshe_skills = [0xB5, 0xBA]
+            
+            banned_from_narshe = any(b in m.get_skillset()
+                                     for b in banned_narshe_skills)
+            banned_from_narshe |= any(b in n.get_skillset()
+                                      for b in banned_narshe_skills)
+
+            if banned_from_narshe:
+                in_narshe_caves = False
+
+                for id in [0x39, 0x3A]:
+                    from formationrandomizer import get_fset
+                    fset = get_fset(id)
+                    for f in fset.formations:
+                        if m in f.present_enemies or n in f.present_enemies:
+                            in_narshe_caves = True
+                            break
+
+            if not banned_from_narshe or not in_narshe_caves:
+                m.swap_ai(n)
 
 
 palette_pools = {}
@@ -1841,7 +1890,7 @@ class MonsterGraphicBlock:
         if self.graphics not in palette_pools:
             palette_pools[self.graphics] = set([])
         for p in palette_pools[self.graphics]:
-            if all(map(lambda (a, b): a == b, zip(self.palette_data, p))):
+            if all(map(lambda a_b: a_b[0] == a_b[1], zip(self.palette_data, p))):
                 return
         palette_pools[self.graphics].add(self.palette_data)
 
@@ -1863,7 +1912,7 @@ class MonsterGraphicBlock:
 
     def set_palette_pointer(self, palette_pointer):
         self.palette_pointer = palette_pointer
-        palette = (palette_pointer - 0x127820) / 0x10
+        palette = (palette_pointer - 0x127820) // 0x10
         self.palette = palette
 
     def write_data(self, fout, palette_pointer=None, no_palette=False):
@@ -1872,7 +1921,7 @@ class MonsterGraphicBlock:
             palette = self.palette
         else:
             self.set_palette_pointer(palette_pointer)
-            palette = (palette_pointer - 0x127820) / 0x10
+            palette = (palette_pointer - 0x127820) // 0x10
 
         if self.large:
             palette |= 0x8000

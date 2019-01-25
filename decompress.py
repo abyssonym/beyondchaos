@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 from utils import read_multi, write_multi
 from sys import argv
 from shutil import copyfile
@@ -22,7 +24,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                 if buffaddr == 0x800:
                     buffaddr = 0
                 if debug:
-                    print "%x" % ord(byte),
+                    print("%x" % ord(byte), end=' ')
             else:
                 low, high, bytestring = (
                     ord(bytestring[0]), ord(bytestring[1]), bytestring[2:])
@@ -45,7 +47,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                 assert len(copied) == length
                 result += copied
                 if debug:
-                    print "%x" % seekaddr, length,
+                    print("%x" % seekaddr, length, end=' ')
                 while copied:
                     byte, copied = copied[0], copied[1:]
                     buff[buffaddr] = byte
@@ -53,9 +55,9 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                     if buffaddr == 0x800:
                         buffaddr = 0
                     if debug:
-                        print "%x" % ord(byte),
+                        print("%x" % ord(byte), end=' ')
             if debug:
-                print
+                print()
                 import pdb; pdb.set_trace()
     return result
 
@@ -101,7 +103,7 @@ def recompress(bytestring):
                 searchstr = bytestring[:k]
                 for h in xrange(1, len(searchstr)+1):
                     loopstr = searchstr[:h]
-                    mult = (len(searchstr) / len(loopstr)) + 1
+                    mult = (len(searchstr) // len(loopstr)) + 1
                     if searchstr == (loopstr * mult)[:len(searchstr)]:
                         if loopbuff.endswith(loopstr):
                             j = k
@@ -210,7 +212,7 @@ if __name__ == "__main__":
     copyfile(sourcefile, outfile)
     d = Decompressor(0x2686C, fakeaddress=0x7E5000, maxaddress=0x28A70)
     d.read_data(sourcefile)
-    print ["%x" % i for i in d.get_bytestring(0x7E7C43, 0x20)]
+    print(["%x" % i for i in d.get_bytestring(0x7E7C43, 0x20)])
     d.writeover(0x7E50F7, [0x0] * 57)
     d.writeover(0x7E501A, [0xEA] * 3)
     d.compress_and_write(outfile)

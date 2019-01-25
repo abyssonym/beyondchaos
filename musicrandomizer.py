@@ -1,3 +1,5 @@
+from __future__ import division
+from __future__ import print_function
 # quick and EXTREMELY messy hack to run nascentorder functions in beyondchaos
 # hopefully, this will allow updates on one end to easily copypasta
 # to the other.
@@ -125,7 +127,7 @@ def put_somewhere(romdata, newdata, desc, f_silent=False):
             success= True
             break
     if not success:
-        if not silent: print "ERROR: not enough free space to insert {}\n\n".format(desc)
+        if not silent: print("ERROR: not enough free space to insert {}\n\n".format(desc))
         assert False
     return (romdata, start, end)
             
@@ -219,7 +221,7 @@ def insert_instruments(data_in, metadata_pos= False):
         
         inst = [i.strip() for i in smp.split(',')]
         if len(inst) < 4:
-            print "WARNING: malformed instrument info '{}'".format(smp)
+            print("WARNING: malformed instrument info '{}'".format(smp))
             continue
         name, loop, pitch, adsr = inst[0:4]
         filename = name + '.brr'
@@ -228,18 +230,18 @@ def insert_instruments(data_in, metadata_pos= False):
             with open(os.path.join('samples', filename), 'rb') as f:
                 sdata = f.read()
         except IOError:
-            print "WARNING: couldn't load sample file {}".format(filename)
+            print("WARNING: couldn't load sample file {}".format(filename))
             continue
         
         try:
             loop = chr(int(loop[0:2], 16)) + chr(int(loop[2:4], 16))
         except (ValueError, IndexError):
-            print "WARNING: malformed loop info in '{}', using default".format(smp)
+            print("WARNING: malformed loop info in '{}', using default".format(smp))
             loop = "\x00\x00"
         try:
             pitch = chr(int(pitch[0:2], 16)) + chr(int(pitch[2:4], 16))
         except (ValueError, IndexError):
-            print "WARNING: malformed pitch info in '{}', using default".format(smp)
+            print("WARNING: malformed pitch info in '{}', using default".format(smp))
             pitch = "\x00\x00"
         if adsr:
             try:
@@ -255,7 +257,7 @@ def insert_instruments(data_in, metadata_pos= False):
                 sr += release
                 adsr = chr(ad) + chr(sr)
             except (AssertionError, ValueError, IndexError):
-                print "WARNING: malformed ADSR info in '{}', disabling envelope".format(smp)
+                print("WARNING: malformed ADSR info in '{}', disabling envelope".format(smp))
                 adsr = "\x00\x00"
         else:
             adsr = "\x00\x00"
@@ -350,7 +352,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
     # figure out what instruments are available
     sampleptrs = [s.strip() for s in CONFIG.get('MusicPtr', 'brrpointers').split(',')]
     if len(sampleptrs) != 2: sampleptrs = to_default('brrpointers')
-    instcount = (int(sampleptrs[1],16) + 1 - int(sampleptrs[0],16)) / 3
+    instcount = (int(sampleptrs[1],16) + 1 - int(sampleptrs[0],16)) // 3
     
     ## figure out what music to use
     # build dict of original music from ROM
@@ -409,7 +411,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                 try:
                     event_mults[c[0]] = int(c[1:])
                 except ValueError:
-                    print "WARNING: in songs.txt: could not interpret '{}'".format(c)
+                    print("WARNING: in songs.txt: could not interpret '{}'".format(c))
         static_mult = 1
         for k, v in event_mults.items():
             static_mult *= v
@@ -449,8 +451,8 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         old_method = False if "battlebylevel" not in FLAGS else True
         if not old_method:
             if len(battleids) != 4 or len(bossids) != 3:
-                print "WARNING: Improper song ID configuration for default method (by area)"
-                print "     Falling back to old method (by level)"
+                print("WARNING: Improper song ID configuration for default method (by area)")
+                print("     Falling back to old method (by level)")
                 old_method = True
                 FLAGS.append("battlebylevel")
                 
@@ -545,12 +547,12 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                         tries += 1
                         continue
                 except IndexError as e:
-                    print "DEBUG: new battle prog mode failed {}rd attempt: {}".format(tries, e)
+                    print("DEBUG: new battle prog mode failed {}rd attempt: {}".format(tries, e))
                     raw_input("press enter to continue>")
                     if tries >= 500:
                         FLAGS.append("battlebylevel")
-                        print "WARNING: couldn't find valid configuration of battle songs by area."
-                        print "     Falling back to old method (by level)."
+                        print("WARNING: couldn't find valid configuration of battle songs by area.")
+                        print("     Falling back to old method (by level).")
                         return process_battleprog()
                     else:
                         tries += 1
@@ -571,8 +573,8 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         return (battleids, bossids)
     
     def check_ids_fit():
-        n_by_isets = (isetlocs[1] - isetlocs[0] + 1) / 0x20
-        n_by_sptrs = (songptraddrs[1] - songptraddrs[0] + 1) / 3
+        n_by_isets = (isetlocs[1] - isetlocs[0] + 1) // 0x20
+        n_by_sptrs = (songptraddrs[1] - songptraddrs[0] + 1) // 3
         if len(songtable) > n_by_isets or len(songtable) > n_by_sptrs:
             return False
         return True
@@ -607,7 +609,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                 with open(os.path.join(MUSIC_PATH, sfx), 'r') as f:
                     mml += f.read()
             except IOError:
-                print "couldn't open {}".format(sfx)
+                print("couldn't open {}".format(sfx))
                 
         return mml_to_akao(mml, name, True if id in [0x29, 0x4F] else False)
     
@@ -618,7 +620,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         while True:
             attempts += 1
             if attempts >= 1000:
-                print "warning: check your tierboss config in songs.txt"
+                print("warning: check your tierboss config in songs.txt")
                 fallback = True
                 attempts = 0
             retry = False
@@ -629,7 +631,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     with open(os.path.join(MUSIC_PATH, n + '_dm.mml'), 'r') as f:
                         tierfiles.append(f.read())
                 except IOError:
-                    print "couldn't open {}".format(n + '_dm.mml')
+                    print("couldn't open {}".format(n + '_dm.mml'))
                     retry = True
             if retry: continue
             
@@ -754,7 +756,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                         else:
                             akao = {}
                 if not akao:
-                    print "couldn't find valid mml for {}".format(s.changeto)
+                    print("couldn't find valid mml for {}".format(s.changeto))
                     keeptrying = True
                     break
                 if variant and variant in akao:
@@ -772,7 +774,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                         s.inst = akao['nat'][1]
                         s.data = akao['nat'][0]
                     else:
-                        print "WARNING: instrument out of range in {}".format(s.changeto + ".mml")
+                        print("WARNING: instrument out of range in {}".format(s.changeto + ".mml"))
             # case: get song from source ROM
             elif not isfile(os.path.join(MUSIC_PATH, s.changeto + "_data.bin")):
                 target = s.changeto[len(native_prefix):]
@@ -792,7 +794,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     assert loc + isetsize <= isetlocs[1] + 1
                     s.inst = data[loc:loc+isetsize]
                 else:
-                    print "target song {} not found for id {} {}".format(s.changeto, s.id, ident)
+                    print("target song {} not found for id {} {}".format(s.changeto, s.id, ident))
                     keeptrying = True
                     break
             else:
@@ -803,7 +805,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     s.inst = fi.read()
                     fi.close()
                 except IOError:
-                    print "couldn't open {}_inst.bin".format(s.changeto)
+                    print("couldn't open {}_inst.bin".format(s.changeto))
                     keeptrying = True
                     break
                 if max(map(ord, s.inst)) > instcount:
@@ -825,7 +827,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                             s.data = fi.read()
                             fi.close()
                         except IOError:
-                            print "couldn't open {}_data.bin".format(s.changeto)
+                            print("couldn't open {}_data.bin".format(s.changeto))
                             keeptrying = True
                             break
                 else:
@@ -835,7 +837,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                         s.data = fi.read()
                         fi.close()
                     except IOError:
-                        print "couldn't open {}_data.bin".format(s.changeto)
+                        print("couldn't open {}_data.bin".format(s.changeto))
                         keeptrying = True
                         break
             
@@ -896,10 +898,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                 songlocations[s.id] = s.data - HIROM
                     
     if attempts >= 1000:
-        print "failed to produce valid music set"
-        print "    try increasing available space or adjusting song insert list"
-        print "    to use less space"
-        print
+        print("failed to produce valid music set")
+        print("    try increasing available space or adjusting song insert list")
+        print("    to use less space")
+        print()
         return data_in
     
     # build battle music related tables

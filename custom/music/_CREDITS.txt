@@ -3,8 +3,9 @@ Song conversions:
                  cc_dragonia, cc_home, cc_hydra, cc_life
                  crys_fields
                  ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair,
-                 ct_keeper, ct_night, ct_revolution, ct_robo, ct_schala,
-                 ct_theme, ct_truth, ct_tylair, ct_tyran, ct_zeal
+                 ct_keeper, ct_mountain, ct_night, ct_revolution, ct_robo,
+                 ct_schala, ct_sewer, ct_theme, ct_truth, ct_tylair, ct_tyran,
+                 ct_zeal
                  cv4_beginning
                  ds4_lyll
                  eo3_waves
@@ -36,7 +37,8 @@ Song conversions:
                  sd2_prayer, sd2_prophecy, sd2_scorpion, sd2_sea, sd2_spirit,
                  sd2_star, sd2_steel, sd2_tasnica, sd2_thanatos, sd2_thunder,
                  sd2_tomorrow, sd2_town, sd2_wish
-                 sd3_angels, sd3_flight, sd3_tension, sd3_winter
+                 sd3_angels, sd3_counterpoint, sd3_flight, sd3_tension,
+                 sd3_winter
                  sdlm_snowfield
                  sf2_balrog
                  so2_rescue

@@ -31,11 +31,14 @@ ct_bobonga:     I00, G51, strago, veldt*2, zozo, gogo, umaro*2
 ct_boss2:       I95, G75, atma*2, metamorphosis, grandfinale, catastrophe
 ct_fair:        johnny, spinachrag, moogles*2, town
 ct_keeper:      espers, fanatics, ruin, owzer
+ct_mountain:    moogles, gogo, umaro, veldt*2, mountain
 ct_night:       coin*2, daryl, celes*2, ruin
 ct_revolution:  I80, G90, atma*2, dmad5, metamorphosis
 ct_robo:        moogles*2, gogo
 ct_robo_vic:    fanfare*2
 ct_schala:      H2, awakening, relm*2, strago, espers, H:prelude, H:omen3, H:celes, H:daryl, H:shadow, H:gogo, H:owzer, H:martiallaw, H:falcon
+ct_sewer:       kefka, spinachrag, gogo, zozo, owzer*2
+ct_sewer_tr:    train
 ct_spekkio:     spinachrag*2, moogles*2, what, grandfinale
 ct_theme:       I45, G80, locke, savethem, grandfinale
 ct_truth:       kefka, grandfinale, catastrophe
@@ -219,6 +222,7 @@ sd2_tomorrow:   metamorphosis*2, catastrophe*2, floatingcont
 sd2_town:       relm, moogles*2, town*2
 sd2_wish:       W4, ruin*2, W:prelude, W:omen3, W:coin, W:zozo, W:owzer, W:narshe, W:town_ruin, W:forest*2, W:espers
 sd3_angels:     omen3, espers*2, awakening
+sd3_counterpoint: umaro*2, veldt*2
 sd3_faith:      I55, G70, boss, atma, grandfinale, gogo, umaro, kefkastower
 sd3_flight:     setzer, chocobo, blackjack*2, mountain
 sd3_paths:      gogo, mountain*2, serpent*2

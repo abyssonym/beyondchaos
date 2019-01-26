@@ -46,7 +46,7 @@
 6B: ts6b_bass,      4A04, FCA0, F 7 7  C
 6C: tr17_dguitar,   7B0C, D7C0, F 3 3  0 
 6D: ts6d_cymbal,    FA05, 0000, F 7 7 10
-6E: tr18_eguitar,   0D08, E05A, F 3 3  0
+6E: gi35_tom,       0000, 0000, F 7 7  0
 6F: tr19_eguitar,   1E06, D28A, F 3 3  0
 70: tr3a_synbass,   E30D, E05A, F 7 7  0
 71: f503_x20_snare, 0000, 8000, F 7 7  0
@@ -80,3 +80,7 @@
 8D: ct28_tube,      7806, C900, F 7 7  E
 8E: f504_x15_crash, 8004, C000, F 7 7 10
 8F: ct08_x20_ohh,   0000, 8000, F 7 7  0
+90: ct15_pizza,     0000, 0000, F 7 7  0
+91: s207_bell,      3B01, F200, F 7 4  D
+92: s205_chorus,    1B00, E200, E 7 7  0
+93: gh18_ahhs,      5508, 2FF0, F 7 7  0

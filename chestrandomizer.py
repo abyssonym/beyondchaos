@@ -234,9 +234,9 @@ class ChestBlock:
             self.set_new_id()
 
         # TODO: Preserve same IDs on chests like in Figaro Cave
-        fout.write(chr(self.memid))
-        fout.write(chr(self.contenttype))
-        fout.write(chr(self.contents))
+        fout.write(bytes((self.memid,)))
+        fout.write(bytes((self.contenttype,)))
+        fout.write(bytes((self.contents,)))
 
     def get_current_value(self, guideline=None):
         if self.treasure:
@@ -345,7 +345,7 @@ class ChestBlock:
                     formations = formations[:random.randint(1, 3)]
 
                 candidates = (orphaned_formations + extra_miabs)
-            candidates = sorted(set(candidates))
+            candidates = sorted(set(candidates), key=lambda f: f.rank())
             if len(candidates) != 1:
                 candidates += formations
             candidates = [c for c in candidates if c not in used_formations]

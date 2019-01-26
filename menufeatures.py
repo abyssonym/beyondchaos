@@ -1470,7 +1470,7 @@ def _rage_dance_common(fout):
     rage_dance_sub.write(fout)
     
     rage_dance_sub.set_location(0x10CF50)
-    rage_dance_sub.bytestring = [0xFF] * 4
+    rage_dance_sub.bytestring = bytes([0xFF] * 4)
     rage_dance_sub.write(fout)
     
 def show_original_names(fout):

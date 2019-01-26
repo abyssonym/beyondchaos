@@ -81,7 +81,7 @@ class Substitution(object):
 
     def write(self, fout):
         fout.seek(self.location)
-        fout.write(self.bytestring)
+        fout.write(bytes(self.bytestring))
 
 
 texttable = {}
@@ -581,7 +581,7 @@ def make_table(cols):
 
     while any(cols):
         cols = [c for c in cols if c]
-        row = zip(*cols)[0]
+        row = list(zip(*cols))[0]
         row = " | ".join(row)
         row = "| %s |" % row
         table = "\n".join([table, row])

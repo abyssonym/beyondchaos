@@ -113,8 +113,7 @@ def read_ai_table(table):
             line = [int(i, 0x10) for i in line]
             aiscripts[name].append(line)
     for key, aiscript in list(aiscripts.items()):
-        print(aiscript)
-        aiscript = [bytes(action) for action in aiscript]
+        aiscript = [bytearray(action) for action in aiscript]
         aiscripts[key] = aiscript
     return aiscripts
 
@@ -181,6 +180,7 @@ class MonsterBlock:
                     else:
                         score += 1 * formation.present_enemies.count(self)
             score = score / float(len(fsets))
+            return score
 
         locations = get_locations()
         fsets = set(fsets)
@@ -431,8 +431,8 @@ class MonsterBlock:
 
     @property
     def boss_death(self):
-        return (bytes([0xF5, 0x0C, 0x01, 0xFF]) in self.aiscript or
-                bytes([0xF5, 0x0C, 0x01, 0x00]) in self.aiscript)
+        return (bytearray([0xF5, 0x0C, 0x01, 0xFF]) in self.aiscript or
+                bytearray([0xF5, 0x0C, 0x01, 0x00]) in self.aiscript)
 
     @property
     def battle_event(self):
@@ -587,10 +587,10 @@ class MonsterBlock:
         attack = generate_attack()
         self.attackname = attack
         attack = name_to_bytes(attack, 10)
-        fout.write("".join(map(chr, attack)))
+        fout.write(attack)
 
         fout.seek(self.specialeffectpointer)
-        fout.write(chr(random.randint(0, 0x21)))
+        fout.write(bytes(random.randint(0, 0x21)))
 
         options = sorted(set(range(0, 0x5A)) - set([0, 0x1C]))
         self.attackanimation = random.choice(options)
@@ -882,7 +882,7 @@ class MonsterBlock:
                     else:
                         if len(set(action[1:])) != 1 or change_skillset:
                             for j in range(100):
-                                newaction = list(action)
+                                newaction = bytearray(action)
                                 for i in range(1, 4):
                                     a = newaction[i]
                                     if a == 0xFE:
@@ -898,7 +898,7 @@ class MonsterBlock:
                 if s in skillmap:
                     s = skillmap[s]
                     action[0] = s
-                assert 0x81 not in actions
+                assert 0x81 not in action
             newscript.append(action)
 
         assert len(b"".join(newscript)) == len(b"".join(self.aiscript))
@@ -917,7 +917,7 @@ class MonsterBlock:
                 args = f.read(numargs)
             except KeyError:
                 args = b""
-            script.append(value + args)
+            script.append(bytearray(value + args))
             if ord(value) == 0xFF:
                 if seen:
                     break
@@ -944,7 +944,7 @@ class MonsterBlock:
             if (len(action) == 4 and action[0] == 0xf0 and
                     action[1] == 0x55):
                 # fix Cyan's AI at imperial camp
-                action = b"".join(bytes([0xF0, 0xEE, 0xEE, 0xEE]))
+                action = bytearray([0xF0, 0xEE, 0xEE, 0xEE])
                 self.aiscript[i] = action
         fout.seek(self.aiptr)
         write_multi(fout, self.ai, length=2)
@@ -1076,8 +1076,8 @@ class MonsterBlock:
                 tutmessage = "".join(map(chr, [0xF7, 0x08]))
                 # trigger phase change at 640 or 768 HP
                 for i, a in enumerate(self.aiscript):
-                    if a[0:3] == "".join(map(chr,[0xFC, 0x06, 0x36])):
-                        self.aiscript[i] = "".join(map(chr, [0xFC, 0x06, 0x36, random.randint(5,6)]))
+                    if a[0:3] == bytearray([0xFC, 0x06, 0x36]):
+                        self.aiscript[i] = bytearray([0xFC, 0x06, 0x36, random.randint(5,6)])
                         break
         if name == 'tunnelarmr':
             self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
@@ -1085,8 +1085,8 @@ class MonsterBlock:
         if name == "leader":
             self.stats['hp'] = 400 + random.randint(0, 50) + random.randint(0, 50)
         if name == "merchant" or name == "officer":
-            stealmessage = "".join(map(chr, [0xFC, 0x01, 0x05, 0x05]))
-            deathmessage = "".join(map(chr, [0xFC, 0x12, 0x00, 0x00]))
+            stealmessage = bytearray([0xFC, 0x01, 0x05, 0x05])
+            deathmessage = bytearray([0xFC, 0x12, 0x00, 0x00])
             index = self.aiscript.index(stealmessage)
             self.aiscript[index] = deathmessage
 
@@ -1935,7 +1935,7 @@ class MonsterGraphicBlock:
         fout.seek(self.pointer+2)
         write_multi(fout, palette, length=2, reverse=False)
         fout.seek(self.pointer+4)
-        fout.write(chr(self.size_template))
+        fout.write(bytes((self.size_template,)))
         if no_palette:
             return
 

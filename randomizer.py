@@ -191,9 +191,9 @@ def rewrite_title(text):
         text += ' '
     text = text[:20]
     fout.seek(0xFFC0)
-    fout.write(text)
+    fout.write(bytes(text, encoding='ascii'))
     fout.seek(0xFFDB)
-    fout.write(chr(int(VERSION)))
+    fout.write(bytes((int(VERSION),)))
 
 
 def rewrite_checksum(filename=None):
@@ -201,7 +201,7 @@ def rewrite_checksum(filename=None):
         filename = outfile
     MEGABIT = 0x20000
     f = open(filename, 'r+b')
-    subsums = [sum(map(ord, f.read(MEGABIT))) for _ in range(32)]
+    subsums = [sum(f.read(MEGABIT)) for _ in range(32)]
     checksum = sum(subsums) & 0xFFFF
     f.seek(0xFFDE)
     write_multi(f, checksum, length=2)
@@ -439,24 +439,24 @@ class CharacterBlock:
 
         self.stats = {}
         fout.seek(self.address)
-        hpmp = list(map(ord, fout.read(2)))
+        hpmp = bytes(fout.read(2))
         if not read_only:
-            hpmp = [mutation(v) for v in hpmp]
+            hpmp = bytes([mutation(v) for v in hpmp])
             fout.seek(self.address)
-            fout.write("".join(map(chr, hpmp)))
+            fout.write(hpmp)
         self.stats['hp'], self.stats['mp'] = tuple(hpmp)
 
         fout.seek(self.address + 6)
-        stats = list(map(ord, fout.read(9)))
+        stats = fout.read(9)
         if not read_only:
-            stats = [mutation(v) for v in stats]
+            stats = bytes([mutation(v) for v in stats])
             fout.seek(self.address + 6)
-            fout.write("".join(map(chr, stats)))
+            fout.write(stats)
         for name, value in zip(CHARSTATNAMES[2:], stats):
             self.stats[name] = value
 
         fout.seek(self.address + 21)
-        level_run = ord(fout.read(1))
+        level_run = fout.read(1)[0]
         run = level_run & 0x03
         level = (level_run & 0x0C) >> 2
         run_map = {
@@ -491,12 +491,12 @@ class CharacterBlock:
                         break
             fout.seek(self.address + 21)
             level_run = (level_run & 0xF0) | level << 2 | run
-            fout.write(chr(level_run))
+            fout.write(bytes((level_run,)))
 
     def become_invincible(self, fout):
         fout.seek(self.address + 11)
-        stats = [0xFF, 0xFF, 0x80, 0x80]
-        fout.write("".join(map(chr, stats)))
+        stats = bytes([0xFF, 0xFF, 0x80, 0x80])
+        fout.write(stats)
 
     def set_id(self, i):
         self.id = i
@@ -679,16 +679,16 @@ def randomize_colosseum(filename, fout, pointer):
         opponent_obj = [m for m in monster_objs if m.id == opponent][0]
         win_obj = [j for j in item_objs if j.itemid == trade][0]
         fout.seek(pointer + (i*4))
-        fout.write(chr(opponent))
+        fout.write(bytes((opponent,)))
         fout.seek(pointer + (i*4) + 2)
-        fout.write(chr(trade))
+        fout.write(bytes((trade,)))
 
         if abs(wager_obj.rank() - win_obj.rank()) >= 5000 and random.randint(1, 2) == 2:
             hidden = True
-            fout.write(chr(0xFF))
+            fout.write(bytes((0xFF,)))
         else:
             hidden = False
-            fout.write(chr(0x00))
+            fout.write(bytes((0x00,)))
         results.append((wager_obj, opponent_obj, win_obj, hidden))
 
 
@@ -1473,7 +1473,7 @@ def manage_natural_magic():
 
     def mutate_spell(pointer, used):
         fout.seek(pointer)
-        spell, level = tuple(map(ord, fout.read(2)))
+        spell, level = tuple(fout.read(2))
 
         while True:
             index = spellids.index(spell)
@@ -1502,12 +1502,12 @@ def manage_natural_magic():
             pointer = address + random.choice([0,32]) + (2*i)
             newspell, level = mutate_spell(pointer, usedspells)
             candidate.natural_magic.append((level, newspell))
-        candidate.natural_magic = sorted(candidate.natural_magic)
+        candidate.natural_magic = sorted(candidate.natural_magic, key=lambda s: (s[0], s[1].spellid))
         for i, (level, newspell) in enumerate(candidate.natural_magic):
             pointer = 0x3008e0 + candidate.id * 32 + (2*i)
             fout.seek(pointer)
-            fout.write(chr(newspell.spellid))
-            fout.write(chr(level))
+            fout.write(bytes((newspell.spellid,)))
+            fout.write(bytes((level,)))
         usedspells = random.sample(usedspells, 12)
 
     lores = get_ranked_spells(sourcefile, magic_only=False)
@@ -1556,13 +1556,13 @@ def manage_equip_umaro(freespaces):
 
     f = open(sourcefile, 'r+b')
     f.seek(0xC359D)
-    old_unequipper = list(map(ord, f.read(218)))
+    old_unequipper = f.read(218)
     f.close()
     header = old_unequipper[:7]
     footer = old_unequipper[-3:]
 
     def generate_unequipper(basepointer, not_current_party=False):
-        unequipper = []
+        unequipper = bytearray([])
         pointer = basepointer + len(header)
         a, b, c = "LO", "MED", "HI"
         for i in range(14):
@@ -1579,7 +1579,7 @@ def manage_equip_umaro(freespaces):
             segment = [hi if j == c else
                        med if j == b else
                        lo if j == a else j for j in segment]
-            unequipper += segment
+            unequipper += bytes(segment)
         unequipper = header + unequipper + footer
         return unequipper
 
@@ -1953,15 +1953,15 @@ def manage_magitek():
     others_used.reverse()
     fout.seek(target_pointer+3)
     for s in terra_used:
-        fout.write(chr(s.targeting))
+        fout.write(bytes((s.targeting,)))
     fout.seek(terra_pointer+3)
     for s in terra_used:
-        fout.write(chr(s.spellid-0x83))
+        fout.write(bytes((s.spellid-0x83,)))
     fout.seek(others_pointer+3)
     for s in others_used:
         if s is None:
             break
-        fout.write(chr(s.spellid-0x83))
+        fout.write(bytes((s.spellid-0x83,)))
 
 
 def manage_final_boss(freespaces):
@@ -2341,7 +2341,7 @@ def manage_character_names(change_to, male):
         name = name_to_bytes(name, 6)
         assert len(name) == 6
         fout.seek(0x478C0 + (6*c))
-        fout.write("".join(map(chr, name)))
+        fout.write(name)
 
 
 def get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits):
@@ -2531,7 +2531,7 @@ def manage_character_appearance(preserve_graphics=False):
 
     riding_sprites = {}
     try:
-        f = open(RIDING_SPRITE_TABLE, "rb")
+        f = open(RIDING_SPRITE_TABLE, "r")
     except IOError:
         pass
     else:
@@ -2710,7 +2710,7 @@ def manage_palettes(change_to, char_ids):
         new_palette = palette_change_to[(c, before)]
         main_palette_changes[c] = (before, new_palette)
         fout.seek(0x2CE2B + c)
-        fout.write(chr(new_palette))
+        fout.write(bytes((new_palette,)))
         pointers = [0, 4, 9, 13]
         pointers = [ptr + 0x18EA60 + (18*c) for ptr in pointers]
         if c < 14:
@@ -2720,7 +2720,7 @@ def manage_palettes(change_to, char_ids):
                 byte = byte & 0xF1
                 byte |= ((new_palette+2) << 1)
                 fout.seek(ptr)
-                fout.write(chr(byte))
+                fout.write(bytes((byte,)))
         character.palette = new_palette
 
     if "repairpalette" in activated_codes:
@@ -2760,7 +2760,7 @@ def manage_palettes(change_to, char_ids):
             continue
         pointer = hex2int(line.strip())
         fout.seek(pointer)
-        data = list(map(ord, fout.read(5)))
+        data = bytearray(fout.read(5))
         char_id, palette = data[1], data[4]
         if char_id not in char_ids:
             continue
@@ -2770,7 +2770,7 @@ def manage_palettes(change_to, char_ids):
             continue
 
         fout.seek(pointer)
-        fout.write("".join(map(chr, data)))
+        fout.write(data)
 
 
 def manage_colorize_animations():
@@ -2850,7 +2850,7 @@ def manage_equipment(items):
                     if (equiptype not in ["weapon", "shield"] and
                             random.randint(1, 100) == 100):
                         equipid = random.randint(0, 0xFF)
-                fout.write(chr(equipid))
+                fout.write(bytes((equipid,)))
 
             continue
 
@@ -3102,20 +3102,20 @@ def manage_espers(freespaces):
 
     ragnarok_sub = Substitution()
     ragnarok_sub.set_location(0xC0B37)
-    ragnarok_sub.bytestring = [0xB2, 0x58, 0x0B, 0x02, 0xFE]
+    ragnarok_sub.bytestring = bytes([0xB2, 0x58, 0x0B, 0x02, 0xFE])
     ragnarok_sub.write(fout)
     pointer = ragnarok_sub.location + len(ragnarok_sub.bytestring) + 1
     a, b = pointer & 0xFF, (pointer >> 8) & 0xFF
     c = 2
     ragnarok_sub.set_location(0xC557B)
-    ragnarok_sub.bytestring = [0xD4, 0xDB,
+    ragnarok_sub.bytestring = bytes([0xD4, 0xDB,
                                0xDD, 0x99,
                                0x6B, 0x6C, 0x21, 0x08, 0x08, 0x80,
-                               0xB2, a, b, c]
+                               0xB2, a, b, c])
     ragnarok_sub.write(fout)
     ragnarok_sub.set_location(pointer)
     # CA5EA9
-    ragnarok_sub.bytestring = [0xB2, 0xA9, 0x5E, 0x00,  # event stuff
+    ragnarok_sub.bytestring = bytes([0xB2, 0xA9, 0x5E, 0x00,  # event stuff
                                0x5C,
                                0xF4, 0x67,  # SFX
                                0xB2, 0xD5, 0x9A, 0x02,  # GFX
@@ -3124,7 +3124,7 @@ def manage_espers(freespaces):
                                0xF4, 0x8D,  # SFX
                                0x86, 0x46,  # receive esper
                                0xFE,
-                               ]
+                               ])
     ragnarok_sub.write(fout)
 
     freespaces = manage_esper_boosts(freespaces)
@@ -3173,7 +3173,7 @@ def manage_treasure(monsters, shops=True):
         if not buycheck:
             raise Exception("Striker pickup not ensured.")
         fout.seek(pointer + (wager.itemid*4) + 2)
-        fout.write(chr(0x29))
+        fout.write(bytes((0x29,)))
         return wager
 
     striker_wager = ensure_striker()
@@ -3348,7 +3348,7 @@ def manage_blitz():
         log(blitzstr, section="blitz inputs")
         newcmd += [(newlength+1) * 2]
         fout.seek(current)
-        fout.write("".join(map(chr, newcmd)))
+        fout.write(bytes(newcmd))
 
 
 def manage_dragons():
@@ -3362,7 +3362,7 @@ def manage_dragons():
         c = ord(fout.read(1))
         assert c == 0x4D
         fout.seek(pointer+1)
-        fout.write(chr(dragon))
+        fout.write(bytes((dragon,)))
 
 
 def manage_formations(formations, fsets):
@@ -4322,11 +4322,11 @@ def manage_opening():
                 text += t
                 text = text[:-1] + chr(0xFE)
             text = text[:-1]
-        text = [table[c] if c in table else c for c in text]
+        text = [table[c] if c in table else ord(c) for c in text]
         text.append(0)
-        d.writeover(address, text)
+        d.writeover(address, bytes(text))
 
-    from string import letters as alpha
+    from string import ascii_letters as alpha
     consonants = "".join([c for c in alpha if c not in "aeiouy"])
     display_flags = sorted([a for a in alpha if a in flags.lower()])
     text = "".join([consonants[int(i)] for i in str(seed)])
@@ -4852,7 +4852,7 @@ def manage_clock():
     wrong_hours = [0, 1, 2, 3, 4, 5]
     wrong_hours.remove(hour)
     random.shuffle(wrong_hours)
-    hour_to_hex = [chr(0x56), chr(0x58), chr(0x5A), chr(0x5C), bytearray([0x55, 0x54]), bytearray([0x55,0x56])]
+    hour_to_hex = [bytes((0x56,)), bytes((0x58,)), bytes((0x5A,)), bytes((0x5C,)), bytearray([0x55, 0x54]), bytearray([0x55,0x56])]
 
     f = open(sourcefile, 'r+b')
     start = 0xDACC7
@@ -4864,7 +4864,7 @@ def manage_clock():
     hour_strings = hour_strings[0:6] + hour_to_hex[wrong_hours[0]] + hour_strings[7:21] + hour_to_hex[wrong_hours[1]] + hour_strings[22:42] + hour_to_hex[wrong_hours[2]] + hour_strings[43:48] + hour_to_hex[wrong_hours[3]] + hour_strings[50:75] + hour_to_hex[wrong_hours[4]] + hour_strings[77:]
 
     if hour >= 4: # double digit hour
-        hour_strings = hour_strings + '\0'
+        hour_strings = hour_strings + b'\0'
 
     hour_text_sub = Substitution()
     hour_text_sub.bytestring = bytes(hour_strings)
@@ -6172,7 +6172,7 @@ def manage_dances():
     else:
         f = open(sourcefile, 'r+b')
         f.seek(0x0FFE80)
-        dances = list(map(ord, f.read(32)))
+        dances = bytes(f.read(32))
         f.close()
 
         # Shuffle the geos, plus Fire Dance, Pearl Wind, Lullaby, Acid Rain, and Absolute 0 because why not
@@ -6239,7 +6239,7 @@ def manage_dances():
     for i, name in enumerate(dance_names):
         name = name_to_bytes(name, 12)
         fout.seek(0x26FF9D + i * 12)
-        fout.write("".join(map(chr, name)))
+        fout.write(name)
 
     for i, dance in enumerate(dance_names):
         from skillrandomizer import spellnames;
@@ -6267,10 +6267,10 @@ class WoRRecruitInfo(object):
         assert(self.char_id is not None)
         for event_pointer in self.event_pointers:
             fout.seek(event_pointer)
-            fout.write(chr(self.char_id))
+            fout.write(bytes((self.char_id,)))
         for recruited_bit_pointer in self.recruited_bit_pointers:
             fout.seek(recruited_bit_pointer)
-            fout.write(chr(0xf0 + self.char_id))
+            fout.write(bytes((0xf0 + self.char_id,)))
         for location_id, npc_id in self.location_npcs:
             location = get_location(location_id)
             npc = location.npcs[npc_id]
@@ -6278,13 +6278,13 @@ class WoRRecruitInfo(object):
             npc.palette = get_character(self.char_id).palette
         for location in self.dialogue_pointers:
             fout.seek(location)
-            fout.write(chr(self.char_id + 2))
+            fout.write(bytes((self.char_id + 2,)))
         if self.caseword_pointers:
             for location in self.caseword_pointers:
                 fout.seek(location)
                 byte = ord(fout.read(1))
                 fout.seek(location)
-                fout.write(chr(byte & 0x0F | (self.char_id << 4)))
+                fout.write(bytes((byte & 0x0F | (self.char_id << 4),)))
         if self.special:
             self.special(self.char_id)
 

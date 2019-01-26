@@ -861,9 +861,9 @@ def reset_special_relics(items, characters, fout):
             for ptrdict in [sperelic, sperelic2]:
                 beforeptr, afterptr = ptrdict[flag]
                 fout.seek(beforeptr)
-                fout.write(chr(before))
+                fout.write(bytes((before,)))
                 fout.seek(afterptr)
-                fout.write(chr(after))
+                fout.write(bytes((after,)))
             break
         changedict[flag] = (before, after)
 

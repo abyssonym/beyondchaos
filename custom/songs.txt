@@ -108,7 +108,7 @@ ff6_town2:      relm*2, johnny, moogles, strago, town
 ff7_5years:     omen3, gestahl*2, celes, daryl, zozo, narshe, ruin*2, train
 ff7_battle:     I45, G20, battle, grandfinale, unforgiven, savethem
 ff7_corel:      shadow*2, gau*2, zozo, owzer, narshe, martiallaw, town_ruin, ruin
-ff7_costa:      prelude, spinachrag*2, strago, town
+ff7_costa:      prelude, spinachrag*2, town, veldt, moogles
 ff7_hurry:      I99, G00, unforgiven, magitek, floatingcont
 ff7_hurry2:     I35, G30, battle, metamorphosis, grandfinale, unforgiven, savethem*2
 ff7_judgment:   omen3, catastrophe, troops, floatingcont*2, kefkastower*2

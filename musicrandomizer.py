@@ -613,8 +613,9 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                 
         return mml_to_akao(mml, name, True if id in [0x29, 0x4F] else False)
     
-    def process_tierboss(opts):
+    def process_tierboss(opts, used_songs=[]):
         opts = [o.strip() for o in opts.split(',')]
+        opts = [o for o in opts if usage_id(o) not in used_songs]
         attempts = 0
         fallback = False
         while True:
@@ -683,6 +684,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             if len(akao) >= 0x1000:
                 continue
             break
+        for n in tiernames: used_songs.append(usage_id(n))
         return (akao, inst)
         
     # choose replacement songs
@@ -728,7 +730,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         #get data now, so we can keeptrying if there's not enough space
         for ident, s in songtable.items():
             if s.changeto == '!!tierboss':
-                s.data, s.inst = process_tierboss(tierboss[ident])
+                s.data, s.inst = process_tierboss(tierboss[ident], used_songs=used_songs)
                 s.is_pointer = False
             # case: get song from MML
             elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")) or isfile(os.path.join(MUSIC_PATH, usage_id(s.changeto) + ".mml")):

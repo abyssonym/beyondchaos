@@ -404,6 +404,9 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         event_mults = {}
         if f_mchaos:
             for ident, s in songtable.items():
+                if ident.endswith("_tr"): continue
+                if ident.endswith("_dm"): continue
+                if ident.endswith("_vic"): continue
                 s.choices.append(song[0])
         for c in canbe:
             if not c: continue

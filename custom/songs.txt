@@ -48,6 +48,7 @@ ct_zeal:        relm*2, awakening, owzer, strago*2
 cv3_aquarius:   H2, I35, G55, magitek, floatingcont, kefkastower
 cv4_beginning:  H2, I00, G35, battle, locke, falcon, serpent, floatingcont
 cv4_beginning_tr: train
+cv4_chandeliers: H4, kefka, gogo, owzer*2, fanatics, H:omen3, H:gestahl, H:shadow, H:spinachrag, H:strago, H:serpent, H:forest
 ds4_lyll:       blackjack, falcon, mountain, serpent, setzer
 eo3_waves:      I50, G99, atma*2, kefkastower, dmad5
 evo_boss:       I85, G40, boss*2, unforgiven

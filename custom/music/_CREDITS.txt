@@ -6,7 +6,7 @@ Song conversions:
                  ct_keeper, ct_mountain, ct_night, ct_revolution, ct_robo,
                  ct_schala, ct_sewer, ct_theme, ct_truth, ct_tylair, ct_tyran,
                  ct_zeal
-                 cv4_beginning
+                 cv4_beginning, cv4_chandeliers
                  ds4_lyll
                  eo3_waves
                  ff2_battleb

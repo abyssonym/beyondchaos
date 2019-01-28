@@ -684,7 +684,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             akao = mml_to_akao(mml, str(tiernames), variant='_default_')
             inst = akao['_default_'][1]
             akao = akao['_default_'][0]
-            if len(akao) >= 0x1000:
+            if len(akao) > 0x1002:
                 continue
             break
         for n in tiernames: used_songs.append(usage_id(n))
@@ -846,7 +846,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                         keeptrying = True
                         break
             
-            if len(s.data) > 0x1000 and "ending" not in ident:
+            if len(s.data) > 0x1002 and "ending" not in ident:
                 print("WARNING: song data too large for {} (as {}), sfx glitches may occur".format(s.changeto, ident))
                 
         if keeptrying:

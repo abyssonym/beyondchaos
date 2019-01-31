@@ -2160,10 +2160,10 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True, s
                 if santa:
                     # color kefka's palette to make him look santa-ish
                     new_palette = palette
-                    new_palette[4] = components_to_color((0x1f, 0x1f, 0x1f)) #0x7fff
-                    new_palette[8] = components_to_color((0x1f, 0x1f, 0x1c)) #0x73ff
-                    new_palette[9] = components_to_color((0x00, 0x07, 0x00)) #0x00e0
-                    new_palette[11] = components_to_color((0x1c, 0x02, 0x04)) #0x105c
+                    new_palette[8] = components_to_color((0x18, 0x18, 0x16))
+                    new_palette[9] = components_to_color((0x16, 0x15, 0x0F))
+                    new_palette[10] = components_to_color((0x1C, 0x08, 0x03))
+                    new_palette[11] = components_to_color((0x18, 0x02, 0x05))
                 else:
                     # give them red & green outfits
                     red = [components_to_color((0x19, 0x00, 0x05)), components_to_color((0x1c, 0x02, 0x04)) ]

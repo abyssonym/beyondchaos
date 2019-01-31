@@ -2463,7 +2463,26 @@ def manage_character_appearance(preserve_graphics=False):
     ghost_mode = 'halloween' in activated_codes
     christmas_mode = 'christmas' in activated_codes
     sprite_swap_mode = 'makeover' in activated_codes and not (sabin_mode or tina_mode or soldier_mode or moogle_mode or ghost_mode)
+    new_palette_mode = not 'sometimeszombies' in activated_codes
 
+    if new_palette_mode:
+        # import recolors for incompatible base sprites
+        recolors = [("cyan", 0x152D40, 0x16A0),  ("mog", 0x15E240, 0x16A0),
+                    ("umaro", 0x162620, 0x16A0), ("dancer", 0x1731C0, 0x5C0),
+                    ("lady", 0x1748C0, 0x5C0)]
+        for rc in recolors:
+            filename = os.path.join("custom","sprites","recolors","RC" + rc[0] + ".bin")
+            try:
+                with open_mei_fallback(filename, "rb") as f:
+                    sprite = f.read()
+            except:
+                print("recolor failed: {}".format(rc)) #delete this
+                print(filename)
+                continue
+            if len(sprite) >= rc[2]: sprite = sprite[:rc[2]]
+            fout.seek(rc[1])
+            fout.write(sprite)
+            
     if (wild or tina_mode or sabin_mode or christmas_mode):
         if christmas_mode:
             char_ids = range(0, 0x15) # don't replace kefka

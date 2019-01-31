@@ -2686,6 +2686,18 @@ def manage_palettes(change_to, char_ids):
         charid = hex2int(charid)
         charpal_options[charid] = palettes
 
+    if new_palette_mode:
+        twinpal = random.randint(0,5)
+        char_palette_pool = range(0,6) + range(0,6)
+        char_palette_pool.remove(twinpal)
+        char_palette_pool.append(random.choice(range(0,twinpal)+range(twinpal,6)))
+        while True:
+            random.shuffle(char_palette_pool)
+            if char_palette_pool[0] == twinpal or char_palette_pool[1] == twinpal:
+                continue
+            break
+        char_palette_pool = char_palette_pool[:4] + [twinpal, twinpal] + char_palette_pool[4:]
+        
     palette_change_to = {}
     for npc in npcs:
         if npc.graphics not in charpal_options:
@@ -2694,6 +2706,10 @@ def manage_palettes(change_to, char_ids):
             new_graphics = change_to[npc.graphics]
             if (npc.graphics, npc.palette) in palette_change_to:
                 new_palette = palette_change_to[(npc.graphics, npc.palette)]
+            elif new_palette_mode and npc.graphics < 14:
+                new_palette = char_palette_pool[npc.graphics]
+                palette_change_to[(npc.graphics, npc.palette)] = new_palette
+                npc.palette = new_palette
             else:
                 while True:
                     new_palette = random.choice(charpal_options[new_graphics])

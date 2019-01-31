@@ -2476,8 +2476,6 @@ def manage_character_appearance(preserve_graphics=False):
                 with open_mei_fallback(filename, "rb") as f:
                     sprite = f.read()
             except:
-                print("recolor failed: {}".format(rc)) #delete this
-                print(filename)
                 continue
             if len(sprite) >= rc[2]: sprite = sprite[:rc[2]]
             fout.seek(rc[1])

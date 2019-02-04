@@ -1,4 +1,4 @@
-
+import copy
 
 from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
@@ -436,7 +436,7 @@ class MonsterBlock:
 
     @property
     def battle_event(self):
-        return chr(0xF7) in [s[0] for s in self.aiscript]
+        return 0xf7 in [s[0] for s in self.aiscript]
 
     @property
     def pretty_aiscript(self):
@@ -1073,7 +1073,7 @@ class MonsterBlock:
                 self.stats['hp'] = 900 + random.randint(0, 100) + random.randint(0, 100)
             else:
                 self.stats['hp'] = 1500 + random.randint(0, 150) + random.randint(0, 150)
-                tutmessage = "".join(map(chr, [0xF7, 0x08]))
+                tutmessage = bytearray([0xF7, 0x08])
                 # trigger phase change at 640 or 768 HP
                 for i, a in enumerate(self.aiscript):
                     if a[0:3] == bytearray([0xFC, 0x06, 0x36]):
@@ -1675,7 +1675,9 @@ class MonsterBlock:
             value = getattr(other, attribute)
             if value is not None:
                 value = type(value)(value)
-            setattr(self, attribute, value)
+            # deep copy so changes to the target's ai don'table
+            # affect the source
+            setattr(self, attribute, copy.deepcopy(value))
 
         if self.rages is not None and other.rages is not None and random.choice([True, False]):
             self.rages = type(other.rages)(other.rages)

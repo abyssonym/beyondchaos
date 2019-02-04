@@ -1,4 +1,4 @@
-
+#!python3
 
 from time import time, sleep, gmtime
 from sys import argv, exit
@@ -2237,7 +2237,8 @@ nameiddict = {
 
 def sanitize_names(names):
     delchars = ''.join(c for c in map(chr, list(range(256))) if not c.isalnum() and c not in "!?/:\"'-.")
-    names = [name.translate(None, delchars) for name in names]
+    table = str.maketrans(dict.fromkeys(delchars))
+    names = [name.translate(table) for name in names]
     return [name[:6] for name in names if name != ""]
 
 
@@ -2597,7 +2598,7 @@ def manage_character_appearance(preserve_graphics=False):
                 fallback_portrait_id = 0xE
 
             portrait = fallback_portrait_id * 0x320
-            portrait_palette = chr(fallback_portrait_id)
+            portrait_palette = bytes((fallback_portrait_id,))
             new_portrait_data = portrait_data[fallback_portrait_id]
             new_portrait_palette_data = portrait_palette_data[fallback_portrait_id]
 
@@ -2619,11 +2620,11 @@ def manage_character_appearance(preserve_graphics=False):
             if not use_fallback or fallback_portrait_id in free_portrait_ids:
                 portrait_id = free_portrait_ids[0]
                 portrait = portrait_id * 0x320
-                portrait_palette = chr(portrait_id)
+                portrait_palette = bytes((portrait_id,))
                 free_portrait_ids.remove(free_portrait_ids[0])
                 fout.seek(0x2D1D00 + portrait)
                 fout.write(new_portrait_data)
-                fout.seek(0x2D5860 + ord(portrait_palette) * 0x20)
+                fout.seek(0x2D5860 + portrait_id * 0x20)
                 fout.write(new_portrait_palette_data)
 
         elif portrait == 0 and wild and change_to[c] != 0:
@@ -4120,7 +4121,10 @@ def create_dimensional_vortex():
                 if c_locid in equivalent_map_dict:
                     duplicate_entrance_dict[c]=d
                 else:
-                    duplicate_entrance_dict[d]=c
+                    if c in duplicate_entrance_dict:
+                        duplicate_entrance_dict[d]=duplicate_entrance_dict[c]
+                    else:
+                        duplicate_entrance_dict[d]=c
 
     entrances = [k for k in entrances if k not in equivalent_map_dict]
 
@@ -4515,9 +4519,9 @@ def manage_bingo():
         monsterskills |= ids
     abilities = [s for s in abilities if s.spellid in monsterskills]
     if difficulty == 'e':
-        left, right = lambda x: 0, lambda x: len(x)/2
+        left, right = lambda x: 0, lambda x: len(x)//2
     elif difficulty == 'h':
-        left, right = lambda x: len(x)/2, lambda x: len(x)
+        left, right = lambda x: len(x)//2, lambda x: len(x)
     else:
         left, right = lambda x: 0, lambda x: len(x)
 
@@ -4609,9 +4613,9 @@ def manage_map_names():
     for i in range(1, 101):
         pointers[i] = fout.tell()
         room_name = "Room %s" % i
-        room_name = "".join([chr(text[c]) for c in room_name])
+        room_name = bytes([text[c] for c in room_name]) + b'\x00'
         fout.write(room_name)
-        fout.write(chr(0))
+        #fout.write(chr(0))
 
     for i in range(1, 101):
         fout.seek(0x268400 + (2*i))
@@ -4744,7 +4748,7 @@ def manage_wor_skip(wor_free_char=0xB):
     for character in partymembers:
         id = character.id
         palette = character.palette
-        wor_sub.bytestring += [0x43, id, palette]
+        wor_sub.bytestring += bytes([0x43, id, palette])
 
     # obtain all locations with WoB treasures
     wobtreasurelocs = []
@@ -4762,7 +4766,7 @@ def manage_wor_skip(wor_free_char=0xB):
 
     # give the items to the player via event code
     for t in wobtreasures:
-        wor_sub.bytestring += [0x80, t]
+        wor_sub.bytestring += bytes([0x80, t])
 
     # give WoB event items
     event_items = get_event_items()
@@ -4770,7 +4774,7 @@ def manage_wor_skip(wor_free_char=0xB):
         if l.upper() in wobtreasurelocs + ["FIGARO CASTLE"]:
             for e in event_items[l]:
                 if e.contenttype == 0x40 and not e.multiple:
-                    wor_sub.bytestring += [0x80, e.contents]
+                    wor_sub.bytestring += bytes([0x80, e.contents])
 
     # give the player a basic set of items.  These items are intended to
     # reflect the items a player would probably have by the time they get this
@@ -4778,12 +4782,12 @@ def manage_wor_skip(wor_free_char=0xB):
     for line in open(WOR_ITEMS_TABLE):
         line = line.strip().split(',')
         for i in range (0, int(line[1])):
-            wor_sub.bytestring += [0x80, int(line[0], 16)]
+            wor_sub.bytestring += bytes([0x80, int(line[0], 16)])
 
     # jump to overwriting the Ramuh cutscene because we need even more space
-    wor_sub.bytestring += [0xB2, 0x49, 0x97, 0x00,
+    wor_sub.bytestring += bytes([0xB2, 0x49, 0x97, 0x00,
                            0xFE
-                          ]
+                          ])
     wor_sub.set_location(0xADD1E)
     wor_sub.write(fout)
     wor_sub2 = Substitution()
@@ -5049,14 +5053,14 @@ def manage_ancient(form_music_overrides={}):
     to_dummy = [get_item(0xF6), get_item(0xF7)]
     dummy_names = ["Pebble", "Tissue"]
     for dummy_name, item in zip(dummy_names, to_dummy):
-        name = [0xFF] + name_to_bytes(dummy_name, 12)
+        name = bytes([0xFF]) + name_to_bytes(dummy_name, 12)
         item.dataname = name
         item.price = 4
         item.itemtype = 6
         item.write_stats(fout)
     blank_sub = Substitution()
     blank_sub.set_location(0x2D76C1)
-    blank_sub.bytestring = bytes([0xFF] * (0x2D76F5 - blank_sub.location))
+    blank_sub.bytestring = bytearray([0xFF] * (0x2D76F5 - blank_sub.location))
     blank_sub.bytestring[blank_sub.size//2] = 0
     blank_sub.write(fout)
 
@@ -5123,9 +5127,9 @@ def manage_ancient(form_music_overrides={}):
         if i >= 14 or "speedcave" in activated_codes and i not in starting:
             level |= 0b1000
         fout.seek(cptr)
-        fout.write(chr(level))
+        fout.write(bytes((level,)))
     fout.seek(0xa5e74)
-    fout.write(chr(0))  # remove Terra's magitek
+    fout.write(bytes((0,)))  # remove Terra's magitek
 
     tempcands = [14, 15, random.choice(list(range(18, 28))), random.choice([32, 33])]
     if 'speedcave' in activated_codes:
@@ -5155,7 +5159,7 @@ def manage_ancient(form_music_overrides={}):
     if runaway in starting:
         byte, bit = runaway // 8, runaway % 8
         mem_addr = ((0x1b+byte) << 3) | bit
-        startsub.bytestring += [0xD7, mem_addr]
+        startsub.bytestring += bytearray([0xD7, mem_addr])
     shadow_leaving_sub = Substitution()
     shadow_leaving_sub.set_location(0x248A6)
     shadow_leaving_sub.bytestring = bytearray([
@@ -5444,10 +5448,10 @@ def manage_ancient(form_music_overrides={}):
         mem_addr = ((0x17+byte) << 3) | bit
         espersub = Substitution()
         espersub.set_location(pointer)
-        espersub.bytestring = bytes([0xF4, 0x8D,
+        espersub.bytestring = [0xF4, 0x8D,
                                0x86, event_value + 0x36,
                                0xD7, mem_addr,
-                               0x3E, None, 0xFE])
+                               0x3E, None, 0xFE]
         espersubs[esper] = espersub
         pointer += espersub.size
 
@@ -5627,23 +5631,23 @@ def manage_ancient(form_music_overrides={}):
         for party_id in range(1, 4):
             for npc_id in range(4, 6):
                 allysub.set_location(pointer)
-                allysub.bytestring = bytearray([0xB2, 0xC1, 0xC5, 0x00,  # set caseword
-                                      0xC0, 0xA3, 0x81, None, None, None])
-                allysub.bytestring += bytearray([0xD4, 0xF0 | chosen.slotid,
+                allysub.bytestring = [0xB2, 0xC1, 0xC5, 0x00,  # set caseword
+                                      0xC0, 0xA3, 0x81, None, None, None]
+                allysub.bytestring += [0xD4, 0xF0 | chosen.slotid,
                                        0xD4, 0xE0 | chosen.slotid,
-                                       0xD7, mem_addr])
+                                       0xD7, mem_addr]
                 if chosen.id >= 14 or "speedcave" in activated_codes:
-                    allysub.bytestring += bytearray([0x77, chosen.slotid,
+                    allysub.bytestring += [0x77, chosen.slotid,
                                            0x8b, chosen.slotid, 0x7F,
                                            0x8c, chosen.slotid, 0x7F,
-                                           0x88, chosen.slotid, 0x00, 0x00])
-                allysub.bytestring += bytearray([0x3E, 0x10 | npc_id,
+                                           0x88, chosen.slotid, 0x00, 0x00]
+                allysub.bytestring += [0x3E, 0x10 | npc_id,
                                        0x3D, chosen.slotid,
                                        0x3F, chosen.slotid, party_id,
                                        0x47,
                                        0x45,
                                        0xF4, 0xD0,
-                                       0xFE])
+                                       0xFE]
                 pointer = pointer + len(allysub.bytestring)
                 uptr = (pointer - 1) - 0xa0000
                 a, b, c = (uptr >> 16, (uptr >> 8) & 0xFF, uptr & 0xFF)
@@ -6102,16 +6106,16 @@ def manage_ancient(form_music_overrides={}):
                 fset = get_2pack(chosen)
                 if address is not None:
                     fout.seek(address)
-                    fout.write(chr(fset.setid & 0xFF))
+                    fout.write(bytes((fset.setid & 0xFF,)))
                 else:
                     bg = bgs.pop()
-                    final_cut.bytestring += [0x46, i+1,
+                    final_cut.bytestring += bytearray([0x46, i+1,
                                              0x4D, fset.setid & 0xFF, bg,
-                                             0xB2, 0xA9, 0x5E, 0x00]
+                                             0xB2, 0xA9, 0x5E, 0x00])
 
         assert len(chosens) == 0
 
-    final_cut.bytestring += [0xB2, 0x64, 0x13, 0x00]
+    final_cut.bytestring += bytearray([0xB2, 0x64, 0x13, 0x00])
     final_cut.write(fout)
 
 def manage_santa():
@@ -6888,7 +6892,8 @@ r   Randomize character locations in the world of ruin.
         savecheck_sub.bytestring = [0xEA, 0xEA]
         savecheck_sub.set_location(0x319f2)
         savecheck_sub.write(fout)
-
+    reseed()
+        
     if 'o' in flags and 'suplexwrecks' not in activated_codes:
         # do this after swapping beserk
         manage_natural_magic()
@@ -6984,7 +6989,7 @@ r   Randomize character locations in the world of ruin.
     if 'halloween' in activated_codes:
         demon_chocobo_sub = Substitution()
         fout.seek(0x2d0000 + 896 * 7)
-        demon_chocobo_sub.bytestring = list(map(ord, fout.read(896)))
+        demon_chocobo_sub.bytestring = fout.read(896)
         for i in range(7):
             demon_chocobo_sub.set_location(0x2d0000 + 896 * i)
             demon_chocobo_sub.write(fout)

@@ -83,7 +83,7 @@ def dprint(t):
 
 def byte_insert(data, position, newdata, maxlength=0, end=0):
     while position > len(data):
-        data = data + "\x00"
+        data = data + b"\x00"
     if end:
         maxlength = end - position + 1
     if maxlength and len(data) > maxlength:
@@ -95,19 +95,19 @@ def int_insert(data, position, newdata, length, reversed=True):
     n = int(newdata)
     l = []
     while len(l) < length:
-        l.append(chr(n & 0xFF))
+        l.append(n & 0xFF)
         n = n >> 8
     if n: dprint("WARNING: tried to insert {} into {} bytes, truncated".format(hex(newdata), length))
     if not reversed: l.reverse()
-    return byte_insert(data, position, "".join(l), length)
+    return byte_insert(data, position, bytes(l), length)
 
 def bytes_to_int(data, reversed=True):
     n = 0
     for i, d in enumerate(data):
         if reversed:
-            n = n + (ord(d) << (8 * i))
+            n = n + (d << (8 * i))
         else:
-            n = (n << (8 * i)) + ord(d)
+            n = (n << (8 * i)) + d
     return n
     
 def put_somewhere(romdata, newdata, desc, f_silent=False):
@@ -234,15 +234,15 @@ def insert_instruments(data_in, metadata_pos= False):
             continue
         
         try:
-            loop = chr(int(loop[0:2], 16)) + chr(int(loop[2:4], 16))
+            loop = bytes([int(loop[0:2], 16), int(loop[2:4], 16)])
         except (ValueError, IndexError):
             print("WARNING: malformed loop info in '{}', using default".format(smp))
-            loop = "\x00\x00"
+            loop = b"\x00\x00"
         try:
-            pitch = chr(int(pitch[0:2], 16)) + chr(int(pitch[2:4], 16))
+            pitch = bytes([int(pitch[0:2], 16), int(pitch[2:4], 16)])
         except (ValueError, IndexError):
             print("WARNING: malformed pitch info in '{}', using default".format(smp))
-            pitch = "\x00\x00"
+            pitch = b"\x00\x00"
         if adsr:
             try:
                 attack, decay, sustain, release = [int(p,16) for p in adsr.split()[0:4]]
@@ -255,12 +255,12 @@ def insert_instruments(data_in, metadata_pos= False):
                 ad += attack
                 sr = sustain << 5
                 sr += release
-                adsr = chr(ad) + chr(sr)
+                adsr = bytes([ad, sr])
             except (AssertionError, ValueError, IndexError):
                 print("WARNING: malformed ADSR info in '{}', disabling envelope".format(smp))
-                adsr = "\x00\x00"
+                adsr = b"\x00\x00"
         else:
-            adsr = "\x00\x00"
+            adsr = b"\x00\x00"
             
         data, s, e = put_somewhere(data, sdata, "(sample) [{:02x}] {}".format(id, name))
         ptrdata = int_insert(ptrdata, (id-1)*3, s + HIROM, 3)
@@ -272,7 +272,7 @@ def insert_instruments(data_in, metadata_pos= False):
     CONFIG.set('MusicPtr', 'brrpointers', "{:x}, {:x}".format(sampleptrs[0], sampleptrs[0]+len(data)))
     if metadata_pos:
         p = metadata_pos
-        metadata = "\x00"*0x600
+        metadata = b"\x00"*0x600
         metadata = byte_insert(metadata, 0x0, loopdata)
         metadata = byte_insert(metadata, 0x200, pitchdata)
         metadata = byte_insert(metadata, 0x400, adsrdata)
@@ -340,14 +340,14 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         return "_".join(name.split("_")[0:2])
             
     class SongSlot:
-        def __init__(self, id, chance=0, is_pointer=True, data="\x00\x00\x00"):
+        def __init__(self, id, chance=0, is_pointer=True, data=b"\x00\x00\x00"):
             self.id = id
             self.chance = chance
             self.choices = []
             self.changeto = ""
             self.is_pointer = is_pointer
             self.data = data
-            self.inst = ""
+            self.inst = b""
             
     # figure out what instruments are available
     sampleptrs = [s.strip() for s in CONFIG.get('MusicPtr', 'brrpointers').split(',')]
@@ -365,10 +365,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
     songptrs = []
     i = 0
     
-    songcount = [ord(data[songcountloc])]
+    songcount = [data[songcountloc]]
     while i < songcount[0]:
         try: p = songptrdata[i*3:i*3+3]
-        except IndexError: p = '\x00\x00\x00'
+        except IndexError: p = b'\x00\x00\x00'
         songptrs.append(bytes_to_int(p) - HIROM)
         i += 1
         
@@ -665,8 +665,8 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             #    f.write(mml)
                 
             akao = mml_to_akao(mml, str(tiernames), variant='_default_')
-            inst = akao['_default_'][1]
-            akao = akao['_default_'][0]
+            inst = bytes(akao['_default_'][1], encoding='latin-1')
+            akao = bytes(akao['_default_'][0], encoding='latin-1')
             if len(akao) >= 0x1000:
                 continue
             break
@@ -747,19 +747,19 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     keeptrying = True
                     break
                 if variant and variant in akao:
-                    s.data = akao[variant][0]
-                    s.inst = akao[variant][1]
+                    s.data = bytes(akao[variant][0], encoding='latin-1')
+                    s.inst = bytes(akao[variant][1], encoding='latin-1')
                 else:
-                    s.data = akao['_default_'][0]
-                    s.inst = akao['_default_'][1]
+                    s.data = bytes(akao['_default_'][0], encoding='latin-1')
+                    s.inst = bytes(akao['_default_'][1], encoding='latin-1')
                 s.is_pointer = False
-                if max(list(map(ord, s.inst))) > instcount:
+                if max(list(s.inst)) > instcount:
                     if 'nopatch' in akao:
-                        s.inst = akao['nopatch'][1]
-                        s.data = akao['nopatch'][0]
+                        s.inst = bytes(akao['nopatch'][1], encoding='latin-1')
+                        s.data = bytes(akao['nopatch'][0], encoding='latin-1')
                     elif 'nat' in akao:
-                        s.inst = akao['nat'][1]
-                        s.data = akao['nat'][0]
+                        s.inst = bytes(akao['nat'][1], encoding='latin-1')
+                        s.data = bytes(akao['nat'][0], encoding='latin-1')
                     else:
                         print("WARNING: instrument out of range in {}".format(s.changeto + ".mml"))
             # case: get song from source ROM
@@ -772,7 +772,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     assert loc >= min([l[0] for l in songdatalocs])
                     if f_preserve:
                         s.is_pointer = True
-                        s.data = loc
+                        s.data = bytes((loc,))
                     else:
                         s.is_pointer = False
                         slen = bytes_to_int(data[loc:loc+2]) + 2
@@ -837,7 +837,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             freelocs = []
             for b, e in songdatalocs:
                 i = b
-                lastchar = ''
+                lastchar = b''
                 streak = 0
                 while i <= e:
                     curchar = data[i]
@@ -863,7 +863,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             for i, l in enumerate(songdatalocs):
                 if l[0] > l[1]: del songdatalocs[i]
         space = [e - b for b, e in songdatalocs]
-        songdata = [""] * len(space)
+        songdata = b"" * len(space)
         songinst = data[isetlocs[0]:isetlocs[1]+1]    
         if f_moveinst: free_space(isetlocs[0], isetlocs[1])
         claim_space(songptraddrs[0], songptraddrs[0] + 3*(len(songtable)+1))
@@ -911,8 +911,8 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         translatetbl(battletable)
         translatetbl(pausetable)
         
-        battletable = "".join(map(chr, battletable))
-        pausetable = "".join(map(chr, pausetable))
+        battletable = bytes(battletable)
+        pausetable = bytes(pausetable)
         
         
     # write to rom        
@@ -1009,28 +1009,28 @@ def process_formation_music_by_table(data, form_music_overrides={}):
         except ValueError:
             mbf = 0
         pos = o_formaux + fid*4
-        dat = list(data[pos:pos+4])
+        dat = bytearray(data[pos:pos+4])
         
-        dat[3] = chr((ord(dat[3]) & 0b11000111) | mbf)
+        dat[3] = (dat[3] & 0b11000111) | mbf
         if line[2] == "0":
-            dat[1] = chr(ord(dat[1]) | 0b00000010)
-            dat[3] = chr(ord(dat[3]) | 0b10000000)
+            dat[1] = dat[1] | 0b00000010
+            dat[3] = dat[3] | 0b10000000
         elif line[2] == "c":
             if fid in event_formations:
                 force_music = True
             else:
                 for m in range(0,6):
                     fpos = o_forms + fid*15
-                    if (ord(data[fpos+1]) >> m) & 1:
-                        mid = ord(data[fpos+2+m]) + (((ord(data[fpos+14]) >> m) & 1) << 8)
-                        mb = ord(data[o_monsters+mid*32+19])
+                    if (data[fpos+1] >> m) & 1:
+                        mid = data[fpos+2+m] + (((data[fpos+14] >> m) & 1) << 8)
+                        mb = data[o_monsters+mid*32+19]
                         if mb & 0b00001011:
                             force_music = True
                             break
         if line[2] == "1" or force_music:
-            dat[1] = chr(ord(dat[1]) & 0b11111101)
-            dat[3] = chr(ord(dat[3]) & 0b01111111)
-        data = byte_insert(data, pos, ''.join(dat))
+            dat[1] = dat[1] & 0b11111101
+            dat[3] = dat[3] & 0b01111111
+        data = byte_insert(data, pos, dat)
     
     return data
         

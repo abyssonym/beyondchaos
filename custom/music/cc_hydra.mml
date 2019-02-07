@@ -8,11 +8,11 @@
 
 #WAVE 0x20 ~0x6b~/0x02/ Bass
 #WAVE 0x21 ~0x42~/0x3E/ Vibraphone
-#WAVE 0x22 ~0x44~/0x20/ Crystal
+#WAVE 0x22 ~0x95~/0x20/ Crystal
 #WAVE 0x23 ~0x32~/0x32/ Ac.Guitar
 #WAVE 0x24 ~0x19~/0x19/ Pizza
 #WAVE 0x25 ~0x1F~/0x1F/ Ocarina
-#WAVE 0x26 ~0x06~/0x06/ Choir
+#WAVE 0x26 ~0x92~/0x06/ Choir
 #WAVE 0x27 ~0x18~/0x18/ Ac.Bass
 
 #WAVE 0x28 ~0x5F~/0x2F/ Maraca
@@ -30,7 +30,7 @@
 #def guitar= |3 v56 o5 %e1 ##midi 004 + 005
 #def choir= |6 v64 o4 %e1 ##midi 006 + 061
 #def vibe= |1 v64 o4 %y5%s1 %e1 ##midi 007
-#def crystal= |2 v64 ~o5~/o5/ %a12 %e1 ##midi 062 + 064
+#def crystal= |2 ~v88~/v64/ ~o5~/o5/ /%a12/ %e1 ##midi 062 + 064
 #def flute= |5 v64 o5 %e1 ##midi 090
 
 ##midi channels
@@ -155,7 +155,7 @@ r2r g+a+<cc+d+e d+4c+4c4d4>g4<c4>f4a+4d+4g4c
 r1r1 d1...r
 $ '19' %a5%r8
 d1...r d1...
-'22'<%e1 %r11 m24,18,239 l8 [4k2dd+>a+4k0a1.<]^ m
+'22'<%e1 %r11 m24,18,239 l8 [4~k1~/k2/dd+>~k2~a+4k0a1.<]^ m
 ##17
 '10'< 'pv'r4c4.d+2c+2c4.
 '23'<l8 %a12k1v40[[^d+c+d+g+d+c+d+][^dcdgdcd]]^dcdgdcd k0

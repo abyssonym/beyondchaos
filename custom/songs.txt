@@ -27,7 +27,7 @@ crys_fields:    chocobo, johnny, gogo, moogles*2, mountain, setzer
 ct_600ad:       zozo, owzer*2, town_ruin, ruin
 ct_battle:      I05, G20, battle*2, unforgiven
 ct_battle2:     I05, G40, battle*2, grandfinale
-ct_bobonga:     I00, G51, strago, veldt*2, zozo, gogo, umaro*2
+ct_bobonga:     veldt*2, zozo, gogo, umaro*2
 ct_boss2:       I95, G75, atma*2, metamorphosis, grandfinale, catastrophe
 ct_fair:        johnny, spinachrag, moogles*2, town
 ct_keeper:      espers, fanatics, ruin, owzer

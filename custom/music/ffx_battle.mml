@@ -3,25 +3,26 @@
 #COMPOSER Nobuo Uematsu
 #ARRANGED emberling
 
-#VARIANT ~ enh
+#VARIANT ~
 #VARIANT / nat
 
-#WAVE 0x20 ~0x49~ /0x0D/
-#WAVE 0x21 ~0x7F~ /0x0E/
-#WAVE 0x22 ~0x40~ /0x08/
-#WAVE 0x23 ~0x0B~ /0x0B/
-#WAVE 0x24 ~0x44~ /0x00/
-#WAVE 0x25 ~0x4D~ /0x1C/
-#WAVE 0x26 ~0x74~ /0x00/
+#WAVE 0x20 ~0x49~ /0x0D/ strings
+#WAVE 0x21 ~0x0E~ /0x0E/ trumpet
+#WAVE 0x22 ~0x08~ /0x08/ horn
+#WAVE 0x23 ~0x0B~ /0x0B/ organ
+#WAVE 0x24 ~0x44~ /0x00/ saw
+#WAVE 0x25 ~0x4D~ /0x1C/ bass
+#WAVE 0x26 ~0x74~ /0x00/ square
 
-#WAVE 0x28 ~0x7E~ /0x14/
-#WAVE 0x29 ~0x59~ /0x22/
-#WAVE 0x2A  0x0F
-#WAVE 0x2B ~0x68~ /0x00/
-#WAVE 0x2C ~0x6D~ /0x12/
-#WAVE 0x2D ~0x88~ /0x11/
+#WAVE 0x28 ~0x7E~ /0x14/ snare
+#WAVE 0x29 ~0x59~ /0x22/ bdr
+#WAVE 0x2A ~0x6E~ /0x00/ tom
+#WAVE 0x2B ~0x68~ /0x00/ open
+#WAVE 0x2C ~0x8E~ /0x12/ crash
+#WAVE 0x2D ~0x88~ /0x11/ ride
+#WAVE 0x2F  0x0F         closed
 
-#def global= t190 %v30 %x224 %b0,70
+#def global= t190 %v30 %x224 %b0,70 %f0,0
 
 #def str= |0 ~o4~/o5/ v127 %e1
 #def st1= p90 %a m
@@ -50,8 +51,8 @@
 #def sv6= v144,48
 #def sv7= v144,52
 #def sv8= v144,56
-#def pet= |1 ~o5~/o6/ ~v72~/v96/ p64 m48,18,237 %e1
-#def hrn= |2 ~o4~/o5/ v72 p40 m48,18,237 %e1
+#def pet= |1 ~o6~/o6/ ~v112~/v96/ p64 m48,18,237 %e1
+#def hrn= |2 ~o5~/o5/ v72 p40 m48,18,237 %e1
 #def org= |3 o6 v28 p64 m48,18,209 v0,7,255 %a12 %e1
 #def bas= |5 o5 ~v127~/v48/ p64 m  %e0
 #def fakechoir= ~|4 o4~/|3 o4/ p64 v63v192,127 m48,18,237 %a13/%s12/
@@ -59,7 +60,7 @@
 #def 8= %r18
 #def 16=%r22
 #def l= p0
-#def r= p127
+#def r= p127v28
 #def hat= v56p104
 
 #drum "a"=5g ~|B~/|C %a11%r23/
@@ -67,14 +68,14 @@
 #drum "c"=5a+ |D p36 v56
 #drum "d"=5a+ |D p36 v80
 #drum "e"=5a+ |D p36 v96
-#drum "g"=5g |A %r30
-#drum "h"=5g |A %r28
-#drum "i"=5g |A %r
-#drum "k"=5f |9 v127 p58
+#drum "g"=5g |F %r30
+#drum "h"=5g |F %r28
+#drum "i"=5g |F %r
+#drum "k"=~5f~/5f/ |9 v127 p58
 #drum "s"=5g |8 v127 p58
 #drum "s-"=5b |8 v127 p58
-#drum "t"=6e |9 v127 p58
-#drum "u"=6a |9 v127 p80
+#drum "t"=~5e~/6e/ /|9/~|A~ v127 p58
+#drum "u"=~5a~/6a/ /|9/~|A~ v127 p80
 #drum "x"=5a |C v127 p104
 #drum "y"=5g |C v127 p24 %r19
 #drum "z"=5g |C v127 p24 %r
@@ -97,15 +98,15 @@ $
 '8'a.b.<c+.>b.ag+ %yf+1^.r8e2 d+1^.r8d+2 g+1..r
 ##at 35: synth echo (skip organ)
 ##'org' l1 c+^ c+^ f+^ e^ e^ d+^ e^ g+^
-'sqw''8''r' l8
-r.<C+>g+ e <D+>g+ e <E> g+ e <D+>g+ e <C+>e  b  e 
+'sqw''8''l' l8
+<C+>g+ e <D+>g+ e <E> g+ e <D+>g+ e <C+>e  b  e 
  a >B< c+ e >A< c+ e >B< c+ e >A< c+>B< c+ e  a
  b  f+ d+<C+>f+ d+<D+>f+    d+<C+>f+ d+ b  d+<D+>d+
  g+>G+ B< e >A  B< e >G+    B< e >A  B  G+ B< e  g+
  a  e  c+ b  e  c+<C+>e     c+ b  e  c+ a  c+ g+ c+
  g >A+<c+ d+>G< c+ d+>A+<   c+ d+>G< c+>A+<c+ d+ f
  a+ g  e <C> g  e <C+>g     e <E> g  e <D+>e <C+>e
-<D+>g+ a+<C> g  g+ a+ d+    g+ c  c+ d+>G+ A+<c16 m
+<D+>g+ a+<C> g  g+ a+ d+    g+ c  c+ d+>G+ A+<c >G+
 ##at 51: trumpet, horn
 'pet'l8< ~v56~
 g+4g+f+4g+e4 ed+4ec+4>b4 a2<g+2^1^1 r1
@@ -152,7 +153,7 @@ r>ab<c+d+4c+d+ e4d+ef+.e.f+  r>b<c+d+e4d+e f+4ef+b.a.b
 '8'd+.d+.d+.'16'e12e24^ '8'f+.f+.f+.'16'g+12g+24^
 ;
 
-{3}
+{5}
 l8
 ##at 1: lowest string
 'str''st1''16'c+4c+c+4c+c+4c+4c+4 'st2'a1.
@@ -179,10 +180,10 @@ e^ c+^^^ d+^ >b<c+d+c+
 l1 e^f+^ l2 g+1.b <c+1.d+ c+1.c+ d1^1
 ##at 75: organ high
 l4 '8'd+.d+.d+.c+. c.c.c.c+.
-d+.d+.d+.e. f+.f+.f+.g+.
+d+.d+.d+.e. f+.f+.f+.g+. v
 ;
 
-{4}
+{3}
 l8
 ##at 1: fourth & fifth string
 'str''st1'< ['8'g+'16'c+g+][3'8'g+'16'c+] ['8'a'16'c+a][3'8'a'16'c+]
@@ -207,10 +208,10 @@ c+^ >a^^^ b^ >g+^^^
 'org'
 l1 c+^d+^ l2 e1.f+ a1.b a1.a a1^1
 ##at 75: organ middle
-l4 '8'[3g+.g+.g+.g+12g+24^] <d.d.d.d12d24^
+l4 '8'[3g+.g+.g+.g+12g+24^] <d.d.d.d12d24^ v
 ;
 
-{5}
+{8}
 l8
 ##at 1: sixth string
 'str''st1'<<[4['8'c+4'16'c+8]'8'c+4j4c+4c+4]'16'l16>v62v96,100def+g+ab<c+d
@@ -288,16 +289,16 @@ $
 ##d+>eg+<d+>a+g+<c>a+g<c>g+ga+g+d+a+
 ##g+d+cg+c+cd+c+>g+<d+>a+g+<c>a+g+<c
 
-##dual channel version
-'sqw''8''l' l8
-<C+>g+ e <D+>g+ e <E> g+ e <D+>g+ e <C+>e  b  e 
+##dual channel version (echo)
+'sqw''8''r' l8
+r.<C+>g+ e <D+>g+ e <E> g+ e <D+>g+ e <C+>e  b  e 
  a >B< c+ e >A< c+ e >B< c+ e >A< c+>B< c+ e  a
  b  f+ d+<C+>f+ d+<D+>f+    d+<C+>f+ d+ b  d+<D+>d+
  g+>G+ B< e >A  B< e >G+    B< e >A  B  G+ B< e  g+
  a  e  c+ b  e  c+<C+>e     c+ b  e  c+ a  c+ g+ c+
  g >A+<c+ d+>G< c+ d+>A+<   c+ d+>G< c+>A+<c+ d+ f
  a+ g  e <C> g  e <C+>g     e <E> g  e <D+>e <C+>e
-<D+>g+ a+<C> g  g+ a+ d+    g+ c  c+ d+>G+ A+<c >G+
+<D+>g+ a+<C> g  g+ a+ d+    g+ c  c+ d+>G+ A+<c16 m
 
 ##at 51: choir / saw1
 p 'fakechoir' l4 c+.c+.c+^1
@@ -305,7 +306,7 @@ p 'fakechoir' l4 c+.c+.c+^1
 'fakechoir' l4 >b.b.b^1
 'saw''sa1' l8 >%k11[j2,514j1,51 $514%k0
 ##at 63: organ 3 / saw1
-'org' l1 a^b^
+'org' l1 a^b^ v
 'othersaw''8' l8
 [4[<c+>g+f+]c+>g+ c+f+g+f+g+<c+f+g+]
 ##at 75:
@@ -343,7 +344,7 @@ l2 c+1.>b a1.g+ f+1.e d1^1
 l8 [3c+r4c+r4c+r^2]dr4dr4dr^2
 ;
 
-{7}
+{4}
 l4
 [3"k.k.k2."]"k.k.k2s-"
 ##at 7:
@@ -354,20 +355,20 @@ v64 l4 v255,80 "\k.k.k2." v255,96 "\k.k.k2." v255,112 "\k.k.k2." v255,127 "\k.k.
 $
 l4 [4"k.s.k.s.ks- k.s.k.s.ks-8k8"]
 ##at 35:
-l8 [4["!!k4s-4kks-4 kks-k4ks-"j2 ^]"k"]
+l8 [4["!!!ok4s-4kks-4 kks-k4ks-"j2 ^]"k"]
 ##at 51:
 l8 ["k1.^ks-4k4.ks-4.kk4.ks-k4k4k4ks-2k4.ks-k4k"]
 ##at 63:
 l8 ["k4s-k4ks-4.ks-kk4s-k"] %g1
-"k1."[6"!ot12"]
-"k2.."l24"bcde4.bcdd8e4d8" l8
-"k1."[6"!ou12"]
-"k1 u48t48^12k4ku48t48^12ks-k" %g0
+"!ok1."[6"!ot12"]
+"!ok2.."l24"bcde4.bcdd8e4d8" l8
+"!ok1."[6"!ou12"]
+"!ok1 u48t48^12k4ku48t48^12ks-k" %g0
 ##at 75:
 l4 [4"k.k.k2."]
 ;
 
-{8}
+{7}
 l8
 "y4."'hat'[j2,800j1,881$800 [j2,801j1,880$801 [j2,802j1,880$802 "ahhahhahig!!z2"
 ##at 7:

@@ -20,7 +20,7 @@
 #WAVE 0x2A 0x1B Harp
 #WAVE 0x2B 0x36 Synth
 
-#def global= ~t90~?t70t255,90? %v50 %b0,70 %x224
+#def global= ~t90~?t70t255,90? %v50 %b0,70 %f0,0 %x224
 
 #def hch= |1 v64
 #def str= |0 v64

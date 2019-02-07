@@ -85,3 +85,4 @@
 92: s205_chorus,    1B00, E200, E 7 7  0
 93: gh18_ahhs,      5508, 2FF0, F 7 7  0
 94: c404_strings,   C906, A080, F 7 7  0
+95: ffx_dulcimer,   640B, A900, F 7 7  D

@@ -18,7 +18,7 @@
 #WAVE 0x2B ~0x5A~/0x0F/
 #WAVE 0x2C ~0x88~/0x11/
 
-#def global= t116 %v50 %b0,100 %x224
+#def global= t116 %v50 %b0,100 %x255
 
 #def 2= ~o2~/o4/ |0 ~%r11~/%r11/
 #def 3= ~o3~/o5/ |0 ~%r12~/%r12/

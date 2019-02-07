@@ -1,5 +1,6 @@
 Song conversions:
-    emberling -- bof2_battle
+    emberling -- blord_2tower
+                 bof2_battle
                  cc_dragonia, cc_home, cc_hydra, cc_life
                  crys_fields
                  ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair,
@@ -44,6 +45,7 @@ Song conversions:
                  so2_rescue
                  top_cold, top_mint, top_world1, top_world3
                  totr_arrow
+                 wc2_orc1
                  xc1_valakn
                  xc2_morardain, xc2_tantal
                  xg_boss, xg_flight, xg_tears

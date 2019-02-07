@@ -13,6 +13,7 @@
 
 [Imports]
 #custom songs
+blord_2tower:   setzer, locke, chocobo, blackjack, johnny, falcon*2, mountain
 bof2_battle:    I65, G05, unforgiven, grandfinale, battle
 cc_arni:        town*2
 cc_dragonia:    H2, omen3, zozo, magitek, kefkastower, owzer
@@ -240,6 +241,7 @@ top_world1:     omen3, shadow, cyan, narshe, ruin, balance, falcon, serpent
 top_world3:     I00, G85, johnny, umaro, zozo, falcon, serpent*2, floatingcont, kefkastower
 totr_arrow:     I75, G60, boss, grandfinale
 totr_spirit:    I99, G75, atma*2, grandfinale, dmad5
+wc2_orc1:       I20, G95, catastrophe, grandfinale, savethem, umaro, veldt, floatingcont, kefkastower
 xc1_valakn:     W4, omen3, celes, daryl, narshe, ruin*2, forest*2, W:prelude, W:coin, W:shadow, W:zozo, W:town_ruin, W:falcon, W:balance, W:mountain, W:espers
 xc2_morardain:  fanfare, grandfinale, setzer*2, moogles, umaro, martiallaw, falcon
 xc2_tantal:     W4, omen3, gestahl, zozo, narshe*2, train*2, ruin*2, serpent, espers, W:celes, W:cyan, W:gogo, W:umaro*2, W:owzer, W:balance, W:forest, W:floatingcont, W:kefkastower

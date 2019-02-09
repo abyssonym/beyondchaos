@@ -2684,6 +2684,12 @@ def manage_character_appearance(preserve_graphics=False):
         newsprite = newsprite[:ssizes[c]]
         fout.write(newsprite)
 
+    # celes in chains
+    fout.seek(0x17D660)
+    chains = fout.read(192)
+    fout.seek(0x159C74)
+    fout.write(chains)
+    
     manage_palettes(change_to, char_ids)
 
 

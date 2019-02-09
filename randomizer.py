@@ -2776,6 +2776,7 @@ def manage_palettes(change_to, char_ids):
         make_palette_repair(main_palette_changes)
 
     if new_palette_mode:
+        char_hues = shuffle_char_hues([ 0, 15, 30, 45, 60, 75, 90, 120, 150, 165, 180, 210, 240, 270, 300, 315, 330, 360 ])
         skintones = [ ( (31,24,17), (25,13, 7) ),
                       ( (31,23,15), (25,15, 8) ),
                       ( (31,24,17), (25,13, 7) ),
@@ -2787,7 +2788,8 @@ def manage_palettes(change_to, char_ids):
                       ( (28,22,16), (22,13, 6) ),
                       ( (28,23,15), (22,16, 7) ),
                       ( (27,23,15), (20,14, 9) ) ]
-        char_hues = shuffle_char_hues([ 0, 15, 30, 45, 60, 75, 90, 120, 150, 165, 180, 210, 240, 270, 300, 315, 330, 360 ])
+        if christmas_mode:
+            skintones.append( ((29,29,30),(25,25,27)) )
         
     for i in xrange(6):
         pointer = 0x268000 + (i*0x20)

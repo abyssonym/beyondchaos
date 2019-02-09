@@ -2471,7 +2471,7 @@ def manage_character_appearance(preserve_graphics=False):
                     ("umaro", 0x162620, 0x16A0), ("dancer", 0x1731C0, 0x5C0),
                     ("lady", 0x1748C0, 0x5C0)]
         for rc in recolors:
-            filename = os.path.join("custom","sprites","recolors","RC" + rc[0] + ".bin")
+            filename = os.path.join("data","sprites","RC" + rc[0] + ".bin")
             try:
                 with open_mei_fallback(filename, "rb") as f:
                     sprite = f.read()

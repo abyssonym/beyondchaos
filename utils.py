@@ -648,14 +648,43 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         hair_light = random.choice([random.randint(60,80), random.randint(55,90)])
         hair_dark = random.randint(int(hair_light * .5),int(hair_light * .65)) if hair_sat < 40 else \
                     random.randint(int(hair_light * .45),int(hair_light * .52))
+        hair_highlight = random.randint(93,100)
+        hair_shadow = random.randint(10,22)
         new_palette[4] = components_to_color(hsv_approx(nudge_hue(hair_hue), hair_sat + random.randint(-7,8), hair_light))
         new_palette[5] = components_to_color(hsv_approx(nudge_hue(hair_hue), hair_sat + random.randint(-7,8), hair_dark))
-        new_palette[2] = components_to_color(hsv_approx(nudge_hue(hair_hue), random.randint(80,100), random.randint(93,100)))
-        new_palette[3] = components_to_color(hsv_approx(nudge_hue(hair_hue), random.randint(10,100), random.randint(10,25)))
+        new_palette[2] = components_to_color(hsv_approx(nudge_hue(hair_hue), random.randint(80,97), random.randint(93,98)))
         
         cloth_sat = random.choice([random.randint(10,50), random.randint(30,60), random.randint(10,85)])
         cloth_light = random.randint(32, max(40,hair_dark + 5))
         cloth_dark = random.randint(int(cloth_light * .6), int(cloth_light * .72))
+        while hair_light >= hair_highlight - 8:
+            print("separating hair & highlight: hair {}   highlight {}".format(hair_light, hair_highlight))
+            hair_light -= 1
+            if hair_light <= int(hair_dark / .65): break
+        while hair_dark <= hair_shadow + 5:
+            hair_shadow -= 1
+            if hair_shadow <= 10: break
+        cycle, done = 0, 0
+        if cloth_hue >= 210 and cloth_hue <= 270:
+            mindelta = 8
+        elif cloth_hue >= 180 and cloth_hue <= 300:
+            mindelta = 6
+        else: mindelta = 4
+        while cloth_dark < hair_shadow + mindelta:
+            if cycle < 1: cycle = 1
+            if cycle == 1:
+                if cloth_dark < int(cloth_light * .72): cloth_dark += 1
+                elif done & 0b11: break
+                else: cycle = 2
+            elif cycle == 2:
+                if hair_shadow > 10: hair_shadow -= 1
+                else: done |= 0b10
+                cycle = 3
+            elif cycle == 3:
+                if cloth_light < hair_dark + 5: cloth_light += 1
+                else: done |= 0b01
+                cycle = 1
+        new_palette[3] = components_to_color(hsv_approx(nudge_hue(hair_hue), random.randint(10,100), hair_shadow))
         new_palette[8] = components_to_color(hsv_approx(nudge_hue(cloth_hue), cloth_sat + random.randint(-7,8), cloth_light))
         new_palette[9] = components_to_color(hsv_approx(nudge_hue(cloth_hue), cloth_sat + random.randint(-7,8), cloth_dark))
         

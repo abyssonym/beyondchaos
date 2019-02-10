@@ -651,9 +651,10 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         hair_highlight = random.randint(93,100)
         hair_shadow = random.randint(10,22)
         
-        cloth_sat = random.choice([random.randint(10,50), random.randint(30,60), random.randint(10,85)])
         cloth_light = random.randint(32, max(42,hair_dark + 10))
         cloth_dark = random.randint(int(cloth_light * .6), int(cloth_light * .72))
+        cloth_sat = random.choice([random.randint(10,50), random.randint(30,60), random.randint(10,85)]) if cloth_light < 40 else \
+                    random.choice([random.randint(10,40), random.randint(25,55))
         while hair_light >= hair_highlight - 8:
             hair_light -= 1
             if hair_light <= int(hair_dark / .65): break

@@ -2685,9 +2685,9 @@ def manage_character_appearance(preserve_graphics=False):
         fout.write(newsprite)
 
     # celes in chains
-    fout.seek(0x17D660)
+    fout.seek(0x159500)
     chains = fout.read(192)
-    fout.seek(0x159C74)
+    fout.seek(0x17D660)
     fout.write(chains)
     
     manage_palettes(change_to, char_ids)
@@ -2722,7 +2722,10 @@ def manage_palettes(change_to, char_ids):
         char_palette_pool = char_palette_pool[:4] + [twinpal, twinpal] + char_palette_pool[4:]
         
     palette_change_to = {}
+    additional_celeses = []
     for npc in npcs:
+        if npc.graphics == 0x41:
+            additional_celeses.append(npc)
         if npc.graphics not in charpal_options:
             continue
         if npc.graphics in change_to:
@@ -2747,7 +2750,10 @@ def manage_palettes(change_to, char_ids):
                 palette_change_to[(npc.graphics, npc.palette)] = new_palette
                 npc.palette = new_palette
             npc.palette = new_palette
-
+    for npc in additional_celeses:
+        if (6,0) in palette_change_to:
+            npc.palette = palette_change_to[(6,0)]
+    
     main_palette_changes = {}
     for character in characters:
         c = character.id

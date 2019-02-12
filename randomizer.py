@@ -2144,6 +2144,9 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True, s
         new_style_palette = None
         if skintones and char_hues:
             new_style_palette = generate_character_palette(skintones, char_hues, trance=trance)
+            if random.randint(1,100) == 1:
+                transformer = get_palette_transformer(middle=middle)
+                new_style_palette = transformer(new_style_palette)
         elif trance:
             new_style_palette = generate_character_palette(trance=True)
             
@@ -2794,7 +2797,7 @@ def manage_palettes(change_to, char_ids):
                       ( (28,22,16), (22,13, 6) ),
                       ( (28,23,15), (22,16, 7) ),
                       ( (27,23,15), (20,14, 9) ) ]
-        if christmas_mode:
+        if christmas_mode or random.randint(1,100) > 50:
             skintones.append( ((29,29,30),(25,25,27)) )
         
     for i in xrange(6):

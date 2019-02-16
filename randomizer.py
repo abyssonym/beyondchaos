@@ -6381,12 +6381,16 @@ def sprint_shoes_hint():
     sprint_shoes = get_item(0xE6)
     spell_id = sprint_shoes.features['learnspell']
     spellname = get_spell(spell_id).name
-    hint = "Equip relics to gain a variety of abilities!<EOP>These teach me {}!".format(spellname)
+    hint = "Equip relics to gain a variety of abilities!<page>These teach me {}!".format(spellname)
     sprint_sub = Substitution()
     sprint_sub.set_location(0xD2099)
     sprint_sub.bytestring = dialogue_to_bytes(hint)
     sprint_sub.write(fout)
 
+    # disable fade to black relics tutorial
+    sprint_sub.set_location(0xA790E)
+    sprint_sub.bytestring = b'\xFE'
+    sprint_sub.write(fout)
 
 def sabin_hint(commands):
     sabin = get_character(0x05)

@@ -16,8 +16,6 @@
 #WAVE 0x26 -- 0x0A
 #WAVE 0x27 -- 0x3F
 
-#SFXV ` *
-
 {1}
 l16t56%v50%x150%b0,70r64p72%e1v19@33o5a<v20dv21ev22a>v23a<v24dv25ev26a>v27a<v28dv29ev30a>v31av32<dv33ev34a  
 v35>a<dea>a<dea>a<dea>a<dea  v32>a<dea>a<dea>a<dea>a<dea  v31>a<dea>a<dea>a<dea>a<dea  
@@ -45,7 +43,7 @@ g+2f+g+abv62a12v57g+12v55f+12
 ;2
 
 l16
-*{3}*`{5}`
+{3}
 l16r64p88v20@35%e1%r10r1  
 r1  o5cdedc>b<cdef+gf+edc>b  <cdedc>b<cdef+gf+edcd  v30e8dge8>a8b8<c8d8e8  
 f+8gf+d2^4  e8dge8>a8b8<c8b8g8  a8bad2^4  p88@32v25%a5<f8%a9gf>a4.b8g8v28d8  
@@ -64,7 +62,7 @@ v35a8g+ef+8b8v40<d8c+8>b8a8  f+8ed+c+8>a8b4^<c+32d32e32f+32a32b32
 ;3
 
 l16
-*{4}*`{8}`
+{4}
 l16r48p40v20@35%e1%r10r1  r1  o4ab<c>bagab<cdedc>bag  
 ab<c>bagab<cdedc>bab  v42@32%a8b<c>b<c>b<c>b<c>b<c>b<c>b<cde  v50f+gf+gf+gf+gf+gf+gf+edc  
 v42>b<c>b<c>b<c>b<c>b<c>b<c>b<cde  v50f+gf+gf+gf+gf+gf+gf+edc  p56v30@34%a8%r10d8ed>f4.b8g8d8  
@@ -77,7 +75,7 @@ v30<a8g+af+8b8v40<d8c+8>a8e8  f+4.g+8f+3v35f12v30d+12
 ;4
 
 l16
-*{5}*`{3}`
+{5}
 l16r64p48v0@35%e1r1  
 o6b64<c64>b64g64d64r2r8r32r64b64<c64d64c64>b64g64d64r8r64  e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64g64e64r4.rr32r64  
 r1  v30@35>c8>b<dc8>e8g8a8b8<c8  d8ed>b2^4  <c8>b<dc8>e8g8a8<g8e8  
@@ -129,7 +127,7 @@ v55a+2^4^8^^32^64p32v60<c  d+v61dv62fv63d+v64gv65fv66g+v67gv68a+v69g+<v70c>v71a+
 ;7
 
 l16
-*{8}*`{4}`
+{8}
 l16r64p72v25@35%e1%a6%r8r1  
 r1  r1  r1  o6e8dge8>a8b8<c8d8e8  
 f+8gf+d2^4  e8dge8>a8b8<c8b8g8  a8bad2^4  v55@32o4c1  

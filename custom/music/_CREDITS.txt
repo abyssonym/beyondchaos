@@ -1,21 +1,23 @@
 Song conversions:
-    emberling -- bof2_battle
+    emberling -- blord_2tower
+                 bof2_battle
                  cc_dragonia, cc_home, cc_hydra, cc_life
                  crys_fields
                  ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair,
-                 ct_keeper, ct_night, ct_revolution, ct_robo, ct_schala,
-                 ct_theme, ct_truth, ct_tylair, ct_tyran, ct_zeal
-                 cv4_beginning
+                 ct_keeper, ct_mountain, ct_night, ct_revolution, ct_robo,
+                 ct_schala, ct_sewer, ct_theme, ct_truth, ct_tylair, ct_tyran,
+                 ct_zeal
+                 cv4_beginning, cv4_chandeliers
                  ds4_lyll
                  eo3_waves
                  ff2_battleb
                  ff3_warrior
                  ff4_calcobrena
-                 ff5_battle, ff5_cave, ff5_curse, ff5_excastle, ff5_final,
-                 ff5_home, ff5_hurry, ff5_lenna, ff5_library, ff5_theme,
-                 ff5_void, ff5_world1
-                 ff7_battle, ff7_corel, ff7_hurry, ff7_rebirth, ff7_reunion,
-                 ff7_snow
+                 ff5_battle, ff5_bridge, ff5_cave, ff5_curse, ff5_excastle,
+                 ff5_final, ff5_home, ff5_hurry, ff5_lenna, ff5_library,
+                 ff5_theme, ff5_void, ff5_world1
+                 ff7_battle, ff7_corel, ff7_costa, ff7_hurry, ff7_rebirth,
+                 ff7_reunion, ff7_snow
                  ff8_battle, ff8_horizon, ff8_lion, ff8_witches
                  ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
                  ffx_battle, ffx_gagazet, ffx_via, ffx_zanarkand
@@ -36,15 +38,17 @@ Song conversions:
                  sd2_prayer, sd2_prophecy, sd2_scorpion, sd2_sea, sd2_spirit,
                  sd2_star, sd2_steel, sd2_tasnica, sd2_thanatos, sd2_thunder,
                  sd2_tomorrow, sd2_town, sd2_wish
-                 sd3_angels, sd3_flight, sd3_tension, sd3_winter
+                 sd3_angels, sd3_counterpoint, sd3_flight, sd3_tension,
+                 sd3_winter
                  sdlm_snowfield
                  sf2_balrog
                  so2_rescue
                  top_cold, top_mint, top_world1, top_world3
                  totr_arrow
+                 wc2_orc1
                  xc1_valakn
                  xc2_morardain, xc2_tantal
-                 xg_boss, xg_flight
+                 xg_boss, xg_flight, xg_tears
     Gi Nattak -- cc_arni, cc_flame, cc_miguel
                  ct_boss2
                  cv3_aquarius
@@ -57,7 +61,7 @@ Song conversions:
                  ff4_town, ff4_troia, ff4_underworld, ff4_zeromus, ff4_zot
                  ff5_exdeath, ff5_world2
                  ff6_town2
-                 ff7_5years, ff7_costa, ff7_temple, ff7_tifa
+                 ff7_5years, ff7_temple, ff7_tifa
                  ff8_laguna, ff8_oath
                  ff9_blackmage, ff9_blackwaltz, ff9_dali, ff9_eiko,
                  ff9_home, ff9_memoria
@@ -84,7 +88,6 @@ Song conversions:
                  zoot_storms
     Jackimus -- ffx_seymour
     MetroidQuest -- ff4_boss, ff4_cave
-                    ff5_bridge
     Royaken -- ff4_bomb, ff4_mysidia, ff4_whale
                ff7_hurry2, ff7_judgment, ff7_materia, ff7_planet
                ff8_heresy

@@ -6,7 +6,6 @@
 
 #VARIANT ~
 #VARIANT / nopatch
-#SFXV ` *
                           #Buzzy syn %k9
                           #Sawtooth  %k11
 #WAVE 0x20:  0x0E         {Trumpet}  %k11
@@ -95,7 +94,7 @@ c.c.f e.e.e e2.. e1^8>]
 ;
 
 
-*{4}* `{7}`
+{4}
 %e1%k11v32p74@0x21o4m12,33,32l1
 a+. g+. b. g+.
 $@0x21%k11p74v24m12,33,32o4
@@ -209,7 +208,7 @@ v80
 ;
 
 
-*{7}* `{4}`
+{7}
 %e1
 [6r1]
 $@0x20%k11p64v32m72,16,24o4l8

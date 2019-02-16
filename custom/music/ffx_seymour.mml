@@ -16,8 +16,8 @@
 #WAVE 0x26 ~0x21~ /0x21/
 #WAVE 0x27 ~0x66~ /0x17/
 
-{1}
-l16t135%v32%b0,70%x224p64%e1%k1v70@3[6p96[2o7e>abf+<d>abebeac+ade>b  p32]]|2o4v80p64[12<e8>b8<d8>b<ere>b8<d8>b8  
+{6}
+l16t135%v32%b0,70%x224%f0,0p64%e1v70@3[6p96[2o7e>abf+<d>abebeac+ade>b  p32]]|2o4v80p64[12<e8>b8<d8>b<ere>b8<d8>b8  
 ] $1 o5[8g8d8f8dgrgd8f8d8  ]>[2[2<e8>b8<d8>b<ere>b8<d8>b8  ]@1v100[2ed+dc+c>ba+ag+gf+fed+dc+  
 <]|2v80[2<e8>b8<d8>b<ere>b8<d8>b8  ]@1v100ed+dc+c>ba+ag+gf+fed+dc+  
 cc+dd+eff+gg+aa+b<cc+dd+  |2v80[11<e8>b8<d8>b<ere>b8<d8>b8  ][2<d8>a8<c8>a<drd>a8<c8>a8  
@@ -32,7 +32,7 @@ f+r8[2f+8ef+r8]f+rf+ref+r8  ][6g+8d+8f+8d+g+rg+d+8f+8d+8  ]>
 
 l16
 {2}
-l16p64%e1%k1v70@3o6[6r4^8e8d8>b8<c+8>a8  
+l16p64%e1v70@3o6[6r4^8e8d8>b8<c+8>a8  
 <e>abf+a8b8a8f+8g8e8  <]|1o4v100[6b4^8bbrbrb<e8d8  >b4^8bbrbrba8r8  
 ] $2 |1o6v100rgd>a+fa<fd+d>dga+afgd  g>a+<fd+da+gd+<c>d+a+ag<d+d>a+  
 g4^8ggrgrga+8a8  g4^8ggrgrgf8r8  <rgd>a+fa<fd+d>dga+afgd  ggra8agaa+a+r<c8>a+gd+  
@@ -52,7 +52,7 @@ a1  g+4a+4<c4c+4  d+1  o5v120|4[4g^8]g8|6c8|4g1
 
 l16
 {3}
-l16p64%e1%k1v120|0o4~>~[4r1  
+l16p64%e1v120|0o4~>~[4r1  
 ]g1  f+1  b1  e1  
 c1  d1  r1  ^2^4>~<~@5v92[2e32g32b32<d32]|1v100[6e4  
 ^8eerereg8f+8e4  ^8eerered8r8] $3 |1o5v80r2  ^4^8d+rcr4ar8  gr4ar8f4^8ff  
@@ -74,7 +74,7 @@ e4f+4g+4a+4  b1  r1  v120|3c1
 
 l16
 {4}
-l16p64%e1%k1v120|0o5~>~[4r1  
+l16p64%e1v120|0o5~>~[4r1  
 ]g1  f+1  b1  e1  
 e1  d1  c1  ^1  
 [4r1  ]~<~@3v90eb[4rb]ar<d8>r8eb[4rb]ar  d8r8eb[4rb]ar<d8>r8e<e  gf+e>b<d>a<c>gbf+aegdeb  
@@ -96,8 +96,8 @@ f+ref+r8][3g+4^8g+g+rg+  rg+b8a+8g+4^8g+g+rg+  rg+f+8r8]
 ;4
 
 l16
-{5}
-l16p64%e1%k1v120|0o5~>~[4r1  
+{7}
+l16p64%e1v120|0o5~>~[4r1  
 ]e1  e1  g1  >b1  
 <c1  >b1  g1  ^1  
 |3[32g4]~<~@3<v95b<f+[4rf+]era8r8>b<f+  [4rf+]er>a8r8b<f+[4rf+]era8  
@@ -119,8 +119,8 @@ a+a+r8]a+ra+ra+a+r8]<[2c+rc+r8  c+r8[2c+8>b<c+r8]c+rc+r>b<c+r8
 ;5
 
 l16
-{6}
-l16p64%e1%k1v120|0o5~>~[4r1  
+{1}
+l16p64%e1v120|0o5~>~[4r1  
 ]b1  a1  <d1  >g1  
 g1  f+2b2  e1  ^1  ~<~
 [48|4v120g8|5v90c8] $6 o5p64[24|4v120g8|5v90c8]|6v120c8|7>b24a24g24e8<|6c8  
@@ -135,8 +135,8 @@ a+4<c+4>b4<e4  d+4a+4g+1  ^1  @3o5v70[2p124[2a+<[3d+r]d+>p4]]
 ;6
 
 l16
-{7}
-l16p64%e1%k1v120|0o5~>~[5r1  
+{5}
+l16p64%e1v120|0o5~>~[5r1  
 ]d1  f+1  r1  a1  
 a1  >c1  ^1  [8r1  
 ]~<~|3[16g4] $7 o5p64[18r1  ][120|4g8|5c8]|0>~>~[2d+1  ^1  c+1  
@@ -149,7 +149,7 @@ a+4<c+4>b4<e4  d+4a+4g+1  ^1  [2r1
 
 l16
 {8}
-l16p64%e1%k1v120|3o5[18r1  ] $8 |3[24r1  ]c4|6[31c2]c4  
+l16p64%e1v120|3o5[18r1  ] $8 |3[24r1  ]c4|6[31c2]c4  
 [14r1  ]|3c1  [14r1  ]|0>~>~f+1  
 ^1  ^1  ^2d+1  ^1  
 ^1  ^2f+1  ^1  ^1  

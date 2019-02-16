@@ -5,7 +5,6 @@
 
 #VARIANT ~ enh
 #VARIANT / nat
-#SFXV ` *
 
 #WAVE 0x20 0x20
 #WAVE 0x21 0x3E
@@ -32,7 +31,9 @@
 #def x3= v50
 #def x4= v40
 
-*{1}*`{7}`
+#SFXV ` *
+
+{1}
 'global' %e1 
 $
 ['bell' l4 p64 [4 rd2d r8d>c2^8<]
@@ -59,7 +60,7 @@ j2r1r1r1r1]
 l16 m48,18,239[ab<c4cd e8.dedc8 >b<dg4ga b8.abgdg e1^1>]
 ;
 
-*{3}*`{1}`
+{3}
 $ %e1 [p64
 'bell' l4 [4 r8b2b >b8b8.b >b2^16<<]
 ##9
@@ -71,7 +72,7 @@ j2r1r1r1r1]
 l16 [fga4ab <c8.>b<c>ba8 gb<d4de g8.egd>b<d> a1^1]
 ;
 
-*{4}*`{8}`
+{4}
 $ %e1 [p64
 'bell' l8 [4 r2.^16 c.r16c4 >d2^.<]
 ##9
@@ -100,12 +101,12 @@ j2,621[[7a4]ag]]$621 j1,0
 l4 ['bass' f1g1 'pizza'> [8e]]
 ;
 
-*{7}*`{3}`
+{7}
 $ %e1 p64 'pizza' [j2,701%j501$701
 ##37
 ;
 
-*{8}*`{4}`
+{8}
 $ %e1 p64 'pizza' [j2,801%j601$801
 ##37
 l4 'pluck'>[ r1r1 e[7r]]

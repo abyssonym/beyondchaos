@@ -2,7 +2,7 @@
 #ALBUM Final Fantasy Mystic Quest
 #COMPOSER Yasuhiro Kawakami
 #ARRANGED emberling
-# via ff5~ff6mcs2
+# via ff5ff6mcs2
 # Converted from binary by mfvitools
 
 #WAVE 0x20 -- 0x22
@@ -15,7 +15,7 @@
 
 
 {1} t140%x232
-l16%b60,0%v75v80p64@39o6%e1c6r12c24r24c24r24c24r24e12r12c12r12e12r12  
+l16%b0,60%v75v80p64@39o6%e1c6r12c24r24c24r24c24r24e12r12c12r12e12r12  
 g12rr24<c24r48c2r4  $ >erererdr4rfrfr  frer4rdr8.er8.  dr8.dr8.c4r8er  
 r8erdr8.cr8.dr8.  <
 ;

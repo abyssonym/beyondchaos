@@ -17,7 +17,7 @@
 #WAVE 0x2B ~0x5F~ /0x2F/ shaker
 #WAVE 0x2C ~0x5E~ /0x23/ cowbell
 
-#def global= t100 %v50 %x224 %b0,70
+#def global= t100 %v50 %x224 %b0,70 %f0,0
 
 #def git= |0 p64 v72 %e1 ~o5~ %a14 %y3 %s2 %r14 /o5 m/
 #def sit= |1 p64 ~v80~ %e1 ~o5~ /o4 v104 %r14 %a15 %y7 %s2 m16,18,237/

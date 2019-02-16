@@ -15,7 +15,7 @@
 #WAVE 0x2A 0x16
 #WAVE 0x2B ~0x8E~/0x12/
 
-#def global= t90 %x224 %v50 %b0,70
+#def global= t90 %x224 %v50 %b0,70 %f0,0
 
 #def string= |0 ~o4~/o5/ %e1 v m48,18,207
 #def choir= |1 ~o3~/o4/ %e1 v m48,18,223

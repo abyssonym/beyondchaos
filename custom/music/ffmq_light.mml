@@ -2,7 +2,7 @@
 #ALBUM Final Fantasy Mystic Quest
 #COMPOSER Yasuhiro Kawakami
 #ARRANGED emberling
-# via ff5~ff6mcs2
+# via ff5ff6mcs2
 # Converted from binary by mfvitools
 
 #WAVE 0x20 --  0x0c          #Piano
@@ -13,7 +13,7 @@
 #WAVE 0x2A --  0x1A          #Trombone
 
 {1} t80 %x224
-l16%b0,70%v80v112p56 |1 o5%k2%e1%a15%y6%s2%r17
+l16%b0,60%v80v112p56 |1 o5%k2%e1%a15%y6%s2%r17
 ;1
 
 {2}

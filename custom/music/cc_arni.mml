@@ -4,8 +4,8 @@
 #ARRANGED Gi Nattak
 # Converted from binary by mfvitools
 
-#VARIANT ~
-#VARIANT / nopatch
+#VARIANT ~ enh
+#VARIANT / nat
 
 #WAVE 0x20 -- /0x32/ ~0x54~
 #WAVE 0x21 -- /0x0D/ ~0x45~

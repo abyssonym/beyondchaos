@@ -17,7 +17,7 @@
 #WAVE 0x29  0x2A
 #WAVE 0x2A ~0x55~ /0x0F/
 
-#def global= t120 %v40 %x224 %b0,70
+#def global= t120 %v40 %x224 %b0,70 %f0,0
 
 #def xyl= |0 %e1 p48 v80 o5 m24,18,239 %y4%s2
 #def pet= |1 %e1 p80 v80 o6 m24,18,239
@@ -47,23 +47,13 @@ l16 'horn'<
 arara4 ararg4 grgrg4 grgrf4
 <r8d8ef8d ^8d8ef8. ^8e8fg8a ^8g8fe8^>
 
-##was 5
 'horn' l32 [3d16.r<d16.r>f16.r<f16.r> e16.r<e16.r>d+16.r<d+16.r>]
 'pet' l16 <d4.c>b< f4e4
 'horn' l32 [2d16.r<d16.r>f16.r<f16.r> e16.rj2<e16.r>d+16.r<d+16.r>]
 'pet' l16 <d4e8
 r8ffed8r ff8f8.ed r8ffef8g ^8f8ef8.
-##was 4
 'horn'r8<<aagf8. aa8a8.gf r8ffef8g ^8f8ed+8.
 d8.c+8.c8 ^8>b4a+8 r8<ff8f8f f2
-
-##OLD 1
-#[<c>afd]bged bge->b<    a+gd>a+< a+fd>a+< aec>a< ae-c>a<
-#[<c>afd]bged bge->b<    [afd>a<] a+fda+ <c>b-af
-#[<c>afd]bged bge->b<    a+gd>a+< a+fd>a+< aec>a< ae-c>a<
-#<[fd>ad<]fgae fd>ad<    [fd>ad<]f>a<d>f adf>a<
-#defd gdad <c>dad gdfd   defd gdad <c>dad <c>d<d>d
-#defd defd cdec defd     defd gdad cdec fcd8
 ;
 
 {5}
@@ -79,25 +69,14 @@ v48 [32a+]<[32c]
 &6[8f][8e][8c][8d]r32
 'xyl' >r32a8a8aaa8 a8a8aaa8 <c8c8ccc8> a+8a+8aaa16.
 
-##was 4
 'horn' l16 <
 frfrf4 frfrd4 drdrg4 ererf4
 frfrf4 frfrd4 a4.aa a+4a4
 frfrf4 frfrd4 drdrg4 ererf4
 drdrd4 drdrd4 drdrd4 drcra4
-##was 2
 'cord' %r15 l16 v64
 r8ddga8. dd8d8.ga r8ddad8c ^8>a8ag+8.
 <d8.e8.f8 ^8e4d+8 r8>aa8a8a <d2
-
-##OLD 2
-#'cord' %r15 l16
-#d8fa8<c8.> b4g4 r8a+8<c>a+8%r2a ^2 %r15
-#d8fa8<c8.> b4g4 frfrf4 grgrg4
-#d8fa8<c8.> b4g4 r8a+8<c>a+8%r2a ^2 %r15
-#v64 r8ddef8r dd8d8.ef r8ddef8c ^8f8gf8.
-#r8ddga8. dd8d8.ga r8ddad8c ^8>a8ag+8.
-#<d8.e8.f8 ^8e4d+8 r8>aa8a8a <d2
 ;
 
 {6}
@@ -109,24 +88,13 @@ l16 $ 'horn'
 frfrf4 erere4 crcrc4 drdrd4
 r8a8aa+8a ^8a8a<c8. ^8>a8<cd8e ^8>a+8<d>a8^
 
-##was 3
 'cord' %r16 l16
 >a8a<c8f8. g4d4 r8f8fd8%r2e ^2 %r16
 >a8a<c8f8. g4d4 drdrd4 crcre4
 >a8a<c8f8. g4d4 r8f8fd8%r2e ^2 %r16
 >r8ffed8r ff8f8.ed r8ffef8g ^8f8ef8.
-##was 5
 'horn' <r8ddga8. dd8d8.ga r8ddad8c ^8>a8ag+8.
 <d8.e8.f8 ^8e4d+8 'pet' r8ff8f8f f2
-
-##OLD 3
-#'cord' %r16
-#>a8a<c8f8. g4d4 r8f8fd8%r2e ^2 %r16
-#>a8a<c8f8. g4d4 drdrd4 crcre4
-#>a8a<c8f8. g4d4 r8f8fd8%r2e ^2 %r16
-#>r8ffed8r ff8f8.ed r8ffef8g ^8f8ef8.
-#'horn' l16 r8<<ffed8. ff8f8.ed r8ddcd8e ^8d8c>b8.
-#a+8.a8.g+8 ^8g4f+8 r8<dd8d8d d2
 ;
 
 {7}
@@ -139,8 +107,6 @@ efed+ef^8 ^8f4e8 f8e8d+8e8 f8e8a8g8
 v48 [12a][16g][4f]
 'xyl' d8d8ddd8 d8d8ddd8 f8f8fff8 e8e8eee8
 
-##was 1
-##was 1
 'xyl' l16
 [<c>afd]bged bge->b<    a+gd>a+< a+fd>a+< aec>a< ae-c>a<
 [<c>afd]bged bge->b<    [afd>a<] a+fda+ <c>b-af
@@ -148,14 +114,6 @@ v48 [12a][16g][4f]
 <[fd>ad<]fgae fd>ad<    [fd>ad<]f>a<d>f adf>a<
 defd gdad <c>dad gdfd   defd gdad <c>dad <c>d<d>d
 defd defd cdec defd     defd gdad cdec fcd8
-
-##OLD 4
-#frfrf4 frfrd4 drdrg4 ererf4
-#frfrf4 frfrd4 a4.aa a+4a4
-#frfrf4 frfrd4 drdrg4 ererf4
-#drdrd4 drdrd4 drdrd4 drcra4
-#'horn'r8<<aagf8. aa8a8.gf r8ffef8g ^8f8ed+8.
-#d8.c+8.c8 ^8>b4a+8 r8<ff8f8f f2
 ;
 
 {4}
@@ -167,24 +125,13 @@ efed+ef^8 ^8f4e8 f8e8d+8e8 f8e8a8g8
 a4^%g1>a+<df%g0 a4g4 g4^%g1>a<ce %g0g4f4
 %r20 d8d8ddd8 d8d8ddd8 f8f8fff8 e8e8eee8 %r
 
-##was 2
 'cord' %r15 l16
 d8fa8<c8.> b4g4 r8a+8<c>a+8%r2a ^2 %r15
 d8fa8<c8.> b4g4 frfrf4 grgrg4
 d8fa8<c8.> b4g4 r8a+8<c>a+8%r2a ^2 %r15
 v64 r8ddef8r dd8d8.ef r8ddef8c ^8f8gf8.
-##was 3
 'horn' l16 r8<<ffed8. ff8f8.ed r8ddcd8e ^8d8c>b8.
 a+8.a8.g+8 ^8g4f+8 r8<dd8d8d d2
-
-##OLD 5
-#'horn' l32 [3d16.r<d16.r>f16.r<f16.r> e16.r<e16.r>d+16.r<d+16.r>]
-#'pet' l16 <d4.c>b< f4e4
-#'horn' l32 [2d16.r<d16.r>f16.r<f16.r> e16.rj2<e16.r>d+16.r<d+16.r>]
-#'pet' l16 <d4e8
-#r8ffed8r ff8f8.ed r8ffef8g ^8f8ef8.
-#'horn' <r8ddga8. dd8d8.ga r8ddad8c ^8>a8ag+8.
-#<d8.e8.f8 ^8e4d+8 'pet' r8ff8f8f f2
 ;
 
 {2}

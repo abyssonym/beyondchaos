@@ -1,4 +1,4 @@
-#TITLE Fire Above the Battle
+#TITLE The Gun Barrel Battle
 #ALBUM Lost Odyssey
 #COMPOSER Nobuo Uematsu
 #ARRANGED emberling
@@ -6,40 +6,41 @@
 #VARIANT ~ enh
 #VARIANT / nat
 
-#WAVE 0x20 ~0x46~/0x0D/
-#WAVE 0x21 ~0x69~/0x2C/
+#WAVE 0x20 ~0x94~/0x0D/
+#WAVE 0x21 ~0x46~/0x2C/
 #WAVE 0x22 ~0x0E~/0x0E/
-#WAVE 0x23 ~0x73~/0x08/
+#WAVE 0x23 ~0x7A~/0x08/
 #WAVE 0x24 ~0x07~/0x07/
 #WAVE 0x25 ~0x60~/0x18/
 #WAVE 0x26 ~0x1B~/0x1B/
-#WAVE 0x28 ~0x24~/0x00/
-#WAVE 0x2A ~0x66~/0x17/
-#WAVE 0x2C ~0x6d~/0x12/
+#WAVE 0x27 ~0x69~/0x00/
+#WAVE 0x28 ~0x91~/0x00/
+#WAVE 0x2A ~0x17~/0x17/
+#WAVE 0x2C ~0x50~/0x12/
 
-#def global= t135 %v30 %x224 %b0,70
+#def global= t135 %v30 %x255 %b0,70 %f0,0
 
 #def str= |0 ~o5~/o5/ m48,18,223
-#def bas= ~|0 o4~/|1 o6/ m48,18,223
-#def vio= ~|1 o4~/|1 o6/ m48,18,239
+#def bas= ~|1 o4~/|1 o6/ m48,18,223
+#def vio= ~|7 o4~/|1 o6/ m48,18,239
 #def pet= |2 o4 m48,18,239
 #def hrn= |3 o4 m48,18,239
 #def flt= |4 o4 m48,18,239
 #def pno= |5 ~o3 %r13~/o5/ m
 #def hrp= |6 o4 m
 
-#drum "f-"=~5c~/4c+/ |A v46 p52
-#drum "g-"=~5d+~/4e/ |A v46 p60
-#drum "a-"=~5g~/4g+/ |A v46 p64
-#drum "f"=~5c~/4c+/ |A v96 p56
-#drum "g"=~5d+~/4e/ |A v96 p60
-#drum "a"=~5g~/4g+/ |A v96 p64
-#drum "b"=~5b~/5c/ |A v96 p68
-#drum "c"=~6d~/5d+/ |A v96 p72
-#drum "d"=~6f~/5f+/ |A v96 p76
-#drum "o"=~7c~/6c+/ |A v96 p64
+#drum "f-"=~4c+~/4c+/ |A v72 p52
+#drum "g-"=~4e~/4e/ |A v72 p60
+#drum "a-"=~4g+~/4g+/ |A v72 p64
+#drum "f"=~4c+~/4c+/ |A v112 p56
+#drum "g"=~4e~/4e/ |A v112 p60
+#drum "a"=~4g+~/4g+/ |A v112 p64
+#drum "b"=~5c~/5c/ |A v112 p68
+#drum "c"=~5d+~/5d+/ |A v112 p72
+#drum "d"=~5f+~/5f+/ |A v112 p76
+#drum "o"=~6c+~/6c+/ |A v112 p64
 #drum "y"=5f |C v127 p64
-#drum "z"=~6c+ |8~/5c+ |5/ v127 p88
+#drum "z"=~5c+ |8~/5c+ |5/ v127 p88
 
 {1}
 'global' %e1
@@ -48,9 +49,9 @@ $
 e%l1f+g%l0%l1a b%l0%l1ag%l0%l1a b%l0%l1<c+d%l0%l1e f+%l0%l1ed%l0%l1e
 f+%l0%l1ga%l0%l1b <c+>%l0%l1ba%l0%l1b <c+%l0%l1de%l0%l1f+ g%l0%l1ab%l0%l1<c+>
 ##3
-$ 'bas' v64 < p88
+$ 'str' v64 < p88
 %l0 %r9 b1^1^1^1^4. v96
-a+2^8^1 %r14 a+4. v112 %a5%r9 a+2^8^1
+g2^8^1 %r14 g4. v112 %a5%r9 g2^8^1
 ##11
 'vio' v84 p44 %r9 l4
 < f+1^ef+g a.g8f+1ef+ d2.f+c+2f+2> b1^1
@@ -74,14 +75,14 @@ f+ga b<c+d edc+> bag]
 'flt' p50 l24 v44 l24 <<[24ef+]
 ;
 
-{2}
+{7}
 'str' v64 p88 l16 > %l0 %e1
 %l0%l1ef+%l0%l1ga %l0%l1ba%l0%l1ga %l0%l1b<c+%l0%l1de %l0%l1f+e%l0%l1de
 %l0%l1f+g%l0%l1ab %l0%l1<c+>b%l0%l1ab %l0%l1<c+d%l0%l1ef+ %l0%l1ga%l0%l1b<c+>%l0
 ##3
-$ 'str' v64 < p88
+$ 'bas' v64 < p88
 %l0 %r9 b1^1^1^1^4. v96
-g2^8^1 %r14 g4. v112 %a5%r9 g2^8^1
+a+2^8^1 %r14 a+4. v112 %a5%r9 a+2^8^1
 ##11
 'str' v96 p72 %r9 l4
 < f+1^ef+g a.g8f+1ef+ d2.f+c+2f+2 >b1^1<
@@ -108,7 +109,7 @@ l16 [ [ |2%p1%p70v127d <|4%p0p32v24d[v32dv24d]>]
 %r11 l4 b< [%r11e.%r16e.e]
 ;
 
-{3}
+{2}
 r1
 'str' v64 p40 l16 %e1
 c+%l1de%l0%l1f+ g%l0%l1f+e%l0%l1f+ g%l0%l1ab%l0%l1<c+ d%l0%l1ef+%l0%l1g%l0
@@ -119,7 +120,7 @@ v80 p32 l12
 c+>a+<c+ ec+e geg a+ga+     p192,76 <c+>a+g a+ge gec+ ec+>a+
 ga+<c+> a+<c+e c+eg egg+    a+1
 ##11
-'str' v64 p58 %a12%s8%r9 l4
+'str' v64 p58 %a12%s7%r9 l4
 f+1^ef+e f+.d8f+1ef+ b2.f+a2f+2 d1c+1
 ##19
 'hrn' v80 p48 %r9 l4
@@ -139,7 +140,7 @@ a.b- <c.d.e     f.e.d+ d.c+.c] v96,104a.b- v192,112<c.d.e
 >b.<c+.d e.f+.^
 ;
 
-{4}
+{5}
 r1r1
 $
 'bas' v64 p58 l4 > %e1
@@ -167,7 +168,7 @@ d.d.d c+.c+.c+ >[b.b.b]
 e.f+.g a.b.<c+
 ;
 
-{5}
+{3}
 r1r1
 $
 'pno' v80 p96 l4 %e1
@@ -223,7 +224,7 @@ v192,80 e%l1f+g%l0%l1a b%l0%l1ag%l0%l1a b%l0%l1<c+d%l0%l1e f+%l0%l1ed%l0%l1e
 v192,127 f+%l0%l1ga%l0%l1b <c+>%l0%l1ba%l0%l1b <c+%l0%l1de%l0%l1f+ g%l0%l1ab%l0%l1<c+>
 ;
 
-{7}
+{4}
 l8
 [2"af-f-gf-f-gf-"]
 $

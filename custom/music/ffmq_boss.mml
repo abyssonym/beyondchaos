@@ -18,7 +18,7 @@
 #WAVE 0x29 -- ~0x74~/0x00/
 
 {1}
-l16t128%v50%x164%b0,70~v127~/v96/p64%e1%k2@40%r0~o4~/o5/a8e<c8>ea+8ea8egaa+g  
+l16t128%v60%x164%b0,60~v127~/v96/p64%e1%k2@40%r0~o4~/o5/a8e<c8>ea+8ea8egaa+g  
 e8<e8.e8.e8.e8.e8   $2 [2~o4~/o5/gaaa<c>[6a]<c8.>b8efff<c  >[8f]g8.gaaa<c>[6a]<c8.>b8f  
 fff<c>fffff<c>ffg8.]a2  <c2>b4g+4  a4b4f2  e2<d4c4  
 >b8ag+4^a2  <c2>b4<e4  >g+8a8b8g+8f2  e2g+8.<e8.d8.  

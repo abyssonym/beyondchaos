@@ -1,0 +1,182 @@
+#TITLE Weird Counterpoint
+#ALBUM Seiken Densetsu 3
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x1f~/0x1f/ flute
+#WAVE 0x21 ~0x86~/0x3E/ xylophone
+#WAVE 0x22 ~0x2C~/0x2C/ low strings
+#WAVE 0x23 ~0x46~/0x0D/ high strings
+#WAVE 0x24 ~0x1C~/0x1C/ bass
+#WAVE 0x25 ~0x03~/0x03/ layer flute
+#WAVE 0x2A ~0x55~/0x2F/ tambourine
+#WAVE 0x2B ~0x65~/0x22/ tom-tom//kick
+#WAVE 0x2C ~0x17~/0x17/ hard bass hit//conga
+
+#def global= t121 %v72 %b0,56 %f0,0 %x224
+
+#def fl1= |0 v80 p80 %e1 %r6 o5 m48,18,239
+#def fl2= |5 v32 p80 %e1 %a11%r15 o5 m48,18,239
+#def xyl= |1 ~v80~/v64/ p48 %e1 ~o3~/o4/ m
+#def st1= |2 v64 p64 %e1 o6 %a7 m
+#def st2= |3 v80 p80 %e1 o6 m48,18,207
+#def st3= @0 v16 p96 %e1 o5 %y3%s2%r7
+#def bas= |4 v16 p64 %e0 o6 %a7 m48,18,127
+
+#drum "a"=2d |C v127 p64 %e1
+#drum "b"=2d |C v107 p64 %e1
+#drum "c"=2d |C v87 p64 %e1
+#drum "d"=2d |C v67 p64 %e1
+#drum "e"=2d |C v47 p64 %e1
+
+#drum "f"=4b |B v23 p96 %e0
+#drum "g"=4b |B v32 p96 %e0
+#drum "h"=4b |B v41 p96 %e0
+#drum "i"=4b |B v50 p96 %e0
+#drum "j"=4b |B v60 p96 %e0
+#drum "k"=4b |B v68 p96 %e0
+#drum "l"=4b |B v76 p96 %e0
+#drum "m"=4b |B v84 p96 %e0
+#drum "m+"=4b |B v100 p96 %e0
+#drum "n"=4d+ |B v115 p96 %e0
+#drum "o"=4a+ |B v115 p96 %e0
+#drum "p"=5g |B v115 p96 %e0
+
+#drum "q"=3g |C v70 p32 %e0 %r24
+#drum "r"=4d |C v70 p32 %e0 %r24
+#drum "s"=4g |C v70 p32 %e0 %r24
+#drum "q+"=4a |C v70 p32 %e0 %r24
+#drum "r+"=4b |C v70 p32 %e0 %r24
+#drum "s+"=5c+ |C v70 p32 %e0 %r24
+
+#drum "t-"=5a |A v20 p48 %e1
+#drum "t"=5a |A v25 p48 %e1
+#drum "t+"=5a |A v30 p48 %e1
+#drum "u"=5a |A v34 p48 %e1
+#drum "v"=5a |A v38 p48 %e1
+#drum "w"=5a |A v42 p48 %e1
+#drum "x"=5a |A v46 p48 %e1
+#drum "y"=5a |A v50 p48 %e1
+#drum "z"=5a |A v58 p48 %e1
+
+{1}
+'global'
+l32 "t-tt+uvwxy"$[
+'fl1' l16
+[[drdr>ara<crc>f8ga<cj2>a<]e]
+[frfrerefrfd8>a<cdj2c]g [frfrerefrfd8j2>a<cdc]cd>ag<
+[[drdr>ara<crc>j2f8ga<c>a<]j2f8ga<ce]fga24<c24d24f24g24<c24
+[drdr>ara<crc>f8ga<cj2>a<]e frfrerefrf>a8ga<cg frfrerefrfer dv65dv50dv35d
+##18
+'fl1' l16
+[>a<cdcdrcdrdrdfrfr >a<cdcdrcdr>d<drr4    >a<cdcdrcdrdrdfg32f32dc >a<cdcdrcdr>d<drr8j2r8]
+##27
+'st2' l8 %a2 d4.
+^4.%acd4.e d2^c>ba   g.a.<c>a16r16r4f g.a.<c>a16r4..<
+d4.cd4.e d2^c>ba   g.a.<c>a16r8r4f16 g.a.<c>a16r4..
+]
+l4> d2.f d2.f g2c2 d1
+    a2.<c> a2.<c d2>b2 a1
+;
+
+{2}
+r4$[
+'st1'> l4
+[4d2.f d2.f g2c2 d1]
+##18
+'xyl' l16
+[4>a<cdcdrcdrdrdfrfr >a<cdcdrcdr>d<drr4]
+##27
+r4 'st1'> l8 [g2..f g2..>a< d.d.dd16r16r4>a< d.d.dd16r4..]
+]
+l4 [d2.f d2.f g2c2 d1]
+;
+
+{3}
+l32 "fghijklm" $[
+l16 [4"!!!o npop oopo o4 p8op" "onp8 op8o o8on"j4"poop"]l32 ":n:fghijklm"
+l16 [4"!!!o npop oopo o4 p8op" "onp8 op8o o8on poop"]
+##18
+["!!!o npop oopo ^4 ^8n8"  "npop oopo ^2" 
+ "npop oopo ^4 ^8i32k32m32m+32"  "npop oopo ^2"]
+##27
+r4 [4"!!!o npop oopo o4 p8op" "onp8 op8o o8on"j4"poop"]":n:popp"
+]
+l32 ["!!!o n1^1^1^2. fghijklm"]
+;
+
+{4}
+r4$[
+l16[4"sqqs q8rq ^s8q qrq8"    "sqqs q8rq ^s8q qqrq"
+     "sqqs q8rq ^s8q qrq8" j4 "sqqs q8sq ^r8q qrsq"]
+                              "sqqs q8sq ^r8q qsss"
+##18
+[4[3"!!!o uuuw zuuu"]"uuu4^u"]
+##27
+r4 ["!!!o sqqs q8rq ^s8q qrq8" j2 "sqqs q8rq ^s8q qqrq"] "sqqs q8sq ^r8q qrsq"
+"sqqs q8rq ^s8q qrq8" "sqqs q8rq ^s8q qqrq"
+"sqqs q8rq qs+8s+ s+32s+32s+r+q+" "sqqs q8sq ^r8q qrsr"
+]
+[r1r1r1r2. l32 "!!!o t-tt+uvwxy"]
+;
+
+{5}
+r4$[
+l16 [["z4x8.z8.x8.xz8" "z8.x8.x8z8x4." "z4x8.z8.x8.xz8" "z8.x8.x8z8x8"j2"^8u32w32y32z32"]
+j2 l32"t-tt+uvwxy"]l16"zuuw"
+##18
+'bas'> %a l16
+[4>a<cdcdrcdrdrdfrfr >a<cdcdrcdr>d<drr8j4r8]
+##27
+'st2'> p64 l8 %a2 g4.
+^4.%afg4.a g2^fed c.d.fd16r^.>a< c.d.fd16r4..
+g4.fg4.a g2^fed c.d.f l16 p56dp40fp24gp8ap72<cp88d>p104ap48d c8.d8.f8dr4..
+]
+'st1'>>
+l4 [d2.f d2.f g2c2 d1]
+;
+
+{6}
+r4$[
+l16 [8"a2.^16a8.a1"]
+##18
+[["!!!o a8.b8.c8.d8.e8c8" j2 "a8.b8.c8.d8.e8.c16"] "a8.b8.c8.d4.."]
+##27
+r4 [4"^2.a4 ^2^a8.a4"]
+]
+^2. "a1 ^1^1^1 a1a1a1a4"
+;
+
+{7}
+r4$[
+'fl2' l16
+[[drdr>ara<crc>f8ga<cj2>a<]e]
+[frfrerefrfd8>a<cdj2c]g [frfrerefrfd8j2>a<cdc]cd>ag<
+[[drdr>ara<crc>j2f8ga<c>a<]j2f8ga<ce]fga24<c24d24f24g24<c24
+[drdr>ara<crc>f8ga<cj2>a<]e frfrerefrf>a8ga<cg frfrerefrfer dv28dv24dv20d
+##18
+'fl2' l16
+[>a<cdcdrcdrdrdfrfr >a<cdcdrcdr>d<drr4    >a<cdcdrcdrdrdfg32f32dc >a<cdcdrcdr>d<drr8j2r8]
+##27
+'st3' l8 %a2 d4.
+^4.%a15cd4.e d2^c>ba   g.a.<c>a16r16r4f g.a.<c>a16r4..<
+d4.cd4.e d2^c>ba   g.a.<c>a16r8r4f16 g.a.<c>a16r4..
+]
+l4> d2.f d2.f g2c2 d1
+    a2.<c> a2.<c d2>b2 a1
+;
+
+{8}
+r4$[
+'bas'> l4
+[4d2.f d2.f g2c2 d1]
+##18
+[8r1]
+##27
+r4 'bas'> l8 [g2..f g2..>a< d.d.dd16r16r4>a< d.d.dd16r4..]
+]
+l4 [d2.f d2.f g2c2 d1]
+;

@@ -2302,10 +2302,10 @@ def manage_character_names(change_to, male):
             names[10] = random.choice(malenames)
     else:
         f = open_mei_fallback(MALE_NAMES_TABLE)
-        malenames = sorted(set([line.strip() for line in f.readlines()]))
+        malenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
         f.close()
         f = open_mei_fallback(FEMALE_NAMES_TABLE)
-        femalenames = sorted(set([line.strip() for line in f.readlines()]))
+        femalenames = sorted(set(sanitize_names([line.strip() for line in f.readlines()])))
         f.close()
         for c in range(14):
             choose_male = False

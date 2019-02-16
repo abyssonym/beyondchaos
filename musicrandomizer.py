@@ -79,6 +79,87 @@ def despoil(t=""):
 def dprint(t):
     pass
 
+# define native song information
+class TrackMetadata:
+    def __init__(self, title="", album="", composer="", arranged=""):
+        self.title, self.album, self.composer, self.arranged = title, album, composer, arranged
+        
+metadata = {
+    "ff6_prelude": "The Prelude",
+    "ff6_omen1": "Omen, part 1",
+    "ff6_omen2": "Omen, part 2",
+    "ff6_omen3": "Omen, part 3",
+    "ff6_awakening": "Awakening",
+    "ff6_balance": "Terra's Theme",
+    "ff6_shadow": "Shadow's Theme",
+    "ff6_strago": "Strago's Theme",
+    "ff6_gau": "Gau's Theme",
+    "ff6_figaro": "Edgar & Sabin's Theme",
+    "ff6_coin": "Coin of Fate",
+    "ff6_cyan": "Cyan's Theme",
+    "ff6_locke": "Locke's Theme",
+    "ff6_rachel": "Forever Rachel",
+    "ff6_relm": "Relm's Theme",
+    "ff6_setzer": "Setzer's Theme",
+    "ff6_daryl": "Epitaph",
+    "ff6_celes": "Celes's Theme",
+    "ff6_chocobo": "Techno de Chocobo",
+    "ff6_boss": "The Decisive Battle",
+    "ff6_johnny": "Johnny C. Bad",
+    "ff6_kefka": "Kefka",
+    "ff6_narshe": "The Mines of Narshe",
+    "ff6_forest": "Phantom Forest",
+    "ff6_veldt": "The Veldt",
+    "ff6_savethem": "Protect the Espers! // Save Them!",
+    "ff6_gestahl": "The Gestahl Empire",
+    "ff6_troops": "Troops March On",
+    "ff6_martiallaw": "Under Martial Law",
+    "ff6_metamorphosis": "Metamorphosis",
+    "ff6_train": "Phantom Train",
+    "ff6_espers": "Esper World",
+    "ff6_grandfinale": "Grand Finale?",
+    "ff6_mountain": "Mt. Koltz",
+    "ff6_battle": "Battle",
+    "ff6_fanfareslow": "Unused Fanfare",
+    "ff6_wed_dance": "Wedding Waltz - Dance",
+    "ff6_aria": "Aria di Mezzo Carattere",
+    "ff6_serpent": "The Serpent Trench",
+    "ff6_zozo": "Slam Shuffle",
+    "ff6_town": "Kids Run Through the City",
+    "ff6_what": "What?",
+    "ff6_gogo": "Gogo's Theme",
+    "ff6_returners": "The Returners",
+    "ff6_fanfare": "Victory Fanfare",
+    "ff6_umaro": "Umaro's Theme",
+    "ff6_moogles": "Mog's Theme",
+    "ff6_unforgiven": "The Unforgiven",
+    "ff6_atma": "Battle to the Death",
+    "ff6_town_ruin": "From That Day On... // The Day After",
+    "ff6_blackjack": "The Airship Blackjack",
+    "ff6_catastrophe": "Catastrophe",
+    "ff6_owzer": "The Magic House",
+    "ff6_dmad123": "Dancing Mad (part 1)",
+    "ff6_spinachrag": "Spinach Rag",
+    "ff6_death": "Rest in Peace".
+    "ff6_opera_intro": "Overture - Intro",
+    "ff6_opera_draco": "Overture - Draco",
+    "ff6_opera_overture": "Overture - Intermission",
+    "ff6_wed_attack": "Wedding Waltz - Attack",
+    "ff6_wed_duel": "Wedding Waltz - Duel",
+    "ff6_wed_rafters": "Wedding Waltz - In the Rafters",
+    "ff6_magitek": "Devil's Lab // Magitek Research Facility",
+    "ff6_floatingcont": "Floating Continent",
+    "ff6_fanatics": "The Fanatics",
+    "ff6_kefkastower": "Kefka's Tower",
+    "ff6_ruin": "Dark World",
+    "ff6_dmad5": "Dancing Mad (part 5)",
+    "ff6_dmad4": "Dancing Mad (part 4)",
+    "ff6_ending1": "Balance is Restored (part 1)",
+    "ff6_ending2": "Balance is Restored (part 2)"
+    }
+for k, v in metadata.items():
+    metadata[k] = TrackMetadata(v, "Final Fantasy VI", "Nobuo Uematsu", "Nobuo Uematsu")
+    
 ### begin functions shared with nascentorder
 
 def byte_insert(data, position, newdata, maxlength=0, end=0):
@@ -272,10 +353,10 @@ def insert_instruments(data_in, metadata_pos= False):
     CONFIG.set('MusicPtr', 'brrpointers', "{:x}, {:x}".format(sampleptrs[0], sampleptrs[0]+len(data)))
     if metadata_pos:
         p = metadata_pos
-        metadata = "\x00"*0x600
-        metadata = byte_insert(metadata, 0x0, loopdata)
-        metadata = byte_insert(metadata, 0x200, pitchdata)
-        metadata = byte_insert(metadata, 0x400, adsrdata)
+        imetadata = "\x00"*0x600
+        imetadata = byte_insert(imetadata, 0x0, loopdata)
+        imetadata = byte_insert(imetadata, 0x200, pitchdata)
+        imetadata = byte_insert(imetadata, 0x400, adsrdata)
         
         CONFIG.set('MusicPtr', 'brrloops', "{:x}, {:x}".format(0+p, 0x1FF+p))
         CONFIG.set('MusicPtr', 'brrpitch', "{:x}, {:x}".format(0x200+p, 0x3FF+p))
@@ -288,7 +369,7 @@ def insert_instruments(data_in, metadata_pos= False):
         loc = int(CONFIG.get('MusicPtr', 'brradsrpointer'),16)
         data = int_insert(data, loc, 0x400+p+HIROM, 3)
         
-        data = byte_insert(data, p, metadata)
+        data = byte_insert(data, p, imetadata)
     else:
         data, s, e = put_somewhere(data, loopdata, "INSTRUMENT LOOP DATA")
         CONFIG.set('MusicPtr', 'brrloops', "{:x}, {:x}".format(s, e))
@@ -461,7 +542,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                 
         for i, id in enumerate(battleids):
             if str(id).lower() == "new":
-                songtable['NaObattle' + str(newidx)] = SongSlot(nextsongid, chance=100)
+                songtable['battle' + str(newidx+2)] = SongSlot(nextsongid, chance=100)
                 battleids[i] = nextsongid
                 nextsongid += 1
                 newidx += 1
@@ -470,7 +551,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         newidx = 0
         for i, id in enumerate(bossids):
             if str(id).lower() == "new":
-                songtable['NaOboss' + str(newidx)] = SongSlot(nextsongid, chance=100)
+                songtable['EventBattle' + str(newidx)] = SongSlot(nextsongid, chance=100)
                 bossids[i] = nextsongid
                 nextsongid += 1
                 newidx += 1
@@ -760,6 +841,15 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                             akao = process_mml(s.id, mml, s.changeto + ".mml")
                         else:
                             akao = {}
+                title = re.search("(?<=#TITLE )([^;\n]*)", mml, re.IGNORECASE)
+                album = re.search("(?<=#ALBUM )([^;\n]*)", mml, re.IGNORECASE)
+                composer = re.search("(?<=#COMPOSER )([^;\n]*)", mml, re.IGNORECASE)
+                arranged = re.search("(?<=#ARRANGED )([^;\n]*)", mml, re.IGNORECASE)
+                title = title.group(0) if title else "??"
+                album = album.group(0) if album else "??"
+                composer = composer.group(0) if composer else "??"
+                arranged = arranged.group(0) if arranged else "??"
+                metadata[s.changeto] = TrackMetadata(title, album, composer, arranged)
                 if not akao:
                     print("couldn't find valid mml for {}".format(s.changeto))
                     keeptrying = True
@@ -963,7 +1053,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         while len(spoiltext[i]) < arrowpos:
             spoiltext[i] += " "
         spoiltext[i] += "-> {}".format(s[1])
-    for t in spoiltext: spoil(t)
+        if s[1] in metadata:
+            spoiltext[i] += "\n" + " " * 8 + "{} -- {}".format(metadata[s[1]].album, metadata[s[1]].title)
+            spoiltext[i] += "\n" + " " * 8 + "Composed by {} -- Arranged by {}".format(metadata[s[1]].composer, metadata[s[1]].arranged)
+    for t in spoiltext: spoil(t + "\n")
     
     if DEBUG:
         fullsonglist = {}

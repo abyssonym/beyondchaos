@@ -1,5 +1,5 @@
-from __future__ import division
-from __future__ import print_function
+#! /usr/bin/env python3
+
 from utils import read_multi, write_multi, utilrandom as random
 from math import log
 from monsterrandomizer import monsterdict
@@ -96,10 +96,9 @@ class Formation():
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.mouldbyte = ord(f.read(1))
-        self.mould = self.mouldbyte >> 4
         self.enemies_present = ord(f.read(1))
-        self.enemy_ids = map(ord, f.read(6))
-        self.enemy_pos = map(ord, f.read(6))
+        self.enemy_ids = list(f.read(6))
+        self.enemy_pos = list(f.read(6))
         self.bosses = ord(f.read(1))
 
         f.seek(self.auxpointer)
@@ -213,21 +212,21 @@ class Formation():
 
     def write_data(self, fout):
         fout.seek(self.pointer)
-        fout.write(chr(self.mouldbyte))
-        fout.write(chr(self.enemies_present))
-        fout.write("".join(map(chr, self.enemy_ids)))
-        fout.write("".join(map(chr, self.enemy_pos)))
-        fout.write(chr(self.bosses))
+        fout.write(bytes([self.mouldbyte]))
+        fout.write(bytes([self.enemies_present]))
+        fout.write(bytes(self.enemy_ids))
+        fout.write(bytes(self.enemy_pos))
+        fout.write(bytes([self.bosses]))
 
         fout.seek(self.auxpointer)
-        fout.write(chr(self.misc1))
-        fout.write(chr(self.misc2))
-        fout.write(chr(self.eventscript))
-        fout.write(chr(self.misc3))
+        fout.write(bytes([self.misc1]))
+        fout.write(bytes([self.misc2]))
+        fout.write(bytes([self.eventscript]))
+        fout.write(bytes([self.misc3]))
 
         if self.ap is not None:
             fout.seek(0x1fb400 + self.formid)
-            fout.write(chr(self.ap))
+            fout.write(bytes([self.ap]))
 
     def lookup_enemies(self):
         self.enemies = []
@@ -264,9 +263,9 @@ class Formation():
         pointer = mouldspecsptrs + (2*self.mould)
         f.seek(pointer)
         pointer = read_multi(f, length=2) | 0x20000
-        for i in xrange(6):
+        for i in range(6):
             f.seek(pointer + (i*4))
-            a, b = tuple(map(ord, f.read(2)))
+            a, b = tuple(f.read(2))
             width = ord(f.read(1))
             height = ord(f.read(1))
             enemy = self.enemies[i]
@@ -370,10 +369,10 @@ class FormationSet():
             num_encounters = 4
         else:
             num_encounters = 2
-        for i in xrange(num_encounters):
+        for i in range(num_encounters):
             self.formids.append(read_multi(f, length=2))
-        if any(map(lambda f: f & 0x8000, self.formids)):
-            assert all(map(lambda f: f & 0x8000, self.formids))
+        if any([f & 0x8000 for f in self.formids]):
+            assert all([f & 0x8000 for f in self.formids])
             self.sixteen_pack = True
         else:
             self.sixteen_pack = False
@@ -397,7 +396,7 @@ class FormationSet():
         elif len(set(self.formations)) < 4:
             result = True
             if replacement:
-                for i in xrange(4):
+                for i in range(4):
                     if self.formids[i] in self.formids[i+1:]:
                         formid = self.formids[i]
                         self.formids.remove(formid)
@@ -406,7 +405,7 @@ class FormationSet():
         else:
             formations = list(self.formations)
             random.shuffle(formations)
-            for i in xrange(4):
+            for i in range(4):
                 f = self.formations[i]
                 for fs2 in fsets:
                     if fs2 != self and f in fs2.formations:
@@ -477,7 +476,7 @@ def get_formations(filename=None):
         return [f for (_, f) in sorted(formdict.items())]
 
     formdict = {}
-    for i in xrange(576):
+    for i in range(576):
         f = Formation(i)
         f.read_data(filename)
         f.lookup_enemies()
@@ -494,7 +493,7 @@ def get_fsets(filename=None):
         return fsets
     else:
         fsetdict = {}
-        for i in xrange(512):
+        for i in range(512):
             fs = FormationSet(setid=i)
             fs.read_data(filename)
             fsetdict[i] = fs

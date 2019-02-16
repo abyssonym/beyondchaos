@@ -1,5 +1,5 @@
-from __future__ import division
-from __future__ import print_function
+
+
 from utils import utilrandom as random
 from itemrandomizer import get_ranked_items, get_item
 
@@ -27,13 +27,13 @@ class ShopBlock:
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.misc = ord(f.read(1))
-        self.items = map(ord, f.read(8))
+        self.items = bytes(f.read(8))
         f.close()
 
     def write_data(self, fout):
         fout.seek(self.pointer)
-        fout.write(chr(self.misc))
-        fout.write("".join(map(chr, self.items)))
+        fout.write(bytes([self.misc]))
+        fout.write(bytes(self.items))
 
     def __repr__(self):
         multiplier = price_multipliers[self.discount]
@@ -177,4 +177,4 @@ class ShopBlock:
 
 def buy_owned_breakable_tools(fout):
     fout.seek(0x3b7f4)
-    fout.write(chr(0x27))
+    fout.write(b'\x27')

@@ -140,7 +140,7 @@ metadata = {
     "ff6_owzer": "The Magic House",
     "ff6_dmad123": "Dancing Mad (part 1)",
     "ff6_spinachrag": "Spinach Rag",
-    "ff6_death": "Rest in Peace".
+    "ff6_death": "Rest in Peace",
     "ff6_opera_intro": "Overture - Intro",
     "ff6_opera_draco": "Overture - Draco",
     "ff6_opera_overture": "Overture - Intermission",
@@ -308,7 +308,7 @@ def insert_instruments(data_in, metadata_pos= False):
         filename = name + '.brr'
         
         try:
-            with open(os.path.join('samples', filename), 'rb') as f:
+            with open(os.path.join('data', 'samples', filename), 'rb') as f:
                 sdata = f.read()
         except IOError:
             print("WARNING: couldn't load sample file {}".format(filename))

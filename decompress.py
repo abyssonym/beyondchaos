@@ -1,24 +1,24 @@
-from __future__ import division
-from __future__ import print_function
+#!/usr/bin/env python3
+
 from utils import read_multi, write_multi
 from sys import argv
 from shutil import copyfile
 
 
 def decompress(bytestring, simple=False, complicated=True, debug=False):
-    result = ""
-    buff = [chr(0)] * 2048
+    result = bytearray([])
+    buff = bytearray(2048)
     buffaddr = 0x7DE
 
     while bytestring:
-        flags, bytestring = ord(bytestring[0]), bytestring[1:]
-        for i in xrange(8):
+        flags, bytestring = bytestring[0], bytestring[1:]
+        for i in range(8):
             if not bytestring:
                 break
 
             if flags & (1 << i):
                 byte, bytestring = bytestring[0], bytestring[1:]
-                result += byte
+                result.append(byte)
                 buff[buffaddr] = byte
                 buffaddr += 1
                 if buffaddr == 0x800:
@@ -27,23 +27,23 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                     print("%x" % ord(byte), end=' ')
             else:
                 low, high, bytestring = (
-                    ord(bytestring[0]), ord(bytestring[1]), bytestring[2:])
+                    bytestring[0], bytestring[1], bytestring[2:])
                 seekaddr = low | ((high & 0x07) << 8)
                 length = ((high & 0xF8) >> 3) + 3
                 if simple:
-                    copied = "".join([buff[seekaddr]] * length)
+                    copied = [buff[seekaddr]] * length
                 elif complicated:
                     if buffaddr == seekaddr:
                         raise Exception("buffaddr equals seekaddr")
                     cycle = buffaddr - seekaddr
                     if cycle < 0:
                         cycle += 0x800
-                    subbuff = "".join((buff+buff)[seekaddr:seekaddr+cycle])
+                    subbuff = (buff+buff)[seekaddr:seekaddr+cycle]
                     while len(subbuff) < length:
                         subbuff = subbuff + subbuff
-                    copied = "".join(subbuff[:length])
+                    copied = subbuff[:length]
                 else:
-                    copied = "".join((buff+buff)[seekaddr:seekaddr+length])
+                    copied = (buff+buff)[seekaddr:seekaddr+length]
                 assert len(copied) == length
                 result += copied
                 if debug:
@@ -64,9 +64,9 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
 
 def recompress(bytestring):
     global buffaddr
-    bytestring = "".join([chr(c) if type(c) is int else c for c in bytestring])
-    result = ""
-    buff = [chr(0)] * 2048
+    bytestring = bytearray([c if type(c) is int else ord(c) for c in bytestring])
+    result = bytearray()
+    buff = bytearray(2048)
     buffaddr = 0x7DE
 
     def add_buff(c):
@@ -77,10 +77,10 @@ def recompress(bytestring):
 
     while bytestring:
         control = 0x00
-        subresult = ""
-        for i in xrange(8):
-            searchbuff = "".join(buff + buff)
-            for j in xrange(3, 35):
+        subresult = bytearray()
+        for i in range(8):
+            searchbuff = (buff + buff)
+            for j in range(3, 35):
                 searchstr = bytestring[:j]
                 if searchstr not in searchbuff:
                     break
@@ -96,12 +96,12 @@ def recompress(bytestring):
                 j = 0
             j = j - 1
             goodloop = None
-            loopbuff = "".join(buff[:buffaddr])
+            loopbuff = buff[:buffaddr]
             #if len(loopbuff) < 35:
             #    loopbuff = "".join(buff) + loopbuff
-            for k in xrange(j+1, 35):
+            for k in range(j+1, 35):
                 searchstr = bytestring[:k]
-                for h in xrange(1, len(searchstr)+1):
+                for h in range(1, len(searchstr)+1):
                     loopstr = searchstr[:h]
                     mult = (len(searchstr) // len(loopstr)) + 1
                     if searchstr == (loopstr * mult)[:len(searchstr)]:
@@ -141,20 +141,20 @@ def recompress(bytestring):
                 byte2 = (index >> 8) | ((j-3) << 3)
                 assert byte1 | ((byte2 & 0x07) << 8) == index
                 assert ((byte2 & 0xF8) >> 3) + 3 == j
-                subresult += chr(byte1) + chr(byte2)
+                subresult += bytes([byte1, byte2])
             else:
                 control |= (1 << i)
                 if bytestring:
                     c, bytestring = bytestring[0], bytestring[1:]
                 else:
-                    c = chr(0)
-                subresult += c
+                    c = 0
+                subresult.append(c)
                 add_buff(c)
-        result += chr(control) + subresult
+        result += bytes((control,)) + subresult
         if not bytestring and (
                 control != 0xFF
-                or not subresult.endswith("".join([chr(0), chr(0)]))):
-            result += chr(0xFF) + "".join(map(chr, [0]*8))
+                or not subresult.endswith(bytes([0, 0]))):
+            result += bytes((0xFF,)) + bytes(8)
     return result
 
 
@@ -181,7 +181,7 @@ class Decompressor():
         #assert decompress(recompress(self.backup)) == self.backup
 
     def writeover(self, address, to_write):
-        to_write = "".join([chr(c) if type(c) is int else c for c in to_write])
+        to_write = bytes([c if type(c) is int else ord(c) for c in to_write])
         if self.fakeaddress:
             address = address - self.fakeaddress
         self.data = (self.data[:address] + to_write +
@@ -190,7 +190,7 @@ class Decompressor():
     def get_bytestring(self, address, length):
         if self.fakeaddress:
             address = address - self.fakeaddress
-        return map(ord, self.data[address:address+length])
+        return self.data[address:address+length]
 
     def compress_and_write(self, fout):
         compressed = recompress(self.data)
@@ -199,10 +199,10 @@ class Decompressor():
         if self.maxaddress:
             length = self.maxaddress - self.address
             fout.seek(self.address)
-            fout.write("".join([chr(0xFF)]*length))
+            fout.write(bytes([0xFF]*length))
         fout.seek(self.address)
         write_multi(fout, size, length=2)
-        fout.write(compressed)
+        fout.write(bytes(compressed))
         if self.maxaddress and fout.tell() >= self.maxaddress:
             raise Exception("Recompressed data out of bounds.")
 

@@ -1,5 +1,3 @@
-from __future__ import division
-from __future__ import print_function
 from os import path
 from collections import defaultdict
 import random
@@ -80,9 +78,8 @@ class Substitution(object):
         self.location = location
 
     def write(self, fout):
-        bs = "".join(map(chr, self.bytestring))
         fout.seek(self.location)
-        fout.write(bs)
+        fout.write(bytes(self.bytestring))
 
 
 texttable = {}
@@ -96,11 +93,11 @@ f.close()
 
 
 def name_to_bytes(name, length):
-    name = map(lambda c: hex2int(texttable[c]), name)
+    name = [hex2int(texttable[c]) for c in name]
     assert len(name) <= length
     while len(name) < length:
         name.append(0xFF)
-    return name
+    return bytes(name)
 
 
 shorttexttable = {}
@@ -114,7 +111,7 @@ f.close()
 
 
 dialoguetexttable = {}
-f = open(DIALOGUE_TEXT_TABLE)
+f = open(DIALOGUE_TEXT_TABLE, encoding='utf8')
 for line in f:
     line = line.strip('\n')
     value, string = tuple(line.split('=', 1))
@@ -127,7 +124,7 @@ def hex2int(hexstr):
 
 
 def dialogue_to_bytes(text):
-    bytes = []
+    bs = []
     i = 0
     while i < len(text):
         if text[i] == "<":
@@ -142,10 +139,10 @@ def dialogue_to_bytes(text):
             i += 1
 
         if hex != "":
-            bytes.append(hex2int(hex))
+            bs.append(hex2int(hex))
 
-    bytes.append(0x0)
-    return bytes
+    bs.append(0x0)
+    return bytes(bs)
 
     
 battlebg_palettes = {}
@@ -171,11 +168,11 @@ def int2bytes(value, length=2, reverse=True):
     if not reverse:
         bs = reversed(bs)
 
-    return bs[:length]
+    return bytes(bs[:length])
 
 
 def read_multi(f, length=2, reverse=True):
-    vals = map(ord, f.read(length))
+    vals = list(f.read(length))
     if reverse:
         vals = list(reversed(vals))
     value = 0
@@ -199,7 +196,7 @@ def write_multi(f, value, length=2, reverse=True):
     if not reverse:
         vals = reversed(vals)
 
-    f.write(''.join(map(chr, vals)))
+    f.write(bytes(vals))
 
 
 utilrandom = random.Random()
@@ -436,7 +433,7 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
                     import pdb; pdb.set_trace()
                 swapmap[index] = swapcode
 
-        remaining = [i for i in xrange(94) if i not in swapmap.keys()]
+        remaining = [i for i in range(94) if i not in swapmap.keys()]
         random.shuffle(remaining)
 
         def get_nearest_swapcode(index):
@@ -464,7 +461,7 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
 
     def palette_transformer(raw_palette, single_bytes=False):
         if single_bytes:
-            raw_palette = zip(raw_palette, raw_palette[1:])
+            raw_palette = list(zip(raw_palette, raw_palette[1:]))
             raw_palette = [p for (i, p) in enumerate(raw_palette) if not i % 2]
             raw_palette = [(b << 8) | a for (a, b) in raw_palette]
         transformed = []
@@ -495,7 +492,7 @@ def decompress(bytestring, simple=False, complicated=False, debug=False):
     buffaddr = 0x7DE
     while bytestring:
         flags, bytestring = ord(bytestring[0]), bytestring[1:]
-        for i in xrange(8):
+        for i in range(8):
             if not bytestring:
                 break
 
@@ -552,7 +549,7 @@ def line_wrap(things, width=16):
 
 
 def get_matrix_reachability(M):
-    M2 = zip(*M)
+    M2 = list(zip(*M))
     new = [0]*len(M)
     new = [list(new) for _ in range(len(M))]
     for i, row in enumerate(M):
@@ -582,7 +579,7 @@ def make_table(cols):
 
     while any(cols):
         cols = [c for c in cols if c]
-        row = zip(*cols)[0]
+        row = list(zip(*cols))[0]
         row = " | ".join(row)
         row = "| %s |" % row
         table = "\n".join([table, row])

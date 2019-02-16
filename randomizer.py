@@ -41,9 +41,9 @@ from menufeatures import (improve_item_display, improve_gogo_status_menu, improv
 from decompress import Decompressor
 
 
-VERSION = "1"
+VERSION = "2"
 BETA = False
-VERSION_ROMAN = "I"
+VERSION_ROMAN = "II"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False

@@ -8,27 +8,27 @@
 
 #WAVE 0x20 ~0x49~/0x0D/
 #WAVE 0x21 ~0x0E~/0x0E/
-#WAVE 0x22 ~0x7A~/0x08/
+#WAVE 0x22 ~0x73~/0x08/
 #WAVE 0x23 ~0x1A~/0x1A/
 #WAVE 0x25 ~0x4D~/0x1C/
 
 #WAVE 0x28 ~0x81~/0x14/
 #WAVE 0x29 ~0x75~/0x16/
 #WAVE 0x2A ~0x55~/0x0F/
-#WAVE 0x2B ~0x8D~/0x24/
-#WAVE 0x2C ~0x12~/0x12/
+#WAVE 0x2B ~0x91~/0x24/
+#WAVE 0x2C ~0x6D~/0x12/
 
-#def global= t165 %b0,70 %v50 %x224
+#def global= t165 %b0,70 %v50 %x255 %f0,0
 #def hit= ~|0 o4~ /|1 o5/ %r20%s4%y6 %e1
-#def hh= v100
-#def hm= v80
-#def hl= v60
-#def str= |0 ~o4~/o5/ v64 m48,18,223 %r10 %e1
+#def hh= v112
+#def hm= v88
+#def hl= v64
+#def str= |0 ~o4~/o5/ v80 m48,18,223 %r8 %e1
 #def pet= |1 ~o6~/o6/ v64 m48,18,239 %e1
 #def pets= ~|1o5~/|1o5/ v72 m48,18,239 %e1
-#def hrn= |2 ~o5~/o5/ ~v88~/v64/ m48,18,223 %r8 %e1
-#def tub= |3 ~o5~/o5/ v56 m48,18,191 %r10 %e1
-#def bass= |5 ~o5~/o5/ ~v64~/v40/ %r19 %e0
+#def hrn= |2 ~o5~/o5/ ~v104~/v64/ m48,18,223 %r6 %e1
+#def tub= |3 ~o5~/o5/ v56 m48,18,191 %r8 %e1
+#def bass= |5 ~o5~/o5/ ~v72~/v40/ %r19 %e0
 #def timp= |9 ~o3~/o3/ 'c17' m v80 %e0
 #def bell= |B ~o5~/o6/ 'c12' m %r12%y6%s1 v96 %e1
 
@@ -90,7 +90,7 @@ p64"!!!oy2." 'hrn'p54 c>b<c1^
 ##34 c2
 'c2' l4 e1^g1^f+1^f1^
 ##38 c6
-'str''c6'< l4 v40 d1^a1^g1^f1^
+'str''c6'< l4 v60 d1^a1^g1^f1^
 ##42 c2/c4 merge
 'hrn'p54 l4 >a2.<ed e1g f+1^ d2.c>b
 ##44 c2/c4 merge into c17
@@ -126,7 +126,7 @@ l8 p89 $238 [|1'hm'%r19a4 ~>>|0~'hl'%r20a~<<~]|1'hm'%r19a4a4 j1,0
 'pet''c3' l4 <c1^d1^e1^f1^
 ;2
 
-{3}
+{7}
 r4
 'hit'p104> l8 [6['hh'd'hl'd'hm'd]j6,307['hh'd'hl'd]]$307'hh'd'hl'd
 'str' l16 <'c6'edef g1^4 a+1^4
@@ -228,7 +228,7 @@ l4 >a1^1^ l16 aaaa l4 a1^1^a
 <f1^ 'hit''c9'> %k2[j2,648;99$648 %k4[j2,649;99$649 %k5[j2,650;99$650 %k0
 ;6
 
-{7}
+{3}
 r4
 l16 'c14'[8["w8xxx8"]["w8xx"]]
 $7##10

@@ -9,7 +9,7 @@
 #WAVE 0x20 ~0x36~/0x36/
 #WAVE 0x21 ~0x83~/0x03/
 #WAVE 0x22 ~0x06~/0x06/
-#WAVE 0x23 ~0x44~/0x00/
+#WAVE 0x23 ~0x95~/0x00/
 #WAVE 0x24 ~0x67~/0x20/
 #WAVE 0x25 ~0x35~/0x35/
 #WAVE 0x26 ~0x54~/0x32/
@@ -18,7 +18,7 @@
 #WAVE 0x2B ~0x66~/0x17/
 #WAVE 0x2C ~0x0F~/0x0F/
 
-#def global= t200 %v50 %b0,70 %x212
+#def global= t200 %v50 %b0,70 %x212 %f0,0
 
 #def epian= |4 ~o5~/o5/ v64 m
 #def clari= |0 ~o5~/o5/ v56 %r10 m48,18,223
@@ -83,46 +83,64 @@ b1^1^2.r4 <dc>a1^1 r1&174r1
 
 {2}
 %e1
-'10'> l1 [g^ f^] g^ f^ g^ a^
-$##17
-'10'> g[5^]f+^
-g^^^a^^^
-b^^^a^g^
-^^^^^^f+^
-##49
-'15' l1 g^e^c^>b^<
-c^g^a^d^
->b^<e^a^c^
-g^c^g^g^
-##81
-c.g2<ce d.>a2d^
->b.<f+2 b<d e.>b2 e^
-ag f.e2 d^ e^
-c.g2 <ce d^^^
->d^^^
-;
-
-{3}
-%e1
 '09' l1 d [13^] f^
 $##17
-'09' d^e^^^d^
-e^d^e^f+^
-^^g+^e^d+^
-d^e^d^^^
+'06' $617 l8 'as''ar'b4'al'>g<d4gc+4 d4>b<g4d>b4< 'ar'b4'al'>e<d4e>b4< d4>b<g4e>b4<
+              'ar'b4'al'>b<e4gc4 e4cg4ec4  'ar'b4'al'>>b<<d4ec+4 d4>b<f+4d>b4<
+'ar'b4'al'>c<e4gc4 e4cg4ec4 'ar'b4'al'>>b<<d4ec+4 d4>b<f+4d>b4<
+'ar'<c4>>'al'a<e4gc4 e4ca4ec4 'ar'<c4>>'al'd<d4ec4 d4>a<f+4d>a4<
+    'ar'b4>>'al'b<<d4ec+4 d4>b<f+4d>b4< 'ar'b4'al'>e<d4e>b4< d4>b<g+4d>b4<
+    'ar'b4>'al'a<e4gc4 e4ca4ec4 'ar'<c4>>'al'c<d4d+c4 d+4cg4d+c4
+'ar'b4'al'>g<d4ec+4 d4>b<g4d>b4< 'ar'b4'al'>c<d4ec4 e4cg4ec4
+'ar'b4'al'>g<d4ec+4 d4>b<g4d>b4< 'ar'b4'al'>d<d4ec4 d4>a<f+4dj1,0>a4<
 ##49
-d^e^^^d^
-e^d^e^f+^
-^^g+^e^d+^
-d^e^d^^^
+l8 'ar'b4'al'>g<d4gc+4 d4>b<g4d>b4< 'ar'b4'al'>e<d4e>b4< d4>b<g4e>b4<
+'ar'b4'al'>c<e4gc4 e4cg4ec4 'ar'b4'al'>>b<<d4ec+4 d4>b<f+4d>b4<
+    'ar'b4'al'>c<e4gc4 e4cg4ec4 'ar'b4'al'>>b<<d4ec+4 e4>b<f+4d>b4<
+    'ar'<c4>>'al'a<e4gc4 e4ca4ec4 <'ar'c4'al'>>d<d4ec4 d4>a<f+4d>a4<
+'ar'b4'al'>>b<<d4ec+4 e4>b<f+4d>b4< 'ar'b4'al'>e<d4e>b4< d4>b<g+4e>b4<
+'ar'b4'al'>a<e4gc4 e4ca4ec4 <'ar'c4'al'>>c<d4d+c4 d+4cg4d+c4
+    'ar'b4'al'>g<d4ec+4 d4>b<g4d>b4< 'ar'b4'al'>c<d4ec4 d4cg4ec4
+    ['ar'b4'al'>g<d4ec+4 d4>b<g4d>b4<] p
 ##81
-e^^^d^^^
-[8^]
+'11' l8 [e4>g<c4ec>g c4g<c4ec4] [f+4>a<d4f+d>a c4a<d4f+d4]
+[f+4>b<d4f+d>b >b4<b<d4f+d4] [e4>g+<d4ed>g+ e4g+<d4edj2^]^8
+
 '06' l8 'as'<'ar'c4>>'al'a<e4ac4 b4>g<e4gc4 'ar'a4'al'>f<c4f>b4< c4>a<f4c>a4<
                'ar'a4'al'>f<d4fc+4 d4>a<f4d>a4< 'ar'b4'al'>g<e4gd+4 e4>b<g4e>b4<
 'ar'b4'al'>g<e4gd4 e4cg4ec4 'ar'b4'al'>g<e4gd4 e4cg4ec4
 <'ar'd4'al'>>a<f+4ge4 <c4>>g<f+4ge4 'ar'b4'al'>g<f+4ge4 a4>f+<e4f+d4
     <'ar'd4'al'>>a<f+4ge4 <c4>>g<f+4ge4 'ar'b4'al'>g<f+4ge4 a4>f+<e4f+d4 p
+;
+
+{3}
+%e1
+'10'> l1 [g^ f^]
+'19'< v32 v192,40d1 v192,48^1 v192,56^1 v192,64^1
+v192,72^1 v192,80^1 v192,88^1 v192,96^1
+##17
+v192,80^1 $ v192,16^1 ^1^1
+'09' rrd^
+e^d^e^f+^
+^^g+^e^d+^
+d^e^d^^^
+##49
+'11' l8 [>g4<de4bed >g4<de4be4] >g4<de4<c>ed >g4<de4<c>e4 >f+4<df+4bf+d >f+4<df+4bf+4
+>g4<de4<c>ed >g4<de4<c>e4  >g4<de4bed >g4<de4be4
+    >a4<ce4aec >a4<ce4ae4  >a4<cf+4af+c >a4<cf+4af+4
+>f+4<df+4bf+d >f+4<df+4bf+4 >g+4<de4bed >g+4<de4be4
+    >a4<ce4aec >a4<ce4ae4  >g4<cd+4gd+c >g4<cd+4gd+4
+>g4<de4bed >g4<de4be4 >g4<de4<c>ed >g4<de4<c>e4 [>g4<de4bed >g4<de4be4]
+##81
+r1r1 '04' l2 <c>bagf+g4a4^1^1r1
+r1r1 <dc>bag+a4b4^1^1&174r1
+
+'11' l8 >[e16.
+<&174e>]f16.<&174e^1^16.
+
+[>d4.<c4.c4] [>e4.<d4.d4]
+l8 >[4c4.b4.bj4^]< ^16. c1^1 r1^1 c1^1 r32r1r1
+'19'v24v192,32d1
 ;
 
 {4}
@@ -134,66 +152,51 @@ $##17
 d^^^c^^^
 >b^<c^>b^<c^>
 ##49
-b^^^<c^>b^
-<c^>b^<c^^^
-d^^^c^^^
->b^<c^>b^^^
+l8 [8"ksttssts ssttssks" j8 "ksttssts ssttssts"] ["ksttssks"]
 ##81
-<c[7^]
->b&186[7^] 
-'13'c>b<c^^32  [>d4.<c4.c4] [>e4.<d4.d4]
-l8 >[4c4.b4.bj4^]< ^16. c1^1 r1^1 c1^1 r32r1r1
+l8 '17' [8'tr'b4.'tl'gg2 'tr'a4.'tl'f&84fj8^16] /%k0/
+'12'>a1g1a1^1 r16
+'17' [4'tr'b4.'tl'gg2 'tr'a4.'tl'f&84fj4^16] /%k0/
+'12'>a1^1 r1^1 a1^1 r1r1r16
 ;
 
 {5}
 %e1
-[8r1] '19'< v32 v192,40d1 v192,48^1 v192,56^1 v192,64^1
-v192,72^1 v192,80^1 v192,88^1 v192,96^1
+'10'> l1 [8r] g^ f^ g^ a^
 $##17
-v192,80^1 v192,16^1 ^1^1
-[28r1]
+'10'> l1 g[5^]f+^
+g^^^a^^^
+b^^^a^g^
+^^^^^^f+^
 ##49
-'11' [>g4<de4bed >g4<de4be4] >g4<de4<c>ed >g4<de4<c>e4 >f+4<df+4bf+d >f+4<df+4bf+4
->g4<de4<c>ed >g4<de4<c>e4  >g4<de4bed >g4<de4be4
-    >a4<ce4aec >a4<ce4ae4  >a4<cf+4af+c >a4<cf+4af+4
->f+4<df+4bf+d >f+4<df+4bf+4 >g+4<de4bed >g+4<de4be4
-    >a4<ce4aec >a4<ce4ae4  >g4<cd+4gd+c >g4<cd+4gd+4
->g4<de4bed >g4<de4be4 >g4<de4<c>ed >g4<de4<c>e4 [>g4<de4bed >g4<de4be4]
+'15' l1 g^e^c^>b^<
+c^g^a^d^
+>b^<e^a^c^
+g^c^g^g^
 ##81
-[e4>g<c4ec>g c4g<c4ec4] [f+4>a<d4f+d>a c4a<d4f+d4]
-[f+4>b<d4f+d>b >b4<b<d4f+d4] [e4>g+<d4ed>g+ e4g+<d4edj2^]^32>[e16.
-<&174e>]f16.<&174e^1^16. f4>a4.<f4>a r4a4.<f4.
-[3e4>g4.<e4>g r4g4.<e4j3^] ^16>a16<f+1^1
-r1r1f+1^1r1r1
+'15' l1 c.g2<ce d.>a2d^
+>b.<f+2 b<d e.>b2 e^
+ag f.e2 d^ e^
+c.g2 <ce d^^^
+>d^^^
 ;
 
 {6}
 %e1
 [15r1]r2 '01'< d2
 $##17
-'06' $617 'as''ar'b4'al'>g<d4gc+4 d4>b<g4d>b4< 'ar'b4'al'>e<d4e>b4< d4>b<g4e>b4<
-              'ar'b4'al'>b<e4gc4 e4cg4ec4  'ar'b4'al'>>b<<d4ec+4 d4>b<f+4d>b4<
-'ar'b4'al'>c<e4gc4 e4cg4ec4 'ar'b4'al'>>b<<d4ec+4 d4>b<f+4d>b4<
-'ar'<c4>>'al'a<e4gc4 e4ca4ec4 'ar'<c4>>'al'd<d4ec4 d4>a<f+4d>a4<
-    'ar'b4>>'al'b<<d4ec+4 d4>b<f+4d>b4< 'ar'b4'al'>e<d4e>b4< d4>b<g+4d>b4<
-    'ar'b4>'al'a<e4gc4 e4ca4ec4 'ar'<c4>>'al'c<d4d+c4 d+4cg4d+c4
-'ar'b4'al'>g<d4ec+4 d4>b<g4d>b4< 'ar'b4'al'>c<d4ec4 e4cg4ec4
-'ar'b4'al'>g<d4ec+4 d4>b<g4d>b4< 'ar'b4'al'>d<d4ec4 d4>a<f+4dj1,0>a4<
+'09' l1 d^e^^^
+[26r1]
 ##49
-'ar'b4'al'>g<d4gc+4 d4>b<g4d>b4< 'ar'b4'al'>e<d4e>b4< d4>b<g4e>b4<
-'ar'b4'al'>c<e4gc4 e4cg4ec4 'ar'b4'al'>>b<<d4ec+4 d4>b<f+4d>b4<
-    'ar'b4'al'>c<e4gc4 e4cg4ec4 'ar'b4'al'>>b<<d4ec+4 e4>b<f+4d>b4<
-    'ar'<c4>>'al'a<e4gc4 e4ca4ec4 <'ar'c4'al'>>d<d4ec4 d4>a<f+4d>a4<
-'ar'b4'al'>>b<<d4ec+4 e4>b<f+4d>b4< 'ar'b4'al'>e<d4e>b4< d4>b<g+4e>b4<
-'ar'b4'al'>a<e4gc4 e4ca4ec4 <'ar'c4'al'>>c<d4d+c4 d+4cg4d+c4
-    'ar'b4'al'>g<d4ec+4 d4>b<g4d>b4< 'ar'b4'al'>c<d4ec4 d4cg4ec4
-    ['ar'b4'al'>g<d4ec+4 d4>b<g4d>b4<]
+'02'l2 <g1gf+ e1ed cdef+ >b1^4r4b<
+cdec c>b<dg ageg f+1^4r4d
+f+1f+f+ g+eee eccd d+1^4r4d4c4
+l4 >b1.bb< c1rddc >b1^1 r1^1
 ##81
-pr1r1 '04' l2 <c>bagf+g4a4^1^1r1
-r1r1 <dc>bag+a4b4^1^1r1
-<c1>b1a1^1 rb<c>bagf+g
-b1^1^2.r4 <dc>a1^1 r1r1
-[4r1]
+l8 [[j2,896%j8101$896]
+l8 "ksttssts" [3"ssttssts"] 
+$8101 l8 ["!!!o ksttssts" ["ssttssts"] "ssttssks"] j1,0
+l1 "k"[7^]
 ;
 
 {7}
@@ -202,15 +205,17 @@ b1^1^2.r4 <dc>a1^1 r1r1
 $##17
 [31r1]r2 l2 '02'b
 ##49
-<g1gf+ e1ed cdef+ >b1^4r4b<
-cdec c>b<dg ageg f+1^4r4d
-f+1f+f+ g+eee eccd d+1^4r4d4c4
-l4 >b1.bb< c1rddc >b1^1 r1^1
+'08' l1 b^^^<c^>b^
+<c^>b^<c^^^
+d^^^c^^^
+>b^<c^>b^^^
 ##81
-l8 '17' [8'tr'b4.'tl'gg2 'tr'a4.'tl'f&84fj8^16] /%k0/
-'12'>a1g1a1^1 r16
-'17' [4'tr'b4.'tl'gg2 'tr'a4.'tl'f&84fj4^16] /%k0/
-'12'>a1^1 r1^1 a1^1 r1r1r16
+'08' l1 <c[7^]
+>b&186[7^] 
+'13' l1c>b<c^^32
+'11' l8 f4>a4.<f4>a r4a4.<f4.
+[3e4>g4.<e4>g r4g4.<e4j3^] ^16>a16<f+1^1
+r1r1f+1^1r1r1
 ;
 
 {8}
@@ -219,10 +224,14 @@ l8 '17' [8'tr'b4.'tl'gg2 'tr'a4.'tl'f&84fj8^16] /%k0/
 $##17
 '07'[j2,824%j617$824 pr24
 ##49
-[8"ksttssts ssttssks" j8 "ksttssts ssttssts"] ["ksttssks"]
+'09' l1 d^e^^^d^
+e^d^e^f+^
+^^g+^e^d+^
+d^e^d^^^
 ##81
-[[j2,896%j8101$896]
-"ksttssts" [3"ssttssts"] 
-$8101 ["ksttssts" ["ssttssts"] "ssttssks"] j1,0
-l1 "k"[7^] &40r
+'09' l1 e^^^d^^^
+[8^]
+'04' l2 <c1>b1a1^1 rb<c>bagf+g
+b1^1^2.r4 <dc>a1^1 r1r1
+[4r1]  &40r
 ;

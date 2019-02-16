@@ -10,7 +10,7 @@
 #WAVE 0x22 ~0x74~/0x33/
 #WAVE 0x23 ~0x03~/0x03/
 
-#def global= t74 %v50 %b0,70 %x224
+#def global= t74 %v50 %b0,70 %x224 %f0,0
 
 #def pno= @3 %y1%s3%r7 o5 v64 p68
 #def oca= |1 %r8 pvm48,18,231 o4 v64 p30 p
@@ -66,7 +66,7 @@ d+2g+2 g+4g+4<d2> rb2.b rg+2..
 ra+2.. ^2g+2
 ;
 
-{4}
+{5}
 %e1 'p4' l8 r4d+4<cr>a+r r1 g4g+fg4a+g+ g1 g4dd+d+2
 $
 'p4' r4d+4f2 r4d+4r4f4 r4d+4d+4g4 rg4g4g4g   f4d+4r4c4 d+4d+4r4d+4 r4d+4f4d+4 r4d+4f2  r4d+2.
@@ -78,7 +78,7 @@ r4d+4r4f4 r4f4r4f4 r4d4r4c4 r1
 r4d+4.d+2..d2
 ;
 
-{5}
+{4}
 %e1 'p5' l8 r4.gr2 r1 r4d4r2 r4.d+f2 r1
 $
 'p5' r4a+g<c4>a+g+ r4.fg+2 r4gg+a+4<d4> a+4<d4c4>a+4

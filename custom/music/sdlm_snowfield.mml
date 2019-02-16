@@ -5,7 +5,6 @@
 
 #VARIANT ~ enh
 #VARIANT / nat
-#SFXV ` *
 
 #WAVE 0x20 ~0x46~/0x0D/
 #WAVE 0x21 ~0x41~/0x06/
@@ -89,7 +88,7 @@ f1^1^1^1
 '19'<c1^1^1^1
 ;
 
-*{3}*`{7}`
+{3}
 '03' l8 f<f4>g<g4> r4r1 f<f>g<g4> r4.r1
 $
 '03' l8 [f<f4>g<g4> r4r1 f<f>g<g4> r1j2r4.]r8 '06' < g+a+
@@ -101,7 +100,7 @@ $
 '03' l8 f<f4>g<g4> r4r1 f<f>g<g4> r2r l8 "!!!o mm4m4m"
 ;
 
-*{4}*`{8}`
+{4}
 '04' l4 r8cr8c rr1 r8c8r8c r.r1
 $
 l8 ['17''ph'c'04'c'17''pl'c'ph'c'04'c'17''pl'c'ph'c4c4'pl'c'ph'dd+d+dr
@@ -139,7 +138,7 @@ l8 '11''ph'<c'04'c'11''pl'<c'04'c4'11''pl'<c'ph'c rr2r16
 l16 '16'>> p10f <p30c p55f <p64c p75f <p90c p100f
 ;
 
-*{7}*`{3}`
+{7}
 '11' l8 < [[4'ph'c'pl'cc]['ph'c'pl'c]]
 $
 '11' l8 < [3[4'ph'c'pl'cc]['ph'c'pl'c]] [4'ph'c'pl'cc] l16 "q8qrsst32s32s"
@@ -153,7 +152,7 @@ l8 '16'<<p120c '09'< 'pl'gg[3'ph'g'pl'gg]['ph'g'pl'g] [3[4'ph'g'pl'gg]['ph'g'pl'
 '09' l8 < [4'ph'g'pl'gg]['ph'g'pl'g]
 ;
 
-*{8}*`{4}`
+{8}
 '16' l16 r1.. >>f<p30cp50f<p55cp64f<p80cp90f<p110c8rv20c4^&252r
 $
 '12' c1^1^1^1 c1^1^1^2^16 l16

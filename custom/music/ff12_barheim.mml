@@ -17,7 +17,7 @@
 #WAVE 0x28 ~0x47~/0x20/
 #WAVE 0x29 ~0x16~/0x16/
 
-#def global= t90 %v50 %b0,70 %x224
+#def global= t90 %v50 %b0,70 %x224 %f0,0
 
 #def stra= |0 o5 m48,18,207 p48
 #def strb= |1 o7 m48,18,207 p58

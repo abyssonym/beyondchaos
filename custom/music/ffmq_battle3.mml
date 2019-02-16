@@ -20,7 +20,7 @@
 #WAVE 0x2C ~0x5D~/0x00/
 
 {1}
-l16t110%b60,0%v70v35p32%e1|9%a10r24r24r24~o4~/o5/e2^4f4  ^2e2  ^4f2^4  
+l16t110%b0,60%v70v35p32%e1|9%a10r24r24r24~o4~/o5/e2^4f4  ^2e2  ^4f2^4  
 g2^4d4  ^1  ^1  $ %x245|Bp48v40%r14~o5~/o5/d2e4c4  
 d2~>~/>/<|9/</v50ce  g<c8>eg<c />/ |Bv40%r14>~~//d2e4e4  d2<|9/</v55ec>g<e8.c>b  
 p64%a10v80a+4d+fgaa+>a+<d+aa+ga+<d  c8>af2^4^  a+4d+fgad+rfrgraf  

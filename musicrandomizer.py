@@ -404,6 +404,9 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         event_mults = {}
         if f_mchaos:
             for ident, s in songtable.items():
+                if ident.endswith("_tr"): continue
+                if ident.endswith("_dm"): continue
+                if ident.endswith("_vic"): continue
                 s.choices.append(song[0])
         for c in canbe:
             if not c: continue
@@ -580,11 +583,24 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         return True
         
     def process_mml(id, mml, name):
+        def ruin_increment(m):
+            val = int(m.group(1))
+            if val in [3, 4, 5, 6, 11, 12, 13, 14]:
+                val += 2
+            elif val in [7, 8, 15, 16]: 
+                val -= 4
+            return "{{{}}}".format(val)
+            return m.group(0)
+            
         sfx = ""
         if id == 0x29:
             sfx = "sfx_zozo.mmlappend"
         elif id == 0x4F:
             sfx = "sfx_wor.mmlappend"
+            try:
+                mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", ruin_increment, mml)
+            except ValueError:
+                print("WARNING: failed to add wind sounds ({})".format(name))
         elif id == 0x20:
             sfx = "sfx_train.mmlappend"
             mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", "$888\g<1>", mml)
@@ -598,10 +614,11 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             except IOError:
                 print("couldn't open {}".format(sfx))
                 
-        return mml_to_akao(mml, name, True if (id == 0x4F) else False)
+        return mml_to_akao(mml, name, True if id in [0x29, 0x4F] else False)
     
-    def process_tierboss(opts):
+    def process_tierboss(opts, used_songs=[]):
         opts = [o.strip() for o in opts.split(',')]
+        opts = [o for o in opts if usage_id(o) not in used_songs]
         attempts = 0
         fallback = False
         while True:
@@ -667,9 +684,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             akao = mml_to_akao(mml, str(tiernames), variant='_default_')
             inst = akao['_default_'][1]
             akao = akao['_default_'][0]
-            if len(akao) >= 0x1000:
+            if len(akao) > 0x1002:
                 continue
             break
+        for n in tiernames: used_songs.append(usage_id(n))
         return (akao, inst)
         
     # choose replacement songs
@@ -715,7 +733,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         #get data now, so we can keeptrying if there's not enough space
         for ident, s in songtable.items():
             if s.changeto == '!!tierboss':
-                s.data, s.inst = process_tierboss(tierboss[ident])
+                s.data, s.inst = process_tierboss(tierboss[ident], used_songs=used_songs)
                 s.is_pointer = False
             # case: get song from MML
             elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")) or isfile(os.path.join(MUSIC_PATH, usage_id(s.changeto) + ".mml")):
@@ -827,7 +845,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                         print("couldn't open {}_data.bin".format(s.changeto))
                         keeptrying = True
                         break
-        
+            
+            if len(s.data) > 0x1002 and "ending" not in ident:
+                print("WARNING: song data too large for {} (as {}), sfx glitches may occur".format(s.changeto, ident))
+                
         if keeptrying:
             dprint("failed music generation during data read")
             continue

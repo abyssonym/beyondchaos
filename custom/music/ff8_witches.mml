@@ -15,7 +15,7 @@
 #WAVE 0x26 0x24
 #WAVE 0x28 ~0x66~/0x17/
 
-#def global= t90 %v50 %b0,70 %x224
+#def global= t90 %v50 %b0,70 %x224 %f0,0
 
 #def hch= |0 v64
 #def str= |1 v64

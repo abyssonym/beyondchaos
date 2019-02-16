@@ -1,0 +1,97 @@
+#TITLE Underground Sewer
+#ALBUM Chrono Trigger
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~! enh
+#VARIANT / nat
+#VARIANT ~_ tr
+
+#WAVE 0x21 ~0x7B~/0x1b/
+#WAVE 0x22 ~0x90~/0x19/
+#WAVE 0x23 ~0x0D~/0x0D/
+#WAVE 0x24 ~0x83~/0x36/
+#WAVE 0x25 ~0x0A~/0x0A/
+
+{1}
+! t80%v40%b0,90%f0,0%x224 !
+_ t83t255,80 %v255,40 %b255,90 %f255,0 _
+l16 $1 t80|2v80p74%e1o5ergrbr4r<c8>brgr  
+d+rf+rbr2r8.  d+rf+rbr4ra8grf+r  ergrbr2r8.  ergrbr4r<d8cr>br  
+erar<cr4re8d8c8  >b4f+8g8a8bag8f+8  e2^4r4  |1%r20v100p64%e1~o5~/o5/e8ef+grerc+8d+rergr  
+f+8d+8bagf+e2  g8bre8grc+8c+d+ergr  arf+8d+rb8gabag4  e8ef+grerc+8d+rergr  
+f+8d+8bagf+e2  g8bre8grc+8c+d+ergr  arf+8d+rb8gabag4  r8erer4rf+rf+r8.  
+r1  r8erer4rf+rf+r8.  r1  
+;1
+
+l16
+{2}
+l16 $2 |2v80p54%e1o4grbr<er2r8.  >f+rbr<d+r2r8.  >f+rbr<d+r2r8.  
+>grbr<er2r8.  >grbr<er2r8.  >ar<crer2r8.  r8d+4e4c+4d+8  
+e8>b8g8b8e4r4  |1%r20v100p64%e1~o4~/o4/e8brbrgre8a+ra+4  b8>b8.b<c+d+eb<c>babgf+  
+e4g4a+rgrer<c+r  d+r>b8f+rd+8ef+gf+e4  e8brbrgre8a+ra+4  b8>b8.b<c+d+eb<c>babgf+  
+e4g4a+rgrer<c+r  d+r>b8f+rd+8ef+gf+e4  ar<crcr>a8br<d+rd+r>b8  a<cea>a+<c+eg>b<d+f+baf+d+>b  
+ar<crcr>a8br<d+rd+r>b8  t75a<ceat70>a+<c+egt65t48,50>b<d+f+b<d+4  
+
+;2
+
+l16
+{3}
+l16 $3 |3v64p110%e1m~o6~/o6/r2r4v5v24,90e4  
+v40d+r2r4.r  r2r4v5v24,90d+4  v40er2r4.r  r2r4v5v24,90e4  
+v40er2r4.r  v5v48,60%l1f+2e4d+4  e2v48,5^4r4  |4~v125~/v60/p74%e1m48,12,203~o4~/o6/gr>br<cr>bra+2  
+a2g4^r<ef+  gr>br<cr>bra+2  a2g4.^r  <gr>br<cr>bra+2  
+a2g4^r<ef+  gr>br<cr>bra+2  a2g4.^r  <a4^gf+ed+rf+r>b8.r  
+a4a+8<c+8>b4.^r  <a4^gf+ed+rf+r>b8.r  <c4d+8e8d+4.^r  
+;3
+
+l16
+{4}
+l16 $4 |3v64p80%e1~o5~/o5/r2r4v5v24,90g4  v40f+r2r4.r  r2r4v5v24,90f+4  
+v40gr2r4.r  r2r4v5v24,90g+4  v40ar2r4.r  v5v48,60%l1b4a4g4f+4  
+e2v48,5^4r4  |5m48,12,203v60p44%e1o5<[2r2r8%l1g8f+8e8  %l0d+4%l1e8f+8%l0e4^r8.  
+r2r8%l1g8f+8e8  %l0d+4%l1d+24e24d+24c+d+%l0e4.^r  ]r1  c4%l1c+8e8%l0d+4.^r  
+<%l1c4^>bagf+rbrd+8.r  e4%l1f+8g8%l0f+4.^r  
+;4
+
+l16
+{5}
+_|F v80p64 o4 %e1_
+_v216,60 [a32.a4.a32.a16.] v216,40 [a32.a4.a32.a16.]_
+_v216,20 [a32.a4.a32.a16.] v216,0 [a32.a4.a32.a16.]_
+_|3p50;55_
+l16|3v64p50%e1 $5 ~o4~/o4/r2r4v5v24,90b4  v40br2r4.r  r2r4v5v24,90b4  
+v40br2r4.r  r2$55r4v5v24,90b4  v40<cr2r4.r  v5v48,60%l1d+4c4>b4a4  
+g2v48,5^4r4  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  v24v144,70<%l1a4g4f+4.v12,10^r  r1  
+v24v144,70%l1a4g4f+4.v12,10^r  
+;5
+
+l16
+{6}
+_|F v80p64 o5k2 %e1 &1r_
+_v216,60 [a32.a4.a32.a16.] v216,40 [a32.a4.a32.a16.]_
+_v216,20 [a32.a4.a32.a16.] v216,0 [a32.a4.a32.a16.]_
+_k0 &47_
+_|3o4p20;66_
+l16|3v64p20%e1 $6 ~o4~/o4/r2r4v5v24,90e4  
+v40d+r2r4.r  r2r4v5v24,90d+4  v40er2r4.r  r2$66r4v5v24,90e4  
+v40er2r4.r  v5v48,60%l1>b4<c4c+4d+4  e2v48,5^4r4  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+v24v144,70%l1a4a+4b4.v12,10^r  r1  v24v144,70%l1a4a+4b4.v12,10^r  
+;6
+
+{7}
+_@4%s0 v80p64 %n1%c22 %e1%g1_
+_v216,60 [c32.c4.c32.c16.] v216,40 [c32.c4.c32.c16.]_
+_v216,20 [c32.c4.c32.c16.] v216,0 [c32.c4.c32.c16.]_
+r;
+
+{8}
+_@4%s0 v80p64 %p1 %e1%g1_
+_v216,60 [d32.d4.d32.d16.] v216,40 [d32.d4.d32.d16.]_
+_v216,20 [d32.d4.d32.d16.] v216,0 [d32.d4.d32.d16.]_
+r;

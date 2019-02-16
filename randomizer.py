@@ -104,7 +104,7 @@ def get_logstring(ordering=None):
     global randlog
     s = ""
     if ordering is None:
-        ordering = sorted([o for o in list(randlog.keys()) if o is not None])
+        ordering = sorted([o for o in randlog.keys() if o is not None])
     ordering = [o for o in ordering if o is not None]
 
     for d in randlog[None]:
@@ -888,7 +888,7 @@ def manage_commands(commands):
     if 'w' not in flags:
         invalid_commands.extend(FORBIDDEN_COMMANDS)
 
-    invalid_commands = set([c for c in list(commands.values()) if c.name in invalid_commands])
+    invalid_commands = set([c for c in commands.values() if c.name in invalid_commands])
 
     def populate_unused():
         unused_commands = set(commands.values())
@@ -978,7 +978,7 @@ def manage_tempchar_commands():
     # Guest characters with Lore command will have an empty list, so make sure they don't have it.
     if 0xC not in changed_commands:
         banned.add(0xC)
-    for i, pool in zip(list(range(0xE, 0x1C)), pools):
+    for i, pool in zip(range(0xE, 0x1C), pools):
         pool = sorted([c for c in pool if c and c not in banned])
         a, b = tuple(random.sample(pool, 2))
         chardict[i].set_battle_command(1, command_id=a)
@@ -1018,7 +1018,7 @@ def manage_commands_new(commands):
     used = []
     all_spells = get_ranked_spells(sourcefile)
     randomskill_names = set([])
-    for c in list(commands.values()):
+    for c in commands.values():
         if c.name in NEVER_REPLACE:
             continue
 
@@ -1214,7 +1214,7 @@ def manage_commands_new(commands):
                 #    nopowers = [s for s in myspells if not s.power]
                 #    powers = [s for s in myspells if s.power]
                 #    myspells = nopowers + powers
-                for s in list(myspells):
+                for s in myspells:
                     if (s.name in WEIGHTED_FIRST
                             and random.choice([True, False])):
                         myspells.remove(s)
@@ -1231,7 +1231,7 @@ def manage_commands_new(commands):
                 autotarget_warning = (0 < len(autotarget) < len(myspells))
                 if targeting_conflict:
                     myspells = noauto + autotarget
-                for s in list(myspells):
+                for s in myspells:
                     if s.name in ALWAYS_FIRST:
                         myspells.remove(s)
                         myspells.insert(0, s)
@@ -1359,7 +1359,7 @@ def manage_commands_new(commands):
         log(command_descr, 'commands')
 
     if "metronome" in activated_codes:
-        magitek = [c for c in list(commands.values()) if c.name == "magitek"][0]
+        magitek = [c for c in commands.values() if c.name == "magitek"][0]
         magitek.read_properties(sourcefile)
         magitek.targeting = 0x04
         magitek.set_retarget(fout)
@@ -1403,7 +1403,7 @@ def manage_suplex(commands, monsters):
     freespaces = []
     freespaces.append(FreeBlock(0x2A65A, 0x2A800))
     freespaces.append(FreeBlock(0x2FAAC, 0x2FC6D))
-    c = [d for d in list(commands.values()) if d.id == 5][0]
+    c = [d for d in commands.values() if d.id == 5][0]
     myfs = freespaces.pop()
     s = SpellSub(spellid=0x5F)
     sb = SpellBlock(0x5F, sourcefile)
@@ -1925,7 +1925,7 @@ def manage_magitek():
     target_pointer = 0x19104
     terra_pointer = 0x1910C
     others_pointer = 0x19114
-    for i in reversed(list(range(3, 8))):
+    for i in reversed(range(3, 8)):
         while True:
             if i == 5:
                 targeting = 0x43
@@ -2236,7 +2236,7 @@ nameiddict = {
 
 
 def sanitize_names(names):
-    delchars = ''.join(c for c in map(chr, list(range(256))) if not c.isalnum() and c not in "!?/:\"'-.")
+    delchars = ''.join(c for c in map(chr, range(256)) if not c.isalnum() and c not in "!?/:\"'-.")
     table = str.maketrans(dict.fromkeys(delchars))
     names = [name.translate(table) for name in names]
     return [name[:6] for name in names if name != ""]
@@ -2278,7 +2278,7 @@ def manage_character_names(change_to, male):
             if random.choice([True, True, False]):
                 random_name_ids.append(moogle_id)
         # Other party members get either the name of their counterpart from snes or gba, or moogle name from another ff game
-        for moogle_id in list(range(2,10)) + list(range(11,13)):
+        for moogle_id in range(2,10) + range(11,13):
             chance = random.randint(1,4)
             if chance == 2:
                 names[moogle_id] = gba_moogle_names[moogle_id - 2]
@@ -2860,7 +2860,7 @@ def manage_equipment(items):
         equippable_items = [i for i in equippable_items if not i.banned]
         if random.randint(1, 4) < 4:
             equippable_items = [i for i in equippable_items if not i.imp_only]
-        for equiptype, func in list(equippable_dict.items()):
+        for equiptype, func in equippable_dict.items():
             if equiptype == 'relic':
                 continue
             equippable = list(filter(func, equippable_items))
@@ -4387,7 +4387,7 @@ def manage_auction_house():
         0x5b85: [0x570c, 0x570c],  # Zephyr Cape (2x)
         0x5cad: [],                # Imp Robot (terminal)
         }
-    destinations = [d for (k, v) in list(new_format.items())
+    destinations = [d for (k, v) in new_format.items()
                     for d in v if v is not None]
     for key in new_format:
         if key == 0x4ea4:
@@ -5278,13 +5278,13 @@ def manage_ancient(form_music_overrides={}):
         "event_addr": 0x5eb3, "facing": 0x47,
         "memaddr": 0, "membit": 0, "unknown": 0,
         "graphics_index": 0x10}
-    for key, value in list(attributes.items()):
+    for key, value in attributes.items():
         setattr(save_point, key, value)
     save_point.set_id(len(falcon.npcs))
     falcon.npcs.append(save_point)
     save_event = EventBlock(pointer=None, locid=falcon.locid)
     attributes = {"event_addr": 0x29aeb, "x": 20, "y": 8}
-    for key, value in list(attributes.items()):
+    for key, value in attributes.items():
         setattr(save_event, key, value)
     falcon.events.append(save_event)
     partyswitch = NPCBlock(pointer=None, locid=falcon.locid)
@@ -5293,7 +5293,7 @@ def manage_ancient(form_music_overrides={}):
         "event_addr": 0x047d, "facing": 2,
         "memaddr": 0, "membit": 0, "unknown": 0,
         "graphics_index": 0, "npcid": 2}
-    for key, value in list(attributes.items()):
+    for key, value in attributes.items():
         setattr(partyswitch, key, value)
     falcon.npcs.append(partyswitch)
 
@@ -5443,7 +5443,7 @@ def manage_ancient(form_music_overrides={}):
         pointer += len(leader_sub.bytestring)
 
     espersubs = {}
-    for esper, event_value in list(esperevents.items()):
+    for esper, event_value in esperevents.items():
         byte, bit = event_value // 8, event_value % 8
         mem_addr = ((0x17+byte) << 3) | bit
         espersub = Substitution()
@@ -5715,7 +5715,7 @@ def manage_ancient(form_music_overrides={}):
             "event_addr": event_addr, "facing": 2,
             "memaddr": 0, "membit": 0, "unknown": 0,
             "graphics_index": 0}
-        for key, value in list(attributes.items()):
+        for key, value in attributes.items():
             setattr(innkeeper, key, value)
         l.npcs.append(innkeeper)
 
@@ -5725,7 +5725,7 @@ def manage_ancient(form_music_overrides={}):
             "event_addr": 0x23510, "facing": 2,
             "memaddr": 0, "membit": 0, "unknown": 0,
             "graphics_index": 0}
-        for key, value in list(attributes.items()):
+        for key, value in attributes.items():
             setattr(unequipper, key, value)
         l.npcs.append(unequipper)
 
@@ -5736,7 +5736,7 @@ def manage_ancient(form_music_overrides={}):
             "event_addr": event_addr, "facing": 0x43,
             "memaddr": 0, "membit": 0, "unknown": 0,
             "graphics_index": 0}
-        for key, value in list(attributes.items()):
+        for key, value in attributes.items():
             setattr(pay_to_save, key, value)
         l.npcs.append(pay_to_save)
 
@@ -5749,7 +5749,7 @@ def manage_ancient(form_music_overrides={}):
                     "event_addr": event_addr, "facing": 0x43,
                     "memaddr": 0, "membit": 0, "unknown": 0,
                     "graphics_index": 0, "npcid": 1}
-                for key, value in list(attributes.items()):
+                for key, value in attributes.items():
                     setattr(final_save, key, value)
                 final_loc.npcs.append(final_save)
 
@@ -5775,7 +5775,7 @@ def manage_ancient(form_music_overrides={}):
             "event_addr": event_addr, "facing": 1,
             "memaddr": 0, "membit": 0, "unknown": 0,
             "graphics_index": 0}
-        for key, value in list(attributes.items()):
+        for key, value in attributes.items():
             setattr(shopkeeper, key, value)
         l.npcs.append(shopkeeper)
 
@@ -5794,7 +5794,7 @@ def manage_ancient(form_music_overrides={}):
                 "x": 54, "y": 18, "event_addr": event_addr,
                 "facing": 2, "memaddr": byte, "membit": bit,
                 "unknown": 0, "graphics_index": 0}
-            for key, value in list(attributes.items()):
+            for key, value in attributes.items():
                 setattr(ally, key, value)
             l.npcs.append(ally)
             if (len(optional_chars) == 12 or (len(optional_chars) > 0 and
@@ -5814,7 +5814,7 @@ def manage_ancient(form_music_overrides={}):
                         "facing": 2, "memaddr": byte, "membit": bit,
                         "unknown": 0, "graphics_index": 0}
                     ally = NPCBlock(pointer=None, locid=l.locid)
-                    for key, value in list(attributes.items()):
+                    for key, value in attributes.items():
                         setattr(ally, key, value)
                     l.npcs.append(ally)
 
@@ -5855,7 +5855,7 @@ def manage_ancient(form_music_overrides={}):
                 "event_addr": event_addr, "facing": 4 | 0x50,
                 "memaddr": byte + 0x17, "membit": bit, "unknown": 0,
                 "graphics_index": 0}
-            for key, value in list(attributes.items()):
+            for key, value in attributes.items():
                 setattr(magicite, key, value)
             l.npcs.append(magicite)
 
@@ -5867,7 +5867,7 @@ def manage_ancient(form_music_overrides={}):
             "event_addr": event_addr, "facing": 2,
             "memaddr": 0, "membit": 0, "unknown": 0,
             "graphics_index": 0}
-        for key, value in list(attributes.items()):
+        for key, value in attributes.items():
             setattr(enemy, key, value)
         l.npcs.append(enemy)
 
@@ -5879,7 +5879,7 @@ def manage_ancient(form_music_overrides={}):
                 "event_addr": event_addr, "facing": 2,
                 "memaddr": 0, "membit": 0, "unknown": 0,
                 "graphics_index": 0}
-            for key, value in list(attributes.items()):
+            for key, value in attributes.items():
                 setattr(partyswitch, key, value)
             l.npcs.append(partyswitch)
 
@@ -6394,7 +6394,7 @@ def sabin_hint(commands):
     if not command_id or command_id == 0xFF:
         command_id = sabin.battle_commands[0]
 
-    command = [c for c in list(commands.values()) if c.id == command_id][0]
+    command = [c for c in commands.values() if c.id == command_id][0]
     hint = "My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {}.".format(command.name)
     sabin_hint_sub = Substitution()
     sabin_hint_sub.set_location(0xD20D0)
@@ -6607,7 +6607,7 @@ r   Randomize character locations in the world of ruin.
     if saveflags:
         try:
             with open('savedflags.txt', 'w') as sff:
-                for k, v in list(speeddial_opts.items()):
+                for k, v in speeddial_opts.items():
                     if v: sff.write("%s: %s" % (k, v) + '\n')
         except:
             print("Couldn't save flag string\n")
@@ -6705,7 +6705,7 @@ r   Randomize character locations in the world of ruin.
     secret_codes['johnnydmad'] = "MUSIC REPLACEMENT MODE"
     secret_codes['johnnyachaotic'] = "MUSIC MANGLING MODE"
     s = ""
-    for code, text in list(secret_codes.items()):
+    for code, text in secret_codes.items():
         if code in flags:
             flags = flags.replace(code, '')
             s += "SECRET CODE: %s ACTIVATED\n" % text
@@ -6915,8 +6915,8 @@ r   Randomize character locations in the world of ruin.
         set_item_changed_commands(changed_commands)
         loglist = reset_special_relics(items, characters, fout)
         for name, before, after in loglist:
-            beforename = [c for c in list(commands.values()) if c.id == before][0].name
-            aftername = [c for c in list(commands.values()) if c.id == after][0].name
+            beforename = [c for c in commands.values() if c.id == before][0].name
+            aftername = [c for c in commands.values() if c.id == after][0].name
             logstr = "{0:13} {1:7} -> {2:7}".format(
                 name + ":", beforename.lower(), aftername.lower())
             log(logstr, section="command-change relics")
@@ -7100,7 +7100,7 @@ r   Randomize character locations in the world of ruin.
 
     if 'playsitself' in activated_codes:
         manage_full_umaro()
-        for c in list(commands.values()):
+        for c in commands.values():
             if c.id not in [0x01, 0x08, 0x0E, 0x0F, 0x15, 0x19]:
                 c.allow_while_berserk(fout)
         whelkhead = get_monster(0x134)

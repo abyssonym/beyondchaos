@@ -152,7 +152,7 @@ def remap_maps(routes):
 
     newlocations = []
     for newlocid in sorted(set(locexchange.values())):
-        keys = [key for (key, value) in list(locexchange.items())
+        keys = [key for (key, value) in locexchange.items()
                 if value == newlocid]
         assert len(set([a for (a, b) in keys])) == 1
         copylocid = keys[0][0]
@@ -231,7 +231,7 @@ def remap_maps(routes):
                 assert clust.locid == newlocation.copied
                 if clust.has_adjacent_entrances:
                     x, y = ent.x, ent.y
-                    for ent2 in list(clust.entgroups.keys()):
+                    for ent2 in clust.entgroups.keys():
                         if ent2.x == ent.x and ent2.y == ent.y:
                             break
                     else:
@@ -768,7 +768,7 @@ class InterSegment(Segment):
         reachable = [a]
         done = []
         for i in range(20):
-            for r in list(reachable):
+            for r in reachable:
                 for c, d in self.links:
                     if c in done or d in done:
                         continue

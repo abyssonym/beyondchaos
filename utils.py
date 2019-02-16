@@ -332,7 +332,7 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
             index = color_to_index(color)
             colordict[index].add(color)
 
-        saturated = dict((k, v) for (k, v) in list(colordict.items()) if k & 0x7)
+        saturated = dict((k, v) for (k, v) in colordict.items() if k & 0x7)
         satlist = sorted(saturated)
         random.shuffle(satlist)
         grouporder = sorted(satlist, key=lambda k: len(saturated[k]),
@@ -433,7 +433,7 @@ def get_palette_transformer(use_luma=False, always=None, middle=True,
                     import pdb; pdb.set_trace()
                 swapmap[index] = swapcode
 
-        remaining = [i for i in range(94) if i not in list(swapmap.keys())]
+        remaining = [i for i in range(94) if i not in swapmap.keys()]
         random.shuffle(remaining)
 
         def get_nearest_swapcode(index):

@@ -124,7 +124,7 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
         
     #generate instruments
     isets = {}
-    for k, v in list(variants.items()):
+    for k, v in variants.items():
         iset = {}
         for line in mml:
             skip = False
@@ -153,18 +153,18 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
                     continue
                 iset[numbers[0]] = numbers[1]
         raw_iset = "\x00" * 0x20
-        for slot, inst in list(iset.items()):
+        for slot, inst in iset.items():
             raw_iset = byte_insert(raw_iset, (slot - 0x20)*2, chr(inst))
         isets[k] = raw_iset
                 
             
     #generate data
     datas = {}
-    for k, v in list(variants.items()):
+    for k, v in variants.items():
         datas[k] = mml_to_akao_main(mml, v, fileid)
         
     output = {}
-    for k, v in list(variants.items()):
+    for k, v in variants.items():
         output[k] = (datas[k], isets[k])
     
     return output
@@ -329,7 +329,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     mls.extend(dcom)
                 elif dcom in drumset:
                     params = {}
-                    for k, v in list(drumset[dcom].params.items()):
+                    for k, v in drumset[dcom].params.items():
                         if lockstate and k != "@0": continue
                         if k in state:
                             if state[k] != v:
@@ -345,7 +345,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                         state.pop("%y0", None)
                         state.pop("%s0", None)
                         state.pop("%r0", None)
-                    for k, v in list(params.items()):
+                    for k, v in params.items():
                         t = (re.sub('[0-9,]', '', k) + v).strip()
                         s = t + s if k == "@0" else s + t
                         if k != "%y":
@@ -543,7 +543,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             data += "\xFC" + int_insert("  ",0,target,2)
     
     #insert pending jumps
-    for k, v in list(pendingjumps.items()):
+    for k, v in pendingjumps.items():
         if v in targets:
             data = int_insert(data, k, targets[v], 2)
         else:
@@ -555,7 +555,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
     for i in range(0,8):
         if i not in channels:
             channels[i] = len(data)
-    for k, v in list(channels.items()):
+    for k, v in channels.items():
         header = int_insert(header, 4 + k*2, v, 2)
         if k <= 8 and k+8 not in channels:
             header = int_insert(header, 4 + (k+8)*2, v, 2)
@@ -594,7 +594,7 @@ if __name__ == "__main__":
         clean_end()
     
     fn = os.path.splitext(fn)[0]
-    for k, v in list(variants.items()):
+    for k, v in variants.items():
         vfn = ".bin" if k in ("_default_", "") else "_{}.bin".format(k)
         
         thisfn = fn + "_data" + vfn

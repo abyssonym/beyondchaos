@@ -94,7 +94,7 @@ del(specialdict["cover"])
 specialdict["frozen"] = 0x19
 specialdict["hp drain"] = 0x30
 specialdict["mp drain"] = 0x31
-reverse_specialdict = dict([(v, k) for (k, v) in list(specialdict.items())])
+reverse_specialdict = dict([(v, k) for (k, v) in specialdict.items()])
 ranked = [specialdict[key] for key in ranked]
 
 
@@ -318,7 +318,7 @@ class MonsterBlock:
                 value = self.stats[name]
                 values[newname] = value
 
-            valuewidth = max(len(str(v)) for v in list(values.values()))
+            valuewidth = max(len(str(v)) for v in values.values())
             substr = "{0:%s} {1:%s}" % (namewidth, valuewidth)
             for name in statnames:
                 name = get_shortname(name)
@@ -1211,7 +1211,7 @@ class MonsterBlock:
 
         new_immunities = [0x00] * 3
         new_statuses = [0x00] * 4
-        bitdict = dict((y, x) for (x, y) in list(statusdict.items()))
+        bitdict = dict((y, x) for (x, y) in statusdict.items())
 
         for _ in range(100):
             if stacount <= 0:

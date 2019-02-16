@@ -219,7 +219,7 @@ class ItemBlock:
                 return list(map(intify, v))
 
         name = bytes([])
-        for key, value in list(customdict.items()):
+        for key, value in customdict.items():
             if key == "name_text":
                 name = name + name_to_bytes(value, 12)
             elif key == "description":

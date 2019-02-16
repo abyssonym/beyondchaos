@@ -32,7 +32,7 @@ for line in open(LOCATION_MAPS_TABLE):
     a, b = tuple(line.strip().split(':'))
     b = b.strip().strip(',').split(',')
     locids = []
-    for locid in list(b):
+    for locid in b:
         if '+' in locid:
             l = int(locid.strip('+'))
             locids.extend([l, l+1, l+2, l+3])

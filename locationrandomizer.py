@@ -1,5 +1,5 @@
-from __future__ import division
-from __future__ import print_function
+#!/usr/bin/env python3
+
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,
                    UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
@@ -32,7 +32,7 @@ for line in open(LOCATION_MAPS_TABLE):
     a, b = tuple(line.strip().split(':'))
     b = b.strip().strip(',').split(',')
     locids = []
-    for locid in list(b):
+    for locid in b:
         if '+' in locid:
             l = int(locid.strip('+'))
             locids.extend([l, l+1, l+2, l+3])
@@ -95,11 +95,11 @@ class NPCBlock():
         value = (self.event_addr | (self.palette << 18) | (self.unknown << 21)
                  | (self.membit << 22) | (self.memaddr << 25))
         write_multi(fout, value, length=4)
-        fout.write(chr(self.x))
-        fout.write(chr(self.y))
-        fout.write(chr(self.graphics))
-        fout.write(chr(self.graphics_index))
-        fout.write(chr(self.facing))
+        fout.write(bytes([self.x]))
+        fout.write(bytes([self.y]))
+        fout.write(bytes([self.graphics]))
+        fout.write(bytes([self.graphics_index]))
+        fout.write(bytes([self.facing]))
 
 
 class EventBlock():
@@ -120,8 +120,8 @@ class EventBlock():
 
     def write_data(self, fout, nextpointer):
         fout.seek(nextpointer)
-        fout.write(chr(self.x))
-        fout.write(chr(self.y))
+        fout.write(bytes([self.x]))
+        fout.write(bytes([self.y]))
         write_multi(fout, self.event_addr, length=3)
 
 
@@ -136,7 +136,7 @@ class Zone():
     def read_data(self, filename):
         f = open(filename, 'r+b')
         f.seek(self.pointer)
-        self.setids = map(ord, f.read(4))
+        self.setids = list(f.read(4))
         f.seek(self.ratepointer)
         self.rates = ord(f.read(1))
         f.close()
@@ -145,7 +145,7 @@ class Zone():
     def pretty_rates(self):
         temp = self.rates
         result = []
-        for i in reversed(range(4)):
+        for i in reversed(list(range(4))):
             temp = (self.rates >> (i*2)) & 0x3
             result.append(temp)
         return result
@@ -199,7 +199,7 @@ class Zone():
         #fout.seek(self.pointer)
         #fout.write("".join(map(chr, self.setids)))
         fout.seek(self.ratepointer)
-        fout.write(chr(self.rates))
+        fout.write(bytes([self.rates]))
 
 
 # 415 locations
@@ -372,7 +372,7 @@ class Location():
             candidates.append((value, e))
         if not candidates:
             return None
-        _, entrance = min(candidates)
+        _, entrance = min(candidates, key=lambda s: (s[0], s[1].entid))
         return entrance
 
     @property
@@ -432,11 +432,11 @@ class Location():
         self.tileproperties = ord(f.read(1))  # mult by 2
         self.attacks = ord(f.read(1))
         self.unknown1 = ord(f.read(1))
-        self.graphic_sets = map(ord, f.read(4))
+        self.graphic_sets = list(f.read(4))
         self.tileformations = read_multi(f, length=2, reverse=True)
         self.mapdata = read_multi(f, length=4)
         self.unknown2 = ord(f.read(1))
-        self.bgshift = map(ord, f.read(4))
+        self.bgshift = list(f.read(4))
         self.unknown3 = ord(f.read(1))
         self.layer12dimensions = ord(f.read(1))
         self.unknown4 = ord(f.read(1))
@@ -508,9 +508,9 @@ class Location():
             for attribute in args:
                 attribute = getattr(self, attribute)
                 try:
-                    attribute = "".join(map(chr, attribute))
+                    attribute = bytes([attribute])
                 except TypeError:
-                    attribute = chr(attribute)
+                    attribute = bytes(attribute)
                 fout.write(attribute)
 
         write_attributes("name_id", "layers_to_animate", "_battlebg",
@@ -528,10 +528,13 @@ class Location():
 
         write_attributes("music", "unknown5", "width", "height",
                          "layerpriorities")
-        assert fout.tell() == self.pointer + 0x21
+        try:
+            assert fout.tell() == self.pointer + 0x21
+        except:
+            print(fout.tell() - (self.pointer + 0x21))
 
         fout.seek(0xf5600 + self.locid)
-        fout.write(chr(self.setid))
+        fout.write(bytes([self.setid]))
 
     def copy(self, location):
         attributes = [
@@ -563,7 +566,7 @@ class Location():
         end = read_multi(f, length=2)
         numchests = (end - begin) // 5
         self.chests = []
-        for i in xrange(numchests):
+        for i in range(numchests):
             pointer = begin + (i*5) + 0x2d8634
             c = ChestBlock(pointer, self.locid)
             c.read_data(filename)
@@ -579,7 +582,7 @@ class Location():
         assert numnpcs == round(numnpcs)
         numnpcs = int(numnpcs)
         self.npcs = []
-        for i in xrange(numnpcs):
+        for i in range(numnpcs):
             pointer = begin + (i*9) + 0x41a10
             e = NPCBlock(pointer, self.locid)
             e.read_data(filename)
@@ -595,7 +598,7 @@ class Location():
         assert numevents == round(numevents)
         numevents = int(numevents)
         self.events = []
-        for i in xrange(numevents):
+        for i in range(numevents):
             pointer = begin + (i*5) + 0x40000
             e = EventBlock(pointer, self.locid)
             e.read_data(filename)
@@ -684,7 +687,7 @@ class Location():
     def write_npcs(self, fout, nextpointer, ignore_order=False):
         fout.seek(self.npcpointer)
         write_multi(fout, (nextpointer - 0x41a10), length=2)
-        for i in xrange(len(self.npcs)):
+        for i in range(len(self.npcs)):
             if ignore_order:
                 e = self.npcs[i]
             else:
@@ -795,11 +798,11 @@ class Entrance():
         if nextpointer >= 0x1FDA00:
             raise Exception("Not enough room for entrances.")
         fout.seek(nextpointer)
-        fout.write(chr(self.x))
-        fout.write(chr(self.y))
+        fout.write(bytes([self.x]))
+        fout.write(bytes([self.y]))
         write_multi(fout, self.dest, length=2)
-        fout.write(chr(self.destx))
-        fout.write(chr(self.desty))
+        fout.write(bytes([self.destx]))
+        fout.write(bytes([self.desty]))
 
     def __repr__(self):
         if hasattr(self, "entid") and self.entid is not None:
@@ -831,12 +834,12 @@ class LongEntrance(Entrance):
         if nextpointer >= 0x2DFE00:
             raise Exception("Not enough room for long entrances.")
         fout.seek(nextpointer)
-        fout.write(chr(self.x))
-        fout.write(chr(self.y))
-        fout.write(chr(self.width))
+        fout.write(bytes([self.x]))
+        fout.write(bytes([self.y]))
+        fout.write(bytes([self.width]))
         write_multi(fout, self.dest, length=2)
-        fout.write(chr(self.destx))
-        fout.write(chr(self.desty))
+        fout.write(bytes([self.destx]))
+        fout.write(bytes([self.desty]))
 
     def copy(self, entrance):
         for attribute in ["x", "y", "dest", "destx", "desty", "width"]:
@@ -864,7 +867,7 @@ class EntranceSet():
         n = (end - start) // 6
         assert end == start + (6*n)
         self.entrances = []
-        for i in xrange(n):
+        for i in range(n):
             e = Entrance(0x1fbb00 + start + (i*6))
             e.set_id(i)
             self.entrances.append(e)
@@ -880,7 +883,7 @@ class EntranceSet():
         n = (end - start) // 7
         assert end == start + (7*n)
         self.longentrances = []
-        for i in xrange(n):
+        for i in range(n):
             e = LongEntrance(0x2DF480 + start + (i*7))
             e.set_id(i)
             self.longentrances.append(e)
@@ -1001,7 +1004,7 @@ def lookup_reachable_entrances(entrance):
         for line in open(ENTRANCE_REACHABILITY_TABLE):
             locid, ents = line.strip().split(':')
             locid = int(locid)
-            ents = map(int, ents.split(','))
+            ents = list(map(int, ents.split(',')))
             for ent in ents:
                 if (locid, ent) in reachdict:
                     raise Exception("Duplicate reachability in table.")

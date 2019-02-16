@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    decompress, line_wrap, USED_LOCATIONS_TABLE,

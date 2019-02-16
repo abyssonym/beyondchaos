@@ -1,5 +1,3 @@
-
-
 from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,
                    name_to_bytes, utilrandom as random,

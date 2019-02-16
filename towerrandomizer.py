@@ -1,4 +1,4 @@
-
+#!/usr/bin/env python3
 
 from utils import (ANCIENT_CHECKPOINTS_TABLE, TOWER_CHECKPOINTS_TABLE,
                    TOWER_LOCATIONS_TABLE, TREASURE_ROOMS_TABLE,

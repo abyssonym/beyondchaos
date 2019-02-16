@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 from utils import (ENEMY_NAMES_TABLE, MODIFIERS_TABLE, MOVES_TABLE,
                    NAMEGEN_TABLE, utilrandom as random)

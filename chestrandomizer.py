@@ -1,5 +1,3 @@
-
-
 from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution
 from itemrandomizer import get_ranked_items, get_item
 from formationrandomizer import get_formations, get_fsets

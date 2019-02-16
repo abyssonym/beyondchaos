@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 
 import sys, os, re, traceback, copy
 from mmltbl import *

@@ -1,4 +1,4 @@
-#!python3
+#!/usr/bin/env python3
 
 from time import time, sleep, gmtime
 from sys import argv, exit

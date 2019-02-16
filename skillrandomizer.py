@@ -1,5 +1,3 @@
-
-
 from utils import (hex2int, int2bytes, Substitution, SPELL_TABLE,
                    SPELLBANS_TABLE, name_to_bytes, utilrandom as random)
 

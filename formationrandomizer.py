@@ -1,4 +1,4 @@
-
+#! /usr/bin/env python3
 
 from utils import read_multi, write_multi, utilrandom as random
 from math import log

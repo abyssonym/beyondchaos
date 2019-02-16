@@ -240,7 +240,7 @@ class ItemBlock:
 
     def write_stats(self, fout):
         fout.seek(self.pointer)
-        fout.write(bytes((self.itemtype,)))
+        fout.write(bytes([self.itemtype]))
 
         self.confirm_heavy()
         write_multi(fout, self.equippable, length=2)
@@ -859,9 +859,9 @@ def reset_special_relics(items, characters, fout):
             for ptrdict in [sperelic, sperelic2]:
                 beforeptr, afterptr = ptrdict[flag]
                 fout.seek(beforeptr)
-                fout.write(bytes((before,)))
+                fout.write(bytes([before]))
                 fout.seek(afterptr)
-                fout.write(bytes((after,)))
+                fout.write(bytes([after]))
             break
         changedict[flag] = (before, after)
 

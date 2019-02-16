@@ -772,7 +772,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     assert loc >= min([l[0] for l in songdatalocs])
                     if f_preserve:
                         s.is_pointer = True
-                        s.data = bytes((loc,))
+                        s.data = bytes([loc])
                     else:
                         s.is_pointer = False
                         slen = bytes_to_int(data[loc:loc+2]) + 2

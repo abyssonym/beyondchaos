@@ -212,21 +212,21 @@ class Formation():
 
     def write_data(self, fout):
         fout.seek(self.pointer)
-        fout.write(bytes((self.mouldbyte,)))
-        fout.write(bytes((self.enemies_present,)))
+        fout.write(bytes([self.mouldbyte]))
+        fout.write(bytes([self.enemies_present]))
         fout.write(bytes(self.enemy_ids))
         fout.write(bytes(self.enemy_pos))
-        fout.write(bytes((self.bosses,)))
+        fout.write(bytes([self.bosses]))
 
         fout.seek(self.auxpointer)
-        fout.write(bytes((self.misc1,)))
-        fout.write(bytes((self.misc2,)))
-        fout.write(bytes((self.eventscript,)))
-        fout.write(bytes((self.misc3,)))
+        fout.write(bytes([self.misc1]))
+        fout.write(bytes([self.misc2]))
+        fout.write(bytes([self.eventscript]))
+        fout.write(bytes([self.misc3]))
 
         if self.ap is not None:
             fout.seek(0x1fb400 + self.formid)
-            fout.write(bytes((self.ap,)))
+            fout.write(bytes([self.ap]))
 
     def lookup_enemies(self):
         self.enemies = []

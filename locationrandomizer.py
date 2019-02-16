@@ -95,11 +95,11 @@ class NPCBlock():
         value = (self.event_addr | (self.palette << 18) | (self.unknown << 21)
                  | (self.membit << 22) | (self.memaddr << 25))
         write_multi(fout, value, length=4)
-        fout.write(bytes((self.x,)))
-        fout.write(bytes((self.y,)))
-        fout.write(bytes((self.graphics,)))
-        fout.write(bytes((self.graphics_index,)))
-        fout.write(bytes((self.facing,)))
+        fout.write(bytes([self.x]))
+        fout.write(bytes([self.y]))
+        fout.write(bytes([self.graphics]))
+        fout.write(bytes([self.graphics_index]))
+        fout.write(bytes([self.facing]))
 
 
 class EventBlock():
@@ -120,8 +120,8 @@ class EventBlock():
 
     def write_data(self, fout, nextpointer):
         fout.seek(nextpointer)
-        fout.write(bytes((self.x,)))
-        fout.write(bytes((self.y,)))
+        fout.write(bytes([self.x]))
+        fout.write(bytes([self.y]))
         write_multi(fout, self.event_addr, length=3)
 
 
@@ -199,7 +199,7 @@ class Zone():
         #fout.seek(self.pointer)
         #fout.write("".join(map(chr, self.setids)))
         fout.seek(self.ratepointer)
-        fout.write(bytes((self.rates,)))
+        fout.write(bytes([self.rates]))
 
 
 # 415 locations
@@ -508,7 +508,7 @@ class Location():
             for attribute in args:
                 attribute = getattr(self, attribute)
                 try:
-                    attribute = bytes((attribute,))
+                    attribute = bytes([attribute])
                 except TypeError:
                     attribute = bytes(attribute)
                 fout.write(attribute)
@@ -534,7 +534,7 @@ class Location():
             print(fout.tell() - (self.pointer + 0x21))
 
         fout.seek(0xf5600 + self.locid)
-        fout.write(bytes((self.setid,)))
+        fout.write(bytes([self.setid]))
 
     def copy(self, location):
         attributes = [
@@ -798,11 +798,11 @@ class Entrance():
         if nextpointer >= 0x1FDA00:
             raise Exception("Not enough room for entrances.")
         fout.seek(nextpointer)
-        fout.write(bytes((self.x,)))
-        fout.write(bytes((self.y,)))
+        fout.write(bytes([self.x]))
+        fout.write(bytes([self.y]))
         write_multi(fout, self.dest, length=2)
-        fout.write(bytes((self.destx,)))
-        fout.write(bytes((self.desty,)))
+        fout.write(bytes([self.destx]))
+        fout.write(bytes([self.desty]))
 
     def __repr__(self):
         if hasattr(self, "entid") and self.entid is not None:
@@ -834,12 +834,12 @@ class LongEntrance(Entrance):
         if nextpointer >= 0x2DFE00:
             raise Exception("Not enough room for long entrances.")
         fout.seek(nextpointer)
-        fout.write(bytes((self.x,)))
-        fout.write(bytes((self.y,)))
-        fout.write(bytes((self.width,)))
+        fout.write(bytes([self.x]))
+        fout.write(bytes([self.y]))
+        fout.write(bytes([self.width]))
         write_multi(fout, self.dest, length=2)
-        fout.write(bytes((self.destx,)))
-        fout.write(bytes((self.desty,)))
+        fout.write(bytes([self.destx]))
+        fout.write(bytes([self.desty]))
 
     def copy(self, entrance):
         for attribute in ["x", "y", "dest", "destx", "desty", "width"]:

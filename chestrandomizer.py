@@ -232,9 +232,9 @@ class ChestBlock:
             self.set_new_id()
 
         # TODO: Preserve same IDs on chests like in Figaro Cave
-        fout.write(bytes((self.memid,)))
-        fout.write(bytes((self.contenttype,)))
-        fout.write(bytes((self.contents,)))
+        fout.write(bytes([self.memid]))
+        fout.write(bytes([self.contenttype]))
+        fout.write(bytes([self.contents]))
 
     def get_current_value(self, guideline=None):
         if self.treasure:

@@ -1024,31 +1024,31 @@ class MonsterBlock:
 
         fout.seek(self.pointer)
         for key in stat_order:
-            fout.write(bytes((self.stats[key],)))
+            fout.write(bytes([self.stats[key]]))
         write_multi(fout, self.stats['hp'], length=2)
         write_multi(fout, self.stats['mp'], length=2)
         write_multi(fout, self.stats['xp'], length=2)
         write_multi(fout, self.stats['gp'], length=2)
-        fout.write(bytes((self.stats['level'],)))
+        fout.write(bytes([self.stats['level']]))
 
-        fout.write(bytes((self.morph,)))
-        fout.write(bytes((self.misc1,)))
-        fout.write(bytes((self.misc2,)))
+        fout.write(bytes([self.morph]))
+        fout.write(bytes([self.misc1]))
+        fout.write(bytes([self.misc2]))
 
         fout.seek(self.pointer + 20)
         for i in self.immunities:
-            fout.write(bytes((i,)))
-        fout.write(bytes((self.absorb,)))
-        fout.write(bytes((self.null,)))
-        fout.write(bytes((self.weakness,)))
+            fout.write(bytes([i]))
+        fout.write(bytes([self.absorb]))
+        fout.write(bytes([self.null]))
+        fout.write(bytes([self.weakness]))
 
         fout.seek(self.pointer + 26)
-        fout.write(bytes((self.attackanimation,)))
+        fout.write(bytes([self.attackanimation]))
 
         fout.seek(self.pointer + 27)
         for s in self.statuses:
-            fout.write(bytes((s,)))
-        fout.write(bytes((self.special,)))
+            fout.write(bytes([s]))
+        fout.write(bytes([self.special]))
 
         fout.seek(self.itemptr)
         fout.write(bytes(self.items))
@@ -1937,7 +1937,7 @@ class MonsterGraphicBlock:
         fout.seek(self.pointer+2)
         write_multi(fout, palette, length=2, reverse=False)
         fout.seek(self.pointer+4)
-        fout.write(bytes((self.size_template,)))
+        fout.write(bytes([self.size_template]))
         if no_palette:
             return
 

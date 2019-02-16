@@ -150,11 +150,11 @@ def recompress(bytestring):
                     c = 0
                 subresult.append(c)
                 add_buff(c)
-        result += bytes((control,)) + subresult
+        result += bytes([control]) + subresult
         if not bytestring and (
                 control != 0xFF
                 or not subresult.endswith(bytes([0, 0]))):
-            result += bytes((0xFF,)) + bytes(8)
+            result += b'\xFF' + bytes(8)
     return result
 
 

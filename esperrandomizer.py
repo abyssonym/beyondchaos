@@ -164,12 +164,12 @@ class EsperBlock:
     def write_data(self, fout):
         fout.seek(self.pointer)
         for learnrate, spell in zip(self.learnrates, self.spells):
-            fout.write(bytes((learnrate,)))
-            fout.write(bytes((spell.spellid,)))
+            fout.write(bytes([learnrate]))
+            fout.write(bytes([spell.spellid]))
         for i in range(5 - len(self.spells)):
-            fout.write(bytes((0x0,)))
-            fout.write(bytes((0xFF,)))
-        fout.write(bytes((self.bonus,)))
+            fout.write(b'\x00')
+            fout.write(b'\xFF')
+        fout.write(bytes([self.bonus]))
 
     def get_candidates(self, rank, set_lower=True, allow_quick=False):
         candidates = get_candidates(rank, set_lower=set_lower)

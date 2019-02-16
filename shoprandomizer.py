@@ -32,7 +32,7 @@ class ShopBlock:
 
     def write_data(self, fout):
         fout.seek(self.pointer)
-        fout.write(bytes((self.misc,)))
+        fout.write(bytes([self.misc]))
         fout.write(bytes(self.items))
 
     def __repr__(self):
@@ -177,4 +177,4 @@ class ShopBlock:
 
 def buy_owned_breakable_tools(fout):
     fout.seek(0x3b7f4)
-    fout.write(bytes((0x27,)))
+    fout.write(b'\x27')

@@ -136,7 +136,7 @@ class SpellBlock:
     def fix_reflect(self, fout):
         self.dmgtype |= 0x02
         fout.seek(self.pointer+3)
-        fout.write(bytes((self.dmgtype,)))
+        fout.write(bytes([self.dmgtype]))
 
     def rank(self):
         if self._rank is not None:
@@ -250,8 +250,8 @@ class CommandBlock:
 
     def write_properties(self, fout):
         fout.seek(self.proppointer)
-        fout.write(bytes((self.properties,)))
-        fout.write(bytes((self.targeting,)))
+        fout.write(bytes([self.properties]))
+        fout.write(bytes([self.targeting]))
 
     def setpointer(self, value, fout):
         fout.seek(self.pointer)
@@ -283,7 +283,7 @@ class CommandBlock:
         else:
             byte = old | byte
         fout.seek(pointer + offset)
-        fout.write(bytes((byte,)))
+        fout.write(bytes([byte]))
 
     def unset_retarget(self, fout):
         self.set_bit(0x24E46, fout, unset=True)

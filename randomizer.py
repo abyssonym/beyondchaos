@@ -6254,8 +6254,40 @@ def manage_dances():
             dancestr += "{0}/16 {1:<12} ".format(frequency, dance_name)
         dancestr = dancestr.rstrip()
         log(dancestr, "dances")
-
-
+        
+    # Randomize dance backgrounds
+    backgrounds = [
+        [0x00, 0x05, 0x06, 0x07, 0x36], #Wind Song
+        [0x01, 0x03, 0x31, 0x32], #Forest Suite
+        [0x02, 0x0E, 0x2F], #Desert Aria
+        [0x04, 0x08, 0x10, 0x13, 0x14, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C,
+            0x1D, 0x1E, 0x20, 0x24, 0x2B, 0x2D, 0x2E, 0x37], #Love Sonata
+        [0x0B, 0x15, 0x16], #Earth Blues
+        [0x0D, 0x1F, 0x23], #Water Rondo
+        [0x09, 0x0A, 0x0C, 0x11, 0x22, 0x26, 0x28, 0x2A], #Dusk Requiem
+        [0x12] ] #Snowman Jazz
+    fout.seek(0x11F9AB)
+    for i, terrain in enumerate(backgrounds):
+        fout.write(chr(random.choice(terrain)))
+    
+    # Change some semi-unused dance associations to make more sense
+    # 1C (Colosseum) from Wind Song to Love Sonata
+    # 1E (Thamasa) from Wind Song to Love Sonata
+    fout.seek(0x2D8E77)
+    fout.write(chr(3))
+    fout.seek(0x2D8E79)
+    fout.write(chr(3))
+    
+    # Put stationary versions of train related bgs in unused slots
+    fout.seek(0x27005A)
+    bg1 = fout.read(6)
+    fout.seek(0x2700C6)
+    bg2 = fout.read(6)
+    fout.seek(0x270126)
+    fout.write(bg1 + bg2)
+    fout.seek(0x2D8E8C)
+    fout.write("\x01\x01")
+    
 class WoRRecruitInfo(object):
     def __init__(self, event_pointers, recruited_bit_pointers, location_npcs,
                  dialogue_pointers, caseword_pointers=None, prerequisite=None, special=None):

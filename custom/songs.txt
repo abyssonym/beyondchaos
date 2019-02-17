@@ -127,6 +127,7 @@ ff8_horizon:    prelude, daryl, coin, gau, town, town_ruin
 ff8_laguna:     I60, G30, battle*2, chocobo, magitek, floatingcont
 ff8_lion:       I80, G80, atma*2, dmad5
 ff8_lion_nointro: catastrophe*2
+ff8_mlaw:       shadow*2, zozo*2, martiallaw*2
 ff8_oath:       omen3, celes, rachel*2, ruin
 ff8_witches:    H4, omen3, gestahl*2, kefka*2, owzer, ruin, train*2, fanatics
 ff9_blackmage:  H4, chocobo, johnny, what, moogles*2, gogo, strago*2, magitek

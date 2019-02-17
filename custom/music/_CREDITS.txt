@@ -18,7 +18,7 @@ Song conversions:
                  ff5_theme, ff5_void, ff5_world1
                  ff7_battle, ff7_corel, ff7_costa, ff7_hurry, ff7_rebirth,
                  ff7_reunion, ff7_snow
-                 ff8_battle, ff8_horizon, ff8_lion, ff8_witches
+                 ff8_battle, ff8_horizon, ff8_lion, ff8_mlaw, ff8_witches
                  ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
                  ffx_battle, ffx_gagazet, ffx_via, ffx_zanarkand
                  ff12_barheim, ff12_paramina

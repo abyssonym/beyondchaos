@@ -16,7 +16,7 @@
 #WAVE 0x2C ~0x0F~/0x0F/ hi-hat
 #WAVE 0x2D ~0x66~/0x17/ tom
 
-#def global= t95 %x224 %v50 %b0,70
+#def global= t95 %x224 %v50 %b0,70 %f0,0
 
 #def bass= |0 v80 p64 ~o5~/o6/ %e0 m
 #def trumpet= |1 ~v80~/v64/ ~o5~/o6/ %e1 /m48,18,207/
@@ -66,7 +66,7 @@ g+4.r8.a+<cd+rg+8a+8r2...]
 >>r1.r f+g+a+<cc+d+f   l8 a+.g+16r4'svs2'f+2 g+.f+16r4'svs4'g+4r16g+.
 ;
 
-{3}
+{5}
 'glock' l16 p64 %a14
 cegbgece >b<d+f+a+f+d+>b<d+ >a<cegec>a<c >g+b<d+fd+>bg+b
 'trumpet' l8 p3 d+'s'^16 r2.^16
@@ -94,7 +94,7 @@ $
 < [a+.g+16r4f+2] f+.f16r4'tvs2'd+2 f+.f16r4'tvs4'd+4r16d+.
 ;
 
-{5}
+{3}
 l16 [8r"h"] [13"kh"] [3"!! ks32s32"]
 $
 [11"!!!o k8skkksk"]"k8sk8"[6"s32"]

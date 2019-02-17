@@ -4,22 +4,22 @@
 #ARRANGED emberling
 # Converted from binary by mfvitools
 
-#VARIANT ~
-#VARIANT / nopatch
+#VARIANT ~ enh
+#VARIANT / nat
 
 #WAVE 0x20 -- ~0x59~ /0x22/
 #WAVE 0x21 -- ~0x81~ /0x14/
-#WAVE 0x22 -- 0x0F
+#WAVE 0x22 -- ~0x11~ /0x11/
 #WAVE 0x24 -- 0x12
 #WAVE 0x25 --  0x1C
 #WAVE 0x26 -- ~0x80~ /0x1C/
 #WAVE 0x27 -- ~0x82~ /0x0E/
 #WAVE 0x28 -- 0x1E
 #WAVE ~0x2A -- 0x74~
+#WAVE ~0x2B -- 0x7C~
 
-
-{1}
-l16t128%x200%b0,50%v75 ~%k3~
+{4}
+l16t128%x200%b0,50%v75%f0,0 ~%k3~
 p64o5v127@33%s7%r20dv100@33%s7%r24dv100@33%s7%r24dv100@33%s7%r24dv127@33%s7%r20dv100@33%s7%r24dv75@32cv127@33%s7%r20dv75@32cv127@33%s7%r20dv75@32cv100@33%s7%r24dv127@33%s7%r20dv100@33%s7%r24dv100@33%s7%r24dv100@33%s7%r24d  
  $3 [2v100@32c8v75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24dv100@32cv100@33%s7%r24dv75@32c8v127@33%s7%r20d8v75@32c8  
 j2 v100@32c8v75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24dv100@32cv100@33%s7%r24dv75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24 $1 d  
@@ -31,37 +31,39 @@ j2 v100@32c8v75@32c8v127@33%s7%r20d8v75@32cv100@33%s7%r24dv100@32cv100@33%s7%r24
 ;3
 
 l16
-{2}
+{1}
 l16p64%e1r1   $4 [2v60@40o5c4v55@39o6fr8.f12r24er8.dr  
 r8ere2^4  v60@40o5c4v55@39o6fr8.f12r24er8.ar  r8grg2^4  ][2v60@40o5c4r2r4  
 r1  v60@40o5c4r2r4  r1  ]
 ;4
 
 l16
-{3}
+{2}
 l16%e1r1  
  $5 v30p48@39[2o5r4<dr8.d12r24cr8.>a+r  r8<crc2^4  o5r4<dr8.d12r24cr8.fr  
-r8ere2^4  ]>v22p64@0~|Av32<~m0,13,255[4o5r4c4r4r4  r1  ]m
+r8ere2^4  ]>v22p64@0~|Bv32~0m0,10,227[4o6r4[3k4&10cj3k-4&10c]k0&46r4r4  r1  ]m
 ;5
 
 l16
-{4}
+{6}
 l16%e1r1  
  $6 v30p80@39[2o4r4<a+r8.a+12r24ar8.gr  r8ara2^4  o4r4<a+r8.a+12r24ar8.<dr  
-r8crc2^4  ]>v10p64@1~|Av32<~m0,11,255[4o5r4e4r4r4  r1  ]m
+r8crc2^4  ]>v16p64@1~|Av32~m0,10,227[4~o6~/o5/r4[3k4&10ej3k-4&10e]k0&46r4r4  r1  ]m
 ;6
 
 l16
 {5}
-l16p72o5@34v110c8v100%y6c8%yv100c8v100%y6c32%yc32c32c32v100ccv100%y6c8%yv100c8v100%y2%s0c8  
-%y $7 v127@36c4@34[2v100c8v100%y6c8%y]v100c8v100%y2%s0c8%yv110c8v100%y6c8  
-%y[2v100c8v100%y6c8%y]v100c8v100%y2%s0c8%yv110c8v100%y6c8%y[2v100c8v100%y6c8  
-%y]v100c8v100%y2%s0c8%yv110c8v100%y6c8%yv100c8v100%y6c32%yc32c32c32v100ccv100%y6c8  
-%yv100c8v100%y2%s0c8%y
+l16p72o5@34 %s0 %k4
+v72c8v64%y6c8%y7v64c8v64%y6c32%y7c32c32c32v64ccv64%y6c8%y7v64c8v64%y2c8
+$7 v127@36c4
+@34%s0[2v64c8v64%y6c8%y7]v64c8v64%y2c8%y7v72c8v64%y6c8  
+%y7[2v64c8v64%y6c8%y7]v64c8v64%y2c8%y7v72c8v64%y6c8%y7[2v64c8v64%y6c8  
+%y7]v64c8v64%y2c8%y7v72c8v64%y6c8%y7v64c8v64%y6c32%y7c32c32c32v64ccv64%y6c8  
+%y7v64c8v64%y2c8%y7
 ;7
 
 l16
-{6}
+{3}
 l16v127p64@37%y6%s1%r0r1   $8 o5c8r8>g8r8a8r8a+8<c8  
 r8c8>g8r8a8r8a+8r8  <c8r8>g8r8a8r8a+8<c8  r8c8>g8r8a<a>ara+<a+>a+r  
 

@@ -5,23 +5,26 @@
 # via ff5ff6mcs2
 # Converted from binary by mfvitools
 
+#VARIANT ~ enh
+#VARIANT / nat
+
 #WAVE 0x20 -- 0x22
-#WAVE 0x21 -- 0x14
+#WAVE 0x21 -- ~0x81~ /0x14/
 #WAVE 0x22 -- 0x11
-#WAVE 0x23 -- 0x17
-#WAVE 0x24 -- 0x20 
+#WAVE 0x23 -- ~0x6E~ /0x17/
+#WAVE 0x24 -- ~0x67~ /0x20/
 #WAVE 0x26 -- 0x02
-#WAVE 0x27 -- 0x0E
+#WAVE 0x27 -- ~0x72~ /0x0E/
 
 
-{1} t140%x232
-l16%b0,60%v75v80p64@39o6%e1c6r12c24r24c24r24c24r24e12r12c12r12e12r12  
+{1} t155%x232
+l16%b0,70%v50%f0,0v80p64@39~o6~/o7/%e1c6r12c24r24c24r24c24r24e12r12c12r12e12r12  
 g12rr24<c24r48c2r4  $ >erererdr4rfrfr  frer4rdr8.er8.  dr8.dr8.c4r8er  
 r8erdr8.cr8.dr8.  <
 ;
 
 {2}
-l16v50p80@39o5%e1g6r12g24r24g24r24g24r24<c12r12>g12r12<c12r12  
+l16v50p80@39~o5~/o6/%e1g6r12g24r24g24r24g24r24<c12r12>g12r12<c12r12  
 e12rr24g24r48g2r4  $ crcrcr>br4r<drdr  drcr4r>br8.<cr8.  >a+r8.a+r8.a4r8<cr  
 r8cr>a+r8.ar8.a+r8.  <
 ;
@@ -37,7 +40,7 @@ g12rr24<c24r48c2r4> $[6crcr]crcrcr<cr>>[6a+ra+r  ]a+r<a+r>br<br
 ;
 
 {5}
-l16v50p96@39o5%e1c6r12c24r48c24rc24r24  
+l16v50p96@39~o5~/o6/%e1c6r12c24r48c24rc24r24  
 c12r12c12r12c12r12c12rr24c24r48c2  r4 $v32p32 @5 o4%a8%y7%s7%r8m96,43,192g1  
 ^2^4a4  f1  ^2^4d4  
 ;
@@ -55,6 +58,6 @@ frfrfrerererdrdr  ererdrdrdrdrcrcr  crerererdrdrcrcr  drdr
 ;
 
 {8}
-l16v50p32@39o5%e1e6r12e24r48e24re24r24g12r12e12  
+l16v50p32@39~o5~/o6/%e1e6r12e24r48e24re24r24g12r12e12  
 r12g12r12<c12rr24e24r48e2  r4 $v32p48 |4 o6%a15%y6%s3%r20%r>[8grgr][8frfr]
 ;

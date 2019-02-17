@@ -104,6 +104,7 @@ ff5_lenna:      gau*2, awakening, rachel, town_ruin, ruin
 ff5_library:    H4, gogo, zozo, owzer*2, strago*2, H:omen3, H:kefka, H:catastrophe, H:shadow, H:spinachrag, H:what, H:umaro
 ff5_theme:      fanfare, prelude, setzer*2, locke*2, figaro, falcon
 ff5_void:       ruin, floatingcont*2, kefkastower, gogo
+ff5_wings:      fanfare, setzer, locke, chocobo, blackjack*2
 ff5_world1:     prelude, cyan, returners, strago
 ff5_world2:     W2, awakening, ruin, balance*2, serpent, espers
 ff6_town2:      relm*2, johnny, moogles, strago, town

@@ -180,6 +180,7 @@ lu2_narvick:    omen3, gestahl, shadow, cyan, zozo, narshe, strago, martiallaw, 
 met3_brain:     metamorphosis*2
 met3_surface:   omen3*2, gestahl, cyan*2, shadow, returners, troops, ruin
 ob_battle:      I40, G50, battle*2, boss, metamorphosis*2, unforgiven
+rs2_heroes:     I50, G75, boss, catastrophe, grandfinale
 rs3_underwater: omen3, shadow, owzer, narshe*2, town_ruin*2, ruin, forest*2
 rsms_battle:    I50, G65, battle*2, unforgiven
 sd1s_boss:      I50, G40, boss*2, unforgiven, floatingcont

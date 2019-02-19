@@ -31,6 +31,7 @@ Song conversions:
                  lu2_battle
                  met3_surface
                  ob_battle
+                 rs2_heroes
                  sd2_8bells, sd2_always, sd2_angel, sd2_city, sd2_desert,
                  sd2_eternal, sd2_flammie, sd2_forest, sd2_forget, sd2_ghost,
                  sd2_hope, sd2_intruder, sd2_jema, sd2_legend, sd2_lofty,

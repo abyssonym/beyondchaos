@@ -1,4 +1,5 @@
 FF6 Beyond Chaos EX Randomizer
+a fork of Abyssonym's FF6 Beyond Chaos Randomizer
 Version:    2
 Date:       February 17, 2019
 URL:        https://github.com/subtractionsoup/beyondchaos
@@ -11,10 +12,10 @@ Requirements:
 
 Running the randomizer:
     Windows users: run beyondchaos_ex.exe.
-	Other users: run "randomizer.py" using Python version 3.7 (It DOES NOT work with python 2.)
+	Other users: run "randomizer.py" using Python version 3.7+ (It DOES NOT work with python 2.)
 
 Source ROM file:
-    The randomizer will ask for a ROM file. Beyond Chaos does not provide this ROM. The simplest thing is to put the ROM in the same directory as Beyond Chaos and simply input the file name.
+    The randomizer will ask for a ROM file. Beyond Chaos EX does not provide this ROM. The simplest thing is to put the ROM in the same directory as Beyond Chaos EX and simply input the file name.
 	e.g., "ff3.smc"
 	
 	If you prefer to keep the ROM in a different folder, enter the full path. e.g., "C:\Users\Kefka\Documents\snes\ff3.smc"
@@ -33,7 +34,7 @@ Flags:
 	* If this is your first seed, I recommend typing:
 	-dfklu partyparty makeover
 	
-	This will give you a good taste of Beyond Chaos while leaving out a few things that can sometimes be frustrating for new players. (partyparty and makeover are "secret" codes that randomize the sprites even more.)
+	This will give you a good taste of Beyond Chaos EX while leaving out a few things that can sometimes be frustrating for new players. (partyparty and makeover are "secret" codes that randomize the sprites even more.)
 	
 	* If you find that too hard, try:
 	-dfklmu partyparty makeover
@@ -177,7 +178,7 @@ Q: Does Beyond Chaos EX work on a real Super Nintendo?
 A: Absolutely! Beyond Chaos has been tested on both Super Everdrive and SD2SNES, and it works 100% perfectly.
 
 Q: I found a bug!
-A: The best thing to do is report it on the Beyond Chaos Discord.
+A: The best thing to do is report it on the Beyond Chaos Discord in the #bugs channel. Please include the seed number and flags used. (The easiest way is to copy and paste the first line of the .txt file.)
 
 --- CONTRIBUTORS ---
 	Abyssonym - original Beyond Chaos creator

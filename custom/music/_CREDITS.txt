@@ -71,8 +71,8 @@ Song conversions:
                  iog_boss, iog_womb
                  jts_stage1
                  lagoon_spirits
-                 lu1_boss, lu1_spoils
-                 lu2_battle3, lu2_boss, lu2_map, lu2_mountain, lu2_narvick
+                 lu1_spoils
+                 lu2_battle3, lu2_boss, lu2_mountain, lu2_narvick, lu2_world
                  met3_brain
                  rs3_underwater
                  rsms_battle
@@ -96,7 +96,8 @@ Song conversions:
                ffx_ambition
     tsushiy -- ff1_bossb
                ff4_baron, ff4_illusion
-    emberling & Gi Nattak -- totr_spirit
+    emberling & Gi Nattak -- lu1_boss
+                             totr_spirit
 Tierboss segments:
     emberling -- ffmq_lava_dm, ff8_witches
     Gi Nattak -- cc_flame_dm

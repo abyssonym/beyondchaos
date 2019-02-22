@@ -174,9 +174,9 @@ lu1_spoils:     prelude, omen3, daryl, awakening
 lu2_battle:     I45, G05, battle*2, unforgiven
 lu2_battle3:    I85, G99, atma*2, grandfinale, dmad5
 lu2_boss:       I95, G40, boss*2, grandfinale
-lu2_map:        awakening, mountain, serpent, balance*2
 lu2_mountain:   fanfare, cyan*2, figaro, returners*2, mountain
 lu2_narvick:    omen3, gestahl, shadow, cyan, zozo, narshe, strago, martiallaw, town_ruin*2, ruin
+lu2_world:      awakening, mountain, serpent, balance*2
 met3_brain:     metamorphosis*2
 met3_surface:   omen3*2, gestahl, cyan*2, shadow, returners, troops, ruin
 ob_battle:      I40, G50, battle*2, boss, metamorphosis*2, unforgiven

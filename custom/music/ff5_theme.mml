@@ -21,7 +21,7 @@
 
 
 {1}
-l16t140%b100,0%v50%x180v125p60@33m12,20,195%e1rr2r4r8o6c32r32  
+l16t140%b0,70%v50%f0,0%x180v125p60@33m12,20,195%e1rr2r4r8o6c32r32  
 f32r32g1  ^2^4r8f32r32a+32r32  <c1  v100m12,20,199 $1 @32o5g2>b4<c4  
 d2^4a4  g1  d+2d+4f4  g2<c2  
 >a2^4f4  g2<d2  >a1  g2>b4<c4  
@@ -48,7 +48,7 @@ c1  c+1  c1  >
 ;2
 
 l16
-{3}
+{5}
 l16v70p70@34%e1m50,20,196%r5ro5[4ererfrfrererdrd  
 r] $3 v70%a15ererfrfrererdrd  rf+rf+rgrgrf+rf+rere  r[6d+rd+rfrfrd+rd+rdrd  
 r]ererfrfrererdrd  rf+rf+rgrgrf+rf+rere  r[2d+rd+rfrfrd+rd+rdrd  
@@ -63,7 +63,7 @@ f1  d+1  ^4d+4f4g4  f1
 ;3
 
 l16
-{4}
+{8}
 l16v75p100@34%e1m52,20,196%r5ro5[32cr] $4 v75%a15[8cr][8dr][16cr]>[8a+r]<[8cr]>[8a+r]<[16c  
 r][8dr][16cr]>d+4d4c4  >a+4a4g4f4  <c4>g1  ^1  
 v70%a7<g1  ^1  a1  ^4a4a+4<c4  
@@ -76,7 +76,7 @@ a+1  g+1  a+1  g+1
 ;4
 
 l16
-{5}
+{3}
 l16v60p30@40%r16%e0ro5c4<c4<e2  ^1  o5c4<c4<e2  ^12o4g8<g8e8<e8>g8<g8e8<e24  
  $5 v127p60@35%e0o6[2c8c8r2<c8>g8  c8c8r2r4  ][2d+8d+8r2<d+8>a+8  
 f8f8r2r4  ][2c8c8r2<c8>g8  c8c8r2r4  ]<d+4d4c4>a+4  
@@ -88,7 +88,7 @@ f+rc+8f8f8r4f8f8  r4
 ;5
 
 l16
-{6}
+{4}
 l16v70p75@36ro5[16a4] $6 [48a4][14@36a8@37a8  
 ]@36a8r4.[48a8aa@37a8@36aa  ]
 ;6
@@ -96,18 +96,23 @@ l16v70p75@36ro5[16a4] $6 [48a4][14@36a8@37a8
 l16
 {7}
 l16v60p30@40%r16%e0r32o4g4<g4<<c32^2  
-^2^4^8.^32o4g4  <g4<<c32^2^24o4e8<e8  c8<c8>e8<e8c8<c12 $7 v127p60@38%e0o5[12@38a8a8r2  
-r4][8a4]a8a4.  a8a4.a8a4a8  a8@39a8a8aa[2[3@38a8a4.  @39a4.@38a8a8a4.  
+^2^4^8.^32o4g4  <g4<<c32^2^24o4e8<e8  c8<c8>e8<e8c8<c12 $7
+v127p60@38%e0o5 a8a8r2  r4
+##[11@38a8a8r2  r4][8a4]a8a4.  a8a4.
+[15r1]
+[2[3@38a8a4.  @39a4.@38a8a8a4.  
 @39a2]@38a8a4.  @39a4.@38a8a8a4.  @39a8@38a4a8][2a8a4.  @39a8@38a4.a8a4a8  
 @39a8@38a4a8]a8a4.  @39a8@38a4.a8a4a8  @39a8@38a4.a8a4.  @39a8@38a4.a8a4.  
 @39a8@38a8@39a4
 ;7
 
 l16
-{8}
+{6}
 l16v60p30@40%r16%e0o4e4<f4  <g8.^4.^2  
-^4^8.o4e4<f4<g  ^2o4c8<c8>g8<g8  c8<c8>g8<g8@41%e0v110o5a1   $8 [15r1  
-]@40%e1v60o4[2d+ga+<d+ga+<d+ga+gd+>a+gd+>a+g  ][2d+a<cfa<cfa<c>afc>afc>a  
+^4^8.o4e4<f4<g  ^2o4c8<c8>g8<g8  c8<c8>g8<g8@41%e0v110o5a1   $8
+v127p60@38%e0o5[11@38a8a8r2  
+r4][8a4]a8a4.     a8a4. a8a4a8  a8 @39a8a8aa
+@40%e1v60o4[2d+ga+<d+ga+<d+ga+gd+>a+gd+>a+g  ][2d+a<cfa<cfa<c>afc>afc>a  
 ][2dfa<dfa<dfafd>afd>af  ][2dga+<dga+<dga+gd>a+gd>a+g  ][2d+ga+<d+ga+<d+ga+gd+>a+gd+>a+g  
 ][2d+a<cfa<cfa<c>afc>afc>a  ][2dfa<dfa<dfafd>afd>af  ][2dgb<dgb<dgbgd>bgd>bg  
 ][7r1  ]@41%e0v110o5r2r4a4  ^1  

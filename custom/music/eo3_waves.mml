@@ -3,8 +3,8 @@
 #COMPOSER Yuzo Koshiro
 #ARRANGED emberling
 
-#VARIANT ~
-#VARIANT / nopatch
+#VARIANT ~ enh
+#VARIANT / nat
 
 #WAVE 0x20 ~0x82~ /0x0E/ Brass Lead
 #WAVE 0x21 ~0x74~ /0x0B/ Rock Organ
@@ -20,7 +20,7 @@
 #WAVE 0x2B  ~0x68~ /0x11/ Hi-Hat
 #WAVE 0x2C  ~0x6D~ /0x12/ Cymbal
 
-#def global= t188 %v36 %x232 %b00,70
+#def global= t188 %v36 %x232 %b0,70 %f0,0
 
 #def organ= |1 p48 ~v32 o6 %a6~ /v40 o6 %a6/
 #def organ2= |1 p48 ~v56 o6 %s20~ /v40 o6/

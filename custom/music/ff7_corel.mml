@@ -15,7 +15,7 @@
 #WAVE 0x26 ~0x19~ /0x19/ pizza
 #WAVE 0x27 ~0x24~ /0x24/ bell
 
-#def global= t120 %v50 %x224 %b0,70
+#def global= t120 %v50 %x224 %b0,70 %f0,0
 
 #def soon= |0 p20 v32 ~o6~/o4/ %e1 m
 #def net= |1 p100 v72 o4 %e1 m
@@ -39,7 +39,7 @@ $
 [a<c>r] [g<c>r] [4abr]
 ;
 
-{2}
+{5}
 $
 'soon' l4
 [20d %l1 e>b< %l0 d e r]
@@ -91,7 +91,7 @@ c. d. d. c+.
 c. c. d^^
 ;
 
-{5}
+{2}
 $
 'tar' l8
 [23r4]

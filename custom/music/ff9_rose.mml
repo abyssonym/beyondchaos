@@ -8,109 +8,111 @@
 
 #WAVE 0x20 ~0x8A~/0x0C/
 #WAVE 0x21 ~0x8B~/0x00/
-#WAVE 0x22 ~0x79~/0x31/
+#WAVE 0x22 ~0x8C~/0x31/
 
-#def global= t65 %v50 %x224 %b0,70
-#def bright= |2 /%a13%y4%s1%r12/
-#def mid= ~|1~ /|0 %a15y5%s2%r12/
-#def low= |0 /%a15y5%s2%r12/
+#def global= t65 %v50 %x240 %b0,70 %f0,0
+#def bright= |2 /%a13%y4%s1%r12/ ~o6~/o5/
+#def high= ~|2o6~ /|0%a15%y5%s2%r12o6/
+#def bmid = ~|2o5~ /|2o4%a13%y4%s1%r12/
+#def mid= ~|1~ /|0 %a15y5%s2%r12/ o5
+#def low= |0 /%a15y5%s2%r12/ o4
 
 {1}
 'global' %e1 p64 l12
-['bright' o5 v84 d4   'mid' v79 e4^v73e4^6
-'bright' v84 c4      > v79 a2 j2 ^4] <<'mid' v73 d4^4
+['bright' v84 d4   'mid' v79 e4^v73e4^6
+'bright' v84 c4      'bmid' v79 a2 j2 ^4] 'high' v73 d4^4
 ##
-$ 'bright' o5 v79
-[d4g6ga4e6e  d4>a+6a+a4<f4   d4g6ga4e4  >a+4<f4c4d4]
+$ 'bright' v79
+[d4g6ga4e6e  d4'bmid'a+6a+a4'bright'f4   d4g6ga4e4  'bmid'a+4'bright'f4c4d4]
 ##
-'bright' o5 l4
+'bright' l4
 [v84<cc>av79f    v84j2 <c>gav79f]  gdv79e2
  v84<cc>av79f    v84j2 <c>gav79f  v84aafv79d    v84e6v79e12g+6g+12a2
 ;
 
 {2}
 %e1 p64 l12
-['mid' o5 v84 a4   'bright' v79 c2.
-v84 f4          v79 j2 'mid'f2 v73 <d4] v43 f2. ^4
+['mid' v84 a4   'bright' v79 c2.
+v84 f4          v79 j2 'mid'f2 v73 'high'd4] v43 f2. ^4
 ##
-$ 'bright' o5 v79
+$ 'bright' v79
 [re6r4rg6r4  re6r4ra6re6     re6r4rg6rd6     ra6re6rd6j2r4] v73'mid'r6d
 ##
-'bright' o5 v79 l12
+'bright' v79 l12
 [r4r6a+r6gr6a  r4r6a+r6g r2j2 r6a+r6gr6a  r4re6r2] r6gr6er6f  rd6re6r2
 ;
 
 {3}
 %e1 p64 l12
-v0['low' o4 d4     v79 o4 c2.
+v0['low' d4     v79 c2.
  a+4            d2.] ^4
 ##
-$ 'mid' o5 v73 l4
-[defc    d'low'>a+ba+<'mid'  decc    fdej2d] v84'low'>d
+$ 'mid' v73 l4
+[defc    d'low'a+ba+'mid'  decc    fdej2d] v84'low'd
 ##
-'low' o4 v84 l4
-c2>f2<  cc+d2  c2>f2  g4^6<<'bright'v79f12'low'>c2>  a+2f2  <cc+d2>  a2a2  <e2>a2
+'low' v84 l4
+c2>f2<  cc+d2  c2>f2  g4^6'bright'v79f12'low'c2>  a+2f2  <cc+d2>  a2a2  <e2>a2
 ;
 
 {4}
 %e1 p64 l12
-v0['mid' o5 d4      'low'> v73 rg2^6
+v0['mid' d4      'low' v73 rg2^6
  v79 >a+4<       v73 ra2^6 v79] ^4
 ##
-$ 'mid' o5 v73 l4
-[fccg    ffff  fcfg    'low'>a+<'mid'gcj2f] v79'low'>r12a6
+$ 'mid' v73 l4
+[fccg    ffff  fcfg    'low'a+'mid'gcj2f] v79'low'r12a6
 ##
-'low' o4 v79 l12
+'low' v79 l12
 rg4^6rf4^6  rg6rg6ra4^6  rg4^6rf4^6  rd4^6rg4^6
 rg4^6rf4^6  rg6rg6ra4^6  re4^6rf4^6  rg+4^6re4^6
 ;
 
 {5}
 %e1 p64 l12
-['bright' o5 v79 re6  'mid' v73 r6c2^
+['bright' v79 re6  'mid' v73 r6c2^
 'bright' v79 rd6     'mid' v73 r6d2^] ^4
 ##
-$ 'mid' o5 v73 l4
-[a<ccc>  aa+a<d>     a<ccc>  a+a+<c>a]
+$ 'mid' v73 l4
+[a'high'ccc'mid'  aa+a'high'd'mid'     a'high'ccc'mid'  a+a+'high'c'mid'a]
 ##
-'mid' o5 v79 l12
-[r6c4^r6c4^  r6cr6c+r6d4^ j2 r6c4^r6c4^  'low'>r6g4^<'mid'r6c4^]
-'low'>r6a4^r6a4^  r6b4^r6g4^
+'mid' v79 l12
+[r6c4^r6c4^  r6cr6c+r6d4^ j2 r6c4^r6c4^  'low'r6g4^'mid'r6c4^]
+'low'r6a4^r6a4^  r6b4^r6g4^
 ;
 
 {6}
 %e1 p64 l12
-['bright' o5 v79 r6f  'mid' v73 r4d2
-'bright' v79 r6>a+<     'mid' v73 r4e2] ^4
+['bright' v79 r6f  'mid' v73 r4d2
+'bright' v79 r6'bmid'a+     'mid' v73 r4e2] ^4
 ##
-$ 'bright' o5 v79
+$ 'bright' v79
 [[r6fr4]     r6fr4r6gr6c    r6fr4r6fr6c     r6gr6dr6er4]
 ##
-'mid' o5 v79 l4
-rerf r2.f rerf 'low'>rb<'mid're    rerf r2.f rc+rd rdrc+
+'mid' v79 l4
+rerf r2.f rerf 'low'rb'mid're    rerf r2.f rc+rd rdrc+
 ;
 
 {7}
 %e1 p64 l12
-['mid' o5 r2       v73 r6g^4
+['mid' r2       v73 r6g^4
 v84 f4          v73 r4rf6^4] ^4
 ##
 $
 [8r1]
 ##
-'mid' o5 v79 l12
+'mid' v79 l12
 r4rg6r4ra6  r1  r4rg6r4ra6  r4rd6r4rg6
 r4rg6r4ra6  r1  r4re6r4rf6  r4rg+6r4re6
 ;
 
 {8}
 %e1 p64 l12
-[r2.            'mid' o6 v73 c4
- r2             > r6a^4] ^4
+[r2.            'high' v73 c4
+ r2             'mid' r6a^4] ^4
 ##
 $
 [8r1]
-'mid' o6 v79 l12
-[r4r6cr4r6c r1 j2 r4r6cr4r6c >r4r6g<r4r6c] >[r4r6a] r4r6br4r6a
+'high' v79 l12
+[r4r6cr4r6c r1 j2 r4r6cr4r6c 'mid'r4r6g'high'r4r6c] 'mid'[r4r6a] r4r6br4r6a
 
 ;

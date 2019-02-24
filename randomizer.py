@@ -5364,7 +5364,7 @@ def manage_ancient(form_music_overrides={}):
             return True
         return False
 
-    formations = sorted(get_formations(), key=lambda fout: fout.rank())
+    formations = sorted(get_formations(), key=lambda f: f.rank())
     enemy_formations = [
         f for f in formations if f.is_fanatics or
         (f.present_enemies and not f.has_event and not f.has_boss)]

@@ -43,7 +43,7 @@ Song conversions:
                  sd3_winter
                  sdlm_bonds, sdlm_snowfield
                  sf2_balrog
-                 so2_rescue
+                 so2_rescue, so2_victory
                  top_cold, top_mint, top_world1, top_world3
                  totr_arrow
                  wc2_orc1

@@ -482,7 +482,9 @@ class CharacterBlock:
                     break
 
             # Don't randomize level average values if worringtriad is active
-            if 'worringtriad' not in activated_codes:
+            # Also don't randomize Terra's level because it gets added for
+            # every loop through the title screen, apparently.
+            if 'worringtriad' not in activated_codes and self.id != 0:
                 level_chance = random.randint(0,99)
                 for i, prob in enumerate(level_map[level]):
                     level_chance -= prob
@@ -6258,7 +6260,7 @@ def manage_dances():
     # Randomize dance backgrounds
     backgrounds = [
         [0x00, 0x05, 0x06, 0x07, 0x36], #Wind Song
-        [0x01, 0x03, 0x31, 0x32], #Forest Suite
+        [0x01, 0x03], #Forest Suite
         [0x02, 0x0E, 0x2F], #Desert Aria
         [0x04, 0x08, 0x10, 0x13, 0x14, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C,
             0x1D, 0x1E, 0x20, 0x24, 0x2B, 0x2D, 0x2E, 0x37], #Love Sonata
@@ -6277,16 +6279,7 @@ def manage_dances():
     fout.write(bytes([3]))
     fout.seek(0x2D8E79)
     fout.write(bytes([3]))
-    
-    # Put stationary versions of train related bgs in unused slots
-    fout.seek(0x27005A)
-    bg1 = fout.read(6)
-    fout.seek(0x2700C6)
-    bg2 = fout.read(6)
-    fout.seek(0x270126)
-    fout.write(bg1 + bg2)
-    fout.seek(0x2D8E8C)
-    fout.write(b"\x01\x01")
+
     
 class WoRRecruitInfo(object):
     def __init__(self, event_pointers, recruited_bit_pointers, location_npcs,

@@ -5626,7 +5626,7 @@ def manage_ancient(form_music_overrides={}):
     num_in_party_sub.write(fout)
     pointer += len(num_in_party_sub.bytestring)
     ally_addrs = {}
-    for chosen in sorted(set(optional_chars)):
+    for chosen in set(optional_chars):
         byte, bit = chosen.slotid // 8, chosen.slotid % 8
         mem_addr = ((0x1b+byte) << 3) | bit
         allysub = Substitution()

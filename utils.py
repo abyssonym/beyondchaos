@@ -123,7 +123,7 @@ def hex2int(hexstr):
     return int(hexstr, 16)
 
 
-def dialogue_to_bytes(text):
+def dialogue_to_bytes(text, null_terminate=True):
     bs = []
     i = 0
     while i < len(text):
@@ -141,7 +141,8 @@ def dialogue_to_bytes(text):
         if hex != "":
             bs.append(hex2int(hex))
 
-    bs.append(0x0)
+    if null_terminate:
+        bs.append(0x0)
     return bytes(bs)
 
     

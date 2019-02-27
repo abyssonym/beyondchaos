@@ -4858,7 +4858,7 @@ def manage_clock():
     wrong_hours = [0, 1, 2, 3, 4, 5]
     wrong_hours.remove(hour)
     random.shuffle(wrong_hours)
-    hour_to_hex = [dialogue_to_bytes('2'),dialogue_to_bytes('4'), dialogue_to_bytes('6'), dialogue_to_bytes('8'), dialogue_to_bytes('10'), dialogue_to_bytes('12')]
+    hour_to_hex = [dialogue_to_bytes('2', null_terminate=False),dialogue_to_bytes('4', null_terminate=False), dialogue_to_bytes('6', null_terminate=False), dialogue_to_bytes('8', null_terminate=False), dialogue_to_bytes('10', null_terminate=False), dialogue_to_bytes('12', null_terminate=False)]
 
     f = open(sourcefile, 'r+b')
     start = 0xDACC7

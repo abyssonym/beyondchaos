@@ -6079,7 +6079,7 @@ def manage_ancient(form_music_overrides={}):
             2: [0xC16DD, 0xC171D, 0xC1756],
             3: [None, None, None]}
         fout.seek(0xA0F6F)
-        fout.write(chr(0x36))
+        fout.write(bytes([0x36]))
         candidates = sorted(boss_formations, key=lambda b: b.rank())
         candidates = [c for c in candidates if c.inescapable]
         candidates = candidates[random.randint(0, len(candidates)-16):]

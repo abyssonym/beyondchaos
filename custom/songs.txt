@@ -258,6 +258,7 @@ xg_mermaid:     daryl*2, coin, rachel, espers*2
 xg_tears:       celes*2, rachel, awakening, ruin
 ys1_wars:       I25, G90, battle, grandfinale, chocobo, falcon, magitek, floatingcont*2, kefkastower
 ys3_wings:      setzer*2, locke, savethem, blackjack, chocobo, serpent*2
+ys8_idance:     chocobo, blackjack, johnny*2, falcon*2, mountain, serpent, setzer
 zaol_overworld: figaro, returners
 zoot_storms:    kefka*2, shadow*2, gogo*2, umaro, owzer, strago
 

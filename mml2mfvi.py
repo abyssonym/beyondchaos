@@ -600,7 +600,7 @@ if __name__ == "__main__":
         thisfn = fn + "_data" + vfn
         try:
             with open(thisfn, 'wb') as f:
-                f.write(v[0])
+                f.write(bytes(v[0], encoding='latin-1'))
         except IOError:
             print("Error writing file {}".format(thisfn))
             clean_end()
@@ -609,7 +609,7 @@ if __name__ == "__main__":
         thisfn = fn + "_inst" + vfn
         try:
             with open(thisfn, 'wb') as f:
-                f.write(v[1])
+                f.write(bytes(v[1], encoding='latin-1'))
         except IOError:
             print("Error writing file {}".format(thisfn))
             clean_end()

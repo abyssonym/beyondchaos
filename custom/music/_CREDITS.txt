@@ -1,7 +1,7 @@
 Song conversions:
     emberling -- blord_2tower
                  bof2_battle
-                 cc_dragonia, cc_home, cc_hydra, cc_life
+                 cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life
                  crys_fields
                  ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair,
                  ct_keeper, ct_mountain, ct_night, ct_revolution, ct_robo,

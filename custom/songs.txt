@@ -19,6 +19,8 @@ cc_arni:        town*2
 cc_dragonia:    H2, omen3, zozo, magitek, kefkastower, owzer
 cc_dragonia_tr: H2, train
 cc_flame:       I75, G95, grandfinale, metamorphosis, catastrophe*2, fanatics*2
+cc_harle:       H4, kefka, zozo, owzer, H:prelude, H:omen3, H:gestahl, H:shadow, H:ruin, H:town_ruin, H:forest
+cc_harle_tr:    H4, train*2
 cc_home:        prelude, balance, relm*2
 cc_hydra:       H2, kefka, shadow, what, umaro*2, zozo, owzer, veldt*2, serpent
 cc_life:        omen3, rachel*2

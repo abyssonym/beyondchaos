@@ -258,6 +258,7 @@ xg_chuchu:      spinachrag*2, what*2, moogles, gogo, strago
 xg_flight:      I30, G90, grandfinale, locke*2, setzer, returners, savethem*2, falcon
 xg_mermaid:     daryl*2, coin, rachel, espers*2
 xg_tears:       celes*2, rachel, awakening, ruin
+xg_weltall:     I50, G50, boss*2, metamorphosis, grandfinale, unforgiven*2, savethem*2
 ys1_wars:       I25, G90, battle, grandfinale, chocobo, falcon, magitek, floatingcont*2, kefkastower
 ys3_wings:      setzer*2, locke, savethem, blackjack, chocobo, serpent*2
 ys8_idance:     chocobo, blackjack, johnny*2, falcon*2, mountain, serpent, setzer
@@ -322,7 +323,7 @@ ff6_ruin:       omen3, daryl, ruin*2, zozo, owzer, train*2, fanatics
 ff6_dmad5:      dmad5*2, grandfinale, floatingcont, kefkastower
 
 [TierBoss]
-dmad123: ff6_tier1, ff6_tier2, ff6_tier3, cc_flame, ff3_eureka, ffmq_lava, ff8_witches
+dmad123: ff6_tier1, ff6_tier2, ff6_tier3, cc_flame, ff3_eureka, ff8_witches, ffmq_lava, xg_weltall
 
 [SongSlots]
 #song id: identifier, % chance to allow change

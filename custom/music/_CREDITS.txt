@@ -49,7 +49,7 @@ Song conversions:
                  wc2_orc1
                  xc1_valakn
                  xc2_morardain, xc2_tantal
-                 xg_boss, xg_flight, xg_tears
+                 xg_boss, xg_flight, xg_tears, xg_weltall
                  ys8_idance
     Gi Nattak -- cc_arni, cc_flame, cc_miguel
                  ct_boss2

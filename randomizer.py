@@ -4801,7 +4801,7 @@ def manage_wor_skip(wor_free_char=0xB):
         setbit = int(line[1], 16)  # if 1, set the bit from the txt file
         bit = line[0]  # the bit to set/clear from the txt file
         if bit == "2FB":
-            bit = "2F" + str(wor_free_char)
+            bit = "2F" + hex(wor_free_char)[2:]
         firstbyte = 0xD1 + int(bit[0:1], 16) * 2 - setbit
         lastbyte = int(bit[1:], 16)
         wor_sub2.bytestring += bytearray([firstbyte, lastbyte])

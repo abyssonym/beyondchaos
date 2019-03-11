@@ -5,6 +5,7 @@ from sys import argv, exit
 from shutil import copyfile
 import os
 from hashlib import md5
+
 from utils import (ESPER_TABLE,
                    COMMAND_TABLE, LOCATION_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
@@ -40,6 +41,7 @@ from musicrandomizer import randomize_music
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 from character import get_characters, get_character, equip_offsets
+from options import ALL_MODES
 
 
 VERSION = "2"
@@ -6377,6 +6379,21 @@ r   Randomize character locations in the world of ruin.
             except IOError:
                 pass
 
+            mode_num = None
+            while mode_num not in range(len(ALL_MODES)):
+                print("Available modes:\n");
+                for i, mode in enumerate(ALL_MODES):
+                    print("{}. {} - {}".format(i+1, mode.name, mode.description))
+                mode = input("\nEnter desired mode number or name:\n").strip()
+                try:
+                    mode_num = int(mode) - 1
+                except ValueError:
+                    for i, m in enumerate(ALL_MODES):
+                        if m.name == mode:
+                            mode_num = i
+                            break;
+                print(mode_num)
+            
             print(flaghelptext + "\n")
             print("Save frequently used flag sets by adding 0: through 9: before the flags.")
             for k, v in sorted(speeddial_opts.items()):
@@ -6392,13 +6409,27 @@ r   Randomize character locations in the world of ruin.
                     print('\nSaving flags "%s" in slot %s' % (flags[1], dial))
                     saveflags = True
                 flags = flags[1]
-            fullseed = ".%s.%s" % (flags, fullseed)
+            fullseed = ".%s.%s.%s" % (mode,flags, fullseed)
             print()
 
     try:
-        version, flags, seed = tuple(fullseed.split('.'))
+        version, mode, flags, seed = tuple(fullseed.split('.'))
     except ValueError:
-        raise ValueError('Seed should be in the format <version>.<flags>.<seed>')
+        raise ValueError('Seed should be in the format <version>.<mode>.<flags>.<seed>')
+    mode = mode.strip()
+    mode_num = None
+    try:
+        mode_num = int(mode) - 1
+    except ValueError:
+        for i, m in enumerate(ALL_MODES):
+            if m.name == mode:
+                mode_num = i
+                break;
+
+    if mode_num not in range(len(ALL_MODES)):
+        raise Exception("Invalid mode specified")
+    mode = ALL_MODES[mode_num]
+
     seed = seed.strip()
     if not seed:
         seed = int(time())
@@ -6485,9 +6516,6 @@ r   Randomize character locations in the world of ruin.
     secret_codes['playsitself'] = "AUTOBATTLE MODE"
     secret_codes['bingoboingo'] = "BINGO BONUS"
     secret_codes['worringtriad'] = "START IN WOR"
-    secret_codes['ancientcave'] = "CHAOS TOWER MODE"
-    secret_codes['speedcave'] = "FAST CHAOS TOWER MODE"
-    secret_codes['racecave'] = "EXTRA FAST CHAOS TOWER MODE"
     secret_codes['metronome'] = "R-CHAOS MODE"
     secret_codes['quikdraw'] = "QUIKDRAW MODE"
     secret_codes['makeover'] = "SPRITE REPLACEMENT MODE"
@@ -6508,9 +6536,16 @@ r   Randomize character locations in the world of ruin.
     secret_codes['johnnydmad'] = "MUSIC REPLACEMENT MODE"
     secret_codes['johnnyachaotic'] = "MUSIC MANGLING MODE"
     s = ""
+    
+    for code in mode.forced_codes:
+        activated_codes.add(code)
+
     for code, text in secret_codes.items():
         if code in flags:
             flags = flags.replace(code, '')
+            if code in mode.prohibited_codes:
+                s += "SECRET CODE: '%s' is not compatible with %s mode." %(text, mode.name)
+                continue
             s += "SECRET CODE: %s ACTIVATED\n" % text
             activated_codes.add(code)
     if 'racecave' in activated_codes:
@@ -6918,9 +6953,9 @@ r   Randomize character locations in the world of ruin.
         if item.banned:
             assert not dummy_item(item)
 
-    if 'christmas' in activated_codes:
+    if 'christmas' in activated_codes and 'ancientcave' not in activated_codes:
         manage_santa()
-    elif 'halloween' in activated_codes:
+    elif 'halloween' in activated_codes and 'ancientcave' not in activated_codes:
         manage_spookiness()
 
     manage_banon_life3()

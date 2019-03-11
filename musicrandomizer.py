@@ -699,8 +699,8 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         return mml_to_akao(mml, name, True if id in [0x29, 0x4F] else False)
     
     def process_tierboss(opts, used_songs=[]):
-        opts = [o.strip() for o in opts.split(',')]
-        opts = [o for o in opts if usage_id(o) not in used_songs]
+        opts_full = [o.strip() for o in opts.split(',')]
+        opts = [o for o in opts_full if usage_id(o) not in used_songs]
         attempts = 0
         fallback = False
         while True:
@@ -708,6 +708,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             if attempts >= 1000:
                 print("warning: check your tierboss config in songs.txt")
                 fallback = True
+                opts = copy(opts_full)
                 attempts = 0
             retry = False
             tiernames = rng.sample(opts, 3)
@@ -721,7 +722,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                     retry = True
             if retry: continue
             
-            mml = re.sub('[~!]', '', tierfiles[0])
+            mml = re.sub('[~*]', '', tierfiles[0])
             mml = re.sub('[?_]', '?', mml)
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,555\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>555\g<2>', mml)
@@ -730,10 +731,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             mml = re.sub('{.*?}', '', mml)
             mml = re.sub('\$555444([0-9])', '{\g<1>}', mml)
             mml = re.sub('#def\s+(\S+)\s*=', '#def 555\g<1>=', mml, flags=re.IGNORECASE)
-            mml = re.sub("'(.*)'", "'555\g<1>'", mml)
+            mml = re.sub("'(.*?)'", "'555\g<1>'", mml)
             tierfiles[0] = mml
             
-            mml = re.sub('[?!]', '', tierfiles[1])
+            mml = re.sub('[?*]', '', tierfiles[1])
             mml = re.sub('[~_]', '?', mml)
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,666\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>666\g<2>', mml)
@@ -742,30 +743,34 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             mml = re.sub('#VARIANT', '#', mml, flags=re.IGNORECASE)
             mml = re.sub('{.*?}', '', mml)
             mml = re.sub('#def\s+(\S+)\s*=', '#def 666\g<1>=', mml, flags=re.IGNORECASE)
-            mml = re.sub("'(.*)'", "'666\g<1>'", mml)
+            mml = re.sub("'(.*?)'", "'666\g<1>'", mml)
             mml = re.sub('"', ')', mml)
             tierfiles[1] = mml
             
             mml = re.sub('[?_]', '', tierfiles[2])
-            mml = re.sub('[~!]', '?', mml)
+            mml = re.sub('[~*]', '?', mml)
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,777\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>777\g<2>', mml)
             mml = re.sub('\$777444([0-9])', '$333\g<1>', mml)
             mml = re.sub('#VARIANT', '#', mml, flags=re.IGNORECASE)
             mml = re.sub('{.*?}', '', mml)
             mml = re.sub('#def\s+(\S+)\s*=', '#def 777\g<1>=', mml, flags=re.IGNORECASE)
-            mml = re.sub("'(.*)'", "'777\g<1>'", mml)
+            mml = re.sub("'(.*?)'", "'777\g<1>'", mml)
             mml = re.sub('"', '(', mml)
             tierfiles[2] = mml
             
             mml = "#VARIANT / \n#VARIANT ? ignore \n" + tierfiles[0] + tierfiles[1] + tierfiles[2]
-            ## uncomment to debug tierboss MML
-            #with open("lbdebug.mml", "w") as f:
-            #    f.write(mml)
-                
+            
             akao = mml_to_akao(mml, str(tiernames), variant='_default_')
             inst = bytes(akao['_default_'][1], encoding='latin-1')
             akao = bytes(akao['_default_'][0], encoding='latin-1')
+
+            ## uncomment to debug tierboss MML
+            #with open("lbdebug.mml", "w") as f:
+            #    f.write(mml)
+            #print("{}: {}".format(len(akao), tiernames))
+            #if "name_of_segment_to_test" not in tiernames: continue
+            
             if len(akao) > 0x1002:
                 continue
             break

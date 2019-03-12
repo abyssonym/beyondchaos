@@ -60,6 +60,7 @@ ff1_bossb:      I85, G70, grandfinale, boss, atma, savethem, catastrophe
 ff1_dungeon:    I85, G25, metamorphosis, grandfinale, unforgiven, floatingcont, boss
 ff2_battleb:    H4, kefka, gogo, owzer*2, espers, fanatics*2, grandfinale, H:I50, H:G30, H:prelude, H:omen3, H:shadow, H:strago, H:balance, H:forest
 ff2_battleb_tr: H4, train
+ff2_theme:      prelude, awakening, town_ruin, ruin, balance, gau
 ff3_darkworld:  prelude, awakening, setzer
 ff3_eureka:     mountain, serpent, falcon, setzer
 ff3_warrior:    figaro, returners*2

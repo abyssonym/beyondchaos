@@ -10,7 +10,7 @@ Song conversions:
                  cv4_beginning, cv4_chandeliers
                  ds4_lyll
                  eo3_waves
-                 ff2_battleb
+                 ff2_battleb, ff2_theme
                  ff3_warrior
                  ff4_calcobrena
                  ff5_battle, ff5_bridge, ff5_cave, ff5_curse, ff5_excastle,

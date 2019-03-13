@@ -87,3 +87,4 @@
 94: c404_strings,   C906, A080, F 7 7  0
 95: ffx_dulcimer,   640B, A900, F 7 7  D
 96: s31f_pizza,     5D0F, 0F60, F 7 7  A
+97: tr25_cguitar,   8208, E070, F 7 7  D 

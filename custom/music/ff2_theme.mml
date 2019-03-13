@@ -9,7 +9,7 @@
 #WAVE 0x20 ~0x40~/0x08/
 #WAVE 0x21 ~0x0A~/0x0A/
 #WAVE 0x22 ~0x0D~/0x0D/
-#WAVE 0x23 ~0x01~/0x01/
+#WAVE 0x23 ~0x97~/0x01/
 #WAVE 0x24 ~0x6B~/0x02/
 #WAVE 0x25 ~0x78~/0x1A/
 
@@ -18,10 +18,14 @@
 #def bssn= |5 o6 ~v64~/v36/ p64 m48,18,223
 #def fstr= |2 o5 p64 m48,18,207 %r7
 #def sstr= |2 o5 p34 m48,18,143 %a3%r9
-#def guit= |3 o4 p84 m
+#def guit= |3 o5 p84 m24,18,223
 #def bass= |4 o6 v88 p64 m
 
 #def vob= ~v114~/v79/
+#def v79= ~v63~/v79/
+#def v74= ~v59~/v74/
+#def v70= ~v56~/v70/
+#def v64= ~v51~/v64/
 
 #def global= t104 %x224 %b0,100 %v30 %f0,0
 
@@ -57,14 +61,14 @@ db<ce> ca<ce> >j2b<b<df> >a+<<cdf>   d+aa+<d+> >b<f+b<d+> eab<e d>bg+e]
 a+<a<df> >b<ab<e> ab<ef> fab<f> eab<d>bg+ed
 ##
 'guit' l16
-v74 r8g4g8<d+4>a+8<c8>  r8f4g8<d+4v70f8v64g8>
-v74 r8d+8gg+8.<c4>g4  r8d+8fg8.r8a+8g8a+8
-f4.<v70g8> v74d+2 r8<v70f4f8> v74c+2f+2d2 r8d4<d4>b8b4
+'v74' r8g4g8<d+4>a+8<c8>  r8f4g8<d+4'v70'f8'v64'g8>
+'v74' r8d+8gg+8.<c4>g4  r8d+8fg8.r8a+8g8a+8
+f4.<'v70'g8> 'v74'd+2 r8<'v70'f4f8> 'v74'c+2f+2d2 r8d4<d4>b8b4
 
-r8g4g8<d+4>a+8<c8>  r8f4g8<d+4v70f8v64g8>
-v74 r8d+8gg+8.<c4>g4  r8d+8fg8.r8a+8g8a+8
-l8 f4.<v70g rfg4> v79c+4.<v70f> v79d4.<v70f>
-v79c4.<v74d> >v79g+4.<<d> v74rg4<d^12>%r7b24^4.
+r8g4g8<d+4>a+8<c8>  r8f4g8<d+4'v70'f8'v64'g8>
+'v74' r8d+8gg+8.<c4>g4  r8d+8fg8.r8a+8g8a+8
+l8 f4.<'v70'g rfg4> 'v79'c+4.<'v70'f> 'v79'd4.<'v70'f>
+'v79'c4.<'v74'd> >'v79'g+4.<<d> 'v74'rg4<d^12>%r7m32,18,223b24^4.
 ;
 
 {3}
@@ -76,15 +80,15 @@ db<ce> ca<ce> >j2b<b<df> >a+<<cdf>   d+aa+<d+> >b<f+b<d+> eab<e d>bg+e]
 a+<a<df> >b<ab<e> ab<ef> fab<f> eab<d>bg+ed
 ##
 'guit' l16
-v74 r4<cd8.r8>fg8.r8  r4<cd8.>r8fg8.r8
+'v74' r4<cd8.r8>fg8.r8  r4<cd8.>r8fg8.r8
 r4.d+8r8a+4d+8  r4.<d4.r4
-v70 l8 fcf4 cd+fg+ d4g+4 c+d+fg+
+'v70' l8 fcf4 cd+fg+ d4g+4 c+d+fg+
 f+cc+f+ d>a<df+ g4>g4<c8.c8.>g
 
-l16 v74 r4<cd8.r8>fg8.r8  r4<cd8.>r8fg8.r8
+l16 'v74' r4<cd8.r8>fg8.r8  r4<cd8.>r8fg8.r8
 r4.d+8r8a+4d+8  r4.<d4.r4
-v70 l8 fcf4 d+4.v64g+ v74c+>g+<c+4 d>v70g+<v74d4
-c>g<c4 >g+d+<c4 r4c4^24>%r7g12^4.
+'v70' l8 fcf4 d+4.'v64'g+ 'v74'c+>g+<c+4 d>'v70'g+<'v74'd4
+c>g<c4 >g+d+<c4 r4c4^24>%r7m40,18,223g12^4.
 ;
 
 {4} r4
@@ -103,9 +107,9 @@ c4.c12r24 >g+4.g+12r24 g1
 {5} r4
 $
 [16r1]
-'guit' l1 v79 %r7
-c>a+g+g<  %r r v74d2 r. %r7v79>g<
-c>a+g+g<  %r r2 v74d+2 rr %r7v79>g2g2
+'guit' l1 'v79' %r7
+c>a+g+g<  %r r 'v74'd2 r. %r7'v79'>g<
+c>a+g+g<  %r r2 'v74'd+2 rr %r7'v79'>g2m48,18,223g2
 ;
 
 {6} r4
@@ -114,7 +118,7 @@ $
 'fstr' l2
 's1'(d+d+) 's2'fg 's1'(d+d+) 's2'df cd+ fg+ (a+'s3'a) (b's2'g)
 's1'(d+d+) 's2'fg 's1'(d+d+) 's2'df cd+ (ff) 's3'gg+ (gg8)
-'guit'v74%r7 <d4.
+'guit''v74'%r7m24,18,223 <d4.
 ;
 
 {7} r4
@@ -131,5 +135,5 @@ $
 'fstr' l2
 's1'(cc) 's2'(dd) 's1'(cc) ('s2'>a+<d) (>g+<c) (df) (f+'s3'f+) g's2'd
 's1'(cc) 's2'(dd) 's1'(cc) ('s2'>a+<d) (>g+<c) c+d ('s3'd+d+) (dd8^24)
-'guit'v74%r7 <g12^4
+'guit''v74'%r7m16,18,223 <g12^4
 ;

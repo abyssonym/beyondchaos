@@ -42,6 +42,7 @@ ct_robo_vic:    fanfare*2
 ct_schala:      H2, awakening, relm*2, strago, espers, H:prelude, H:omen3, H:celes, H:daryl, H:shadow, H:gogo, H:owzer, H:martiallaw, H:falcon
 ct_sewer:       kefka, spinachrag, gogo, zozo, owzer*2
 ct_sewer_tr:    train
+ct_silent:      shadow, gogo, zozo, owzer, strago, forest*2, train
 ct_spekkio:     spinachrag*2, moogles*2, what, grandfinale
 ct_theme:       I45, G80, locke, savethem, grandfinale
 ct_truth:       kefka, grandfinale, catastrophe
@@ -134,6 +135,7 @@ ff8_lion_nointro: catastrophe*2
 ff8_mlaw:       shadow*2, zozo*2, martiallaw*2
 ff8_oath:       omen3, celes, rachel*2, ruin
 ff8_witches:    H4, omen3, gestahl*2, kefka*2, owzer, ruin, train*2, fanatics
+ff9_battle:     I30, G45, battle*2, savethem
 ff9_blackmage:  H4, chocobo, johnny, what, moogles*2, gogo, strago*2, magitek
 ff9_blackwaltz: H4, ruin, fanatics*2
 ff9_dali:       awakening, town*2, town_ruin
@@ -167,6 +169,7 @@ ffmq_tristam:   fanfare, chocobo, johnny*2, spinachrag, moogles
 ffmq_victory:   fanfare*2
 fz_white1:      W4, W:I40, W:G30, blackjack, johnny, moogles, chocobo, W:battle, W:unforgiven*2, W:setzer, W:locke, W:zozo, W:falcon*2, W:serpent*2, W:magitek, W:floatingcont
 iog_boss:       I95, G55, boss, metamorphosis*2, catastrophe, unforgiven
+iog_larai:      H2, catastrophe*2, grandfinale, umaro, owzer, train, espers, fanatics, kefkastower, H:mountain, H:veldt, H:forest, H:omen3, H:gestahl, H:kefka
 iog_whispers:   H2, zozo, owzer*2, ruin*2, forest*2, train, espers, H:prelude, H:daryl, H:shadow
 iog_womb:       W2, prelude, daryl, coin, rachel, awakening, ruin, forest
 jts_stage1:     I10, G60, battle, johnny, chocobo, magitek*2, floatingcont

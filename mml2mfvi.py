@@ -208,11 +208,90 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
         while True:
             r = re.search("'(.*?)'", line)
             if not r: break
-            m = r.group(1)
+            mx = r.group(1)
+            #
+            m = re.search("([^+\-*]+)", mx).group(1)
+            tweaks = {}
+            tweak_text = ""
+            while True:
+                twx = re.search("([+\-*])([%a-z]+)([0-9.,]+)", mx)
+                if not twx: break
+                tweak_text += twx.group(0)
+                cmd = twx.group(2) + ''.join([c for c in twx.group(3) if c == ','])
+                tweaks[cmd] = (twx.group(1), twx.group(3))
+                mx = mx.replace(twx.group(0), "", 1)
+            #
             s = macros[m] if m in macros else ""
+            p = 0
+            if tweaks:
+                # "o,,": ("+", ",1,")
+                skip = ignore + "\"'{"
+                sq = list(s)
+                sr = ""
+                while sq:
+                    c = sq.pop(0)
+                    if c in skip:
+                        endat = "}" if c=="{" else c
+                        if sq: c += sq.pop(0)
+                        while sq:
+                            cc = sq.pop(0)
+                            if cc == endat:
+                                if endat == "'": c += tweak_text
+                                c += cc
+                                break
+                            else: c += cc
+                        sr += c
+                        continue
+                    if sq and c == "%":
+                        c += sq.pop(0)
+                    d = ""
+                    while sq and sq[0] in "1234567890,.+-x":
+                        d += sq.pop(0)
+                    cmd = c + ''.join([ch for ch in d if ch == ','])
+                    if cmd in tweaks:
+                        d = d.split(',')
+                        e = tweaks[cmd][1].split(',')
+                        sign = tweaks[cmd][0]
+                        for j, ee in enumerate(e):
+                            if not ee:
+                                c += f"{d[j]},"
+                                continue
+                            try: en = int(ee)
+                            except:
+                                try: en = int(ee,16)
+                                except:
+                                    try: en = float(ee)
+                                    except:
+                                        warn("error parsing {} into {}".format(r.group(0), s))
+                                        en = 0
+                            try: dn = int(d[j])
+                            except:
+                                try: dn = int(d[j],16)
+                                except:
+                                    warn("error parsing {} into {}".format(r.group(0), s))      
+                                    dn = 0
+                            if sign is "*":
+                                result = dn * en
+                            elif sign is "-":
+                                result = dn - en
+                            elif sign is "+":
+                                result = dn + en
+                            if result < 0: result = 0
+                            if ((cmd is "v" or cmd is "p") and j==0) or ((cmd is "v," or cmd is "p,") and j==1):
+                                if result > 127: result = 127
+                            else:
+                                if result > 255: result = 255
+                            #apply new values
+                            c += f"{int(result)},"
+                        c = c.rstrip(',')
+                    else: c += d
+                    sr += c
+                s = sr
+                                                    
             line = line.replace(r.group(0), s, 1)
-        mml[i] = line
             
+        mml[i] = line
+        
     #drums
     drums = {}
     for line in mml:

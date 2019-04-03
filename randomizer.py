@@ -22,13 +22,13 @@ from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              get_ranked_spells, get_spell)
 from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                get_metamorphs, get_ranked_monsters,
-                               shuffle_monsters, get_monster, read_ai_table)
+                               shuffle_monsters, get_monster, read_ai_table,
+                               change_enemy_name, randomize_enemy_name)
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield, unhack_tintinabar)
 from esperrandomizer import (EsperBlock, allocate_espers)
 from shoprandomizer import (ShopBlock, buy_owned_breakable_tools)
-from namerandomizer import generate_name
 from formationrandomizer import (get_formations, get_fsets,
                                  get_formation, get_fset)
 from locationrandomizer import (EntranceSet,
@@ -3939,20 +3939,6 @@ def create_dimensional_vortex():
     fout.seek(e.longpointer + 2)
     write_multi(fout, (longnextpointer - 0x2df480), length=2)
 
-def change_enemy_name(fout, enemy_id, name):
-    pointer = 0xFC050 + (enemy_id * 10)
-    fout.seek(pointer)
-    monster = get_monster(enemy_id)
-    monster.changed_name = name
-    name = name_to_bytes(name, 10)
-    fout.write(name)
-
-
-def randomize_enemy_name(fout, enemy_id):
-    name = generate_name()
-    change_enemy_name(fout, enemy_id, name)
-    return name
-
 
 def randomize_final_party_order():
     code = bytes([
@@ -6518,7 +6504,8 @@ r   Randomize character locations in the world of ruin.
     if 'r' in flags and 'ancientcave' not in activated_codes:
         wor_free_char = manage_wor_recruitment(fout,
                                                random_treasure='t' in flags,
-                                               include_gau='o' in flags or 'w' in flags or 't' in flags)
+                                               include_gau='o' in flags or 'w' in flags or 't' in flags,
+                                               include_gogo=True)
 
     if 'worringtriad' in activated_codes and 'ancientcave' not in activated_codes:
         manage_wor_skip(fout, wor_free_char)

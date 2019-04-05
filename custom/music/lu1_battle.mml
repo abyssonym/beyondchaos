@@ -1,0 +1,179 @@
+#TITLE Battle #1
+#ALBUM Lufia and the Fortress of Doom
+#COMPOSER Yasunori Shiono
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x52~/0x33/
+#WAVE 0x21 ~0x7c~/0x09/
+#WAVE 0x22 ~0x0B~/0x0B/
+#WAVE 0x23 ~0x4A~/0x1C/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x5C~/0x21/
+#WAVE 0x2A ~0x6E~/0x17/
+#WAVE 0x2E ~0x12~/0x12/
+#WAVE 0x2F ~0x0F~/0x0F/
+
+#def global=t156 %x240 %v50 %b0,70 %f0,0
+
+#def whine= %k0 @5 o4 v48 %e1 m48,18,201
+#def whine2= %k0 @5 o5 v48 %e1 m48,18,193
+#def lg1= %k2 |0 ~o5~/o4/ v72 p50 %e1 m48,18,63 %r9
+#def lg2= %k2 |1 ~o4~/o5/ v48 p70 %e1 m48,18,127
+#def org= %k0 |2 o5 v40 %e1 m48,18,201 %s4%y0%r2
+#def bas= %k0 |3 ~o6~/o5/ v90 p64 %e0 m /%y4%s3/
+
+#drum "k"=5f |8 v88 p64 %e0 %k0
+#drum "s"=5b |9 v88 p64 %e0 %k0 /%y4%s3/
+#drum "s-"=5b |9 v32 p64 %e0 %k0 /%y4%s3/
+
+#drum "h"=5a |F v56 p50 %e0 %k0
+#drum "i"=5a |F v40 p50 %e0 %k0
+#drum "y"=5a |E v127 p80 %e1 %r19%s2%y3 %k0
+
+#drum "g"=5d+ |A v88 p80 %e1 %k0
+#drum "e"=4a+ |A v88 p55 %e1 %k0
+#drum "c"=4g+ |A v88 p30 %e1 %k0
+
+{1}
+'global'
+'whine' p32 p192,96 f2 m72,-3^8. m64,-12^4^16
+$
+'lg1+o2' l8 m40,1d2^ c+>ba+<
+m40,1c2^ >ba+g+
+m40,1a+2^ a+g+f+
+g+.f+.f.f+.fc+
+## 8.39
+r4 <m21,1d4.c+>ba+<
+m40,1c2^ >ba+g+
+m40,1a+2^ a+g+f+
+g+.f+.f.f+.fc+
+## 9.151, 10.29, 10.107, 10.185
+l16
+<d+c+>ba+ <c+>ba+g+  ba+g+f+ a+g+f+f
+f+fc+>g+ <fc+>g+c+  c+d+fg+ <c+d+fg+>
+b<c+d+c+ d+fd+f  f+ff+g+ f+g+a+b
+<d+c+>ba+ g+f+fc+>  ba+g+f+ fc+>bg+<
+## 11.63, 11.141, 12.19, 12.97
+bg+g+<c+> g+g+<d+>g+  g+<f>g+g+ <f+>g+<f>g+
+<d+>g+g+<f> g+g+<f+>g+  g+<f>g+g+ <f+>g+<g+>g+
+bg+g+<c+> g+g+<d+>g+  g+<f>g+g+ <f+>g+<f>g+
+<m40,4d2 <f+fc+>g+ f+>ba+f+
+;
+
+{2}
+'whine2' p20 p192,107 f2 m72,-3^8. m64,-12^4^16
+$
+'org+o1' p76 l16 g+2.g+8.a+ ^1
+<c+2.c+8.d+ ^1>
+## 8.39
+r4 g+2g+8.a+ ^1
+<c+2.c+8.d+ ^1>
+## 9.151, 10.29, 10.107, 10.185
+[r8g+r8g+r8g+8.g+r8g+g+
+r8gr8gr8g8.gr8gg
+r8g+r8g+r8g+8.g+r8g+g+
+r8gr8gr8g+8g8g+a+8.
+## 11.63, 11.141, 12.19, 12.97
+]#^^
+;
+
+{3}
+'bas*v1.5-o1' l16
+r2 a+<a+fg+ gd+>a+<d+
+$
+'bas-o1' l16
+[8a+<a+d+f> a+<g+d+f>]
+## 8.39
+r4 a+<a+d+f>
+[23a+<a+d+f> a+<g+d+f>]
+## 9.151, 10.29, 10.107, 10.185
+#^^
+## 11.63, 11.141, 12.19, 12.97
+#^^
+;
+
+{4}
+l16
+"s-s-" v43 "\ss" v55 "\ss" v66 "\ss" v77 "\ssss" v88 "\ssss"
+$
+[4"!!!o k4s8kk8.k8s8kk"]
+## 8.39
+"g32g32eck32k32"   "s8kk8.k8s8kk"
+["k4s8kk8.k8s8kk"]  "k4s8kkksk8s8ss"
+## 9.151, 10.29, 10.107, 10.185
+[7"k4s8kk8.k8s8kk"]
+## 11.63, 11.141, 12.19, 12.97
+#^^
+"kg32g32gec8eeksk8s8ss"
+;
+
+{5}
+r1
+$
+'org+o1' p60 l16 c+2.c+8.d+ ^1
+f+2.f+8.g+ ^1
+## 8.39
+r4 c+2c+8.d+ ^1
+f+2.f+8.g+ ^1
+## 9.151, 10.29, 10.107, 10.185
+[[3r8c+r8c+r8c+8.c+r8c+c+]
+r8c+r8c+r8c+8c+8c+d+8.
+## 11.63, 11.141, 12.19, 12.97
+]#^^
+;
+
+{6}
+r1 l16
+$
+"y4" [30"hi"]
+## 8.39
+r4 "y4" [28"hi"]
+## 9.151, 10.29, 10.107, 10.185
+"y4" [54"hi"]
+## 11.63, 11.141, 12.19, 12.97
+#^^
+r1
+;
+
+{7}
+r1
+$
+'lg2+o2' m40,1d2^ c+>ba+<
+m40,1c2^ >ba+g+
+m40,1a+2^ a+g+f+
+g+.f+.f.f+.fc+
+## 8.39
+r4 <m21,1d4.c+>ba+<
+m40,1c2^ >ba+g+
+m40,1a+2^ a+g+f+
+g+.f+.f.f+.fc+
+## 9.151, 10.29, 10.107, 10.185
+l16
+<d+c+>ba+ <c+>ba+g+  ba+g+f+ a+g+f+f
+f+fc+>g+ <fc+>g+c+  c+d+fg+ <c+d+fg+>
+b<c+d+c+ d+fd+f  f+ff+g+ f+g+a+b
+<d+c+>ba+ g+f+fc+>  ba+g+f+ fc+>bg+<
+## 11.63, 11.141, 12.19, 12.97
+bg+g+<c+> g+g+<d+>g+  g+<f>g+g+ <f+>g+<f>g+
+<d+>g+g+<f> g+g+<f+>g+  g+<f>g+g+ <f+>g+<g+>g+
+bg+g+<c+> g+g+<d+>g+  g+<f>g+g+ <f+>g+<f>g+
+<m40,4d2 <f+fc+>g+ f+>ba+f+
+;
+
+{8}
+r1
+$
+'org+o1' p68 l16 f2.f8.g ^1
+a+2.a+8.<c ^1>
+## 8.39
+r4 f2f8.g ^1
+a+2.a+8.<c ^1>
+## 9.151, 10.29, 10.107, 10.185
+[[3r8fr8fr8f8.fr8ff]
+r8fr8fr8f8f8fg8.
+## 11.63, 11.141, 12.19, 12.97
+]#^^
+;

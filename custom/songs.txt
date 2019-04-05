@@ -127,6 +127,7 @@ ff7_snow:       W4, narshe, ruin*2, W:prelude*2, W:omen3, W:daryl, W:coin, W:gau
 ff7_temple:     H2, omen3, shadow, owzer, forest*2, train, serpent
 ff7_tifa:       prelude, rachel, relm*2, awakening*2, town_ruin
 ff8_battle:     I15, G40, battle*2, metamorphosis, grandfinale, catastrophe
+ff8_boss:       I85, G65, boss*2, grandfinale, magitek, floatingcont
 ff8_heresy:     H2, gestahl, kefka, catastrophe, owzer, ruin, fanatics*2
 ff8_horizon:    prelude, daryl, coin, gau, town, town_ruin
 ff8_laguna:     I60, G30, battle*2, chocobo, magitek, floatingcont
@@ -175,6 +176,7 @@ iog_womb:       W2, prelude, daryl, coin, rachel, awakening, ruin, forest
 jts_stage1:     I10, G60, battle, johnny, chocobo, magitek*2, floatingcont
 lagoon_spirits: celes, awakening, owzer, ruin, forest*2, train
 lo_battle:      I05, G75, battle*2, grandfinale, cyan, umaro
+lu1_battle:     I60, G0, battle*2, unforgiven, chocobo
 lu1_boss:       I90, G45, boss*2, grandfinale
 lu1_spoils:     prelude, omen3, daryl, awakening
 lu2_battle:     I45, G05, battle*2, unforgiven
@@ -243,6 +245,7 @@ sdlm_bonds:     prelude, omen3, rachel, gau, town_ruin
 sdlm_nostalgic: daryl, rachel*2, gau, awakening, town_ruin*2
 sdlm_snowfield: W4, moogles, zozo, serpent*2, W:cyan, W:setzer, W:troops, W:savethem, W:martiallaw, W:town_ruin, W:falcon, W:mountain, W:espers, W:floatingcont
 sf2_balrog:     I35, G65, battle*2, setzer, blackjack, chocobo*2, johnny*2, moogles, magitek, floatingcont
+sf2_ken:        I40, G60, battle*2, grandfinale, unforgiven*2, setzer, locke, johnny
 so2_rescue:     I70, G20, unforgiven, savethem, magitek*2, floatingcont
 so2_victory:    fanfare*2
 tn_evergreen:   awakening*2, relm*2, forest

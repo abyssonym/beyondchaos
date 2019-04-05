@@ -5,7 +5,7 @@ from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    make_table, utilrandom as random)
 from skillrandomizer import SpellBlock, get_spell, get_ranked_spells
 from itemrandomizer import get_ranked_items, get_item
-from namerandomizer import generate_attack
+from namerandomizer import generate_attack, generate_name
 
 
 stat_order = ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
@@ -96,6 +96,21 @@ specialdict["hp drain"] = 0x30
 specialdict["mp drain"] = 0x31
 reverse_specialdict = dict([(v, k) for (k, v) in specialdict.items()])
 ranked = [specialdict[key] for key in ranked]
+
+
+def change_enemy_name(fout, enemy_id, name):
+    pointer = 0xFC050 + (enemy_id * 10)
+    fout.seek(pointer)
+    monster = get_monster(enemy_id)
+    monster.changed_name = name
+    name = name_to_bytes(name, 10)
+    fout.write(name)
+
+
+def randomize_enemy_name(fout, enemy_id):
+    name = generate_name()
+    change_enemy_name(fout, enemy_id, name)
+    return name
 
 
 def read_ai_table(table):

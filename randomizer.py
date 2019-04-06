@@ -40,7 +40,7 @@ from musicrandomizer import randomize_music
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 from character import get_characters, get_character, equip_offsets
-from options import ALL_MODES, ALL_FLAGS
+from options import ALL_MODES, ALL_FLAGS, ALL_CODES
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
@@ -6170,57 +6170,19 @@ def randomize():
 
     characters = get_characters()
 
-    secret_codes['airship'] = "AIRSHIP MODE"
-    secret_codes['partyparty'] = "CRAZY PARTY MODE"
-    secret_codes['bravenudeworld'] = "TINA PARTY MODE"
-    secret_codes['suplexwrecks'] = "SUPLEX MODE"
-    secret_codes['strangejourney'] = "BIZARRE ADVENTURE"
-    secret_codes['dearestmolulu'] = "ENCOUNTERLESS MODE"
-    secret_codes['canttouchthis'] = "INVINCIBILITY"
-    secret_codes['easymodo'] = "EASY MODE"
-    secret_codes['norng'] = "NO RNG MODE"
-    secret_codes['endless9'] = "ENDLESS NINE MODE"
-    secret_codes['equipanything'] = "EQUIP ANYTHING MODE"
-    secret_codes['collateraldamage'] = "ITEM BREAK MODE"
-    secret_codes['repairpalette'] = "PALETTE REPAIR"
-    secret_codes['llg'] = "LOW LEVEL GAME MODE"
-    secret_codes['naturalmagic'] = "NATURAL MAGIC MODE"
-    secret_codes['naturalstats'] = "NATURAL STATS MODE"
-    secret_codes['playsitself'] = "AUTOBATTLE MODE"
-    secret_codes['bingoboingo'] = "BINGO BONUS"
-    secret_codes['worringtriad'] = "START IN WOR"
-    secret_codes['metronome'] = "R-CHAOS MODE"
-    secret_codes['quikdraw'] = "QUIKDRAW MODE"
-    secret_codes['makeover'] = "SPRITE REPLACEMENT MODE"
-    secret_codes['kupokupo'] = "MOOGLE MODE"
-    secret_codes['capslockoff'] = "Mixed Case Names Mode"
-    secret_codes['replaceeverything'] = "REPLACE ALL SKILLS MODE"
-    secret_codes['allcombos'] = "ALL COMBOS MODE"
-    secret_codes['randomboost'] = "RANDOM BOOST MODE"
-    secret_codes['dancingmaduin'] = "RESTRICTED ESPERS MODE"
-    secret_codes['masseffect'] = "WILD EQUIPMENT EFFECT MODE"
-    secret_codes['darkworld'] = "SLASHER'S DELIGHT MODE"
-    secret_codes['supernatural'] = "SUPER NATURAL MAGIC MODE"
-    secret_codes['madworld'] = "TIERS FOR FEARS MODE"
-    secret_codes['randombosses'] = "RANDOM BOSSES MODE"
-    secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
-    secret_codes['notawaiter'] = "CUTSCENE SKIPS"
-    secret_codes['rushforpower'] = "OLD VARGAS FIGHT MODE"
-    secret_codes['johnnydmad'] = "MUSIC REPLACEMENT MODE"
-    secret_codes['johnnyachaotic'] = "MUSIC MANGLING MODE"
-    s = ""
     
+    s = ""
     for code in mode.forced_codes:
         activated_codes.add(code)
 
-    for code, text in secret_codes.items():
-        if code in flags:
-            flags = flags.replace(code, '')
+    for code in ALL_CODES:
+        if code.name in flags:
+            flags = flags.replace(code.name, '')
             if code in mode.prohibited_codes:
-                s += "SECRET CODE: '%s' is not compatible with %s mode." %(text, mode.name)
+                s += "SECRET CODE: '%s' is not compatible with %s mode." %(code.description, mode.name)
                 continue
-            s += "SECRET CODE: %s ACTIVATED\n" % text
-            activated_codes.add(code)
+            s += "SECRET CODE: %s ACTIVATED\n" % code.description
+            activated_codes.add(code.name)
     if 'racecave' in activated_codes:
         activated_codes.add('speedcave')
     if 'speedcave' in activated_codes:

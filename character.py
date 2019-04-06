@@ -50,6 +50,7 @@ class CharacterBlock:
         self.new_appearance = None
         self.natural_magic = None
         self.palette = None
+        self.wor_location = None
 
     def __repr__(self):
         s = "{0:02d}. {1}".format(self.id+1, self.newname) + "\n"
@@ -76,6 +77,8 @@ class CharacterBlock:
             s += "Notable equipment: "
             s += ", ".join([n.name for n in self.get_notable_equips()])
             s += "\n"
+        if self.wor_location is not None:
+            s += "World of Ruin location: %s\n" % self.wor_location
         if self.natural_magic is not None:
             s += "Has natural magic.\n"
             for level, spell in self.natural_magic:

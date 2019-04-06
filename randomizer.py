@@ -6455,6 +6455,14 @@ r   Randomize character locations in the world of ruin.
         f.write_data(fout)
 
     if 't' in flags:
+        wedge_money = 1000 + random.randint(0,1500)
+        vicks_money = 500 + random.randint(0,750)
+        starting_money = wedge_money + vicks_money
+        starting_money_sub = Substitution()
+        starting_money_sub.set_location(0xC9A93)
+        starting_money_sub.bytestring = bytes([0x84, starting_money & 0xFF, (starting_money >> 8) & 0xFF])
+        starting_money_sub.write(fout)
+
         # do this after hidden formations
         manage_treasure(monsters, shops=True)
         if 'ancientcave' not in activated_codes:

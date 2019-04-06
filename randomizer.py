@@ -40,7 +40,7 @@ from musicrandomizer import randomize_music
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 from character import get_characters, get_character, equip_offsets
-from options import ALL_MODES
+from options import ALL_MODES, ALL_FLAGS
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
@@ -6026,28 +6026,7 @@ def randomize():
         print("Success! Using valid rom file: %s\n" % sourcefile)
     del(f)
 
-    flaghelptext = '''o   Shuffle characters' in-battle commands.
-w   Generate new commands for characters, replacing old commands.
-z   Always have "Sprint Shoes" effect.
-b   Make the game more balanced by removing exploits such as Joker Doom,
-        Vanish/Doom, and the Evade/Mblock bug.
-m   Randomize enemy stats.
-c   Randomize palettes and names of various things.
-i   Randomize the stats of equippable items.
-q   Randomize what equipment each character can wear and character stats.
-e   Randomize esper spells and levelup bonuses.
-t   Randomize treasure, including chests, colosseum, shops, and enemy drops.
-u   Umaro risk. (Random character will be berserk)
-l   Randomize blitz inputs.
-n   Randomize window background colors.
-f   Randomize enemy formations.
-s   Swap character graphics around.
-p   Randomize the palettes of spells and weapon animations.
-d   Randomize final dungeon.
-g   Randomize dances
-k   Randomize the clock in Zozo
-r   Randomize character locations in the world of ruin.
-0-9 Shorthand for the text saved under that digit, if any
+    flaghelptext = '''0-9 Shorthand for the text saved under that digit, if any
 -   Use all flags EXCEPT the ones listed'''
 
     speeddial_opts = {}
@@ -6074,16 +6053,19 @@ r   Randomize character locations in the world of ruin.
                 print("Available modes:\n");
                 for i, mode in enumerate(ALL_MODES):
                     print("{}. {} - {}".format(i+1, mode.name, mode.description))
-                mode = input("\nEnter desired mode number or name:\n").strip()
+                mode_str = input("\nEnter desired mode number or name:\n").strip()
                 try:
-                    mode_num = int(mode) - 1
+                    mode_num = int(mode_str) - 1
                 except ValueError:
                     for i, m in enumerate(ALL_MODES):
-                        if m.name == mode:
+                        if m.name == mode_str:
                             mode_num = i
                             break;
-                print(mode_num)
-            
+            mode = ALL_MODES[mode_num]
+            allowed_flags = [f for f in ALL_FLAGS if f.name not in mode.prohibited_flags]
+            print()
+            for flag in sorted(allowed_flags):
+                print(flag.name, flag.description)
             print(flaghelptext + "\n")
             print("Save frequently used flag sets by adding 0: through 9: before the flags.")
             for k, v in sorted(speeddial_opts.items()):
@@ -6099,26 +6081,27 @@ r   Randomize character locations in the world of ruin.
                     print('\nSaving flags "%s" in slot %s' % (flags[1], dial))
                     saveflags = True
                 flags = flags[1]
-            fullseed = ".%s.%s.%s" % (mode,flags, fullseed)
+            fullseed = ".%i.%s.%s" % (mode_num+1,flags, fullseed)
             print()
 
     try:
-        version, mode, flags, seed = tuple(fullseed.split('.'))
+        version, mode_str, flags, seed = tuple(fullseed.split('.'))
     except ValueError:
         raise ValueError('Seed should be in the format <version>.<mode>.<flags>.<seed>')
-    mode = mode.strip()
+    mode_str = mode_str.strip()
     mode_num = None
     try:
-        mode_num = int(mode) - 1
+        mode_num = int(mode_str) - 1
     except ValueError:
         for i, m in enumerate(ALL_MODES):
-            if m.name == mode:
+            if m.name == mode_str:
                 mode_num = i
                 break;
 
     if mode_num not in range(len(ALL_MODES)):
         raise Exception("Invalid mode specified")
     mode = ALL_MODES[mode_num]
+    allowed_flags = [f for f in ALL_FLAGS if f.name not in mode.prohibited_flags]
 
     seed = seed.strip()
     if not seed:
@@ -6174,7 +6157,7 @@ r   Randomize character locations in the world of ruin.
     if version and version != VERSION:
         print ("WARNING! Version mismatch! "
                "This seed will not produce the expected result!")
-    s = "Using seed: %s.%s.%s" % (VERSION, flags, seed)
+    s = "Using seed: %s.%s.%s.%s" % (VERSION, mode.name, flags, seed)
     print(s)
     log(s, section=None)
     log("This is a game guide generated for the Beyond Chaos EX FF6 randomizer.",
@@ -6276,17 +6259,19 @@ r   Randomize character locations in the world of ruin.
         "The randomization is very thorough, so it may take some time.\n"
         'Please be patient and wait for "randomization successful" to appear.')
 
-    allFlags = 'abcdefghijklmnopqrstuvwxyz'
-
+    all_flags = str.join("", sorted([f.name for f in allowed_flags]))
     if '-' in flags:
         print("NOTE: Using all flags EXCEPT the specified flags.")
-        newFlags = allFlags
+        newFlags = all_flags
         for f in flags.strip():
             newFlags = newFlags.replace(f,"")
         flags = newFlags
 
+    for f in mode.prohibited_flags:
+        flags = flags.replace(f,"")
+
     if not flags.strip():
-        flags = allFlags
+        flags = all_flags
 
     if 'o' in flags or 'w' in flags or 't' in flags:
         auto_recruit_gau()

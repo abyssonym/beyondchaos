@@ -1486,8 +1486,24 @@ def manage_skips():
                 palette_correct_sub.set_location(int(split_line[0], 16))
                 palette_correct_sub.write(fout)
 
+    def handleAirship(split_line): # Replace events that should be modified if we start with the airship
+        if 'airship' not in activated_codes:
+            writeToAddress(split_line[0], split_line[1:])
+        else:
+            writeToAddress(split_line[0],
+                split_line[1:-1] +  # remove FE from the end
+                ['D2', 'BA'] +  # enter airship from below decks
+                ['D2', 'B9'] +  # airship appears on world map
+                ['D0', '70'] +  # party appears on airship
+                ['6B', '00', '04', '54', '22', '00'] +  # load map, place party
+                ['C7', '54', '23'] +  # place airship
+                ['FF'] +  # end map script
+                ['FE']  # end subroutine
+            )
+            
     for line in open(SKIP_EVENTS_TABLE):
         # If "Foo" precedes a line in skipEvents.txt, call "handleFoo"
+        line = line.strip().split('#')[0]  # Ignore everything after '#'
         split_line = line.strip().split(' ')
         handler = "handle" + split_line[0]
         locals()[handler](split_line[1:])
@@ -1607,6 +1623,10 @@ def activate_airship_mode(freespaces):
     # always access floating continent
     set_airship_sub.bytestring = bytes([0xC0, 0x27, 0x01, 0x79, 0xF5, 0x00])
     set_airship_sub.set_location(0xAF53A)  # need first branch for button press
+    # ... except in the World of Ruin
+    set_airship_sub.write(fout)
+    set_airship_sub.bytestring = bytes([0xC0, 0xA4, 0x80, 0x6E, 0xF5, 0x00])
+    set_airship_sub.set_location(0xAF579)  # need first branch for button press
     set_airship_sub.write(fout)
 
     # always exit airship
@@ -6506,9 +6526,10 @@ r   Randomize character locations in the world of ruin.
                                                random_treasure='t' in flags,
                                                include_gau='o' in flags or 'w' in flags or 't' in flags,
                                                include_gogo=True)
+    reseed()
 
     if 'worringtriad' in activated_codes and 'ancientcave' not in activated_codes:
-        manage_wor_skip(fout, wor_free_char)
+        manage_wor_skip(fout, wor_free_char, 'airship' in activated_codes)
     reseed()
 
     if 'k' in flags and 'ancientcave' not in activated_codes:

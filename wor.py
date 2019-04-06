@@ -581,7 +581,7 @@ def manage_wor_recruitment(fout, random_treasure, include_gau, include_gogo):
     return wor_free_char
 
 
-def manage_wor_skip(fout, wor_free_char=0xB):
+def manage_wor_skip(fout, wor_free_char=0xB, airship=False):
     characters = get_characters()
 
     # jump to FC end cutscene for more space
@@ -761,11 +761,19 @@ def manage_wor_skip(fout, wor_free_char=0xB):
         firstbyte = 0xD1 + int(bit[0:1], 16) * 2 - setbit
         lastbyte = int(bit[1:], 16)
         wor_sub2.bytestring += bytearray([firstbyte, lastbyte])
+        
+    if airship:
+        wor_sub2.bytestring += bytearray([0xD2, 0xB9])  # airship appears in WoR
 
-    wor_sub2.bytestring += bytearray([0x6B, 0x01, 0x00, 0x91, 0xD3, 0x00, # go to WoR
-                            0xFF,  # end map script
-                            0xFE,  # return
-                            ])
+    wor_sub2.bytestring += bytearray([0x6B, 0x01, 0x00, 0x91, 0xD3, 0x00]) # go to WoR
+
+    if airship:
+        wor_sub2.bytestring += bytearray([0xC7, 0x91, 0xD3])  # place airship
+    
+    wor_sub2.bytestring += bytearray([
+        0xFF,  # end map script
+        0xFE,  # return
+        ])
 
     wor_sub2.set_location(0xA9749)
     wor_sub2.write(fout)

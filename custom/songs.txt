@@ -187,6 +187,7 @@ lu2_narvick:    omen3, gestahl, shadow, cyan, zozo, narshe, strago, martiallaw, 
 lu2_world:      awakening, mountain, serpent, balance*2
 met3_brain:     metamorphosis*2
 met3_surface:   omen3*2, gestahl, cyan*2, shadow, returners, troops, ruin
+mmx_prologue:   I35, G25, grandfinale, unforgiven, chocobo, blackjack, johnny, magitek*2, floatingcont
 ob_battle:      I40, G50, battle*2, boss, metamorphosis*2, unforgiven
 rs2_heroes:     I50, G75, boss, catastrophe, grandfinale
 rs3_underwater: omen3, shadow, owzer, narshe*2, town_ruin*2, ruin, forest*2

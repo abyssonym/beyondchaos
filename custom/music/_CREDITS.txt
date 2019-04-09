@@ -1,4 +1,5 @@
 Song conversions:
+    Cecil188 -- ot_stillsnow
     emberling -- blord_2tower
                  bof2_battle
                  cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life

@@ -189,6 +189,7 @@ met3_brain:     metamorphosis*2
 met3_surface:   omen3*2, gestahl, cyan*2, shadow, returners, troops, ruin
 mmx_prologue:   I35, G25, grandfinale, unforgiven, chocobo, blackjack, johnny, magitek*2, floatingcont
 ob_battle:      I40, G50, battle*2, boss, metamorphosis*2, unforgiven
+ot_stillsnow:   coin*2, narshe, ruin*2, town_ruin*2, W:prelude, W:omen3*2, W:celes, W:daryl, W:rachel, W:awakening, W:forest, W:espers
 rs2_heroes:     I50, G75, boss, catastrophe, grandfinale
 rs3_underwater: omen3, shadow, owzer, narshe*2, town_ruin*2, ruin, forest*2
 rsms_battle:    I50, G65, battle*2, unforgiven

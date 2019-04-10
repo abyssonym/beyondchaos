@@ -149,6 +149,7 @@ ff9_messenger:  H2, dmad5, gestahl, catastrophe*2, grandfinale, fanatics
 ff9_rose:       prelude, celes*2, coin*2, daryl, cyan
 ffx_ambition:   H2, omen3, kefka, owzer, fanatics*2
 ffx_battle:     I55, G10, battle*2, savethem
+ffx_calm:       omen3, shadow, awakening, ruin, forest*2, espers, serpent
 ffx_decision:   relm, awakening, town, martiallaw
 ffx_gagazet:    W4, omen3, gau, cyan, umaro, narshe, ruin*2, veldt, W:rachel, W:awakening, W:zozo, W:owzer, W:strago, W:martiallaw, W:town_ruin, W:espers
 ffx_seymour:    I99, G80, atma, dmad5

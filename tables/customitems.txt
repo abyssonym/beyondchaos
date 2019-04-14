@@ -610,3 +610,73 @@ name_icon           e7
 name_text           Meme Ring
 description         Never talk to me or my son again.
 tier                low
+
+! Cecil Wisdom
+price				2674
+itemtype			01
+equippable			3fff
+breakeffect			c4
+magstam				50
+statboost2			08
+statusprotect2		20
+special2			40
+otherproperties		04
+power				bc
+hitmdef				c8
+specialaction		60
+weapon_animation    1c 1c 2c 08 33 0 8c 0
+name_icon			dc
+name_text			Cecil Wisdom
+description			The more you know
+tier				low
+
+! Meme Shield
+price				1
+itemtype			23
+equippable			3fff
+learnrate			14
+learnspell			1A
+breakeffect			29
+speedvigor			47
+magstam				02
+power				0
+hitmdef				69
+name_icon			e2
+mblockevade			05
+statboost1			40
+statboost2			20
+special3			10
+name_icon			e2
+name_text			Meme Shield
+tier				high
+
+! Dumpster
+price				1
+itemtype			24
+equippable			3fff
+breakeffect			0
+statboost1			08
+special2			11
+statusacquire2		0c
+name_icon			e3
+name_text			Dumpster
+tier				high
+
+! Run Away!
+price				1
+itemtype			21
+equippable			3fff
+learnrate			14
+learnspell			22
+power				1
+speedvigor			70
+mblockevade			33
+breakeffect			c2
+hitmdef				c8
+statusacquire3		01
+statboost1			08
+otherproperties		04
+weapon_animation    24 24 1f 0 78 04 a4 0
+name_icon			01
+name_text			Run Away!
+tier				high

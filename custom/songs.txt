@@ -27,6 +27,7 @@ cc_life:        omen3, rachel*2
 cc_miguel:      grandfinale, ruin*2, rachel
 cc_miguel_tr:   train
 crys_fields:    chocobo, johnny, gogo, moogles*2, mountain, setzer
+crys_mountain:  I25, G55, grandfinale, unforgiven, falcon, mountain, serpent, floatingcont, kefkastower
 ct_600ad:       zozo, owzer*2, town_ruin, ruin
 ct_battle:      I05, G20, battle*2, unforgiven
 ct_battle2:     I05, G40, battle*2, grandfinale
@@ -169,6 +170,7 @@ ffmq_rock:      prelude, setzer, chocobo*2, blackjack, johnny*2, spinachrag, moo
 ffmq_tower:     gestahl, catastrophe, troops*2, savethem, umaro, kefkastower
 ffmq_tristam:   fanfare, chocobo, johnny*2, spinachrag, moogles
 ffmq_victory:   fanfare*2
+fz_port:        I35, G40, grandfinale, falcon*2, serpent, magitek, floatingcont
 fz_white1:      W4, W:I40, W:G30, blackjack, johnny, moogles, chocobo, W:battle, W:unforgiven*2, W:setzer, W:locke, W:zozo, W:falcon*2, W:serpent*2, W:magitek, W:floatingcont
 iog_boss:       I95, G55, boss, metamorphosis*2, catastrophe, unforgiven
 iog_larai:      H2, catastrophe*2, grandfinale, umaro, owzer, train, espers, fanatics, kefkastower, H:mountain, H:veldt, H:forest, H:omen3, H:gestahl, H:kefka
@@ -180,6 +182,7 @@ lo_battle:      I05, G75, battle*2, grandfinale, cyan, umaro
 lu1_battle:     I60, G0, battle*2, unforgiven, chocobo
 lu1_boss:       I90, G45, boss*2, grandfinale
 lu1_spoils:     prelude, omen3, daryl, awakening
+lu1_world:      cyan, johnny, falcon, balance*2
 lu2_battle:     I45, G05, battle*2, unforgiven
 lu2_battle3:    I85, G99, atma*2, grandfinale, dmad5
 lu2_boss:       I95, G40, boss*2, grandfinale

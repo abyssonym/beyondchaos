@@ -3,7 +3,7 @@ Song conversions:
     emberling -- blord_2tower
                  bof2_battle
                  cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life
-                 crys_fields
+                 crys_fields, crys_mountain
                  ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair,
                  ct_keeper, ct_mountain, ct_night, ct_revolution, ct_robo,
                  ct_schala, ct_silent, ct_sewer, ct_theme, ct_truth, ct_tylair,
@@ -27,10 +27,10 @@ Song conversions:
                  ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
                  ffmq_fossil, ffmq_gale, ffmq_lava, ffmq_light, ffmq_rock,
                  ffmq_tower, ffmq_tristam, ffmq_victory
-                 fz_white1
+                 fz_port, fz_white1
                  iog_larai, iog_whispers
                  lo_battle
-                 lu1_battle
+                 lu1_battle, lu1_world
                  lu2_battle
                  met3_surface
                  mmx_prologue

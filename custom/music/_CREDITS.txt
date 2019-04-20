@@ -35,6 +35,7 @@ Song conversions:
                  met3_surface
                  mmx_prologue
                  ob_battle
+                 ot_sunshade
                  rs2_heroes
                  sd2_8bells, sd2_always, sd2_angel, sd2_city, sd2_desert,
                  sd2_eternal, sd2_flammie, sd2_forest, sd2_forget, sd2_ghost,

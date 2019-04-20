@@ -1,0 +1,297 @@
+#TITLE Sunshade, City of Pleasures
+#ALBUM Octopath Traveler
+#COMPOSER Yasunori Nishiki
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x97~/0x01/
+#WAVE 0x21 ~0x8B~/0x1B/
+#WAVE 0x22 ~0x42~/0x3E/
+#WAVE 0x23 ~0x18~/0x18/
+#WAVE 0x24 ~0x74~/0x0A/
+#WAVE 0x25 ~0x36~/0x36/
+#WAVE 0x26 ~0x35~/0x35/
+#WAVE 0x27 ~0x4F~/0x33/
+#WAVE 0x28 ~0x57~/0x2E/
+#WAVE 0x29 ~0x85~/0x15/
+#WAVE 0x2A ~0x81~/0x14/
+#WAVE 0x2E ~0x5F~/0x2F/
+#WAVE 0x2F ~0x55~/0x0F/
+
+#def global= t136 %x255 %v40 %b0,100 %f0,0
+
+#def gtr= |0 ~o6~/o5/ p48 'vgt' %e1 %y6%s2%r13 m48,18,199
+#def pia= |1 o5 p80 'vpi' %e1 ~%y4%s3~ /%y4%s1/ m
+#def vib= |2 ~o4~/o5/ p40 'vv' %e1 m
+#def bas= |3 o7 p56 'vbs' %e1 %y6%s3 m
+#def clr= |4 o5 p72 'vcl' %e1 m48,18,223
+#def tin= |5 o5 p48 'vtw' %e1 m48,18,215
+#def rec= |6 o6 p80 'vrc' %e1 m24,18,215
+#def sax= |7 ~o6~/o5/ p72 'vsx' %e1 m48,18,223
+
+#def vgt= v104
+#def vpi= v64
+#def vv= ~v16~/v25/
+#def vbs= v127
+#def vcl= v64
+#def vtw= v40
+#def vrc= v52
+#def vsx= v52
+
+#def f= v255,64
+
+#drum "b"=5a p24 |A %e1 %a8 v48
+#drum "s"=5f p24 |A %e1 v32
+
+#drum "t+"=~6c~/5g/ p104 |F %e1 v40
+#drum "t"=~6c~/5g/ p104 |F %e1 v20
+#drum "t-"=~6c~/5g/ p104 |F %e1 v10
+#drum "m"=5a p104 |E %e0 v32
+#drum "m-"=5a p104 |E %e0 v16
+
+#drum "a"=5f+ p64 |8 %e0 v48 %y7%s7
+#drum "e"=5f p64 |8 %e0 v48 %y5%s3
+#drum "c"=5f p64 |8 %e0 v24 %y5%s3
+#drum "d"=5c+ p64 |8 %e0 v48 %y7%s7
+#drum "p"=5g+ p64 |9 %e1 v48
+
+#cdef ( %l1
+#cdef ) %l0
+
+#def pl0= %y4
+#def pl1= %y2
+#def pl2= %y0
+
+{1}
+'global'
+r8$  'gtr-o1'
+c1.r1.
+##6
+'clr' [
+%r9 d+4^32 %r16 d4 c.^32
+%r13 f2^d+ d2^c >a+2^g+   %r10 g1^1^1
+%r9 <d+4^32 %r16 d4 c.^32
+%r13 f2^d+ a+2^g+ g2^f  %r10 g1^1^1
+##22
+%r9 d+4^32 %r16 d4 c.^32
+%r13 f2^d+ d2^c >a+2^g+   %r10 &138g1^1^1 <c^32d^32
+%r12 d+4 f4 g..  f4a+ r4.   
+%r4 (d+4f4g4)(f4d+4d4) %r10c1^1^1
+##38
+'tin+o1' %r9 d+4^32 %r14 d4c.   %r10 f2^^32(d+ d2^16.)(c>a+2^) g+^32g1^1^2^
+<(c.d.)  %r14  d+4^32 f4^32 %r17 g. %r14f4a+ r4.
+d+4(f4g..)f4(d+4d4) %r9 c1^1^1^32
+j2,154##54
+'gtr' m24,18,239 r2 m48,7c+4 <e..m6,-1^32 r1r16. k4m255,-2d+2.^32k0c>
+a4m9,1a-4 r2 m96,-1g2(e24f+^48)'vgt*v.67'e2^16  'vgt'm18,2d16.m12,-7^16'vgt*v.67'c2^16.
+>r4. aga g4%r11m9,2g4m6,-3^8..m6,-1^32 'vgt*v.67'g4^16.m12,-3^32^4.  'vgt'%r13 r(d16d+16e)(gg+a)
+k-4<(c4k8m48,-1c4)>k0 e16.r32e16.r32 g4a1^1
+##6
+'sax']
+##54 v2
+$154
+'gtr-o1' &1r e4e8 &47r 'bas-o2*v.5+p24'
+m24,7a2^32 <d+.. e4.m24,2^ f+4 g4.m24,-4^ 'vbs'c>ba
+'gtr-o1' &1r e4e8 &47r 'bas-o2*v.5+p24'
+cm6,1^r d+^32e.. a16m12,2^16^4r <cr 'vbs'e2m12,1d+4.
+'gtr-o1' &1r e4e8 &47r 'bas-o2*v.5+p24'
+(m26,6ek-4a+4)k0 <ek-4d+4k0e %s0 f+4g^32 f+.. g32m18,1^16. b4<c4.m24,-7c
+'gtr-o1' &1r e4e8 &47r 'bas-o2+p16'
+>(k4m96,-2a+4.k0m96,-12a2) red+c>b ff+gg+aa+b
+;
+
+{2}
+r8$ 'gtr+o1'
+r32. &183c^2 r1.
+[##6
+'gtr+o1' [6 >>c32.<< &183c^2 r1.]
+##22
+#^^ 5-6
+>>d+32.<< &135c >>d+64<<&21crcr4.
+>>d+32.<< &135c >>d64<&33a+r16a+r4.<
+>>c32.<< &183c^2 r1.
+##38
+'rec' %r9 r4. (c^32d)d+(f.d+)%r16 g+a+k-12g+k0 'f*v,.5'
+f+4 %r5(g16 d+16.dd+c) (>a+<cd)(c>a+<d)>
+'f*v,.2'(%r16gab) %r14 d+..d+ (%r17c32^4>a+1.^)
+'vrc'<<  %r11 (d+..f^32)    (g4^32f4^32)d+.  %r15a+4g+r4.
+%r10(g4f4)d+4f.r16(d+4d4) c1^1^1
+##54
+[4 r64 'gtr' a4a16.. "!!!o b4.^4b1^1"]
+]
+;
+
+{3}
+'bas-o3'
+a+$
+[14 <c4cd+4d+c4>a+r4  a+]
+##6
+#^^ 3-10
+##22
+#^^ 11-14
+[g+4g+<d+4d+>j2 g+4g+r4g+]a+4a+r4a+
+[ <c4cd+4d+c4>a+r4  a+]
+##38
+[4 <c4cd+4d+c4>a+r4  a+]
+[g+4g+<d+4d+>j2 g+4g+r4g+]a+4a+r4a+
+[ <c4cd+4d+c4>a+r4  a+]
+##54
+a4a r1r1r2r
+a4a r1...<am72,-6^4.e16.c16>b16.
+a4a r1r1r2r
+a4a r1...<m72,-12a4.>aa+b
+##6
+[12 <c4cd+4d+c4>a+r4  a+]
+##22
+#^^ 9-12
+[g+4g+<d+4d+>j2 g+4g+r4g+]a+4a+r4a+
+<c4cd+4d+c4>a+r4  a+
+<c4c(d+c)>'vbs*v.67'a+<'vbs'c'vbs*v.67'c'vbs'%s6<c>a+%s5g%s4>a+%s3
+##38
+[ <c4cd+4d+c4a+r4  a+>    <c4cd+4d+c4>a+r4  a+]
+[g+4g+<d+4d+>j2 g+4g+r4g+]a+4a+r4a+
+[ <c4cd+4d+c4>a+r4  a+]
+##54
+a4ar4<
+m24,7a2^32 <d+.. e4.m24,2^ f+4 g4.m24,-4^ r4.
+>>a4ar4<
+cm6,1^4 d+^32e.. a16m12,2^16^4. <c4> a2 a4m24,-5^
+>a4ar4<
+(m26,6ek-4a+4)k0 <ek-4d+4k0'vbs*.5'e  f+4g^32 f+.. 'vbs*.33'g32m18,1^16. 'vbs'b4<c4.m24,-7c
+>>>a4ar4<
+(k4m96,-2a+4.k0m96,-12a2) red+c>b ff+gg+aa+b
+;
+
+{4}
+r8$ 'gtr'
+r32 &186d+^2 r1.
+[##6
+[6 r32 'gtr'd+8.. ['pia' g2 'pl1'g4 'pl0'g2 j2 ^4]]
+##22
+#^^5-6
+[r32 'gtr'g8.. 'pia' g+2 'pl1'j2g+4 'pl0'g+2] f4 'pl0'f2
+ r32 'gtr'd+8.. ['pia' g2 'pl1'g4 'pl0'g2 j2 ^4]
+##38
+['gtr-o1'c32<d+8.. ['pia' g2 'pl1'g4 'pl0'g2 j2 ^4]]
+['gtr-o1'd+32<g8.. 'pia' g+2 'pl1'j2g+4 'pl0'g+2] f4 'pl0'f2
+ 'gtr-o1'c32<d+8.. ['pia' g2 'pl1'g4 'pl0'g2 j2 ^4]
+##54
+[4"!!!o a4ap4ed2. a4.pecd2."]
+]
+;
+
+{5}
+r8$
+$500 "m4.btt-m4s2 m4.t+tt-m4m-2" j1,0
+##6
+[6 [j2,529%j500$529 ]
+##22
+#^^ 5-6
+$530 "m4" 'pia-o1'g+ "!!!o btt-m4s2  m4" 'pia-o1'g+ "!!!o t+tt-m4m-2" j1,0
+[3 [j2,537%j500$537 ]
+##38
+#^^ 2-3
+[j2,549%j530$549
+[j2,553%j500$553
+##54
+[4 'gtr-o1' &1r e4e8 &215r1r1.]
+##6
+[6 [j2,5290%j500$5290 ]
+##22
+#^^ 5-6
+[j2,5300%j530$5300
+[3 [j2,5370%j500$5370 ]
+##38
+#^^ 2-3
+[j2,5490%j530$5490
+[j2,5530%j500$5530
+##54
+[4"!!!o m4m-m4m-m2. m4m-m4m-m4m-2"]
+;
+
+{6}
+r8$ r1r1r1
+[##6
+'pia' [14 ^4 d+2 'pl2' j14 d+4 'pl0' d+2]
+##22
+#^^9-14
+d4 'pl0' d2
+[2 ^4 d+2 'pl2' d+4 'pl0' d+2]
+##38
+[6 ^4 d+2 'pl2' j6 d+4 'pl0' d+2]
+d4 'pl0' d2
+[2 ^4 d+2 'pl2' d+4 'pl0' d+2]
+j2,654##54
+[4"!!!o m4m-m4m-m2. m4m-m4m-m4m-2"]
+]##54v2
+$654
+[4 'gtr' &2r e4e8 &214r1r1.]
+;
+
+{7}
+r8$ 'gtr-o1'
+[5 r64 &189g^2 r1.]
+##6
+#^^ 2-5
+##22
+l32
+[ [j2,725%j734$725 $0]
+$726 'vv'c<c16.>'vv*v.66'c<c16.>'vv*v.55'c<c16.>'vv*v.44'c<c16.>'vv*v.33'c<c16.>'vv*v.22'c<c16.>'vv*v.11'c<c16.> j1,0 r2r8 r1.
+$730 'vv'c<c16.>'vv*v.6'c<c16.>'vv*v.3'c<c16.> 'vv'd+<d+16.>'vv*v.6'd+<d+16.>'vv*v.3'd+<d+16.> 'vv'c<c16.>'vv*v.6'c<c16.>'vv*v.3'c<c16.> r4.
+'vv'c<c16.>'vv*v.6'c<c16.>'vv*v.3'c<c16.> 'vv'd+<c16.>'vv*v.6'd+<c16.>'vv*v.3'd+<c16.> 'vv'f<c16.>'vv*v.6'f<c16.>'vv*v.3'f<c16.> r4. j1,0
+$734 'vib-o1'c<c16.>'vv*v.6'c<c16.>'vv*v.3'c<c16.> 'vv'd+<d+16.>'vv*v.6'd+<d+16.>'vv*v.3'd+<d+16.> 
+'vv'c<c16.>'vv*v.6'c<c16.>'vv*v.3'c<c16.> 'vv'>a+<a+16.>'vv*v.6'a+<a+16.>'vv*v.3'a+<a+16. j1,0
+[j2,737%j726$737 r2r8
+##38
+r4 $738 'vv'c<c16.>'vv*v.6'c<c16.>'vv*v.3'c<c16.> j1,0 r8
+'vv'c<c16.>'vv*v.5'c<c16.>[j2,739%j738$739 r4. [j2,740%j738$740 r2..
+r4 [j2,742%j738$742 r8 [j2,743%j738$743 r4.
+[r4 [j2,744%j738$744 r8 'vv'c<c16.>'vv*v.6'c<c16.>[j2,745%j738$745 r8] r4 [j2,748%j738$748 r2..
+[j2,751%j734$751 [j2,752%j726$752 r2r8
+##54
+[4 'gtr' &2r e4e8 &214r1r1.]
+##6
+'gtr-o1'
+[4 r64 &189g^2 r1.]
+##22
+l32
+[ [j2,7250%j734$7250 ]
+[j2,7260%j726$7260 r2r8 r1.
+[j2,7300%j730$7300
+[j2,7340%j734$7340
+[j2,7370%j726$7370 r2r8
+##38
+r4 [j2,7380%j738$7380 r8
+'vv'c<c16.>'vv*v.5'c<c16.>[j2,7390%j738$7390 r4. [j2,7400%j738$7400 r2..
+r4 [j2,7420%j738$7420 r8 [j2,7430%j738$7430 r4.
+[r4 [j2,7440%j738$7440 r8 'vv'c<c16.>'vv*v.6'c<c16.>[j2,7450%j738$7450 r8] r4 [j2,7480%j738$7480 r2..
+[j2,7510%j734$7510 [j2,7520%j726$7520 r2r8
+##54
+'gtr-o2' [4a4a8 r1r1.^8]
+;
+
+{8}
+r8$
+[4r2.]
+[##6
+[16r2.]
+##22
+'gtr-o1'
+[r64 &189g^2 r1.]
+r64 &142g+ &41g+ g+8^32 r4.
+r64 &142g+ &47<c c8 r4.>
+r64 &189g^2 r1.
+##38
+<<[r64>g32< &183c^2 r1.]
+   r64>g+32< &135c >>d+64<<&21crcr4.
+   r64>g+32< &135c >>d64<&33a+r16a+r4.<
+   r64>g+32< &183c^2 r1.
+j2,854##54
+'gtr-o2' [4a4a8 r1r1.^8]
+] ##54v2
+$854
+[16r2.]
+;
+

@@ -136,6 +136,7 @@ ff8_lion:       I80, G80, atma*2, dmad5
 ff8_lion_nointro: catastrophe*2
 ff8_mlaw:       shadow*2, zozo*2, martiallaw*2
 ff8_oath:       omen3, celes, rachel*2, ruin
+ff8_triad:      johnny, what, zozo, johnny, spinachrag*2
 ff8_witches:    H4, omen3, gestahl*2, kefka*2, owzer, ruin, train*2, fanatics
 ff9_battle:     I30, G45, battle*2, savethem
 ff9_blackmage:  H4, chocobo, johnny, what, moogles*2, gogo, strago*2, magitek
@@ -250,6 +251,7 @@ sd3_tension:    I50, G60, boss*2, grandfinale, setzer, locke, savethem, chocobo,
 sd3_winter:     W4, omen3*2, daryl, owzer, narshe*2, town_ruin, ruin*2, forest, train, serpent, W:celes, W:coin, W:rachel, W:relm, W:shadow, W:umaro, W:zozo, W:martiallaw, W:mountain, W:espers*2
 sdlm_bonds:     prelude, omen3, rachel, gau, town_ruin
 sdlm_nostalgic: daryl, rachel*2, gau, awakening, town_ruin*2
+sdlm_pain:      G75, I70, boss, atma, grandfinale
 sdlm_snowfield: W4, moogles, zozo, serpent*2, W:cyan, W:setzer, W:troops, W:savethem, W:martiallaw, W:town_ruin, W:falcon, W:mountain, W:espers, W:floatingcont
 sf2_balrog:     I35, G65, battle*2, setzer, blackjack, chocobo*2, johnny*2, moogles, magitek, floatingcont
 sf2_ken:        I40, G60, battle*2, grandfinale, unforgiven*2, setzer, locke, johnny

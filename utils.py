@@ -145,6 +145,17 @@ def dialogue_to_bytes(text, null_terminate=True):
         bs.append(0x0)
     return bytes(bs)
 
+
+def get_dialog_pointer(f, index):
+    f.seek(0xCE600)
+    increment_index = read_multi(f)
+    base = base = 0xD0000 if index <= increment_index else 0xE0000
+    ptrs_start = 0xCE602
+    f.seek(ptrs_start + index * 2)
+    ptr = read_multi(f)
+    ptr += base
+    return ptr
+
     
 battlebg_palettes = {}
 f = open(BATTLE_BG_PALETTE_TABLE)

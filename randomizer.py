@@ -12,6 +12,7 @@ from utils import (ESPER_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SHOP_TABLE, SPRITE_REPLACEMENT_TABLE, RIDING_SPRITE_TABLE,
                    MOOGLE_NAMES_TABLE, SKIP_EVENTS_TABLE, DANCE_NAMES_TABLE,
+                   get_dialog_pointer,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -4483,17 +4484,19 @@ def manage_clock():
 
     # Change text that says "Hand's pointin' at the two."
     if minute != 0:
-        minute_text_sub = Substitution()
+        text = "Hand’s pointin’ at the "
         if minute == 1:
-            minute_text_sub.bytestring = bytes([0xAB, 0x8B, 0x4B]) # ' f', 'ou', 'r'
+            text += "four."
         elif minute == 2:
-            minute_text_sub.bytestring = bytes([0x8E, 0x42, 0x51]) # ' s', 'i', 'x'
+            text += "six."
         elif minute == 3:
-            minute_text_sub.bytestring = bytes([0x7F, 0x5C, 0x65, 0x00]) # ' ', '8', '.', '\0'
+            text += "8."
         else:
-            minute_text_sub.bytestring = bytes([0x81, 0x3E, 0x47]) # ' t', 'e', 'n'
+            text += "ten."
 
-        minute_text_sub.set_location(0xDB035)
+        minute_text_sub = Substitution()
+        minute_text_sub.bytestring = dialogue_to_bytes(text)
+        minute_text_sub.set_location(get_dialog_pointer(fout, 0x42A))
         minute_text_sub.write(fout)
 
 
@@ -4501,98 +4504,81 @@ def manage_clock():
     wrong_seconds.remove(second)
     random.shuffle(wrong_seconds)
 
-    double_clue = wrong_seconds[:2]
+    double_clue = sorted(wrong_seconds[:2])
     wrong_seconds = wrong_seconds[2:]
 
-    if 0 in double_clue and 1 in double_clue:
-        # Change to "The seconds? They're less than 30!".
-
-        second_text_sub0 = Substitution()
-        second_text_sub0.bytestring = bytes([0xBB, 0xAF, 0x86, 0x83, 0x8F, 0x7F, 0x57, 0x54, 0x5E, 0x00]) # ' l', 'es', 's ' 'th', 'an', ' ', '3', '0', '!', '\0'
-        second_text_sub0.set_location(0xDAEE4)
+    second_text_sub0 = Substitution()
+    second_text_sub0.set_location(get_dialog_pointer(fout, 0x423))
+    
+    if double_clue == [0, 1]:
+        text = "The seconds? They’re less than 30!"
+        second_text_sub0.bytestring = dialogue_to_bytes(text)        
         second_text_sub0.write(fout)
 
-    elif 0 in double_clue and 2 in double_clue:
-        # Change to "The seconds? They're a factor of 30!".
-
-        second_text_sub0 = Substitution()
-        second_text_sub0.bytestring = bytes([0x88, 0xAB, 0xEE, 0x96, 0x93, 0xD8, 0x7F, 0x57, 0x54, 0x5E, 0x00]) # ' a', ' f', 'ac', 'to', 'r ', 'of', ' ', '3', '0', '!', '\0',
-        second_text_sub0.set_location(0xDAEE4)
+    elif double_clue == [0, 2]:
+        text = "The seconds? They’re a factor of 30!"
+        second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 
-    elif 0 in double_clue and 3 in double_clue:
-        # Change to "The seconds are 10 modulo 30.".
-
-        second_text_sub0 = Substitution()
-        second_text_sub0.bytestring = bytes([0x88, 0x89, 0x7F, 0x55, 0x54, 0x9C, 0x48, 0x3D, 0x4E, 0xEA, 0x7F, 0x57, 0x54, 0x65, 0x00]) # ' a', 're', ' ', '1', '0', ' m', 'o', 'd', 'u', 'lo',  ' ', '3', '0', '.', '\0',
-        second_text_sub0.set_location(0xDAEDD)
+    elif double_clue == [0, 3]:
+        text = "The seconds? They’re a square times 10"
+        second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 
-    elif 0 in double_clue and 4 in double_clue:
-        # Change to "The second hand's pointin' a bit upward." (i.e., 10 or 50)
-        second_text_sub0 = Substitution()
-        second_text_sub0.bytestring = bytes([0x91, 0x8F, 0x3D, 0xB4, 0x7F, 0x49, 0x48, 0x8A, 0xE8, 0xE2, 0x88, 0xA1, 0xA5, 0xF1, 0x49, 0x50, 0x3A, 0x4B, 0x3D, 0x65]) # ' h', 'an', 'd', '\'s', ' ', 'p', 'o', 'in', 'ti', 'n\'', '_a', '_b', 'it', ' u', 'p' 'w', 'a', 'r', 'd', '.'
-        second_text_sub0.set_location(0xDAEDC)
+    elif double_clue == [0, 4]:
+        text = "The second hand’s pointin’ a bit upward." # (i.e., 10 or 50)
+        second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 
-    elif 1 in double_clue and 2 in double_clue:
-        # Change to "The seconds? They're around 25!".
-        second_text_sub0 = Substitution()
-        second_text_sub0.bytestring = bytes([0x88, 0xCA, 0x4E, 0xB5, 0x7F, 0x56, 0x59, 0x5E, 0x00]) # ' a', 'ro', 'u', 'nd', ' ', '2', '5', '!', '\0',
-        second_text_sub0.set_location(0xDAEE4)
+    elif double_clue == [1, 2]:
+        text = "The seconds? They’re around 25!"
+        second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 
-    #elif 1 in double_clue and 3 in double_clue:
-        # Leave the clue as "The seconds? They're divisible by 20!".
+    elif double_clue == [1, 3]:
+        pass
+        # Leave the clue as "The seconds? They’re divisible by 20!".
 
-    elif 1 in double_clue and 4 in double_clue:
-        # Change to "The seconds are 20 modulo 30.".
-
-        second_text_sub0 = Substitution()
-        second_text_sub0.bytestring = bytes([0x88, 0x89, 0x7F, 0x56, 0x54, 0x9C, 0x48, 0x3D, 0x4E, 0xEA, 0x7F, 0x57, 0x54, 0x65, 0x00]) # ' a', 're', ' ', '2', '0', ' m', 'o', 'd', 'u', 'lo',  ' ', '3', '0', '.', '\0',
-        second_text_sub0.set_location(0xDAEDD)
+    elif double_clue == [1, 4]:
+        text = "The seconds are divisible by a square."
+        second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 
-    elif 2 in double_clue and 3 in double_clue:
-        # Change to "The seconds? They're around 35!".
-        second_text_sub0 = Substitution()
-        second_text_sub0.bytestring = bytes([0x88, 0xCA, 0x4e, 0xB5, 0x7F, 0x57, 0x59, 0x5E, 0x00]) # ' a', 'ro', 'u', 'nd', ' ', '3', '5', '!', '\0',
-        second_text_sub0.set_location(0xDAEE4)
+    elif double_clue == [2, 3]:
+        text = "The seconds? They’re around 35!"
+        second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 
-    elif 2 in double_clue and 4 in double_clue:
-        # Change to "The seconds are an odd prime times 10!".
-        second_text_sub0 = Substitution()
-        second_text_sub0.bytestring = bytes([0x88, 0x89, 0x88, 0x94, 0x48, 0x3D, 0x8C, 0x49, 0xCC, 0xA2, 0x81, 0x42, 0xA2, 0x86, 0x55, 0x54, 0x5E, 0x00]) # ' a', 're', ' a', 'n ', 'o', 'd', 'd ', 'p', 'ri', 'me', ' t', 'i', 'me', 's ', '1', '0', '!'
-        second_text_sub0.set_location(0xDAEDD)
+    elif double_clue == [2, 4]:
+        text = "The seconds are an odd prime times 10!"
+        second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 
-    elif 3 in double_clue and 4 in double_clue:
-        # Change to "The seconds? They're greater than 30!".
-        second_text_sub0 = Substitution()
-        second_text_sub0.bytestring = bytes([0xC6, 0x89, 0x95, 0x87, 0x81, 0x9B, 0x94, 0x57, 0x54, 0x5E, 0x00]) # ' g', 're', 'at', 'er', ' t', 'ha', 'n', '3', '0', '!', '\0',
-        second_text_sub0.set_location(0xDAEE4)
+    elif double_clue == [3, 4]:
+        text = "The seconds? They’re greater than 30!"
+        second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 
-
-    # Change text that says 'Clock's second hand's pointin' at 30'
+    text = "Clock’s second hand’s pointin’ at " + str(wrong_seconds[0] + 1) + "0."
     second_text_sub1 = Substitution()
-    second_text_sub1.bytestring = bytes([0x55 + wrong_seconds[0]])
-    second_text_sub1.set_location(0xDAEA4)
+    second_text_sub1.bytestring = dialogue_to_bytes(text)
+    second_text_sub1.set_location(get_dialog_pointer(fout, 0x421))
     second_text_sub1.write(fout)
 
     if wrong_seconds[1] != 1:
-        # Change clue that says "The second hand of my watch is pointing at four."
-        # In the original game, this clue is redundant. It should say "at two".
+        text = "The second hand of my watch is pointing at "
+        # In the original game, this clue says "four" and is redundant. It should say "two".
         second_text_sub2 = Substitution()
         if wrong_seconds[1] == 0:
-            second_text_sub2.bytestring = bytes([0x81, 0x50, 0x48]) #' t', 'w', 'o'
+            text += "two."
         elif wrong_seconds[1] == 2:
-            second_text_sub2.bytestring = bytes([0x8E, 0x42, 0x51]) #' s', 'i', 'x'
+            text += "six."
         elif wrong_seconds[1] == 3:
-            second_text_sub2.bytestring = bytes([0x7F, 0x5C, 0x65, 0x00]) # ' ', '8', '.', '\0'
+            text += "8."
         else:
-            second_text_sub2.bytestring = bytes([0x81, 0x3E, 0x47]) #' t', 'e', 'n'
+            text += "ten."
+
+        second_text_sub2.bytestring = dialogue_to_bytes(text)
         second_text_sub2.set_location(0xDAF63)
         second_text_sub2.write(fout)
 
@@ -5876,7 +5862,7 @@ def sprint_shoes_hint():
     spellname = get_spell(spell_id).name
     hint = "Equip relics to gain a variety of abilities!<page>These teach me {}!".format(spellname)
     sprint_sub = Substitution()
-    sprint_sub.set_location(0xD2099)
+    sprint_sub.set_location(get_dialog_pointer(fout, 0xb8))
     sprint_sub.bytestring = dialogue_to_bytes(hint)
     sprint_sub.write(fout)
 
@@ -5894,7 +5880,7 @@ def sabin_hint(commands):
     command = [c for c in commands.values() if c.id == command_id][0]
     hint = "My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {}.".format(command.name)
     sabin_hint_sub = Substitution()
-    sabin_hint_sub.set_location(0xD20D0)
+    sabin_hint_sub.set_location(get_dialog_pointer(fout, 0xb9))
     sabin_hint_sub.bytestring = dialogue_to_bytes(hint)
     
     sabin_hint_sub.write(fout)

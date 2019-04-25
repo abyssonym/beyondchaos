@@ -1,0 +1,127 @@
+#TITLE Dungeon
+#ALBUM StarTropics
+#COMPOSER Yoshio Hirai
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x3E~/0x3E/
+#WAVE 0x22 ~0x92~/0x06/
+#WAVE 0x23 ~0x07~/0x07/
+#WAVE 0x24 ~0x74~/0x08/
+#WAVE 0x25 ~0x69~/0x0A/
+#WAVE 0x26 ~0x80~/0x1C/
+#WAVE 0x2A ~0x2E~/0x2E/
+#WAVE 0x2B ~0x85~/0x15/
+#WAVE 0x2C ~0x2F~/0x2F/
+
+#def global= t110 %x224 %v40 %b0,85 %f0,0
+
+#def mba= |0 o5 'vm' m
+#def xyl= |0 o5 %y4%s3 'vx' m
+#def vox= |2 o5 'vv' m24,18,203 %a12%r8
+#def flt= |3 o4 'vf' m24,18,223
+#def cla= |4 ~o5~/o6/ 'vc' m24,18,231
+#def fid= |5 o5 'vs' m24,18,239
+#def bas= |6 o6 'vb' %y2%s3 m
+
+#def vm= v80
+#def vx= v48
+#def vv= v64
+#def vf= v64
+#def vc= v96
+#def vs= v64
+#def vb= ~v112~/v64/
+
+#drum "c"=5c |A v104 %e1 p48
+#drum "b"=4f+ |A v56 %e0 p48
+#drum "s"=5f+ |B ~v80~/v127/ %e1 %y p48
+#drum "p"=4a+ |B ~v56~/v96/ %e0 %y5%s1 p48
+#drum "p+"=4a+ |B ~v64~/v104/ %e0 p48
+
+#drum "m"=5f+ |C v48 %r0 p80 %y
+#drum "n"=5c |C v24 %r0 p80 %y
+#drum "o"=5c |C v32 %r1 p80 %y6%s1
+#drum "z"=5c |C v80 %r1 p80 %y
+
+#def f= %r20^16%r5
+#def f8= %r20^8%r5
+
+{1}$
+'global' %e1
+l16 'mba-o1' p32 [g8aa+r<crd ^8c8d8f8  g8.gr4 g8.gr4>
+g8aa+r<crd ^8c8d8f8> g8.gr4 g8.gr4]
+##
+'flt+o1*v2' %s1%y2%r5
+d2 c>a+'f'a'f'a+'f'g    ^2 'f8'aa+'f'a'f'f
+d1^1
+<d2 c>a+'f'a'f'a+'f'g    ^2 'f8'aa+'f'a'f'f
+g1^1
+##
+'cla-o1' %s1%y2%r5 [d+8.d+'f'd+ga+  <d8.c8.>a8   g2'f8'aa+'f'a'f'f]
+g1^1
+;
+
+{2}$ %e1
+l16 'xyl' p88  [4 g8a+d ^f8g  ^a+d8 g8f8    e8g>a+ ^<c8e  ^g>a+8< c8e8]
+##
+[4 g8.d8g8f ^fc8c8f8  d+8.>a+8<d+8f ^fc8c8f8]
+##
+[d+8.c8d+8g f8.d8f8a g8.d+8g8a+ f8.d8f8a]
+[g8.d8f8g ^gd8d8f8]
+;
+
+{3}$ %e1
+l16 'bas-o2' p64 [4 [g8r<d8rg8>] < [c8rg8r<c8>] >]
+##
+[4 g8r<d8rg8> f8r<c8rf8> d+8ra+8r<d+8> f8r<c8rf8>]
+##
+[c8rg8r<c8> d8ra8r<d8> d+8ra+8r<d+8> f8r<c8rf8>] [4g8r<d8rg8>]
+;
+
+{4}$
+l16 [[7"c8bc spcb bp8b s8bc"] "c8bc spcb bpbc s8sp+"]
+[5"!!!o c8bc spcb bp8b s8bc"] "c8bc spcb bpbc s8sp+"
+;
+
+{5}$ %e1
+l16 'flt-o1' p96 %r15 [g8aa+r<crd ^8c8d8f8  g8.gr4 g8.gr4>
+g8aa+r<crd ^8c8d8f8> g8.gr4 g8.gr4]
+##
+'fid*v.67' %s1%y2%r5
+g2 gg'f'f'f'f'f'd    ^2 'f8'cd'f'f'f'd
+>g1^1<
+g2 gg'f'f'f'f'f'd    ^2 'f8'cd'f'f'f'd
+d1^1
+##
+'vox-o1' p40 [g2a2a+2<c2>] <d1^1>
+;
+
+{6}$ %e1
+'vox-o1' p40 g2<d2 c1> g2<d4>a+4< c1>
+g2<d4>a+4< d+1> g2<d2>g1
+##
+'fid*v1.2' p96 %s1%y2%r5 l16
+d2 c>a+'f'a'f'a+'f'g    ^2 'f8'aa+'f'a'f'f
+d1^1
+<d2 c>a+'f'a'f'a+'f'g    ^2 'f8'aa+'f'a'f'f
+g1^1
+##
+[d+8.d+'f'd+ga+  <d8.c8.>a8   g2'f8'aa+'f'a'f'f]
+g1^1
+;
+
+{7}$ %e1
+l16 'xyl*v.67' p72 [g8aa+r<crd ^8c8d8f8  g8.gr4 g8.gr4>
+g8aa+r<crd ^8c8d8f8> g8.gr4 g8.gr4]
+##
+[<d8.>a+8.<d8 c>a+8a8a+8g ^8a+8<c8.>a+ ^8aa+8a8f
+g8aa+r<crd ^8c8d8f8> g8.gr4 g8.gr4]
+##
+'vox-o1' p40 [c2d2d+2f2] g1^1
+;
+
+{8}$
+l16 "z8o8 nono nomo nono" "nomo nono z8om nono"
+;

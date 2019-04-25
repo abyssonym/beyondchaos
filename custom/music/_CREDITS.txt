@@ -23,7 +23,7 @@ Song conversions:
                  ff8_triad, ff8_witches
                  ff9_battle, ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
                  ffx_battle, ffx_calm, ffx_gagazet, ffx_via, ffx_zanarkand
-                 ff12_barheim, ff12_paramina
+                 ff12_barheim, ff12_ozmone, ff12_paramina
                  ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
                  ffmq_fossil, ffmq_gale, ffmq_lava, ffmq_light, ffmq_rock,
                  ffmq_tower, ffmq_tristam, ffmq_victory
@@ -49,6 +49,7 @@ Song conversions:
                  sdlm_bonds, sdlm_pain, sdlm_snowfield
                  sf2_balrog, sf2_ken
                  so2_rescue, so2_victory
+                 st_dungeon
                  top_cold, top_mint, top_spirit, top_world1, top_world3
                  totr_arrow
                  wc2_orc1

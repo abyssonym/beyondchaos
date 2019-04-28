@@ -318,7 +318,7 @@ Cok ei
 Col abdefgilotu
 Com abefimoprt
 Con acdefgijklnqrstvw
-Coo eiklnprt
+Coo eiklprt
 Cop eilprstuy
 Cor adefiklmnoprstvy
 Cos bimsty
@@ -674,7 +674,7 @@ Goi ant
 Gol acdfgil
 Gom eopu
 Gon adegnz
-Goo bdefgiknps
+Goo bdefginps
 Gor degiksy
 Gos hlps
 Got ht
@@ -1607,7 +1607,7 @@ Tak ei
 Tal bceiklmo
 Tan acdegiknstyz
 Tao it
-Tar abdegimnoprtz
+Tar abegimnoprtz
 Tas hkmst
 Tat aetu
 Tau gnprt
@@ -4705,7 +4705,7 @@ tal aeiklopuwy
 tam aefimp
 tan abcdefgiklstuyz
 tap hlopu
-tar acdefiklortvy
+tar acefiklortvy
 tas chmty
 tat aeioru
 tau bgnr

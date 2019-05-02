@@ -1,0 +1,152 @@
+#TITLE Battle 3
+#ALBUM Lufia and the Fortress of Doom
+#COMPOSER Yasunori Shiono
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x5D~/0x00/
+#WAVE 0x21 ~0x46~/0x0D/
+#WAVE 0x22 ~0x73~/0x08/
+#WAVE 0x23 ~0x6B~/0x1C/
+#WAVE 0x26 ~0x77~/0x27/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x7E~/0x21/
+#WAVE 0x2A ~0x84~/0x17/
+#WAVE 0x2C ~0x8E~/0x12/
+#WAVE 0x2F ~0x8F~/0x0F/
+
+#def global= t86 %x232 %v50 %b0,70 %f0,0
+
+#def gt= ~|0~/@0/ ~o6~/o5/ 'vg' p80 m48,18,239 %k-10
+#def st= |1 o5 'vs' p40 m48,18,207 %k-8 %r6
+#def hn= |2 o5 'vh' p56 m48,18,223 %k4 %r5
+#def bs= |3 ~o6~/o5/ 'vb' p72 m ~%y1%s5~/%y3%s3/
+#def oh= |6 o6 'vo' p48 m %k-3
+
+#def vg= ~v56~/v32/
+#def vs= ~v96~/v96/
+#def vh= ~v127~/v64/
+#def vb= ~v96~/v64/
+#def vo= v127
+
+#drum "k"=5f |8 v112 p64 %k0 %e0
+#drum "s"=5b |9 v112 p64 /%y3%s4/ %k0 %e1
+#drum "x"=5e |C v112 p76 /%a/ %k0 %e1 %r18
+#drum "y"=5e |C v112 p52 /%a/ %k0 %e1 %r17
+#drum "r"=5a ~|F~/|C/ v72 p96 /%a12%r20/~%s0%y0~ %k0 %e1
+#drum "h"=5a |F v80 p96 ~%s0%y5~ %k0 %e0
+#drum "i"=5a |F v48 p96 ~%s0%y5~ %k0 %e0
+#drum "g"=5g |A ~v127~/v96/ p88 %e1 ~%k0~/%k249/
+#drum "e"=5e |A ~v127~/v96/ p70 %e1 ~%k0~/%k249/
+#drum "c"=5c |A ~v127~/v96/ p52 %e1 ~%k0~/%k249/
+
+#cdef ( %s2
+#cdef ) %s5
+
+{1}
+'global' %e1
+'st' d2 e2 f4g4 a4<c+4>
+$[##19.024
+'st'
+l16 a4d4 a8.g32a32<d.>a.f  g+1        a4d4 a8.g32a32<d.>a.f  <c1>
+##21.191
+a+4^a+<cd c+4.de  f12e12c12>g12f12e12 d4^efa
+a+4^a+<cd c+4.de  f12e12c12>g12f12e12 a2.<c+4>
+]##31.031
+[[a4.g<c>] a2 d2    [a4.g<c>]j2 <d2 d2>] <d1
+;
+
+{2}
+%e1 'gt' %y4%s5 %r9
+l16 [ef+gf+agf+g] l32 ef+ga f+gab gab<c> ab<cd>    b<cde cdef+ def+g ef+ga
+$##19.024
+'gt' [ %y4 %r9
+l16 [[3(ee)b(ej3e)<e>] [3(d+d+)a+(d+j3d+)<d+>]]
+##21.191
+[(cc)g(cc)<c>(cc > bb)<f+>(bb)<b>(bb)  <<g12f+12d12>a12g12f+12  j2 e4^f+gb] <d+1>
+]##31.031
+l32 %r%r9 ef+ga f+gab gab<c> ab<cd>    b<cde cdef+ def+g ef+ga
+bagf+ agf+e gf+ed f+edc    edc>b< dc>ba< c>bag bagf+
+egee <e>ege egee <e>ege    egee <e>ege egee <e>ege
+<edc>b <dc>ba <c>bag bagf+    agf+e gf+ed f+edc >b<cdd+
+ef+ga <edc>b ab<cd gf+ed    ef+ga <edc>b ab<cd agf+e
+e8.>b8.e8>    b8.e8.>b8<
+ef+ga f+gab gab<c> ab<cd>    b<cde cdef+ def+g ef+ga
+<e2. mm48,-12^4
+;
+
+{3}
+'bs'
+l16 [8f+c+dc+]
+$[##19.024
+'bs' [[16f+][16f]]
+##21.191
+[8d][8c+][10f+]g+g+aa<c+c+>  [8d][8c+]>[6b12]< c+2..c+8
+]##31.031
+[4[8d][8e][6f+]ee f+f+g+g+aa<c+c+>]
+;
+
+{4}
+l16 [12"k8"] "skks kks32s32s32s32"
+$[##19.024
+["!!!o"  "k8s8.ksk kksk8k32k32s8"
+"g64g32.kke64e32.kkc64c32.k" "kskksk32k32s8"]
+##21.191
+"k8s8.ksk kksk8k32k32s8" "skkskksk kksk8k32k32s8"
+"k8s8.ksk kksk8k32k32s8" "skkskksk k8k8k8k8 k8k8kk32k32s8"
+]##31.031
+[7"k8s8.ksk kksk8k32k32s8"] "g64g32.kke64e32.kkc64c32.kkskksk32k32s8"
+;
+
+{5}
+[12"r"] "y.y.y"
+$[##19.024
+l16 ['oh-o1' e8 'hn-o1' a4. a4a.a.a    g+2 <d+2>]
+##21.191
+<d2 f4c+4  d2 a2    d2 f4c+4  g2 a2.
+l64 %l1 dc+c>ba+ag+gf+fed+dc+c>b<< %l0
+]##31.031
+[4d2 e2 f1]
+;
+
+{6} %e1 'st-o1+%k10'
+l16 [ef+gf+agf+g] l32 ef+ga f+gab gab<c> ab<cd>    b<cde cdef+ def+g ef+ga
+$[##19.024
+l16 ['hn-o1' f2.f.f.f    d+2 g+2]
+##21.191
+a+2 <c+4>a4  a2 <d2>    a+2 <c+4>a4  a+2 a2 <c+4
+l64 %l1 c+c>ba+ag+gf+fed+dc+c>ba+< %l0
+]##31.031
+[4a+2 <c2 d1>]
+;
+
+{7}
+r1r1
+$[##19.02
+l16 ["x8" [7"!vhi"] "y8.y8.y8.y8.y8y8"]
+##21.191
+[":i:x8" [7"!vhi"] "y8.y8.y8 x8" j2,724[3"!vhi"] ]$724 ":y" [6"r8"] "x8"
+]##31.031
+[3 ":i:x8" [15"!vhi"]] "x8" [7"!vhi"] "y8.y8.y8.y8.y8y8"
+;
+
+{8}
+r1r1 %e1
+$[##19.02
+'st-o1+%k10*v.75' %s2 %r9
+l16 [[3(ee)b(ej3e)<e>] [3(d+d+)a+(d+j3d+)<d+>]]
+##21.191
+['vs*v.75'(cc)g(cc)<c>(cc > bb)<f+>(bb)<b>(bb)  'vs*v.5'<<<g12f+12d12>a12g12f+12  j2 e4^f+gb>] b1>
+]##31.031
+l32 %r%s7%l1 'vs*v.75' ef+ga f+gab gab<c> ab<cd>    b<cde cdef+ def+g ef+ga %l0%l1
+bagf+ agf+e gf+ed f+edc    edc>b< dc>ba< c>bag bagf+ %l0%l1
+egee <e>ege egee <e>ege    egee <e>ege egee <e>ege %l0%l1
+<edc>b <dc>ba <c>bag bagf+    agf+e gf+ed f+edc >b<cdd+ %l0%l1
+ef+ga <edc>b ab<cd gf+ed    ef+ga <edc>b ab<cd agf+e %l0
+e8.>b8.e8>    b8.e8.>b8< %l1
+ef+ga f+gab gab<c> ab<cd>    b<cde cdef+ def+g ef+ga %l0
+<e2. mm48,-12^4
+;
+

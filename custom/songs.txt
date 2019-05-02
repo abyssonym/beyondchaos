@@ -185,6 +185,7 @@ lagoon_spirits: celes, awakening, owzer, ruin, forest*2, train
 lo_battle:      I05, G75, battle*2, grandfinale, cyan, umaro
 lu1_battle:     I60, G0, battle*2, unforgiven, chocobo
 lu1_boss:       I90, G45, boss*2, grandfinale
+lu1_final:      I70, G70, atma, dmad5, catastrophe, grandfinale, floatingcont, kefkastower
 lu1_spoils:     prelude, omen3, daryl, awakening
 lu1_world:      cyan, johnny, falcon, balance*2
 lu2_battle:     I45, G05, battle*2, unforgiven

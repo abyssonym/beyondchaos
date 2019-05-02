@@ -31,7 +31,7 @@ Song conversions:
                  gd3_desert
                  iog_larai, iog_whispers
                  lo_battle
-                 lu1_battle, lu1_world
+                 lu1_battle, lu1_final, lu1_world
                  lu2_battle
                  met3_surface
                  mmx_prologue

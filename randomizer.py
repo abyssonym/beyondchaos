@@ -40,7 +40,7 @@ from musicrandomizer import randomize_music
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 from character import get_characters, get_character, equip_offsets
-from options import ALL_MODES, ALL_FLAGS, ALL_CODES
+from options import ALL_MODES, ALL_FLAGS, ALL_CODES, NORMAL_CODES, SPECIAL_CODES, options
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
@@ -82,7 +82,6 @@ TEK_SKILLS = (# [0x18, 0x6E, 0x70, 0x7D, 0x7E] +
 
 
 secret_codes = {}
-activated_codes = set([])
 namelocdict = {}
 changed_commands = set([])
 
@@ -321,9 +320,9 @@ class WindowBlock():
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.palette = []
-        if 'christmas' in activated_codes:
+        if options.is_code_active('christmas'):
             self.palette = [(0x1c, 0x02, 0x04)] * 2 + [(0x19, 0x00, 0x06)] * 2 + [(0x03, 0x0d, 0x07)] * 2 + [(0x18,0x18,0x18)] + [(0x04, 0x13, 0x0a)]
-        elif 'halloween' in activated_codes:
+        elif options.is_code_active('halloween'):
             self.palette = [(0x04, 0x0d, 0x15)] * 2 + [(0x00, 0x00, 0x00)] + [(0x0b, 0x1d, 0x15)] + [(0x00,0x11,0x00)] + [(0x1e, 0x00, 0x00)] + [(0x1d, 0x1c, 0x00)] + [(0x1c, 0x1f, 0x1b)]
         else:
             for i in range(0x8):
@@ -342,7 +341,7 @@ class WindowBlock():
             write_multi(fout, color, length=2)
 
     def mutate(self):
-        if 'halloween' in activated_codes:
+        if options.is_code_active('halloween'):
             return
         def cluster_colors(colors):
             def distance(cluster, value):
@@ -376,7 +375,7 @@ class WindowBlock():
             degree = random.randint(-75, 75)
             darken = random.uniform(prevdarken, min(prevdarken*1.1, 1.0))
             darkener = lambda c: int(round(c * darken))
-            if 'christmas' in activated_codes:
+            if options.is_code_active('christmas'):
                 hueswap = lambda w: w
             else:
                 hueswap = generate_swapfunc()
@@ -651,7 +650,7 @@ def manage_commands(commands):
     ungray_statscreen_sub.write(fout)
 
     fanatics_fix_sub = Substitution()
-    if "metronome" in activated_codes:
+    if options.is_code_active('metronome'):
         fanatics_fix_sub.bytestring = bytes([0xA9, 0x1D])
     else:
         fanatics_fix_sub.bytestring = bytes([0xA9, 0x15])
@@ -681,7 +680,7 @@ def manage_commands(commands):
             # Fixing Gau
             c.set_battle_command(0, commands["fight"])
 
-        if 'metronome' in activated_codes:
+        if options.is_code_active('metronome'):
             c.set_battle_command(0, command_id=0)
             c.set_battle_command(1, command_id=0x1D)
             c.set_battle_command(2, command_id=2)
@@ -689,7 +688,7 @@ def manage_commands(commands):
             c.write_battle_commands(fout)
             continue
 
-        if 'collateraldamage' in activated_codes:
+        if options.is_code_active('collateraldamage'):
             c.set_battle_command(1, command_id=0xFF)
             c.set_battle_command(2, command_id=0xFF)
             c.set_battle_command(3, command_id=1)
@@ -735,7 +734,7 @@ def manage_commands(commands):
 
 
 def manage_tempchar_commands():
-    if "metronome" in activated_codes:
+    if options.is_code_active('metronome'):
         return
     characters = get_characters()
     chardict = dict([(c.id, c) for c in characters])
@@ -800,7 +799,7 @@ def manage_commands_new(commands):
         if c.name in NEVER_REPLACE:
             continue
 
-        if "replaceeverything" not in activated_codes:
+        if not options.is_code_active("replaceeverything"):
             if c.name in RESTRICTED_REPLACE and random.choice([True, False]):
                 continue
 
@@ -820,7 +819,7 @@ def manage_commands_new(commands):
             random_skill = False
             combo_skill = True
 
-        if "allcombos" in activated_codes:
+        if options.is_code_active('allcombos'):
             random_skill = False
             combo_skill = True
 
@@ -829,7 +828,7 @@ def manage_commands_new(commands):
         while random.randint(1, 5) == 5:
             scount += 1
         scount = min(scount, 9)
-        if "endless9" in activated_codes:
+        if options.is_code_active("endless9"):
             scount = 9
 
         def get_random_power():
@@ -1128,7 +1127,7 @@ def manage_commands_new(commands):
         c.newname(newname, fout)
         c.unsetmenu(fout)
         c.allow_while_confused(fout)
-        if "playsitself" in activated_codes:
+        if options.is_code_active('playsitself'):
             c.allow_while_berserk(fout)
         else:
             c.disallow_while_berserk(fout)
@@ -1136,12 +1135,12 @@ def manage_commands_new(commands):
         command_descr = "{0}\n-------\n{1}".format(c.name, str(s))
         log(command_descr, 'commands')
 
-    if "metronome" in activated_codes:
+    if options.is_code_active('metronome'):
         magitek = [c for c in commands.values() if c.name == "magitek"][0]
         magitek.read_properties(sourcefile)
         magitek.targeting = 0x04
         magitek.set_retarget(fout)
-        if "endless9" in activated_codes:
+        if options.is_code_active("endless9"):
             s = MultipleSpellSub()
             s.set_count(9)
             magitek.newname("9xChaos", fout)
@@ -1219,7 +1218,7 @@ def manage_natural_magic():
                   0x17 in c.battle_commands)]
 
     num_natural_mages = 1
-    if 'supernatural' in activated_codes:
+    if options.is_code_active('supernatural'):
         num_natural_mages = len(candidates)
     else:
         if random.randint(0,9) != 9:
@@ -1395,7 +1394,7 @@ def manage_umaro(commands):
     if 0xFF in umaro_risk.battle_commands:
         battle_commands = []
         battle_commands.append(0)
-        if "collateraldamage" not in activated_codes:
+        if not options.is_code_active("collateraldamage"):
             battle_commands.extend(random.sample([3, 5, 6, 7, 8, 9, 0xA, 0xB,
                                                   0xC, 0xD, 0xE, 0xF, 0x10,
                                                   0x12, 0x13, 0x16, 0x18, 0x1A,
@@ -1420,7 +1419,7 @@ def manage_umaro(commands):
     umaro.beserk = False
     umaro_risk.beserk = True
 
-    if "metronome" in activated_codes:
+    if options.is_code_active('metronome'):
         umaro_risk.battle_commands = [0x1D, 0xFF, 0xFF, 0xFF]
 
     umaro_risk.write_battle_commands(fout)
@@ -1477,7 +1476,7 @@ def manage_skips():
         writeToAddress(split_line[0], split_line[1:])
 
     def handleGau(split_line): # Replace events that should be replaced if we are auto-recruiting Gau
-        if 'o' in flags or 'w' in flags or 't' in flags:
+        if options.shuffle_commands or options.replace_commands or options.random_treasure:
             writeToAddress(split_line[0], split_line[1:])
 
     def handlePalette(split_line): # Fix palettes so that they are randomized
@@ -1489,7 +1488,7 @@ def manage_skips():
                 palette_correct_sub.write(fout)
 
     def handleAirship(split_line): # Replace events that should be modified if we start with the airship
-        if 'airship' not in activated_codes:
+        if not options.is_code_active('airship'):
             writeToAddress(split_line[0], split_line[1:])
         else:
             writeToAddress(split_line[0],
@@ -1582,7 +1581,7 @@ def manage_skips():
     daryl_cutscene_sub.write(fout)
 
     # We overwrote some of the event items, so write them again
-    if 't' in flags:
+    if options.random_treasure:
         for area_name, items in get_event_items().items():
             for e in items:
                 e.write_data(fout, cutscene_skip=True)
@@ -1675,7 +1674,7 @@ def activate_airship_mode(freespaces):
 
 def manage_rng():
     fout.seek(0xFD00)
-    if 'norng' in activated_codes:
+    if options.is_code_active('norng'):
         numbers = [0 for _ in range(0x100)]
     else:
         numbers = list(range(0x100))
@@ -1822,12 +1821,12 @@ def manage_final_boss(freespaces):
 
 def manage_monsters():
     monsters = get_monsters(sourcefile)
-    itembreaker = "collateraldamage" in activated_codes
-    randombosses = "randombosses" in activated_codes
-    madworld = "madworld" in activated_codes
-    darkworld = "darkworld" in activated_codes
-    safe_solo_terra = "ancientcave" not in activated_codes
-    change_skillset = True if darkworld in activated_codes else None
+    itembreaker = options.is_code_active("collateraldamage")
+    randombosses = options.is_code_active("randombosses")
+    madworld = options.is_code_active("madworld")
+    darkworld = options.is_code_active("darkworld")
+    safe_solo_terra = not options.is_code_active("ancientcave")
+    change_skillset = True if options.is_code_active("darkworld") else None
     final_bosses = (list(range(0x157, 0x160)) + list(range(0x127, 0x12b)) +
                     [0x112, 0x11a, 0x17d])
     for m in monsters:
@@ -1953,7 +1952,7 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True, s
                 piece = transformer(piece)
                 new_palette += piece
             new_palette[6:8] = skintone
-            if 'christmas' in activated_codes:
+            if options.is_code_active('christmas'):
                 if santa:
                     # color kefka's palette to make him look santa-ish
                     new_palette = palette
@@ -2048,12 +2047,12 @@ def sanitize_names(names):
 
 def manage_character_names(change_to, male):
     characters = get_characters()
-    wild = 'partyparty' in activated_codes
-    sabin_mode = 'suplexwrecks' in activated_codes
-    tina_mode = 'bravenudeworld' in activated_codes
-    soldier_mode = 'quikdraw' in activated_codes
-    moogle_mode = 'kupokupo' in activated_codes
-    ghost_mode = 'halloween' in activated_codes
+    wild = options.is_code_active('partyparty')
+    sabin_mode = options.is_code_active('suplexwrecks')
+    tina_mode = options.is_code_active('bravenudeworld')
+    soldier_mode = options.is_code_active('quikdraw')
+    moogle_mode = options.is_code_active('kupokupo')
+    ghost_mode = options.is_code_active('halloween')
 
     names = []
     if tina_mode:
@@ -2134,7 +2133,7 @@ def manage_character_names(change_to, male):
     for umaro_id in [0x10f, 0x110]:
         change_enemy_name(fout, umaro_id, umaro_name)
 
-    if 'capslockoff' not in activated_codes:
+    if not options.is_code_active('capslockoff'):
         names = [name.upper() for name in names]
 
     for c in characters:
@@ -2151,8 +2150,8 @@ def manage_character_names(change_to, male):
 
 def get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits):
     # get unused portraits so we can overwrite them if needed
-    sprite_swap_mode = 'makeover' in activated_codes
-    wild = 'partyparty' in activated_codes
+    sprite_swap_mode = options.is_code_active('makeover')
+    wild = options.is_code_active('partyparty')
     if not sprite_swap_mode:
         return [], False
 
@@ -2199,8 +2198,8 @@ def get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits):
 
 
 def get_sprite_swaps(char_ids, male, female):
-    sprite_swap_mode = 'makeover' in activated_codes
-    wild = 'partyparty' in activated_codes
+    sprite_swap_mode = options.is_code_active('makeover')
+    wild = options.is_code_active('partyparty')
     if not sprite_swap_mode:
         return []
 
@@ -2251,14 +2250,14 @@ def get_sprite_swaps(char_ids, male, female):
 
 def manage_character_appearance(preserve_graphics=False):
     characters = get_characters()
-    wild = 'partyparty' in activated_codes
-    sabin_mode = 'suplexwrecks' in activated_codes
-    tina_mode = 'bravenudeworld' in activated_codes
-    soldier_mode = 'quikdraw' in activated_codes
-    moogle_mode = 'kupokupo' in activated_codes
-    ghost_mode = 'halloween' in activated_codes
-    christmas_mode = 'christmas' in activated_codes
-    sprite_swap_mode = 'makeover' in activated_codes and not (sabin_mode or tina_mode or soldier_mode or moogle_mode or ghost_mode)
+    wild = options.is_code_active('partyparty')
+    sabin_mode = options.is_code_active('suplexwrecks')
+    tina_mode = options.is_code_active('bravenudeworld')
+    soldier_mode = options.is_code_active('quikdraw')
+    moogle_mode = options.is_code_active('kupokupo')
+    ghost_mode = options.is_code_active('halloween')
+    christmas_mode = options.is_code_active('christmas')
+    sprite_swap_mode = options.is_code_active('makeover') and not (sabin_mode or tina_mode or soldier_mode or moogle_mode or ghost_mode)
 
     if (wild or tina_mode or sabin_mode or christmas_mode):
         if christmas_mode:
@@ -2467,9 +2466,9 @@ def manage_character_appearance(preserve_graphics=False):
 
 
 def manage_palettes(change_to, char_ids):
-    sabin_mode = 'suplexwrecks' in activated_codes
-    tina_mode = 'bravenudeworld' in activated_codes
-    christmas_mode = 'christmas' in activated_codes
+    sabin_mode = options.is_code_active('suplexwrecks')
+    tina_mode = options.is_code_active('bravenudeworld')
+    christmas_mode = options.is_code_active('christmas')
     characters = get_characters()
     npcs = get_npcs()
     charpal_options = {}
@@ -2528,7 +2527,7 @@ def manage_palettes(change_to, char_ids):
                 fout.write(bytes([byte]))
         character.palette = new_palette
 
-    if "repairpalette" in activated_codes:
+    if options.is_code_active('repairpalette'):
         make_palette_repair(main_palette_changes)
 
     for i in range(6):
@@ -2596,10 +2595,10 @@ def manage_colorize_animations():
 
 def manage_items(items, changed_commands=None):
     from itemrandomizer import (set_item_changed_commands, extend_item_breaks)
-    always_break = True if "collateraldamage" in activated_codes else False
-    crazy_prices = True if "madworld" in activated_codes else False
-    extra_effects= True if "masseffect" in activated_codes else False
-    wild_breaks = True if "electricboogaloo" in activated_codes else False
+    always_break = options.is_code_active('collateraldamage')
+    crazy_prices = options.is_code_active('madworld')
+    extra_effects = options.is_code_active('masseffect')
+    wild_breaks = options.is_code_active('electricboogaloo')
 
     set_item_changed_commands(changed_commands)
     unhack_tintinabar(fout)
@@ -2623,7 +2622,7 @@ def manage_equipment(items):
                        "relic": lambda i: i.is_relic}
 
     tempchars = [14, 15, 16, 17, 32, 33] + list(range(18, 28))
-    if 'ancientcave' in activated_codes:
+    if options.is_code_active('ancientcave'):
         tempchars += [41, 42, 43]
     for c in characters:
         if c.id >= 14 and c.id not in tempchars:
@@ -2895,7 +2894,7 @@ def manage_espers(freespaces):
     espers = get_espers()
     random.shuffle(espers)
     for e in espers:
-        e.generate_spells(tierless = "madworld" in activated_codes)
+        e.generate_spells(tierless = options.is_code_active('madworld'))
         e.generate_bonus()
 
     bonus_espers = [e for e in espers if e.id in [15, 16]]
@@ -2996,12 +2995,12 @@ def manage_treasure(monsters, shops=True):
 
 
 def manage_chests():
-    crazy_prices = True if "madworld" in activated_codes else False
+    crazy_prices = options.is_code_active('madworld')
     locations = get_locations(sourcefile)
     locations = sorted(locations, key=lambda l: l.rank())
     for l in locations:
         # if the Zozo clock is randomized, upgrade the chest from chain saw to pearl lance before mutating
-        if 'k' in flags:
+        if options.random_clock:
             if l.locid in [221,225,226]:
                 for c in l.chests:
                     if c.contenttype == 0x40 and c.contents == 166:
@@ -3367,10 +3366,10 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None, form_m
         ue.set_relative_ai(pointer)
         freespaces = determine_new_freespaces(freespaces, myfs, ue.aiscriptsize)
 
-        itembreaker = 'collateraldamage' in activated_codes
-        randombosses = 'randombosses' in activated_codes
-        madworld = 'madworld' in activated_codes
-        darkworld = 'darkworld' in activated_codes
+        itembreaker = options.is_code_active('collateraldamage')
+        randombosses = options.is_code_active('randombosses')
+        madworld = options.is_code_active('madworld')
+        darkworld = options.is_code_active('darkworld')
         ue.auxloc = "Missing (Boss)"
         ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
         ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
@@ -3516,7 +3515,7 @@ def get_shops():
 def manage_shops():
     buyables = set([])
     descriptions = []
-    crazy_shops = True if "madworld" in activated_codes else False
+    crazy_shops = options.is_code_active("madworld")
     buy_owned_breakable_tools(fout)
 
     for s in get_shops():
@@ -3526,7 +3525,7 @@ def manage_shops():
         buyables |= set(s.items)
         descriptions.append(str(s))
 
-    if "ancientcave" not in activated_codes:
+    if not options.is_code_active("ancientcave"):
         for d in sorted(descriptions):
             log(d, section="shops")
 
@@ -3643,7 +3642,7 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
             done.append(p)
 
 
-    if 'p' in flags or 's' in flags or 'partyparty' in activated_codes:
+    if options.random_animation_palettes or options.swap_sprites or options.is_code_active('partyparty'):
         manage_colorize_wor()
         manage_colorize_esper_world()
 
@@ -3696,7 +3695,7 @@ def manage_colorize_esper_world():
 
 
 def manage_encounter_rate():
-    if 'dearestmolulu' in activated_codes:
+    if options.is_code_active('dearestmolulu'):
         overworld_rates = bytes([1, 0, 1, 0, 1, 0, 0, 0,
                            0xC0, 0, 0x60, 0, 0x80, 1, 0, 0,
                            0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF,
@@ -4031,7 +4030,7 @@ def manage_full_umaro():
     full_umaro_sub.bytestring = bytes([0x80])
     full_umaro_sub.set_location(0x20928)
     full_umaro_sub.write(fout)
-    if 'u' in flags:
+    if options.random_zerker:
         full_umaro_sub.set_location(0x21619)
         full_umaro_sub.write(fout)
 
@@ -4119,7 +4118,7 @@ def manage_opening():
     consonants = "".join([c for c in alpha if c not in "aeiouy"])
     display_flags = sorted([a for a in alpha if a in flags.lower()])
     text = "".join([consonants[int(i)] for i in str(seed)])
-    codestatus = "CODES ON" if activated_codes else "CODES OFF"
+    codestatus = "CODES ON" if options.active_codes else "CODES OFF"
     display_flags = "".join(display_flags).upper()
     replace_credits_text(0x659C, "ffvi")
     replace_credits_text(0x65A9, "BEYOND CHAOS EX")
@@ -4657,10 +4656,10 @@ def manage_ancient(form_music_overrides={}):
     goddess_save_sub.write(fout)
 
     # decrease exp needed for level up
-    if 'racecave' in activated_codes:
+    if options.is_code_active('racecave'):
         maxlevel = 49
         divisor = 12.0
-    elif 'speedcave' in activated_codes:
+    elif options.is_code_active('speedcave'):
         maxlevel = 49
         divisor = 8.0
     else:
@@ -4689,9 +4688,9 @@ def manage_ancient(form_music_overrides={}):
                            0x3F, 0x0E, 0x00,
                            0x3F, 0x0F, 0x00,
                            ])
-    if 'racecave' in activated_codes:
+    if options.is_code_active('racecave'):
         num_starting = 9 + random.randint(0, 2) + random.randint(0, 1)
-    elif 'speedcave' in activated_codes:
+    elif options.is_code_active('speedcave'):
         num_starting = 4 + random.randint(0, 3) + random.randint(0, 2)
     else:
         num_starting = 4 + random.randint(0, 1) + random.randint(0, 1)
@@ -4707,7 +4706,7 @@ def manage_ancient(form_music_overrides={}):
         fout.seek(cptr)
         level = ord(fout.read(1))
         level &= 0xF3
-        if i >= 14 or "speedcave" in activated_codes and i not in starting:
+        if i >= 14 or options.is_code_active("speedcave") and i not in starting:
             level |= 0b1000
         fout.seek(cptr)
         fout.write(bytes([level]))
@@ -4715,7 +4714,7 @@ def manage_ancient(form_music_overrides={}):
     fout.write(b'\x00')  # remove Terra's magitek
 
     tempcands = [14, 15, random.choice(list(range(18, 28))), random.choice([32, 33])]
-    if 'speedcave' in activated_codes:
+    if options.is_code_active('speedcave'):
         tempcands.append(random.choice([16, 17]))
         tempcands.append(random.choice([41, 42, 43]))
     charcands = list(range(14)) + random.sample(tempcands, 2)
@@ -4808,7 +4807,7 @@ def manage_ancient(form_music_overrides={}):
     espers = list(get_espers())
     num_espers = 3
     for i in range(num_espers):
-        if "speedcave" in activated_codes:
+        if options.is_code_active("speedcave"):
             esperrank = 999
         else:
             esperrank = 0
@@ -4891,9 +4890,9 @@ def manage_ancient(form_music_overrides={}):
     pilot_sub.set_location(0xC2110)
     pilot_sub.write(fout)
 
-    if "racecave" in activated_codes:
+    if options.is_code_active("racecave"):
         randomize_tower(filename=sourcefile, ancient=True, nummaps=50)
-    elif "speedcave" in activated_codes:
+    elif options.is_code_active("speedcave"):
         randomize_tower(filename=sourcefile, ancient=True, nummaps=85)
     else:
         randomize_tower(filename=sourcefile, ancient=True, nummaps=300)
@@ -4918,7 +4917,7 @@ def manage_ancient(form_music_overrides={}):
         if formation.formid in [0x1a4, 0x1d4, 0x1d5, 0x1d6, 0x1e4,
                                 0x1e2, 0x1ff, 0x1bd, 0x1be]:
             return False
-        if ("racecave" in activated_codes
+        if (options.is_code_active("racecave")
                 and formation.formid in [0x162, 0x1c8, 0x1d3]):
             return False
         return True
@@ -4941,7 +4940,7 @@ def manage_ancient(form_music_overrides={}):
                     and f.get_music() != 0]):
                 return False
         best_drop = formation.get_best_drop()
-        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or "madworld" in activated_codes):
+        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or options.is_code_active("madworld")):
             return True
         return False
 
@@ -4978,7 +4977,7 @@ def manage_ancient(form_music_overrides={}):
             l.write_data(fout)
 
     pointer = 0xB4E35
-    if 'racecave' in activated_codes:
+    if options.is_code_active('racecave'):
         candidates = [c for c in starting if c != runaway]
         leaders = random.sample(candidates, 3)
         subptr = pointer - 0xa0000
@@ -5059,7 +5058,7 @@ def manage_ancient(form_music_overrides={}):
               3: (8000, 0xA5F),
               4: (30000, 0xA64)}
 
-    if "racecave" in activated_codes:
+    if options.is_code_active("racecave"):
         partyswitch_template = [
             0x4B, None, None,
             0x4B, 0x86, 0x83,
@@ -5175,7 +5174,7 @@ def manage_ancient(form_music_overrides={}):
     optional_chars = [c for c in characters if hasattr(c, "slotid")]
     optional_chars = [c for c in optional_chars if c.slotid == runaway or
                       (c.id not in starting and c.id in charcands)]
-    if "speedcave" in activated_codes:
+    if options.is_code_active("speedcave"):
         while len(optional_chars) < 24:
             if random.choice([True, True, False]):
                 supplement = [c for c in optional_chars if c.id >= 14 or
@@ -5219,7 +5218,7 @@ def manage_ancient(form_music_overrides={}):
                 allysub.bytestring += [0xD4, 0xF0 | chosen.slotid,
                                        0xD4, 0xE0 | chosen.slotid,
                                        0xD7, mem_addr]
-                if chosen.id >= 14 or "speedcave" in activated_codes:
+                if chosen.id >= 14 or options.is_code_active("speedcave"):
                     allysub.bytestring += [0x77, chosen.slotid,
                                            0x8b, chosen.slotid, 0x7F,
                                            0x8c, chosen.slotid, 0x7F,
@@ -5284,7 +5283,7 @@ def manage_ancient(form_music_overrides={}):
         pointer += innsub.size
         savesub = make_paysub(save_template, save_template2, l, pointer)
         pointer += savesub.size
-        if "racecave" in activated_codes:
+        if options.is_code_active('racecave'):
             pswitch_sub = make_paysub(partyswitch_template,
                                       partyswitch_template2, l, pointer)
             pointer += pswitch_sub.size
@@ -5381,7 +5380,7 @@ def manage_ancient(form_music_overrides={}):
                 setattr(ally, key, value)
             l.npcs.append(ally)
             if (len(optional_chars) == 12 or (len(optional_chars) > 0 and
-                                              "speedcave" in activated_codes)):
+                                              options.is_code_active('speedcave'))):
                 temp = optional_chars.pop()
                 if chosen.id != temp.id:
                     chosen = temp
@@ -5410,7 +5409,7 @@ def manage_ancient(form_music_overrides={}):
         for i in range(num_espers):
             if len(espers) == 0:
                 break
-            if "speedcave" in activated_codes:
+            if options.is_code_active('speedcave'):
                 candidates = espers
             else:
                 esperrank = l.restrank
@@ -5454,7 +5453,7 @@ def manage_ancient(form_music_overrides={}):
             setattr(enemy, key, value)
         l.npcs.append(enemy)
 
-        if "racecave" in activated_codes:
+        if options.is_code_active('racecave'):
             event_addr = (pswitch_sub.location - 0xa0000) & 0x3FFFF
             partyswitch = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
@@ -5521,7 +5520,7 @@ def manage_ancient(form_music_overrides={}):
             def enrank(r):
                 mr = min(maxrank, 0xFF)
                 r = max(0, min(r, mr))
-                if "racecave" in activated_codes:
+                if options.is_code_active('racecave'):
                     half = r//2
                     quarter = half//2
                     r = (half + random.randint(0, quarter) +
@@ -5545,12 +5544,12 @@ def manage_ancient(form_music_overrides={}):
 
             chosen_enemies = sorted(chosen_enemies, key=lambda f: f.rank())
 
-            if "racecave" in activated_codes:
+            if options.is_code_active('racecave'):
                 bossify = False
             elif rank >= maxrank * 0.9:
                 bossify = True
             else:
-                if "speedcave" in activated_codes:
+                if options.is_code_active('speedcave'):
                     thresh = 0.5
                 else:
                     thresh = 0.1
@@ -5566,7 +5565,7 @@ def manage_ancient(form_music_overrides={}):
                     chosen_boss = random.choice(candidates)
                     chosen_enemies[3] = chosen_boss
 
-            if "speedcave" in activated_codes:
+            if options.is_code_active('speedcave'):
                 thresh, bossthresh = 2, 1
             else:
                 # allow up to three of the same formation
@@ -5590,7 +5589,7 @@ def manage_ancient(form_music_overrides={}):
             fset.write_data(fout)
 
         if not (hasattr(l, "secret_treasure") and l.secret_treasure):
-            if 'speedcave' in activated_codes or rank == 0:
+            if options.is_code_active('speedcave') or rank == 0:
                 low = random.randint(0, 400)
                 high = random.randint(low, low*5)
                 high = random.randint(low, high)
@@ -5619,11 +5618,11 @@ def manage_ancient(form_music_overrides={}):
     final_cut.bytestring = bytearray([0x3F, 0x0E, 0x00,
                             0x3F, 0x0F, 0x00,
                             ])
-    if "racecave" not in activated_codes:
+    if not options.is_code_active("racecave"):
         final_cut.bytestring += bytearray([0x9D,
                                  0x4D, 0x65, 0x33,
                                  0xB2, 0xA9, 0x5E, 0x00])
-    elif "racecave" in activated_codes:
+    else:
         for i in range(16):
             final_cut.bytestring += bytearray([0x3F, i, 0x00])
         locked = 0
@@ -5752,7 +5751,7 @@ def manage_spookiness():
         nowhere_to_run_bottom_sub.write(fout)
 
 def manage_dances():
-    if 'madworld' in activated_codes:
+    if options.is_code_active('madworld'):
          spells = get_ranked_spells(sourcefile)
          dances = random.sample(spells, 32)
          dances = [s.spellid for s in dances]
@@ -6170,37 +6169,33 @@ def randomize():
 
     characters = get_characters()
 
-    
     s = ""
     for code in mode.forced_codes:
-        activated_codes.add(code)
+        options.activate_code(code)
 
-    for code in ALL_CODES:
+    for code in NORMAL_CODES:
         if code.name in flags:
             flags = flags.replace(code.name, '')
             if code in mode.prohibited_codes:
                 s += "SECRET CODE: '%s' is not compatible with %s mode." %(code.description, mode.name)
                 continue
             s += "SECRET CODE: %s ACTIVATED\n" % code.description
-            activated_codes.add(code.name)
-    if 'racecave' in activated_codes:
-        activated_codes.add('speedcave')
-    if 'speedcave' in activated_codes:
-        activated_codes.add('ancientcave')
-    if 'strangejourney' in activated_codes:
-        activated_codes.add('notawaiter')
+            options.activate_code(code.name)
+
+    if options.is_code_active('strangejourney'):
+        options.activate_code('notawaiter')
 
     tm = gmtime(seed)
     if tm.tm_mon == 12 and (tm.tm_mday == 24 or tm.tm_mday == 25):
-        activated_codes.add('christmas')
+        options.activate_code('christmas')
         s += "CHRISTMAS MODE ACTIVATED\n"
     elif tm.tm_mon == 10 and tm.tm_mday == 31:
-        activated_codes.add('halloween')
-        s += "ALL HALLOWS EVE MODE ACTIVATED\n"
+        options.activate_code('halloween')
+        s += "ALL HALLOWS' EVE MODE ACTIVATED\n"
 
     print(s.strip())
 
-    if 'randomboost' in activated_codes:
+    if options.is_code_active('randomboost'):
         x = input("Please enter a randomness "
                       "multiplier value (blank for tierless): ")
         try:
@@ -6210,7 +6205,7 @@ def randomize():
         except:
             multiplier = None
         set_randomness_multiplier(multiplier)
-    elif 'madworld' in activated_codes:
+    elif options.is_code_active('madworld'):
         set_randomness_multiplier(None)
 
     fout = open(outfile, "r+b")
@@ -6235,38 +6230,41 @@ def randomize():
     if not flags.strip():
         flags = all_flags
 
-    if 'o' in flags or 'w' in flags or 't' in flags:
+    for f in flags:
+        options.activate_flag(f)
+
+    if options.shuffle_commands or options.replace_commands or options.random_treasure:
         auto_recruit_gau()
 
-    if 'o' in flags and 'suplexwrecks' not in activated_codes:
+    if options.shuffle_commands and not options.is_code_active('suplexwrecks'):
         manage_commands(commands)
         improve_gogo_status_menu(fout)
     reseed()
 
     spells = get_ranked_spells(sourcefile)
-    if 'madworld' in activated_codes:
+    if options.is_code_active('madworld'):
         random.shuffle(spells)
         for i, s in enumerate(spells):
             s._rank = i+1
             s.valid = True
-    if 'w' in flags and 'suplexwrecks' not in activated_codes:
-        if 'quikdraw' in activated_codes:
+    if options.replace_commands and not options.is_code_active('suplexwrecks'):
+        if options.is_code_active('quikdraw'):
             ALWAYS_REPLACE += ["rage"]
         _, freespaces = manage_commands_new(commands)
         improve_gogo_status_menu(fout)
     reseed()
 
-    if 'z' in flags:
+    if options.sprint:
         manage_sprint()
 
-    if 'b' in flags:
-        manage_balance(newslots='w' in flags)
-        if 'm' in flags or 'f' in flags or 'd' in flags:
+    if options.fix_exploits:
+        manage_balance(newslots=options.replace_commands)
+        if options.random_enemy_stats or options.random_formations or options.random_final_dungeon:
             randomize_final_party_order()
     reseed()
 
-    preserve_graphics = ('s' not in flags and
-                         'partyparty' not in activated_codes)
+    preserve_graphics = (not options.swap_sprites and
+                         not options.is_code_active('partyparty'))
 
     monsters = get_monsters(sourcefile)
     formations = get_formations(sourcefile)
@@ -6281,15 +6279,15 @@ def randomize():
     aispaces.append(FreeBlock(0xFFF47, 0xFFF47 + 87))
     aispaces.append(FreeBlock(0xFFFBE, 0xFFFBE + 66))
 
-    if 'd' in flags or 'ancientcave' in activated_codes:
+    if options.random_final_dungeon or options.is_code_active('ancientcave'):
         # do this before treasure
-        if 'm' in flags and 't' in flags and 'q' in flags:
+        if options.random_enemy_stats and options.random_treasure and options.random_character_stats:
             dirk = get_item(0)
             dirk.become_another()
             dirk.write_stats(fout)
             dummy_item(dirk)
             assert not dummy_item(dirk)
-    if 'm' in flags and 't' in flags and 'q' in flags:
+    if options.random_enemy_stats and options.random_treasure and options.random_character_stats:
         if random.randint(1, 10) != 10:
             rename_card = get_item(231)
             rename_card.become_another(tier="low")
@@ -6306,44 +6304,43 @@ def randomize():
     reseed()
 
     items = get_ranked_items()
-    if 'i' in flags:
+    if options.random_items:
         manage_items(items, changed_commands=changed_commands)
         improve_item_display(fout)
     reseed()
 
-    if 'm' in flags:
+    if options.random_enemy_stats:
         aispaces = manage_final_boss(aispaces)
         monsters = manage_monsters()
         improve_rage_menu(fout)
     reseed()
 
-    if 'm' in flags or 'o' in flags or 'w' in flags:
+    if options.random_enemy_stats or options.shuffle_commands or options.replace_commands:
         for m in monsters:
-            m.screw_tutorial_bosses(old_vargas_fight='rushforpower' in activated_codes)
+            m.screw_tutorial_bosses(old_vargas_fight=options.is_code_active('rushforpower'))
             m.write_stats(fout)
 
-    if 'c' in flags and 'm' in flags:
+    if options.random_palettes_and_names and options.random_enemy_stats:
         mgs = manage_monster_appearance(monsters,
                                         preserve_graphics=preserve_graphics)
     reseed()
 
-    if 'c' in flags or 's' in flags or (
-            set(['partyparty', 'bravenudeworld', 'suplexwrecks',
-                 'christmas', 'halloween',
-                 'kupokupo', 'quikdraw']) & activated_codes):
+    if options.random_palettes_and_names or options.swap_sprites or options.is_any_code_active(
+            ['partyparty', 'bravenudeworld', 'suplexwrecks',
+             'christmas', 'halloween', 'kupokupo', 'quikdraw']):
         manage_character_appearance(preserve_graphics=preserve_graphics)
         show_original_names(fout)
     reseed()
 
-    if 'q' in flags:
+    if options.random_character_stats:
         # do this after items
         manage_equipment(items)
     reseed()
 
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
-    if 'e' in flags:
-        if 'dancingmaduin' in activated_codes:
-            allocate_espers('ancientcave' in activated_codes, get_espers(), get_characters(), fout)
+    if options.random_espers:
+        if options.is_code_active('dancingmaduin'):
+            allocate_espers(options.is_code_active('ancientcave'), get_espers(), get_characters(), fout)
             nerf_paladin_shield()
         manage_espers(esperrage_spaces)
     reseed()
@@ -6371,23 +6368,23 @@ def randomize():
         savecheck_sub.write(fout)
     reseed()
         
-    if 'o' in flags and 'suplexwrecks' not in activated_codes:
+    if options.shuffle_commands and not options.is_code_active('suplexwrecks'):
         # do this after swapping beserk
         manage_natural_magic()
     reseed()
 
-    if 'u' in flags:
+    if options.random_zerker:
         umaro_risk = manage_umaro(commands)
         reset_rage_blizzard(items, umaro_risk, fout)
     reseed()
 
-    if 'o' in flags and 'suplexwrecks' not in activated_codes:
+    if options.shuffle_commands and not options.is_code_active('suplexwrecks'):
         # do this after swapping beserk
         manage_tempchar_commands()
     reseed()
 
-    start_in_wor = 'worringtriad' in activated_codes
-    if 'q' in flags:
+    start_in_wor = options.is_code_active('worringtriad')
+    if options.random_character_stats:
         # do this after swapping beserk
         from itemrandomizer import set_item_changed_commands
         set_item_changed_commands(changed_commands)
@@ -6407,27 +6404,27 @@ def randomize():
             c.mutate_stats(fout, start_in_wor, read_only=True)
     reseed()
 
-    if 'f' in flags:
+    if options.random_formations:
         formations = get_formations()
         fsets = get_fsets()
         manage_formations(formations, fsets)
         for fset in fsets:
             fset.write_data(fout)
 
-    if 'f' in flags or 'ancientcave' in activated_codes:
+    if options.random_formations or options.is_code_active('ancientcave'):
         manage_dragons()
     reseed()
 
-    if 'd' in flags and 'ancientcave' not in activated_codes:
+    if options.random_final_dungeon and not options.is_code_active('ancientcave'):
         # do this before treasure
         manage_tower()
     reseed()
 
-    if 'f' in flags or 't' in flags:
+    if options.random_formations or options.random_treasure:
         assign_unused_enemy_formations()
 
     form_music = {}
-    if 'f' in flags:
+    if options.random_formations:
         manage_formations_hidden(formations, freespaces=aispaces, form_music_overrides=form_music)
         for m in get_monsters():
             m.write_stats(fout)
@@ -6436,7 +6433,7 @@ def randomize():
     for f in get_formations():
         f.write_data(fout)
 
-    if 't' in flags:
+    if options.random_treasure:
         wedge_money = 1000 + random.randint(0,1500)
         vicks_money = 500 + random.randint(0,750)
         starting_money = wedge_money + vicks_money
@@ -6447,32 +6444,32 @@ def randomize():
 
         # do this after hidden formations
         manage_treasure(monsters, shops=True)
-        if 'ancientcave' not in activated_codes:
+        if not options.is_code_active('ancientcave'):
             manage_chests()
-            mutate_event_items(fout, cutscene_skip='notawaiter' in activated_codes)
+            mutate_event_items(fout, cutscene_skip=options.is_code_active('notawaiter'))
             for fs in fsets:
                 # write new formation sets for MiaBs
                 fs.write_data(fout)
 
-    if 'c' in flags:
+    if options.random_palettes_and_names:
         # do this before ancient cave
         # could probably do it after if I wasn't lazy
         manage_colorize_dungeons()
 
-    if 'ancientcave' in activated_codes:
+    if options.is_code_active('ancientcave'):
         manage_ancient(form_music_overrides=form_music)
     reseed()
 
-    if 'o' in flags or 'w' in flags or 'm' in flags:
+    if options.shuffle_commands or options.replace_commands or options.random_enemy_stats:
         manage_magitek()
     reseed()
 
-    if 'l' in flags:
+    if options.random_blitz:
         if 0x0A not in changed_commands:
             manage_blitz()
     reseed()
 
-    if 'halloween' in activated_codes:
+    if options.is_code_active('halloween'):
         demon_chocobo_sub = Substitution()
         fout.seek(0x2d0000 + 896 * 7)
         demon_chocobo_sub.bytestring = fout.read(896)
@@ -6480,7 +6477,7 @@ def randomize():
             demon_chocobo_sub.set_location(0x2d0000 + 896 * i)
             demon_chocobo_sub.write(fout)
 
-    if 'n' in flags or 'christmas' in activated_codes or 'halloween' in activated_codes:
+    if options.random_window or options.is_code_active('christmas') or options.is_code_active('halloween'):
         for i in range(8):
             w = WindowBlock(i)
             w.read_data(sourcefile)
@@ -6488,56 +6485,56 @@ def randomize():
             w.write_data(fout)
     reseed()
 
-    if 'dearestmolulu' in activated_codes or (
-            'f' in flags and 'b' in flags and
-            'ancientcave' not in activated_codes):
+    if options.is_code_active('dearestmolulu') or (
+            options.random_formations and options.fix_exploits and
+            not options.is_code_active('ancientcave')):
         manage_encounter_rate()
     reseed()
     reseed()
 
-    if 'p' in flags:
+    if options.random_animation_palettes:
         manage_colorize_animations()
     reseed()
 
-    if 'suplexwrecks' in activated_codes:
+    if options.is_code_active('suplexwrecks'):
         manage_suplex(commands, monsters)
     reseed()
 
-    if 'strangejourney' in activated_codes and 'ancientcave' not in activated_codes:
+    if options.is_code_active('strangejourney') and not options.is_code_active('ancientcave'):
         create_dimensional_vortex()
         manage_strange_events()
     reseed()
 
-    if 'notawaiter' in activated_codes and 'ancientcave' not in activated_codes:
+    if options.is_code_active('notawaiter') and not options.is_code_active('ancientcave'):
         print("Cutscenes are currently skipped up to Kefka @ Narshe")
         manage_skips()
     reseed()
 
     wor_free_char = 0xB  # gau
-    if 'r' in flags and 'ancientcave' not in activated_codes:
+    if options.shuffle_wor and not options.is_code_active('ancientcave'):
         wor_free_char = manage_wor_recruitment(fout,
-                                               random_treasure='t' in flags,
-                                               include_gau='o' in flags or 'w' in flags or 't' in flags,
+                                               random_treasure=options.random_treasure,
+                                               include_gau=options.shuffle_commands or options.replace_commands or options.random_treasure,
                                                include_gogo=True)
     reseed()
 
-    if 'worringtriad' in activated_codes and 'ancientcave' not in activated_codes:
-        manage_wor_skip(fout, wor_free_char, 'airship' in activated_codes)
+    if options.is_code_active('worringtriad') and not options.is_code_active('ancientcave'):
+        manage_wor_skip(fout, wor_free_char, options.is_code_active('airship'))
     reseed()
 
-    if 'k' in flags and 'ancientcave' not in activated_codes:
+    if options.random_clock and not options.is_code_active('ancientcave'):
         manage_clock()
     reseed()
 
-    if 'g' in flags:
+    if options.random_dances:
         if 0x13 not in changed_commands:
             manage_dances()
             improve_dance_menu(fout)
     reseed()
 
-    if 'johnnydmad' in activated_codes or 'johnnyachaotic' in activated_codes:
-        f_mchaos = True if 'johnnyachaotic' in activated_codes else False
-        music_log = randomize_music(fout, f_mchaos = f_mchaos, codes=activated_codes, form_music_overrides=form_music)
+    if options.is_code_active('johnnydmad') or options.is_code_active('johnnyachaotic'):
+        f_mchaos = options.is_code_active('johnnyachaotic')
+        music_log = randomize_music(fout, options=options, f_mchaos = f_mchaos,form_music_overrides=form_music)
         log(music_log, section="music")
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
@@ -6548,28 +6545,28 @@ def randomize():
     # This needs to be after write_all_locations_misc()
     # so the changes to Daryl don't get stomped.
     event_freespaces = [FreeBlock(0xCFE2A, 0xCFE2a + 470)]
-    if 'airship' in activated_codes:
+    if options.is_code_active('airship'):
         event_freespaces = activate_airship_mode(event_freespaces)
 
-    if 'u' in flags or 'q' in flags:
+    if options.random_zerker or options.random_character_stats:
         manage_equip_umaro(event_freespaces)
 
-    if 'easymodo' in activated_codes or 'llg' in activated_codes or 'dearestmolulu' in activated_codes:
+    if options.is_code_active('easymodo') or options.is_code_active('llg') or options.is_code_active('dearestmolulu'):
         for m in monsters:
-            if 'easymodo' in activated_codes:
+            if options.is_code_active('easymodo'):
                 m.stats['hp'] = 1
-            if 'llg' in activated_codes:
+            if options.is_code_active('llg'):
                 m.stats['xp'] = 0
-            elif 'dearestmolulu' in activated_codes:
+            elif options.is_code_active('dearestmolulu'):
                 m.stats['xp'] = min(0xFFFF, 3 * m.stats['xp'])
             m.write_stats(fout)
 
-    if 'naturalmagic' in activated_codes or 'naturalstats' in activated_codes:
+    if options.is_code_active('naturalmagic') or options.is_code_active('naturalstats'):
         espers = get_espers()
-        if 'naturalstats' in activated_codes:
+        if options.is_code_active('naturalstats'):
             for e in espers:
                 e.bonus = 0xFF
-        if 'naturalmagic' in activated_codes:
+        if options.is_code_active('naturalmagic'):
             for e in espers:
                 e.spells, e.learnrates = [], []
             for i in items:
@@ -6579,16 +6576,16 @@ def randomize():
         for e in espers:
             e.write_data(fout)
 
-    if 'canttouchthis' in activated_codes:
+    if options.is_code_active('canttouchthis'):
         for c in characters:
             if c.id >= 14:
                 continue
             c.become_invincible(fout)
 
-    if 'equipanything' in activated_codes:
+    if options.is_code_active('equipanything'):
         manage_equip_anything()
 
-    if 'playsitself' in activated_codes:
+    if options.is_code_active('playsitself'):
         manage_full_umaro()
         for c in commands.values():
             if c.id not in [0x01, 0x08, 0x0E, 0x0F, 0x15, 0x19]:
@@ -6604,17 +6601,17 @@ def randomize():
         if item.banned:
             assert not dummy_item(item)
 
-    if 'christmas' in activated_codes and 'ancientcave' not in activated_codes:
+    if options.is_code_active('christmas') and options.is_code_active('ancientcave'):
         manage_santa()
-    elif 'halloween' in activated_codes and 'ancientcave' not in activated_codes:
+    elif options.is_code_active('halloween') and options.is_code_active('ancientcave'):
         manage_spookiness()
 
     manage_banon_life3()
 
-    if 'w' in flags or 'o' in flags:
+    if options.replace_commands or options.shuffle_commands:
         sabin_hint(commands)
         
-    if 'z' in flags:
+    if options.sprint:
         sprint_shoes_hint()
 
     rewrite_title(text="FF6 BCEX %s" % seed)
@@ -6633,7 +6630,7 @@ def randomize():
             log(m.get_description(changed_commands=changed_commands),
                 section="monsters")
 
-    if "ancientcave" not in activated_codes:
+    if not options.is_code_active("ancientcave"):
         log_chests()
     log_break_learn_items()
 
@@ -6643,7 +6640,7 @@ def randomize():
 
     print("Randomization successful. Output filename: %s\n" % outfile)
 
-    if 'bingoboingo' in activated_codes:
+    if options.is_code_active('bingoboingo'):
         manage_bingo()
 
 

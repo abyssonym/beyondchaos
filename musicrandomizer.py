@@ -1055,11 +1055,11 @@ def process_formation_music_by_table(data, form_music_overrides={}):
     
     return data
         
-def randomize_music(fout, f_mchaos=False, codes=[], form_music_overrides={}):
+def randomize_music(fout, options, f_mchaos=False, form_music_overrides={}):
     events = ""
-    if 'christmas' in codes:
+    if options.is_code_active('christmas'):
         events += "W"
-    if 'halloween' in codes:
+    if options.is_code_active('halloween'):
         events += "H"
     fout.seek(0)
     data = fout.read()

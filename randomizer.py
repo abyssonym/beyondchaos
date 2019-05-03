@@ -6099,8 +6099,8 @@ def randomize():
 
     if mode_num not in range(len(ALL_MODES)):
         raise Exception("Invalid mode specified")
-    mode = ALL_MODES[mode_num]
-    allowed_flags = [f for f in ALL_FLAGS if f.name not in mode.prohibited_flags]
+    options.mode = ALL_MODES[mode_num]
+    allowed_flags = [f for f in ALL_FLAGS if f.name not in options.mode.prohibited_flags]
 
     seed = seed.strip()
     if not seed:

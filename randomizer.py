@@ -5960,6 +5960,18 @@ def manage_banon_life3():
     ]
     banon_sub.write(fout)
 
+
+def the_end_comes_beyond_katn():
+    fout.seek(0x25f821)
+    fout.write(bytes([0xEA]*5))
+    
+    fout.seek(0x25f852)
+    fout.write(bytes([0xEA]*5))
+    
+    fout.seek(0xcbfa3)
+    fout.write(bytes([0xf6, 0xf1, 0x00, 0x00, 0xbb, 0xfe]))
+
+
 def expand_rom():
     fout.seek(0,2)
     if fout.tell() < 0x400000:
@@ -6613,6 +6625,9 @@ def randomize():
         
     if options.sprint:
         sprint_shoes_hint()
+
+    if options.mode.name == "katn":
+        the_end_comes_beyond_katn()
 
     rewrite_title(text="FF6 BCEX %s" % seed)
     fout.close()

@@ -100,6 +100,11 @@ ALL_MODES = [
          forced_codes=["racecave", "speedcave", "ancientcave"],
          prohibited_codes=ANCIENT_CAVE_PROHIBITED_CODES,
          prohibited_flags=ANCIENT_CAVE_PROHIBITED_FLAGS),
+    Mode(name="katn",
+         description="",
+         forced_codes=["madworld"],
+         prohibited_codes=["airship", "worringtriad"],
+         prohibited_flags=["d", "k", "r"])
 ]
 
 ALL_FLAGS = [

@@ -1471,9 +1471,21 @@ def manage_skips():
                 ['FE']  # end subroutine
             )
 
+    def handleConvergent(split_line): # Replace events that should be modified if the scenarios are changed
+        if 'divergent' in activated_codes:
+            return
+        writeToAddress(split_line[0], split_line[1:])
+
+    def handleDivergent(split_line): # Replace events that should be modified if the scenarios are changed
+        if 'divergent' not in activated_codes:
+            return
+        writeToAddress(split_line[0], split_line[1:])
+
     for line in open(SKIP_EVENTS_TABLE):
         # If "Foo" precedes a line in skipEvents.txt, call "handleFoo"
-        line = line.strip().split('#')[0]  # Ignore everything after '#'
+        line = line.split('#')[0].strip()  # Ignore everything after '#'
+        if not line:
+            continue
         split_line = line.strip().split(' ')
         handler = "handle" + split_line[0]
         locals()[handler](split_line[1:])

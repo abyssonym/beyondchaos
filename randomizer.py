@@ -1821,12 +1821,9 @@ def manage_final_boss(freespaces):
 
 def manage_monsters():
     monsters = get_monsters(sourcefile)
-    itembreaker = options.is_code_active("collateraldamage")
-    randombosses = options.is_code_active("randombosses")
-    madworld = options.is_code_active("madworld")
-    darkworld = options.is_code_active("darkworld")
     safe_solo_terra = not options.is_code_active("ancientcave")
-    change_skillset = True if options.is_code_active("darkworld") else None
+    darkworld = options.is_code_active("darkworld") 
+    change_skillset = True if darkworld else None
     final_bosses = (list(range(0x157, 0x160)) + list(range(0x127, 0x12b)) +
                     [0x112, 0x11a, 0x17d])
     for m in monsters:
@@ -1840,20 +1837,20 @@ def manage_monsters():
                 m.randomize_boost_level()
                 if darkworld:
                     m.increase_enemy_difficulty()
-                m.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=False)
+                m.mutate(options=options, change_skillset=True, safe_solo_terra=False)
             else:
-                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=False)
+                m.mutate(options=options, change_skillset=change_skillset, safe_solo_terra=False)
             if 0x127 <= m.id < 0x12a or m.id == 0x17d or m.id == 0x11a:
                 # boost statues, Atma, final kefka a second time
                 m.randomize_boost_level()
                 if darkworld:
                     m.increase_enemy_difficulty()
-                m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=False)
+                m.mutate(options=options, change_skillset=change_skillset, safe_solo_terra=False)
             m.misc1 &= (0xFF ^ 0x4)  # always show name
         else:
             if darkworld:
                 m.increase_enemy_difficulty()
-            m.mutate(change_skillset=change_skillset, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
+            m.mutate(options=options, change_skillset=change_skillset, safe_solo_terra=safe_solo_terra)
 
         m.tweak_fanatics()
         m.relevel_specifics()
@@ -2939,13 +2936,17 @@ def manage_espers(freespaces):
     return freespaces
 
 
-def manage_treasure(monsters, shops=True):
+def manage_treasure(monsters, shops=True, no_charm_drops=False):
     for mm in get_metamorphs():
         mm.mutate_items()
         mm.write_data(fout)
 
     for m in monsters:
         m.mutate_items()
+        if no_charm_drops:
+            charms = [222, 223]
+            while any(x in m.drops for x in charms):
+                m.mutate_items()
         m.mutate_metamorph()
         m.write_stats(fout)
 
@@ -2996,6 +2997,7 @@ def manage_treasure(monsters, shops=True):
 
 def manage_chests():
     crazy_prices = options.is_code_active('madworld')
+    no_monsters = options.mode.name == 'katn'
     locations = get_locations(sourcefile)
     locations = sorted(locations, key=lambda l: l.rank())
     for l in locations:
@@ -3006,7 +3008,7 @@ def manage_chests():
                     if c.contenttype == 0x40 and c.contents == 166:
                         c.contents = 33
 
-        l.mutate_chests(crazy_prices=crazy_prices)
+        l.mutate_chests(crazy_prices=crazy_prices, no_monsters=no_monsters)
     locations = sorted(locations, key=lambda l: l.locid)
 
     for m in get_monsters():
@@ -3370,13 +3372,14 @@ def manage_formations_hidden(formations, freespaces, esper_graphics=None, form_m
         randombosses = options.is_code_active('randombosses')
         madworld = options.is_code_active('madworld')
         darkworld = options.is_code_active('darkworld')
+        easyrace = options.mode.name == 'katn'
         ue.auxloc = "Missing (Boss)"
-        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
-        ue.mutate_ai(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+        ue.mutate_ai(change_skillset=True, options=options)
+        ue.mutate_ai(change_skillset=True, options=options)
 
-        ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+        ue.mutate(change_skillset=True, options=options)
         if random.choice([True, False]):
-            ue.mutate(change_skillset=True, itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld)
+            ue.mutate(change_skillset=True, options=options)
         ue.treasure_boost()
         ue.graphics.mutate_palette()
         name = randomize_enemy_name(fout, ue.id)
@@ -5961,6 +5964,31 @@ def manage_banon_life3():
     banon_sub.write(fout)
 
 
+def start_with_random_espers():
+    fout.seek(0xC9ab6)
+    fout.write(bytes([0xB2, 0x00, 0x50, 0xF0 - 0xCA]))
+    
+    espers = sorted(get_espers(), key=lambda e: e.rank)
+    
+    num_espers = 4 + random.randint(0, 2) + random.randint(0, 1)
+    fout.seek(0x305000)
+    bytestring = bytes([0x78, 0x0e, 0x78, 0x0f])
+    for i in range(num_espers):
+        rank = espers[0].rank
+        while rank < 5 and random.randint(1, 3) == 3:
+            rank += 1
+        candidates = [e for e in espers if e.rank == rank]
+        while not candidates:
+            candidates = [e for e in espers if e.rank <= rank]
+            rank += 1
+
+        e = random.choice(candidates)
+        espers.remove(e)
+        bytestring += bytes([0x86, 0x36 + e.id])
+    bytestring += bytes([0xFE])
+    fout.write(bytestring)
+
+
 def the_end_comes_beyond_katn():
     fout.seek(0x25f821)
     fout.write(bytes([0xEA]*5))
@@ -6455,10 +6483,11 @@ def randomize():
         starting_money_sub.write(fout)
 
         # do this after hidden formations
-        manage_treasure(monsters, shops=True)
+        katn = options.mode.name == 'katn'
+        manage_treasure(monsters, shops=True, no_charm_drops=katn)
         if not options.is_code_active('ancientcave'):
             manage_chests()
-            mutate_event_items(fout, cutscene_skip=options.is_code_active('notawaiter'))
+            mutate_event_items(fout, cutscene_skip=options.is_code_active('notawaiter'), crazy_prices=options.is_code_active('madworld'), no_monsters=katn)
             for fs in fsets:
                 # write new formation sets for MiaBs
                 fs.write_data(fout)
@@ -6548,6 +6577,10 @@ def randomize():
         f_mchaos = options.is_code_active('johnnyachaotic')
         music_log = randomize_music(fout, options=options, f_mchaos = f_mchaos,form_music_overrides=form_music)
         log(music_log, section="music")
+    reseed()
+    
+    if options.mode.name == "katn":
+        start_with_random_espers()
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()
@@ -6613,9 +6646,9 @@ def randomize():
         if item.banned:
             assert not dummy_item(item)
 
-    if options.is_code_active('christmas') and options.is_code_active('ancientcave'):
+    if options.is_code_active('christmas') and not options.is_code_active('ancientcave'):
         manage_santa()
-    elif options.is_code_active('halloween') and options.is_code_active('ancientcave'):
+    elif options.is_code_active('halloween') and not options.is_code_active('ancientcave'):
         manage_spookiness()
 
     manage_banon_life3()

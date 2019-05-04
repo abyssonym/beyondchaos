@@ -448,21 +448,26 @@ class EventItem:
             desc = "*%s" % desc
         return desc
     
-    def mutate_contents(self, cutscene_skip=False):
+    def mutate_contents(self, cutscene_skip=False, crazy_prices=False, no_monsters=False):
         from chestrandomizer import ChestBlock
         c = ChestBlock(0x0, 0x0)
         c.memid = 0
         c.contenttype = self.contenttype
         c.contents = self.contents
         
-        c.mutate_contents(monster=self.monster)
+        cannot_show_text = not self.text or (cutscene_skip and self.cutscene_skip_pointer)
+        monster = self.monster
+        if no_monsters or cannot_show_text:
+            monster = False
+        
+        c.mutate_contents(monster=monster, crazy_prices=crazy_prices)
         # If we can't show text, we don't want it to be GP,
         # because that event takes 3 bytes instead of 2,
         # and I'd have to rearrange or remove stuff to fit it.
         # So just make sure it's an item.
-        if not self.text or (cutscene_skip and self.cutscene_skip_pointer):
+        if cannot_show_text:
             while c.contenttype != 0x40:
-                c.mutate_contents(monster=False)
+                c.mutate_contents(monster=False, crazy_prices=crazy_prices)
                     
         self.contenttype = c.contenttype
         self.contents = c.contents
@@ -579,7 +584,7 @@ duplicate_event_item_skip_dict = {
 def get_event_items():
     return event_items_dict
     
-def mutate_event_items(fout, cutscene_skip=False):
+def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monsters=False):
     event_item_sub = Substitution()
     event_item_sub.set_location(0x9926)
     event_item_sub.bytestring = bytes([0x8A, 0xD6]) # pointer to new event command 66
@@ -631,5 +636,5 @@ def mutate_event_items(fout, cutscene_skip=False):
     
     for location in event_items_dict:
         for e in event_items_dict[location]:
-            e.mutate_contents(cutscene_skip=cutscene_skip)
+            e.mutate_contents(cutscene_skip=cutscene_skip, no_monsters=no_monsters)
             e.write_data(fout, cutscene_skip=cutscene_skip)

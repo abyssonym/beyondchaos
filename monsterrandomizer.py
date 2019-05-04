@@ -716,8 +716,9 @@ class MonsterBlock:
         self.stats['mp'] = int(
             round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
 
-    def mutate_ai(self, change_skillset=True, itembreaker=False, randombosses=False, madworld=False, darkworld=False, safe_solo_terra=True):
-        if self.name[:2] == "L." and randombosses == False:
+    def mutate_ai(self, options, change_skillset=True, safe_solo_terra=True):
+        itembreaker = options.is_code_active("collateraldamage")
+        if self.name[:2] == "L." and not options.is_code_active("randombosses"):
             change_skillset = False
         elif "guardian" in self.name.lower():
             return
@@ -732,7 +733,7 @@ class MonsterBlock:
             e = s1.unreflectable == s2.unreflectable
             f = s1.abort_on_allies == s2.abort_on_allies
             return (a and b and c and d and e and f)
-        if madworld: 
+        if options.is_code_active("madworld"):
             restricted = []
         else:
             restricted = [0x13, 0x14]
@@ -747,7 +748,7 @@ class MonsterBlock:
                     if self in f.present_enemies:
                         banned.extend([0xB5, 0xBA])
                         break
-            
+
         oldskills = sorted([s for s in all_spells if s.spellid in skillset],
                            key=lambda s: s.rank())
         if change_skillset:
@@ -1623,7 +1624,11 @@ class MonsterBlock:
 
         self.special = special
 
-    def mutate(self, change_skillset=None, itembreaker=False, randombosses=False, madworld=False, darkworld=False, safe_solo_terra=True):
+    def mutate(self, options, change_skillset=None, safe_solo_terra=True):
+        randombosses = options.is_code_active("randombosses")
+        darkworld = options.is_code_active("darkworld")
+        madworld = options.is_code_active("madworld")
+
         if change_skillset is None:
             change_skillset = randombosses or not (self.is_boss or self.boss_death)
             manual_change = False
@@ -1637,21 +1642,19 @@ class MonsterBlock:
             self.mutate_affinities(odds=5 if madworld else 10)
         if madworld or random.randint(1, 10) > 5:
             # do this before mutate_control
-            if self.stats['level'] <= 7:
-                 self.mutate_special(darkworld=darkworld, narshesafe=True)
-            else:
-                 self.mutate_special(darkworld=darkworld)
+            narshesafe = options.mode.name == 'katn' or self.stats['level'] <= 7
+            self.mutate_special(darkworld=darkworld, narshesafe=narshesafe)
         if manual_change and change_skillset:
             value = 10
         else:
             value = random.randint(1, 10)
         if value > 1:
             if value == 2:
-                self.mutate_ai(change_skillset=False,
-                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
+                self.mutate_ai(options=options, change_skillset=False,
+                               safe_solo_terra=safe_solo_terra)
             else:
-                self.mutate_ai(change_skillset=change_skillset,
-                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
+                self.mutate_ai(options=options, change_skillset=change_skillset, 
+                               safe_solo_terra=safe_solo_terra)
         self.mutate_control()
 
     def swap_ai(self, other):

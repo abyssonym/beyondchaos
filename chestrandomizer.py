@@ -500,9 +500,23 @@ class EventItem:
             self.pointer = prev_pointer
         elif self.pointer == 0xCD59E:
             event_item_sub.bytestring = bytes([0x94, # Pause 60 frames
-            0x66, 0xE5, 0xC6, self.contents,  # Show text 0x06E5 at bottom, no text box, with item self.contents
+            0x66 if self.contenttype == 0x40 else 0x67, 0xE5, 0xC6, self.contents,  # Show text 0x06E5 at bottom, no text box, with item self.contents
             0xFE]) # return
             event_item_sub.set_location(0x10CF4A)
+            event_item_sub.write(fout)
+            
+            # Change Lone Wolf text to say item placeholder instead of gold hairpin
+            event_item_sub.bytestring = dialogue_to_bytes(      
+                "<line>Grrrr…<line>"
+                "You’ll never get this<line>" +
+                ("“<item>”!" if self.contenttype == 0x40 else "“<GP>00 GP”!"))
+            event_item_sub.set_location(get_dialog_pointer(fout, 0x6e5))
+            event_item_sub.write(fout)
+            
+            # Because it takes up more slightly space
+            # move Lone Wolf talking into a subroutine
+            event_item_sub.bytestring = bytes([0xB2, 0x4A, 0xCF, 0x06])
+            event_item_sub.set_location(0xCD581)
             event_item_sub.write(fout)
 
 # TODO: Maybe this should be in a text file
@@ -587,7 +601,7 @@ def get_event_items():
 def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monsters=False):
     event_item_sub = Substitution()
     event_item_sub.set_location(0x9926)
-    event_item_sub.bytestring = bytes([0x8A, 0xD6]) # pointer to new event command 66
+    event_item_sub.bytestring = bytes([0x8A, 0xD6, 0x99, 0xd6]) # pointer to new event commands 66 and 67
     event_item_sub.write(fout)
     event_item_sub.set_location(0x9934)
     event_item_sub.bytestring = bytes([0x13, 0xD6, 0x26, 0xD6, 0x71, 0xD6]) # pointers to new event commands 6D, 6E, and 6F
@@ -609,6 +623,9 @@ def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monster
     
     # 66 : (4 bytes) Show text $AAAA with item name $BB and wait for button press
     0xA5, 0xED, 0x85, 0x1A, 0x8D, 0x83, 0x05, 0xA9, 0x01, 0x20, 0x70, 0x9B, 0x4C, 0xBC, 0xA4,
+    
+    # 67 : (4 bytes) Show text $AAAA with number $BB and wait for button press
+    0xA5, 0xED, 0x85, 0x1A, 0x85, 0x22, 0x64, 0x24, 0x20, 0xE5, 0x02, 0xA9, 0x01, 0x20, 0x70, 0x9B, 0x4C, 0xBC, 0xA4,
     ])
     event_item_sub.write(fout)
     
@@ -635,18 +652,6 @@ def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monster
         event_item_sub.set_location(location)
         event_item_sub.bytestring = dialogue_to_bytes(text)
         event_item_sub.write(fout)
-
-    # Change Lone Wolf text to say item placeholder instead of gold hairpin
-    event_item_sub.bytestring = dialogue_to_bytes("<line>Grrrr…<line>"
-               "You’ll never get this<line>“<item>”!")
-    event_item_sub.set_location(get_dialog_pointer(fout, 0x6e5))
-    event_item_sub.write(fout)
-    
-    # Because it takes up more slightly space
-    # move Lone Wolf talking into a subroutine
-    event_item_sub.bytestring = bytes([0xB2, 0x4A, 0xCF, 0x06])
-    event_item_sub.set_location(0xCD581)
-    event_item_sub.write(fout)
     
     for location in event_items_dict:
         for e in event_items_dict[location]:

@@ -84,7 +84,7 @@ ANCIENT_CAVE_PROHIBITED_FLAGS = [
 ]
 
 ALL_MODES = [
-    Mode(name="normal", description="Play through the game with things randomized."),
+    Mode(name="normal", description="Play through the normal story."),
     Mode(name="ancientcave",
          description="Play through a long randomized dungeon.",
          forced_codes=["ancientcave"],
@@ -169,12 +169,20 @@ NORMAL_CODES = [
 ]
 
 
+# TODO: do this a better way
+CAVE_CODES = [
+    Code('ancientcave', "ANCIENT CAVE MODE"),
+    Code('speedcave', "SPEED CAVE MODE"),
+    Code('racecave', "RACE CAVE MODE"),
+]
+
+
 SPECIAL_CODES = [
     Code('christmas', 'CHIRSTMAS MODE'),
     Code('halloween', "ALL HALLOWS' EVE MODE")
 ]
 
 
-ALL_CODES = NORMAL_CODES + SPECIAL_CODES
+ALL_CODES = NORMAL_CODES + CAVE_CODES + SPECIAL_CODES
 
 options = Options(ALL_MODES[0])

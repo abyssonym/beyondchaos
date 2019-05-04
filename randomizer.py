@@ -6168,7 +6168,7 @@ def randomize():
     if version and version != VERSION:
         print ("WARNING! Version mismatch! "
                "This seed will not produce the expected result!")
-    s = "Using seed: %s.%s.%s.%s" % (VERSION, mode.name, flags, seed)
+    s = "Using seed: %s.%s.%s.%s" % (VERSION, options.mode.name, flags, seed)
     print(s)
     log(s, section=None)
     log("This is a game guide generated for the Beyond Chaos EX FF6 randomizer.",
@@ -6182,14 +6182,14 @@ def randomize():
     characters = get_characters()
 
     s = ""
-    for code in mode.forced_codes:
+    for code in options.mode.forced_codes:
         options.activate_code(code)
 
     for code in NORMAL_CODES:
         if code.name in flags:
             flags = flags.replace(code.name, '')
-            if code in mode.prohibited_codes:
-                s += "SECRET CODE: '%s' is not compatible with %s mode." %(code.description, mode.name)
+            if code in options.mode.prohibited_codes:
+                s += "SECRET CODE: '%s' is not compatible with %s mode." %(code.description, options.mode.name)
                 continue
             s += "SECRET CODE: %s ACTIVATED\n" % code.description
             options.activate_code(code.name)
@@ -6236,7 +6236,7 @@ def randomize():
             newFlags = newFlags.replace(f,"")
         flags = newFlags
 
-    for f in mode.prohibited_flags:
+    for f in options.mode.prohibited_flags:
         flags = flags.replace(f,"")
 
     if not flags.strip():

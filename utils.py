@@ -146,17 +146,54 @@ def dialogue_to_bytes(text, null_terminate=True):
     return bytes(bs)
 
 
+def get_long_battle_text_pointer(f, index):
+    base = 0x100000
+    ptrs_start = 0x10D000
+    f.seek(ptrs_start + index * 2)
+    ptr = read_multi(f)
+    ptr += base
+    return ptr
+
+
+def get_long_battle_text_index(f, address):
+    base = 0x100000
+    ptrs_start = 0x10D000
+    ptrs_end = 0x10D200
+    prev = 0
+    for index, ptr_ptr in enumerate(range(ptrs_start, ptrs_end, 2)):
+        f.seek(ptr_ptr)
+        ptr = read_multi(f) + base
+        if ptr > address:
+            return index - 1
+    return -1
+
+
 def get_dialog_pointer(f, index):
     f.seek(0xCE600)
     increment_index = read_multi(f)
-    base = base = 0xD0000 if index <= increment_index else 0xE0000
+    base = 0xD0000 if index <= increment_index else 0xE0000
     ptrs_start = 0xCE602
     f.seek(ptrs_start + index * 2)
     ptr = read_multi(f)
     ptr += base
     return ptr
 
-    
+
+def get_dialog_index(f, address):
+    f.seek(0xCE600)
+    increment_index = read_multi(f)
+    ptrs_start = 0xCE602
+    ptrs_end = 0xD0000
+    prev = 0
+    for index, ptr_ptr in enumerate(range(ptrs_start, ptrs_end, 2)):
+        base = 0xD0000 if index <= increment_index else 0xE0000
+        f.seek(ptr_ptr)
+        ptr = read_multi(f) + base
+        if ptr > address:
+            return index - 1
+    return -1
+
+
 battlebg_palettes = {}
 f = open(BATTLE_BG_PALETTE_TABLE)
 for line in f:

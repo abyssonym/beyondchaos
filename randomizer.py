@@ -4526,7 +4526,7 @@ def manage_clock():
         second_text_sub0.write(fout)
 
     elif double_clue == [0, 4]:
-        text = "The second hand’s pointin’ a bit upward." # (i.e., 10 or 50)
+        text = "The second hand’s in the clock’s top half."
         second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 
@@ -4540,7 +4540,7 @@ def manage_clock():
         # Leave the clue as "The seconds? They’re divisible by 20!".
 
     elif double_clue == [1, 4]:
-        text = "The seconds are divisible by a square."
+        text = "The seconds have four proper factors."
         second_text_sub0.bytestring = dialogue_to_bytes(text)
         second_text_sub0.write(fout)
 

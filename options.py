@@ -1,6 +1,8 @@
 from dataclasses import dataclass, field
 from typing import List, Set
 
+from utils import utilrandom as random
+
 @dataclass(frozen=True)
 class Mode:
     name: str
@@ -68,6 +70,10 @@ class Options:
                 setattr(self, flag.attr, True)
                 return
 
+    def random_unused_code(self):
+        unused_codes = [c for c in NORMAL_CODES
+                        if c not in self.active_codes and c.name != "repairpalette"]
+        return random.choice(unused_codes)
 
 ANCIENT_CAVE_PROHIBITED_CODES = [
     "airship",

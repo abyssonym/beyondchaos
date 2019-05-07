@@ -2013,3 +2013,35 @@ def get_metamorphs(filename=None):
         mm.id = i
         metamorphs.append(mm)
     return get_metamorphs()
+
+
+def get_collapsing_house_help_skill():
+    status_specials = []
+    all_skills = []
+    from formationrandomizer import get_fset
+    for id in [0x80]:
+        fset = get_fset(id)
+        for f in fset.formations:
+            for m in f.present_enemies:
+                if not m.physspecial and not m.goodspecial:
+                    status_specials.append(m.special & 0x3F)
+                skills = m.get_skillset(ids_only=False)
+                all_skills.extend([z for z in skills
+                    if z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]])
+    
+    if status_specials:
+        sleep_index = ranked.index(specialdict["sleep"])
+        worst_special = max(status_specials, key=lambda s: ranked.index(s))
+        worst_special_index = ranked.index(worst_special)
+        if worst_special_index >= sleep_index or random.choice([True, False]):
+            status = reverse_specialdict[worst_special]
+            if status == "zombie":
+                status = "zombify"
+            elif status[-2:] == "ed":
+                status = status[:-2]
+            elif status[-1] == "e":
+                status = status[:-1]
+            return status
+    
+    worst_skill = max(all_skills, key=lambda s: s.rank())
+    return worst_skill.name + "-"

@@ -114,6 +114,8 @@ dialoguetexttable = {}
 f = open(DIALOGUE_TEXT_TABLE, encoding='utf8')
 for line in f:
     line = line.strip('\n')
+    if not line:
+        continue
     value, string = tuple(line.split('=', 1))
     dialoguetexttable[string] = value
 f.close()
@@ -139,7 +141,11 @@ def dialogue_to_bytes(text, null_terminate=True):
             i += 1
 
         if hex != "":
-            bs.append(hex2int(hex))
+            h = hex2int(hex)
+            while h > 255:
+                bs.append(h//256)
+                h %= 256
+            bs.append(h)
 
     if null_terminate:
         bs.append(0x0)

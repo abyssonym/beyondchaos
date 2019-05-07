@@ -25,7 +25,8 @@ from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
 from monsterrandomizer import (MonsterGraphicBlock, get_monsters,
                                get_metamorphs, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table,
-                               change_enemy_name, randomize_enemy_name)
+                               change_enemy_name, randomize_enemy_name,
+                               get_collapsing_house_help_skill)
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield, unhack_tintinabar)
@@ -5754,7 +5755,7 @@ def manage_dances():
          dances = random.sample(spells, 32)
          dances = [s.spellid for s in dances]
     else:
-        f = open(sourcefile, 'r+b')
+        f = open(sourcefile, 'rb')
         f.seek(0x0FFE80)
         dances = bytes(f.read(32))
         f.close()
@@ -5778,9 +5779,10 @@ def manage_dances():
         for i in range(8):
             while True:
                 index = random.randint(0, half) + random.randint(0, half)
-                if index not in other:
+                spellid = spells[index].spellid
+                if spellid not in other:
                     break
-            other.append(spells[index].spellid)
+            other.append(spellid)
 
         dances = geo[:16] + other[:8] + beasts[:8]
         random.shuffle(dances)
@@ -5880,6 +5882,7 @@ def sprint_shoes_hint():
     sprint_sub.bytestring = b'\xFE'
     sprint_sub.write(fout)
 
+
 def sabin_hint(commands):
     sabin = get_character(0x05)
     command_id = sabin.battle_commands[1]
@@ -5893,6 +5896,35 @@ def sabin_hint(commands):
     sabin_hint_sub.bytestring = dialogue_to_bytes(hint)
     
     sabin_hint_sub.write(fout)
+
+
+def code_hint():
+    if options.is_any_code_active(["easymodo", "canttouchthis"]):
+        return
+
+    max_len = 0x6D
+    while True:
+        code = options.random_unused_code()
+        print(code.name)
+        hint = "MADUIN: But if you use the code “{}”… <wait 240 frames><wait 1 frame><page><line>You will probably be able to remain in this world as a human being… <wait 240 frames><wait 1 frame>".format(code.name)
+        bytestring = dialogue_to_bytes(hint)
+        if len(bytestring) <= max_len:
+            break
+
+    code_hint_sub = Substitution()
+    code_hint_sub.set_location(get_dialog_pointer(fout, 0xBFD))
+    code_hint_sub.bytestring = bytestring
+    code_hint_sub.write(fout)
+
+
+def house_hint():
+    skill = get_collapsing_house_help_skill()
+    
+    hint = "There are monsters inside! They keep {}ing everyone who goes in to help.".format(skill) # Leave off 'You using suitable Relics?' just to make sure there's enough room.
+    house_hint_sub = Substitution()
+    house_hint_sub.set_location(get_dialog_pointer(fout, 0x8A4))
+    house_hint_sub.bytestring = dialogue_to_bytes(hint)
+    house_hint_sub.write(fout)
 
 
 # Moves check for dead banon after Life 3 so he doesn't revive and then game over.
@@ -6576,6 +6608,12 @@ def randomize():
     
     if options.mode.name == "katn":
         start_with_random_espers()
+    reseed()
+    
+    if options.random_enemy_stats or options.random_formations:
+        house_hint()
+    code_hint()
+    reseed()
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()

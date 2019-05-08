@@ -3,7 +3,7 @@ Song conversions:
     emberling -- blord_2tower
                  bof2_battle
                  cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life
-                 crys_fields, crys_mountain
+                 crys_fields, crys_mountain, crys_tower
                  ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair,
                  ct_keeper, ct_mountain, ct_night, ct_revolution, ct_robo,
                  ct_schala, ct_silent, ct_sewer, ct_theme, ct_truth, ct_tylair,
@@ -53,7 +53,8 @@ Song conversions:
                  smb2_select
                  so2_rescue, so2_victory
                  st_dungeon
-                 top_cold, top_mint, top_spirit, top_world1, top_world3
+                 top_cold, top_harmony, top_mint, top_spirit, top_world1,
+                 top_world3
                  totr_arrow
                  wc2_orc1
                  xc1_valakn

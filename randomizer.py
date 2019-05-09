@@ -3097,6 +3097,7 @@ def manage_blitz():
     cardinals = [0x8, 0xA, 0xC, 0xE]
     letters = list(range(3, 7))
     log("1. left, right, left", section="blitz inputs")
+    used_cmds = [[0xE, 0xA, 0xE]]
     for i in range(1, 8):
         # skip pummel
         current = blitzspecptr + (i * 12)
@@ -3108,7 +3109,6 @@ def manage_blitz():
         newlength = min(newlength, 10)
 
         newcmd = []
-        used_cmds = [[0xE, 0xA, 0xE]]
         while True:
             prev = newcmd[-1] if newcmd else None
             pprev = newcmd[-2] if len(newcmd) > 1 else None

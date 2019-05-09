@@ -138,23 +138,24 @@ Normal CC850 6B
 Normal AFA83 FD FD FD
 Normal AFA93 FD FD FD
 Normal AFAB4 FD FD FD
-#Palette CA2FB 01
-#Palette CA35D 0A
-#Palette CA36B 0A
-#Palette CA379 0A
-#Palette CA387 0A
-#Palette CA395 0A
-#Palette CA3A3 0A
-#Palette CA3B1 0A
-#Palette CA3BF 0A
-#Palette CA3CD 0A
-#Palette CA3DB 0A
-#Palette CA3E9 0A
-#Palette A663D 04
-#Palette A6CA3 05
-#Palette A86BA 06
-#Palette B9ABC 02
-#Palette B113A 15
-#Palette BC085 0B
-#Gau CFE1A 3F 0B 01 D4 FB FE
-#Gau BC0A4 B2 1A FE 02 FE
+Palette CA2FB 01
+Palette CA35D 0A
+Palette CA36B 0A
+Palette CA379 0A
+Palette CA387 0A
+Palette CA395 0A
+Palette CA3A3 0A
+Palette CA3B1 0A
+Palette CA3BF 0A
+Palette CA3CD 0A
+Palette CA3DB 0A
+Palette CA3E9 0A
+Palette A663D 04
+Palette A6CA3 05
+Palette A86BA 06
+ConvergentPalette B9ABC 02
+DivergentPalette B9AB6 02
+Palette B113A 15
+ConvergentPalette BC085 0B
+Gau CFE1A 3F 0B 01 D4 FB FE
+Gau BC0A4 B2 1A FE 02 FE

@@ -1444,6 +1444,9 @@ def manage_skips():
         writeToAddress(split_line[0], split_line[1:])
 
     def handleGau(split_line): # Replace events that should be replaced if we are auto-recruiting Gau
+        # at least for now, divergent paths doesn't skip the cutscene with Gau
+        if options.is_code_active("divergent")
+            return
         if options.shuffle_commands or options.replace_commands or options.random_treasure:
             writeToAddress(split_line[0], split_line[1:])
 
@@ -1454,6 +1457,16 @@ def manage_skips():
                 palette_correct_sub.bytestring = bytes([character.palette])
                 palette_correct_sub.set_location(int(split_line[0], 16))
                 palette_correct_sub.write(fout)
+
+    def handleConvergentPalette(split_line):
+        if options.is_code_active('divergent'):
+            return
+        handlePalette(split_line)
+        
+    def handleDivergentPalette(split_line):
+        if not options.is_code_active('divergent'):
+            return
+        handlePalette(split_line)
 
     def handleAirship(split_line): # Replace events that should be modified if we start with the airship
         if not options.is_code_active('airship'):
@@ -1472,14 +1485,14 @@ def manage_skips():
             )
 
     def handleConvergent(split_line): # Replace events that should be modified if the scenarios are changed
-        if 'divergent' in activated_codes:
+        if options.is_code_active('divergent'):
             return
-        writeToAddress(split_line[0], split_line[1:])
+        handleNormal(split_line)
 
     def handleDivergent(split_line): # Replace events that should be modified if the scenarios are changed
-        if 'divergent' not in activated_codes:
+        if not options.is_code_active('divergent'):
             return
-        writeToAddress(split_line[0], split_line[1:])
+        handleNormal(split_line)
 
     for line in open(SKIP_EVENTS_TABLE):
         # If "Foo" precedes a line in skipEvents.txt, call "handleFoo"

@@ -1018,6 +1018,14 @@ def lookup_reachable_entrances(entrance):
     entrances = entrance.location.entrances
     return [e for e in entrances if e.entid in reachdict[key]]
 
+
+def get_npcs():
+    npcs = []
+    for l in get_locations():
+        npcs.extend(l.npcs)
+    return npcs
+
+
 if __name__ == "__main__":
     from sys import argv
     if len(argv) > 1:

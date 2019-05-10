@@ -8,6 +8,9 @@ from itemrandomizer import get_ranked_items, get_item
 from namerandomizer import generate_attack, generate_name
 
 
+# Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
+REPLACE_ENEMIES = [0x10f, 0x136, 0x137]
+
 stat_order = ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
               'def', 'mdef', 'mpow']
 

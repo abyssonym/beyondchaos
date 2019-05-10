@@ -664,7 +664,7 @@ def manage_commands(commands):
     if random.randint(1, 5) != 5:
         invalid_commands.append("magitek")
 
-    if 'w' not in flags:
+    if not options.replace_commands:
         invalid_commands.extend(FORBIDDEN_COMMANDS)
 
     invalid_commands = set([c for c in commands.values() if c.name in invalid_commands])
@@ -4121,7 +4121,8 @@ def manage_opening():
 
     from string import ascii_letters as alpha
     consonants = "".join([c for c in alpha if c not in "aeiouy"])
-    display_flags = sorted([a for a in alpha if a in flags.lower()])
+    flag_names = [f.name for f in options.active_flags]
+    display_flags = sorted([a for a in alpha if a in flag_names])
     text = "".join([consonants[int(i)] for i in str(seed)])
     codestatus = "CODES ON" if options.active_codes else "CODES OFF"
     display_flags = "".join(display_flags).upper()
@@ -4203,7 +4204,7 @@ def manage_auction_house():
             write_multi(fout, dest, 2)
             pointer += 3
 
-    if 't' not in flags:
+    if not options.random_treasure:
         return
 
     auction_items = [(0xbc, 0xB4EF1, 0xB5012, 0x0A45, 500), # Cherub Down
@@ -4585,7 +4586,7 @@ def manage_clock():
 
 def manage_ancient(form_music_overrides={}):
     change_battle_commands = [41, 42, 43]
-    if 'o' not in flags:
+    if not options.shuffle_commands:
         alrs = AutoLearnRageSub(require_gau=True)
         alrs.set_location(0x23b73)
         alrs.write(fout)
@@ -4618,7 +4619,7 @@ def manage_ancient(form_music_overrides={}):
 
     characters = get_characters()
     gau = [c for c in characters if c.id == 11][0]
-    if 'w' not in flags and gau.battle_commands[1] in [0x11, None]:
+    if not options.replace_commands and gau.battle_commands[1] in [0x11, None]:
         gau.battle_commands[1] = 0xFF
         gau.write_battle_commands(fout)
 

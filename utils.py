@@ -174,7 +174,7 @@ def get_long_battle_text_index(f, address):
     return -1
 
 
-def get_dialog_pointer(f, index):
+def get_dialogue_pointer(f, index):
     f.seek(0xCE600)
     increment_index = read_multi(f)
     base = 0xD0000 if index <= increment_index else 0xE0000
@@ -185,7 +185,7 @@ def get_dialog_pointer(f, index):
     return ptr
 
 
-def get_dialog_index(f, address):
+def get_dialogue_index(f, address):
     f.seek(0xCE600)
     increment_index = read_multi(f)
     ptrs_start = 0xCE602

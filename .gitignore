@@ -5,3 +5,4 @@ dist/*
 beyondchaos_ex.spec
 build.bat
 savedflags.txt
+.pylintrc

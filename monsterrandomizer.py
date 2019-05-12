@@ -736,7 +736,9 @@ class MonsterBlock:
             e = s1.unreflectable == s2.unreflectable
             f = s1.abort_on_allies == s2.abort_on_allies
             return (a and b and c and d and e and f)
-        if options.is_code_active("madworld"):
+        if options.mode.name == "katn":
+            restricted = [0xEA, 0xC8]
+        elif options.is_code_active("madworld"):
             restricted = []
         else:
             restricted = [0x13, 0x14]

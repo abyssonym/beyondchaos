@@ -465,6 +465,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
     
     tierboss = dict(songconfig.items('TierBoss'))
     
+    if len(songtable) > songcount[0]:
+        print("expanding song count to {}".format(len(songtable)))
+        songcount[0] = len(songtable)
+        
     # determine which songs change
     used_songs = []
     songs_to_change = []
@@ -1154,6 +1158,56 @@ def process_formation_music_by_table(data, form_music_overrides={}):
     
     return data
         
+def process_map_music(data):
+    #find range of valid track #s
+    songcount_byte = 0x53C5E
+    max_bgmid = data[songcount_byte]
+    max_bgmid -= 4 #extra battles always go last
+    
+    map_offset = 0x2D8F00
+    map_block_size = 0x21
+    map_music_byte = 0x1C
+    
+    replacements = {}
+    replacements[0x51] = [ #Phantom Forest (forest)
+        0x84, 0x85, 0x86, 0x87
+        ]
+    replacements[0x55] = [ #Daryl's Tomb (tomb)
+        0x129, 0x12A, 0x12B, 0x12C
+        ]
+    replacements[0x56] = [ #Cyan's Dream (dream)
+        0x13D, #stoogeland
+        0x13F, 0x140 #dream of a mine
+        ]
+    replacements[0x57] = [ #Ancient Castle (ancient)
+        0x191, 0x192, #cave
+        0x196, 0x197, 0x198 #ruins
+        ]
+    replacements[0x58] = [ #Phoenix Cave (phoenix)
+        0x139, 0x13B
+        ]
+    replacements[0x59] = [ #Sealed Gate Cave (gate)
+        0x17E, 0x17F, 0x180, 0x181, 0x182
+        ]
+    replacements[0x5A] = [ #Mt. Zozo (mount2)
+        0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5
+        ]
+    replacements[0x5B] = [ #Figaro Engine Room (engine)
+        0x3E, 0x3F, 0x40, 0x41, 0x42
+        ]
+    replacements[0x5C] = [ #Village (village)
+        0x0E, 0x0F, 0x10, #chocobo stable
+        0x9D, 0xA0, 0xA1, 0xA4, #Mobliz (WoB)
+        0xBC #Kohlingen (WoB)
+        ]
+    
+    for bgm_id, maps in replacements.items():
+        if bgm_id > max_bgmid: continue
+        for map_id in maps:
+            offset = map_offset + (map_id * map_block_size) + map_music_byte
+            data = byte_insert(data, offset, bytes([bgm_id]))
+    return data
+    
 def randomize_music(fout, f_mchaos=False, codes=[], form_music_overrides={}):
     events = ""
     if 'christmas' in codes:
@@ -1164,6 +1218,8 @@ def randomize_music(fout, f_mchaos=False, codes=[], form_music_overrides={}):
     data = fout.read()
     data = insert_instruments(data, INST_METADATA_OFFSET)
     data = process_custom_music(data, f_mchaos=f_mchaos, eventmodes=events)
+    if 'ancientcave' not in codes and 'speedcave' not in codes and 'racecave' not in codes:
+        data = process_map_music(data)
     data = process_formation_music_by_table(data, form_music_overrides=form_music_overrides)
     
     fout.seek(0)

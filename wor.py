@@ -5,7 +5,7 @@ from character import get_character, get_characters
 from locationrandomizer import get_location, get_locations
 from monsterrandomizer import change_enemy_name
 from utils import (WOB_TREASURE_TABLE, WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
-                   read_multi, Substitution, utilrandom as random, write_multi, get_dialog_pointer)
+                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer)
 
 
 def dir_to_camera_moves(dir):
@@ -339,7 +339,7 @@ class WoRRecruitInfo(object):
             npc.graphics = self.char_id
             npc.palette = get_character(self.char_id).palette
         for index, offset in self.dialogue_pointers:
-            fout.seek(get_dialog_pointer(fout, index) + offset)
+            fout.seek(get_dialogue_pointer(fout, index) + offset)
             fout.write(bytes([self.char_id + 2]))
         if self.caseword_pointers:
             for location in self.caseword_pointers:

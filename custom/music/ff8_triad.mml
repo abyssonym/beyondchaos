@@ -1,0 +1,178 @@
+#TITLE Shuffle or Boogie
+#ALBUM Final Fantasy VIII
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x10~/0x10/ mouth harp
+#WAVE 0x21 ~0x70~/0x31/ filter sweep
+#WAVE 0x22 ~0x6B~/0x02/ bass guitar
+#WAVE 0x23 ~0x49~/0x0D/ strings
+#WAVE 0x24 ~0x0B~/0x0B/ organ
+#WAVE 0x25 ~0x6f~/0x1E/ dist.guitar
+#WAVE 0x28 ~0x22~/0x22/ kick
+#WAVE 0x29 ~0x51~/0x15/ clap
+
+#def global= t120 %x232 %v40 %b0,85 %f0,0
+
+#def mh= |0 p64 o5 'vh' %e1 m
+#def rs= ~|1 o5~ /|1 o4/ 'vr' %e1 m ~%y3%s2%r13~
+#def bg= |2 p64 o7 'vb' %e0 m
+#def st= |3 'ps' ~o4~/o5/ 'vs' %e1 m48,18,207 %r8
+#def ro= |4 p30 o6 'vo' %e1 m48,18,215 v0,16,255 %r1
+#def dg= |5 p90 ~o7~/o6/ 'vd' %e1 m48,18,223 /%y3%s4%r13/
+
+#def vh= v64
+#def vr= v96
+#def vb= ~v96~/v112/
+#def vs= v64
+#def vo= v24
+#def vd= ~v96~/v64/
+
+#def ps= p40
+
+#drum "i"=5a |8 p64 v74 %e0 m
+#drum "j"=5a |8 p64 v86 %e0 m
+#drum "k"=5a |8 p64 v96 %e0 m
+#drum "c"=~5f~/5c/ |9 p64 ~v96~/v127/ %e1 m
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'global'
+[32'mh*v1.25'f6'vh'f12]
+##5
+#^^ 17-32
+$##9
+l12 [['rs'f6'vr*v.7'f] 'vr'g+6'vr*v.7'f 'vr'f6'vr*v.7'f
+'vr'a+6'vr*v.7'f 'vr'f6'vr*v.7'f 'vr'g+6'vr*v.7'f 'vr'd+6'vr*v.7'g
+'vr'f6fr6f^2 fr3f^2]
+##17
+[g+6'vr*v.7'g+ 'vr'g6'vr*v.7'f+ 'vr'f6'vr*v.7'f 'vr'd+6f ^6fd+6f ^6fg+6f
+j2 ^1^1]
+^2. 'st+o1' l4 f2c+d+c
+##25
+'vs*v1.25''ps-p10' g2fg a+<c2>g  rg+gf+ fed+d
+##29
+'ro-o1' f1^1^1v
+'dg-o1' l12 [4crc]
+;
+
+{2}
+r1r1 ["^4c6c12^4c4"]
+##5
+'ro-o1' f1^1^1^1v
+$##9
+'dg-o1' l12 [16crcdrd]
+##17
+[4 frfgrg]
+'ro-o1' f1^1v
+'dg-o1' [4 frfgrg]
+'st+o2-p10' c2>a+4<c2>g+4a+4f4
+##25
+'dg-o1' [4grgara] fr6
+'st+o1' l4 (c+c>b) (a+ag+g)
+##29
+'dg-o1' l12 [6crcdrd] [grgara]
+;
+
+{3}
+r1r1r1r2. 'bg-o2*v1.13' l12 cde
+##5
+[15 fr'vb'f'vb*v1.13'] cde
+$##9
+[[15 'bg-o2*v1.13'fr'vb'f'vb*v1.13'] j2 cde] fga
+##17
+[[7a+r'vb'a+'vb*v1.13']a+g+g
+[7fr'vb'f'vb*v1.13']j2 fga]fg+a+
+##25
+<[8cr'vb'c'vb*v1.13']>a+r6
+'st+p10' l4 f+(fe) (d+d)(c+c)
+##29
+'bg-o2*v1.13' l12 [12fr'vb'f'vb*v1.13']
+cr'vb'c'vb*v1.13' dr'vb'd'vb*v1.13' d+r'vb'd+'vb*v1.13' er'vb'e'vb*v1.13'
+;
+
+{4}
+r1r1r1r2.r6"j12"
+##5
+l12 "k4^6i k2 k4^6i k4^6i" "k4c6c k4c4 k4c6c k4c6i"
+$##9
+["!!!o k4^6i k2 k4^6i k4^6i  k6kc6c k4c4 k6kc6c k4c4"]
+##17
+['st-p10' f2 g2 g+2 (a+<c)(c+dfa+)
+["!!!o k6kc6c k4c4"]]
+##25
+'st+o1' l4 c2>a+<c d+f2c  l12 "!!!o k1..^6i"
+##29
+"k4^6i k2 k4^6i k4^6i    k6kc6c k4c4  k6kc6c k4c4"
+;
+
+{5}
+[4r1]
+##5
+'ro-o1' ([12c3])v
+$##9
+[32'mh*v1.25'f6'vh'f12]
+##17
+[[8'vh*v1.25'a+6'vh'a+12] [8'vh*v1.25'f6'vh'f12]]
+##25
+[8'vh*v1.25'c6'vh'c12] f6r12 r1..
+##29
+[12'vh*v1.25'f6'vh'f12][4'vh*v1.25'c6'vh'c12]
+;
+
+{6}
+[4r1]
+##5
+'ro-o2' ([16f4])v
+$##9
+l12 'mh+o2+p24*v.67'
+[f6f f6f g+6f f6f  a+6f f6f g+6f d+6g   f6f r6f^2 fr3f^2]
+##17
+g+6g+g6f+ f6fd+6f ^6fd+6f ^6fg+6f
+'ro-o1' ([6c3])v
+'mh+o2+p24*v.67' g+6g+g6f+ f6fd+6f ^6fd+6f ^6fg+6f
+'st+o1'f2d+4 r4r1
+##25
+'dg-o1' [8crc]>a+ r6 r1..
+##29
+'ro-o1' ([9c3])v r4r6"!!!o i^2"
+;
+
+{7}
+[4r1]
+##5
+r1r1 l12 "^4^6i ^2^4^6i ^2"
+$##9
+'dg-o2' l12 [32frf]
+##17
+'st'd2c+4c4 >a+2<(dfg)(g+a+<d)
+'ro-o2' ([8f4])v
+'st'd2c+4c4 >a+2<(dfg)(g+a+<d)
+r4r6 "!!!o i ^2 ^4^6i ^2"
+##25
+'st+p10' l4 f2d+f g+a+2f r1r1
+##29
+'dg-o2' l12 [12frf] r1
+;
+
+{8}
+[4r1]
+##5
+[4r1]
+$##9
+l12 [^1^1 ^4^6"i" ^2^4^6"i" ^2]
+##17
+["k4^6i k2 k4^6i k4^6i" j2,824
+["^4^6i ^2"]] $824 r1r1
+##25
+":i: k4^6i k2 k4^6i k4^6i" r1r1
+##29
+'ro-o2' ([12f4])v r1
+;
+
+

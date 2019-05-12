@@ -1,0 +1,203 @@
+#TITLE Inner Mountains
+#ALBUM Crystalis
+#COMPOSER Yoko Osaka
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x7C~/0x1A/
+#WAVE 0x21 ~0x44~/0x04/
+#WAVE 0x22 ~0x41~/0x06/
+#WAVE 0x23 ~0x7B~/0x1B/
+#WAVE 0x24 ~0x4A~/0x1C/
+#WAVE 0x25 ~0x69~/0x33/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x5C~/0x21/
+#WAVE 0x2E ~0x5A~/0x11/
+#WAVE 0x2F ~0x0F~/0x0F/
+
+#def global= t75 ~%x240~/%x224/ %v40 %b0,85 %f0,0
+
+#def saw= |0 ~o5~/o7/ v48 m24,18,239
+#def dlc= |1 o6 ~v64~/v48/ %y3%s2 m24,18,223
+#def cho= |2 o5 v52 m24,18,203 %a10%r12
+#def cim= |3 o5 ~v64~/v96/ m %y3%s2
+#def bas= |4 ~o8~/o7/ ~v64~/v40/ m ~%y0%s3%r11~
+#def fid= |5 o5 v64 m24,18,239
+
+#drum "k"=5f |8 v64 p64 m %e0
+#drum "s"=6c |9 v64 p64 m %e1 /%y4%s1/
+#drum "t"=6e |9 v64 p74 m %e1 /%y4%s5/
+#drum "h"=5a |F v48 p74 m %e1
+#drum "i"=5g |E v48 p74 m %e0
+#drum "o"=5e |E v48 p94 m %e0
+#drum "r"=5b |E v64 p74 m %e1
+ 
+{1}$
+'global' %e1
+'cim' l16 p48
+r[3a<e>a<f>]a<e8>
+r[3g<d>g<e>]g<d8>
+##
+l48 <c24r>a24rf24rc24r <c24r>a24rf24r<c32c32
+d24r>b24rg24rd24r <d24r>b24rg24r<d32d32>
+##
+l16 rarg+rgrf+ ra32a32rg+32g+32rg32g32rf+32f+32
+###
+r<cc>a32<c32 eaec  f8ed8c>b8
+r<dd>g32b32<dgd>b  <c8de^4
+'fid+o1*v.85' %y3%s0
+rf32f32ff rfgf  f8.e ^4
+d32dd.d rdef 'saw+o1' %y3%s2 />/ re32ee.e ^e32g.
+###
+'cho-o1' p80 a4bm12,-4^8.a4..m6,-2^
+a4b8m6,5^8<c2
+'saw'/>/ p48 %y1%s1 a<c8>b32<c32 d12c12>b12  <ce8d32e32 f12e12d12
+%y0%s2 e32d32>b4.. g+8<f8e8>b8
+;
+
+{2}$
+%e1 'cim' l16 p80
+r[3a<c>a<d>]a<c8>
+r[3gbg<c>]gb8
+##
+'fid*v.67' l16 %r19
+<c>afc <c>af<c
+d>bgd <d>bg<d
+##
+%r5 %y3%s2 e1
+###
+'cho-o1'
+a2f4.ef
+g8b8<d>bgb <c8de^4
+'cim+o1'
+rd32d32dd rded  c8.c ^4
+>a+32a+a+.a+ ra+<cd>  rg+32g+g+.g+ ^e32g.
+###
+p48 a12<c12>b12 <d12c12>b12  <c32>b32a4..
+a12<c12>b12 <d12c12>b12  <c32d32e4..
+'dlc-o1' p80 ea8g32a32 b12a12g12  a<c8>b32<c32 d12c12>b12
+%r5 <e2> e8<d8c8>g+8
+;
+
+{3}$
+%e1 'saw-o2*v1.25' l16 p56
+a4.raa4.ra32a32
+g4.rgg4...g32
+##
+l32 f8r16ff frfffrff  g8r16gg grgggrgg
+##
+l24 [a12rg+12rg12rf+12r]
+###
+'bas-o2' %e0
+l32 [4araa][4frff]
+l32 [4grgg][crcc][c+rc+c+]
+l32 [4drdd][4araa]
+l32 [4a+ra+a+][4eree]
+###
+l32 [3araaraer]araaargr
+l32 [3frffrfcr]frfffrgr
+l32 araaraer grggrgdr frffrfcr frfffrff
+[8eree]
+;
+
+{4}$ l16
+[3"k8s8kks8 k8s8kksk"]
+##
+"k8s8kks8" l32 "k16kk s8 k16kk s16tt"
+###
+l16 "k8s8kks8 k8s8kksk"
+l16 "k8s8kks8 k8s8kksk"
+l16 "k8s8kks8 k8s8kksk"
+"k8s8kks8" l32 "k16kk s8 k16kk s16tt"
+###
+l16 "k8s8kks8 k8s8kksk"
+l16 "k8s8kks8 k8s8kksk"
+l16 "k8s8kks8 k8s8kksk"
+"k8s8kks8 k8s8kkst32t32"
+;
+
+{5}$ l16
+[12"hh32h32oh32h32"]
+##
+["hh32h32oh32h32"] l32 "i16ii r16hh i16ii r16r16"
+###
+l16 [4"hh32h32oh32h32"]
+l16 [4"hh32h32oh32h32"]
+l16 [4"hh32h32oh32h32"]
+["hh32h32oh32h32"] l32 "i16ii r16hh i16ii r16r16"
+###
+l16 [4"hh32h32oh32h32"]
+l16 [4"hh32h32oh32h32"]
+l16 [4"hh32h32oh32h32"]
+[3"hh32h32oh32h32"] "hh32h32rr"
+;
+
+{6}$
+%e1 'dlc-o1*v.67' l16 p48
+r[3a<e>a<f>]a<e8>
+r[3g<d>g<e>]g<d8>
+##
+'cho' f2g2
+##
+a2m12,-12a2
+###
+'saw-o1*v.67'
+r<cc>a32<c32 eaec  f8ed8c>b8
+r<dd>g32b32<dgd>b  <c8de^4
+'cim'
+rf32f32ff rfgf  f8.e ^4
+d32dd.d rdef  re32ee.e ^e32g.
+###
+>a12<c12>b12 <d12c12>b12  <c32>b32a4..
+a12<c12>b12 <d12c12>b12  <c32d32e4..
+'dlc-o1' p48 a<c8>b32<c32 d12c12>b12  <ce8d32e32 f12e12d12
+e32d32>b4.. g+8<f8e8>b8
+;
+
+{7}$
+'bas-o2'  l16 p72
+a4.raa4.ra32a32
+g4.rgg4...g32
+##
+l32 f8r16ff frfffrff  g8r16gg grgggrgg
+##
+l24 [a12rg+12rg12rf+12r]
+###
+'saw-o2*v1.25'%e1
+l32 [4araa][4frff]
+l32 [4grgg][crcc][c+rc+c+]
+l32 [4drdd][4araa]
+l32 [4a+ra+a+][4eree]
+###
+l16 %y3%s3 [3a.a.e]a.a.g
+l16 [3f.f.c]f.f.g
+a.a.e g.g.d f.f.c f.f.f
+[<m12,-12e8>e8]<[4m12,-12e8]
+;
+
+{8}$
+%e1 'dlc-o1*v.67' l16 p80
+r[3a<c>a<d>]a<c8>
+r[3gbg<c>]gb8
+##
+'cim*v.67'
+l48 r<c24r>a24rf24rc24r <c24r>a24rf24r<c32c32
+d24r>b24rg24rd24r <d24r>b24rg24r<d32&2d32
+##
+'dlc-o1*v.67'
+l16 rarg+rgrf+ ra32a32rg+32g+32rg32g32rf+32f+32
+###
+p48 r<cc>a32<c32 eaec  f8ed8c>b8
+r<dd>g32b32<dgd>b  <c8de^4
+'fid*v.67' %y3%s0 p80
+rd32d32dd rded  c8.c ^4
+>a+32a+a+.a+ ra+<cd 'saw-o1' %y3%s2 rg+32g+g+.g+ ^e32g.
+###
+'saw'/>/ p80 %y3%s0 p48
+a12<c12>b12 <d12c12>b12  <c32>b32a4..
+a12<c12>b12 <d12c12>b12  <c32d32e4..
+>%y1%s1 ea8g32a32 b12a12g12  a<c8>b32<c32 d12c12>b12
+%y0%s2 <e2> e8<d8c8>g+8
+;

@@ -1,5 +1,7 @@
 *.pyc
 *.smc
-beyondchaos.spec
+build/*
+dist/*
+beyondchaos_ex.spec
 build.bat
 savedflags.txt

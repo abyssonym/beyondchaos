@@ -4801,7 +4801,7 @@ def manage_wor_skip(wor_free_char=0xB):
         setbit = int(line[1], 16)  # if 1, set the bit from the txt file
         bit = line[0]  # the bit to set/clear from the txt file
         if bit == "2FB":
-            bit = "2F" + str(wor_free_char)
+            bit = "2F" + hex(wor_free_char)[2:]
         firstbyte = 0xD1 + int(bit[0:1], 16) * 2 - setbit
         lastbyte = int(bit[1:], 16)
         wor_sub2.bytestring += bytearray([firstbyte, lastbyte])
@@ -4858,7 +4858,7 @@ def manage_clock():
     wrong_hours = [0, 1, 2, 3, 4, 5]
     wrong_hours.remove(hour)
     random.shuffle(wrong_hours)
-    hour_to_hex = [dialogue_to_bytes('2'),dialogue_to_bytes('4'), dialogue_to_bytes('6'), dialogue_to_bytes('8'), dialogue_to_bytes('10'), dialogue_to_bytes('12')]
+    hour_to_hex = [dialogue_to_bytes('2', null_terminate=False),dialogue_to_bytes('4', null_terminate=False), dialogue_to_bytes('6', null_terminate=False), dialogue_to_bytes('8', null_terminate=False), dialogue_to_bytes('10', null_terminate=False), dialogue_to_bytes('12', null_terminate=False)]
 
     f = open(sourcefile, 'r+b')
     start = 0xDACC7
@@ -5364,7 +5364,7 @@ def manage_ancient(form_music_overrides={}):
             return True
         return False
 
-    formations = sorted(get_formations(), key=lambda fout: fout.rank())
+    formations = sorted(get_formations(), key=lambda f: f.rank())
     enemy_formations = [
         f for f in formations if f.is_fanatics or
         (f.present_enemies and not f.has_event and not f.has_boss)]
@@ -5626,7 +5626,7 @@ def manage_ancient(form_music_overrides={}):
     num_in_party_sub.write(fout)
     pointer += len(num_in_party_sub.bytestring)
     ally_addrs = {}
-    for chosen in sorted(set(optional_chars)):
+    for chosen in set(optional_chars):
         byte, bit = chosen.slotid // 8, chosen.slotid % 8
         mem_addr = ((0x1b+byte) << 3) | bit
         allysub = Substitution()
@@ -6079,7 +6079,7 @@ def manage_ancient(form_music_overrides={}):
             2: [0xC16DD, 0xC171D, 0xC1756],
             3: [None, None, None]}
         fout.seek(0xA0F6F)
-        fout.write(chr(0x36))
+        fout.write(bytes([0x36]))
         candidates = sorted(boss_formations, key=lambda b: b.rank())
         candidates = [c for c in candidates if c.inescapable]
         candidates = candidates[random.randint(0, len(candidates)-16):]

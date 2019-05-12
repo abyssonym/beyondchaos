@@ -1,0 +1,155 @@
+#TITLE Ryu's Defeat (Cinema Display V)
+#ALBUM Ninja Gaiden III
+#COMPOSER Kaori Nakabai
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x97~/0x01/
+#WAVE 0x21 ~0x8B~/0x20/
+#WAVE 0x22 ~0x45~/0x0D/
+#WAVE 0x23 ~0x1C~/0x1C/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x5C~/0x14/
+#WAVE 0x2A ~0x84~/0x17/
+#WAVE 0x2B ~0x5A~/0x11/
+
+#def global= t90 %x240 %v50 %b0,85 %f0,0
+
+#def gt= |0 'g' ~o6~/o6/ p72 %e1 m48,18,223
+#def pi= |1 'p' ~o5~/o6/ p56 %e1 m
+#def st= |2 's' ~o4~/o5/ p48 %e1 m48,18,207 %r6
+#def bs= |3 'b' o5 p64 %e0 m %y2%s4%r8
+
+#def g= v64
+#def p= ~v96~/v56/
+#def s= v64
+#def b= v56
+
+#drum "k"=5g |8 v80 p64 %e0
+#drum "q"=5a |9 v30 p64 %e1
+#drum "r"=5a |9 v55 p64 %e1
+#drum "s"=5a |9 v80 p64 %e1
+#drum "p"=5g |B v72 p80 %e1 %y2%s0
+#drum "h"=5g |B v56 p80 %e0 %y4%s0
+#drum "t"=5f |A v80 p80 %e1
+
+{1}
+'global'
+l8 'pi' g+d+>a+b^2< gd+>a+b^2< f+d+>a+b2<c+16d+16 e2d+2
+##4
+g+d+>a+b^2< gd+>a+b^2< f+d+>a+b2<c+16d+16 e2d+2
+$##8
+l16 'st' d+2.>b<c+8.  d+2.>b<c+8.
+d+2.c+>b8. g+2..f+g+
+##C
+b2..<c+>b a+4<f+4d+4>f+4  f4g+4b4<d4 d+2.>b<c+8.
+##10
+d+2.>b<c+8.  d+2.>b<c+8.
+d+2.c+>b8.< g+2.g+gf+f
+##14
+e2..f+e  d+2f+2    g+1^1
+;
+
+{2}
+l8 'gt' g+d+>a+16a+16b16b16^2< gd+>a+16a+16b16b16^2<
+f+d+>a+16a+16b16b4..<c+16d+16 e16e4..d+16d+4..
+##4
+g+d+>a+16a+16b16b16^2< gd+>a+16a+16b16b16^2<
+f+d+>a+16a+16b16b4..<c+16d+16 e16e4..d+16d+4..
+$##8
+l16 'gt' g+g+d+d+>a+a+bb^2< ggd+d+>a+a+bb^2<
+f+f+d+d+>a+a+bb^2< ffc+c+>g+g+ff^2<
+##C
+ee>bbg+g+ee^2< d+d+c+c+>a+a+f+f+^2<
+dd>bbg+g+ff^2< d+d+>a+a+ggd+d+^2<
+##10
+g+g+d+d+>a+a+bb^2< ggd+d+>a+a+bb^2<
+f+f+d+d+>a+a+bb^2< ffc+c+>g+g+ff^2<
+##14
+ee>bbg+g+ee^2<  d+d+c+c+>a+a+f+f+<f+f+c+c+>a+a+f+f+<
+g+g+d+d+>a+a+bb<f+f+d+d+>a+a+bb< ffc+c+>g+g+a+a+<d+d+>ggg+g+a+a+
+;
+
+{3}
+'gt' r16g+2... r16g2... r16f+2... b2r4'bs'd+4
+##4
+g+1 g1 f+1 c+2d+2
+$##8
+'bs' l16 g+8r4rg+g+8g+8rg+8r g8r4rgg8g8rg8r
+f+8r4rf+f+8f+8rf+8r f8r4rff8f8c+f8f
+##C
+e8r4ree8e8re8r d+8r4rd+d+8d+8rd+8r
+d8r4rdd8d8rd8r d+8r4rd+d+8d+8a+d+8r
+##10
+g+8r4rg+g+8g+8rg+8r g8r4rgg8g8rg8r
+f+8r4rf+f+8f+8rf+8r f8r4rff8f8c+f8f
+##14
+e8r4ree8e8re8r d+8r4rd+f+8f+8rf+8f+
+[g+8r4rg+g+8g+8rg+8r]
+;
+
+{4}
+'gt' [3r8.d+16^2.] >g+2g2
+##4
+l16 [3"k4k4k4srq8"] "k4k4k8t8srqr"
+$##8
+"!!!o k4s8.kk4srqt" "k4s8.kk4s8sr"
+"k4s8.kk4srqt" "k4s8.kk8s8srqr"
+;
+
+{5}
+[4r1]
+##4
+'st-o1' %a5 g+1 g1 f+1 c+2d+2
+$##8
+'st-o1' %a5 g+1 g1 f+1 f1
+##C
+e1 d+1 d1 a+1
+##10
+g+1 g1 f+1 f1
+##14
+e1 d+2f+2 g+1^1
+;
+
+{6}
+r1r1r1 'gt-o1'  r2a+2
+##4
+'gt' r16g+2... r16g2... r16f+2... >b2a+2
+$##8
+l16 'pi+o1' %r1 d+2.>b<c+'p*v.67'c+8  'p'd+2.>b<c+'p*v.67'c+8'p'
+d+2.c+>b'p*v.67'b8'p' g+2..f+g+
+##C
+b2..<c+>b a+4<f+4d+4>f+4  f4g+4b4<d4 d+2.>b<c+'p*v.67'c+8'p'
+##10
+d+2.>b<c+'p*v.67'c+8'p'  d+2.>b<c+'p*v.67'c+8'p'
+d+2.c+>b'p*v.67'b8'p'< g+2.g+gf+f
+##14
+e2..f+e  d+2f+2    l8 g+ 'p*v.5' >>bg+g+<d+>bf+f+< c+>g+ff+a+d+fg
+;
+
+{7}
+[4r1]
+##4
+'gt' [3r8.d+16^2.] >g+2g2
+$##8
+'pi' g+d+>a+b^2< gd+>a+b^2< f+d+>a+b^2< fc+>g+f^2<
+##C
+e>bg+e^2< d+c+>a+f+^2<  d>bg+f^2< d+>a+gd+^2<
+##10
+g+d+>a+b^2< gd+>a+b^2< f+d+>a+b^2< fc+>g+f^2<
+##14
+e>bg+e^2< d+c+>a+f+<f+c+>a+f+<
+g+d+>a+b<f+d+>a+b< fc+>g+a+<d+>gg+a+
+;
+
+{8}
+[4r1]
+##4
+[3"phph phhp"] "phph hph16h16p"
+$##8
+l16 "!!!o phhh hhph hphh hhpp" "phhh hhph hphh hphp"
+"phhh hhph hphh hhpp" "phhh hhph hphh phph"
+;
+

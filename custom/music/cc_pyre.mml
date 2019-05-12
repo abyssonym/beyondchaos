@@ -1,0 +1,200 @@
+#TITLE Mount Pyre
+#ALBUM Chrono Cross
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x97~/0x02/
+#WAVE 0x21 ~0x43~/0x06/
+#WAVE 0x22 ~0x33~/0x33/
+#WAVE 0x23 ~0x1B~/0x1B/
+#WAVE 0x28 ~0x84~/0x17/
+#WAVE 0x29 ~0x5B~/0x2E/
+#WAVE 0x2A ~0x5F~/0x2F/
+#WAVE 0x2B ~0x37~/0x37/
+#WAVE 0x2C ~0x3C~/0x3C/
+
+#def global= t105 %x240 %v50 %b0,85 %f0,0
+
+#def gt= %e1 |0 'g' p64 ~o5~/o7/ m48,18,193 %r10 %y3%s3
+#def st= %e1 |1 's' ~o4~/o5/ m6,18,207 %a7
+#def bp= %e1 |2 'p' p64 o5 m48,18,231 %r5
+#def bs= %e0 |0 'b' p64 ~o5~/o7/ m %r8
+#def hp= %e1 |3 'h' p0 o5 m
+
+#def g= v80
+#def s= v40
+#def p= v88
+#def b= v96
+#def h= v40
+
+#def da= %e1 |8 p40 o4
+#def da1= ~v96~/v72/ ~e4.~/e4./
+#def da2= ~v96~/v72/ ~e16^2~/e16^2/ ~v52~/v36/ ~e16~/e16/
+#def db= %e1 ~|8~/|8/ p80 ~o3~/o3/ %r21
+#def db1= ~v52~/v36/ ~g8g16b8 v36 g16~ /c8c16e8 v24 c16/
+#def db2= 'db1' ~b16g16g16g16~ /e16c16c16c16/
+#def dc= 'da' ~[v96e8>v52g16b8v36g16<]>b16g16g16<v52e16~ /[v72e8>v36c16e8v24c16<]>e16c16c16<v52e16/
+#cdef ( %l1
+#cdef ) %l0
+
+#drum "z"=4e |8 p64 %e1 ~v127~/v96/
+#drum "y"=4e |8 p64 %e1 ~v72~/v52/
+#drum "x"=4e |8 p64 %e1 ~v52~/v36/
+
+#drum "t"=5g |B p80 %e1 v80
+#drum "s"=6e |A p40 %e1 v32
+#drum "r"=6e |A p40 %e1 v20
+#drum "q"=6e |A p40 %e1 v12
+#drum "m"=5a+ |A p40 %e1 v32
+#drum "n"=5a+ |A p40 %e1 v20
+
+#drum "a"=7f+ |C p72 %e1 v24 %r27
+#drum "b"=7c+ |C p72 %e1 v20 %r26
+#drum "c"=4a |9 p48 %e1 v70 %r22
+#drum "d"=5e |9 p48 %e1 v70 %r22
+#drum "e"=5g |9 p48 %e1 v70 %r22
+#drum "f"=5a |9 p48 %e1 v70 %r22
+
+#drum "g"=5e |9 p48 %e1 v40 %r20
+#drum "h"=5g |9 p48 %e1 v40 %r20
+#drum "i"=5a |9 p48 %e1 v40 %r20
+
+{1}
+'global'
+'gt*v1.2-o2' [8a1^1]
+$## 17
+'bp'
+m48,2a1...<c d1...e16>b16<  c4.(g1.a16g16) f+1.d+2
+## 25
+e1>b2..<c d1.^e4>b (m4,1b16b16)a1... ^1^1
+## 33
+^1 "!!!o srrmrqmr  sq16r.mrrmr srrmrrsn16r16"
+## 37
+'gt-o1' r4. a<eab1.^> a<fb<c1.^>> a<f<cd1.^>> a<eab^^1
+## 45
+'st+o1' p107 d+1^1 f+1^1 %r10 ^1^1
+;
+
+{2}
+'gt-o1' r4. [a<eab1.^> a<fb<c1.^>> a<f<cd1.^>> a<eabj2^1.>]^^1
+$## 17
+'hp-o1'
+eb<ed>a<c>gb ^aegba<c>b  efb<ef>b<ed ^>a<c>bgaeg
+aea<cgc>b<e ^d>b<cdege  b<c>bf+ad+f+>b ^ab<cd+cf+d+
+## 25
+e>ab<cd>b<cg ^>ab<cd>b<cg  d>fb<cd>b<cg ^>fb<cd>b<cg>
+eab<cd>b<cg ^>eb<cd>b<cg>  eab<cd>b<cg ^>eb<cd>b<cg>
+## 33
+a1^1 "!!!o" r4."a4b4. ^4.a2b"
+## 37
+'gt-o1*v.5-p64' r2. a<eab1.^> a<fb<c1.^>> a<f<cd1.^>> a<eab^2.
+## 45
+'st' p87 a1^1 g1^1 %r10 ^1^1
+;   
+
+{3}
+'gt*v.5-o2-p64' r4. [8a1j8^1]^2   %e0'b'p64 g
+$## 17
+'bs-o2'
+a4ra1.g a4ra1<a4ega>  a4ra1.g a4r&140a<a48b4a4f+4d+
+## 25
+ae>a1.^g a4ra1.g  a4ra1.g a4ra1<c4de>g
+## 33
+a1^1^1^1
+## 37
+'gt*v1.2-o2' [4a1^1]
+## 45
+'bs-o2' l32
+[a8<arer g^dra^er  a+8argr d^erg^ar>
+a8<ardr g^era^er  a+8a^gr >a^<era^gr>]
+"!!!o z1..y4"
+;
+
+{4}
+'gt-o1*v.5-p64' r2. [a<eab1.^> a<fb<c1.^>> a<f<cd1.^>> a<eabj2^1.>] ^2.
+$## 17
+"!!!o" l8
+[4"z4.c4cdb fdef4dey   z4.a4bde fdea4dey"]
+## 25
+#^^
+## 33
+"z4.c4cdb fdef4def   c4.c4cde fdef4def"
+## 37
+#y4.yy4.q y4.yyhgq   y4.yy4.q y4.yyhgq
+#c4.qr2   r4.qr4.i   r4.qr2   r4.qr4.i
+#r2  h2   g4.hi2     ^2  h2   g4.hi2
+[4"!!!o  x4.xy4.q  x4.xyhgq"]
+## 45
+[4'dc'] 'da' &240 'da1' "!!!o ^higac"
+;
+
+{5}
+[6r1] 'db'    r4. 'db2*v.34' 'db1*v.54''db2*v.65'
+'db1*v.78''db2*v.85' 'db1*v.95''db2*v1.01'  'db1*v1.1''db2*v1.15' 'db1*v1.23''db2*v1.20'
+'db1*v1.14''db2*v1.09' 'db1*v1.03''db2*v.97'  'db1*v.89''db2*v.83' 'db1*v.75''db2*v.68'
+$## 17
+'st' p107 %l1
+b1b2..<c d1d1 c1c1 >b1b1
+## 25
+b1b2..<c d1d1 c1>b1 a1a1
+## 33
+%r7 a1^1^1^1 )
+## 37
+'gt*v.5-o2-p64' r4. [4a1j4^1]^2^
+## 45
+"!!!o"
+"s4rmrsmr srrmrqmr sq16r.mrrmr srrmrrsn16r16" r1r1
+;
+
+
+{6}
+[6r1] 'da'    r4. 'da2*v.34' 'da1*v.54''da2*v.65'
+'da1*v.78''da2*v.85' 'da1*v.95''da2*v1.01'  'da1*v1.1''da2*v1.15' 'da1*v1.23''da2*v1.20'
+'da1*v1.14''da2*v1.09' 'da1*v1.03''da2*v.97'  'da1*v.89''da2*v.83' 'da1*v.75''da2*v.68'
+$## 17
+'st-o1' p87 %l1
+[16a1]
+## 25
+#^^
+## 33
+%r7 a1^1^1^1 )
+## 37
+"!!!o"
+"c4.qr2   r4.qr4.i" "r4.qr2   r4.qr4.i" "r4.qr2   r4.qr4.i" "r4.qr2   r4.qr4.a"
+## 45
+'st' p20 (a+1a+1 < c1c1 %r10 ^1^1)
+;
+
+
+{7}
+'gt*v.15-o2+p63' r2. [7a1^1]a1^4
+$## 17
+"!!!o" l8
+[4"s4rmtsmr srrmrqmr  sq16r.mtrmr srrmrrsn16r16"]
+## 25
+#^^
+## 33
+"s4rmrsmr" r1r1r1
+## 37
+"r2  h2   g4.hi2" "^2  h2   g4.hi2" "^2  h2   g4.hi2" "^2  h2   g4.hi2"
+## 45
+"zh4iahgb ghibghiy zhia4bhg hgiaghgy" r1r1
+;
+
+{8}
+'gt-o1*v.15+p64' r1r [a<eab1.^> a<fb<c1.^>> a<f<cd1.^>> a<eabj2^1.>] ^4.
+$## 17
+'st' p20 %l1
+e1e1 f1f1 e1e1 d+1d+1
+## 25
+e1e1 f1f1 e1e1 e1e1
+## 33
+%r7 e1^1^1^1 )
+## 37
+'gt*v.15-o2+p63' r2. [3a1^1]a1^4
+## 45
+'st-o1' p40 r1r1 (a1a1 %r10 ^1^1)
+;

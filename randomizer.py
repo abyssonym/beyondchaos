@@ -1445,7 +1445,7 @@ def manage_skips():
 
     def handleGau(split_line): # Replace events that should be replaced if we are auto-recruiting Gau
         # at least for now, divergent paths doesn't skip the cutscene with Gau
-        if options.is_code_active("divergent")
+        if options.is_code_active("divergent"):
             return
         if options.shuffle_commands or options.replace_commands or options.random_treasure:
             writeToAddress(split_line[0], split_line[1:])
@@ -2535,7 +2535,13 @@ def manage_palettes(change_to, char_ids):
     for line in open(EVENT_PALETTE_TABLE):
         if line[0] == '#':
             continue
-        pointer = hex2int(line.strip())
+        line = line.split(' ')
+        if len(line) > 1:
+            if line[1] == 'c' and options.is_code_active('divergent'):
+                return
+            if line[1] == 'd' and not options.is_code_active('divergent'):
+                return
+        pointer = hex2int(line[0].strip())
         fout.seek(pointer)
         data = bytearray(fout.read(5))
         char_id, palette = data[1], data[4]
@@ -4751,7 +4757,6 @@ def code_hint():
     max_len = 0x6D
     while True:
         code = options.random_unused_code()
-        print(code.name)
         hint = "MADUIN: But if you use the code “{}”… <wait 240 frames><wait 1 frame><page><line>You will probably be able to remain in this world as a human being… <wait 240 frames><wait 1 frame>".format(code.name)
         bytestring = dialogue_to_bytes(hint)
         if len(bytestring) <= max_len:

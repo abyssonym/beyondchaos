@@ -1196,6 +1196,7 @@ def process_map_music(data):
         ]
     replacements[0x5C] = [ #Village (village)
         0x0E, 0x0F, 0x10, #chocobo stable
+        0x5D, 0x5E, #Sabin's house
         0x9D, 0xA0, 0xA1, 0xA4, #Mobliz (WoB)
         0xBC #Kohlingen (WoB)
         ]

@@ -6,7 +6,6 @@
 
 #VARIANT ~ enh
 #VARIANT / nat
-#SFXV ` *
 
 #WAVE 0x20 ~0x45~/0x0D/
 #WAVE 0x21 ~0x31~/0x31/
@@ -21,7 +20,7 @@
 #def 2=%k-14
 #def 4=~%k3~/%k14/
 
-*{7}*`{3}`
+{7}
 l16{FD}100%e1|5v40p64o6%r18d24r8.r48e24r8.r48 $1 f24r12e24r12c24r12>a24r12  
 <d24r3d24r12c24r12>a24r12f24r12g24r12  a24r8.r48g24r8.r48e24r12f24r12a24r12<c24r12  
 e24r8.r48f24r8.r48c24r2  r8.r48e24r8.r48f24r12e24r12c24r12>a24r12<d24  
@@ -31,7 +30,7 @@ r12d24r12c24r12d24r12d24r2  r4.r12[8r1  ][16r1  ]
 
 l16
 {1}
-l16t84%v20%b0,70%x224{FD}100%e1|1p64v78o6'1b'd4e4 $2 f8e8c8>a8  
+l16t84%v20%b0,70%f0,0%x224{FD}100%e1|1p64v78o6'1b'd4e4 $2 f8e8c8>a8  
 <d4.d8c8>a8f8g8  a4g4e8f8a8<c8  e4f4c2  ^4e4f8e8c8>a8  
 <d4.d8c8>a8f8g8  a4g4e8f8a8<c8  e8d8c8d8d2  %k0|0p64~o6~/o7/%a8v39d4v53e4v60f8e8c8>a8  
 <d4.d8c8>a8f8g8  a4g4e8f8a8<c8  e4f4c2  ^4e4f8e8c8>a8  
@@ -56,7 +55,7 @@ b1  ^1  <c+1
 ;3
 
 l16
-*{3}*`{6}`
+{3}
 l16{FD}100%e1r2 $4 |1v69p64o4'1'r8a2  
 f4.r8e2  f4e8^8>a4.<<g8  >d4.<f8>g8<d4c2  r8>a2f4.  
 ^8e2f4e8  r8>a4.<<g8>g4a8  <g4.g8f+2  %k0|0v35p64~o5~/o6/%a8c2d2  
@@ -69,7 +68,7 @@ drdr8.drdrdr8.dr  drdr8.drdrdr8.dr  c+1
 ;4
 
 l16
-*{4}*`{7}`
+{4}
 l16{FD}100%e1r2 $5 |1v55p64o4'1'd2  
 >a+2a4<c4  >f4e4d2  g2<c1  d2>a+2  
 a4<c4>f4e4  d2g4a4  <d2<d2  %k0|0v35p127~o4~/o5/%a8d2>a+2  
@@ -90,13 +89,13 @@ l16{FD}120%e1r2 $6 |6v103p64o5d4r8d8
 ;6
 
 l16
-*{6}*`{8}`
+{6}
 l16{FD}127%e1r2v110p64o5 $7 [7r4|4'4'd2  |2'2'a+4]r4|4'4'd2  
 r4[8r1  ]|2'2'[16r4a+2r4  ]
 ;7
 
 l16
-*{8}*`{4}`
+{8}
 l16{FD}120%e1r2 $8 [7r1  ]|3v120p64o5%a3g1  
 [24r1  ]
 ;8

@@ -17,7 +17,7 @@
 #WAVE 0x2B ~0x68~/0x11/
 #WAVE 0x2C ~0x2D~/0x2D/
 
-#def global= t90 %v50 %b0,70 %x224
+#def global= t90 %v50 %b0,70 %f0,0 ~%x255~/%x232/
 
 #def low= |0 ~v104~/v80/ ~o3~/o4/ p44
 #def mid= ~|3~/|2/ ~v127~/v80/ ~o4~/o5/ p74
@@ -74,7 +74,7 @@ $312 l8 c>ba+ag+f+fd
 'low''st' l8 [15d+<d+>]'su'd+4^2
 ;
 
-{4}
+{5}
 $ %e1
 ['mid''st' l4 ^8
 a+a+d+a+ a+aad+ aaad+ aad+a8]
@@ -82,7 +82,7 @@ a+a+d+a+ a+aad+ aaad+ aad+a8]
 'low''st' l4 [15a+]'su'a+^2
 ;
 
-{5}
+{6}
 $ %e1
 ['mid''st' l4 k2 ^8
 aaaa aa+a+a+ d+a+a+a+ a+a+a+a+8]
@@ -90,24 +90,24 @@ aaaa aa+a+a+ d+a+a+a+ a+a+a+a+8]
 ~'low''st'~/'fb'/p64 l4 [15d+]'su'd+^2
 ;
 
-{6}
+{7}
 $ %e1
 ['fb' l8
 f4d+'p'f4c+'f' f4d+'p'fd+c'f' f4d+'p'f4g'f' %rf4.'p'r4.'p']
 [4r1]
-l4 r8 %e0 ["!!!otuv16v8.s tuv16v8."j2"u16u8."] r2r8
+[18"!!!ok4"]
 ;
 
-{7}
+{4}
 $ %e1
 l8 [32"kc"]
 [4r1]
-l4 r8 [8"!!!oco"]"co8"
+l4 r8 %e0 ["!!!otuv16v8.s tuv16v8."j2"u16u8."] r2r8
 ;
 
 {8}
 $ %e1
 l4 [[6"gb"]"g1"]
 [4r1]
-[18"!!!ok4"]
+l4 r8 [8"!!!oco"]"co8"
 ;

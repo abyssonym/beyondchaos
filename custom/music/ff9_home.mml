@@ -6,10 +6,8 @@
 
 #WAVE 0x20 -- 0x08
 
-#SFXV ` *
-
 {1}
-l16t70%v32%x112%b0,70v80p63%e1@32o5<d8^ef8g8a4^rb<c  >b8a8g8^af8e8d8c8  
+l16t70%v32%x112%b0,70%f0,0v80p63%e1@32o5<d8^ef8g8a4^rb<c  >b8a8g8^af8e8d8c8  
 d8^ef8g8a4^rb<c  >b8a8a8g+8a4^8r8  d8^ef8g8a4^rb<c  >b8a8g8^af8e8d8c8  
  $1 f8^fgfedc8a8e8^g  f8e8e8r8d4^8r8  <d4>a8<d8c8^>ba8g8  a8fga8b8<c4c8r8  
 d4>a8<d8c8^>ba8g8  f8a8e8dc+d4d8r8  <d4>a8<d8c8^>ba8g8  a8fga8b8<c4c8r8  
@@ -28,7 +26,7 @@ d4^8r4^8d8e8  d4a8g8e8e4d2  r8d4^8e8d4^8  e8
 ;2
 
 l16
-*{3}*`{5}`
+{3}
 l16v68p24%e1@32o5r4<d8c8>a<cdef8  
 ded8c8>b8<d4c8>a4  r4<c4d4c8dc  >b8<c8d8e8c8d8e8^r4  ^d8c8>a<cdef8ded8c8  
 >b8<d4c8>a4r8<c8  d8>b8r4<c8>b8a8<c4  e8>b8r4^8<d4c8  d8c8d4>b8<c8d4  
@@ -41,7 +39,7 @@ r8d4c8d8c8d4  >b8
 ;3
 
 l16
-*{4}*`{6}`
+{4}
 l16p64%e1v60@32o5r4a8g8r8<c4  >a8g8a8g8a4^8f4  
 a4a2a8ga   $4 g8a8a8b8a8ab<c+8^r4  ^>a8g8r8<c4>a8g8a8  g8a4^8f4a4  
 b8g8a8a4g8a8a8  g8a8a8agf+8r8a4  a4a4a8g8a4  ^8g+8a4<c8r8>a4  

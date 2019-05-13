@@ -1,4 +1,5 @@
-from __future__ import print_function
+#!/usr/bin/env python3
+
 from utils import (ENEMY_NAMES_TABLE, MODIFIERS_TABLE, MOVES_TABLE,
                    NAMEGEN_TABLE, utilrandom as random)
 
@@ -91,5 +92,5 @@ def generate_attack():
         return modifier + move
 
 if __name__ == "__main__":
-    for i in xrange(0x100):
+    for i in range(0x100):
         print(generate_name())

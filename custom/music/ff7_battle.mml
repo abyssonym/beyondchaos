@@ -21,7 +21,7 @@
 #WAVE 0x2B ~0x55~ /0x0F/ tambourine
 #WAVE 0x2C ~0x6D~ /0x12/ cymbal
 
-#def global= t185 %v48 %x240 %b00,70
+#def global= t185 %v48 %x240 %b0,70 %f0,0
 
 #def string= |0 p20 ~o5~/o5/ 'vstr' %e0
 #def fl= |3 p50 o5 'vfl' %e1
@@ -46,13 +46,13 @@
 #def srise= v32v192,96
 #def sroll= v96v96,32[12"\s"]v96,96[12"\s"]
 
-#drum "a"=3f  |7v127 %e0
-#drum "b"=3a- |7v127 %e0
-#drum "c"=3b- |7v127 %e0
-#drum "d"=4c  |7v127 %e0
-#drum "e"=4d- |7v127 %e0
-#drum "f"=4e- |7v127 %e0
-#drum "g"=4f  |7v127 %e0
+#drum "a"=3f  |7v127 %e1
+#drum "b"=3a- |7v127 %e1
+#drum "c"=3b- |7v127 %e1
+#drum "d"=4c  |7v127 %e1
+#drum "e"=4d- |7v127 %e1
+#drum "f"=4e- |7v127 %e1
+#drum "g"=4f  |7v127 %e1
 #drum "p"=~5c |Bv32~ /5b |Bv32 %s24/ %e0
 #drum "q"=5e  |Bv52 %e0
 #drum "r"=~5b~/5g/  |8v32 %e0
@@ -150,7 +150,7 @@ l8 f'nv'a-<c>'hv'f'nv'gb-'hv'f'nv'a-f8
 ;
 
 ##### PET #####
-{3}
+{7}
 'horn''h''hv' l8
 c p64"5!!qq" 'horn''h''hv' c p64"5!!qq" 'horn''h''hv' c p64"5!!q"
 "q4qq4qpq"
@@ -200,7 +200,7 @@ f2e-2 e-1 ^2gfe-g
 ;
 
 ##### HORN #####
-{4}
+{3}
 ##'horn''h''hv' l4
 ##f.f.f r1
 p64 "z1" r1
@@ -285,7 +285,7 @@ e->b-<d-e->b-<ge-
 ;
 
 ##### BASS #####
-{6}
+{8}
 $
 'bass' l16
 [
@@ -317,7 +317,7 @@ $
 ;
 
 ##### TIMP #####
-{7}
+{6}
 %g0 p64 l8
 "a1" r4"p2d4"
 $
@@ -349,7 +349,7 @@ l4 "a2d2 a2dc e1 e2b2" l8
 ;
 
 ##### SNR #####
-{8}
+{4}
 %g0 p64 l8
 "srrsrrsr" 'srise'[8"\s"]
 $

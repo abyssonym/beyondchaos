@@ -1,5 +1,3 @@
-from __future__ import division
-from __future__ import print_function
 from utils import (hex2int, int2bytes, Substitution, SPELL_TABLE,
                    SPELLBANS_TABLE, name_to_bytes, utilrandom as random)
 
@@ -96,7 +94,7 @@ class SpellBlock:
         f.seek(self.pointer+9)
         self.special = ord(f.read(1))
         f.seek(self.pointer+10)
-        statuses = map(ord, f.read(4))
+        statuses = list(f.read(4))
         self.death = statuses[0] & 0x80
         self.petrify = statuses[0] & 0x40
         self.condemned = statuses[1] & 0x1
@@ -121,24 +119,24 @@ class SpellBlock:
 
     @property
     def is_blitz(self):
-        return self.spellid in xrange(0x5D, 0x65)
+        return self.spellid in range(0x5D, 0x65)
 
     @property
     def is_swdtech(self):
-        return self.spellid in xrange(0x55, 0x5D)
+        return self.spellid in range(0x55, 0x5D)
 
     @property
     def is_esper(self):
-        return self.spellid in xrange(0x36, 0x51)
+        return self.spellid in range(0x36, 0x51)
 
     @property
     def is_slots(self):
-        return self.spellid in xrange(0x7D, 0x83)
+        return self.spellid in range(0x7D, 0x83)
 
     def fix_reflect(self, fout):
         self.dmgtype |= 0x02
         fout.seek(self.pointer+3)
-        fout.write(chr(self.dmgtype))
+        fout.write(bytes([self.dmgtype]))
 
     def rank(self):
         if self._rank is not None:
@@ -252,17 +250,17 @@ class CommandBlock:
 
     def write_properties(self, fout):
         fout.seek(self.proppointer)
-        fout.write(chr(self.properties))
-        fout.write(chr(self.targeting))
+        fout.write(bytes([self.properties]))
+        fout.write(bytes([self.targeting]))
 
     def setpointer(self, value, fout):
         fout.seek(self.pointer)
-        bytestring = "".join(map(chr, int2bytes(value, length=2)))
+        bytestring = bytes(int2bytes(value, length=2))
         fout.write(bytestring)
 
     def unsetmenu(self, fout):
         fout.seek(self.menu)
-        bytestring = "".join(map(chr, [0x95, 0x77]))
+        bytestring = bytes([0x95, 0x77])
         fout.write(bytestring)
 
     def newname(self, text, fout):
@@ -272,7 +270,7 @@ class CommandBlock:
         text = name_to_bytes(text, 7)
 
         fout.seek(self.textptr)
-        fout.write("".join(map(chr, text)))
+        fout.write(bytes(text))
 
     def set_bit(self, pointer, fout, unset=False):
         bit = self.id % 8
@@ -285,7 +283,7 @@ class CommandBlock:
         else:
             byte = old | byte
         fout.seek(pointer + offset)
-        fout.write(chr(byte))
+        fout.write(bytes([byte]))
 
     def unset_retarget(self, fout):
         self.set_bit(0x24E46, fout, unset=True)
@@ -305,9 +303,9 @@ class CommandBlock:
 
 def get_ranked_spells(filename=None, magic_only=False):
     if spelldict:
-        spells = sorted(spelldict.values(), key=lambda s: s.spellid)
+        spells = sorted(list(spelldict.values()), key=lambda s: s.spellid)
     else:
-        spells = [SpellBlock(i, filename) for i in xrange(0xFF)]
+        spells = [SpellBlock(i, filename) for i in range(0xFF)]
         for s in spells:
             spelldict[s.spellid] = s
 
@@ -325,8 +323,8 @@ def get_spell(spellid):
 class SpellSub(Substitution):
     def __init__(self, spellid):
         self.spellid = spellid
-        self.bytestring = [0xA9, self.spellid, 0x85, 0xB6, 0xA9,
-                           0x02, 0x85, 0xB5, 0x4C, 0x5F, 0x17]
+        self.bytestring = bytes([0xA9, self.spellid, 0x85, 0xB6, 0xA9,
+                           0x02, 0x85, 0xB5, 0x4C, 0x5F, 0x17])
 
     def __repr__(self):
         return "Use the skill '{0}'".format(spellnames[self.spellid])
@@ -344,18 +342,18 @@ def get_spellsets(spells=None):
     if wildspells is None:
         wildspells = random.sample(spells,8)
     spellsets['Wild'] = ('random set of spells', wildspells)
-    spellsets['Magic'] = ('magic spell', range(0, 0x36))
-    spellsets['Black'] = ('black magic spell', range(0, 0x18))
-    spellsets['White'] = ('white magic spell', range(0x2D, 0x36))
-    spellsets['Gray'] = ('gray magic spell', range(0x18, 0x2D))
-    spellsets['Esper'] = ('Esper summon', range(0x36, 0x51))
-    spellsets['Sword'] = ('SwdTech skill', range(0x55, 0x5D))
-    spellsets['Blitz'] = ('Blitz', range(0x5D, 0x65))
-    spellsets['Geo'] = ('geomancer-type Dance move', range(0x65, 0x75))
-    spellsets['Beast'] = ('beast-summoning Dance move', range(0x75, 0x7D))
-    spellsets['Lore'] = ('Lore', range(0x8B, 0xA3))
+    spellsets['Magic'] = ('magic spell', list(range(0, 0x36)))
+    spellsets['Black'] = ('black magic spell', list(range(0, 0x18)))
+    spellsets['White'] = ('white magic spell', list(range(0x2D, 0x36)))
+    spellsets['Gray'] = ('gray magic spell', list(range(0x18, 0x2D)))
+    spellsets['Esper'] = ('Esper summon', list(range(0x36, 0x51)))
+    spellsets['Sword'] = ('SwdTech skill', list(range(0x55, 0x5D)))
+    spellsets['Blitz'] = ('Blitz', list(range(0x5D, 0x65)))
+    spellsets['Geo'] = ('geomancer-type Dance move', list(range(0x65, 0x75)))
+    spellsets['Beast'] = ('beast-summoning Dance move', list(range(0x75, 0x7D)))
+    spellsets['Lore'] = ('Lore', list(range(0x8B, 0xA3)))
     spellsets['Rare'] = ('rare effect (Slots, Super Ball, non-Lore monster skill)',
-                         range(0x7D, 0x83) + range(0xA3, 0xEE))
+                         list(range(0x7D, 0x83)) + list(range(0xA3, 0xEE)))
     elementals = [s for s in spells if bin(s.elements).count('1') == 1]
     spellsets['Fire'] = ('fire-elemental skill',
                          [s for s in elementals if s.elements & 1])
@@ -375,7 +373,7 @@ def get_spellsets(spells=None):
                           [s for s in elementals if s.elements & 0x80])
     spellsets['Elem'] = ('elemental skill (excluding black magic spells)',
                          [s for s in spells if s.elements and
-                          s.spellid not in range(0, 0x18)])
+                          s.spellid not in list(range(0, 0x18))])
     # Skills that deal non-elemental magic damage - Meteor, Ultima, Crusader...
     # This includes most desperation attacks as well.
     # TODO: also includes Drain, Rasp, Osmose, Empowerer - a bug?
@@ -418,8 +416,8 @@ def get_spellsets(spells=None):
                           [s for s in spells if s.target_group_default and
                            not s.target_enemy_default])
     spellsets['Tek'] = ('Magitek or other tech-themed skill',
-                        ([0x18, 0x6E, 0x70, 0x7D, 0x7E] + range(0x86, 0x8B) +
-                         [0xA7, 0xB1] + range(0xB4, 0xBA) + [0x91, 0x9A] +
+                        ([0x18, 0x6E, 0x70, 0x7D, 0x7E] + list(range(0x86, 0x8B)) +
+                         [0xA7, 0xB1] + list(range(0xB4, 0xBA)) + [0x91, 0x9A] +
                          [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3]))
     spellsets['Time'] = ('time mage skill (a la FF5)',
                          [0x10, 0x11, 0x12, 0x13, 0x19, 0x1B, 0x1F, 0x20, 0x22,
@@ -430,7 +428,7 @@ def get_spellsets(spells=None):
     spellsets['Miss'] = ('skill with low accuracy',
                         [s for s in spells if not s.unblockable and not s.level_spell and 0 < s.accuracy < 90])
                             
-    for key, desc_and_spellset in spellsets.items():
+    for key, desc_and_spellset in list(spellsets.items()):
         if not desc_and_spellset:
             continue
         desc, spellset = desc_and_spellset
@@ -451,26 +449,26 @@ class RandomSpellSub(Substitution):
     def template(self):
         if self.wild:
             return self.get_wild()
-        template = [0x20, 0x5A, 0x4B,        # get random number
-                    0x29, None,              # AND the result
+        template = bytearray([0x20, 0x5A, 0x4B,        # get random number
+                    0x29, 0x00,              # AND the result
                     0xAA,                    # TAX
-                    0xBF, None, None, None,  # load byte from $addr + X
+                    0xBF, 0x00, 0x00, 0x00,  # load byte from $addr + X
                     0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
                     0x64, 0xB8, 0x64, 0xB9,  # clear targets
                     0x20, 0xC1, 0x19,  # JSR $19C1
                     0x20, 0x51, 0x29,  # JSR $2951
                     0x4C, 0x5F, 0x17,
-                    ]
+                    ])
         return template
 
     def get_wild(self):
-        template = [0x20, 0x5A, 0x4B,        # get random number
+        template = bytearray([0x20, 0x5A, 0x4B,        # get random number
                     0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
                     0x64, 0xB8, 0x64, 0xB9,  # clear targets
                     0x20, 0xC1, 0x19,  # JSR $19C1
                     0x20, 0x51, 0x29,  # JSR $2951
                     0x4C, 0x5F, 0x17,
-                    ]
+                    ])
         return template
 
     @property
@@ -480,7 +478,7 @@ class RandomSpellSub(Substitution):
         return len(self.template) + len(self.spells)
 
     def generate_bytestring(self):
-        self.bytestring = list(self.template)
+        self.bytestring = self.template
         if self.wild:
             return self.bytestring
 
@@ -488,17 +486,15 @@ class RandomSpellSub(Substitution):
         self.bytestring[4] = len(self.spells) - 1
         assert self.bytestring[4] in [(2**i)-1 for i in range(1, 8)]
         a, b, c = pointer >> 16, (pointer >> 8) & 0xFF, pointer & 0xFF
-        self.bytestring[7:10] = [c, b, a]
-        if None in self.bytestring:
-            raise Exception("Bad pointer calculation.")
-        self.bytestring += sorted([s.spellid for s in self.spells])
+        self.bytestring[7:10] = bytearray([c, b, a])
+        self.bytestring += bytearray(sorted([s.spellid for s in self.spells]))
 
     def write(self, fout):
         super(RandomSpellSub, self).write(fout)
 
     def set_spells(self, valid_spells, spellsets=None, spellclass=None):
         spellsets = spellsets or get_spellsets(spells=valid_spells)
-        spellclass = spellclass or random.choice(spellsets.keys())
+        spellclass = spellclass or random.choice(list(spellsets.keys()))
         self.name = spellclass
         desc, spellset = spellsets[spellclass]
         self.spells_description = desc
@@ -516,19 +512,19 @@ class RandomSpellSub(Substitution):
 
         for setlength in [8, 16, 32]:
             if len(spellset) <= setlength:
-                spells = sorted(spellset)
+                spells = spellset
                 while len(spells) < setlength:
                     spells.append(random.choice(spellset))
                 break
         else:
             assert setlength == 32
-            spells = random.sample(sorted(spellset),
+            spells = random.sample(spellset,
                                    min(setlength, len(spellset)))
             while len(spells) < setlength:
                 spells.append(random.choice(spellset))
             assert len(set(spells)) > 16
 
-        self.spells = sorted(spells)
+        self.spells = spells
 
         return self.spells
 
@@ -581,7 +577,7 @@ class ComboSpellSub(Substitution):
         subpointer = self.location + self.get_overhead()
 
         offset = 0
-        self.bytestring = []
+        self.bytestring = bytearray([])
         for (i, s) in enumerate(self.spellsubs):
             spointer = subpointer + offset
             s.set_location(spointer)
@@ -589,15 +585,15 @@ class ComboSpellSub(Substitution):
             high = (spointer >> 8) & 0xFF
             offset += len(s.bytestring)
             if i > 0:
-                self.bytestring += [
+                self.bytestring += bytearray([
                     0xA9, 0x01,
                     0x04, 0xB2,
-                    ]
-            self.bytestring += [
+                    ])
+            self.bytestring += bytearray([
                 0x5A,
                 0x20, low, high,
                 0x7A,
-                ]
+                ])
         self.bytestring.append(0x60)
         assert len(self.bytestring) == self.get_overhead()
 
@@ -646,7 +642,7 @@ class ChainSpellSub(MultiSpellSubMixin):
             self.spellsub.generate_bytestring()
         high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
 
-        self.bytestring = [
+        self.bytestring = bytearray([
             0xA9, 0x01,
             0x04, 0xB2,
             0x5A,                           # PHY
@@ -655,12 +651,11 @@ class ChainSpellSub(MultiSpellSubMixin):
             0x20, 0x5A, 0x4B,               # get random number
             0x29, 0x01,                     # AND the result
             0xC9, 0x00,                     # CMP #0
-            0xD0, None,                     # BNE start of bytestring
-            ]
+            0xD0, 0x00,                     # BNE start of bytestring
+            ])
         length = len(self.bytestring)
         self.bytestring[-1] = (0x100 - length)
-        assert None not in self.bytestring
-        self.bytestring += [0x60]
+        self.bytestring += bytearray([0x60])
         assert len(self.bytestring) == self.get_overhead()
         self.bytestring += self.spellsub.bytestring
 
@@ -701,15 +696,15 @@ class MultipleSpellSub(MultiSpellSubMixin):
         high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
         if isinstance(self.spellsub, RandomSpellSub):
             if self.count <= 3:
-                self.bytestring = [0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2] * (self.count - 1) + [0x20, low, high]
+                self.bytestring = bytearray([0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2] * (self.count - 1) + [0x20, low, high])
             else:
-                self.bytestring = [0xA9, self.count - 1, 0x48, 0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2, 0x68, 0x3A, 0xD0, 0xF2, 0x20, low, high]
+                self.bytestring = bytearray([0xA9, self.count - 1, 0x48, 0x5A, 0x20, low, high, 0x7A, 0xA9, 0x01, 0x04, 0xb2, 0x68, 0x3A, 0xD0, 0xF2, 0x20, low, high])
         else:
             if self.count <= 3:
-                self.bytestring = [0x5A, 0x20, low, high, 0x7A] * (self.count - 1) + [0x20, low, high]
+                self.bytestring = bytearray([0x5A, 0x20, low, high, 0x7A] * (self.count - 1) + [0x20, low, high])
             else:
-                self.bytestring = [0xA9, self.count - 1, 0x48, 0x5A, 0x20, low, high, 0x7A, 0x68, 0x3A, 0xD0, 0xF6, 0x20, low, high]
-        self.bytestring += [0x60]
+                self.bytestring = bytearray([0xA9, self.count - 1, 0x48, 0x5A, 0x20, low, high, 0x7A, 0x68, 0x3A, 0xD0, 0xF6, 0x20, low, high])
+        self.bytestring += bytearray([0x60])
         self.bytestring += self.spellsub.bytestring
 
     def __repr__(self):

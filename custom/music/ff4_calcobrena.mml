@@ -13,7 +13,7 @@
 #WAVE 0x24 ~0x83~/0x36/
 #WAVE 0x2A ~0x81~/0x14/
 
-#def global= t163 %x224 %v50 %b0,70
+#def global= t163 %x224 %v50 %b0,70 %f0,0
 
 #cdef ( %l1
 #cdef ) %l0

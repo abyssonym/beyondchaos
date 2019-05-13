@@ -13,6 +13,7 @@
 
 [Imports]
 #custom songs
+blord_2tower:   setzer, locke, chocobo, blackjack, johnny, falcon*2, mountain
 bof2_battle:    I65, G05, unforgiven, grandfinale, battle
 cc_arni:        town*2
 cc_dragonia:    H2, omen3, zozo, magitek, kefkastower, owzer
@@ -27,15 +28,18 @@ crys_fields:    chocobo, johnny, gogo, moogles*2, mountain, setzer
 ct_600ad:       zozo, owzer*2, town_ruin, ruin
 ct_battle:      I05, G20, battle*2, unforgiven
 ct_battle2:     I05, G40, battle*2, grandfinale
-ct_bobonga:     I00, G51, strago, veldt*2, zozo, gogo, umaro*2
+ct_bobonga:     veldt*2, zozo, gogo, umaro*2
 ct_boss2:       I95, G75, atma*2, metamorphosis, grandfinale, catastrophe
 ct_fair:        johnny, spinachrag, moogles*2, town
 ct_keeper:      espers, fanatics, ruin, owzer
+ct_mountain:    moogles, gogo, umaro, veldt*2, mountain
 ct_night:       coin*2, daryl, celes*2, ruin
 ct_revolution:  I80, G90, atma*2, dmad5, metamorphosis
 ct_robo:        moogles*2, gogo
 ct_robo_vic:    fanfare*2
 ct_schala:      H2, awakening, relm*2, strago, espers, H:prelude, H:omen3, H:celes, H:daryl, H:shadow, H:gogo, H:owzer, H:martiallaw, H:falcon
+ct_sewer:       kefka, spinachrag, gogo, zozo, owzer*2
+ct_sewer_tr:    train
 ct_spekkio:     spinachrag*2, moogles*2, what, grandfinale
 ct_theme:       I45, G80, locke, savethem, grandfinale
 ct_truth:       kefka, grandfinale, catastrophe
@@ -45,6 +49,7 @@ ct_zeal:        relm*2, awakening, owzer, strago*2
 cv3_aquarius:   H2, I35, G55, magitek, floatingcont, kefkastower
 cv4_beginning:  H2, I00, G35, battle, locke, falcon, serpent, floatingcont
 cv4_beginning_tr: train
+cv4_chandeliers: H4, kefka, gogo, owzer*2, fanatics, H:omen3, H:gestahl, H:shadow, H:spinachrag, H:strago, H:serpent, H:forest
 ds4_lyll:       blackjack, falcon, mountain, serpent, setzer
 eo3_waves:      I50, G99, atma*2, kefkastower, dmad5
 evo_boss:       I85, G40, boss*2, unforgiven
@@ -105,7 +110,7 @@ ff6_town2:      relm*2, johnny, moogles, strago, town
 ff7_5years:     omen3, gestahl*2, celes, daryl, zozo, narshe, ruin*2, train
 ff7_battle:     I45, G20, battle, grandfinale, unforgiven, savethem
 ff7_corel:      shadow*2, gau*2, zozo, owzer, narshe, martiallaw, town_ruin, ruin
-ff7_costa:      prelude, spinachrag*2, strago, town
+ff7_costa:      prelude, spinachrag*2, town, veldt, moogles
 ff7_hurry:      I99, G00, unforgiven, magitek, floatingcont
 ff7_hurry2:     I35, G30, battle, metamorphosis, grandfinale, unforgiven, savethem*2
 ff7_judgment:   omen3, catastrophe, troops, floatingcont*2, kefkastower*2
@@ -219,6 +224,7 @@ sd2_tomorrow:   metamorphosis*2, catastrophe*2, floatingcont
 sd2_town:       relm, moogles*2, town*2
 sd2_wish:       W4, ruin*2, W:prelude, W:omen3, W:coin, W:zozo, W:owzer, W:narshe, W:town_ruin, W:forest*2, W:espers
 sd3_angels:     omen3, espers*2, awakening
+sd3_counterpoint: umaro*2, veldt*2
 sd3_faith:      I55, G70, boss, atma, grandfinale, gogo, umaro, kefkastower
 sd3_flight:     setzer, chocobo, blackjack*2, mountain
 sd3_paths:      gogo, mountain*2, serpent*2
@@ -235,6 +241,7 @@ top_world1:     omen3, shadow, cyan, narshe, ruin, balance, falcon, serpent
 top_world3:     I00, G85, johnny, umaro, zozo, falcon, serpent*2, floatingcont, kefkastower
 totr_arrow:     I75, G60, boss, grandfinale
 totr_spirit:    I99, G75, atma*2, grandfinale, dmad5
+wc2_orc1:       I20, G95, catastrophe, grandfinale, savethem, umaro, veldt, floatingcont, kefkastower
 xc1_valakn:     W4, omen3, celes, daryl, narshe, ruin*2, forest*2, W:prelude, W:coin, W:shadow, W:zozo, W:town_ruin, W:falcon, W:balance, W:mountain, W:espers
 xc2_morardain:  fanfare, grandfinale, setzer*2, moogles, umaro, martiallaw, falcon
 xc2_tantal:     W4, omen3, gestahl, zozo, narshe*2, train*2, ruin*2, serpent, espers, W:celes, W:cyan, W:gogo, W:umaro*2, W:owzer, W:balance, W:forest, W:floatingcont, W:kefkastower
@@ -242,6 +249,7 @@ xg_boss:        I85, G50, boss*2, metamorphosis, grandfinale, troops, savethem
 xg_chuchu:      spinachrag*2, what*2, moogles, gogo, strago
 xg_flight:      I30, G90, grandfinale, locke*2, setzer, returners, savethem*2, falcon
 xg_mermaid:     daryl*2, coin, rachel, espers*2
+xg_tears:       celes*2, rachel, awakening, ruin
 ys1_wars:       I25, G90, battle, grandfinale, chocobo, falcon, magitek, floatingcont*2, kefkastower
 ys3_wings:      setzer*2, locke, savethem, blackjack, chocobo, serpent*2
 zaol_overworld: figaro, returners
@@ -277,7 +285,7 @@ ff6_metamorphosis: metamorphosis*2, catastrophe, grandfinale, unforgiven, floati
 ff6_train_ext:  H4, train*2, shadow, gau, gogo, umaro, owzer
 ff6_espers:     espers*2, omen3, narshe, forest*2
 ff6_grandfinale: I75, G30, grandfinale*2, kefka, gogo, umaro, savethem*2
-ff6_mountain:   mountain*2, returners, troops, umaro*2, serpent
+ff6_mountain:   mountain*2, returners, troops, umaro*2, serpent, veldt
 ff6_battle:     I20, G05, battle*2, unforgiven
 ff6_fanfareslow: fanfare
 ff6_serpent:    serpent*2, espers

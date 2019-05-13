@@ -27,7 +27,7 @@
 #drum "g"=5c |A p64 %e1 %a12
 
 {1}
-l16t116%v15%b0,60%x208{FD}120%e1_[4r1  ]_ $1 |7v100p64~o6~/o7/m48,18,211v24,9,255%a10%r8d8rd8rere4r8er  
+l16t116%v15%b0,60%f0,0%x208{FD}120%e1_[4r1  ]_ $1 |7v100p64~o6~/o7/m48,18,211v24,9,255%a10%r8d8rd8rere4r8er  
 e8re8rf+rf+8.re8.r  d8rd8rere8.rd8c+>a  ^2^4.^r  <d8rd8rere4r8er  
 e8re8rarf+8.re8.r  d8rd8rere8.r>a4  b2^4.|0v100p64o6vm48,16,211d8  
 f+6r48f+6r48g8g+64a4rr32r64ar  a8.g8.f+8e3r24de  f+6r48f+6r48g8g+64a4rr32r64>a8  

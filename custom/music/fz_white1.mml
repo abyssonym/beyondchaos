@@ -5,7 +5,6 @@
 
 #VARIANT ~ enh
 #VARIANT / nat
-#SFXV ` *
 
 #WAVE 0x20 ~0x80~/0x02/ bass
 #WAVE 0x21 ~0x72~/0x0E/ trumpet
@@ -67,7 +66,7 @@ g+4.r8.a+<cd+rg+8a+8r2...]
 >>r1.r f+g+a+<cc+d+f   l8 a+.g+16r4'svs2'f+2 g+.f+16r4'svs4'g+4r16g+.
 ;
 
-*{3}*`{6}`
+{3}
 'glock' l16 p64 %a14
 cegbgece >b<d+f+a+f+d+>b<d+ >a<cegec>a<c >g+b<d+fd+>bg+b
 'trumpet' l8 p3 d+'s'^16 r2.^16
@@ -82,7 +81,7 @@ l8 f+.f.d+ c+.c.>a+ g+.a+.<c c+.d+.f f+.f.d+ c+.c.>a+ g+.a+.<c c+.d+.f
 [f+.f16r4d+2] c+.c16r4>'tvs2'a+2< c+.>a+16r4'tvs4'a+4r16a+.
 ;
 
-*{4}*`{7}`
+{4}
 'trumpet' l8 p39
 r1. d+ff+g+
 p78 a+'s16' r2.^16
@@ -104,5 +103,3 @@ $
 ##18
 [7"k8skkksk"] "k8sk"l32"tuuvvww16"
 ;
-
-`{3} {4} {8} r;`

@@ -3,67 +3,67 @@
 #COMPOSER Yasunori Mitsuda
 #ARRANGED emberling
 
-#VARIANT ~ enh
+#VARIANT ~
 #VARIANT / nat
 
-#WAVE 0x20 ~0x45~ /0x25/
+#WAVE 0x20 ~0x46~ /0x25/
 #WAVE 0x21 ~0x41~ /0x03/
-#WAVE 0x22 ~0x74~ /0x0A/
-#WAVE 0x23 ~0x24~ /0x24/
-#WAVE 0x24 ~0x60~ /0x2C/
+#WAVE 0x22 ~0x00~ /0x00/
+#WAVE 0x23 ~0x8D~ /0x24/
+#WAVE 0x24 ~0x2C~ /0x2C/
 #WAVE 0x25 0x0E
-#WAVE 0x26 ~0x7F~ /0x08/
+#WAVE 0x26 ~0x1A~ /0x1A/
 
-#WAVE 0x27 ~0x6D~ /0x12/
+#WAVE 0x27 ~0x8E~ /0x12/
 #WAVE 0x29 0x16
 #WAVE 0x2A ~0x81~ /0x14/
 #WAVE 0x2B ~0x55~ /0x00/
 
 
-#def global= t133 %v64%x224%b0,100
+#def global= t133 %v50%x224%b0,70%f0,0
 
-#def bassl= |4 p90 ~v64~/v127/ ~o4~/o5/ %p0 %a12 %r18
-#def bassm= |5 p78 v80 o5 %p0 %a13 %r17
-#def bassh= |6 p84 v64 o4 %p0 %a12 %r21
-#def strb= @5 p52 v127 o3 %p0 %a12 %y0 %s3
-#def str1= |0 p47 ~v64~/v96/ ~o4~/o4/ %p0 
-#def str2= @5 p49 v32 o3 %p0 %a9 %y4 %s3
-#def str3= |1 p56 ~v80~/v32/ o4 %p0
-#def pet1= |2 p96 ~v64~/v80/ o5 %p0
-#def pet2= |5 p88 ~v64~/v80/ o6 %p0
-#def lead= |0 p62 v76 o5 m22,11,241
-#def bell= |3 p16 v104 o5 %p0
-#def harp= @3 p28 v96 o5 %p0 %a14 %y6 %s2 %r12
-#def timp= |9 p48 v120 o4 %p0
+#def bassl= |4 p90 ~v127~/v127/ ~o5~/o5/ %r18 %e1
+#def bassm= |6 p78 v32 o6  %r17 %e1
+#def bassh= |0 p84 v64 o4  %r21 %e1
+#def strb= |4 p52 v127 o5  %r5 %e1
+#def str1= |0 p47 ~v64~/v96/ ~o5~/o5/  %e1
+#def str2= |0 p49 v64 o4 %e1
+#def str3= |1 p56 ~v32~/v32/ o4 %a8 %e1
+#def pet1= |0 p96 ~v64~/v80/ o5 %e1
+#def pet2= |5 p88 ~v64~/v80/ o6 %e1
+#def lead= |0 p62 v76 ~o6~/o6/ m24,18,239 %e1
+#def bell= |3 p16 v72 ~o4~/o5/ %e1
+#def harp= @3 p28 v96 o5  %a14 %y6 %s2 %r12 %e1
+#def timp= |9 p48 v120 o4 %e1
 
 #def stab= %r21
-#def psw= p0,10,127
+#def psw= p64p0,96,96
 #def sentence= l32"!!!or8t8rtvwxy"l16"zv t s8  v8  v8"
-#def snare= ~5b~/5g/ |A p64 %p0
-#def tamb= ~5f |B~ /3f @7 %a15 %r24/ p45 %p0
+#def snare= ~5b~/5g/ |A p64 
+#def tamb= ~5f |B~ /3f @7 %a15 %r24/ p45 
 
-#drum "c"=5f |7 p64 v127 %p0 %r15
-#drum "c+"=5g |7 p64 v127 %p0 %r14
-#drum "c-"=5e |7 p64 v127 %p0 %r13
-#drum "d"=5f |7 p64 v127 %p0 %r16
-#drum "d+"=5g |7 p64 v127 %p0 %r18
-#drum "e"=5f |7 p64 v127 %p0 %r21
-#drum "e+"=5g |7 p64 v127 %p0 %r20
-#drum "e-"=5e |7 p64 v127 %p0 %r21
-#drum "h"='tamb' v96
-#drum "i"='tamb' v52
-#drum "r"='snare' v112 ##s+v
-#drum "s"='snare' v96 ##v124
-#drum "t"='snare' v88 ##v116
-#drum "u"='snare' v80 ##v108
-#drum "v"='snare' v72 ##v96
-#drum "w"='snare' v64 ##v80
-#drum "x"='snare' v56 ##v72
-#drum "y"='snare' v48 ##v48
-#drum "z"='snare' v32 ##v36
+#drum "c"=5f |7 p64 v127  %r15 %e0
+#drum "c+"=5g |7 p64 v127  %r14 %e0
+#drum "c-"=5e |7 p64 v127  %r13 %e0
+#drum "d"=5f |7 p64 v127  %r16 %e0
+#drum "d+"=5g |7 p64 v127  %r18 %e0
+#drum "e"=5f |7 p64 v127  %r21 %e0
+#drum "e+"=5g |7 p64 v127  %r20 %e0
+#drum "e-"=5e |7 p64 v127  %r21 %e0
+#drum "h"='tamb' v96 %e1
+#drum "i"='tamb' v52 %e1
+#drum "r"='snare' %e0 v112 ##s+v
+#drum "s"='snare' %e0 v96 ##v124
+#drum "t"='snare' %e0 v88 ##v116
+#drum "u"='snare' %e0 v80 ##v108
+#drum "v"='snare' %e0 v72 ##v96
+#drum "w"='snare' %e0 v64 ##v80
+#drum "x"='snare' %e0 v56 ##v72
+#drum "y"='snare' %e0 v48 ##v48
+#drum "z"='snare' %e0 v32 ##v36
 
 ##### bassline1 #####
-{4}
+{6}
 $ 'str2' 'stab' l24
 eb<a
 'bassl' l8              
@@ -82,13 +82,12 @@ e4e4e4ef e4e4e4e4
 'strb'>%y0%s2 l8
 c+2e4.f+4.g2^g
 'harp'>> l32
-'psw'
 fga-<c de-fg a-b-<cd e-fga->
 fga-b- <cde-f ga-<cd e-fg16^1
-p
+'psw'
 ##25
 l4 >
-[f.<f.a- ^16a-8.f.>g.]
+[f.<f.a- ^16a-8.f.>g.] p
 ##30
 'bassl' l8
 e4egeaed e4e4e4e4 e4egeaed
@@ -98,7 +97,7 @@ e4ef4%r13f4%r18d16f16 %r15e4.e4.e4
 ;
 
 ##### bassline2 #####
-{5}
+{3}
 $ 'str2' 'stab' l24
 r48 a<e %r17 b^48^12^8
 'bassm' l8              
@@ -137,7 +136,7 @@ b.a.<e.d.>b<c>b1^4. v96,12 ^2
 ;
 
 ##### bassline3 #####
-{6} 
+{7} 
 $ 'str1' 'stab' l24
 r48 a<eb48
 'bassh' l8              
@@ -177,7 +176,7 @@ l4 'psw'
 ;
 
 ##### melody1 #####
-{2} $
+{1} $
 'str1' 'stab' l24
 eb<a< %r17 e1
 r2..
@@ -207,7 +206,7 @@ m0,16,255  %r10 g+1^1 mv
 'str3'%a0 <f1^1^1^1
 ##30
 'lead' l8
-e1 ^a4<d4>b4<c> ba %r13 b1^
+e1 ^a4<d4>b4<c> ba %r7 b1^
 'pet2'%r21
 f4%r18f4%r21f e4.e4.e4.
 'lead' l8
@@ -216,7 +215,7 @@ l4 >b.a.<e.d.ga f+1 %r19 ^2..
 m;
 
 ##### melody2 #####
-{3}
+{2}
 r8
 $ 'bell' l1
 b^b^
@@ -249,7 +248,7 @@ l4 f4.e4.b4.a4.e4d4 m48,19,222 e1e-1 m
 ;
 
 ##### percussion // extra melody #####
-{7}
+{8}
 r8 l1
 $ "c^c^1"
 ##6
@@ -273,7 +272,7 @@ l8 [13"!!!ohiihiihi"]
 ;
 
 ##### timpani #####
-{1}
+{5}
 'global'
 'timp' l8
 >b<
@@ -310,7 +309,7 @@ b4 v120b8v120b8v100bv110bv120b8v100b8v120bv100bv110bb
 ;
 
 ##### snare #####
-{8}
+{4}
 l32 "wvut"
 $
 ##  1.'.8.'.4.'.8.'.2.'.8.'.4.'.8.'.

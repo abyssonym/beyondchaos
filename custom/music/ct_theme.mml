@@ -4,8 +4,8 @@
 #ARRANGED emberling
 # Converted from binary by mfvitools
 
-#VARIANT ~
-#VARIANT / nopatch
+#VARIANT ~ enh
+#VARIANT / nat
 
 #WAVE 0x20 -- ~0x4F~ /0x0E/ #Sax
 #WAVE 0x21 -- ~0x45~ /0x0D/ #Strings

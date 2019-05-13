@@ -1,17 +1,17 @@
 FF6 Beyond Chaos EX Randomizer
-Version:    1
-Date:       January 14, 2019
+Version:    2
+Date:       February 17, 2019
 URL:        https://github.com/subtractionsoup/beyondchaos
 Discord:    https://discord.gg/S3G3UXy
 
 --- QUICKSTART ---
 Requirements:
 	FF3 US 1.0 ROM
-	If not running Windows, install Python 2.7. (NOT python 3.0+)
+	If not running Windows, install Python 3.7+.
 
 Running the randomizer:
     Windows users: run beyondchaos_ex.exe.
-	Other users: run "randomizer.py" using Python version 2.7 (It DOES NOT work with python 3.)
+	Other users: run "randomizer.py" using Python version 3.7 (It DOES NOT work with python 2.)
 
 Source ROM file:
     The randomizer will ask for a ROM file. Beyond Chaos does not provide this ROM. The simplest thing is to put the ROM in the same directory as Beyond Chaos and simply input the file name.

@@ -21,7 +21,7 @@
 #WAVE 0x2E ~0x6D~/0x12/
 #WAVE 0x2F ~0x68~/0x0F/
 
-#def global= t110 %x224 %v50 %b0,70
+#def global= t110 %x224 %v50 %b0,70 %f0,0
 
 #def organ= |0 o5 %e1 m48,18,223
 #def gmute= ~|1 o7~ /@2 o5 %y3%s4%r12/ %e1 m48,18,223

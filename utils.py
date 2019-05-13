@@ -494,7 +494,7 @@ huetranstable = {
     240: [0, 0, 31],
     300: [31, 0, 31],
     }
-    
+ 
 def hue_rgb(deg):
     rgbtweentable = {0: 2, 60: -1, 120: 3, 180: -2, 240: 1, 300: -3}
     while deg >= 360: deg -= 360
@@ -512,37 +512,35 @@ def hue_rgb(deg):
     rgb[tween] = remainder
     return rgb
     
-def shuffle_char_hues(source_hues):
-    hues = list(map(hue_rgb, source_hues))
+def shuffle_char_hues(hues):
     while True:
         tryagain = False
         random.shuffle(hues)
-        for v in range(0,18,3): #check for too close colors vertically (within one palette)
-            chunk = hues[v:v+3]
-            for i in range(len(chunk)):
-                for j in range(i+1, len(chunk)):
-                    difference = [(c, d) for c, d in zip(chunk[i],chunk[j]) if c != d]
-                    if len(difference) < 1: difference.append((0,0))
-                    if len(difference) == 1:
-                        if abs(difference[0][0] - difference[0][1]) <= 8 or chunk[i] == chunk[j]:
-                            tryagain = True
+        for c in range(0,18,3): #check for too close colors vertically (within one palette)
+            chunk = hues[c:c+3]
+            chunk += [h+360 for h in chunk]
+            for i in range(6):
+                for j in range(i+1, 6):
+                    if abs(chunk[i]-chunk[j]) <= 16:
+                        tryagain = True
+                        break
                 if tryagain: break
             if tryagain: break
         if tryagain: continue
-        for h in range(0,3): #check for too close colors horizontally (same element on different palettes)
-            chunk = hues[h:len(hues):3]
-            for i in range(len(chunk)):
-                for j in range(i+1, len(chunk)):
-                    difference = [(c, d) for c, d in zip(chunk[i],chunk[j]) if c != d]
-                    if len(difference) < 1: difference.append((0,0))
-                    if len(difference) == 1 :
-                        if abs(difference[0][0] - difference[0][1]) <= 8:
-                            tryagain = True
+        for c in range(0,3): #check for too close colors horizontally (same element on different palettes)
+            chunk = hues[c:len(hues):3]
+            chunk += [h+360 for h in chunk]
+            for i in range(12):
+                for j in range(i+1, 12):
+                    if abs(chunk[i]-chunk[j]) <= 16:
+                        tryagain = True
+                        break
                 if tryagain: break
             if tryagain: break
         if tryagain: continue
         break
-    return hues
+    print(hues)
+    return list(map(hue_rgb, hues))
     
 def generate_character_palette(skintones_unused=None, char_hues_unused=None, trance=False):
         
@@ -555,8 +553,12 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         shrunk = tuple([(31 if i == 31 else 0) for i in rgb])
         grown = tuple([(0 if i == 0 else 31) for i in rgb])
         bounds = (transtable[shrunk], transtable[grown])
-        prev = min(bounds)
-        next = max(bounds)
+        if 300 in bounds and 0 in bounds:
+            prev = 300
+            next = 360
+        else:
+            prev = min(bounds)
+            next = max(bounds)
         descending = False if prev == bounds[0] else True
         if descending:
             return int(next - (((tweens[0] + 1) * 60) / 32.0) - 1)
@@ -568,7 +570,7 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         order = [rgb.index(min(rgb)), rgb.index(max(rgb))]
         order = [order[0], [n for n in [0,1,2] if n not in order][0], order[1]]
         color = list(rgb)
-        for c in color: c -= color[order[0]]
+        color = [c-color[order[0]] for c in color]
         pct = color[order[1]] / float(color[order[2]])
         pure = [0,0,0]
         pure[order[1]] = int(31 * pct)

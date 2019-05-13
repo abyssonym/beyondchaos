@@ -2802,7 +2802,8 @@ def manage_palettes(change_to, char_ids):
                       ( (27,23,15), (20,14, 9) ) ]
         if christmas_mode or random.randint(1,100) > 50:
             skintones.append( ((29,29,30),(25,25,27)) )
-
+        random.shuffle(skintones)
+        
     for i in range(6):
         pointer = 0x268000 + (i*0x20)
         if new_palette_mode:

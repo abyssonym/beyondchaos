@@ -466,7 +466,6 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
     tierboss = dict(songconfig.items('TierBoss'))
     
     if len(songtable) > songcount[0]:
-        print("expanding song count to {}".format(len(songtable)))
         songcount[0] = len(songtable)
         
     # determine which songs change

@@ -539,7 +539,6 @@ def shuffle_char_hues(hues):
             if tryagain: break
         if tryagain: continue
         break
-    print(hues)
     return list(map(hue_rgb, hues))
     
 def generate_character_palette(skintones_unused=None, char_hues_unused=None, trance=False):

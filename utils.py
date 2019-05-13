@@ -513,7 +513,7 @@ def hue_rgb(deg):
     return rgb
     
 def shuffle_char_hues(source_hues):
-    hues = map(hue_rgb, source_hues)
+    hues = list(map(hue_rgb, source_hues))
     while True:
         tryagain = False
         random.shuffle(hues)
@@ -636,11 +636,12 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         skintone = skintones_unused.pop(0)
         skin_hue = guess_hue(list(skintone[0]))
         hair_hue = char_hues_unused.pop(0)
-        cloth_hue = hue_rgb(nudge_apart(hue_deg(char_hues_unused.pop(0)), skin_hue))
+        cloth_hue_deg = nudge_apart(hue_deg(char_hues_unused.pop(0)), skin_hue)
+        cloth_hue = hue_rgb(cloth_hue_deg)
         acc_hue = hue_rgb(nudge_apart(hue_deg(char_hues_unused.pop(0)), skin_hue))
         
         new_palette = [[0,0,0], [3,3,3]] + list(skintone)
-        new_palette = map(components_to_color, new_palette) * 3
+        new_palette = list(map(components_to_color, new_palette)) * 3
         
         hair_sat = random.choice([random.randint(15,30), random.randint(20,50), random.randint(20,75)])
         hair_light = random.choice([random.randint(60,80), random.randint(55,90)])
@@ -662,9 +663,9 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         while cloth_dark > hair_dark - 3:
             hair_dark += 1
         cycle, done = 0, 0
-        if cloth_hue >= 210 and cloth_hue <= 270:
+        if cloth_hue_deg >= 210 and cloth_hue_deg <= 270:
             mindelta = 8
-        elif cloth_hue >= 180 and cloth_hue <= 300:
+        elif cloth_hue_deg >= 180 and cloth_hue_deg <= 300:
             mindelta = 6
         else: mindelta = 4
         while cloth_dark < hair_shadow + mindelta:
@@ -724,7 +725,7 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         new_palette[10] = hsv_approx(nudge_hue(hue_rgb(hues[3])), sats[3], vals[3])
         new_palette[11] = hsv_approx(nudge_hue(hue_rgb(hues[3])), sats[3], vals[3] * .66)
 
-        new_palette = map(components_to_color, new_palette)
+        new_palette = list(map(components_to_color, new_palette))
         
     return new_palette
                 

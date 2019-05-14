@@ -2408,54 +2408,163 @@ def get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits):
     return free_portrait_ids, merchant
 
 
-def get_sprite_swaps(char_ids, male, female):
+def get_sprite_swaps(char_ids, male, female, vswaps):
     sprite_swap_mode = 'makeover' in activated_codes
     wild = 'partyparty' in activated_codes
+    clone_mode = 'attackoftheclones' in activated_codes
+    replace_all = 'novanilla' in activated_codes or 'frenchvanilla' in activated_codes
+    external_vanillas = False if 'novanilla' in activated_codes else ('frenchvanilla' in activated_codes or clone_mode)
     if not sprite_swap_mode:
         return []
 
     class SpriteReplacement:
-        def __init__(self, file, name, gender, riding=None, fallback_portrait_id=0xE, portrait_filename=None):
+        def __init__(self, file, name, gender, riding=None, fallback_portrait_id=0xE, portrait_filename=None, uniqueids=None, groups=None):
             self.file = file.strip()
             self.name = name.strip()
             self.gender = gender.strip().lower()
             self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
-
+            self.uniqueids = [s.strip() for s in uniqueids.split('|')] if uniqueids else []
+            self.groups = [s.strip() for s in groups.split('|')] if groups else []
+            if self.gender == "female": self.groups.append("girls")
+            if self.gender == "male": self.groups.append("boys")
+            self.weight = 1.0
+            
             if fallback_portrait_id == '':
                 fallback_portrait_id = 0xE
             self.fallback_portrait_id = int(fallback_portrait_id)
-            self.portrait_filename = portrait_filename
-            self.portrait_palette_filename = portrait_filename
-            if self.portrait_palette_filename and self.portrait_palette_filename:
-                if self.portrait_palette_filename[-4:] == ".bin":
-                    self.portrait_palette_filename = self.portrait_palette_filename[:-4]
-                self.portrait_palette_filename = self.portrait_palette_filename + ".pal"
+            if portrait_filename is not None:
+                self.portrait_filename = portrait_filename.strip()
+                if self.portrait_filename:
+                    self.portrait_palette_filename = portrait_filename.strip()
+                    if self.portrait_palette_filename and self.portrait_palette_filename:
+                        if self.portrait_palette_filename[-4:] == ".bin":
+                            self.portrait_palette_filename = self.portrait_palette_filename[:-4]
+                        self.portrait_palette_filename = self.portrait_palette_filename + ".pal"
+                else:
+                    self.portrait_filename = None
 
         def has_custom_portrait(self):
             return self.portrait_filename is not None and self.portrait_palette_filename is not None
+            
+        def is_on(self, checklist):
+            val = False
+            for g in self.uniqueids:
+                if g in checklist:
+                    return True
+            return False
 
     f = open_mei_fallback(SPRITE_REPLACEMENT_TABLE)
-    replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
+    known_replacements = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
     f.close()
 
-    replace_min = 8 if not wild else 16
-    replace_max = 12 if not wild else 20
-
-    num_to_replace = min(len(replace_candidates), random.randint(replace_min,replace_max))
-    replacements = random.sample(replace_candidates, num_to_replace)
-
-    if wild:
-        swap_to = dict(list(zip(random.sample(char_ids, num_to_replace),replacements)))
+    #uniqueids for sprites pulled from rom
+    vuids = { 0: "terra", 1: "locke", 2: "cyan", 3: "shadow", 4: "edgar", 5: "sabin", 6: "celes", 7: "strago", 8: "relm", 9: "setzer", 10: "moogle", 11: "gau", 12: "gogo6", 13: "umaro", 16: "leo", 17: "banon", 18: "terra", 21: "kefka" }
+                
+    #determine which character ids are makeover'd
+    blacklist = set()
+    if replace_all:
+        num_to_replace = len(char_ids)
+        is_replaced = [True] * num_to_replace
     else:
-        female_replacements = [s for s in replacements if s.gender == "female"]
-        male_replacements = [s for s in replacements if s.gender == "male"]
-        neutral_replacements = [s for s in replacements if s.gender != "male" and s.gender != "female"]
-
-        swap_to = dict(list(zip(random.sample(female, len(female_replacements)),female_replacements)))
-        swap_to.update(dict(list(zip(random.sample(male, len(male_replacements)), male_replacements))))
-        not_already_swapped = [c for c in char_ids if c not in swap_to]
-        swap_to.update(dict(list(zip(random.sample(not_already_swapped, len(neutral_replacements)), neutral_replacements))))
-
+        replace_min = 8 if not wild else 16
+        replace_max = 12 if not wild else 20
+        num_to_replace = min(len(known_replacements), random.randint(replace_min,replace_max))
+        is_replaced = [True] * num_to_replace + [False]*(len(char_ids)-num_to_replace)
+        random.shuffle(is_replaced)
+        for i, t in enumerate(is_replaced):
+            if i in vuids and not t:
+                blacklist.update([s.strip() for s in vuids[i].split('|')])
+    
+    if external_vanillas:
+        #include vanilla characters, but using the same system/chances as all others
+        og_replacements = [
+            SpriteReplacement("ogterra.bin","Terra","female","true",0,None,"terra"),
+            SpriteReplacement("oglocke.bin","Locke","male","true",1,None,"locke"),
+            SpriteReplacement("ogcyan.bin","Cyan","male","true",2,None,"cyan"),
+            SpriteReplacement("ogshadow.bin","Shadow","male","true",3,None,"shadow"),
+            SpriteReplacement("ogedgar.bin","Edgar","male","true",4,None,"edgar"),
+            SpriteReplacement("ogsabin.bin","Sabin","male","true",5,None,"sabin"),
+            SpriteReplacement("ogceles.bin","Celes","female","true",6,None,"celes"),
+            SpriteReplacement("ogstrago.bin","Strago","male","true",7,None,"strago"),
+            SpriteReplacement("ogrelm.bin","Relm","female","true",8,None,"relm","kids"),
+            SpriteReplacement("ogsetzer.bin","Setzer","male","true",9,None,"setzer"),
+            SpriteReplacement("ogmog.bin","Mog","neutral","true",10,None,"moogle"),
+            SpriteReplacement("oggau.bin","Gau","male","true",11,None,"gau","kids"),
+            SpriteReplacement("oggogo.bin","Gogo","neutral","true",12,None,"gogo6"),
+            SpriteReplacement("ogumaro.bin","Umaro","neutral","true",13,None,"umaro")]
+        if wild:
+            og_replacements.extend( [
+                SpriteReplacement("ogtrooper.bin","Trooper","neutral","true",14),
+                SpriteReplacement("ogimp.bin","Imp","neutral","true",15),
+                SpriteReplacement("ogleo.bin","Leo","male","true",16,None,"leo"),
+                SpriteReplacement("ogbanon.bin","Banon","male","true",17,None,"banon"),
+                SpriteReplacement("ogesperterra.bin","Esper Terra","female","true",0,"esperterra-p.bin","terra"),
+                SpriteReplacement("ogmerchant.bin","Merchant","male","true",1),
+                SpriteReplacement("ogghost.bin","Ghost","neutral","true",18),
+                SpriteReplacement("ogkefka.bin","Kefka","male","true",17,"kefka-p.bin","kefka")])
+        if clone_mode:
+            used_vanilla = [nameiddict[change_to[n]] for i, n in enumerate(char_ids) if not is_replaced[i]]
+            og_replacements = [r for r in og_replacements if r.name not in used_vanilla]
+        known_replacements.extend(og_replacements)
+            
+    #weight selection based on no*/hate*/like*/love* codes
+    whitelist = [c[4:] for c in activated_codes if c.startswith("love")]
+    replace_candidates = []
+    for r in known_replacements:
+        for w in whitelist:
+            if w not in r.groups:
+                r.weight = 0
+                break
+        if not r.weight: continue
+        for g in r.groups:
+            if not r.weight: break
+            if "no"+g in activated_codes:
+                r.weight = 0
+            elif "hate"+g in activated_codes:
+                r.weight /= 3
+            elif "like"+g in activated_codes:
+                r.weight *= 2
+        if r.weight:
+            replace_candidates.append(r)
+    
+    #select sprite replacements
+    if not wild:
+        female_candidates = [c for c in replace_candidates if c.gender == "female"]
+        male_candidates = [c for c in replace_candidates if c.gender == "male"]
+        neutral_candidates = [c for c in replace_candidates if c.gender != "male" and c.gender != "female"]
+    
+    swap_to = {}
+    for id in random.sample(char_ids, len(char_ids)):
+        if not is_replaced[id]:
+            continue
+        if wild:
+            candidates = replace_candidates
+        else:
+            if id in female:
+                candidates = female_candidates
+            elif id in male:
+                candidates = male_candidates
+            else:
+                candidates = neutral_candidates
+            if random.randint(0,len(neutral_candidates)+2*len(candidates)) <= len(neutral_candidates):
+                candidates = neutral_candidates
+        if clone_mode:
+            reverse_blacklist = [c for c in candidates if c.is_on(blacklist)]
+            if reverse_blacklist:
+                weights = [c.weight for c in reverse_blacklist]
+                swap_to[id] = random.choices(reverse_blacklist, weights)[0]
+                blacklist.update(swap_to[id].uniqueids)
+                candidates.remove(swap_to[id])
+                continue
+        final_candidates = [c for c in candidates if not c.is_on(blacklist)]
+        if final_candidates:
+            weights = [c.weight for c in final_candidates]
+            swap_to[id] = random.choices(final_candidates, weights)[0]
+            blacklist.update(swap_to[id].uniqueids)
+            candidates.remove(swap_to[id])
+        else:
+            print(f"custom sprite pool for {id} empty, using a vanilla sprite")
+            
     return swap_to
 
 
@@ -2540,7 +2649,7 @@ def manage_character_appearance(preserve_graphics=False):
 
     manage_character_names(change_to, male)
 
-    swap_to = get_sprite_swaps(char_ids, male, female)
+    swap_to = get_sprite_swaps(char_ids, male, female, change_to)
 
     for c in characters:
         if c.id < 14:
@@ -6816,7 +6925,18 @@ r   Randomize character locations in the world of ruin.
     secret_codes['rushforpower'] = "OLD VARGAS FIGHT MODE"
     secret_codes['johnnydmad'] = "MUSIC REPLACEMENT MODE"
     secret_codes['johnnyachaotic'] = "MUSIC MANGLING MODE"
-    secret_codes['sometimeszombies'] = "OLD CHARACTER PALETTE MODE"
+    #secret_codes['sometimeszombies'] = "OLD CHARACTER PALETTE MODE"
+    secret_codes['novanilla'] = "COMPLETE MAKEOVER MODE"
+    secret_codes['frenchvanilla'] = "EQUAL RIGHTS MAKEOVER MODE"
+    secret_codes['attackoftheclones'] = "CLONE COSPLAY MAKEOVER MODE"
+    
+    makeover_groups = ["boys", "girls", "kids", "pets", "potato"]
+    for mg in makeover_groups:
+        secret_codes['no'+mg] = f"NO {mg.upper()} ALLOWED MODE"
+        secret_codes['hate'+mg] = f"RARE {mg.upper()} MODE"
+        secret_codes['like'+mg] = f"COMMON {mg.upper()} MODE"
+        secret_codes['love'+mg] = f"{mg.upper()} WORLD MODE"
+        
     s = ""
     for code, text in secret_codes.items():
         if code in flags:

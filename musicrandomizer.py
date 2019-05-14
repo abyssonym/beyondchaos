@@ -1257,7 +1257,7 @@ def process_map_music(data):
         loc = offset
         while True:
             op = dat[loc]
-            print(f"${loc:06X}: {op:02X}")
+            #print(f"${loc:06X}: {op:02X}")
             if op == 0xFE:
                 break
             elif op in range(0, 0x34): #action queue
@@ -1284,13 +1284,13 @@ def process_map_music(data):
                 print("unexpected event op ${:02X} at ${:06X}".format(op, loc))
                 break
                 
-        print("full event at ${:06X}:".format(offset))
-        for b in range(offset, loc):
-            print("{:02X} ".format(dat[b]), end="")
-        print()
+        #print("full event at ${:06X}:".format(offset))
+        #for b in range(offset, loc):
+        #    print("{:02X} ".format(dat[b]), end="")
+        #print()
         
         for ch in changes:
-            print("at ${:06X}: {:02X} {:02X} -> {:02X}".format(ch[0]-1, dat[ch[0]-1], dat[ch[0]], ch[1]))
+            #print("at ${:06X}: {:02X} {:02X} -> {:02X}".format(ch[0]-1, dat[ch[0]-1], dat[ch[0]], ch[1]))
             dat = byte_insert(dat, ch[0], bytes([ch[1]]))
        
         return dat

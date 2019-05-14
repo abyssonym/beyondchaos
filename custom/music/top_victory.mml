@@ -1,0 +1,82 @@
+#TITLE Go A Step Further
+#ALBUM Tales of Phantasia
+#COMPOSER Motoi Sakuraba, Shinji Tamura
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x0E~/0x0E/
+#WAVE 0x21 ~0x74~/0x07/
+#WAVE 0x22 ~0x4A~/0x1C/
+#WAVE 0x28 ~0x56~/0x14/
+#WAVE 0x29 ~0x50~/0x12/
+
+#def global= t120 %x255 %v40 %b0,85 %f0,0
+
+#def tp= %e1 |0 ~o6~/o6/ 't' p68 %r11 m48,18,239
+#def cl= %e1 |1 ~o5~/o4/ 'c' p52 %r9 m48,18,223
+#def sb= %e1 |2 ~o8~/o7/ 'b' p64 ~%y3%s3~/%y5%s1/ m
+#def sy= %e1 @5 o4 's' p52 m48,18,207
+
+#def t= v80
+#def c= v48
+#def b= ~v127~/v80/
+#def s= v32
+
+#drum "s"=6d+ |8 p64 v80 %e0
+#drum "t"=6d+ |8 p64 v56 %e0
+#drum "y"=5g  |9 p80 v127 %r21 %e1
+#drum "b"=4a+  |8 p48 v48 %e1 %y3%s5
+
+{1}
+'global' 'tp' l16
+er48gr48<cr48> g12<cr48er48>  f+r48ar48<dr48 g12f+12d12>
+b12r24b24b24b24 <e12>b12<e12 g+2
+$##
+'tp' l4 t141
+a.<c+.e d2g2  c2fa g.d.^>
+a.<c+.e d2g2  l12>fa<c>a<cfl4ca d.g.^
+;
+
+{2}
+'tp' l16
+cr48er48gr48 e12gr48<cr48>  dr48f+r48ar48 <d12d12>a12
+e12r24e24e24e24 g+12e12g+12 b2
+$##
+'cl+o1'
+c+1 d1  e2>a2 b2<d2    c+1 d1  e2f2 g1
+;
+
+{3}
+'sb-o2' l12
+ccr>g<c>g< ddr>a<d>a    eee<e>b<e> e4g+4
+$##
+a8r8aaa[3a8r24] g8r8ggg[3g8r24] f8r8fff[3f8r24] g8r8ggg[3g8r24]
+;
+
+{4} l24
+[3"s8tst s12t12s12"] "s4s4"
+$##
+l12 "!!!o s4tst s6s6s6  s4tstststst"
+;
+
+{5}
+'sy'
+g2f+2e1
+$##
+'tp' l4
+e.a.<c+> b2<d2>  a2<cf d.>b.^    e.a.<c+> b2<d2>  l12cfafa<c>l4a<c> b.<d.^
+;
+
+{6}
+"y2y1y4y4"
+$##
+"y1^1"
+;
+
+{7}
+"b2b2b2b4b4"
+$##
+"b1"
+;

@@ -667,7 +667,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             return False
         return True
         
-    def process_mml(id, mml, name):
+    def process_mml(id, orig_mml, name):
         def ruin_increment(m):
             val = int(m.group(1))
             if val in [3, 4, 5, 6, 11, 12, 13, 14]:
@@ -678,10 +678,14 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             return m.group(0)
             
         sfx = ""
+        is_sfxv = False
+        mml = orig_mml
         if id == 0x29:
             sfx = "sfx_zozo.mmlappend"
-        elif id == 0x4F:
+            is_sfxv = True
+        elif id == 0x4F or (id == 0x5D and rng.choice([True, False, False])):
             sfx = "sfx_wor.mmlappend"
+            is_sfxv = True
             try:
                 mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", ruin_increment, mml)
             except ValueError:
@@ -699,7 +703,10 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             except IOError:
                 print("couldn't open {}".format(sfx))
                 
-        return mml_to_akao(mml, name, True if id in [0x29, 0x4F] else False)
+        akaov = mml_to_akao(mml, name, is_sfxv)
+        if id == 0x5D and len(bytes(akaov["_default_"][0], encoding="latin-1")) > 0x1002:
+            akaov = mml_to_akao(orig_mml, name, False)
+        return akaov
     
     def process_tierboss(opts, used_songs=[]):
         opts_full = [o.strip() for o in opts.split(',')]
@@ -1167,6 +1174,7 @@ def process_map_music(data):
     map_block_size = 0x21
     map_music_byte = 0x1C
     
+    #replace track ids in map data
     replacements = {}
     replacements[0x51] = [ #Phantom Forest (forest)
         0x84, 0x85, 0x86, 0x87
@@ -1200,12 +1208,124 @@ def process_map_music(data):
         0x9D, 0xA0, 0xA1, 0xA4, #Mobliz (WoB)
         0xBC #Kohlingen (WoB)
         ]
-    
+    replacements[0x5D] = [ #Opening magitek sequence (assault)
+        0x13, #outside south
+        0x27, #outside north
+        0x2A #Tritoch mine room
+        ]
+    replacements[0x00] = [ #Change maps to "continue current music"
+        0x29 #Narshe mines 1
+        ]
+        
     for bgm_id, maps in replacements.items():
         if bgm_id > max_bgmid: continue
         for map_id in maps:
             offset = map_offset + (map_id * map_block_size) + map_music_byte
             data = byte_insert(data, offset, bytes([bgm_id]))
+            
+    #also replace relevant play song events
+    def adjust_event(dat, offset, oldid, newid):
+        op_lengths = {}
+        for o in [0x38, 0x39, 0x3A, 0x3B, 0x45, 0x47, 0x49, 0x4A, 0x4E, 0x4F, 0x54, 0x5B, 0x5C, 0x7B, 0x82, 0x8E, 0x8F, 0x90, 0x91, 0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x9A, 0x9D, 0xA2, 0xA6, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB1, 0xBB, 0xBF, 0xDE, 0xDF, 0xE0, 0xE1, 0xE2, 0xE3, 0xE4, 0xF7, 0xF8, 0xFA, 0xFD, 0xFE]:
+            op_lengths[o] = 1
+        for o in [0x35, 0x36, 0x37, 0x3D, 0x3E, 0x41, 0x42, 0x46, 0x50, 0x52, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x62, 0x63, 0x77, 0x78, 0x6C, 0x7D, 0x80, 0x81, 0x86, 0x87, 0x8D, 0x98, 0x9B, 0x9C, 0xA1, 0xA7, 0xB0, 0xB4, 0xB5, 0xB8, 0xB9, 0xBA, 0xD0, 0xD1, 0xD2, 0xD3, 0xD4, 0xD5, 0xD6, 0xD7, 0xD8, 0xD9, 0xDA, 0xDB, 0xDC, 0xDD, 0xE7, 0xF0, 0xF2, 0xF3, 0xF4, 0xF9]:
+            op_lengths[o] = 2
+        for o in [0x37, 0x3F, 0x40, 0x43, 0x44, 0x48, 0x4B, 0x4C, 0x4D, 0x5D, 0x5E, 0x5F, 0x60, 0x64, 0x65, 0x70, 0x71, 0x72, 0x7E, 0x7F, 0x84, 0x85, 0x8B, 0x8C, 0xBC, 0xEF, 0xF1]:
+            op_lengths[o] = 3
+        for o in [0x51, 0x53, 0x61, 0x79, 0x88, 0x89, 0x8A, 0x99, 0xB2, 0xBD, 0xE8, 0xE9, 0xEA, 0xEB, 0xF5, 0xF6]:
+            op_lengths[o] = 4
+        for o in [0x3C, 0x7A, 0xB3, 0xB7]:
+            op_lengths[o] = 5
+        for o in [0x6A, 0x6B, 0x6C, 0xA0, 0xC0, 0xC8]:
+            op_lengths[o] = 6
+        for o in [0xC1, 0xC9]:
+            op_lengths[o] = 8
+        for o in [0xC2, 0xCA]:
+            op_lengths[o] = 10
+        for o in [0xC3, 0xCB]:
+            op_lengths[o] = 12
+        for o in [0xC4, 0xCC]:
+            op_lengths[o] = 14
+        for o in [0xC5, 0xCD]:
+            op_lengths[o] = 16
+        for o in [0xC6, 0xCE]:
+            op_lengths[o] = 17
+        for o in [0xC7, 0xCF]:
+            op_lengths[o] = 18
+        
+        changes = []
+        loc = offset
+        while True:
+            op = dat[loc]
+            print(f"${loc:06X}: {op:02X}")
+            if op == 0xFE:
+                break
+            elif op in range(0, 0x34): #action queue
+                loc += 2 + (dat[loc+1] & 0x7F)
+            elif op in [0x73, 0x74]: #bitmap
+                loc += 3 + dat[loc+2] * dat[loc+3]
+            elif op == 0xB6: #variable length dialogue choice
+                loc += 1
+                while dat[loc] != 0xFE and edat[loc+2] <= 2:
+                    loc += 3
+            elif op == 0xBE: #variable length switch/case
+                loc += 1 + dat[loc+1]*3
+            elif op == 0xF0: #play song
+                if dat[loc+1] == oldid:
+                    changes.append((loc+1, newid))
+                loc += 2
+            elif op == 0xF1: #play song with fade
+                if dat[loc+1] == oldid:
+                    changes.append((loc+1, newid))
+                loc += 3
+            elif op in op_lengths:
+                loc += op_lengths[op]
+            else:
+                print("unexpected event op ${:02X} at ${:06X}".format(op, loc))
+                break
+                
+        print("full event at ${:06X}:".format(offset))
+        for b in range(offset, loc):
+            print("{:02X} ".format(dat[b]), end="")
+        print()
+        
+        for ch in changes:
+            print("at ${:06X}: {:02X} {:02X} -> {:02X}".format(ch[0]-1, dat[ch[0]-1], dat[ch[0]], ch[1]))
+            dat = byte_insert(dat, ch[0], bytes([ch[1]]))
+       
+        return dat
+        
+    def adjust_entrance_event(dat, mapid, oldid, newid):
+        event_offset = 0x0A0000
+        entrance_table = 0x11FA00
+        table_offset = entrance_table + mapid*3
+        event_offset += dat[table_offset]
+        event_offset += (dat[table_offset+1] << 8)
+        event_offset += (dat[table_offset+2] << 16)
+        dat = adjust_event(dat, event_offset, oldid, newid)
+        return dat
+        
+    data = adjust_entrance_event(data, 0xA2, 0x2A, 0x5C) #mobliz
+    data = adjust_entrance_event(data, 0xC0, 0x2A, 0x5C) #kohlingen
+    data = adjust_event(data, 0xC3B0E, 0x2A, 0x5C) #kohlingen, WoR, locke recruited
+    
+    data = adjust_event(data, 0xC9A4F, 0x39, 0x5D) #opening mission
+    
+    # add music conditional event for Narshe Mines 1 map
+    event = b"\xC0\x01\x80\x5A\x39\x02" #if you've met arvis, jump to "play Narshe music"
+    event += b"\xB2\x01\x9B\x02" #subroutine: put terra, biggs, wedge on magitek armor
+    event += b"\xF0\x5D\xFE" #play opening mission track & return
+    data = byte_insert(data, 0xC9F1A, event)
+    # 3 bytes unused, C9F27 - C9F29
+    
+    #code from Mines 1 entrance event moved to subroutine
+    #Replaces Save Point tutorial event (already dummied out by BC)
+    event = b"\x44\x00\xC0\x44\x0E\xC0\x44\x0F\xC0\xFE" #Put terra, biggs, wedge on magitek armor
+    data = byte_insert(data, 0xC9B01, event)
+    # $12 bytes unused, C9B0B - C9B1C
+    
+    data = byte_insert(data, 0xC9F1D, b"\x5A\x39\x02")
+    
     return data
     
 def randomize_music(fout, f_mchaos=False, codes=[], form_music_overrides={}):
@@ -1224,5 +1344,6 @@ def randomize_music(fout, f_mchaos=False, codes=[], form_music_overrides={}):
     
     fout.seek(0)
     fout.write(data)
+    
     return "\n".join(spoiler['Music'])
     

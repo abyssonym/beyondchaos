@@ -2432,8 +2432,9 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
             if fallback_portrait_id == '':
                 fallback_portrait_id = 0xE
             self.fallback_portrait_id = int(fallback_portrait_id)
-            if portrait_filename is not None:
-                self.portrait_filename = portrait_filename.strip()
+            self.portrait_filename = portrait_filename
+            if self.portrait_filename is not None:
+                self.portrait_filename = self.portrait_filename.strip()
                 if self.portrait_filename:
                     self.portrait_palette_filename = portrait_filename.strip()
                     if self.portrait_palette_filename and self.portrait_palette_filename:

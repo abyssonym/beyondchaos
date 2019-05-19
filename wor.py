@@ -406,8 +406,8 @@ def sasquatch_cave_recruit(fout, char_id):
 
     if char_id == 0x0C:
         gogo_sub = Substitution()
-        gogo_sub.set_location()
-        umaro_sub.bytestring = bytes([0x4B, 0x0D, 0xCA]) # shrouded in odd clothing
+        gogo_sub.set_location(0xCD811)
+        gogo_sub.bytestring = bytes([0x4B, 0x0D, 0xCA]) # shrouded in odd clothing
         gogo_sub.write(fout)
         return
 

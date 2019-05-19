@@ -28,8 +28,9 @@ for line in open(MAP_BATTLE_BG_TABLE):
 
 maplocations = {}
 maplocations_reverse = {}
+maplocations_override = {}
 for line in open(LOCATION_MAPS_TABLE):
-    a, b = tuple(line.strip().split(':'))
+    a, b, *c = line.strip().split(':')
     b = b.strip().strip(',').split(',')
     locids = []
     for locid in b:
@@ -44,6 +45,8 @@ for line in open(LOCATION_MAPS_TABLE):
     for locid in sorted(locids):
         maplocations[locid] = a
         maplocations_reverse[a].append(locid)
+    if c:
+        maplocations_override[a] = c[0]
 
 
 def add_location_map(location_name, mapid):
@@ -620,11 +623,24 @@ class Location():
             return self.fset.rank()
 
     def mutate_chests(self, guideline=None, crazy_prices=False, no_monsters=False):
+        if not self.chests:
+            return
+
+        rank = None
+        override = maplocations_override.get(maplocations[self.locid], None)
+        if (self.attacks & 0x80 == 0 or override) and self.locid in maplocations:
+            location = maplocations[self.locid]
+            if override:
+                location = override
+            fsets = {get_location(l).fset
+                     for l in maplocations_reverse[location]
+                     if get_location(l).attacks & 0x80 != 0}
+            if fsets:
+                rank = min(fsets, key=lambda f: f.rank()).rank()
+        else:
+            rank = self.rank()
         for c in self.chests:
-            if self.fset.setid == 0:
-                c.set_rank(None)
-            else:
-                c.set_rank(self.rank())
+            c.set_rank(rank)
 
         if guideline is None:
             if len(self.chests) > 0:

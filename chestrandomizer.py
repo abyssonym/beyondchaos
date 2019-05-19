@@ -1,3 +1,4 @@
+import math
 from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution, get_dialogue_pointer, dialogue_to_bytes
 from itemrandomizer import get_ranked_items, get_item
 from formationrandomizer import get_formations, get_fsets
@@ -11,9 +12,10 @@ done_items = []
 
 appropriate_formations = None
 
-EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x09, 0x19, 0x1b, 0x22, 0x24, 0x33, 0x38,
-                 0x39, 0x3a, 0x42, 0x43, 0x50, 0x59, 0x5e, 0x64, 0x73, 0x7f,
-                 0xd1, 0xe3]
+EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x06, 0x09, 0x19, 0x1b, 0x1c, 0x22, 0x24,
+                 0x33, 0x38, 0x39, 0x3a, 0x3f, 0x42, 0x43, 0x4f, 0x50, 0x59,
+                 0x5e, 0x64, 0x65, 0x73, 0x79, 0x7f, 0x9f, 0xaf, 0xd1, 0xde,
+                 0xe3]
 
 
 def add_orphaned_formation(formation):
@@ -63,7 +65,7 @@ def get_appropriate_formations():
     if appropriate_formations is not None:
         return appropriate_formations
 
-    from randomizer import NOREPLACE_FORMATIONS
+    from formationrandomizer import NOREPLACE_FORMATIONS
     formations = get_formations()
     formations = [f for f in formations if not f.battle_event]
     formations = [f for f in formations if f.formid not in
@@ -130,6 +132,102 @@ def mark_taken_id(taken):
     assert 1 <= taken < 0x200
     if taken in valid_ids:
         valid_ids = [i for i in valid_ids if i != taken]
+
+
+def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_limit):
+    global a
+    appropriate_formations = get_appropriate_formations()
+    formations = [f for f in appropriate_formations if
+                  f.get_guaranteed_drop_value() >= value * 100]
+    orphaned_formations = get_orphaned_formations()
+    orphaned_formations = [f for f in orphaned_formations
+                               if f not in used_formations]
+    extra_miabs = get_extra_miabs(0)
+    
+    if guarantee_miab_treasure:
+        extra_miabs = []
+        orphaned_formations = []
+        candidates = []
+    else:
+        if len(extra_miabs) > 1:
+            extra_miabs = get_extra_miabs(rank)
+        if orphaned_formations or extra_miabs:
+            max_rank = math.inf if clock else 1.5 * rank - 150
+            formations = [f for f in formations if f.rank() >= rank and f.rank() < max_rank]
+            formations = formations[:random.randint(1, 3)]
+            if not clock:
+                orphaned_formations = [f for f in orphaned_formations
+                if f.rank() < 1.5 * rank - 150 and f.get_guaranteed_drop_value() >= value * 10 - 1000]
+                max_extra_miab_rank = 5/4000 * rank * rank + rank - 200
+                extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank]
+        candidates = (orphaned_formations + extra_miabs)
+        candidates = [c for c in candidates if c not in used_formations]
+        candidates = [c for c in candidates
+                      if c.formid not in banned_formids]
+    candidates = sorted(set(candidates), key=lambda f: f.rank())
+    
+    if len(candidates) != 1:
+        candidates += formations
+    candidates = [c for c in candidates if c not in used_formations]
+    candidates = [c for c in candidates
+                  if c.formid not in banned_formids]
+            
+    if enemy_limit is not None:
+        candidates = [f for f in candidates if f.rank() <= enemy_limit]
+
+    rank_multiplier = 1.5
+    value_divisor = 2
+    while not candidates:
+        max_rank = max(rank,rank_multiplier * rank - 200)
+        min_value = value * 100/value_divisor - 1500
+        orphaned_formations = get_orphaned_formations()
+        orphaned_formations = [f for f in orphaned_formations
+                if f.rank() <= max_rank and f.get_guaranteed_drop_value() >= min_value / 3 - 1200]
+        extra_miabs = get_extra_miabs(0)
+        max_extra_miab_rank = 5/4000 * rank * rank + rank - 200
+        extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank * rank_multiplier]
+        candidates = [c for c in candidates if c not in used_formations]
+        candidates = [c for c in candidates
+                      if c.formid not in banned_formids]
+        if len(candidates) != 1:
+            formations = [c for c in appropriate_formations if c.rank() <= max_rank and c.get_guaranteed_drop_value() >= min_value]
+        
+            formations = [c for c in formations if c not in used_formations]
+            formations = [c for c in formations
+                          if c.formid not in banned_formids]
+            formations = formations[:2]
+            candidates += formations
+
+        rank_multiplier *= 1.25
+        value_divisor *= 2
+        if rank_multiplier < 5 and enemy_limit is not None:
+            candidates = [f for f in candidates
+                          if f.rank() <= enemy_limit]
+            candidates = sorted(candidates, key=lambda f: f.rank())
+            half = len(candidates) // 2
+            candidates = candidates[half:]
+            index = random.randint(0, half) + random.randint(0, half)
+            index = min(index, len(candidates)-1)
+            candidates = candidates[index:]
+
+    candidates = sorted(candidates, key=lambda f: f.rank())
+    if orphaned_formations:
+        index = max(
+            0, len([c for c in candidates if c.rank() <= rank])-1)
+        index = mutate_index(index, len(candidates), [False, True],
+                             (-3, 2), (-1, 1))
+    else:
+        index = 0
+        index = mutate_index(index, len(candidates), [False, True],
+                             (-1, 4), (-1, 1))
+
+    chosen = candidates[index]
+    for m in chosen.present_enemies:
+        m.auxloc = "Monster-in-a-Box"
+
+    banned_formids.append(chosen.formid)
+    used_formations.append(chosen)
+    return chosen
 
 
 class ChestBlock:
@@ -207,6 +305,10 @@ class ChestBlock:
                 item = get_item(self.contents)
                 s += item.name
         return s
+
+    @property
+    def is_clock(self):
+        return self.effective_id in [2, 10, 31, 51, 61, 62, 69, 103]
 
     def set_content_type(self, contenttype):
         if self.effective_id >= 0x100:
@@ -295,6 +397,7 @@ class ChestBlock:
 
         items = get_ranked_items()
         itemids = [i.itemid for i in items]
+
         if self.treasure:
             try:
                 index = itemids.index(self.contents)
@@ -313,76 +416,31 @@ class ChestBlock:
         orphaned_formations = [f for f in orphaned_formations
                                if f not in used_formations]
         extra_miabs = get_extra_miabs(0)
-        if orphaned_formations or extra_miabs:
-            chance -= 2
-            chance = max(chance, 1)
 
         if monster is True:
             chance = 1
         elif monster is False:
             chance += 3
             chance = min(chance, 50)
+        else:
+            if orphaned_formations or extra_miabs:
+                chance -= 2
+                chance = max(chance, 1)
 
-        formations = get_appropriate_formations()
-        formations = [f for f in formations if
+        appropriate_formations = get_appropriate_formations()
+        formations = [f for f in appropriate_formations if
                       f.get_guaranteed_drop_value() >= value * 100]
         if 1 <= chance <= 3 and (self.rank or formations):
             # monster
             self.set_content_type(0x20)
-
-            rank = self.rank or min(formations, key=lambda f: f.rank()).rank()
-            if guarantee_miab_treasure:
-                extra_miabs = []
-                orphaned_formations = []
-                candidates = []
-            else:
-                if len(extra_miabs) > 1:
-                    extra_miabs = get_extra_miabs(rank)
-                if orphaned_formations or extra_miabs:
-                    formations = [f for f in formations if f.rank() >= rank]
-                    formations = formations[:random.randint(1, 3)]
-
-                candidates = (orphaned_formations + extra_miabs)
-            candidates = sorted(set(candidates), key=lambda f: f.rank())
-            if len(candidates) != 1:
-                candidates += formations
-            candidates = [c for c in candidates if c not in used_formations]
-            candidates = [c for c in candidates
-                          if c.formid not in banned_formids]
-
-            if enemy_limit is not None:
-                candidates = [f for f in candidates if f.rank() <= enemy_limit]
-
-            if not candidates:
-                candidates = (formations +
-                              get_orphaned_formations() + get_extra_miabs(0))
-                if enemy_limit is not None:
-                    candidates = [f for f in candidates
-                                  if f.rank() <= enemy_limit]
-                    candidates = sorted(candidates, key=lambda f: f.rank())
-                    half = len(candidates) // 2
-                    candidates = candidates[half:]
-                    index = random.randint(0, half) + random.randint(0, half)
-                    index = min(index, len(candidates)-1)
-                    candidates = candidates[index:]
-
-            candidates = sorted(candidates, key=lambda f: f.rank())
-            if orphaned_formations:
-                index = max(
-                    0, len([c for c in candidates if c.rank() <= rank])-1)
-                index = mutate_index(index, len(candidates), [False, True],
-                                     (-3, 2), (-1, 1))
-            else:
-                index = 0
-                index = mutate_index(index, len(candidates), [False, True],
-                                     (-1, 4), (-1, 1))
-
-            chosen = candidates[index]
-            for m in chosen.present_enemies:
-                m.auxloc = "Monster-in-a-Box"
-
-            banned_formids.append(chosen.formid)
-            used_formations.append(chosen)
+            
+            from locationrandomizer import get_location
+            rank = self.rank
+            if self.is_clock or not rank:
+                rank = min(formations, key=lambda f: f.rank()).rank()
+            
+            chosen = select_monster_in_a_box(rank=rank, value=value, clock=self.is_clock or monster is True, guarantee_miab_treasure=guarantee_miab_treasure, enemy_limit=enemy_limit)
+            drops = [e.drops for e in chosen.present_enemies]
             chosen = get_2pack(chosen)
             # only 2-packs are allowed
             self.contents = chosen.setid & 0xFF

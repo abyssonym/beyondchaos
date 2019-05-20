@@ -1,5 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Set
+import string
 
 from utils import utilrandom as random
 
@@ -26,7 +27,22 @@ class Flag:
 class Code:
     name: str
     description: str
+    key1: str = ''
+    key2: str = ''
+    
+    @property
+    def is_cyphered(self):
+        return self.key1 and self.key2
 
+    def remove_from_string(self, s: str):
+        name = self.name
+        if self.is_cyphered:
+            f = FourSquare(self.key1, self.key2)
+            name = f.decypher(self.name)
+        if self.name in s:
+            return True, s.replace(self.name, '')
+        return False, s
+        
 
 @dataclass
 class Options:
@@ -194,6 +210,64 @@ SPECIAL_CODES = [
 ]
 
 
-ALL_CODES = NORMAL_CODES + CAVE_CODES + SPECIAL_CODES
+TOP_SECRET_CODES = [
+]
+
+ALL_CODES = NORMAL_CODES + CAVE_CODES + SPECIAL_CODES + TOP_SECRET_CODES
 
 options = Options(ALL_MODES[0])
+
+
+# This is a little silly, since anyone who knows a little python can very easily recover the plaintext, but knowing a little python you can easily subvert it all kinds of ways. This at least prevents people from seeing the plaintext (or something to easy decode in one's head like ROT13) directly in the code.
+class FourSquare:
+    def __init__(self, key1: str, key2: str):
+        self.cyphertable1 = FourSquare.cyphertable_from_key(key1)
+        self.cyphertable2 = FourSquare.cyphertable_from_key(key2)
+        self.plaintable = string.ascii_lowercase.replace('j', '')
+
+    @staticmethod
+    def cyphertable_from_key(key: str):
+        key = key.upper()
+        key = key.replace('j', 'i')
+        k = set(key)
+        k_remainder = set(string.ascii_uppercase.replace('J', '')) - k
+        return sorted(k, key=key.index) + sorted(k_remainder)
+        
+    def encypher(self, plaintext: str):
+        plaintext = "".join([c for c in plaintext if c.isalpha()])
+        plaintext = plaintext.lower()
+        if len(plaintext) % 2 == 1:
+            plaintext = plaintext + 'x'
+        plaintext = plaintext.replace('j', 'i')
+        
+        cyphertext = ''
+        for i in range(0, len(plaintext), 2):
+            j = i+1
+            i_index = self.plaintable.index(plaintext[i])
+            i_row, i_col = divmod(i_index, 5)
+            j_index = self.plaintable.index(plaintext[j])
+            j_row, j_col = divmod(j_index, 5)
+            
+            cyphertext += self.cyphertable1[i_row*5 + j_col]
+            cyphertext += self.cyphertable2[j_row*5 + i_col]
+            
+        return cyphertext
+    
+    def decypher(self, cyphertext:str):
+        if len(cyphertext) % 2 == 1:
+            raise ValueError
+        if 'J' in cyphertext:
+            raise ValueError
+        
+        plaintext = ''
+        for i in range(0, len(cyphertext), 2):
+            j = i+1
+            i_index = self.cyphertable1.index(cyphertext[i])
+            i_row, i_col = divmod(i_index, 5)
+            j_index = self.cyphertable2.index(cyphertext[j])
+            j_row, j_col = divmod(j_index, 5)
+            
+            plaintext += self.plaintable[i_row*5 + j_col]
+            plaintext += self.plaintable[j_row*5 + i_col]
+            
+        return plaintext

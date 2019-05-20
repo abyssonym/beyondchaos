@@ -744,14 +744,14 @@ class MonsterBlock:
             restricted = [0x13, 0x14]
 
         banned = restricted
-        # No blizzard or tek laser in solo terra
+        # No blizzard, mega volt, or tek laser in solo terra
         if safe_solo_terra:
             from formationrandomizer import get_fset
             for id in [0x39, 0x3A]:
                 fset = get_fset(id)
                 for f in fset.formations:
                     if self in f.present_enemies:
-                        banned.extend([0xB5, 0xBA])
+                        banned.extend([0xB5, 0xB8, 0xBA])
                         break
 
         oldskills = sorted([s for s in all_spells if s.spellid in skillset],
@@ -1852,8 +1852,8 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
                 m.swap_ai(n)
                 continue
 
-            # No blizzard or tek laser in solo terra
-            banned_narshe_skills = [0xB5, 0xBA]
+            # No blizzard, mega volt, or tek laser in solo terra
+            banned_narshe_skills = [0xB5, 0xB8, 0xBA]
             
             banned_from_narshe = any(b in m.get_skillset()
                                      for b in banned_narshe_skills)

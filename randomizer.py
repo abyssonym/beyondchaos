@@ -4539,7 +4539,10 @@ def manage_santa():
 def manage_spookiness():
     n_o_e_s_c_a_p_e_sub = Substitution()
     n_o_e_s_c_a_p_e_sub.bytestring = bytes([0x4B, 0xAE, 0x42])
-    for location in [0xCA1C8, 0xCA296, 0xA89BF, 0xB1963, 0xB198B]:
+    locations = [0xCA1C8, 0xCA296, 0xB198B]
+    if not options.is_code_active('notawaiter'):
+        locations.extend([0xA89BF, 0xB1963])
+    for location in locations:
         n_o_e_s_c_a_p_e_sub.set_location(location)
         n_o_e_s_c_a_p_e_sub.write(fout)
 
@@ -4551,13 +4554,19 @@ def manage_spookiness():
 
     nowhere_to_run_sub = Substitution()
     nowhere_to_run_sub.bytestring = bytes([0x4B, 0xB3, 0x42])
-    for location in [0xCA215, 0xCA270, 0xB19B5, 0xB19F0, 0xC8293]:
+    locations = [0xCA215, 0xCA270, 0xC8293]
+    if not options.is_code_active('notawaiter'):
+        locations.extend([0xB19B5, 0xB19F0])
+    for location in locations:
         nowhere_to_run_sub.set_location(location)
         nowhere_to_run_sub.write(fout)
 
     nowhere_to_run_bottom_sub = Substitution()
     nowhere_to_run_bottom_sub.bytestring = bytes([0x4B, 0xB3, 0xC2])
-    for location in [0xCA2F0, 0xCA7EE]:
+    locations = [0xCA7EE]
+    if not options.is_code_active('notawaiter'):
+        locations.append(0xCA2F0)
+    for location in locations:
         nowhere_to_run_bottom_sub.set_location(location)
         nowhere_to_run_bottom_sub.write(fout)
 

@@ -1459,12 +1459,12 @@ def manage_skips():
                 palette_correct_sub.write(fout)
 
     def handleConvergentPalette(split_line):
-        if options.is_code_active('divergent'):
+        if options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
             return
         handlePalette(split_line)
         
     def handleDivergentPalette(split_line):
-        if not options.is_code_active('divergent'):
+        if not options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
             return
         handlePalette(split_line)
 
@@ -1485,12 +1485,12 @@ def manage_skips():
             )
 
     def handleConvergent(split_line): # Replace events that should be modified if the scenarios are changed
-        if options.is_code_active('divergent'):
+        if options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
             return
         handleNormal(split_line)
 
     def handleDivergent(split_line): # Replace events that should be modified if the scenarios are changed
-        if not options.is_code_active('divergent'):
+        if not options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
             return
         handleNormal(split_line)
 
@@ -2537,9 +2537,9 @@ def manage_palettes(change_to, char_ids):
             continue
         line = line.split(' ')
         if len(line) > 1:
-            if line[1] == 'c' and options.is_code_active('divergent'):
+            if line[1] == 'c' and options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
                 return
-            if line[1] == 'd' and not options.is_code_active('divergent'):
+            if line[1] == 'd' and not options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
                 return
         pointer = hex2int(line[0].strip())
         fout.seek(pointer)
@@ -5105,7 +5105,7 @@ def randomize():
     for code in options.mode.forced_codes:
         options.activate_code(code)
 
-    for code in NORMAL_CODES:
+    for code in NORMAL_CODES + TOP_SECRET_CODES:
         found, flags = code.remove_from_string(flags)
         if found:
             if code in options.mode.prohibited_codes:

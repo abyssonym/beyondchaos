@@ -36,8 +36,9 @@ from locationrandomizer import (EntranceSet,
                                 get_locations, get_location, get_zones)
 from chestrandomizer import mutate_event_items, get_event_items
 from towerrandomizer import randomize_tower
-from musicrandomizer import randomize_music
+from musicrandomizer import randomize_music, manage_opera, insert_instruments
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
+from dialoguemanager import manage_dialogue_patches
 from decompress import Decompressor
 
 
@@ -6731,6 +6732,7 @@ r   Randomize character locations in the world of ruin.
     secret_codes['electricboogaloo'] = "WILD ITEM BREAK MODE"
     secret_codes['notawaiter'] = "CUTSCENE SKIPS"
     secret_codes['rushforpower'] = "OLD VARGAS FIGHT MODE"
+    secret_codes['alasdraco'] = "JAM UP YOUR OPERA MODE"
     secret_codes['johnnydmad'] = "MUSIC REPLACEMENT MODE"
     secret_codes['johnnyachaotic'] = "MUSIC MANGLING MODE"
     s = ""
@@ -6769,7 +6771,7 @@ r   Randomize character locations in the world of ruin.
 
     fout = open(outfile, "r+b")
     expand_rom()
-
+    
     print (
         "\nNow beginning randomization.\n"
         "The randomization is very thorough, so it may take some time.\n"
@@ -7074,9 +7076,17 @@ r   Randomize character locations in the world of ruin.
             improve_dance_menu(fout)
     reseed()
 
-    if 'johnnydmad' in activated_codes or 'johnnyachaotic' in activated_codes:
-        f_mchaos = True if 'johnnyachaotic' in activated_codes else False
-        music_log = randomize_music(fout, f_mchaos = f_mchaos, codes=activated_codes, form_music_overrides=form_music)
+    has_music = 'johnnydmad' in activated_codes or 'johnnyachaotic' in activated_codes
+    if has_music or 'alasdraco' in activated_codes:
+        data = insert_instruments(fout, 0x310000)
+        opera = None
+        
+    if 'alasdraco' in activated_codes and 'ancientcave' not in activated_codes:
+        opera = manage_opera(fout, has_music)
+    reseed()
+    
+    if has_music:
+        music_log = randomize_music(fout, opera = opera, codes=activated_codes, form_music_overrides=form_music)
         log(music_log, section="music")
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
@@ -7156,6 +7166,8 @@ r   Randomize character locations in the world of ruin.
     if 'z' in flags:
         sprint_shoes_hint()
 
+    manage_dialogue_patches(fout)
+    
     rewrite_title(text="FF6 BCEX %s" % seed)
     fout.close()
     rewrite_checksum()
@@ -7196,6 +7208,8 @@ if __name__ == "__main__":
         input("Press enter to close this program. ")
     except Exception as e:
         print("ERROR: %s" % e)
+        import traceback
+        traceback.print_exc()
         if fout:
             fout.close()
         if outfile is not None:

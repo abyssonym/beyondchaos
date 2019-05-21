@@ -6,8 +6,11 @@
 import configparser, os.path, re
 from copy import copy
 
-from utils import (utilrandom as rng, open_mei_fallback as open)
+from locationrandomizer import get_locations, get_location
+from dialoguemanager import set_dialogue_var, set_pronoun, patch_dialogue, load_patch_file
+from utils import (utilrandom as random, open_mei_fallback as open)
 from mml2mfvi import mml_to_akao
+
 
 try:
     from sys import _MEIPASS
@@ -275,8 +278,9 @@ def claim_space(startc, endc):
             newfs.append((start, end))
     freespace = newfs
     
-def insert_instruments(data_in, metadata_pos= False):
-    data = data_in
+def insert_instruments(fout, metadata_pos= False):
+    fout.seek(0)
+    data = fout.read()
     samplecfg = configparser.ConfigParser()
     samplecfg.read(safepath(os.path.join('tables', 'samples.txt')))
         
@@ -387,9 +391,10 @@ def insert_instruments(data_in, metadata_pos= False):
         loc = int(CONFIG.get('MusicPtr', 'brradsrpointer'),16)
         data = int_insert(data, loc, s + HIROM, 3)
     
-    return data
+    fout.seek(0)
+    fout.write(data)
 
-def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=True, f_mchaos=False, f_altsonglist=False):
+def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f_battleprog=True, f_mchaos=False, f_altsonglist=False):
     global freespace
     data = data_in
     freespacebackup = freespace
@@ -472,7 +477,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
     used_songs = []
     songs_to_change = []
     for ident, s in songtable.items():
-        if rng.randint(1, 100) > s.chance:
+        if random.randint(1, 100) > s.chance:
             if not f_repeat: used_songs.append(native_prefix + ident)
             songtable[ident].changeto = native_prefix + ident
         else:
@@ -579,14 +584,14 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         battlecount = len(battleids) + len(bossids)
         while len(intensitytable) < battlecount:
             dprint("WARNING: not enough battle songs marked, adding random song to pool")
-            newsong = rng.choice([k[0] for k in songconfig.items('Imports') if k not in intensitytable])
-            intensitytable[newsong] = (rng.randint(0,9), rng.randint(0,9))
+            newsong = random.choice([k[0] for k in songconfig.items('Imports') if k not in intensitytable])
+            intensitytable[newsong] = (random.randint(0,9), random.randint(0,9))
 
         if old_method:
             retry = True
             while retry:
                 retry = False
-                battlechoices = rng.sample([(k, sum(intensitytable[k]), intensitytable[k][0]) for k in intensitytable.keys()], battlecount)
+                battlechoices = random.sample([(k, sum(intensitytable[k]), intensitytable[k][0]) for k in intensitytable.keys()], battlecount)
                 for c in battlechoices:
                     if usage_id(battlechoices[0]) in used_songs: retry = True
             battlechoices.sort(key=operator.itemgetter(1))
@@ -609,20 +614,20 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             tries=0
             while True:
                 try:
-                    event, (ei, eg) = rng.choice(list(intensity_subset(imin=33, gmax=33).items()))
+                    event, (ei, eg) = random.choice(list(intensity_subset(imin=33, gmax=33).items()))
                     bt = min(ei,60) 
 
-                    super, (si, sg) = rng.choice(list(intensity_subset(imin=bt, gmin=66).items()))
-                    boss, (bi, bg) = rng.choice(list(intensity_subset(imin=bt, gmin=max(22,eg), gmax=sg).items()))
+                    super, (si, sg) = random.choice(list(intensity_subset(imin=bt, gmin=66).items()))
+                    boss, (bi, bg) = random.choice(list(intensity_subset(imin=bt, gmin=max(22,eg), gmax=sg).items()))
                     wt = min(80,max(bg, 50))
-                    balance = rng.sample(list(intensity_subset(imax=bt, gmax=wt).items()), 2)
+                    balance = random.sample(list(intensity_subset(imax=bt, gmax=wt).items()), 2)
                     if balance[0][1][0] + balance[0][1][1] > balance[1][1][0] + balance[1][1][1]:
                         boutside, (boi, bog) = balance[1]
                         binside, (bii, big) = balance[0]
                     else:
                         boutside, (boi, bog) = balance[0]
                         binside, (bii, big) = balance[1]
-                    ruin = rng.sample(list(intensity_subset(imax=min(bi, si), gmin=max(bog,big)).items()), 2)
+                    ruin = random.sample(list(intensity_subset(imax=min(bi, si), gmin=max(bog,big)).items()), 2)
                     if ruin[0][1][0] + ruin[0][1][1] > ruin[1][1][0] + ruin[1][1][1]:
                         routside, (roi, rog) = ruin[1]
                         rinside, (rii, rig) = ruin[0]
@@ -683,7 +688,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
         if id == 0x29:
             sfx = "sfx_zozo.mmlappend"
             is_sfxv = True
-        elif id == 0x4F or (id == 0x5D and rng.choice([True, False, False])):
+        elif id == 0x4F or (id == 0x5D and random.choice([True, False, False])):
             sfx = "sfx_wor.mmlappend"
             is_sfxv = True
             try:
@@ -721,7 +726,7 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
                 opts = copy(opts_full)
                 attempts = 0
             retry = False
-            tiernames = rng.sample(opts, 3)
+            tiernames = random.sample(opts, 3)
             tierfiles = []
             for n in tiernames:
                 try:
@@ -808,14 +813,14 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             set_by_battleprog = battleprog[0] + battleprog[1]
         songs_to_change = [s for s in songs_to_change if s[1].id not in set_by_battleprog]
         f_moveinst = False if check_ids_fit() or f_preserve else True
-        rng.shuffle(songs_to_change)
+        random.shuffle(songs_to_change)
         for ident, s in songs_to_change:
             if ident in tierboss:
                 songtable[ident].changeto = '!!tierboss'
             else:
                 choices = [c for c in songtable[ident].choices if usage_id(c) not in used_songs]
                 if not choices: choices.append(native_prefix + ident)
-                newsong = rng.choice(choices)
+                newsong = random.choice(choices)
                 if (usage_id(newsong) in used_songs) and (not f_repeat):
                     keeptrying = True
                     break
@@ -959,6 +964,18 @@ def process_custom_music(data_in, eventmodes="", f_randomize=True, f_battleprog=
             dprint("failed music generation during data read")
             continue
         
+        # force opera music if opera is randomized
+        if opera:
+            songtable['aria'].is_pointer = False
+            songtable['aria'].data = bytes(opera['aria'][0], encoding='latin-1')
+            songtable['aria'].inst = bytes(opera['aria'][1], encoding='latin-1')
+            songtable['opera_draco'].is_pointer = False
+            songtable['opera_draco'].data = bytes(opera['overture'][0], encoding='latin-1')
+            songtable['opera_draco'].inst = bytes(opera['overture'][1], encoding='latin-1')
+            songtable['wed_duel'].is_pointer = False
+            songtable['wed_duel'].data = bytes(opera['duel'][0], encoding='latin-1')
+            songtable['wed_duel'].inst = bytes(opera['duel'][1], encoding='latin-1')
+            
         # try to fit it all in!
         if f_preserve:
             freelocs = []
@@ -1328,16 +1345,17 @@ def process_map_music(data):
     
     return data
     
-def randomize_music(fout, f_mchaos=False, codes=[], form_music_overrides={}):
+def randomize_music(fout, opera=None, codes=[], form_music_overrides={}):
     events = ""
     if 'christmas' in codes:
         events += "W"
     if 'halloween' in codes:
         events += "H"
+    f_mchaos = 'johnnyachaotic' in codes
+    
     fout.seek(0)
     data = fout.read()
-    data = insert_instruments(data, INST_METADATA_OFFSET)
-    data = process_custom_music(data, f_mchaos=f_mchaos, eventmodes=events)
+    data = process_custom_music(data, opera=opera, f_mchaos=f_mchaos, eventmodes=events)
     if 'ancientcave' not in codes and 'speedcave' not in codes and 'racecave' not in codes:
         data = process_map_music(data)
     data = process_formation_music_by_table(data, form_music_overrides=form_music_overrides)
@@ -1346,4 +1364,444 @@ def randomize_music(fout, f_mchaos=False, codes=[], form_music_overrides={}):
     fout.write(data)
     
     return "\n".join(spoiler['Music'])
+    
+#######################################
+## End of core music randomizer code ##
+#######################################
+
+def manage_opera(fout, affect_music):
+    fout.seek(0)
+    data = fout.read()
+    
+    #2088 blocks available for all 3 voices in Waltz 3
+    SAMPLE_MAX_SIZE = 0x4968 
+    
+    #Determine opera cast
+    
+    class OperaSinger:
+        def __init__(self, name, title, sprite, gender, file, sample, octave, volume, init):
+            self.name = name
+            self.title = title
+            self.sprite = sprite
+            self.gender = gender
+            self.file = file
+            self.sample = int(sample,16)
+            self.octave = octave
+            self.volume = volume
+            self.init = init
+    
+    #voice range notes
+    # Overture (Draco) ranges from B(o-1) to B(o)
+    # Aria (Maria) ranges from D(o) to D(o+1)
+    # Duel 1 (Draco) ranges from B(o-1) to E(o)
+    # Duel 2 (Maria) ranges from A(o) to F(o+1)
+    # Duel 3 (Ralse) ranges from E(o) to C(o+1)
+    # Duel 4 (Draco) ranges from B(o-1) to F(o)
+    # Duel 5 (Ralse) ranges from E(o) to B(o)
+    
+    singer_options = []
+    try:
+        with open(safepath(os.path.join('custom','opera.txt'))) as f:
+            for line in f.readlines():
+                singer_options.append([l.strip() for l in line.split('|')])
+    except IOError:
+        print("WARNING: failed to load opera config")
+        return
+        
+    singer_options = [OperaSinger(*s) for s in singer_options]
+    
+    #categorize by voice sample
+    voices = {}
+    for s in singer_options:
+        if s.sample in voices:
+            voices[s.sample].append(s)
+        else:
+            voices[s.sample] = [s]
+    
+    #find a set of voices that doesn't overflow SPC RAM
+    sample_sizes = {}
+    while True:
+        vchoices = random.sample(list(voices.values()), 3)
+        for c in vchoices:
+            smp = c[0].sample
+            if smp not in sample_sizes:
+                sample_sizes[smp] = find_sample_size(data, smp)
+        sample_total_size = sum([sample_sizes[c[0].sample] for c in vchoices])
+        if sample_total_size <= SAMPLE_MAX_SIZE:
+            break
+
+    #select characters
+    charpool = []
+    char = {}
+    #by voice, for singers
+    for v in vchoices:
+        charpool.append(random.choice(v))
+    random.shuffle(charpool)
+    for c in ["Maria", "Draco", "Ralse"]:
+        char[c] = charpool.pop()
+    #by sprite/name, for impresario
+    charpool = [c for c in singer_options if c not in char.values()]
+    char["Impresario"] = random.choice(charpool)
+    
+    #reassign sprites in npc data
+    locations = get_locations()
+    #first, free up space for a unique Ralse
+    #choose which other NPCs get merged:
+    # 1. id for new scholar, 2. id for merged sprite, 3. offset for merged sprite, 4. spritesheet filename, 5. extra pose type
+    merge_options = [
+        (32, 33, 0x1731C0, "dancer.bin", "flirt"), #fancy gau -> dancer
+        (35, 32, 0x173D40, "gausuit.bin", "sideeye"), #clyde -> fancy gau
+        (60, 32, 0x173D40, "daryl.bin", "sideeye"), #clyde -> daryl
+        (42, 32, 0x173D40, "katarin.bin", "sideeye"), #clyde -> katarin
+        (60, 42, 0x176580, "daryl.bin", "sideeye"), #katarin -> daryl
+        (60, 42, 0x176580, "katarin.bin", "sideeye"), #daryl -> katarin
+        (60, 41, 0x175FC0, "daryl.bin", "sleeping"), #rachel -> daryl
+        (60, 41, 0x175FC0, "rachel.bin", "sleeping"), #daryl -> rachel
+        (60, 30, 0x172080, "returner.bin", "prone"), #daryl -> returner
+        (53, 59, 0x17BFC0, "figaroguard.bin", None), #conductor -> figaro guard
+        (45, 48, 0x178800, "maduin.bin", "prone"), #yura -> maduin
+        ]
+    merge = random.choice(merge_options)
+    
+    #merge sacrifice into new slot
+    replace_npc(locations, (merge[0], None), merge[1])
+    #move scholar into sacrifice slot
+    for i in [0,1,3,4,5]:
+        replace_npc(locations, (27, i), (merge[0], i))
+    
+    #randomize palettes of shuffled characters
+    for i in [0x1A, 0x1B, 0x1C, 0x2B]:
+        palette = random.randint(0,5)
+        for l in locations:
+            for npc in l.npcs:
+                if npc.graphics == i:
+                    #npc.palette = palette
+                    pass
+    
+    for l in locations:
+        for npc in l.npcs:
+            if npc.graphics in [118,138]:
+                print()
+                print(f"graphics {npc.graphics} found at ${npc.pointer:X}, in location 0x{l.locid:X}")
+                print(f"palette {npc.palette}, facing byte {npc.facing:X}")
+                print(f"facing {npc.facing & 3:X}, change {npc.facing>>2 & 1:X}")
+                print(f"bglayer {npc.facing>>3 & 3:X}, unknown1 {npc.facing>>5 & 1:X}")
+                print(f"mirror {npc.facing>>6 & 2:X}, unknown2 {npc.facing>>7 & 1:X}")
+                
+    #randomize item thrown off balcony
+    balcony = get_location(0xEC)
+    for npc in balcony.npcs:
+        if npc.graphics == 88:
+            item = random.choice([
+                #(84, 0x24, "chest"), #treasure box (palette broken)
+                (87, 0x44, "statue"),
+                (88, 0x54, "flowers"), #bouquet
+                (89, 0x54, "letter"), #letter
+                (91, 0x54, "magicite"), #magicite
+                (92, 0x44, "book"), #book
+                ##DO NOT THROW THE BABY
+                (96, 0x44, "crown"), #slave crown
+                (97, 0x54, "weight"), #4ton weight
+                (100, 0x54, "bandana"), #locke's bandana
+                ##(124, 0x02, "helmet") #a shiny thing (didn't work)
+                ])
+            npc.graphics = item[0]
+            npc.palette = random.choice(range(6))
+            npc.facing = item[1]
+            set_dialogue_var("OperaItem", item[2])
+            print(f"opera item is {npc.graphics}, palette {npc.palette} ({item[2]})")
+            print(f"at address {npc.pointer:X}")
+    #4 ton weight
+    for npc in get_location(0xEB).npcs:
+        if npc.graphics == 97:
+            item = random.choice([
+                (58, 0x11), #fish (????)
+                #(87, 0x44), #mini statue
+                (93, 0x54), #ultros is allowed to try to throw the baby (STOP HIM)
+                #(97, 0x54), #4ton weight
+                #(112, 0x43), #fire
+                ###(118, 0x10), #rock (didn't work)
+                ###(138, 0x12) #leo's sword (didn't work)
+                ])
+            npc.graphics = item[0]
+            npc.palette = random.choice(range(6))
+            npc.facing = item[1]
+            print(f"ultros item is {npc.graphics}, palette {npc.palette}")
+            print(f"at address {npc.pointer:X}")
+
+    #set up some spritesheet locations
+    pose = {
+        'singing': list(range(0x60, 0x6A)),
+        'ready': list(range(0x3E, 0x44)),
+        'prone': list(range(0x51, 0x57)),
+        'angry': list(range(0x76, 0x7C)),
+        'flirt': [0xA3, 0xA4, 0x9C, 0x99, 0x9A, 0x9B],
+        'sideeye': [0x92, 0x93, 0x94, 0x95, 0x08, 0x09],
+        'sleeping': [0x86, 0x87, 0x88, 0x89, 0x08, 0x09]
+            }
+    
+    opath = os.path.join("custom","opera")
+    #load scholar graphics
+    try:
+        with open(safepath(os.path.join(opath, "ralse.bin")),"rb") as f:
+            sprite = f.read()
+    except IOError:
+        print(f"failed to open custom/opera/ralse.bin")
+        sprite = None
+    if sprite:
+        print(f"merge {merge}, pose {pose}")
+        new_sprite = create_sprite(sprite, merge[0], pose[merge[4]] if merge[4] is not None else [])
+        data = byte_insert(data, merge[2], new_sprite)
+    #load new graphics into merged slot
+    pass #TODO
+    
+    #load new graphics into opera characters
+    char_offsets = {
+        "Maria": (0x1705C0, pose['ready'] + pose['singing']),
+        "Draco": (0x1713C0, pose['prone'] + pose['singing']),
+        "Ralse": (0x170CC0, pose['prone'] + pose['singing']),
+        "Impresario": (0x176B40, pose['angry'])}
+    for cname, c in char.items():
+        print(f"{cname} -> {c.name}")
+        try:
+            with open(safepath(os.path.join(opath, f"{c.sprite}.bin")),"rb") as f:
+                sprite = f.read()
+        except IOError:
+            try:
+                with open(safepath(os.path.join("custom","sprites", f"{c.sprite}.bin")),"rb") as f:
+                    sprite = f.read()
+            except:
+                print(f"failed to open custom/opera/{c.sprite}.bin or custom/sprites/{c.sprite}.bin")
+                continue
+        offset, extra_tiles = char_offsets[cname]
+        #tiles = list(range(0x28)) + extra_tiles
+        #new_sprite = bytearray()
+        #for t in tiles:
+        #    loc = t*32
+        #    new_sprite.extend(sprite[loc:loc+32])
+        #data = byte_insert(data, offset, new_sprite)
+        new_sprite = create_sprite(sprite, offset, extra_tiles)
+        data = byte_insert(data, offset, new_sprite)
+        
+    ### adjust script
+    
+    load_patch_file("opera")
+    factions = [
+        ("the East", "the West"),
+        ("the North", "the South"),
+        ("the Rebels", "the Empire"),
+        ("the Alliance", "the Horde"),
+        ("the Sharks", "the Jets"),
+        ("the Fire Nation", "the Air Nation"),
+        ("the Sith", "the Jedi"),
+        ("the X-Men", "the Sentinels"),
+        ("the X-Men", "the Inhumans"),
+        ("the Kree", "the Skrulls"),
+        ("the jocks", "the nerds"),
+        ("Palamecia", "the Wild Rose"),
+        ("Baron", "Mysidia"),
+        ("Baron", "Damcyan"),
+        ("Baron", "Fabul"),
+        ("AVALANCHE", "Shinra"),
+        ("Shinra", "Wutai"),
+        ("Balamb", "Galbadia"),
+        ("Galbadia", "Esthar"),
+        ("Alexandria", "Burmecia"),
+        ("Alexandria", "Lindblum"),
+        ("Zanarkand", "Bevelle"),
+        ("the Aurochs", "the Goers"),
+        ("Yevon", "the Al Bhed"),
+        ("the Gullwings", "the Syndicate"),
+        ("New Yevon", "the Youth League"),
+        ("Dalmasca", "Archadia"),
+        ("Dalmasca", "Rozarria"),
+        ("Cocoon", "Pulse"),
+        ("Lucis", "Niflheim"),
+        ("Altena", "Forcena"),
+        ("Nevarre", "Rolante"),
+        ("Wendel", "Ferolia"),
+        ("the Lannisters", "the Starks"),
+        ("the Hatfields", "the McCoys"),
+        ("the Aliens", "the Predators"),
+        ("cats", "dogs"),
+        ("YoRHa", "the machines"),
+        ("Shevat", "Solaris"),
+        ("U-TIC", "Kukai"),
+        ("the Bionis", "the Mechonis"),
+        ("Samaar", "the Ghosts"),
+        ("Mor Ardain", "Uraya"),
+        ("Marvel", "Capcom"),
+        ("Nintendo", "Sega"),
+        ("Subs", "Dubs"),
+        ("vampires", "werewolves"),
+        ("Guardia", "the Mystics")
+        ]
+    factions = random.choice(factions)
+    if random.choice([False, True]):
+        factions = (factions[1], factions[0])
+    set_dialogue_var("OperaEast", factions[0])
+    set_dialogue_var("OperaWest", factions[1])
+        
+    set_dialogue_var("maria", char['Maria'].name)
+    set_dialogue_var("draco", char['Draco'].name)
+    set_dialogue_var("ralse", char['Ralse'].name)
+    set_dialogue_var("impresario", char['Impresario'].name)
+    set_dialogue_var("mariatitle", char['Maria'].title)
+    set_dialogue_var("dracotitle", char['Draco'].title)
+    set_dialogue_var("ralsetitle", char['Ralse'].title)
+    set_dialogue_var("impresariotitle", char['Impresario'].title)
+    char['Maria'].gender = set_pronoun('Maria', char['Maria'].gender)
+    char['Draco'].gender = set_pronoun('Draco', char['Draco'].gender)
+    char['Ralse'].gender = set_pronoun('Ralse', char['Ralse'].gender)
+    char['Impresario'].gender = set_pronoun('Impresario', char['Impresario'].gender)
+    
+    #due to the variance in power relations connoted by "make X my queen" and "make X my king", this line will be altered in all variations so that it means roughly the same thing no matter the Maria replacement's gender
+    
+    if char['Maria'].gender == "female":
+        set_dialogue_var("MariaTheGirl", "the girl")
+        set_dialogue_var("MariaQueen", "bride")
+        set_dialogue_var("MariaWife", "wife")
+    elif char['Maria'].gender == "male":
+        set_dialogue_var("MariaTheGirl", "the guy")
+        set_dialogue_var("MariaQueen", "consort")
+        set_dialogue_var("MariaWife", "husband")
+    elif char['Maria'].gender == "object":
+        set_dialogue_var("MariaTheGirl", char['Maria'].title + char['Maria'].name)
+        set_dialogue_var("MariaQueen", "prize")
+        set_dialogue_var("MariaWife", "collection")
+    else:
+        set_dialogue_var("MariaTheGirl", "the girl")
+        set_dialogue_var("MariaQueen", "consort")
+        set_dialogue_var("MariaWife", "partner")
+    
+    if char['Impresario'].gender == "male":
+        set_dialogue_var("ImpresarioMan", "man") # from "music man"
+    elif char['Impresario'].gender == "female":
+        set_dialogue_var("ImpresarioMan", "madam")
+    elif char['Impresario'].gender == "object":
+        set_dialogue_var("ImpresarioMan", "machine")
+    else:
+        set_dialogue_var("ImpresarioMan", "maker")
+        
+    # for idx in [1189, 1208, 1222, 1228]:
+        # patch_dialogue(idx, "east", "{operaEast}")
+        # patch_dialogue(idx, "west", "{operaWest}")
+        # patch_dialogue(idx, "west's", "{operaWest}'s")
+    # patch_dialogue(1189, "the", None)
+    # patch_dialogue(1208, "the", None, 2)
+    # patch_dialogue(1208, "the", None, 3)
+    # patch_dialogue(1222, "the", None, 3)
+    # patch_dialogue(1228, "the", None, 2)
+    
+    # for idx in [1157, 1159, 1170, 1171, 1173, 1174, 1177, 1178, 1182, 1196, 1197, 1227, 1237, 1240, 1244, 1247, 1249, 1252, 1254, 1255, 1256, 1257, 1258]:
+        # patch_dialogue(idx, "impresario", "{IMPRESARIO}")
+    # for idx in [1162, 1206, 1236]:
+        # patch_dialogue(idx, "impresario", "{Impresario}")
+    # patch_dialogue(474, "impresario", "{impresario}") #Talk to the Impresario!
+    # patch_dialogue(474, "the", "{impresariotitle}") #Talk to the Impresario!
+    # patch_dialogue(1206, "the", "{ImpresarioTitle}", 11) #"The Impresario" on aria script
+    # patch_dialogue(1225, "the", "{impresariotitle}") #Better tell the Impresario!
+    # patch_dialogue(1225, "impresario", "{impresario}") #Talk to the Impresario!
+    # patch_dialogue(1261, "the", "{Impresariotitle}", 1) #Press the far right switch
+    # patch_dialogue(1261, "impresario", "{impresario}") #Press the far right switch
+    
+    # for idx in [1032, 1156, 1157, 1159, 1160]:
+        # patch_dialogue(idx, "maria", "{Maria}")
+    # for idx in [1156]:
+        # patch_dialogue(idx, "her", "{MariaEm}")
+    # for idx in [1156]:
+        # patch_dialogue(idx, "she's", "{MariaEyIs}")
+        
+    ### adjust music
+    opera = {}
+    try:
+        overture = read_opera_mml('overture')
+        overture += f"\n#WAVE 0x2B 0x{char['Draco'].sample:02X}\n"
+        overture += f"\n#def draco= |B o{char['Draco'].octave[0]} v{char['Draco'].volume} {char['Draco'].init}\n"
+        seg = read_opera_mml(f"{char['Draco'].file}_overture")
+        overture += seg
+        
+        aria = read_opera_mml('aria')
+        aria += f"\n#WAVE 0x2A 0x{char['Maria'].sample:02X}\n"
+        aria += f"\n#def maria= |A o{char['Maria'].octave[1]} v{char['Maria'].volume} {char['Maria'].init}\n"
+        seg = read_opera_mml(f"{char['Maria'].file}_aria")
+        aria += seg
+        
+        duel = read_opera_mml('duel')
+        duel += f"\n#WAVE 0x2A 0x{char['Maria'].sample:02X}\n"
+        duel += f"\n#def maria= |A o{char['Maria'].octave[3]} v{char['Maria'].volume} {char['Maria'].init}\n"
+        duel += f"\n#WAVE 0x2B 0x{char['Draco'].sample:02X}\n"
+        duel += f"\n#def draco= |B o{char['Draco'].octave[2]} v{char['Draco'].volume} {char['Draco'].init}\n"
+        duel += f"\n#def draco2= |B o{char['Draco'].octave[5]} v{char['Draco'].volume} {char['Draco'].init}\n"
+        duel += f"\n#WAVE 0x2C 0x{char['Ralse'].sample:02X}\n"
+        duel += f"\n#def ralse= |C o{char['Ralse'].octave[4]} v{char['Ralse'].volume} {char['Ralse'].init}\n"
+        duel += f"\n#def ralse2= |C o{char['Ralse'].octave[6]} v{char['Ralse'].volume} {char['Ralse'].init}\n"
+        duelists = ["Draco", "Maria", "Ralse", "Draco", "Ralse"]
+        for i in range(5):
+            seg = read_opera_mml(f"{char[duelists[i]].file}_duel{i+1}")
+            duel += seg
+        
+        #print(overture)
+        #print("########")
+        #print(duel)
+        #print("########")
+        #print(aria)
+        
+        opera['overture'] = mml_to_akao(overture)['_default_']
+        opera['duel'] = mml_to_akao(duel)['_default_']
+        opera['aria'] = mml_to_akao(aria)['_default_']
+        
+    except IOError:
+        print("opera music generation failed, reverting to default")
+        affect_music = False
+    
+    fout.seek(0)
+    fout.write(data)
+    
+    return opera if affect_music else None
+    
+def find_sample_size(data, sidx):
+    table = 0x53C5F
+    offset = bytes_to_int(data[table+sidx*3:table+sidx*3+3]) - 0xC00000
+    loc = 0
+    
+    #scan BRR block headers until one has END bit set
+    while not (data[offset+loc*9] & 1):
+        loc += 1
+    
+    return (loc+1)*9
+    
+def replace_npc(locations, old, new):
+    if old[1] is not None: #if a palette is specified,
+        for l in locations:
+            for n in l.npcs:
+                if n.graphics == old[0] and n.palette == old[1]:
+                    n.graphics = new[0]
+                    n.palette = new[1]
+    else:
+        for l in locations:
+            for n in l.npcs:
+                if n.graphics == old[0]:
+                    try:
+                        n.graphics = new
+                    except IndexError:
+                        n.graphics = new
+    
+def create_sprite(sprite, offset, extra_tiles):
+    tiles = list(range(0x28)) + (extra_tiles if extra_tiles else [])
+    new_sprite = bytearray()
+    for t in tiles:
+        loc = t*32
+        new_sprite.extend(sprite[loc:loc+32])
+    return new_sprite
+    
+def read_opera_mml(file):
+    try:
+        file = safepath(os.path.join('custom','opera',f'{file}.mml'))
+        with open(file, "r") as f:
+            mml = f.read()
+        return mml
+    except IOError:
+        print(f"Failed to read {file}")
+        raise
     

@@ -88,3 +88,6 @@
 95: ffx_dulcimer,   640B, A900, F 7 7  D
 96: s31f_pizza,     5D0F, 0F60, F 7 7  A
 97: tr25_cguitar,   8208, E070, F 7 7  D 
+98: rd08_lawl,      0000, D700, F 7 7  F
+99: so2lena3,       1815, F900, F 0 2  0
+9A: ct24_trumpet,   9C06, E1C6, F 7 7  0

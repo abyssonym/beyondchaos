@@ -1,0 +1,73 @@
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0D
+#WAVE 0x21 -- 0x2C
+#WAVE 0x25 -- 0x0E
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+l16%b0,100%f0,0%v50|0p50%e1v40t70o5g+2a2  ^2r2  a1  f2f+2  
+a2t20g+4t125r4  r4<er48er48er48e4r4  r4er48er48er48e4r4  f4er8.d4er8.  
+t120f4t110er8.t100d4t90e4  >b8a8g+2^4  <c8>b8a2^4  b8a8g+4a4f+4  
+g+2^4t125r4  r1  r1  r1  
+
+;
+
+l16
+{2}
+l16|0p60%e1v40o5e4d4c2  ^2r2  f4e4d+2  d2d+2  
+e2^4r4  r4ar48ar48ar48g+4r4  r4ar48ar48ar48g+4r4  a4g+r8.a4g+r8.  
+a4g+r8.a4g+4  d8c8>b2^4  <e8d8c2^4  d8c8>b2^4  
+<e2^4r4  r1  r1  r1  
+
+;
+
+l16
+{3}
+l16|0p70%e1v40o4b2a2  ^2r2  <c2>b2  b2a2  
+b2^4r4  r4<er48er48er48e4r4  r4er48er48er48e4r4  f4er8.d4er8.  
+f4er8.d4e4  r1  r1  r1  
+r1  r1  r1  r1  
+
+;
+
+l16
+{4}
+l16|1p75%e1v60o5e4g+4a2  ^2r2  <d4c4>b2  a2b2  
+<e2^4r4  r4>er48er48er48e4r4  r4er48er48er48e4r4  f4er8.d4er8.  
+f4er8.d4e4  e2^4f+8g+8  a2^4b8<c8  d2>b2  
+<e2>e4r4  r1  r1  r1  
+
+;
+
+l16
+{6}
+l16r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+v60|5p64%e1m48,18,239r2o6a24r24a24r24a24r24<e24r8>a24r24  <e1  ^1  
+
+;
+
+l16
+{7}
+l16r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  v60|5p45%e1m48,18,239o6g24r24g24r24g24r24<d24r8>g24r24<d2  
+^1  
+;
+
+l16
+{8}
+l16r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  v60|5p80%e1m48,18,239r2o6f24r24f24r24f24r24<c24r8>f24r24  
+<c1  
+;
+
+l16

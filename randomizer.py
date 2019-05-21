@@ -4726,7 +4726,6 @@ def code_hint():
     max_len = 0x6D
     while True:
         code = options.random_unused_code()
-        print(code.name)
         hint = "MADUIN: But if you use the code “{}”… <wait 240 frames><wait 1 frame><page><line>You will probably be able to remain in this world as a human being… <wait 240 frames><wait 1 frame>".format(code.name)
         bytestring = dialogue_to_bytes(hint)
         if len(bytestring) <= max_len:

@@ -67,11 +67,12 @@ def allocate_espers(ancient_cave, espers, characters, fout):
     characters = [c for c in characters if c.id in char_ids]
     
     chars_for_esper = []
+    max_rank = max(espers, key=lambda e: e.rank).rank
     for e in espers:
         num_users = 1
-        if random.randint(1,10) == 10:
+        if e.id not in [15, 16] and random.randint(1,25) >= 25 - max_rank + e.rank:
             num_users += 1
-            while num_users < 15 and random.choice([True, False, False]):
+            while num_users < 15 and random.choice([True] + [False] * (e.rank + 2)):
                 num_users += 1
         users = random.sample(characters, num_users)
         chars_for_esper.append([c.id for c in users])

@@ -3,7 +3,7 @@ Draco|Sir|draco|male|default|39|6665666|120|m48,18,239%a10
 Ralse|Prince|ralse|male|default|38|6676676|120|m48,18,239%a10
 Impresario|the|impresario|male|default|93|4443444|100|m48,18,239
 Gato|El|cat|random|default|9A|5454555|100|m%y0%s5
-Cloud|Miss|clouddress|truerandom|default|99|4443444|127|m20,92,63k3
+Cloud|Miss|clouddress|truerandom|default|99|4443444|127|m20,92,63k-6
 Garnet|Princess|garnetgown|female|nolegato|98|5565565|100|m
 clock|the|clock|object|nolegato|8D|5554454|80|m48,18,207
 Gau|Sir|gausuit|male|default|05|4444444|100|m48,18,223
@@ -14,10 +14,10 @@ Relm|Miss|relmadult|female|default|33|5555555|100|m48,18,223
 Cyan|Sir|ogcyan|male|default|34|5554555|100|m48,18,207
 Johnny|$73The Man$62|johnny|male|default|4B|5555555|100|m48,18,207
 Link|my dude|link|male|default|63|4444444|100|m48,18,239
-Celes|General|ogceles|female|nolegato|3A|4444444|100|m20,92,63k3
+Celes|General|ogceles|female|nolegato|3A|4444444|100|m20,92,63k6
 Aerith|Miss|aerith|female|default|64|4444444|100|m48,18,239
 Yuna|Lady|yuna|female|default|64|5555555|100|m48,18,239
 Edward|Prince|edward|male|nolegato|54|5555555|100|m48,18,207
 ghost|a|ghost|random|default|7D|5555555|72|m%r5%a7
-Ultros|Master|ultros|male|default|10|6666666|100|m
+Ultros|Master|ultros|male|nolegato|10|6666666|100|m
 Nadia|Princess|marle|female|default|99|5554555|100|m48,18,239

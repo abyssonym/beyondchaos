@@ -1447,24 +1447,24 @@ def manage_opera(fout, affect_music):
     locations = get_locations()
     #first, free up space for a unique Ralse
     #choose which other NPCs get merged:
-    # 1. id for new scholar, 2. id for merged sprite, 3. offset for merged sprite, 4. spritesheet filename, 5. extra pose type
+    # 0. id for new scholar, 1. offset for new scholar, 2. id for merged sprite, 3. offset for merged sprite, 4. spritesheet filename, 5. extra pose type
     merge_options = [
-        (32, 33, 0x1731C0, "dancer.bin", "flirt"), #fancy gau -> dancer
-        (35, 32, 0x173D40, "gausuit.bin", "sideeye"), #clyde -> fancy gau
-        (60, 32, 0x173D40, "daryl.bin", "sideeye"), #clyde -> daryl
-        (42, 32, 0x173D40, "katarin.bin", "sideeye"), #clyde -> katarin
-        (60, 42, 0x176580, "daryl.bin", "sideeye"), #katarin -> daryl
-        (60, 42, 0x176580, "katarin.bin", "sideeye"), #daryl -> katarin
-        (60, 41, 0x175FC0, "daryl.bin", "sleeping"), #rachel -> daryl
-        (60, 41, 0x175FC0, "rachel.bin", "sleeping"), #daryl -> rachel
-        (60, 30, 0x172080, "returner.bin", "prone"), #daryl -> returner
-        (53, 59, 0x17BFC0, "figaroguard.bin", None), #conductor -> figaro guard
-        (45, 48, 0x178800, "maduin.bin", "prone"), #yura -> maduin
+        (32, 0x172C00, 33, 0x1731C0, "dancer.bin", "flirt"), #fancy gau -> dancer
+        (32, 0x172C00, 35, 0x173D40, "gausuit.bin", "sideeye"), #clyde -> fancy gau
+        (60, 0x17C4C0, 35, 0x173D40, "daryl.bin", "sideeye"), #clyde -> daryl
+        (42, 0x176580, 35, 0x173D40, "katarin.bin", "sideeye"), #clyde -> katarin
+        (60, 0x17C4C0, 42, 0x176580, "daryl.bin", "sideeye"), #katarin -> daryl
+        (60, 0x17C4C0, 42, 0x176580, "katarin.bin", "sideeye"), #daryl -> katarin
+        (60, 0x17C4C0, 41, 0x175FC0, "daryl.bin", "sleeping"), #rachel -> daryl
+        (60, 0x17C4C0, 41, 0x175FC0, "rachel.bin", "sleeping"), #daryl -> rachel
+        (60, 0x17C4C0, 30, 0x172080, "returner.bin", "prone"), #daryl -> returner
+        (53, 0x17A1C0, 59, 0x17BFC0, "figaroguard.bin", None), #conductor -> figaro guard
+        (45, 0x1776C0, 48, 0x178800, "maduin.bin", "prone"), #yura -> maduin
         ]
     merge = random.choice(merge_options)
     
     #merge sacrifice into new slot
-    replace_npc(locations, (merge[0], None), merge[1])
+    replace_npc(locations, (merge[0], None), merge[2])
     #move scholar into sacrifice slot
     for i in [0,1,3,4,5]:
         replace_npc(locations, (27, i), (merge[0], i))
@@ -1478,15 +1478,16 @@ def manage_opera(fout, affect_music):
                     #npc.palette = palette
                     pass
     
-    for l in locations:
-        for npc in l.npcs:
-            if npc.graphics in [118,138]:
-                print()
-                print(f"graphics {npc.graphics} found at ${npc.pointer:X}, in location 0x{l.locid:X}")
-                print(f"palette {npc.palette}, facing byte {npc.facing:X}")
-                print(f"facing {npc.facing & 3:X}, change {npc.facing>>2 & 1:X}")
-                print(f"bglayer {npc.facing>>3 & 3:X}, unknown1 {npc.facing>>5 & 1:X}")
-                print(f"mirror {npc.facing>>6 & 2:X}, unknown2 {npc.facing>>7 & 1:X}")
+    #debug info
+    # for l in locations:
+        # for npc in l.npcs:
+            # if npc.graphics in [118,138]:
+                # print()
+                # print(f"graphics {npc.graphics} found at ${npc.pointer:X}, in location 0x{l.locid:X}")
+                # print(f"palette {npc.palette}, facing byte {npc.facing:X}")
+                # print(f"facing {npc.facing & 3:X}, change {npc.facing>>2 & 1:X}")
+                # print(f"bglayer {npc.facing>>3 & 3:X}, unknown1 {npc.facing>>5 & 1:X}")
+                # print(f"mirror {npc.facing>>6 & 2:X}, unknown2 {npc.facing>>7 & 1:X}")
                 
     #randomize item thrown off balcony
     balcony = get_location(0xEC)
@@ -1531,7 +1532,7 @@ def manage_opera(fout, affect_music):
 
     #set up some spritesheet locations
     pose = {
-        'singing': list(range(0x60, 0x6A)),
+        'singing': [0x66, 0x67, 0x68, 0x69, 0x64, 0x65, 0x60, 0x61, 0x62, 0x63],
         'ready': list(range(0x3E, 0x44)),
         'prone': list(range(0x51, 0x57)),
         'angry': list(range(0x76, 0x7C)),
@@ -1549,11 +1550,25 @@ def manage_opera(fout, affect_music):
         print(f"failed to open custom/opera/ralse.bin")
         sprite = None
     if sprite:
-        print(f"merge {merge}, pose {pose}")
-        new_sprite = create_sprite(sprite, merge[0], pose[merge[4]] if merge[4] is not None else [])
-        data = byte_insert(data, merge[2], new_sprite)
+        new_sprite = create_sprite(sprite)
+        data = byte_insert(data, merge[1], new_sprite)
+        
     #load new graphics into merged slot
-    pass #TODO
+    try:
+        with open(safepath(os.path.join(opath, f"{merge[4]}")),"rb") as f:
+            sprite = f.read()
+    except IOError:
+        try:
+            with open(safepath(os.path.join("custom","sprites", f"{merge[4]}")),"rb") as f:
+                sprite = f.read()
+        except:
+            print(f"failed to open custom/opera/{merge[4]} or custom/sprites/{merge[4]}")
+            sprite = None
+    if sprite:
+        print(f"merge {merge}, pose {pose}")
+        new_sprite = create_sprite(sprite, pose[merge[5]] if merge[5] is not None else [])
+        data = byte_insert(data, merge[3], new_sprite)
+    
     
     #load new graphics into opera characters
     char_offsets = {
@@ -1580,7 +1595,7 @@ def manage_opera(fout, affect_music):
         #    loc = t*32
         #    new_sprite.extend(sprite[loc:loc+32])
         #data = byte_insert(data, offset, new_sprite)
-        new_sprite = create_sprite(sprite, offset, extra_tiles)
+        new_sprite = create_sprite(sprite, extra_tiles)
         data = byte_insert(data, offset, new_sprite)
         
     ### adjust script
@@ -1659,18 +1674,22 @@ def manage_opera(fout, affect_music):
     
     if char['Maria'].gender == "female":
         set_dialogue_var("MariaTheGirl", "the girl")
-        set_dialogue_var("MariaQueen", "bride")
+        set_dialogue_var("MariaQueenBad", "mine")
+        set_dialogue_var("MariaQueen", "queen")
         set_dialogue_var("MariaWife", "wife")
     elif char['Maria'].gender == "male":
         set_dialogue_var("MariaTheGirl", "the guy")
-        set_dialogue_var("MariaQueen", "consort")
+        set_dialogue_var("MariaQueenBad", "mine")
+        set_dialogue_var("MariaQueen", "king")
         set_dialogue_var("MariaWife", "husband")
     elif char['Maria'].gender == "object":
         set_dialogue_var("MariaTheGirl", char['Maria'].title + char['Maria'].name)
+        set_dialogue_var("MariaQueenBad", "mine")
         set_dialogue_var("MariaQueen", "prize")
         set_dialogue_var("MariaWife", "collection")
     else:
         set_dialogue_var("MariaTheGirl", "the girl")
+        set_dialogue_var("MariaQueenBad", "mine")
         set_dialogue_var("MariaQueen", "consort")
         set_dialogue_var("MariaWife", "partner")
     
@@ -1682,35 +1701,6 @@ def manage_opera(fout, affect_music):
         set_dialogue_var("ImpresarioMan", "machine")
     else:
         set_dialogue_var("ImpresarioMan", "maker")
-        
-    # for idx in [1189, 1208, 1222, 1228]:
-        # patch_dialogue(idx, "east", "{operaEast}")
-        # patch_dialogue(idx, "west", "{operaWest}")
-        # patch_dialogue(idx, "west's", "{operaWest}'s")
-    # patch_dialogue(1189, "the", None)
-    # patch_dialogue(1208, "the", None, 2)
-    # patch_dialogue(1208, "the", None, 3)
-    # patch_dialogue(1222, "the", None, 3)
-    # patch_dialogue(1228, "the", None, 2)
-    
-    # for idx in [1157, 1159, 1170, 1171, 1173, 1174, 1177, 1178, 1182, 1196, 1197, 1227, 1237, 1240, 1244, 1247, 1249, 1252, 1254, 1255, 1256, 1257, 1258]:
-        # patch_dialogue(idx, "impresario", "{IMPRESARIO}")
-    # for idx in [1162, 1206, 1236]:
-        # patch_dialogue(idx, "impresario", "{Impresario}")
-    # patch_dialogue(474, "impresario", "{impresario}") #Talk to the Impresario!
-    # patch_dialogue(474, "the", "{impresariotitle}") #Talk to the Impresario!
-    # patch_dialogue(1206, "the", "{ImpresarioTitle}", 11) #"The Impresario" on aria script
-    # patch_dialogue(1225, "the", "{impresariotitle}") #Better tell the Impresario!
-    # patch_dialogue(1225, "impresario", "{impresario}") #Talk to the Impresario!
-    # patch_dialogue(1261, "the", "{Impresariotitle}", 1) #Press the far right switch
-    # patch_dialogue(1261, "impresario", "{impresario}") #Press the far right switch
-    
-    # for idx in [1032, 1156, 1157, 1159, 1160]:
-        # patch_dialogue(idx, "maria", "{Maria}")
-    # for idx in [1156]:
-        # patch_dialogue(idx, "her", "{MariaEm}")
-    # for idx in [1156]:
-        # patch_dialogue(idx, "she's", "{MariaEyIs}")
         
     ### adjust music
     opera = {}
@@ -1787,7 +1777,7 @@ def replace_npc(locations, old, new):
                     except IndexError:
                         n.graphics = new
     
-def create_sprite(sprite, offset, extra_tiles):
+def create_sprite(sprite, extra_tiles=None):
     tiles = list(range(0x28)) + (extra_tiles if extra_tiles else [])
     new_sprite = bytearray()
     for t in tiles:

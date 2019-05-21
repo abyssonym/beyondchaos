@@ -118,7 +118,6 @@ def load_patch_file(fn):
         print(f"failed to open data/script/{fn}.txt")
         return
     for i, line in enumerate(lines):
-        print(line)
         s = line.split(':',1)
         try:
             script_idx = int(s[0].strip())

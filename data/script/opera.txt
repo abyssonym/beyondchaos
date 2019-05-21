@@ -1,6 +1,6 @@
 474:impresario->{impresario}|the->impresariotitle
 1032:maria->{Maria}
-1156:maria->{Maria}|her->{MariaEm}|she's->{MariaEyIs}
+1156:maria->{Maria}|her->{mariaEm}|she's->{MariaEyIs}
 1157:impresario->{IMPRESARIO}|maria->{Maria}
 1159:impresario->{IMPRESARIO}|maria->{Maria}
 1160:maria->{Maria}
@@ -34,7 +34,7 @@
 1228:the@2->*|west->{operaWest}|ralse->{RALSE}
 1231:maria->{Maria}
 1232:draco->{Draco}
-1233:maria->{Maria}|queen->{mariaQueen}
+1233:maria->{Maria}|queen->{mariaQueenBad}|my->*
 1236:impresario->{Impresario}
 1237:impresario->{IMPRESARIO}
 1239:maria->{Maria}

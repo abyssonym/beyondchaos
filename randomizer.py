@@ -41,7 +41,7 @@ from musicrandomizer import randomize_music
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 from character import get_characters, get_character, equip_offsets
-from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, options
+from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, options
 from wor import manage_wor_recruitment, manage_wor_skip
 
 

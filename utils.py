@@ -693,8 +693,8 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         
         acc_sat = random.choice([random.randint(10,25)] + [random.randint(25,65)]*2 + [random.randint(20,85)]*2)
         acc_light = random.randint(cloth_light + 10,min(100,max(80,cloth_light + 20)))
-        acc_dark = random.randint(int(acc_light * .5), int(acc_light * .68)) if acc_sat < 50 else \
-                   random.randint(int(acc_light * .4), int(acc_light * .52))
+        acc_dark = random.randint(int(acc_light * .5), int(acc_light * .68)) #if acc_sat < 50 else \
+                   #random.randint(int(acc_light * .4), int(acc_light * .52))
         new_palette[10] = components_to_color(hsv_approx(nudge_hue(acc_hue), acc_sat + random.randint(-7,8), acc_light))
         new_palette[11] = components_to_color(hsv_approx(nudge_hue(acc_hue), acc_sat + random.randint(-7,8), acc_dark))
     else:

@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import configparser
 from time import time, sleep, gmtime
 from sys import argv, exit
 from shutil import copyfile
@@ -4873,10 +4874,23 @@ def randomize():
     if len(args) > 2:
         sourcefile = args[1].strip()
     else:
-        sourcefile = input("Please input the file name of your copy of "
-                           "the FF3 US 1.0 rom:\n> ").strip()
+        previous_rom_path = ''
+        try:
+            config = configparser.ConfigParser()
+            config.read('bcex.cfg')
+            if 'ROM' in config:
+                previous_rom_path = config['ROM']['Path']
+        except IOError:
+            print("IOERROR")
+            pass
+        
+        previous = f" (blank for previous: {previous_rom_path})" if previous_rom_path else ""
+        sourcefile = input(f"Please input the file name of your copy of "
+                           f"the FF3 US 1.0 rom{previous}:\n> ").strip()
         print()
 
+    if previous_rom_path and not sourcefile:
+        sourcefile = previous_rom_path
     try:
         f = open(sourcefile, 'rb')
         data = f.read()
@@ -4912,27 +4926,40 @@ def randomize():
         print("Success! Using valid rom file: %s\n" % sourcefile)
     del f
 
+    saveflags = False
+    if sourcefile != previous_rom_path:
+        saveflags = True
+
     flaghelptext = '''0-9 Shorthand for the text saved under that digit, if any
 -   Use all flags EXCEPT the ones listed'''
 
     speeddial_opts = {}
-    saveflags = False
+    
     if len(args) > 2:
         fullseed = args[2].strip()
     else:
         fullseed = input("Please input a seed value (blank for a random "
                          "seed):\n> ").strip()
         print()
+
         if '.' not in fullseed:
-            try:
-                with open('savedflags.txt', 'r') as sff:
-                    savedflags = [l.strip() for l in sff.readlines() if ":" in l]
+            config = configparser.ConfigParser()
+            config.read('bcex.cfg')
+            if 'speeddial' in config:
+                    speeddial_opts = config['speeddial']
+            else:
+                try:
+                    savedflags = []
+                    with open('savedflags.txt', 'r') as sff:
+                        savedflags = [l.strip() for l in sff.readlines() if ":" in l]
                     for line in savedflags:
                         line = line.split(':')
                         line[0] = ''.join(c for c in line[0] if c in '0123456789')
                         speeddial_opts[line[0]] = ''.join(line[1:]).strip()
-            except IOError:
-                pass
+                except IOError:
+                    pass            
+
+            speeddial_opts['~'] = '-dfklu partyparty makeover'
 
             mode_num = None
             while mode_num not in range(len(ALL_MODES)):
@@ -4956,6 +4983,7 @@ def randomize():
             print("Save frequently used flag sets by adding 0: through 9: before the flags.")
             for k, v in sorted(speeddial_opts.items()):
                 print("    %s: %s" % (k, v))
+            print("If this is your first time playing, I recommend typing ~")
             print()
             flags = input("Please input your desired flags (blank for "
                           "all of them):\n> ").strip()
@@ -4999,12 +5027,19 @@ def randomize():
 
     if saveflags:
         try:
-            with open('savedflags.txt', 'w') as sff:
-                for k, v in speeddial_opts.items():
-                    if v:
-                        sff.write("%s: %s" % (k, v) + '\n')
+            config = configparser.ConfigParser()
+            config['ROM'] = {}
+            config['ROM']['Path'] = sourcefile
+            config['speeddial'] = {k:v for k,v in speeddial_opts.items() if k != '~'}
+            with open('bcex.cfg', 'w') as cfg_file:
+                config.write(cfg_file)
         except:
             print("Couldn't save flag string\n")
+        else:
+            try:
+                os.remove('savedflags.txt')
+            except OSError:
+                pass
 
     if '.' in sourcefile:
         tempname = sourcefile.rsplit('.', 1)
@@ -5033,7 +5068,7 @@ def randomize():
 
     flags = flags.lower()
     flags = flags.replace('endless9', 'endless~nine~')
-    for d in "0123456789":
+    for d in "~0123456789":
         if d in speeddial_opts:
             replacement = speeddial_opts[d]
         else:

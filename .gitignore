@@ -6,3 +6,4 @@ beyondchaos_ex.spec
 build.bat
 savedflags.txt
 .pylintrc
+bcex.cfg

@@ -158,7 +158,7 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
             if not clock:
                 orphaned_formations = [f for f in orphaned_formations
                 if f.rank() < 1.5 * rank - 150 and f.get_guaranteed_drop_value() >= value * 10 - 1000]
-                max_extra_miab_rank = 5/4000 * rank * rank + rank - 200
+                max_extra_miab_rank = 5/4000 * rank * rank + 3/2*rank - 300
                 extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank]
         candidates = (orphaned_formations + extra_miabs)
         candidates = [c for c in candidates if c not in used_formations]
@@ -184,7 +184,7 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
         orphaned_formations = [f for f in orphaned_formations
                 if f.rank() <= max_rank and f.get_guaranteed_drop_value() >= min_value / 3 - 1200]
         extra_miabs = get_extra_miabs(0)
-        max_extra_miab_rank = 5/4000 * rank * rank + rank - 200
+        max_extra_miab_rank = 5/4000 * rank * rank + 3/2*rank - 300
         extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank * rank_multiplier]
         candidates = [c for c in candidates if c not in used_formations]
         candidates = [c for c in candidates

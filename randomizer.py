@@ -12,7 +12,7 @@ from utils import (COMMAND_TABLE, LOCATION_TABLE,
                    LOCATION_PALETTE_TABLE, CHARACTER_PALETTE_TABLE,
                    EVENT_PALETTE_TABLE, MALE_NAMES_TABLE, FEMALE_NAMES_TABLE,
                    FINAL_BOSS_AI_TABLE, SPRITE_REPLACEMENT_TABLE, RIDING_SPRITE_TABLE,
-                   MOOGLE_NAMES_TABLE, SKIP_EVENTS_TABLE, DANCE_NAMES_TABLE,
+                   MOOGLE_NAMES_TABLE, SKIP_EVENTS_TABLE, DANCE_NAMES_TABLE, DIVERGENT_TABLE,
                    get_dialogue_pointer, get_long_battle_text_pointer,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
@@ -42,7 +42,7 @@ from musicrandomizer import randomize_music
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
 from decompress import Decompressor
 from character import get_characters, get_character, equip_offsets
-from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, options
+from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, options
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
@@ -1445,6 +1445,9 @@ def manage_skips():
         writeToAddress(split_line[0], split_line[1:])
 
     def handleGau(split_line): # Replace events that should be replaced if we are auto-recruiting Gau
+        # at least for now, divergent paths doesn't skip the cutscene with Gau
+        if options.is_code_active("divergent"):
+            return
         if options.shuffle_commands or options.replace_commands or options.random_treasure:
             writeToAddress(split_line[0], split_line[1:])
 
@@ -1455,6 +1458,16 @@ def manage_skips():
                 palette_correct_sub.bytestring = bytes([character.palette])
                 palette_correct_sub.set_location(int(split_line[0], 16))
                 palette_correct_sub.write(fout)
+
+    def handleConvergentPalette(split_line):
+        if options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+            return
+        handlePalette(split_line)
+        
+    def handleDivergentPalette(split_line):
+        if not options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+            return
+        handlePalette(split_line)
 
     def handleAirship(split_line): # Replace events that should be modified if we start with the airship
         if not options.is_code_active('airship'):
@@ -1472,9 +1485,21 @@ def manage_skips():
                 ['FE']  # end subroutine
             )
 
+    def handleConvergent(split_line): # Replace events that should be modified if the scenarios are changed
+        if options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+            return
+        handleNormal(split_line)
+
+    def handleDivergent(split_line): # Replace events that should be modified if the scenarios are changed
+        if not options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+            return
+        handleNormal(split_line)
+
     for line in open(SKIP_EVENTS_TABLE):
         # If "Foo" precedes a line in skipEvents.txt, call "handleFoo"
-        line = line.strip().split('#')[0]  # Ignore everything after '#'
+        line = line.split('#')[0].strip()  # Ignore everything after '#'
+        if not line:
+            continue
         split_line = line.strip().split(' ')
         handler = "handle" + split_line[0]
         locals()[handler](split_line[1:])
@@ -2511,7 +2536,13 @@ def manage_palettes(change_to, char_ids):
     for line in open(EVENT_PALETTE_TABLE):
         if line[0] == '#':
             continue
-        pointer = hex2int(line.strip())
+        line = line.split(' ')
+        if len(line) > 1:
+            if line[1] == 'c' and options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+                return
+            if line[1] == 'd' and not options.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+                return
+        pointer = hex2int(line[0].strip())
         fout.seek(pointer)
         data = bytearray(fout.read(5))
         char_id, palette = data[1], data[4]
@@ -4857,6 +4888,19 @@ def expand_rom():
         expand_sub.write(fout)
 
 
+def diverge(fout):
+    for line in open(DIVERGENT_TABLE):
+        line = line.strip().split('#')[0]  # Ignore everything after '#'
+        if not len(line):
+            continue
+        split_line = line.strip().split(' ')
+        address = int(split_line[0], 16)
+        data = bytes([int(b, 16) for b in split_line[1:]])
+        #print(hex(address), hex(len(data)))
+        fout.seek(address)
+        fout.write(data)
+
+
 def randomize():
     global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE, NEVER_REPLACE
 
@@ -5096,7 +5140,7 @@ def randomize():
     for code in options.mode.forced_codes:
         options.activate_code(code)
 
-    for code in NORMAL_CODES:
+    for code in NORMAL_CODES + TOP_SECRET_CODES:
         found, flags = code.remove_from_string(flags)
         if found:
             if code in options.mode.prohibited_codes:
@@ -5156,6 +5200,9 @@ def randomize():
     for f in flags:
         options.activate_flag(f)
 
+    if options.is_code_active("QGWURNGNSEIMKTMDFBIX"):
+        diverge(fout)
+
     if options.shuffle_commands or options.replace_commands or options.random_treasure:
         auto_recruit_gau()
 
@@ -5192,7 +5239,7 @@ def randomize():
     monsters = get_monsters(sourcefile)
     formations = get_formations(sourcefile)
     fsets = get_fsets(sourcefile)
-    locations = get_locations(sourcefile)
+    locations = get_locations(outfile)
     items = get_ranked_items(sourcefile)
     zones = get_zones(sourcefile)
     get_metamorphs(sourcefile)
@@ -5583,7 +5630,7 @@ def randomize():
 
 if __name__ == "__main__":
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
+    if True: #len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
         exit()
     try:

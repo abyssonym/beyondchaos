@@ -5097,8 +5097,8 @@ def randomize():
         options.activate_code(code)
 
     for code in NORMAL_CODES:
-        if code.name in flags:
-            flags = flags.replace(code.name, '')
+        found, flags = code.remove_from_string(flags)
+        if found:
             if code in options.mode.prohibited_codes:
                 s += "SECRET CODE: '%s' is not compatible with %s mode." %(code.description, options.mode.name)
                 continue

@@ -14,11 +14,12 @@ Song conversions:
                  ff2_battleb, ff2_theme
                  ff3_warrior
                  ff4_calcobrena
-                 ff5_battle, ff5_bridge, ff5_cave, ff5_curse, ff5_excastle,
-                 ff5_final, ff5_home, ff5_hurry, ff5_lenna, ff5_library,
-                 ff5_theme, ff5_void, ff5_wings, ff5_world1
+                 ff5_battle, ff5_boss, ff5_bridge, ff5_cave, ff5_curse,
+                 ff5_excastle, ff5_final, ff5_home, ff5_hurry, ff5_lenna,
+                 ff5_library, ff5_mountain, ff5_theme, ff5_void, ff5_wings,
+                 ff5_world1
                  ff7_battle, ff7_corel, ff7_costa, ff7_hurry, ff7_rebirth,
-                 ff7_reunion, ff7_snow
+                 ff7_reunion, ff7_snow, ff7_weapon
                  ff8_battle, ff8_boss, ff8_horizon, ff8_landing, ff8_lion,
                  ff8_mlaw, ff8_triad, ff8_witches
                  ff9_battle, ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
@@ -46,8 +47,8 @@ Song conversions:
                  sd2_prayer, sd2_prophecy, sd2_scorpion, sd2_sea, sd2_spirit,
                  sd2_star, sd2_steel, sd2_tasnica, sd2_thanatos, sd2_thunder,
                  sd2_tomorrow, sd2_town, sd2_wish
-                 sd3_angels, sd3_counterpoint, sd3_flight, sd3_tension,
-                 sd3_winter
+                 sd3_angels, sd3_counterpoint, sd3_flight, sd3_mana,
+                 sd3_tension, sd3_winter
                  sdlm_bonds, sdlm_pain, sdlm_snowfield
                  sf2_balrog, sf2_guile, sf2_ken
                  smb2_select

@@ -99,6 +99,7 @@ ff4_whale:      fanfare, grandfinale, blackjack*2
 ff4_zeromus:    I95, G90, atma, dmad5
 ff4_zot:        kefka, troops, fanatics, assault
 ff5_battle:     I10, G10, battle*2
+ff5_boss:       I90, G55, boss*2, atma, catastrophe*2, grandfinale, engine, floatingcont, kefkastower
 ff5_bridge:     I65, G70, atma, grandfinale, unforgiven, savethem
 ff5_cave:       prelude, ruin, forest, cave*2, tomb*2, dream, ancient
 ff5_curse:      H4, shadow, owzer, ruin, fanatics, zozo, gate, phoenix, ancient, H:prelude, H:omen3, H:gestahl, H:kefka, H:gogo, H:strago, H:forest, H:espers, H:tomb, H:dream
@@ -110,6 +111,7 @@ ff5_home:       prelude, daryl*2, coin*2, town_ruin*2, gau, village
 ff5_hurry:      I70, G00, unforgiven
 ff5_lenna:      gau*2, awakening, rachel, town_ruin, ruin
 ff5_library:    H4, gogo, zozo, owzer*2, strago*2, dream, phoenix, ancient, H:omen3, H:kefka, H:catastrophe, H:shadow, H:spinachrag, H:what, H:umaro, H:engine, H:gate
+ff5_mountain:   grandfinale, setzer, returners, johnny, moogles, gogo, mountain, mount2, engine
 ff5_theme:      fanfare, prelude, setzer*2, locke*2, figaro, falcon
 ff5_void:       ruin, floatingcont, kefkastower, engine*2, ancient, dream
 ff5_wings:      fanfare, setzer, locke, chocobo, blackjack*2
@@ -130,6 +132,7 @@ ff7_reunion:    omen3, owzer, strago, ruin, train, espers, serpent, forest, drea
 ff7_snow:       W4, narshe, ruin*2, espers, serpent, forest, W:prelude*2, W:omen3, W:daryl, W:coin, W:gau, W:what, W:zozo, W:town_ruin, W:mountain, W:train
 ff7_temple:     H2, omen3, shadow, owzer, forest, train, cave, tomb*2, gate*2, ancient
 ff7_tifa:       prelude, rachel, relm*2, awakening*2, town_ruin
+ff7_weapon:     I85, G80, boss, atma, metamorphosis, catastrophe*2, assault*2, savethem, kefkastower
 ff8_battle:     I15, G40, battle*2, metamorphosis, grandfinale, catastrophe, assault
 ff8_boss:       I85, G65, boss*2, grandfinale, floatingcont
 ff8_heresy:     H2, gestahl, kefka, catastrophe, owzer, ruin, fanatics*2
@@ -254,6 +257,7 @@ sd3_angels:     omen3, espers*2, awakening, gate, phoenix
 sd3_counterpoint: umaro*2, veldt*2
 sd3_faith:      I55, G70, boss, atma, grandfinale, umaro
 sd3_flight:     setzer, chocobo, blackjack*2, mountain
+sd3_mana:       I80, G45, boss*2, atma, metamorphosis*2, catastrophe, grandfinale, unforgiven, ancient, magitek, dream, floatingcont*2, phoenix, kefkastower
 sd3_paths:      gogo, mountain*2, serpent, mount2, cave, forest
 sd3_tension:    I50, G60, boss*2, grandfinale, setzer, locke, savethem, chocobo, blackjack, johnny*2
 sd3_winter:     W4, omen3*2, daryl, owzer, narshe*2, town_ruin, ruin*2, cave, train, serpent, ancient, dream, W:celes, W:coin, W:rachel, W:relm, W:shadow, W:umaro, W:zozo, W:martiallaw, W:mountain, W:espers*2, W:forest

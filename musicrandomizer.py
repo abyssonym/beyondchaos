@@ -1773,8 +1773,8 @@ def replace_npc(locations, old, new):
             for n in l.npcs:
                 if n.graphics == old[0]:
                     try:
-                        n.graphics = new
-                    except IndexError:
+                        n.graphics = new[0]
+                    except TypeError:
                         n.graphics = new
     
 def create_sprite(sprite, extra_tiles=None):

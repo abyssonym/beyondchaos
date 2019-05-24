@@ -155,7 +155,7 @@ def manage_dialogue_patches(fout):
     
     fout.seek(0xCE600)
     bankidx = read_multi(fout, 2)
-    for idx in range(0xC14): #C15 through CFF pointers are repurposed
+    for idx in range(0xC0C): #C0D through CFF pointers are repurposed
         script_ptrs[idx] = read_multi(fout,2) + (0x10000 if idx > bankidx else 0)
         script[idx] = read_script(idx)
         
@@ -239,7 +239,7 @@ def split_line(line):
 def patch(text):
     if text is None:
         return None
-    print(f"patching {text}", end="")
+    #print(f"patching {text}", end="")
     while True:
         match = re.search("\{(.+)\}", text)
         if not match: break

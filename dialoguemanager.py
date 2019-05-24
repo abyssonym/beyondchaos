@@ -143,6 +143,10 @@ def load_patch_file(fn):
 def manage_dialogue_patches(fout):
     global script_bin
     
+    #don't do anything unless we need to
+    if not dialogue_patches and not dialogue_patches_battle:
+        return
+        
     #load existing script & pointer table
     fout.seek(0xD0000)
     script_bin = fout.read(0x1F0FF)
@@ -163,7 +167,7 @@ def manage_dialogue_patches(fout):
     for idx, patches in dialogue_patches.items():
         line = split_line(script[idx])
         
-        print(f"patching line {idx}")
+        #print(f"patching line {idx}")
         #print(f"  original: {script[idx]}")
         token_counter = {}
         for i, token in enumerate(line):
@@ -184,7 +188,7 @@ def manage_dialogue_patches(fout):
                 except IndexError:
                     pass
         new_text = "".join(line)
-        print(f"  new: {new_text}")
+        #print(f"  new: {new_text}")
         script[idx] = new_text
         
     new_script = b""

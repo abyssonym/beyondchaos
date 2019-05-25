@@ -4047,7 +4047,7 @@ def manage_opening():
     palette = tf(palette, single_bytes=True)
     d.writeover(0x6470, palette)
 
-    table = ("~ " + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
+    table = ("! " + "ABCDEFGHIJKLMNOPQRSTUVWXYZ" +
              "." + "abcdefghijklmnopqrstuvwxyz")
     table = dict((c, i) for (i, c) in enumerate(table))
 
@@ -5003,7 +5003,7 @@ def randomize():
                 except IOError:
                     pass            
 
-            speeddial_opts['~'] = '-dfklu partyparty makeover'
+            speeddial_opts['!'] = '-dfklu partyparty makeover'
 
             mode_num = None
             while mode_num not in range(len(ALL_MODES)):
@@ -5027,7 +5027,7 @@ def randomize():
             print("Save frequently used flag sets by adding 0: through 9: before the flags.")
             for k, v in sorted(speeddial_opts.items()):
                 print("    %s: %s" % (k, v))
-            print("If this is your first time playing, I recommend typing ~")
+            print("If this is your first time playing, I recommend typing !")
             print()
             flags = input("Please input your desired flags (blank for "
                           "all of them):\n> ").strip()
@@ -5074,7 +5074,7 @@ def randomize():
             config = configparser.ConfigParser()
             config['ROM'] = {}
             config['ROM']['Path'] = sourcefile
-            config['speeddial'] = {k:v for k,v in speeddial_opts.items() if k != '~'}
+            config['speeddial'] = {k:v for k,v in speeddial_opts.items() if k != '!'}
             with open('bcex.cfg', 'w') as cfg_file:
                 config.write(cfg_file)
         except:
@@ -5112,7 +5112,7 @@ def randomize():
 
     flags = flags.lower()
     flags = flags.replace('endless9', 'endless~nine~')
-    for d in "~0123456789":
+    for d in "!0123456789":
         if d in speeddial_opts:
             replacement = speeddial_opts[d]
         else:

@@ -4531,7 +4531,7 @@ def manage_clock():
             text += "ten."
 
         second_text_sub2.bytestring = dialogue_to_bytes(text)
-        second_text_sub2.set_location(0xDAF63)
+        second_text_sub2.set_location(get_dialogue_pointer(fout, 0x425))
         second_text_sub2.write(fout)
 
 

@@ -129,7 +129,8 @@ ALL_MODES = [
          prohibited_flags=["d", "k", "r"]),
     Mode(name="dragonhunt",
          description="Kill all 8 dragons in the World of Ruin. Intended for racing.",
-         forced_codes=["airship", "worringtriad"])
+         forced_codes=["worringtriad"],
+         prohibited_codes=["airship"])
 ]
 
 ALL_FLAGS = [

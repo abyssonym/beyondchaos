@@ -5,7 +5,7 @@ from character import get_character, get_characters
 from locationrandomizer import get_location, get_locations
 from monsterrandomizer import change_enemy_name
 from utils import (WOB_TREASURE_TABLE, WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
-                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer)
+                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer, dialogue_to_bytes)
 
 
 def dir_to_camera_moves(dir):
@@ -581,7 +581,7 @@ def manage_wor_recruitment(fout, random_treasure, include_gau, include_gogo):
     return wor_free_char
 
 
-def manage_wor_skip(fout, wor_free_char=0xB, airship=False):
+def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False):
     characters = get_characters()
 
     # jump to FC end cutscene for more space
@@ -627,7 +627,10 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False):
                           0x40, 0x07, 0x07,  # give Strago properties
                           0x40, 0x0A, 0x0A,  # give Mog properties
                           0x40, 0x07, 0x07,  # give Strago properties
-                          0x40, 0x06, 0x06,  # give Celes properties
+                          ]) + bytes([
+                                0x40, 0x0A, 0x0A,  # give Mog properties
+                            ] if dragon else []
+                          ) + bytes([0x40, 0x06, 0x06,  # give Celes properties
                           0xD5, 0xF7,  # flag Strago as unobtained
                           0xD5, 0xE7,  # flag Strago as unobtained
                           0xD5, 0xFA,  # flag Mog as unobtained
@@ -765,15 +768,83 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False):
     if airship:
         wor_sub2.bytestring += bytearray([0xD2, 0xB9])  # airship appears in WoR
 
-    wor_sub2.bytestring += bytearray([0x6B, 0x01, 0x00, 0x91, 0xD3, 0x00]) # go to WoR
-
-    if airship:
-        wor_sub2.bytestring += bytearray([0xC7, 0x91, 0xD3])  # place airship
-    
-    wor_sub2.bytestring += bytearray([
-        0xFF,  # end map script
-        0xFE,  # return
+    if dragon:
+        wor_sub2.bytestring += bytearray([
+            0xD0, 0xA7,  # Talked to crimson robber
+            0xD0, 0xA8,  # Talked to crimson robber
+            0xD0, 0xA9,  # Talked to crimson robber
+            0xD0, 0xAA,  # Talked to crimson robber
+            0xD0, 0xAB,  # crimson robber left cafe
+            0xD7, 0x74,
+            0xD0, 0xAC,  # boarded the crimson robbers' ship
+            0xD7, 0xFE,
+            0xD7, 0x77,
+            0xD7, 0x78,
+            0xD7, 0x7E,  # talked to gerad in s figaro inn
+            0xD7, 0x7A,
+            0xD6, 0x99,
+            0xD2, 0x23,  # Can jump on turtle in figaro cave
+            0xD4, 0x6E,  # Saw Gerad help the injured guy
+            0xD0, 0xC6,  # recruited Edgar in WoR
+            0xD4, 0xF4,  # flag Edgar as obtained
+            0xD4, 0xE4,  # flag Edgar as obtained
+            0x3D, 0x04,  # create Edgar
+            0x3F, 0x04, 0x01,  # add Edgar to party
+            0xD7, 0xF0,
+            0xD7, 0xF1,
+            0xD7, 0xF2,
+            0xD7, 0x82,
+            0xD7, 0x97,
+            0xD6, 0x81,
+            0xD0, 0xC7,  # Saw Figaro Castle rise after tentacles
+            0xD5, 0xB7,  # prison door is not open
+            0xD0, 0xDC,  # Figaro castle is in Western desert
+            0xD4, 0xF9,  # flag Setzer as obtained
+            0xD4, 0xE9,  # flag Setzer as obtained
+            0x3D, 0x09,  # create Setzer
+            0x3F, 0x09, 0x01,  # add Setzer to party
+            0xDD, 0x7F,
+            0xDD, 0xB6,
+            0xD0, 0xCA,  # recruited Setzer in WoR
+            0xD0, 0xCB,  # opened Daryl's tomb
+            0xD4, 0xB1,  # opened the door
+            0xD4, 0xB3,  # raised the water
+            0xD4, 0xB5,  # raised the water 2
+            0xD4, 0xB8,  # opened the door 2
+            0xD4, 0xB2,  # defeated dullahan
+            0xD7, 0xF3,
+            0x04, 0x05,
+            0xD5, 0x11, 0x08,
+            0xCF,
+            0xFF,
+            0x06, 0x05,
+            0xD5, 0x12, 0x07,
+            0xCF,
+            0xFF,
+            0x41, 0x04,
+            0x41, 0x06,
+            0x41, 0x09,
+            0xB2, 0x7B, 0x47, 0x00, # Falcon rising out of water
+            0xFE,
         ])
+            
+        text = "<SETZER>: But first we need to kill the dragons!"
+        dragon_text_sub = Substitution()
+        dragon_text_sub.bytestring = dialogue_to_bytes(text)
+        dragon_text_sub.set_location(get_dialogue_pointer(fout, 0x9AF))
+        dragon_text_sub.write(fout)
+        print(len(dragon_text_sub.bytestring), get_dialogue_pointer(fout, 0x9B0) - get_dialogue_pointer(fout, 0x9AF))
+            
+    else:
+        wor_sub2.bytestring += bytearray([0x6B, 0x01, 0x00, 0x91, 0xD3, 0x00]) # go to WoR
+
+        if airship:
+            wor_sub2.bytestring += bytearray([0xC7, 0x91, 0xD3])  # place airship
+        
+        wor_sub2.bytestring += bytearray([
+            0xFF,  # end map script
+            0xFE,  # return
+            ])
 
     wor_sub2.set_location(0xA9749)
     wor_sub2.write(fout)
@@ -790,3 +861,48 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False):
             odds.append(False)
     fout.seek(address)
     write_multi(fout, extra_known_lores, length=3)
+    
+    if dragon:
+        set_alternate_dragon_locations(fout)
+
+
+def set_alternate_dragon_locations(fout):
+    # TODO: Add more locations and randomly pick two?
+    # These NPCs happen to match the NPC numbers of the dragons
+    # in Kefka's tower so we can jump into the same event.
+    # A more general solution would need to copy the event
+    # after dragons have been randomized.
+    # Or just abandon the option of going into Kefka's tower
+    # to fight them.
+    
+    # gold dragon: zone eater
+    zone_eater = get_location(0x114)
+    gold_dragon = zone_eater.npcs[0]
+    gold_dragon.palette = 2
+    gold_dragon.graphics = 57
+    gold_dragon.membit = 3
+    gold_dragon.memaddr = 0x1F56 - 0x1EE0
+    gold_dragon.event_addr = 0x218F3
+    
+
+    # skull dragon: Owzer's mansion
+    owzer = get_location(0xd1)
+    # Hide the emperor and replace Ultros
+    # since his NPC number matches the skull dragon's.
+    emperor = owzer.npcs[3]
+    emperor.membit = 2
+    emperor.memaddr = 0x1F1E - 0x1EE0
+    skull_dragon = owzer.npcs[4]
+    skull_dragon.palette = 4
+    skull_dragon.graphics = 57
+    skull_dragon.membit = 4
+    skull_dragon.memaddr = 0x1F56 - 0x1EE0
+    skull_dragon.event_addr = 0x5EB3
+    
+    skull_dragon_event = Substitution()
+    skull_dragon_event.set_location(0xB4B62) 
+    skull_dragon_event.bytestring = bytes([
+    0xC0, 0xB4, 0x86, 0x20, 0x19, 0x02,  # If haven't beat this dragon, branch to $CC1920
+    0xFE # return
+    ])
+    skull_dragon_event.write(fout)

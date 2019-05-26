@@ -123,10 +123,14 @@ ALL_MODES = [
          prohibited_codes=ANCIENT_CAVE_PROHIBITED_CODES,
          prohibited_flags=ANCIENT_CAVE_PROHIBITED_FLAGS),
     Mode(name="katn",
-         description="Play the normal story up to Kefka at Narshe, with extra wackiness. Suitable for racing.",
+         description="Play the normal story up to Kefka at Narshe, with extra wackiness. Intended for racing.",
          forced_codes=["madworld"],
          prohibited_codes=["airship", "worringtriad"],
-         prohibited_flags=["d", "k", "r"])
+         prohibited_flags=["d", "k", "r"]),
+    Mode(name="dragonhunt",
+         description="Kill all 8 dragons in the World of Ruin. Intended for racing.",
+         forced_codes=["worringtriad"],
+         prohibited_codes=["airship"])
 ]
 
 ALL_FLAGS = [

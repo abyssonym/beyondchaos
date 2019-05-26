@@ -4539,7 +4539,7 @@ def manage_clock():
             text += "ten."
 
         second_text_sub2.bytestring = dialogue_to_bytes(text)
-        second_text_sub2.set_location(0xDAF63)
+        second_text_sub2.set_location(get_dialogue_pointer(fout, 0x425))
         second_text_sub2.write(fout)
 
 
@@ -4885,6 +4885,18 @@ def the_end_comes_beyond_katn():
 
     fout.seek(0xcbfa3)
     fout.write(bytes([0xf6, 0xf1, 0x00, 0x00, 0xbb, 0xfe]))
+
+
+def the_end_comes_beyond_crusader():
+    fout.seek(0x25f821)
+    fout.write(bytes([0xEA]*5))
+
+    fout.seek(0x25f852)
+    fout.write(bytes([0xEA]*5))
+
+    fout.seek(0xc203f)
+    fout.write(bytes([0x97, 0xf6, 0xf1, 0x00, 0x00, 0x5c, 0xbb, 0xfe]))
+    print("The end comes beyond crusader")
 
 
 def expand_rom():
@@ -5498,7 +5510,7 @@ def randomize():
     reseed()
 
     if options.is_code_active('worringtriad') and not options.is_code_active('ancientcave'):
-        manage_wor_skip(fout, wor_free_char, options.is_code_active('airship'))
+        manage_wor_skip(fout, wor_free_char, options.is_code_active('airship'), options.mode.name == 'dragonhunt')
     reseed()
 
     if options.random_clock and not options.is_code_active('ancientcave'):
@@ -5605,6 +5617,8 @@ def randomize():
 
     if options.mode.name == "katn":
         the_end_comes_beyond_katn()
+    elif options.mode.name == "dragonhunt":
+        the_end_comes_beyond_crusader()
 
     rewrite_title(text="FF6 BCEX %s" % seed)
     fout.close()

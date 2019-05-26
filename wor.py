@@ -5,7 +5,7 @@ from character import get_character, get_characters
 from locationrandomizer import get_location, get_locations
 from monsterrandomizer import change_enemy_name
 from utils import (WOB_TREASURE_TABLE, WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
-                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer)
+                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer, dialogue_to_bytes)
 
 
 def dir_to_camera_moves(dir):
@@ -780,6 +780,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False):
             0xD7, 0xFE,
             0xD7, 0x77,
             0xD7, 0x78,
+            0xD7, 0x7E,  # talked to gerad in s figaro inn
             0xD7, 0x7A,
             0xD6, 0x99,
             0xD2, 0x23,  # Can jump on turtle in figaro cave
@@ -796,7 +797,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False):
             0xD7, 0x97,
             0xD6, 0x81,
             0xD0, 0xC7,  # Saw Figaro Castle rise after tentacles
-            0xD5, 0xB7,
+            0xD5, 0xB7,  # prison door is not open
             0xD0, 0xDC,  # Figaro castle is in Western desert
             0xD4, 0xF9,  # flag Setzer as obtained
             0xD4, 0xE9,  # flag Setzer as obtained
@@ -806,10 +807,34 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False):
             0xDD, 0xB6,
             0xD0, 0xCA,  # recruited Setzer in WoR
             0xD0, 0xCB,  # opened Daryl's tomb
+            0xD4, 0xB1,  # opened the door
+            0xD4, 0xB3,  # raised the water
+            0xD4, 0xB5,  # raised the water 2
+            0xD4, 0xB8,  # opened the door 2
+            0xD4, 0xB2,  # defeated dullahan
             0xD7, 0xF3,
+            0x04, 0x05,
+            0xD5, 0x11, 0x08,
+            0xCF,
+            0xFF,
+            0x06, 0x05,
+            0xD5, 0x12, 0x07,
+            0xCF,
+            0xFF,
+            0x41, 0x04,
+            0x41, 0x06,
+            0x41, 0x09,
             0xB2, 0x7B, 0x47, 0x00, # Falcon rising out of water
             0xFE,
-            ])
+        ])
+            
+        text = "<SETZER>: But first we need to kill the dragons!"
+        dragon_text_sub = Substitution()
+        dragon_text_sub.bytestring = dialogue_to_bytes(text)
+        dragon_text_sub.set_location(get_dialogue_pointer(fout, 0x9AF))
+        dragon_text_sub.write(fout)
+        print(len(dragon_text_sub.bytestring), get_dialogue_pointer(fout, 0x9B0) - get_dialogue_pointer(fout, 0x9AF))
+            
     else:
         wor_sub2.bytestring += bytearray([0x6B, 0x01, 0x00, 0x91, 0xD3, 0x00]) # go to WoR
 

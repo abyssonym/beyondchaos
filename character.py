@@ -204,7 +204,7 @@ class CharacterBlock:
             # Don't randomize level average values if worringtriad is active
             # Also don't randomize Terra's level because it gets added for
             # every loop through the title screen, apparently.
-            if start_in_wor and self.id != 0:
+            if not start_in_wor and self.id != 0:
                 level_chance = random.randint(0,99)
                 for i, prob in enumerate(level_map[level]):
                     level_chance -= prob

@@ -39,7 +39,7 @@ from locationrandomizer import (get_locations, get_location, get_zones, get_npcs
 from chestrandomizer import mutate_event_items, get_event_items
 from towerrandomizer import randomize_tower
 from musicrandomizer import randomize_music
-from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu)
+from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu, y_equip_relics)
 from decompress import Decompressor
 from character import get_characters, get_character, equip_offsets
 from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, options
@@ -5635,6 +5635,7 @@ def randomize():
 
     manage_banon_life3()
     allergic_dog()
+    y_equip_relics(fout)
 
     if options.replace_commands or options.shuffle_commands:
         sabin_hint(commands)

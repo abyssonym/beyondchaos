@@ -1614,3 +1614,9 @@ def y_equip_relics(fout):
     y_equip_relics_sub.set_location(0x3a147)
     y_equip_relics_sub.bytestring = bytes([0xf2, 0x98])
     y_equip_relics_sub.write(fout)
+
+
+def fix_gogo_portrait(fout):
+    """Hides the portion of Gogo's portrait that shows incorrectly on his status menu."""
+    fout.seek(0x35f51)
+    fout.write(bytes([0x0a, 0x62]))

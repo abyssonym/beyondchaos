@@ -5432,6 +5432,30 @@ def randomize():
         starting_money_sub.bytestring = bytes([0x84, starting_money & 0xFF, (starting_money >> 8) & 0xFF])
         starting_money_sub.write(fout)
 
+        # auto-float doesn't remove Interceptor
+        allergic_dog_sub = Substitution()
+        allergic_dog_sub.set_location(0x391c4)
+        allergic_dog_sub.bytestring = bytes([
+            0x20, 0xF2, 0x93,  # JSR $93F2  		; Define Y
+            0xAD, 0x32, 0x30,  # LDA $3032  		; Gear status immunity
+            0x20, 0xEC, 0x91,  # JSR $91EC  		; Cure affected ailments
+            0xAD, 0x34, 0x30,  # LDA $3034  		; Gear-granted status
+            0x19, 0x15, 0x00,  # ORA $0015,Y		; Add actor status
+            0x4A,              # LSR A      		; Auto Float or Rage?
+            0x90, 0x15,        # BCC $15    		; Exit if not
+            0xB9, 0x15, 0x00,  # LDA $0015,Y		; Actor status
+            0x29, 0x40,        # AND #$40   		; Get Interceptor
+            0x85, 0xE0,        # STA $E0    		; Memorize it
+            0xAD, 0x34, 0x30,  # LDA $3034  		; Gear-granted status
+            0x29, 0x01,        # AND #$01   		; Auto Float?
+            0xF0, 0x02,        # BEQ $02    		; Skip next line if not
+            0xA9, 0x81,        # LDA #$81   		; Enable Rage, Float
+            0x05, 0xE0,        # ORA $E0    		; Add Interceptor back
+            0x99, 0x15, 0x00,  # STA $0015,Y		; Set actor status
+            0x60               # RTS
+        ])
+        allergic_dog_sub.write(fout)
+
         # do this after hidden formations
         katn = options.mode.name == 'katn'
         manage_treasure(monsters, shops=True, no_charm_drops=katn)

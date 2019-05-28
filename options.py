@@ -77,6 +77,8 @@ class Options:
         for code in ALL_CODES:
             if code.name == code_name:
                 self.active_codes.add(code)
+                if code in MAKEOVER_MODIFIER_CODES:
+                     self.activate_code("makeover")
                 return
 
     def activate_flag(self, flag_name: str):
@@ -197,7 +199,10 @@ NORMAL_CODES = [
     Code('rushforpower', "OLD VARGAS FIGHT MODE"),
     Code('johnnydmad', "MUSIC REPLACEMENT MODE"),
     Code('johnnyachaotic', "MUSIC MANGLING MODE"),
-    Code('sometimeszombies', "OLD CHARACTER PALETTE MODE"),
+    #Code('sometimeszombies', "OLD CHARACTER PALETTE MODE"),
+]
+
+MAKEOVER_MODIFIER_CODES = [
     Code('novanilla', "COMPLETE MAKEOVER MODE"),
     Code('frenchvanilla', "EQUAL RIGHTS MAKEOVER MODE"),
     Code('attackoftheclones', "CLONE COSPLAY MAKEOVER MODE")
@@ -205,7 +210,7 @@ NORMAL_CODES = [
   
 makeover_groups = ["boys", "girls", "kids", "pets", "potato"]
 for mg in makeover_groups:
-    NORMAL_CODES.extend([
+    MAKEOVER_MODIFIER_CODES.extend([
         Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE"),
         Code('hate'+mg, f"RARE {mg.upper()} MODE"),
         Code('like'+mg, f"COMMON {mg.upper()} MODE"),
@@ -230,7 +235,7 @@ TOP_SECRET_CODES = [
     Code('QGWURNGNSEIMKTMDFBIX', 'DIVERGENT PATHS MODE', key1='power', key2='panda')
 ]
 
-ALL_CODES = NORMAL_CODES + CAVE_CODES + SPECIAL_CODES + TOP_SECRET_CODES
+ALL_CODES = NORMAL_CODES + MAKEOVER_MODIFIER_CODES + CAVE_CODES + SPECIAL_CODES + TOP_SECRET_CODES
 
 options = Options(ALL_MODES[0])
 

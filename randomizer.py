@@ -17,7 +17,7 @@ from utils import (COMMAND_TABLE, LOCATION_TABLE,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
-                   battlebg_palettes, set_randomness_multiplier,
+                   battlebg_palettes, shuffle_char_hues, generate_character_palette, set_randomness_multiplier,
                    mutate_index, utilrandom as random, open_mei_fallback,
                    dialogue_to_bytes)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
@@ -42,7 +42,7 @@ from musicrandomizer import randomize_music
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu, y_equip_relics, fix_gogo_portrait)
 from decompress import Decompressor
 from character import get_characters, get_character, equip_offsets
-from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, options
+from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, MAKEOVER_MODIFIER_CODES, options
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
@@ -1933,33 +1933,44 @@ def manage_monster_appearance(monsters, preserve_graphics=False):
     return mgs
 
 
-def recolor_character_palette(pointer, palette=None, flesh=False, middle=True, santa=False):
+def recolor_character_palette(pointer, palette=None, flesh=False, middle=True, santa=False, skintones = None, char_hues = None, trance = False):
     fout.seek(pointer)
     if palette is None:
         palette = [read_multi(fout, length=2) for _ in range(16)]
         outline, eyes, hair, skintone, outfit1, outfit2, NPC = (
             palette[:2], palette[2:4], palette[4:6], palette[6:8],
             palette[8:10], palette[10:12], palette[12:])
-        new_palette = []
         def components_to_color(xxx_todo_changeme):
             (red, green, blue) = xxx_todo_changeme
             return red | (green << 5) | (blue << 10)
 
+        new_style_palette = None
+        if skintones and char_hues:
+            new_style_palette = generate_character_palette(skintones, char_hues, trance=trance)
+            if random.randint(1,100) == 1:
+                transformer = get_palette_transformer(middle=middle)
+                new_style_palette = transformer(new_style_palette)
+        elif trance:
+            new_style_palette = generate_character_palette(trance=True)
+            
+        new_palette = new_style_palette if new_style_palette else []
         if not flesh:
-            for piece in (outline, eyes, hair, skintone, outfit1, outfit2, NPC):
+            pieces = (outline, eyes, hair, skintone, outfit1, outfit2, NPC) if not new_style_palette else [NPC]
+            for piece in pieces:
                 transformer = get_palette_transformer(middle=middle)
                 piece = list(piece)
                 piece = transformer(piece)
                 new_palette += piece
-            new_palette[6:8] = skintone
+
+            if not new_style_palette: new_palette[6:8] = skintone
             if options.is_code_active('christmas'):
                 if santa:
                     # color kefka's palette to make him look santa-ish
                     new_palette = palette
-                    new_palette[4] = components_to_color((0x1f, 0x1f, 0x1f)) #0x7fff
-                    new_palette[8] = components_to_color((0x1f, 0x1f, 0x1c)) #0x73ff
-                    new_palette[9] = components_to_color((0x00, 0x07, 0x00)) #0x00e0
-                    new_palette[11] = components_to_color((0x1c, 0x02, 0x04)) #0x105c
+                    new_palette[8] = components_to_color((0x18, 0x18, 0x16))
+                    new_palette[9] = components_to_color((0x16, 0x15, 0x0F))
+                    new_palette[10] = components_to_color((0x1C, 0x08, 0x03))
+                    new_palette[11] = components_to_color((0x18, 0x02, 0x05))
                 else:
                     # give them red & green outfits
                     red = [components_to_color((0x19, 0x00, 0x05)), components_to_color((0x1c, 0x02, 0x04))]
@@ -1975,6 +1986,8 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True, s
         else:
             transformer = get_palette_transformer(middle=middle)
             new_palette = transformer(palette)
+            if new_style_palette:
+                new_palette = new_style_palette[0:12] + new_palette[12:]
 
         palette = new_palette
 
@@ -2179,53 +2192,163 @@ def get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits):
     return free_portrait_ids, merchant
 
 
-def get_sprite_swaps(char_ids, male, female):
+def get_sprite_swaps(char_ids, male, female, vswaps):
     sprite_swap_mode = options.is_code_active('makeover')
     wild = options.is_code_active('partyparty')
+    clone_mode =  options.is_code_active('attackoftheclones')
+    replace_all = options.is_code_active('novanilla') or options.is_code_active('frenchvanilla')
+    external_vanillas = False if options.is_code_active('novanilla') else (options.is_code_active('frenchvanilla') or clone_mode)
     if not sprite_swap_mode:
         return []
 
     class SpriteReplacement:
-        def __init__(self, file, name, gender, riding=None, fallback_portrait_id=0xE, portrait_filename=None):
+        def __init__(self, file, name, gender, riding=None, fallback_portrait_id=0xE, portrait_filename=None, uniqueids=None, groups=None):
             self.file = file.strip()
             self.name = name.strip()
             self.gender = gender.strip().lower()
             self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
-
+            self.uniqueids = [s.strip() for s in uniqueids.split('|')] if uniqueids else []
+            self.groups = [s.strip() for s in groups.split('|')] if groups else []
+            if self.gender == "female": self.groups.append("girls")
+            if self.gender == "male": self.groups.append("boys")
+            self.weight = 1.0
+            
             if fallback_portrait_id == '':
                 fallback_portrait_id = 0xE
             self.fallback_portrait_id = int(fallback_portrait_id)
             self.portrait_filename = portrait_filename
-            self.portrait_palette_filename = portrait_filename
-            if self.portrait_palette_filename and self.portrait_palette_filename:
-                if self.portrait_palette_filename[-4:] == ".bin":
-                    self.portrait_palette_filename = self.portrait_palette_filename[:-4]
-                self.portrait_palette_filename = self.portrait_palette_filename + ".pal"
+            if self.portrait_filename is not None:
+                self.portrait_filename = self.portrait_filename.strip()
+                if self.portrait_filename:
+                    self.portrait_palette_filename = portrait_filename.strip()
+                    if self.portrait_palette_filename and self.portrait_palette_filename:
+                        if self.portrait_palette_filename[-4:] == ".bin":
+                            self.portrait_palette_filename = self.portrait_palette_filename[:-4]
+                        self.portrait_palette_filename = self.portrait_palette_filename + ".pal"
+                else:
+                    self.portrait_filename = None
 
         def has_custom_portrait(self):
             return self.portrait_filename is not None and self.portrait_palette_filename is not None
+            
+        def is_on(self, checklist):
+            val = False
+            for g in self.uniqueids:
+                if g in checklist:
+                    return True
+            return False
 
     f = open_mei_fallback(SPRITE_REPLACEMENT_TABLE)
-    replace_candidates = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
+    known_replacements = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
     f.close()
 
-    replace_min = 8 if not wild else 16
-    replace_max = 12 if not wild else 20
-
-    num_to_replace = min(len(replace_candidates), random.randint(replace_min, replace_max))
-    replacements = random.sample(replace_candidates, num_to_replace)
-
-    if wild:
-        swap_to = dict(list(zip(random.sample(char_ids, num_to_replace), replacements)))
+    #uniqueids for sprites pulled from rom
+    vuids = { 0: "terra", 1: "locke", 2: "cyan", 3: "shadow", 4: "edgar", 5: "sabin", 6: "celes", 7: "strago", 8: "relm", 9: "setzer", 10: "moogle", 11: "gau", 12: "gogo6", 13: "umaro", 16: "leo", 17: "banon", 18: "terra", 21: "kefka" }
+                
+    #determine which character ids are makeover'd
+    blacklist = set()
+    if replace_all:
+        num_to_replace = len(char_ids)
+        is_replaced = [True] * num_to_replace
     else:
-        female_replacements = [s for s in replacements if s.gender == "female"]
-        male_replacements = [s for s in replacements if s.gender == "male"]
-        neutral_replacements = [s for s in replacements if s.gender != "male" and s.gender != "female"]
-
-        swap_to = dict(list(zip(random.sample(female, len(female_replacements)), female_replacements)))
-        swap_to.update(dict(list(zip(random.sample(male, len(male_replacements)), male_replacements))))
-        not_already_swapped = [c for c in char_ids if c not in swap_to]
-        swap_to.update(dict(list(zip(random.sample(not_already_swapped, len(neutral_replacements)), neutral_replacements))))
+        replace_min = 8 if not wild else 16
+        replace_max = 12 if not wild else 20
+        num_to_replace = min(len(known_replacements), random.randint(replace_min,replace_max))
+        is_replaced = [True] * num_to_replace + [False]*(len(char_ids)-num_to_replace)
+        random.shuffle(is_replaced)
+        for i, t in enumerate(is_replaced):
+            if i in vuids and not t:
+                blacklist.update([s.strip() for s in vuids[i].split('|')])
+    
+    if external_vanillas:
+        #include vanilla characters, but using the same system/chances as all others
+        og_replacements = [
+            SpriteReplacement("ogterra.bin","Terra","female","true",0,None,"terra"),
+            SpriteReplacement("oglocke.bin","Locke","male","true",1,None,"locke"),
+            SpriteReplacement("ogcyan.bin","Cyan","male","true",2,None,"cyan"),
+            SpriteReplacement("ogshadow.bin","Shadow","male","true",3,None,"shadow"),
+            SpriteReplacement("ogedgar.bin","Edgar","male","true",4,None,"edgar"),
+            SpriteReplacement("ogsabin.bin","Sabin","male","true",5,None,"sabin"),
+            SpriteReplacement("ogceles.bin","Celes","female","true",6,None,"celes"),
+            SpriteReplacement("ogstrago.bin","Strago","male","true",7,None,"strago"),
+            SpriteReplacement("ogrelm.bin","Relm","female","true",8,None,"relm","kids"),
+            SpriteReplacement("ogsetzer.bin","Setzer","male","true",9,None,"setzer"),
+            SpriteReplacement("ogmog.bin","Mog","neutral","true",10,None,"moogle"),
+            SpriteReplacement("oggau.bin","Gau","male","true",11,None,"gau","kids"),
+            SpriteReplacement("oggogo.bin","Gogo","neutral","true",12,None,"gogo6"),
+            SpriteReplacement("ogumaro.bin","Umaro","neutral","true",13,None,"umaro")]
+        if wild:
+            og_replacements.extend( [
+                SpriteReplacement("ogtrooper.bin","Trooper","neutral","true",14),
+                SpriteReplacement("ogimp.bin","Imp","neutral","true",15),
+                SpriteReplacement("ogleo.bin","Leo","male","true",16,None,"leo"),
+                SpriteReplacement("ogbanon.bin","Banon","male","true",17,None,"banon"),
+                SpriteReplacement("ogesperterra.bin","Esper Terra","female","true",0,"esperterra-p.bin","terra"),
+                SpriteReplacement("ogmerchant.bin","Merchant","male","true",1),
+                SpriteReplacement("ogghost.bin","Ghost","neutral","true",18),
+                SpriteReplacement("ogkefka.bin","Kefka","male","true",17,"kefka-p.bin","kefka")])
+        if clone_mode:
+            used_vanilla = [nameiddict[vswaps[n]] for i, n in enumerate(char_ids) if not is_replaced[i]]
+            og_replacements = [r for r in og_replacements if r.name not in used_vanilla]
+        known_replacements.extend(og_replacements)
+            
+    #weight selection based on no*/hate*/like*/love* codes
+    whitelist = [c.name[4:] for c in options.active_codes if c.name.startswith("love")]
+    replace_candidates = []
+    for r in known_replacements:
+        for w in whitelist:
+            if w not in r.groups:
+                r.weight = 0
+                break
+        if not r.weight: continue
+        for g in r.groups:
+            if not r.weight: break
+            if options.is_code_active("no"+g):
+                r.weight = 0
+            elif  options.is_code_active("hate"+g):
+                r.weight /= 3
+            elif  options.is_code_active("like"+g):
+                r.weight *= 2
+        if r.weight:
+            replace_candidates.append(r)
+    
+    #select sprite replacements
+    if not wild:
+        female_candidates = [c for c in replace_candidates if c.gender == "female"]
+        male_candidates = [c for c in replace_candidates if c.gender == "male"]
+        neutral_candidates = [c for c in replace_candidates if c.gender != "male" and c.gender != "female"]
+    
+    swap_to = {}
+    for id in random.sample(char_ids, len(char_ids)):
+        if not is_replaced[id]:
+            continue
+        if wild:
+            candidates = replace_candidates
+        else:
+            if id in female:
+                candidates = female_candidates
+            elif id in male:
+                candidates = male_candidates
+            else:
+                candidates = neutral_candidates
+            if random.randint(0,len(neutral_candidates)+2*len(candidates)) <= len(neutral_candidates):
+                candidates = neutral_candidates
+        if clone_mode:
+            reverse_blacklist = [c for c in candidates if c.is_on(blacklist)]
+            if reverse_blacklist:
+                weights = [c.weight for c in reverse_blacklist]
+                swap_to[id] = random.choices(reverse_blacklist, weights)[0]
+                blacklist.update(swap_to[id].uniqueids)
+                candidates.remove(swap_to[id])
+                continue
+        final_candidates = [c for c in candidates if not c.is_on(blacklist)]
+        if final_candidates:
+            weights = [c.weight for c in final_candidates]
+            swap_to[id] = random.choices(final_candidates, weights)[0]
+            blacklist.update(swap_to[id].uniqueids)
+            candidates.remove(swap_to[id])
+        else:
+            print(f"custom sprite pool for {id} empty, using a vanilla sprite")
 
     return swap_to
 
@@ -2240,6 +2363,23 @@ def manage_character_appearance(preserve_graphics=False):
     ghost_mode = options.is_code_active('halloween')
     christmas_mode = options.is_code_active('christmas')
     sprite_swap_mode = options.is_code_active('makeover') and not (sabin_mode or tina_mode or soldier_mode or moogle_mode or ghost_mode)
+    new_palette_mode = not options.is_code_active('sometimeszombies')
+
+    if new_palette_mode:
+        # import recolors for incompatible base sprites
+        recolors = [("cyan", 0x152D40, 0x16A0),  ("mog", 0x15E240, 0x16A0),
+                    ("umaro", 0x162620, 0x16A0), ("dancer", 0x1731C0, 0x5C0),
+                    ("lady", 0x1748C0, 0x5C0)]
+        for rc in recolors:
+            filename = os.path.join("data","sprites","RC" + rc[0] + ".bin")
+            try:
+                with open_mei_fallback(filename, "rb") as f:
+                    sprite = f.read()
+            except:
+                continue
+            if len(sprite) >= rc[2]: sprite = sprite[:rc[2]]
+            fout.seek(rc[1])
+            fout.write(sprite)
 
     if (wild or tina_mode or sabin_mode or christmas_mode):
         if christmas_mode:
@@ -2294,7 +2434,7 @@ def manage_character_appearance(preserve_graphics=False):
 
     manage_character_names(change_to, male)
 
-    swap_to = get_sprite_swaps(char_ids, male, female)
+    swap_to = get_sprite_swaps(char_ids, male, female, change_to)
 
     for c in characters:
         if c.id < 14:
@@ -2444,6 +2584,12 @@ def manage_character_appearance(preserve_graphics=False):
         newsprite = newsprite[:ssizes[c]]
         fout.write(newsprite)
 
+    # celes in chains
+    fout.seek(0x159500)
+    chains = fout.read(192)
+    fout.seek(0x17D660)
+    fout.write(chains)
+    
     manage_palettes(change_to, char_ids)
 
 
@@ -2451,6 +2597,8 @@ def manage_palettes(change_to, char_ids):
     sabin_mode = options.is_code_active('suplexwrecks')
     tina_mode = options.is_code_active('bravenudeworld')
     christmas_mode = options.is_code_active('christmas')
+    new_palette_mode = not options.is_code_active('sometimeszombies')
+
     characters = get_characters()
     npcs = get_npcs()
     charpal_options = {}
@@ -2462,14 +2610,33 @@ def manage_palettes(change_to, char_ids):
         charid = hex2int(charid)
         charpal_options[charid] = palettes
 
+    if new_palette_mode:
+        twinpal = random.randint(0,5)
+        char_palette_pool = list(range(0,6)) + list(range(0,6))
+        char_palette_pool.remove(twinpal)
+        char_palette_pool.append(random.choice(list(range(0,twinpal))+list(range(twinpal,6))))
+        while True:
+            random.shuffle(char_palette_pool)
+            if char_palette_pool[0] == twinpal or char_palette_pool[1] == twinpal:
+                continue
+            break
+        char_palette_pool = char_palette_pool[:4] + [twinpal, twinpal] + char_palette_pool[4:]
+        
     palette_change_to = {}
+    additional_celeses = []
     for npc in npcs:
+        if npc.graphics == 0x41:
+            additional_celeses.append(npc)
         if npc.graphics not in charpal_options:
             continue
         if npc.graphics in change_to:
             new_graphics = change_to[npc.graphics]
             if (npc.graphics, npc.palette) in palette_change_to:
                 new_palette = palette_change_to[(npc.graphics, npc.palette)]
+            elif new_palette_mode and npc.graphics < 14:
+                new_palette = char_palette_pool[npc.graphics]
+                palette_change_to[(npc.graphics, npc.palette)] = new_palette
+                npc.palette = new_palette
             else:
                 while True:
                     new_palette = random.choice(charpal_options[new_graphics])
@@ -2484,7 +2651,10 @@ def manage_palettes(change_to, char_ids):
                 palette_change_to[(npc.graphics, npc.palette)] = new_palette
                 npc.palette = new_palette
             npc.palette = new_palette
-
+    for npc in additional_celeses:
+        if (6,0) in palette_change_to:
+            npc.palette = palette_change_to[(6,0)]
+    
     main_palette_changes = {}
     for character in characters:
         c = character.id
@@ -2512,16 +2682,41 @@ def manage_palettes(change_to, char_ids):
     if options.is_code_active('repairpalette'):
         make_palette_repair(main_palette_changes)
 
+    if new_palette_mode:
+        char_hues = shuffle_char_hues([ 0, 15, 30, 45, 60, 75, 90, 120, 150, 165, 180, 210, 240, 270, 300, 315, 330, 360 ])
+        skintones = [ ( (31,24,17), (25,13, 7) ),
+                      ( (31,23,15), (25,15, 8) ),
+                      ( (31,24,17), (25,13, 7) ),
+                      ( (31,25,15), (25,19,10) ),
+                      ( (31,25,16), (24,15,12) ),
+                      ( (27,17,10), (20,12,10) ),
+                      ( (25,20,14), (19,12, 4) ),
+                      ( (27,22,18), (20,15,12) ),
+                      ( (28,22,16), (22,13, 6) ),
+                      ( (28,23,15), (22,16, 7) ),
+                      ( (27,23,15), (20,14, 9) ) ]
+        if christmas_mode or random.randint(1,100) > 50:
+            skintones.append( ((29,29,30),(25,25,27)) )
+        random.shuffle(skintones)
+        
     for i in range(6):
         pointer = 0x268000 + (i*0x20)
-        palette = recolor_character_palette(pointer, palette=None,
-                                            flesh=(i == 5), santa=(christmas_mode and i == 3))
+        if new_palette_mode:
+            palette = recolor_character_palette(pointer, palette=None,
+                                    flesh=(i == 5), santa=(christmas_mode and i==3),
+                                    skintones=skintones, char_hues=char_hues)
+        else:
+            palette = recolor_character_palette(pointer, palette=None,
+                                            flesh=(i == 5), santa=(christmas_mode and i==3))
         pointer = 0x2D6300 + (i*0x20)
         recolor_character_palette(pointer, palette=palette)
 
     # esper terra
     pointer = 0x268000 + (8*0x20)
-    palette = recolor_character_palette(pointer, palette=None, flesh=True,
+    if new_palette_mode:
+        palette = recolor_character_palette(pointer, palette=None, trance=True)
+    else:
+        palette = recolor_character_palette(pointer, palette=None, flesh=True,
                                         middle=False)
     pointer = 0x2D6300 + (6*0x20)
     palette = recolor_character_palette(pointer, palette=palette)
@@ -5182,11 +5377,12 @@ def randomize():
 
     characters = get_characters()
 
+
     s = ""
     for code in options.mode.forced_codes:
         options.activate_code(code)
 
-    for code in NORMAL_CODES + TOP_SECRET_CODES:
+    for code in NORMAL_CODES + MAKEOVER_MODIFIER_CODES + TOP_SECRET_CODES:
         found, flags = code.remove_from_string(flags)
         if found:
             if code in options.mode.prohibited_codes:
@@ -5689,6 +5885,8 @@ if __name__ == "__main__":
         input("Press enter to close this program. ")
     except Exception as e:
         print("ERROR: %s" % e)
+        import traceback
+        traceback.print_exc()
         if fout:
             fout.close()
         if outfile is not None:

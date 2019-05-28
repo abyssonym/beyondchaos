@@ -197,7 +197,19 @@ NORMAL_CODES = [
     Code('rushforpower', "OLD VARGAS FIGHT MODE"),
     Code('johnnydmad', "MUSIC REPLACEMENT MODE"),
     Code('johnnyachaotic', "MUSIC MANGLING MODE"),
+    Code('sometimeszombies', "OLD CHARACTER PALETTE MODE"),
+    Code('novanilla', "COMPLETE MAKEOVER MODE"),
+    Code('frenchvanilla', "EQUAL RIGHTS MAKEOVER MODE"),
+    Code('attackoftheclones', "CLONE COSPLAY MAKEOVER MODE")
 ]
+  
+makeover_groups = ["boys", "girls", "kids", "pets", "potato"]
+for mg in makeover_groups:
+    NORMAL_CODES.extend([
+        Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE"),
+        Code('hate'+mg, f"RARE {mg.upper()} MODE"),
+        Code('like'+mg, f"COMMON {mg.upper()} MODE"),
+        Code('love'+mg, f"{mg.upper()} WORLD MODE")])
 
 
 # TODO: do this a better way

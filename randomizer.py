@@ -5541,7 +5541,7 @@ def randomize():
 
     if options.random_palettes_and_names or options.swap_sprites or options.is_any_code_active(
             ['partyparty', 'bravenudeworld', 'suplexwrecks',
-             'christmas', 'halloween', 'kupokupo', 'quikdraw']):
+             'christmas', 'halloween', 'kupokupo', 'quikdraw', 'makeover']):
         manage_character_appearance(preserve_graphics=preserve_graphics)
         show_original_names(fout)
     reseed()

@@ -2297,19 +2297,20 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
     whitelist = [c.name[4:] for c in options.active_codes if c.name.startswith("love")]
     replace_candidates = []
     for r in known_replacements:
-        for w in whitelist:
-            if w not in r.groups:
-                r.weight = 0
-                break
-        if not r.weight: continue
+        whitelisted = False
         for g in r.groups:
-            if not r.weight: break
+            if not r.weight:
+                break
+            if g in whitelist:
+                whitelisted = True
             if options.is_code_active("no"+g):
                 r.weight = 0
             elif  options.is_code_active("hate"+g):
                 r.weight /= 3
             elif  options.is_code_active("like"+g):
                 r.weight *= 2
+        if whitelist and not whitelisted:
+            r.weight = 0
         if r.weight:
             replace_candidates.append(r)
 

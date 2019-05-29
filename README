@@ -1,26 +1,26 @@
 FF6 Beyond Chaos EX Randomizer
 a fork of Abyssonym's FF6 Beyond Chaos Randomizer
-Version:    2
-Date:       February 17, 2019
+Version:    3
+Date:       June 21, 2019
 URL:        https://github.com/subtractionsoup/beyondchaos
 Discord:    https://discord.gg/S3G3UXy
 
 --- QUICKSTART ---
 Requirements:
-	FF3 US 1.0 ROM
-	If not running Windows, install Python 3.7+.
+    FF3 US 1.0 ROM
+    If not running Windows, install Python 3.7+.
 
 Running the randomizer:
     Windows users: run beyondchaos_ex.exe.
-	Other users: run "randomizer.py" using Python version 3.7+ (It DOES NOT work with python 2.)
+    Other users: run "randomizer.py" using Python version 3.7+ (It DOES NOT work with python 2.)
 
 Source ROM file:
     The randomizer will ask for a ROM file. Beyond Chaos EX does not provide this ROM. The simplest thing is to put the ROM in the same directory as Beyond Chaos EX and simply input the file name.
-	e.g., "ff3.smc"
-	
-	If you prefer to keep the ROM in a different folder, enter the full path. e.g., "C:\Users\Kefka\Documents\snes\ff3.smc"
-	
-	The ROM used should be the FF3 US 1.0 ROM. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
+    e.g., "ff3.smc"
+    
+    If you prefer to keep the ROM in a different folder, enter the full path. e.g., "C:\Users\Kefka\Documents\snes\ff3.smc"
+    
+    The ROM used should be the FF3 US 1.0 ROM. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
 
     MD5 - e986575b98300f721ce27c180264d890
     CRC32 - a27f1c7a
@@ -28,19 +28,28 @@ Source ROM file:
 Seed value:
     Next, the randomizer will ask for a seed value. The seed value is an integer number that can be used to share the same randomization with other people. If you don't know which seed you want, just leave this blank.
 
+Mode:
+    Next, it asks you to specify a game mode.
+    In normal mode, you play through the story as usual.
+    In ancient cave, speed cave, and race cave modes you going through a randomized three-party dungeon to defeat Kefka; they differ in the length of the dungeon.
+    In K at N mode, you play through the beginning of the normal story, ending at the fight with Kefka at Narshe. The randomness is adjusted to give you a lot more variety in that section than you would see in normal mode.
+    In dragon hunt mode, you start in the World of Ruin with the airship, and it ends immediately when you kill the 8th dragon.
+    
+    Type the name or number of the mode you want.
+
 Flags:
     Finally, the randomizer will ask for a list of flags. These allow you to customize what it randomizes.
-	
-	* If this is your first seed, I recommend typing:
-	-dfklu partyparty makeover
-	
-	This will give you a good taste of Beyond Chaos EX while leaving out a few things that can sometimes be frustrating for new players. (partyparty and makeover are "secret" codes that randomize the sprites even more.)
-	
-	* If you find that too hard, try:
-	-dfklmu partyparty makeover
-	
-	* The "typical" flags used by veterans are:
-	-lk partyparty makeover
+    
+    * If this is your first seed, I recommend typing:
+    -dfklu partyparty makeover johnnydmad
+    
+    This will give you a good taste of Beyond Chaos EX while leaving out a few things that can sometimes be frustrating for new players. ("partyparty" and "makeover" are "secret" codes that randomize the sprites even more. "johnnydmad" randomizes the music. You can leave them out if you want.)
+    
+    * If you find that too hard, try:
+    -dfklmu partyparty makeover johnnydmad
+    
+    * The "typical" flags used by veterans are:
+    -lk partyparty makeover capslockoff johnnydmad
 
 Output rom file:
     The randomizer generates two files, a patched rom file, and a mini-FAQ. Both files will have the seed value in their name. To play the game, load the patched rom file in your emulator. The mini-FAQ is a text file that mainly includes information about where to get items; colosseum rewards, monster steals and drops, shop info, and monster rages are all included.
@@ -51,14 +60,14 @@ Output rom file:
     Beyond Chaos EX is also customizable. Using the flags in the above section, you can choose to only randomize certain parts of the game. Every flag you select will make the game a little more random, and also a little more difficult. Therefore, even experienced players should be able to find some challenge in the resulting game. As the game progresses, enemies may become more and more difficult, so that it becomes necessary to develop specialized strategies for individual formations.
 
 --- FAQ/KNOWN ISSUES ---
-Q: How do I play Beyond Chaos Ancient Cave mode?
-A: There are three codes you can use. "ancientcave" is for the standard Ancient Cave mode with ~200 maps and takes a very long time to complete. "speedcave" is a shorter, faster mode (~100 maps) that is designed to be completed in one sitting. "racecave" is even shorter (~50 maps) and can be completed in one relatively short sitting. Input the code in the flags. For vanilla Ancient Cave mode, I recommend using "ancientcavez".
-
 Q: How do I play Beyond Chaos Bingo?
 A: The code is "bingoboingo". Use the code in the flags and the randomizer will ask you some more questions when the randomization is complete.
 
 Q: How do I use different sprites?
 A: Use the code "makeover" to randomly replace sprites. You can customize which sprites are available by checking custom/spritereplacements.txt.
+
+Q: How do I get random music?
+A: Use the code "johnnydmad" in the flags.
 
 Q: I lost my seed number but I still have the rom. Can I find my seed number again?
 A: The seed is displayed in the auto-generated guide, in the rom's SNES header, and in the opening sequence with the magitek armor.
@@ -70,7 +79,7 @@ Q: How do I defeat TunnelArmr without Runic?
 A: Just kill it.
 
 Q: How do I defeat Ultros at the Esper's hideout without Sketch?
-A: Just kill it.
+A: Just kill it. (If you happen to have another way to use Tentacle on him, that'll work too.)
 
 Q: Speaking of Sketch, was the Sketch Glitch patched?
 A: No. Believe it or not, there are people out there who want to play using the Sketch Glitch, which is why the randomizer is based off of the FF3 US 1.0 rom. In an ideal world you would be able to choose whether or not to patch the glitch, but since there is such small demand for that kind of feature and it would take considerable effort, I haven't implemented it.
@@ -97,9 +106,17 @@ Q: I heard that there's a secret item. How do I get it?
 A: Va gur svany qhatrba, gurer'f n fznyy vagrevbe ebbz jvgu n qbbe cnfg n pbairlbe oryg gung vf vanpprffvoyr. Gb ernpu gur qbbe, lbh zhfg hfr na rkcybvg gung vf abeznyyl hfrq gb fxvc Cbygetrvfg va inavyyn SS6. Ybbx hc gur Cbygetrvfg fxvc gb svaq bhg ubj gb qb gur gevpx.
 
 Q: I heard that there are secret codes. What are they?
-A: I'll give you the codes, but be aware that these are codes that were used during development for testing the randomizer. I make no guarantees about their playability, and it's recommended that you play through the randomizer without codes at least once before you use them. Here they are, as always, in ROT13:
+A: Secret codes can be entered when the randomizer asks you for flags. They can do everything from make silly cosmetic changes to major gameplay changes. Mostly they're secret because it's recommended you play through the randomizer at least once without them before using them.
+Here are a few that ARE okay to use on your first time:
+
+    capslockoff - Character names will not be in all-caps by default
+    partyparty - a super version of the s flag. This also randomizes the sprites for Kefka, the soldiers, merchants, Esper Terra, Imp, Banon, and Leo.
+    makeover - replaces (most) sprites with ones not in the original game, such as Samus or Rydia.
+    johnnydmad - replaces the music tracks with tracks not in the original game. For example, you might hear music from Secret of Mana or Tales of Phantasia.
+    notawaiter - skips some of the cutscenes. It skips all of the ones through Kefka @ Narshe, and a few of the longer ones after that.
+
+The rest are here, in ROT13, but—again—it's recommended that you play through the randomizer without codes at least once before you use them:
     nvefuvc
-    cneglcnegl
     oenirahqrjbeyq
     fhcyrkjerpxf
     fgenatrwbhearl
@@ -118,8 +135,6 @@ A: I'll give you the codes, but be aware that these are codes that were used dur
     zrgebabzr
     dhvxqenj
     xhcbxhcb
-    pncfybpxbss
-    znxrbire
     ercynprrirelguvat
     nyypbzobf
     enaqbzobbfg
@@ -127,10 +142,11 @@ A: I'll give you the codes, but be aware that these are codes that were used dur
     znffrssrpg
     fhcreangheny
     znqjbeyq
-	ryrpgevpobbtnybb
+    ryrpgevpobbtnybb
     abgnjnvgre
     qnexjbeyq
     enaqbzobffrf
+    wbuaalnpunbgvp
 
 Q: What level should I be for the final dungeon?
 A: It really depends on your gear and what builds you have access to. I usually end up going there around level 35-40, but it doesn't hurt to have a few absurdly high level characters to tank hits.
@@ -159,11 +175,11 @@ A: Fun fact, if you equip cursed shields on multiple party members, you can uncu
 Q: I just got a Game Over, but I didn't get to keep my experience levels.
 A: This feature was removed because it didn't work properly with one of the new esper boosts. I also wasn't very fond of it to begin with, because I would often get a Game Over and forget to reset so I don't miss out on valuable esper levels.
 
+Q: My berserker who uses Rage did a slam attack and it did a whole bunch of damage/somehow killed someone on my team.
+A: That's a bug. For some reason when he has the Rage status, the slam attack gets the properties of the Fire spell but with a super high Magic Power. If the enemy has Reflect, it'll hit your team. Hopefully you have equipment that absorbs or nullifies fire.
+
 Q: Can you add X to the mini-guide that gets generated?
 A: Let me know. I'm not sure what kinds of things people want in the mini-FAQ.
-
-Q: The guide says a character can learn a spell naturally, but they haven't learned it.
-A: Yeah, that's a bug I haven't bothered to figure out yet. I think it has to do with characters joining at a higher level than the magic they learn. They'll still learn the rest of their natural magic, though.
 
 Q: Can you add X feature?
 A: Maybe. I'm open to suggestions, but things that require a lot of effort probably won't get made.
@@ -181,13 +197,13 @@ Q: I found a bug!
 A: The best thing to do is report it on the Beyond Chaos Discord in the #bugs channel. Please include the seed number and flags used. (The easiest way is to copy and paste the first line of the .txt file.)
 
 --- CONTRIBUTORS ---
-	Abyssonym - original Beyond Chaos creator
-	subtractionsoup - maintainer of Beyond Chaos EX
-    CtrlxZ - fixed up sprites for Beyond Chaos
-	DarkSlash - madworld and darkworld codes
-	emberling - speeddial and randomized music
-	glennmatthews - Command descriptions in logfile
-	Lockirby2 - The worringtriad and notawaiter codes
+    Abyssonym - original Beyond Chaos creator
+    subtractionsoup - maintainer of Beyond Chaos EX
+    CtrlxZ - created or modified a bunch of sprites for the randomizer
+    DarkSlash - madworld, darkworld, randombosses codes and some other things for KatN mode.
+    emberling - speeddial, randomized music, converted a ton of music, and reworked palettes and sprite replacement
+    glennmatthews - Command descriptions in logfile
+    Lockirby2 - The worringtriad and notawaiter codes
     myself086 - new menu features and natural magic expansion
 
 --- SPECIAL THANKS ---
@@ -199,8 +215,11 @@ A: The best thing to do is report it on the Beyond Chaos Discord in the #bugs ch
     quikdraw7777 - permadeath community leader and pioneer
     tenkarider - romhacker who gave me lots of early feedback, and creator of the Ultimate Czar Dragon hack, FF6 Curse of the Gods, and many other challenges
     Synchysi - esper restriction patch
-	Novalia Spirit - "Allergic Dog" bug fix patch
-	Leet Sketcher - Y Equip Relics patch
-	Assassin - That Damn Yellow Streak fix patch
+    Novalia Spirit - "Allergic Dog" bug fix patch
+    Leet Sketcher - Y Equip Relics patch
+    Assassin - That Damn Yellow Streak fix patch
     ff6hacking.com community - additional sprites, see custom/sprites/credits.txt for details
     AND YOU
+
+--- SPECIAL NO THANKS ---
+    Mitch McConnell

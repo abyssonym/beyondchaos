@@ -46,9 +46,9 @@ from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, MAKEOV
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
-VERSION = "2"
+VERSION = "3"
 BETA = False
-VERSION_ROMAN = "II"
+VERSION_ROMAN = "III"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False
@@ -5218,6 +5218,7 @@ def randomize():
         saveflags = True
 
     flaghelptext = '''0-9 Shorthand for the text saved under that digit, if any
+!   Recommended new player flags
 -   Use all flags EXCEPT the ones listed'''
 
     speeddial_opts = {}
@@ -5246,7 +5247,7 @@ def randomize():
                 except IOError:
                     pass
 
-            speeddial_opts['!'] = '-dfklu partyparty makeover'
+            speeddial_opts['!'] = '-dfklu partyparty makeover johnnydmad'
 
             mode_num = None
             while mode_num not in range(len(ALL_MODES)):
@@ -5270,7 +5271,6 @@ def randomize():
             print("Save frequently used flag sets by adding 0: through 9: before the flags.")
             for k, v in sorted(speeddial_opts.items()):
                 print("    %s: %s" % (k, v))
-            print("If this is your first time playing, I recommend typing !")
             print()
             flags = input("Please input your desired flags (blank for "
                           "all of them):\n> ").strip()

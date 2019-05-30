@@ -41,7 +41,7 @@ Cid7.bin,Cid7,male,true,1,Cid7-p.bin
 clock.bin,Clock,neutral,true,1,clock-p.bin
 cloud.bin,Cloud,male,true,4,cloud-p.bin
 cloudchild.bin,Cloud Child,male,true,1,cloud-p.bin
-clouddress.bin,Dressy Cloud,female,true,1,cloud-p.bin
+cloud-dress.bin,Dressy Cloud,female,true,1,cloud-p.bin
 clyde.bin,Clyde,male,true,3,clyde-p.bin
 crono.bin,Crono,male,true,11,crono-p.bin
 cucco.bin,Cucco,neutral,true,1,cucco-p.bin
@@ -81,9 +81,9 @@ gaffgarion.bin,Gaffgarion,male,true,1,gaffgarion-p.bin
 galuf.bin,Galuf,male,true,1,galuf-p.bin
 garland.bin,Garland,male,true,1,garland-p.bin
 garnet.bin,Garnet,female,true,0,garnet-p.bin
-garnetgown.bin,Garnet Gown,female,true,0,garnet-p.bin
+garnet-gown.bin,Garnet Gown,female,true,0,garnet-p.bin
 garnetwhitemage.bin,Garnet White Mage,female,true,0,garnet-p.bin
-gausuit.bin,Gau in a suit,male,true,11
+gau-fancy.bin,Gau in a suit,male,true,11
 geno.bin,Geno,male,true,1,geno-p.bin
 gestahl.bin,Gestahl,male,true,7,gestahl-p.bin
 gilgamesh.bin,Gilgamesh,male,true,1,gilgamesh-p.bin
@@ -159,7 +159,7 @@ Ramza1.bin,Ramza Chapter 1,male,true,1,ramza1-p.bin
 red.bin,Red,male,true,1,red-p.bin
 redmage.bin,Red Mage,neutral,true,9,redmage-p.bin
 redxiii.bin,Red XIII,male,true,1,redxiii-p.bin
-relmadult.bin,Relm Adult,female,true,8
+relm-adult.bin,Relm Adult,female,true,8
 reno.bin,Reno,male,true,1,reno-p.bin
 retropikachu.bin,Retro Pikachu,neutral,true,1,retropikachu-p.bin
 returner.bin,Returner,male,true,17,returner-p.bin

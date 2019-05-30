@@ -2504,7 +2504,7 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
                 SpriteReplacement("ogghost.bin","Ghost","neutral","true",18),
                 SpriteReplacement("ogkefka.bin","Kefka","male","true",17,"kefka-p.bin","kefka")])
         if clone_mode:
-            used_vanilla = [nameiddict[change_to[n]] for i, n in enumerate(char_ids) if not is_replaced[i]]
+            used_vanilla = [nameiddict[vswaps[n]] for i, n in enumerate(char_ids) if not is_replaced[i]]
             og_replacements = [r for r in og_replacements if r.name not in used_vanilla]
         known_replacements.extend(og_replacements)
             
@@ -6927,16 +6927,18 @@ r   Randomize character locations in the world of ruin.
     secret_codes['johnnydmad'] = "MUSIC REPLACEMENT MODE"
     secret_codes['johnnyachaotic'] = "MUSIC MANGLING MODE"
     #secret_codes['sometimeszombies'] = "OLD CHARACTER PALETTE MODE"
-    secret_codes['novanilla'] = "COMPLETE MAKEOVER MODE"
-    secret_codes['frenchvanilla'] = "EQUAL RIGHTS MAKEOVER MODE"
-    secret_codes['attackoftheclones'] = "CLONE COSPLAY MAKEOVER MODE"
+    
+    makeover_warning = "" if "makeover" in flags else " *NOT*"
+    secret_codes['novanilla'] = "COMPLETE MAKEOVER MODE" + makeover_warning
+    secret_codes['frenchvanilla'] = "EQUAL RIGHTS MAKEOVER MODE" + makeover_warning
+    secret_codes['cloneparty'] = "CLONE COSPLAY MAKEOVER MODE" + makeover_warning
     
     makeover_groups = ["boys", "girls", "kids", "pets", "potato"]
     for mg in makeover_groups:
-        secret_codes['no'+mg] = f"NO {mg.upper()} ALLOWED MODE"
-        secret_codes['hate'+mg] = f"RARE {mg.upper()} MODE"
-        secret_codes['like'+mg] = f"COMMON {mg.upper()} MODE"
-        secret_codes['love'+mg] = f"{mg.upper()} WORLD MODE"
+        secret_codes['no'+mg] = f"NO {mg.upper()} ALLOWED MODE" + makeover_warning
+        secret_codes['hate'+mg] = f"RARE {mg.upper()} MODE" + makeover_warning
+        secret_codes['like'+mg] = f"FREQUENT {mg.upper()} MODE" + makeover_warning
+        secret_codes['love'+mg] = f"{mg.upper()} WORLD MODE" + makeover_warning
         
     s = ""
     for code, text in secret_codes.items():

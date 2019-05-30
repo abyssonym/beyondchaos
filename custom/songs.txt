@@ -205,6 +205,7 @@ met3_surface:   omen3*2, gestahl, cyan, shadow, returners, troops, ruin, tomb, p
 mmx_prologue:   I35, G25, grandfinale, unforgiven, chocobo, blackjack, johnny, magitek, floatingcont, mount2, assault
 ng3_defeat:     omen3, celes, shadow, zozo, train, espers, tomb, ancient
 ob_battle:      I40, G50, battle*2, boss, metamorphosis*2, unforgiven, serpent, assault
+ot_oasis:       relm, gau, village*2, town, town_ruin*2, strago
 ot_stillsnow:   coin*2, narshe, ruin*2, town_ruin*2, forest, tomb, W:prelude, W:omen3*2, W:celes, W:daryl, W:rachel, W:awakening, W:cave, W:espers
 ot_sunshade:    shadow*2, spinachrag, zozo*2, narshe, martiallaw
 rs2_heroes:     I50, G75, boss, catastrophe, grandfinale
@@ -219,6 +220,7 @@ sd1s_risingsun: celes*2, rachel, relm, gau, awakening, martiallaw, town_ruin*2, 
 sd2_8bells:     W4, omen3, awakening, narshe, ruin, train, espers, cave, tomb, dream, gate, phoenix, ancient, W:forest, W:serpent*2, W:balance, W:town_ruin
 sd2_always:     relm*2, chocobo, spinachrag, moogles*2, gogo, town, village*2
 sd2_angel:      omen3*2, celes*2, rachel*2, tomb
+sd2_boss:       I99, G55, boss*2, metamorphosis, unforgiven, grandfinale
 sd2_city:       relm*2, awakening, moogles, town*2, martiallaw*2
 sd2_desert:     shadow, gau, cyan, gogo*2, umaro, zozo, owzer, strago*2, veldt, mountain*2, serpent*2, cave, dream, ancient, engine
 sd2_dwarf:      prelude, what*2, moogles, village

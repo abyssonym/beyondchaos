@@ -57,12 +57,14 @@ cv3_aquarius:   H2, I35, G55, magitek, floatingcont, kefkastower, assault*2
 cv4_beginning:  H2, I00, G35, battle, locke, falcon, floatingcont, mount2, phoenix, gate, ancient, assault*2
 cv4_beginning_tr: train
 cv4_chandeliers: H4, kefka, gogo, owzer*2, fanatics, serpent, tomb, dream, H:omen3, H:gestahl, H:shadow, H:spinachrag
+ds4_dungeon:    gate, ancient, magitek, engine, dream, phoenix*2, kefkastower
 ds4_lyll:       blackjack, falcon, mountain, mount2, serpent, setzer
 eo3_waves:      I50, G99, atma*2, kefkastower, dmad5
 evo_boss:       I85, G40, boss*2, unforgiven
 ff1_battle:     I10, G00, battle, grandfinale, unforgiven
 ff1_bossb:      I85, G70, grandfinale, boss, atma, savethem, catastrophe
 ff1_dungeon:    I85, G25, metamorphosis, grandfinale, unforgiven, floatingcont, gate, phoenix, boss
+ff2_battle2:    I75, G75, metamorphosis, catastrophe, grandfinale, assault*2
 ff2_battleb:    H4, kefka, gogo, owzer*2, espers, fanatics*2, grandfinale, dream*2, gate, H:I50, H:G30, H:prelude, H:omen3, H:shadow, H:strago, H:balance, H:cave, H:forest, H:tomb, H:engine
 ff2_battleb_tr: H4, train
 ff2_theme:      prelude, awakening, town_ruin, ruin, balance, gau, forest*2

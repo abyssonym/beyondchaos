@@ -9,9 +9,9 @@ Song conversions:
                  ct_robo, ct_schala, ct_silent, ct_sewer, ct_theme, ct_truth,
                  ct_tylair, ct_tyran, ct_zeal
                  cv4_beginning, cv4_chandeliers
-                 ds4_lyll
+                 ds4_dungeon, ds4_lyll
                  eo3_waves
-                 ff2_battleb, ff2_theme
+                 ff2_battle2, ff2_battleb, ff2_theme
                  ff3_warrior
                  ff4_calcobrena
                  ff5_battle, ff5_boss, ff5_bridge, ff5_cave, ff5_curse,

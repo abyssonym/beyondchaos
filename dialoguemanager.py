@@ -161,7 +161,7 @@ def manage_dialogue_patches(fout):
         
     #TODO battle pointers
             
-    print(f"original script size is ${len(script_bin):X} bytes")
+    #print(f"original script size is ${len(script_bin):X} bytes")
     
     #apply changes to dialogue
     for idx, patches in dialogue_patches.items():
@@ -206,10 +206,10 @@ def manage_dialogue_patches(fout):
                 raise IndexError
             offset -= 0x10000
             first_high_index = idx
-            print(f"first high index at {first_high_index}")
+            #print(f"first high index at {first_high_index}")
         new_script += dialogue_to_bytes(text)
         new_ptrs += bytes([offset & 0xFF, (offset >> 8) & 0xFF])
-    print(f"new script: ${len(new_script):X} bytes")
+    #print(f"new script: ${len(new_script):X} bytes")
     
     #write to file
     fout.seek(0xD0000)
@@ -260,5 +260,5 @@ def patch(text):
             
         text = text[0:match.start()] + var + text[match.end():]
             
-    print(f" to {text}")
+    #print(f" to {text}")
     return text

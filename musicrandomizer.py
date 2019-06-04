@@ -1450,7 +1450,7 @@ def manage_opera(fout, affect_music):
     # 0. id for new scholar, 1. offset for new scholar, 2. id for merged sprite, 3. offset for merged sprite, 4. spritesheet filename, 5. extra pose type
     merge_options = [
         (32, 0x172C00, 33, 0x1731C0, "dancer.bin", "flirt"), #fancy gau -> dancer
-        (32, 0x172C00, 35, 0x173D40, "gausuit.bin", "sideeye"), #clyde -> fancy gau
+        (32, 0x172C00, 35, 0x173D40, "gau-fancy.bin", "sideeye"), #clyde -> fancy gau
         (60, 0x17C4C0, 35, 0x173D40, "daryl.bin", "sideeye"), #clyde -> daryl
         (42, 0x176580, 35, 0x173D40, "katarin.bin", "sideeye"), #clyde -> katarin
         (60, 0x17C4C0, 42, 0x176580, "daryl.bin", "sideeye"), #katarin -> daryl
@@ -1510,8 +1510,8 @@ def manage_opera(fout, affect_music):
             npc.palette = random.choice(range(6))
             npc.facing = item[1]
             set_dialogue_var("OperaItem", item[2])
-            print(f"opera item is {npc.graphics}, palette {npc.palette} ({item[2]})")
-            print(f"at address {npc.pointer:X}")
+            #print(f"opera item is {npc.graphics}, palette {npc.palette} ({item[2]})")
+            #print(f"at address {npc.pointer:X}")
     #4 ton weight
     for npc in get_location(0xEB).npcs:
         if npc.graphics == 97:
@@ -1527,8 +1527,8 @@ def manage_opera(fout, affect_music):
             npc.graphics = item[0]
             npc.palette = random.choice(range(6))
             npc.facing = item[1]
-            print(f"ultros item is {npc.graphics}, palette {npc.palette}")
-            print(f"at address {npc.pointer:X}")
+            #print(f"ultros item is {npc.graphics}, palette {npc.palette}")
+            #print(f"at address {npc.pointer:X}")
 
     #set up some spritesheet locations
     pose = {
@@ -1565,7 +1565,7 @@ def manage_opera(fout, affect_music):
             print(f"failed to open custom/opera/{merge[4]} or custom/sprites/{merge[4]}")
             sprite = None
     if sprite:
-        print(f"merge {merge}, pose {pose}")
+        #print(f"merge {merge}, pose {pose}")
         new_sprite = create_sprite(sprite, pose[merge[5]] if merge[5] is not None else [])
         data = byte_insert(data, merge[3], new_sprite)
     
@@ -1577,7 +1577,7 @@ def manage_opera(fout, affect_music):
         "Ralse": (0x170CC0, pose['prone'] + pose['singing']),
         "Impresario": (0x176B40, pose['angry'])}
     for cname, c in char.items():
-        print(f"{cname} -> {c.name}")
+        #print(f"{cname} -> {c.name}")
         try:
             with open(safepath(os.path.join(opath, f"{c.sprite}.bin")),"rb") as f:
                 sprite = f.read()

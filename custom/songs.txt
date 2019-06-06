@@ -14,6 +14,7 @@
 [Imports]
 #custom songs
 blord_2tower:   setzer, locke, chocobo, blackjack, johnny, falcon*2, mount2
+bof1_dawn:      prelude, omen3*2, falcon, serpent*2
 bof2_battle:    I65, G05, unforgiven, grandfinale, battle
 cc_arni:        town*2, village
 cc_dragonia:    H2, omen3, zozo, kefkastower, owzer, dream*2, ancient
@@ -167,6 +168,7 @@ ffx_seymour:    I99, G80, atma, dmad5
 ffx_via:        H2, omen3, celes, zozo, train*2, cave, tomb*2, phoenix, ancient
 ffx_zanarkand:  celes*2, daryl, coin*2, ruin*2
 ff12_barheim:   owzer, martiallaw, cave, train*2, dream, ancient*2, tomb
+ff12_estersand: locke, chocobo, moogles, balance*2, veldt, mountain*2, mount2, serpent
 ff12_ozmone:    returners, moogles, gogo, veldt*2, mountain*2, forest, serpent
 ff12_paramina:  W4, omen3*2, gestahl*2, catastrophe, narshe*2, martiallaw, town_ruin, ruin*2, cave*2, tomb, ancient, assault, W:shadow, W:awakening, W:cyan, W:troops*2, W:umaro, W:zozo, W:owzer, W:balance, W:train*2, W:serpent, W:espers*2, W:forest
 ffmq_battle1:   I50, G15, battle*2
@@ -275,6 +277,9 @@ sf2_ken:        I40, G60, battle*2, grandfinale, unforgiven*2, setzer, locke, jo
 smb2_select:    prelude*2, johnny, spinachrag*2, moogles
 so2_rescue:     I70, G20, unforgiven, savethem, magitek*2, floatingcont, mount2
 so2_victory:    fanfare*2
+so2_world1:     omen3, cyan, falcon
+so2_world1_a:   figaro, returners, balance, mount2
+so2_world1_b:   omen3, gestahl, espers, ruin, gate*2, ancient*2, dream, phoenix*2
 st_dungeon:     H2, moogles, gogo, veldt, mountain, cave*2, serpent, dream, phoenix, ancient, H:umaro, H:owzer, H:falcon
 tn_evergreen:   awakening*2, relm*2, forest
 top_cold:       W4, shadow, zozo, owzer, narshe*2, ruin*2, cave*2, tomb, serpent, espers*2, gate, ancient, W:prelude, W:omen3, W:celes, W:daryl, W:umaro, W:town_ruin, W:veldt, W:mountain, W:kefkastower

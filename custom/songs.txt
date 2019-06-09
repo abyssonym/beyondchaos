@@ -14,6 +14,7 @@
 [Imports]
 #custom songs
 blord_2tower:   setzer, locke, chocobo, blackjack, johnny, falcon*2, mount2
+blord_ruins:    train, gate, ancient*2, magitek*2, engine, phoenix
 bof1_dawn:      prelude, omen3*2, falcon, serpent*2
 bof2_battle:    I65, G05, unforgiven, grandfinale, battle
 cc_arni:        town*2, village
@@ -192,6 +193,7 @@ iog_whispers:   H2, zozo, owzer*2, ruin*2, forest*2, cave*2, tomb*2, dream, trai
 iog_womb:       W2, prelude, daryl, coin, rachel, awakening, ruin, forest, tomb, espers
 jts_stage1:     I10, G60, battle, johnny, chocobo, magitek*2, floatingcont, mount2, assault
 lagoon_spirits: celes, awakening, owzer, ruin, forest*2, cave*2, tomb, espers, ancient, train
+lal_theme:      I20, G80, setzer*2, locke*2, figaro, returners, savethem, falcon, mount2, floatingcont
 lo_battle:      I05, G75, battle*2, grandfinale, cyan, umaro, assault*2
 lu1_battle:     I60, G0, battle*2, unforgiven, chocobo
 lu1_boss:       I90, G45, boss*2, grandfinale, assault
@@ -284,6 +286,7 @@ st_dungeon:     H2, moogles, gogo, veldt, mountain, cave*2, serpent, dream, phoe
 tn_evergreen:   awakening*2, relm*2, forest
 top_cold:       W4, shadow, zozo, owzer, narshe*2, ruin*2, cave*2, tomb, serpent, espers*2, gate, ancient, W:prelude, W:omen3, W:celes, W:daryl, W:umaro, W:town_ruin, W:veldt, W:mountain, W:kefkastower
 top_harmony:    relm, moogles*2, town, strago, village*2
+top_freeze:     W4, espers, awakening, town_ruin*2, serpent*2, forest, tomb, dream, W:prelude, W:omen3, W:relm, W:shadow, W:zozo, W:strago, W:village, W:town, W:martiallaw, W:ruin, W:balance, W:cave, W:gate, W:ancient, W:phoenix
 top_mint:       omen3, celes, rachel, awakening*2, town_ruin, tomb
 top_spirit:     I60, G65, grandfinale, unforgiven
 top_victory:    fanfare*2

@@ -1,6 +1,6 @@
 Song conversions:
     Cecil188 -- ot_stillsnow
-    emberling -- blord_2tower
+    emberling -- blord_2tower, blord_ruins
                  bof1_dawn
                  bof2_battle
                  cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life, cc_pyre
@@ -32,6 +32,7 @@ Song conversions:
                  fz_port, fz_white1
                  gd3_desert
                  iog_larai, iog_whispers
+                 lal_theme
                  lo_battle
                  lu1_battle, lu1_final, lu1_world
                  lu2_battle
@@ -55,8 +56,8 @@ Song conversions:
                  smb2_select
                  so2_rescue, so2_victory, so2_world1
                  st_dungeon
-                 top_cold, top_harmony, top_mint, top_spirit, top_victory, 
-                 top_world1, top_world3
+                 top_cold, top_freeze, top_harmony, top_mint, top_spirit,
+                 top_victory, top_world1, top_world3
                  totr_arrow
                  wc2_orc1
                  xc1_valakn

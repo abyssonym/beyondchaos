@@ -2033,7 +2033,7 @@ def get_collapsing_house_help_skill():
                 skills = m.get_skillset(ids_only=False)
                 all_skills.extend([z for z in skills
                     if (z.target_enemy_default or z.target_everyone) and z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]])
-    
+
     if status_specials:
         sleep_index = ranked.index(specialdict["sleep"])
         worst_special = max(status_specials, key=lambda s: ranked.index(s))

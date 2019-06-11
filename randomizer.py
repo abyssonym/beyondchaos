@@ -1580,6 +1580,7 @@ def manage_skips():
         0xC2, 0x64, 0x00, # set bearing 100
         0xFA, # show airship emerging from the ocean
         0xD2, 0x11, 0x34, 0x10, 0x08, 0x40, # load map Falcon upper deck
+        0xD7, 0xF3,  # hide Daryl on the Falcon
         0xB2, 0x43, 0x48, 0x00,  # jump to part where it sets a bunch of bits then flys to Maranda
         0xFE])
     daryl_cutscene_sub.write(fout)
@@ -4963,7 +4964,11 @@ def code_hint():
     max_len = 0x6D
     while True:
         code = options.random_unused_code()
-        hint = "MADUIN: But if you use the code “{}”… <wait 240 frames><wait 1 frame><page><line>You will probably be able to remain in this world as a human being… <wait 240 frames><wait 1 frame>".format(code.name)
+        codename = code.name
+        if code.is_cyphered:
+            f = FourSquare(self.key1, self.key2)
+            codename = f.decypher(self.name)
+        hint = "MADUIN: But if you use the code “{}”… <wait 240 frames><wait 1 frame><page><line>You will probably be able to remain in this world as a human being… <wait 240 frames><wait 1 frame>".format(codename)
         bytestring = dialogue_to_bytes(hint)
         if len(bytestring) <= max_len:
             break
@@ -5119,7 +5124,6 @@ def the_end_comes_beyond_crusader():
 
     fout.seek(0xc203f)
     fout.write(bytes([0x97, 0xf6, 0xf1, 0x00, 0x00, 0x5c, 0xbb, 0xfe]))
-    print("The end comes beyond crusader")
 
 
 def expand_rom():
@@ -5379,7 +5383,6 @@ def randomize():
 
     characters = get_characters()
 
-
     s = ""
     for code in options.mode.forced_codes:
         options.activate_code(code)
@@ -5387,7 +5390,7 @@ def randomize():
     for code in NORMAL_CODES + MAKEOVER_MODIFIER_CODES + TOP_SECRET_CODES:
         found, flags = code.remove_from_string(flags)
         if found:
-            if code in options.mode.prohibited_codes:
+            if code.name in options.mode.prohibited_codes:
                 s += "SECRET CODE: '%s' is not compatible with %s mode." %(code.description, options.mode.name)
                 continue
             s += "SECRET CODE: %s ACTIVATED\n" % code.description
@@ -5726,11 +5729,14 @@ def randomize():
     reseed()
 
     wor_free_char = 0xB  # gau
-    if options.shuffle_wor and not options.is_code_active('ancientcave'):
+    alternate_gogo = options.is_code_active('HAKCSBKC')
+    if (options.shuffle_wor or alternate_gogo) and not options.is_code_active('ancientcave'):
+        include_gau = options.shuffle_commands or options.replace_commands or options.random_treasure,
         wor_free_char = manage_wor_recruitment(fout,
+                                               shuffle_wor=options.shuffle_wor,
                                                random_treasure=options.random_treasure,
-                                               include_gau=options.shuffle_commands or options.replace_commands or options.random_treasure,
-                                               include_gogo=True)
+                                               include_gau=include_gau,
+                                               alternate_gogo=alternate_gogo)
     reseed()
 
     if options.is_code_active('worringtriad') and not options.is_code_active('ancientcave'):
@@ -5759,9 +5765,11 @@ def randomize():
 
     if options.random_enemy_stats or options.random_formations:
         house_hint()
-    code_hint()
     reseed()
 
+    code_hint()
+    reseed()
+    
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     write_all_locations_misc()
     for fs in fsets:

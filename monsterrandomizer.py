@@ -1550,14 +1550,14 @@ class MonsterBlock:
 
     @property
     def goodspecial(self):
-        good = set(range(10, 0x1F))
+        good = set(range(0x10, 0x1F))
         good.remove(0x12)  # slow
         good.remove(0x14)  # stop
         good.remove(0x19)  # frozen
         good.remove(0x1D)  # disappear
         good.add(0x04)  # vanish
         good.add(0x0A)  # image
-        return self.special in good
+        return self.special & 0x3f in good
 
     @property
     def physspecial(self):
@@ -2032,7 +2032,7 @@ def get_collapsing_house_help_skill():
                     status_specials.append(m.special & 0x3F)
                 skills = m.get_skillset(ids_only=False)
                 all_skills.extend([z for z in skills
-                    if z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]])
+                    if (z.target_enemy_default or z.target_everyone) and z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]])
     
     if status_specials:
         sleep_index = ranked.index(specialdict["sleep"])

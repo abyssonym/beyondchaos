@@ -1195,7 +1195,7 @@ class MonsterBlock:
             self.statuses[3] |= 0x04  # reraise
             self.stats['hp'] = 0xFFFF
 
-        self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFFFF)
+        self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFFFE)
 
         def fuddle(value, limit=0xFFFF):
             low = value // 2

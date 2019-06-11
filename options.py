@@ -39,8 +39,8 @@ class Code:
         if self.is_cyphered:
             f = FourSquare(self.key1, self.key2)
             name = f.decypher(self.name)
-        if self.name in s:
-            return True, s.replace(self.name, '')
+        if name in s:
+            return True, s.replace(name, '')
         return False, s
         
 

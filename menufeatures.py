@@ -1604,7 +1604,7 @@ def y_equip_relics(fout):
     y_equip_relics_sub.write(fout)
     
     y_equip_relics_sub.set_location(0x39ff0)
-    y_equip_relics_sub.bytestring = bytes([0x5b, 0x60])
+    y_equip_relics_sub.bytestring = bytes([0x60])
     y_equip_relics_sub.write(fout)
     
     y_equip_relics_sub.set_location(0x3a048)

@@ -223,6 +223,11 @@ class AutoLearnRageSub(Substitution):
         learn_leap_sub.bytestring = bytes([0xEA] * 7)
         learn_leap_sub.set_location(0x2543E)
         learn_leap_sub.write(fout)
+        
+        gau_cant_appear_sub = Substitution()
+        gau_cant_appear_sub.bytestring = bytes([0x80, 0x0C])
+        gau_cant_appear_sub.set_location(0x22FB5)
+        gau_cant_appear_sub.write(fout)
 
         vict_sub = Substitution()
         vict_sub.bytestring = bytes([0x20]) + int2bytes(self.location, length=2)
@@ -247,10 +252,7 @@ class AutoRecruitGauSub(Substitution):
         gau_stays_wor_sub.bytestring = bytes([0xD4, 0xFB])
         gau_stays_wor_sub.set_location(0xA5324)
         gau_stays_wor_sub.write(fout)
-        gau_cant_appear_sub = Substitution()
-        gau_cant_appear_sub.bytestring = bytes([0x80, 0x0C])
-        gau_cant_appear_sub.set_location(0x22FB5)
-        gau_cant_appear_sub.write(fout)
+        
         REPLACE_ENEMIES.append(0x172)
         super(AutoRecruitGauSub, self).write(fout)
 
@@ -511,12 +513,14 @@ def auto_recruit_gau():
     recruit_gau_sub.write(fout)
 
 
-def manage_commands(commands):
-    characters = get_characters()
-
+def auto_learn_rage():
     alrs = AutoLearnRageSub(require_gau=False)
     alrs.set_location(0x23b73)
     alrs.write(fout)
+
+
+def manage_commands(commands):
+    characters = get_characters()
 
     learn_lore_sub = Substitution()
     learn_lore_sub.bytestring = bytes([0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00, 0x00])
@@ -5449,6 +5453,8 @@ def randomize():
 
     if options.shuffle_commands or options.replace_commands or options.random_treasure:
         auto_recruit_gau()
+        if options.shuffle_commands or options.replace_commands:
+            auto_learn_rage()
 
     if options.shuffle_commands and not options.is_code_active('suplexwrecks'):
         manage_commands(commands)

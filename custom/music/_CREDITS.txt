@@ -13,7 +13,7 @@ Song conversions:
                  ds4_dungeon, ds4_lyll
                  eo3_waves
                  ff2_battle2, ff2_battleb, ff2_theme
-                 ff3_warrior
+                 ff3_battle, ff3_warrior
                  ff4_calcobrena
                  ff5_battle, ff5_boss, ff5_bridge, ff5_cave, ff5_curse,
                  ff5_excastle, ff5_final, ff5_home, ff5_hurry, ff5_lenna,
@@ -41,6 +41,7 @@ Song conversions:
                  ng3_defeat
                  ob_battle
                  ot_oasis, ot_sunshade
+                 rd_summer
                  rs2_heroes
                  sd2_8bells, sd2_always, sd2_angel, sd2_boss, sd2_city,
                  sd2_desert, sd2_eternal, sd2_flammie, sd2_forest, sd2_forget,
@@ -63,6 +64,7 @@ Song conversions:
                  xc1_valakn
                  xc2_morardain, xc2_tantal
                  xg_boss, xg_flight, xg_tears, xg_weltall
+                 ys3_time
                  ys8_idance
     Gi Nattak -- cc_arni, cc_flame, cc_miguel
                  ct_boss2

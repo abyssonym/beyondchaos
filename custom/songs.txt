@@ -3,7 +3,6 @@
 # append * and a number to an identifier to place song multiple times in pool
 #
 # I and/or E followed by a number 00-99 marks a song as battle music
-# this applies if battle music progression is selected
 # the combined Intensity and Grandeur of songs will go up for stronger enemies
 # Intensity is meant to be more like "uh oh, I'm in trouble now!"
 # Grandeur is more like "We've reached another stage of our grand journey"
@@ -70,6 +69,7 @@ ff2_battle2:    I75, G75, metamorphosis, catastrophe, grandfinale, assault*2
 ff2_battleb:    H4, kefka, gogo, owzer*2, espers, fanatics*2, grandfinale, dream*2, gate, H:I50, H:G30, H:prelude, H:omen3, H:shadow, H:strago, H:balance, H:cave, H:forest, H:tomb, H:engine
 ff2_battleb_tr: H4, train
 ff2_theme:      prelude, awakening, town_ruin, ruin, balance, gau, forest*2
+ff3_battle:     I25, G30, battle*2, metamorphosis, grandfinale, assault, savethem
 ff3_darkworld:  prelude, awakening, setzer, mountain, serpent
 ff3_eureka:     mountain, mount2, espers, dream, serpent, falcon, setzer
 ff3_warrior:    figaro, returners*2
@@ -214,6 +214,7 @@ ob_battle:      I40, G50, battle*2, boss, metamorphosis*2, unforgiven, serpent, 
 ot_oasis:       relm, gau, village*2, town, town_ruin*2, strago
 ot_stillsnow:   coin*2, narshe, ruin*2, town_ruin*2, forest, tomb, W:prelude, W:omen3*2, W:celes, W:daryl, W:rachel, W:awakening, W:cave, W:espers
 ot_sunshade:    shadow*2, spinachrag, zozo*2, narshe, martiallaw
+rd_summer:      omen3*2, celes, daryl*2, coin, rachel, espers, town_ruin, ruin, forest, tomb*2, dream
 rs2_heroes:     I50, G75, boss, catastrophe, grandfinale
 rs3_underwater: omen3, shadow, owzer, narshe*2, town_ruin*2, ruin, cave*2, tomb*2, gate, phoenix, ancient
 rsms_battle:    I50, G65, battle*2, unforgiven
@@ -306,6 +307,7 @@ xg_mermaid:     daryl*2, coin, rachel, espers*2, tomb, ancient
 xg_tears:       celes*2, rachel, awakening, ruin
 xg_weltall:     I50, G50, boss*2, metamorphosis, grandfinale, unforgiven*2, savethem*2, assault
 ys1_wars:       I25, G90, battle, grandfinale, chocobo, falcon, magitek, floatingcont*2, kefkastower, mount2, assault
+ys3_time:       I5, G65, battle, unforgiven, locke, setzer, chocobo, blackjack, gogo, mount2, engine, floatingcont*2
 ys3_wings:      setzer*2, locke, savethem, blackjack, chocobo, serpent*2, mountain, mount2
 ys8_idance:     chocobo, blackjack, johnny*2, falcon*2, mountain, mount2*2, serpent, setzer, dream, ancient
 zaol_overworld: figaro, returners

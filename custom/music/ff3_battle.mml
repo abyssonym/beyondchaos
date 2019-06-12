@@ -1,0 +1,234 @@
+#TITLE Battle 1
+#ALBUM Final Fantasy III
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+#based on NDS arrangement by Tsuyoshi Sekito & Keiji Kawamori
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x0D~/0x0D/
+#WAVE 0x21 ~0x2C~/0x2C/
+#WAVE 0x22 ~0x35~/0x35/
+#WAVE 0x23 ~0x07~/0x07/
+#WAVE 0x24 ~0x9A~/0x0E/
+#WAVE 0x25 ~0x1B~/0x1B/
+#WAVE 0x26 ~0x1C~/0x1C/
+#WAVE 0x28 ~0x81~/0x14/
+#WAVE 0x29 ~0x16~/0x16/
+#WAVE 0x2A ~0x12~/0x12/
+
+#def init= t158 %x240 %v40 %b0,85 %f0,0
+
+#def st= |0 o6 %e1 's' p64 m48,18,207
+#def cb= |1 o7 %e1 'c' p32 m48,18,199
+#def ob= |2 o7 %e1 'o' p40 m48,18,223
+#def fl= |3 o5 %e1 'f' p96 m48,18,239
+#def tp= |4 ~o6~/o7/ %e1 't' p56 m48,18,231
+#def hp= |5 o7 %e1 'h' p32 m
+#def bs= |6 o7 %e0 'b' p72 m %y2%s3
+#def kd= |9 o3 %e1 'k' p48 m
+
+#def s= v72
+#def c= v120
+#def o= v48
+#def f= v40
+#def t= ~v64~/v80/
+#def h= v48
+#def b= v72
+#def k= v112
+
+#def kf= v48,112
+#def df= v192,80
+#def cf= v192,120
+
+#def d= ~v80~/v96/
+#drum "m"=5f |8 p64 %e1 'd*v.25'
+#drum "n"=5f |8 p64 %e1 'd*v.375'
+#drum "o"=5f |8 p64 %e1 'd*v.5'
+#drum "p"=5f |8 p64 %e1 'd*v.625'
+#drum "q"=5f |8 p64 %e1 'd*v.75'
+#drum "r"=5f |8 p64 %e1 'd*v.875'
+#drum "s"=5f |8 p64 %e1 'd'
+#drum "a"=5e |8 p64 %e1 'd*v.25'
+#drum "b"=5e |8 p64 %e1 'd*v.375'
+#drum "c"=5e |8 p64 %e1 'd*v.5'
+#drum "d"=5e |8 p64 %e1 'd*v.625'
+#drum "e"=5e |8 p64 %e1 'd*v.75'
+#drum "f"=5e |8 p64 %e1 'd*v.875'
+#drum "g"=5e |8 p64 %e1 'd'
+#drum "w"=5e |A p80 %e1 v80 %a6%r24
+#drum "x"=5e |A p80 %e1 v96 %r18
+#drum "y"=5e |A p80 %e1 v96 %r15
+#drum "z"=5e |A p80 %e1 v80 %r15
+
+#def r= %r25^8%r14
+#def rr= %r24^4%r14
+#def q= %r27^16%r14
+
+{1} 'init'
+'st-o1' %r20 l12
+fb<fb<fb ^1 ^1
+$## 4
+['st-o1*v1.2' l4
+%r7 a2.b <c2.d  eage    %r18 f+8d8 ^2.
+%r7 fc>a<f e>bg+j2<e  dc>a<c  %r12 >b2..e8]
+## 12
+b a1 %r14 ^1
+## 20
+'tp' l16
+%r11 d2e2 f2d2  %r14 c'q'd'q'e'q'>a'q'b8<c8'r'c8 e8>a'q'b'q'<c8^2
+%r11 d2e2 f2d2  %r14 >a'q'b'q'<c4>b'q'<c'q'd4 c'q'd'q'e4d'q'e8f8a8 %r9 g+1 e1
+;
+
+{2}
+'st-o1' %r20 l12
+r24g+<dg+<dg+<d24 ^1 ^1
+$## 4
+['st-o1' %r14 l8
+cecedf+df+ eg+eg+fg+fg+  geaebe<c>g af+
+'fl' l16 %r15  ab<cdc>bagfedc
+'st' %r14 l8
+cc'r'>af4'rr' bb'r'g+d4'rr' j2,218 [4fd]g+
+'fl+o1'  %rd+%r20e >%rb<%r20c> %rg+%r14a%r20e]
+## 12
+$218 [efdfcfdf]
+## 20
+[4fa][4g+b] aec>a< g+ec>g+< gec>g< f+ec>g<
+[4fa][4g+b] aece dg+dg+ egeg fafa
+'fl' %r15 l16  ef+g+b <ef+g+b <d>bf+d >bg+f+d    cdeg<cdc>g ef+g+b<eg+b<e
+;
+
+{3}
+'bs-o3' l8
+r4g4   [6a]gg [5a]<ag4
+$## 4
+['bs-o3' l8 [4a<a>] [4g+<g+>] g<g>a<a>b<bc<c> d<d
+'ob-o1' l16 %r19 ab<cdc>bagfed8
+'bs-o3' l8 ffrj2cf4.r eerbe4.r dd4e4f4ag+
+'ob-o1' %r15a%r23g+%r15f%r23e%r15c%r23>b%r15g+]
+## 12
+<c>f4.r eerbe4.r
+[[6a]gg]
+## 20
+[5b]<dc>b eeee<edc>b  aa<e>ag+a<e>aga<e>afa<e>a
+[5b]<dc>b eeee<edc>b  aaa<a>bb<g+e cccgddbd >ee<e>e<dd<d>d cc<c>c>b4.<e
+;
+
+{4}
+r4r12 "m24n24o24p24" l16
+ "qbobscpbococscobqbocscpboeocscob"
+# 5 3 7 4 3 3 7 3 5 3 7 4 3 3 7 3
+#  2 2 3 2 3 3 3 2 2 3 3 2 5 3 3 2
+$## 4
+["!!!o" l16
+ "qbobscpbococscobqbocscpboeocscob"
+# 5 3 7 4 3 3 7 3 5 3 7 4 3 3 7 3
+#  2 2 3 2 3 3 3 2 2 3 3 2 5 3 3 2
+ "qbobscqcodpeqfrgsbsbmbqdsfndsana"
+# 5 3 7 5 3 4 5 6 7 7 1 5 7 2 7 2
+#  2 3 3 3 4 5 6 7 2 2 2 4 6 4 1 1
+ "sbsbnbrbscpdsbnbsbsbnbrfsdqfsgsg" j2,418
+# 7 7 2 6 7 4 7 2 7 7 2 6 7 5 7 7
+#  2 2 2 2 3 4 2 2 2 2 2 6 4 6 7 7
+ "sbocscobscndpeqfs" v0'df'[7"gs"]"g"]
+# 7 3 7 3 7 2 5 6 7~~~~~~~~~~~~~~
+#  2 3 3 2 3 4 5 6
+## 12
+$418 ":g:"
+ "qbocscpbococscobqbocscpbocpdqfrg"
+# 5 3 7 4 3 3 7 3 5 3 7 4 3 4 5 6
+#  2 3 3 2 3 3 3 2 2 3 3 2 3 4 6 7
+## 20
+["sbrcsfqdscrcscrbsfoescsbpgocqfrg"
+# 7 6 7 5 7 6 7 6 7 3 7 7 4 3 5 6
+#  2 3 6 4 3 3 3 2 6 5 3 2 7 3 6 7
+ "sbocscpbocncscobqbocscpcodpeqfrg"
+# 7 3 7 4 3 2 7 3 5 3 7 4 3 4 5 6
+#  2 3 3 2 3 3 3 2 2 3 3 3 4 5 6 7
+]
+ "sfobsbsdrfpdscsdreobocpdpeqerfsg"
+# 7 3 7 7 6 4 7 7 6 3 3 4 4 5 6 7
+#  6 2 2 4 6 4 3 4 5 2 3 4 5 5 6 7
+;
+## 1234567
+## mnopqrs <- higher pitch
+## abcdefg <- lower pitch
+## 1234567
+
+{5}
+'hp-o1' l12
+r4 r24b<fb24
+'kd' a1^4. 'k*v.4''kf*v2.5,'[10e16]
+$## 4
+['kd' l8
+a2d2 g+2f2 g2 'k*v.4''kf*v2,'[8e16] ad^2.
+j2,518 ff^2f4 ee^2e4 a1 ^4. 'k*v.4''kf*v2.5,'[10e16]]
+## 12
+$518 ff4cf2 ee4be2 a2a2 a8a8a4 a2
+## 20
+b4b4e2 g+4g+4d2  a2e2a2f2
+b4b4e2 g+4g+4d2  a2b2<c2d8>'k*v.5''kf*v1.5,'[6e16]
+g+4g+2g+2g4 'k*v.4''kf*v2,'[8e16]
+;
+
+{6}
+'hp-o1' l12
+r4 g+<dg+
+'cb-o3' l8
+[[6a]gg]
+$## 4
+["!!!o y1^1"
+'ob-o1' l8 %r19    gcacbc<c>e    'st-o1' %r14 f+dr2.
+aa'r'f  'ob-o1' l24 %r19 g+ab<cdef4
+'st-o1' l8 %r14 g+g+'r'e  'ob-o1' l24 %r19 g+ab<cdd+e4>> j2
+f4a4<c4f4 'st-o2' %r14 b8r2..]
+## 12
+"!!!o y1x2x2"
+## 20
+"y1x1"
+'st-o1' l8 %r14 ec>ae< ec>g+e< ec>ge< dc>ge
+"!!!o y1x1"
+'st-o1' l8 %r14 ec>a<c >b<d>b<d cece dfdf    beg+e bdf+d <c>ege beg+e
+;
+
+{7}
+'ob-o2' l24 %r22
+[3fg+b<d] "y1 ^1"
+$## 4
+['cb-o3' l8 [4a<a>] [4g+<g+>] g<g>a<a>b<bc<c> d<d>>%r19^2.%r
+ffrcf4.r eerbe4.r j2 dd4e4f4ag+ %r19^2..%r]
+## 12
+[[6a]gg]
+## 20
+[5b]<dc>b eeeeedcb  aa<e>ag+a<e>aga<e>afa<e>a 'cf*v,.67'[5b]<dc>b 'cf*v,.33' eeeeedcb
+'ob-o2' l8 %r19
+a<cea> b<dfb ceg<c> dfa<d>
+e 'st-o2' %r14 b 'ob-o1' %r19
+g+ 'st-o2' %r14 b 'ob-o1' %r19
+d 'st-o2' %r14 b 'ob-o1' %r19
+f+ 'st-o2' %r14 b 'ob-o1' %r19
+e 'st-o1' %r14 c 'ob-o1' %r19
+g 'st-o1' %r14 c 'ob-o1' %r19
+e 'st-o2' %r14 b 'ob-o1' %r19
+g+ 'st-o2' %r14 b 'ob-o1' %r19
+;
+
+{8}
+'fl-o1' l24 %r23
+r4 g+b<dfg+b ^1 ^1
+$## 4
+[r1 "!!!o x1 x2x2 x8z2.." 
+"x2" 'st-o1' l4 %r14 d'rr'
+"!!!ox2" 'st-o2' %r14 b'rr' j2
+"!!!ox2x4.. w16^1"]
+## 12
+r1r1
+## 20
+r1r1
+"!!!o x2x2x2x2"
+'ob-o1' %r19 f1 g+1
+"!!!o x2x2x2x2"
+"x4x4y2x2y2"
+;
+

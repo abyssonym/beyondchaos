@@ -1,0 +1,100 @@
+#TITLE Day of Summer
+#ALBUM Radical Dreamers
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x54~/0x32/
+#WAVE 0x21 ~0x92~/0x06/
+#WAVE 0x22 ~0x03~/0x03/
+
+#def 0o= o5
+#def 1o= ~o5~/o5/
+#def 2o= o4
+
+{1}
+l16t72%v40%b0,100%f0,0%x192%e1|1v25'1o-o1'%a4d1  [6^1  ]$^2%r12^2  |2v30p64'2o+o2'm24,24,205%r7[2r4m6,-2d32m6,+2^32^8.>f4.df  
+m6,-1a32m6,+1^32^8.^4g2  <]>r4m6,-1f32m6,+1^32^8.e4.c12r24  c8d12r24m6,-2d32m6,+2^32^8.^2  
+r4m6,-1f32m6,+1^32^8.e4.g12r24  m6,-1g32m6,+1^32^^4d8m6,-2e32m6,+2^32^8.^4  
+v35[2<r4m6,-2d32m6,+2^32^8.>f4.df  m6,-1a32m6,+1^32^8.^4g2  ]r4m6,-1f32m6,+1^32^8.e4.c12r24  
+c8d12r24m6,-2d32m6,+2^32^8.^2  r4m6,-1f32m6,+1^32^8.e4.g12r24  m6,-1g32m6,+1^32^^4d8t192,59m6,-2e32m6,+2^32^8.^4  
+t96,48%r10^2t192,44r1  t64r1  r1  v40%r4<d6>f12<c+8.%l1c32c+32%l0c4>%l0b12a12g12  
+f12g12a12e6%l1f48g48f24%l0e6d12e4  <d6>f12<c+8.%l1c32c+32%l0c4>%l0b12a12g12  
+f12g12a12e6%l1f48g48f24%l0e6d12e6d12  c+2^4.^24>b12  <c+6f+2^4>b12  
+<c+2^4.^24>b12  <c+6f+2^12f+6g+12  v192,55a4d4g6^24%l1f48g48f12%l0e12f12  
+v192,70g6a12d4c4e4  v192,85%l1e2^4^6^24f48e48  v192,40t192,46d1  
+%l0
+##
+|1v25'1o-o1'%a4 t192,55 d1 t192,64 ^1 t192,72 [5^1]
+;
+
+{2} $
+l16%e1|0v80p64'0o'm16,24,196[2^4d8e2^8  ^4e8f2^8  
+^4f8g4%l1f32g32f%l0e8d8  j2,1 c+8.>b<c+2^4  ] $1 c+8.dc+2^4  v60[2r4f8e8r4c8d8  
+r4>g8a8r4<d8c8  ]r4c8d8r4>b8<c8  r4.d4.d4  r4c8d8r4>b8<c8  
+r4>a8b8r4<d8c+8  v70[2r4f8e8r4c8d8  r4>g8a8r4<d8c8  ]r4c8d8r4>b8<c8  
+r4.d4.d4  r4c8d8r4>b8<c8  r4>a8b8r4a8b8  <c+8d8e8f8r32g8.&7^32v60f4  
+&5^32v45e4.^^32[6v60v192,110d4c+4  c4c+4][4v60v192,110c+4c+4  c+4c+4]>v70a12g12a12a+12<c12d12  
+v80c12>b12<c12d12e12c12v90d12c12d12e12f12d12  v100e12d12e12f12e12c12v110d4d4  
+e4d4v192,60d4d4  e4d4
+##
+r32.d16&27
+;
+
+{3} $
+l16%e1|0v80p64'0o-o1'm16,24,196[8^8  
+a2^4.]v60[2r8  a4.r8f4.r8  c4.r8g4.]r8  f4.r8e4.r8  
+a8g4a8g4a8r8  f4.r8e4.r8  d4.r8e4.v70[2r8  a4.r8f4.r8  
+c4.r8g4.]r8  f4.r8e4.r8  a8g4a8g4a8r8  f4.r8e4.r8  
+d4.r8e4.^2  ^64<v50e8.^32^64r64r4v35c+4.^^32^64  >[6v55v192,105r12f12a6f12a12^12f12a6f12a12  
+][4v55v192,105r12f+12b6f+12b12^12f+12b6f+12b12  ]v65^8.^48g12a12g3v75a12a8.^48  
+v85^8.^48a+12<c12>a+12^4v95<c12c12^8  v105^12>f12a6f12a6f12a6f12a12  
+v192,55^12f12a6f12a6f12a6f12a12
+##
+r32a16&6
+;
+
+{4}
+l16%e1|0v80p64'0o-o1'm16,24,196[8d1  ]
+$ v60[2d2>a+2  f2<c2  ]>a+2a2  
+<d1  >a+2a2  g2a2  v70<d2>a+2  
+f2<c2  d2>a+2  f2<c2  >a+2a2  
+<d1  >a+2a2  g2a2  ^2<<v40c+2  
+v25>a2[6v50v192,100r24d6d12d6d24  ^24d6d12d6d24][4v50v192,100r24>b6<d12>b6<d24  
+^24>b6<d12>b6<d24v50]v60^8d3d6  v70e4e8v80^8f3f6  v90g4g8v100^24d6d12d6d12d6  
+d12d6d24v192,50^24d6d12d6d12d6  d12d6d24
+##
+r64&189f %e1|0v80p64'0o-o1'm16,24,196 [7d1]
+;
+
+{5} $
+l16%e1|1v45p64'1o'%a5%r9a1  g1  f2e2  
+f8.%a6e%a5f2^4  a2^4g4  e2^4g4  f1  
+e8.%a6f%a5e4%r12^2  [8r1  ]v40%a9%r17[2r4a4r4a4  r4a4r4g4  
+]r4f4r4g4  r4a4r4a4  r4f4r4g4  r4g4r4a4  
+r1  r2|0p64'0o-o2'[6v50v192,100r8a4a8  ^8a4a8]v50v192,100r8<d4d8  ^8d4d8[3v50v192,100r8d4d8  
+^8d4d8]v60^24>g2  v70a4.^24a24v80^24a+2  v90<c4.^24c24v100^8>a4a4  
+a4a8v192,50^8a4a4  a4a8
+;
+
+{6}
+l16%e1r1 $ |1v28p98'1o'%a5%r9d1  c1  >b8.<%a6c+%a5>b2^4  
+<d1  c1  >b1  <c+8.>%a6b%a5<c+4%r12^2  
+[8r1  ]v30%a9%r17[2r4f4r4f4  r4f4r4e4  ]r4d4r4e4  
+r4g4r4g4  [2r4d4r4e4  ]r1  r2v30<%a10%r0[6v96,60d4c+4  
+v96,30c4c+4]c+4d4  e4f+4c+4d4  c+4>b4<c+4d4  e4f+4c+4d4  
+c+4>b4a4<d4  >g4<c4>a4<d4  c4e4e1  d1  
+##
+|0v80p64'0o-o1'm16,24,196 d1
+;
+
+{7} $
+l16%e1[4r1  
+]|1v28p30'1o-o1'%a4%r9f2^4e4  d1  f1  e2%r12^2  
+[8r1  ]v30<%a9%r17[5r4c4r4c4  ]r4d4r4d4  r4c4r4c4  
+r4>b4r4<c+4  r1  r2v20%a10%r0[10v96,50a4a4  a4a4]e4a4  
+d4g4f4a4  g4<c4c1  >a1
+;

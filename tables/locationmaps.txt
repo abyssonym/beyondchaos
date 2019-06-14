@@ -31,7 +31,7 @@ Phantom Forest:130,132,133,134,135
 Phantom Train:141,142,145,146,147,149,151,152,153
 Phoenix Cave:313,315
 Returner's Hideout:109,110:Mt. Koltz
-Sabin's House:94:South Figaro Cave (WoB)
+Duncan's Cabin:94:South Figaro Cave (WoB)
 Sealed Gate:382,383,384,385,386
 Serpent Trench:175:Phantom Train
 South Figaro Basement:84,86,87,89

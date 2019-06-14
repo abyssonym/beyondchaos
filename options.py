@@ -97,7 +97,9 @@ ANCIENT_CAVE_PROHIBITED_CODES = [
     "airship",
     "notawaiter",
     "strangejourney",
-    "worringtriad"
+    "worringtriad",
+    "QGWURNGNSEIMKTMDFBIX",
+    "HAKCSBKC"
 ]
 
 
@@ -127,7 +129,7 @@ ALL_MODES = [
     Mode(name="katn",
          description="Play the normal story up to Kefka at Narshe, with extra wackiness. Intended for racing.",
          forced_codes=["madworld"],
-         prohibited_codes=["airship", "worringtriad"],
+         prohibited_codes=["airship", "worringtriad", "QGWURNGNSEIMKTMDFBIX", "HAKCSBKC"],
          prohibited_flags=["d", "k", "r"]),
     Mode(name="dragonhunt",
          description="Kill all 8 dragons in the World of Ruin. Intended for racing.",
@@ -200,6 +202,7 @@ NORMAL_CODES = [
     Code('johnnydmad', "MUSIC REPLACEMENT MODE"),
     Code('johnnyachaotic', "MUSIC MANGLING MODE"),
     #Code('sometimeszombies', "OLD CHARACTER PALETTE MODE"),
+    Code('HAKCSBKC', 'ALTERNATE GOGO MODE', key1='application', key2='octetstream'),
 ]
 
 MAKEOVER_MODIFIER_CODES = [
@@ -291,5 +294,5 @@ class FourSquare:
             
             plaintext += self.plaintable[i_row*5 + j_col]
             plaintext += self.plaintable[j_row*5 + i_col]
-            
-        return plaintext
+
+        return plaintext[:-1] if plaintext[-1] == 'x' else plaintext

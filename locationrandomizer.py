@@ -82,27 +82,50 @@ class NPCBlock():
         f.seek(self.pointer)
         value = read_multi(f, length=4)
         self.palette = (value & 0x1C0000) >> 18
-        self.unknown = (value & 0x200000) >> 21
+        self.bg2_scroll = (value & 0x200000) >> 21
         self.membit = (value & 0x1C00000) >> 22
         self.memaddr = (value & 0xFE000000) >> 25
         self.event_addr = value & 0x3FFFF
-        self.x = ord(f.read(1))
-        self.y = ord(f.read(1))
+        
+        byte4 = ord(f.read(1))
+        self.x = byte4 & 0x7f
+        self.show_on_vehicle = (byte4 & 0x80) >> 7
+        
+        byte5 = ord(f.read(1))
+        self.y = byte5 & 0x3F
+        self.speed = (byte5 & 0xC0) >> 6
+        
         self.graphics = ord(f.read(1))
-        self.graphics_index = ord(f.read(1))
-        self.facing = ord(f.read(1))
+        
+        byte7 = ord(f.read(1))
+        self.move_type = byte7 & 0xF
+        self.sprite_priority = (byte7 & 0x30) >> 4
+        self.vehicle = (byte7 & 0xC0) >> 6
+        
+        byte8 = ord(f.read(1))
+        self.facing = byte8 & 0x03
+        self.no_turn_when_speaking = (byte8 & 0x4) >> 2
+        self.layer_priority = (byte8 & 0x18) >> 3
+        self.special_anim = (byte8 & 0xe0) >> 5
         f.close()
 
     def write_data(self, fout, nextpointer):
         fout.seek(nextpointer)
-        value = (self.event_addr | (self.palette << 18) | (self.unknown << 21)
+        value = (self.event_addr | (self.palette << 18) | (self.bg2_scroll << 21)
                  | (self.membit << 22) | (self.memaddr << 25))
         write_multi(fout, value, length=4)
-        fout.write(bytes([self.x]))
-        fout.write(bytes([self.y]))
-        fout.write(bytes([self.graphics]))
-        fout.write(bytes([self.graphics_index]))
-        fout.write(bytes([self.facing]))
+        
+        byte4 = (self.x & 0x7f) | ((self.show_on_vehicle & 0x1) << 7)
+        
+        byte5 = (self.y & 0x3F) | ((self.speed & 0x3) << 6)
+
+        byte6 = self.graphics
+        
+        byte7 = (self.move_type & 0xF) | ((self.sprite_priority & 0x3) << 4) | ((self.vehicle & 0x3) << 6)
+
+        byte8 = (self.facing & 0x03) | ((self.no_turn_when_speaking & 0x1) << 2) | ((self.layer_priority & 0x3) << 3) | ((self.special_anim & 0x7) << 5)
+
+        fout.write(bytes([byte4, byte5, byte6, byte7, byte8]))
 
 
 class EventBlock():
@@ -223,7 +246,9 @@ class Location():
             self.altname = "%x" % self.locid
 
     def __repr__(self):
-        if self.name:
+        if self.locid in mapnames:
+            return self.altname
+        elif self.name:
             return "%x %s" % (self.locid, self.name)
         else:
             return self.altname

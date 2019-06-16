@@ -307,9 +307,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
     save_point = NPCBlock(pointer=None, locid=falcon.locid)
     attributes = {
         "graphics": 0x6f, "palette": 6, "x": 20, "y": 8,
-        "event_addr": 0x5eb3, "facing": 0x47,
-        "memaddr": 0, "membit": 0, "unknown": 0,
-        "graphics_index": 0x10}
+        "show_on_vehicle": False, "speed":  0,
+        "event_addr": 0x5eb3, "facing": 3,
+        "no_turn_when_speaking": False, "layer_priority": 0,
+        "special_anim": 2,
+        "memaddr": 0, "membit": 0, "bg2_scroll": 0,
+        "move_type": 0, "sprite_priority": 1, "vehicle": 0}
     for key, value in attributes.items():
         setattr(save_point, key, value)
     save_point.set_id(len(falcon.npcs))
@@ -322,9 +325,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
     partyswitch = NPCBlock(pointer=None, locid=falcon.locid)
     attributes = {
         "graphics": 0x17, "palette": 0, "x": 16, "y": 6,
+        "show_on_vehicle": False, "speed":  0,
         "event_addr": 0x047d, "facing": 2,
-        "memaddr": 0, "membit": 0, "unknown": 0,
-        "graphics_index": 0, "npcid": 2}
+        "no_turn_when_speaking": False, "layer_priority": 0,
+        "special_anim": 0,
+        "memaddr": 0, "membit": 0, "bg2_scroll": 0,
+        "move_type": 0, "sprite_priority": 0, "vehicle": 0, "npcid": 2}
     for key, value in attributes.items():
         setattr(partyswitch, key, value)
     falcon.npcs.append(partyswitch)
@@ -744,9 +750,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
         palette = random.choice(npc_palettes[graphics])
         attributes = {
             "graphics": graphics, "palette": palette, "x": 52, "y": 16,
+            "show_on_vehicle": False, "speed":  0,
             "event_addr": event_addr, "facing": 2,
-            "memaddr": 0, "membit": 0, "unknown": 0,
-            "graphics_index": 0}
+            "no_turn_when_speaking": False, "layer_priority": 0,
+            "special_anim": 0,
+            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
+            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
         for key, value in attributes.items():
             setattr(innkeeper, key, value)
         l.npcs.append(innkeeper)
@@ -754,9 +763,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
         unequipper = NPCBlock(pointer=None, locid=l.locid)
         attributes = {
             "graphics": 0x1e, "palette": 3, "x": 49, "y": 16,
+            "show_on_vehicle": False, "speed":  0,
             "event_addr": 0x23510, "facing": 2,
-            "memaddr": 0, "membit": 0, "unknown": 0,
-            "graphics_index": 0}
+            "no_turn_when_speaking": False, "layer_priority": 0,
+            "special_anim": 0,
+            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
+            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
         for key, value in attributes.items():
             setattr(unequipper, key, value)
         l.npcs.append(unequipper)
@@ -765,9 +777,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
         pay_to_save = NPCBlock(pointer=None, locid=l.locid)
         attributes = {
             "graphics": 0x6f, "palette": 6, "x": 47, "y": 4,
-            "event_addr": event_addr, "facing": 0x43,
-            "memaddr": 0, "membit": 0, "unknown": 0,
-            "graphics_index": 0}
+            "show_on_vehicle": False, "speed":  0,
+            "event_addr": event_addr, "facing": 3,
+            "no_turn_when_speaking": False, "layer_priority": 0,
+            "special_anim": 2,
+            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
+            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
         for key, value in attributes.items():
             setattr(pay_to_save, key, value)
         l.npcs.append(pay_to_save)
@@ -778,9 +793,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
                 final_save = NPCBlock(pointer=None, locid=l.locid)
                 attributes = {
                     "graphics": 0x6f, "palette": 6, "x": 82, "y": 43,
-                    "event_addr": event_addr, "facing": 0x43,
-                    "memaddr": 0, "membit": 0, "unknown": 0,
-                    "graphics_index": 0, "npcid": 1}
+                    "show_on_vehicle": False, "speed":  0,
+                    "event_addr": event_addr, "facing": 3,
+                    "no_turn_when_speaking": False, "layer_priority": 0,
+                    "special_anim": 2,
+                    "memaddr": 0, "membit": 0, "bg2_scroll": 0,
+                    "move_type": 0, "sprite_priority": 0, "vehicle": 0, "npcid": 1}
                 for key, value in attributes.items():
                     setattr(final_save, key, value)
                 final_loc.npcs.append(final_save)
@@ -804,9 +822,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
         palette = random.choice(npc_palettes[graphics])
         attributes = {
             "graphics": graphics, "palette": palette, "x": 39, "y": 11,
+            "show_on_vehicle": False, "speed":  0,
             "event_addr": event_addr, "facing": 1,
-            "memaddr": 0, "membit": 0, "unknown": 0,
-            "graphics_index": 0}
+            "no_turn_when_speaking": False, "layer_priority": 0,
+            "special_anim": 0,
+            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
+            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
         for key, value in attributes.items():
             setattr(shopkeeper, key, value)
         l.npcs.append(shopkeeper)
@@ -823,9 +844,11 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
             attributes = {
                 "graphics": chargraphics[chosen.id],
                 "palette": chosen.palette,
-                "x": 54, "y": 18, "event_addr": event_addr,
-                "facing": 2, "memaddr": byte, "membit": bit,
-                "unknown": 0, "graphics_index": 0}
+                "x": 54, "y": 18, "show_on_vehicle": False, "speed":  0,
+                "event_addr": event_addr,
+                "facing": 2, "no_turn_when_speaking": False, "layer_priority": 0,
+                "special_anim": 0, "memaddr": byte, "membit": bit,
+                "bg2_scroll": 0, "move_type": 0, "sprite_priority": 0, "vehicle": 0}
             for key, value in attributes.items():
                 setattr(ally, key, value)
             l.npcs.append(ally)
@@ -842,9 +865,11 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
                     attributes = {
                         "graphics": chargraphics[chosen.id],
                         "palette": chosen.palette,
-                        "x": 53, "y": 18, "event_addr": event_addr,
-                        "facing": 2, "memaddr": byte, "membit": bit,
-                        "unknown": 0, "graphics_index": 0}
+                        "x": 53, "y": 18, "show_on_vehicle": False, "speed":  0,
+                        "event_addr": event_addr,
+                        "facing": 2, "no_turn_when_speaking": False, "layer_priority": 0,
+                        "special_anim": 0,"memaddr": byte, "membit": bit,
+                        "bg2_scroll": 0, "move_type": 0, "sprite_priority": 0, "vehicle": 0}
                     ally = NPCBlock(pointer=None, locid=l.locid)
                     for key, value in attributes.items():
                         setattr(ally, key, value)
@@ -884,9 +909,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
             magicite = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
                 "graphics": 0x5B, "palette": 2, "x": 44+i, "y": 16,
-                "event_addr": event_addr, "facing": 4 | 0x50,
-                "memaddr": byte + 0x17, "membit": bit, "unknown": 0,
-                "graphics_index": 0}
+                "show_on_vehicle": False, "speed":  0,
+                "event_addr": event_addr, "facing": 0,
+                "no_turn_when_speaking": True, "layer_priority": 2,
+                "special_anim": 2,
+                "memaddr": byte + 0x17, "membit": bit, "bg2_scroll": 0,
+                "move_type": 0, "sprite_priority": 0, "vehicle": 0}
             for key, value in attributes.items():
                 setattr(magicite, key, value)
             l.npcs.append(magicite)
@@ -896,9 +924,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
         enemy = NPCBlock(pointer=None, locid=l.locid)
         attributes = {
             "graphics": 0x3e, "palette": 2, "x": 42, "y": 6,
+            "show_on_vehicle": False, "speed":  0,
             "event_addr": event_addr, "facing": 2,
-            "memaddr": 0, "membit": 0, "unknown": 0,
-            "graphics_index": 0}
+            "no_turn_when_speaking": False, "layer_priority": 0,
+            "special_anim": 0,
+            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
+            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
         for key, value in attributes.items():
             setattr(enemy, key, value)
         l.npcs.append(enemy)
@@ -908,9 +939,12 @@ def manage_ancient(options, fout, sourcefile, form_music_overrides={}):
             partyswitch = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
                 "graphics": 0x17, "palette": 0, "x": 55, "y": 16,
+                "show_on_vehicle": False, "speed":  0,
                 "event_addr": event_addr, "facing": 2,
-                "memaddr": 0, "membit": 0, "unknown": 0,
-                "graphics_index": 0}
+                "no_turn_when_speaking": False, "layer_priority": 0,
+                "special_anim": 0,
+                "memaddr": 0, "membit": 0, "bg2_scroll": 0,
+                "move_type": 0, "sprite_priority": 0, "vehicle": 0}
             for key, value in attributes.items():
                 setattr(partyswitch, key, value)
             l.npcs.append(partyswitch)

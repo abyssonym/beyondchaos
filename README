@@ -12,6 +12,8 @@ Requirements:
 
 Running the randomizer:
     Windows users: run beyondchaos_ex.exe.
+	If you're using a version prior to Windows 10 and get an error message, try this: https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows
+
     Other users: run "randomizer.py" using Python version 3.7+ (It DOES NOT work with python 2.)
 
 Source ROM file:
@@ -19,7 +21,9 @@ Source ROM file:
     e.g., "ff3.smc"
     
     If you prefer to keep the ROM in a different folder, enter the full path. e.g., "C:\Users\Kefka\Documents\snes\ff3.smc"
-    
+
+	The randomizer will remember the last ROM location you used, so on subsequent runs, you can just press Enter to use the same ROM as last time.
+
     The ROM used should be the FF3 US 1.0 ROM. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
 
     MD5 - e986575b98300f721ce27c180264d890
@@ -40,8 +44,10 @@ Mode:
 Flags:
     Finally, the randomizer will ask for a list of flags. These allow you to customize what it randomizes.
     
-    * If this is your first seed, I recommend typing:
-    -dfklu partyparty makeover johnnydmad
+    * If this is your first seed, I recommend simply typing an exclamation mark ('!').
+	
+	! is the new player flags preset, and is equivalent to:
+	-dfklu partyparty makeover johnnydmad
     
     This will give you a good taste of Beyond Chaos EX while leaving out a few things that can sometimes be frustrating for new players. ("partyparty" and "makeover" are "secret" codes that randomize the sprites even more. "johnnydmad" randomizes the music. You can leave them out if you want.)
     

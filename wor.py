@@ -4,7 +4,6 @@ from chestrandomizer import get_event_items
 from character import get_character, get_characters
 from locationrandomizer import get_location, get_locations, NPCBlock
 from monsterrandomizer import change_enemy_name
-from options import options
 from utils import (WOB_TREASURE_TABLE, WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
                    read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer, dialogue_to_bytes)
 
@@ -468,7 +467,49 @@ def manage_wor_recruitment(fout, shuffle_wor, random_treasure, include_gau, alte
     if alternate_gogo:    
         _manage_gogo_recruitment(fout, collapsing_house_char)
     
+    _start_of_wor_event(fout, alternate_gogo)
+
     return wor_free_char
+
+
+def _start_of_wor_event(fout, alternate_gogo):
+    new_events = [
+        # Set names for Mog, Gogo, Umaro in case they appear in text
+        0x7F, 0x0C, 0x0C, # Set name for GOGO
+        0x7F, 0x0D, 0x0D, # Set name for UMARO
+        0xC0, 0x9F, 0x82, 0xB3, 0x5E, 0x00, # If Mog recruited in WoB, jump to return
+        0x7F, 0x0A, 0x0A # Set name for MOG
+    ]
+    
+    if alternate_gogo:
+        new_events += [0xDA, 0x4B] # Set Gogo NPC bit
+
+    # bits that get set at the start of the world of ruin
+    wor_bits_sub = Substitution()
+    wor_bits_sub.set_location(0x305280)
+    wor_bits_sub.bytestring = [
+    # These bits are normally set in subroutine CB4B4B
+    # We could just call it as a subroutine, but we'll reuse the space later.
+    0xD9, 0xF2,
+    0xD8, 0x92,
+    ] + new_events + [
+    0xFE, # Return
+    ]
+    wor_bits_sub.write(fout)
+    next_event = wor_bits_sub.location + len(wor_bits_sub.bytestring)
+    
+    # call the new subroutine above in place of CB4B4B
+    ptr_low = wor_bits_sub.location & 0xFF
+    ptr_mid = (wor_bits_sub.location & 0xFF00) >> 8
+    ptr_high = ((wor_bits_sub.location - 0xA0000) & 0xFF0000) >> 16
+    wor_bits_sub2 = Substitution()
+    wor_bits_sub2.set_location(0xA5334)
+    wor_bits_sub2.bytestring = [
+    0xB2, ptr_low, ptr_mid, ptr_high
+    ]
+    wor_bits_sub2.write(fout)
+
+
 
 def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gogo):
     candidates = [0x00, 0x01, 0x02, 0x05, 0x07, 0x08, 0x0A, 0x0D]
@@ -1031,32 +1072,6 @@ def _manage_gogo_recruitment(fout, collapsing_house_char):
     value &= ~(1 << gogo_npc.membit)
     fout.seek(0xE0A0 + gogo_npc.memaddr)
     fout.write(bytes([value]))
-    
-    # bits that get set at the start of the world of ruin
-    wor_bits_sub = Substitution()
-    wor_bits_sub.set_location(next_event)
-    wor_bits_sub.bytestring = [
-    # These bits are normally set in subroutine CB4B4B
-    # We could just call it as a subroutine, but we'll reuse the space later.
-    0xD9, 0xF2,
-    0xD8, 0x92,
-    # Now set the bits we want
-    0xDA, 0x4B, # Set Gogo NPC bit
-    0xFE, # Return
-    ]
-    wor_bits_sub.write(fout)
-    next_event = wor_bits_sub.location + len(wor_bits_sub.bytestring)
-    
-    # call the new subroutine above in place of CB4B4B
-    ptr_low = wor_bits_sub.location & 0xFF
-    ptr_mid = (wor_bits_sub.location & 0xFF00) >> 8
-    ptr_high = ((wor_bits_sub.location - 0xA0000) & 0xFF0000) >> 16
-    wor_bits_sub2 = Substitution()
-    wor_bits_sub2.set_location(0xA5334)
-    wor_bits_sub2.bytestring = [
-    0xB2, ptr_low, ptr_mid, ptr_high
-    ]
-    wor_bits_sub2.write(fout)
 
 
 def _setup_alternate_zone_eater(fout, include_gau):
@@ -1154,7 +1169,7 @@ def _setup_alternate_zone_eater(fout, include_gau):
     gau_event_shim.write(fout)
 
 
-def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False):
+def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, alternate_gogo=False):
     characters = get_characters()
 
     # jump to FC end cutscene for more space
@@ -1340,8 +1355,14 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False):
         firstbyte = 0xD1 + int(bit[0:1], 16) * 2 - setbit
         lastbyte = int(bit[1:], 16)
         wor_sub2.bytestring += bytearray([firstbyte, lastbyte])
-    if options.is_code_active('HAKCSBKC'):
-        wor_sub2.bytestring += bytearray([0xDA, 0x4B]) # set event bit $54B  
+    if alternate_gogo:
+        wor_sub2.bytestring += bytearray([0xDA, 0x4B]) # set event bit $54B
+    # This is only necessary if the random wor recruitment is on, but it's harmless if not.
+    wor_sub2.bytestring += bytearray([
+        0x7F, 0x0C, 0x0C, # Set name for GOGO
+        0x7F, 0x0D, 0x0D, # Set name for UMARO
+        0x7F, 0x0A, 0x0A # Set name for MOG
+        ])
 
     if airship:
         wor_sub2.bytestring += bytearray([0xD2, 0xB9])  # airship appears in WoR

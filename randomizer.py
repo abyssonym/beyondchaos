@@ -5746,7 +5746,7 @@ def randomize():
     reseed()
 
     if options.is_code_active('worringtriad') and not options.is_code_active('ancientcave'):
-        manage_wor_skip(fout, wor_free_char, options.is_code_active('airship'), options.mode.name == 'dragonhunt')
+        manage_wor_skip(fout, wor_free_char, options.is_code_active('airship'), options.mode.name == 'dragonhunt', options.is_code_active('HAKCSBKC'))
     reseed()
 
     if options.random_clock and not options.is_code_active('ancientcave'):

@@ -37,6 +37,7 @@ ct_battle2:     I05, G40, battle*2, grandfinale
 ct_bobonga:     veldt*2, zozo, gogo, umaro*2
 ct_boss2:       I95, G75, atma*2, metamorphosis, grandfinale, catastrophe
 ct_fair:        johnny, spinachrag, moogles*2, town, village
+ct_frog:        fanfare, cyan*2, returners
 ct_keeper:      espers, fanatics, ruin, dream, gate, ancient
 ct_mountain:    moogles, gogo, umaro, veldt*2, mountain, engine
 ct_night:       coin*2, daryl, celes*2, ruin, tomb
@@ -290,11 +291,13 @@ top_harmony:    relm, moogles*2, town, strago, village*2
 top_freeze:     W4, espers, awakening, town_ruin*2, serpent*2, forest, tomb, dream, W:prelude, W:omen3, W:relm, W:shadow, W:zozo, W:strago, W:village, W:town, W:martiallaw, W:ruin, W:balance, W:cave, W:gate, W:ancient, W:phoenix
 top_mint:       omen3, celes, rachel, awakening*2, town_ruin, tomb
 top_spirit:     I60, G65, grandfinale, unforgiven
+top_treant:     W2, omen3, daryl, coin, espers, ruin, serpent, forest*2, cave, tomb
 top_victory:    fanfare*2
 top_world1:     omen3, shadow, cyan, narshe, ruin, balance, falcon, serpent, forest, cave
 top_world3:     I00, G85, johnny, umaro, zozo, falcon*2, floatingcont, kefkastower, ancient, mount2
 totr_arrow:     I75, G60, boss, grandfinale
 totr_spirit:    I99, G75, atma*2, grandfinale, dmad5
+totr_worlds:    omen3, celes, rachel*2, awakening, ruin, serpent, tomb, dream, phoenix, balance
 wc2_orc1:       I20, G95, catastrophe, grandfinale, savethem, umaro, veldt, floatingcont, kefkastower, assault*2
 xc1_valakn:     W4, omen3, celes, daryl, narshe, ruin*2, cave*2, tomb*2, W:prelude, W:coin, W:shadow, W:zozo, W:town_ruin, W:falcon, W:balance, W:mountain, W:espers, W:forest, W:ancient
 xc2_morardain:  grandfinale, setzer*2, moogles, umaro, martiallaw, falcon

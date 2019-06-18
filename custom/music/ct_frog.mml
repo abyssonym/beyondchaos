@@ -1,0 +1,107 @@
+#TITLE Frog's Theme
+#ALBUM Chrono Trigger
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#WAVE 0x20 0x9A trumpet
+#WAVE 0x21 0x45 strings
+#WAVE 0x22 0x63 flute
+#WAVE 0x23 0x16 timpani
+#WAVE 0x24 0x81 snare
+#WAVE 0x25 0x8E crash
+
+{2}
+l16t126%x180%v20%b0,70%f0,0{FD}127%e1%k1 $1 |0v127p64o5v100p80<r4dr4.rdrr8  
+r4dr4.rdrr8  r4>a+r4.ra+rr8  r4<cr4r48cr12r48c8r24cr48  r4dr4.rdrr8  
+r4cr4.rcrr8  r4>a+r4.ra+rr8  r4<cr4r48cr12r48>a8r24ar48  r4a+r4.r<crr8  
+r4>a+r4r48<d24r24c24r24d6r12  r4>a+r4.r<crr8  r12>g24r24v90g24r24v100g24r24v110g24r24v120g24r8v80a24r24v90a24r24v100a24r24v110a24r24v120a24r24  
+r4v100a+r4.r<cr8r  r4>a+r4r48<d24r24c24r24d6r12  r4>a+r4.r<crr8  
+r4>g24r24g24r24g24r24g24r4.r12  
+;1
+
+l16
+{1}
+l16{FD}100%e1%k1 $2 |2v40p44o5m12,24,201v79p64m12,-2dm12,+2^^24dr48d12>a+12<c12d4g4  
+m12,-2fm12,+2^^8^4d4.^24>a+12  m12,-2gm12,+2^^8^4^4.^24r12  g12a12a+12a12a+12<c12>a+12<c12d12c12d12f12  
+m12,-2dm12,+2^^24dr48d12>a+12<c12d4g4  m12,-2am12,+2^^6^24a+12a12g4f4  
+m12,-2gm12,+2^^8^4^4.^24r12  m12,-2gm12,+2^^8^4m12,-2am12,+2^^8^4  
+m12,-2a+m12,+2^^24a+12a+12a12g12f4d4  m12,-2gm12,+2^^24g12g12f12d+12d2  
+m12,-2a+m12,+2^^24a+12a+12a12g12f4d4  m12,-2gm12,+2^^8^4m12,-2am12,+2^^8^4  
+m12,-2a+m12,+2^^24a+12a+12a12g12f4d4  m12,-2gm12,+2^^24g12g12f12d+12d2  
+m12,-2a+m12,+2^^24a+12a+12a12a+12<c4>a4  m12,-2am12,+2^^8^4g12r4.r24  
+
+;2
+
+l16
+{6}
+l16{FD}100%e1%k1 $3 |1v71p27o5%a9<d24r8.r48d24r24d24r24d24r24d24r8.r48d6r12  
+d24r8.r48d24r24d24r24d24r24d24r8.r48d6r12  >a+24r8.r48a+24r24a+24r24a+24r24a+24r8.r48a+6r12  
+<c24r8.r48c24r24c24r24c24r24c24r8.r48c6r12  d24r8.r48d24r24d24r24d24r24d24r8.r48d6r12  
+c24r8.r48c24r24c24r24c24r24c24r8.r48c6r12  >a+24r8.r48a+24r24a+24r24a+24r24a+24r8.r48a+6r12  
+<c24r8.r48c24r24c24r24c24r24c24r8.r48c6r12  >a+24r8.r48a+4<c24r8.r48c4  
+r12>a+24r8a+4<d24r8.r48d4  >a+24r8.r48a+4<c24r8.r48c4  >g2a2  a+24r8.r48a+4<c24r8.r48c4  
+r12>a+24r8a+4<d24r8.r48d4  >a+24r8.r48a+4<c24r8.r48c4  c24r8.r48d24r24d24r24d24r24d24r4.r12  
+
+;3
+
+l16
+{8}
+l16{FD}100%e1%k1 $4 |1v55p27o5%a8a+24r8.r48a+24r24a+24r24a+24r24a+24r8.r48a+6r12  
+a+24r8.r48a+24r24a+24r24a+24r24a+24r8.r48a+6r12  g24r8.r48g24r24g24r24g24r24g24r8.r48g6r12  
+a24r8.r48a24r24a24r24a24r24a24r8.r48a6r12  a+24r8.r48a+24r24a+24r24a+24r24a+24r8.r48a+6r12  
+a24r8.r48a24r24a24r24a24r24a24r8.r48a6r12  g24r8.r48g24r24g24r24g24r24g24r8.r48g6r12  
+g24r8.r48g24r24g24r24g24r24a24r8.r48a6r12  g24r8.r48g4a24r8.r48a4  
+r12g24r8g4a24r8.r48a4  g24r8.r48g4a24r8.r48a4  e2f+2  g24r8.r48g4a24r8.r48a4  
+r12g24r8g4a24r8.r48a4  g24r8.r48g4a24r8.r48a4  v62f24r8.r48g24r24g24r24g24r24g24r4.r12  
+
+;4
+
+l16
+{5}
+l16{FD}100%e1%k1 $6 |1v55p64o3%a9g12r6g12r6g12r6g4  
+a+12r6a+12r6a+12r6a+4  d+12r6d+12r6d+12r6d+4  f12r6f12r6f12r6f4  
+g12r6g12r6g12r6g4  f12r6f12r6f12r6f4  d+12r6d+12r6d+12r6d+4  d12r6d12r6d12r6d4  
+[2d+12r6d+6d+12f12r6f4  d+12r6d+6d+12g12r6g4  d+12r6d+6d+12f12r6f4  
+j2,5 c12r6c12r6d12r6d4  ] $5 g12r6g12r6g12r6r4  
+;6
+
+{4} %g1 $ l12
+[[3"a4fdaa6d"'d*v.6''df'[8"s48"]"a"]
+"a4fdaaaa"'d*v.6''df'[8"s48"]"!v0a"]
+"a6ffffa6affa"
+"ff6afffaa"[8"f48"]"f"
+"a6ffffa6affa"
+"^fecba6fecba"
+"a6ffffa6affa"
+"ff6afffaa"[8"f48"]"f"
+"a6ffffa6afff a4aaaa2"
+;
+
+#def d=v78
+#def df= v32,78
+#drum "a"=5f+ |4 p50 'd*v1.2'
+#drum "b"=5f+ |4 p50 'd*v1.1'
+#drum "c"=5f+ |4 p50 'd*v.93'
+#drum "d"=5f+ |4 p50 'd*v.9'
+#drum "e"=5f+ |4 p50 'd*v.76'
+#drum "f"=5f+ |4 p50 'd*v.6'
+#drum "s"=5f+ |4 p50
+
+l16
+{3}
+l16{FD}120%k1 $9 |3v90p64o3g4g12g12g12g4g4  
+a+4a+12a+12a+12a+4a+4  d+4d+12d+12d+12d+4d+4  f4f12f12f12f4f4  g4g12g12g12g4g4  
+f4f12f12f12f4f4  d+4d+12d+12d+12d+4d+4  d4d12d12d12d4d4  [2d+4d+6d+12f4f4  
+d+4d+6d+12g4g4  d+4d+6d+12f4f4  j2,8 c4c6c12d4d4  ] $8 g4g12g12g12g2  
+
+;9
+
+l16
+{7}
+l16{FD}127v120p40 $10 ^4%k1{FD}110|0v100p80o5a+r4.ra+rr8  
+r4a+r4.ra+rr8  r4gr4.rgrr8  r4ar4r48ar12r48a8r24ar48  r4a+r4.ra+rr8  
+r4ar4.rarr8  r4gr4.rgrr8  r4gr4r48gr12r48f+8r24f+r48  r4gr4.rgrr8  
+r4gr4r48a24r24g24r24a6r12  r4gr4.rarr8  r12e24r24v90e24r24v100e24r24v110e24r24v120e24r8v80f+24r24v90f+24r24v100f+24r24v110f+24r24v120f+24r24  
+r4v100gr4.rarr8  r4gr4r48a24r24g24r24a6r12  r4gr4.rarr8  r4d24r24d24r24d24r24d24r8.r48%k0{FD}127|5v120p40f4
+
+;10

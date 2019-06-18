@@ -17,7 +17,7 @@
 #WAVE 0x2B ~0x50~/0x12/
 #WAVE 0x2C ~0x88~/0x11/
 
-#def global= t88 %x224 %v64 %b0,100 %f0,0
+#def global= t88 %x224 %v50 %b0,90 %f0,0
 
 #def syn= |1 ~o5~/o6/ ~v90~/v64/ %e1 m48,18,239 p54
 #def sye= |1 ~o5~/o6/ ~v30~/v21/ %e1 m48,18,239 p74
@@ -39,8 +39,8 @@
 #def h110= v26
 #def h115= v28
 
-#drum "y"=5a |B %r14 %y3%s3 v100 %e1 p64
-#drum "z"=5a |B %r14 %y4%s2 v100 %e1 p64
+#drum "y"=5a |B %r17 %y3%s3 v112 %e1 p64
+#drum "z"=5a |B %r17 %y4%s2 v112 %e1 p64
 #drum "k"=5f |8 v100 %e0 p64
 #drum "j"=5f |8 v72 %e0 p64
 #drum "s"=5f+ |9 v100 %e1 p64

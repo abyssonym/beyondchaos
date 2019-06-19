@@ -210,7 +210,7 @@ NORMAL_CODES = [
 MAKEOVER_MODIFIER_CODES = [
     Code('novanilla', "COMPLETE MAKEOVER MODE"),
     Code('frenchvanilla', "EQUAL RIGHTS MAKEOVER MODE"),
-    Code('attackoftheclones', "CLONE COSPLAY MAKEOVER MODE")
+    Code('cloneparty', "CLONE COSPLAY MAKEOVER MODE")
 ]
   
 makeover_groups = ["boys", "girls", "kids", "pets", "potato"]

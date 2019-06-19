@@ -1346,11 +1346,11 @@ def process_map_music(data):
     
     return data
     
-def randomize_music(fout, options, opera=None, form_music_overrides={}):
+def randomize_music(fout, options_, opera=None, form_music_overrides={}):
     events = ""
-    if options.is_code_active('christmas'):
+    if options_.is_code_active('christmas'):
         events += "W"
-    if options.is_code_active('halloween'):
+    if options_.is_code_active('halloween'):
         events += "H"
     f_mchaos = 'johnnyachaotic' in codes
     

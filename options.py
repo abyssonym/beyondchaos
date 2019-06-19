@@ -242,7 +242,7 @@ TOP_SECRET_CODES = [
 
 ALL_CODES = NORMAL_CODES + MAKEOVER_MODIFIER_CODES + CAVE_CODES + SPECIAL_CODES + TOP_SECRET_CODES
 
-options = Options(ALL_MODES[0])
+options_ = Options(ALL_MODES[0])
 
 
 # This is a little silly, since anyone who knows a little python can very easily recover the plaintext, but knowing a little python you can easily subvert it all kinds of ways. This at least prevents people from seeing the plaintext (or something to easy decode in one's head like ROT13) directly in the code.

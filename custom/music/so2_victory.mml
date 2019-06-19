@@ -1,0 +1,97 @@
+#TITLE Strike Your Mind
+#ALBUM Star Ocean: The Second Story
+#COMPOSER Motoi Sakuraba
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x49~/0x0D/
+#WAVE 0x21 ~0x82~/0x0E/
+#WAVE 0x22 ~0x58~/0x31/
+#WAVE 0x23 ~0x6B~/0x1C/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x81~/0x14/
+#WAVE 0x2A ~0x50~/0x12/
+
+#def global= t120 %b0,100 %v50 %f0,0 %x240
+
+#def str= |0 v24 ~o4~/o5/ %e1 %a7%r12 m p64
+#def pet= |1 v80 ~o5~/o6/ %e1 m48,18,239 p64
+#def hch= |2 v48 ~o5~/o4/ %e1 %y5%s2%r19 m p64
+#def bas= |3 ~v80~/v40/ ~o5~/o4/ %e0 m p64
+
+#drum "y"=5g |A v64 %e0 m p64
+#drum "k"=5f |8 v64 %e0 m p64
+#drum "s"=5a+ |9 v40 %e0 m p64
+#drum "t"=5a+ |9 v52 %e0 m p64
+
+#def t10= %r26 %y2%s5 v112
+#def t12= %r24 %y2%s5 v112
+#def t16= %r22 %y2%s4 v120
+#def tl= %r7 %y7%s7 v80
+
+{1}
+'global' 'pet'
+l12 't16'e't12'ab't10'<d>b<d't12'e>'t16'b<'t12'd't10'egf+
+'tl' e2...r16
+$
+'pet' 't16'a6a 'tl'<e4..r16 't16'f+g+a
+'tl'e4.r8>b4<e8.r16
+'t16'>a6a 'tl'<e4..r16 't16'f+g+a
+'tl'b4.r8g+4e8.r16
+;
+
+{2}
+"k4k4k4k4"
+'pet''tl' b2...r16
+$
+l12 'hch' <aec+>a<c+eaf+d>a<df+
+<e>bg+eg+>b<e>g+beg+b
+<aec+>a<c+eaf+d>a<df+
+>ebg+<e>b<g+ebg+<e>b<g+
+;
+
+{3}
+'bas' l12
+e6ee<e>ea<a>aa<a>a
+[6e<e>]
+$
+l4 'bas' ae<d>a <e>b<e>b ae<d>a <e>b<e>e
+;
+
+{4}
+l12 ["ts24s24s sss tss tss"]
+$
+[[4"!!!otss"] "ts24s24s sss tss tss"]
+;
+
+{5}
+'str' l2
+<ee eg+
+$
+'str' <ef+ e1 ef+ e1
+;
+
+{6}
+"y2y2y1"
+$
+"!!!o y1"
+'str' g+1
+"!!!o y1"
+'pet' <g+4.r8e4>b8.r16
+;
+
+{7}
+'str' l2
+g+a g+b
+$
+'str' aa >b1< aa g+1
+;
+
+{8}
+'str' l2
+>b<c+ >b<e
+$
+'str' c+d r1 c+d >b1<
+;

@@ -1,0 +1,191 @@
+#TITLE Calm Before the Storm
+#ALBUM Final Fantasy X
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x0D~/0x0D/
+#WAVE 0x21 ~0x36~/0x36/
+#WAVE 0x22 ~0x95~/0x31/
+#WAVE 0x23 ~0x54~/0x32/
+#WAVE 0x24 ~0x42~/0x20/
+#WAVE 0x25 ~0x18~/0x18/
+
+#def global= t85 %x240 %v50 %b0,100 %f0,0
+
+#def st= |0 p64 'vst' ~o5\~/o5/ m48,18,207 %a7%r6
+#def fl= |1 p94 'vfl' ~o5~/o5/ m48,18,223 %r9
+#def dl= |2 p104 'vdl' ~o6~/o4/ ~m18,18,63~ ~%y1%s3~ %r16
+#def gt= |3 p24 'vgt' ~o5~/o5/ m48,18,203 %r16
+#def mb= |4 p44 'vmb' ~o4~/o4/ m %y4%s2 %r10
+#def ep= @3 p84 'vep' ~o5~/o5/ m48,18,239 %y0%s1 %r5
+#def bs= |5 p64 'vbs' ~o7~/o7/ m
+
+#def vst= v24
+#def vfl= v24
+#def vdl= v52
+#def vgt= v64
+#def vmb= ~v64~/v80/
+#def vep= v64
+#def vbs= v104
+
+{1}$
+'global' %e1
+'dl-o1' l8
+[rg+2g+4.g+4.g+  rg2g4.g4.g]
+##9
+'ep+o2' l8
+c+d+f>a+4. a+<cc+>fgg+  g1.    <c+d+f>a+4. a+<cc+>fgg+  g4<d+4^1>
+ga+g+g4f g4.d+fg  f4<c4^1    cedc4>b< c4.>ab<c  >a+4<g4^1
+##25
+>
+>a+<c>a+<a+af g+gd+c+d+f  >a+1.    a+<c>a+<a+af g+gd+c+d+f  g1.
+>a+<c>a+<a+af g+gd+c+d+f  >a+1.    a+<c>a+<c+c>a+ g+4f4g+4 a+1. r1.
+##43
+'mb+o2' l8
+d4d4d+4 f4>a+4<a+4  g+2g4 f4.d+dd+    f2d4 >a+4.<c>a+4  g+2g4 f2.<
+d4d4d+4 f4>a+4<a+4  g+2g4 f4f4g4    g+2f4 f2g+4  a+2f+4 f+2a+4 <c2. r2. r1.
+##63
+'fl*v1.5' l8
+a+<c>a+<a+af g+gd+c+d+f  >a+1.    a+<c>a+<a+af g+gd+c+d+f  g1.
+>a+<c>a+<a+af g+gd+c+d+f  >a+1.    a+<c>a+<c+c>a+ g+4f4g+4 a+1. r1.
+;
+
+{2}$
+%e1 'gt' l8
+[8a+2a+4]
+##9
+'dl-o2' l4
+[a+<a+a+<d+>g+a+>  d+<a+a+<f>ga+>]<
+c<ddd+>g<d>  c+a+a+<f>g+a+  >a<bb<e>gb  >g<a+a+<d+>fa+
+##25
+>a+<a+a+<d+>g+a+  >d+<a+a+<f>ga+  >a+<a+a+<d+>g+a+  c<ddd+>g<d>
+>a+<a+a+<d+>g+a+  >d+<a+a+<f>ga+  >f+<g+g+>f<ff  [>a+<a+a+<c>fa+]
+##43
+l8
+[3 >a+<fa+[3<d+d>a+]  >f<d+g+[3<fc>g+] ]
+c+fg+[3<c>g+f]  >f+<f+a+[3<f>a+f+]
+[>f<a<c[3gc>a<]>]
+##63
+>a+<g+a+<f>a+g+<d+>a+g+<f>a+g+  >d+<ga+<d+>a+g<f>a+g<d+>a+g
+>a+<g+a+<f>a+g+<d+>a+g+<f>a+g+  cg<d[3d+d>g<]>
+>a+<g+a+<f>a+g+<d+>a+g+<f>a+g+  >d+<ga+<d+>a+g<f>a+g<d+>a+g
+>f+<c+g+a+g+c+ >f<d+f<c>fd+    [>a+<fa+<d+>a+f<c>a+f<d>a+f]
+;
+
+{3}$
+%e1 'dl-o2' l8
+[a+4.<<f4.d+4.f4.>>  d+4.<<d+4.f4.d+4.>>]
+##9
+'gt' l4
+[[a+c+a+] [a+d+a+]]
+[gcg] [g+c+g+] adaaca [g>a+<g]
+##25
+l8
+[a+fc+fa+f][a+fd+fa+f][a+fc+fa+f][a+d+cd+a+d+]
+[a+fc+fa+f][a+fd+fa+f] a+f+c+f+a+f+ g+fcfg+f [4a+fdfa+f]
+##43
+[3[a+fdfa+f][g+fcfg+f]] [g+fc+fg+f][a+f+c+f+a+f+] [4afcfaf]
+##63
+[a+fc+fa+f][a+fd+fa+f][a+fc+fa+f][a+d+cd+a+d+]
+[a+fc+fa+f][a+fd+fa+f] a+f+c+f+a+f+ g+fcfg+f [4a+fdfa+f]
+;
+
+{4}$
+%e1 'gt' l8
+[4r[5f4]f]
+##9
+'dl-o1' l4
+[r8g+<f>g+a+<f>g+8  r8g<d+>ga+<d+>g8]
+r8g<d+>g<dd+>g8  r8g+<f>g+a+<f>g+8   r8g<e>gb<e>g8  r8f<d>fa+<d>f8
+##25
+r8g+<f>g+a+<f>g+8  r8g<d+>ga+<d+>g8  r8g+<f>g+a+<f>g+8  r8g<d+>g<dd+>g8
+r8g+<f>g+a+<f>g+8  r8g<d+>ga+<d+>g8  r8c+a+c+8r8d+<c>d+8  r8f<d+>fa+<d>f8
+^8f<d+>fa+<d>f8
+##43
+'st+o1+%a4*v1.33' l8
+d4d4d+4 f4>a+4<a+4  g+2g4 f4.d+dd+    f2d4 >a+4.<c>a+4  g+2g4 f2.<
+d4d4d+4 f4>a+4<a+4  g+2g4 f4f4g4    g+2f4 f2g+4  a+2f+4 f+2a+4 <c2. r2. r1.
+##63
+'fl*v1.5' l8
+c+d+c+<c+d+c+ fd+c>a+<cc+  >g1^4r4    c+d+c+<c+d+c+ fd+c>a+<cc+  d+1^4r4>
+c+d+c+<c+d+c+ fd+c>a+<cc+  >g1^4r4    f+g+f+a+g+f+ f4c4d+4  d1^4r1..
+;
+
+{5}$
+%e1 'dl-o1' l8
+[4r4a+4a+4.a+4.a+4]
+##9
+'gt' l8
+[4r[5f4]f]
+r[5d+4]d+ r[5f4]f r[5e4]e rd4d4d4d+4d4d
+##25
+'bs-o2' l8
+a+2^a+<f2^f d+2.>a+2^g+16a16   a+2^a+<f2^f16f+16 g4c2.>g2
+a+2^a+<f2^f d+2.>a+2^g+16g16   f+2^f+f2g+4 a+2.>a+2. ^1.<
+##43
+a+2^<c d2>a+4  f2^g g+2<c4>    a+2^<c d2>a+4  f2. ^<gfrdd+
+f4>a+4.<c d2>a+4  f2^g g+2<c4    c+2^>g+ g+2g4  f+2^<c+ c+4>a+4f+4
+f2<c4 c2>c4  f2<c4 c2.>
+##63
+a+2^a+<f2^f d+2.>a+2^g+16a16   a+2^a+<f2^f16f+16 g4c2.>g2
+a+2^a+<f2^f d+2.>a+2^g+16g16   f+2^f+f2g+4 a+2.>a+2. ^1.
+;
+
+{6}$
+%e1 'gt' l8
+[ r4c+2.c+2 r4d+2.d+2 ]
+##9
+'st+o1' l4
+f1. g1. f2.a+.g+. g1.    d+1. f1. e1. d1.
+##25
+f1. g1. f1. g1.    f1. g1^g+ a+2.g+2. a+1. r1.
+##43
+'fl' l8
+d2. f2.  a+4.g+g4 g+2.    d2. f2.  <c4.>g+4g g+2.
+d2. f2.  a+4.g+g4 g+2.    f2. g+2f4  f+2. g+2a+4
+<c1^1^4 r2.
+##63
+'st+o1' l4
+c2.> a+2g+  g1.    <c2.> a+2g+  g1.
+<c2.> a+2g+  g1.    f+2. g+2.  a+1^1^1
+;
+
+{7}$
+[4r1.]
+##9
+%e1 'st+o1' l4
+c+1. d+1. c+1. d+1.    c1. c+1. c1. >a+1.<
+##25
+c+1. d+1. c+1. d+1.    c+1. d+1^f f+2.f2. d1. r1.
+##43
+'fl-o1' l8
+a+2. <d2.  g4.fd+4 f2.    >a+2.< d2.  g+4.f4d+ f2.
+>a+2.< d2.  g4.fd+4 f2.    c+1.  c+1.  a1.^2. r2.
+##63
+'st' l2
+c+1. c+1. c+1. d.c.    c+1. c+1. c+.c. c.d.   d+.d.
+;
+
+{8}$
+[4r1.]
+##9
+%e1 'mb+o2*v.75' l8
+c+d+f>a+4. a+<cc+>fgg+  g1.    <c+d+f>a+4. a+<cc+>fgg+  g4<d+4^1>
+ga+g+g4f g4.d+fg  f4<c4^1    cedc4>b< c4.>ab<c  >a+4<g4^1
+##25
+'fl' l8
+ a+<c>a+<a+af g+gd+c+d+f  >a+1.    a+<c>a+<a+af g+gd+c+d+f  g1.
+>a+<c>a+<a+af g+gd+c+d+f  >a+1.    a+<c>a+<c+c>a+ g+4f4g+4 a+1. r1.
+##43
+'st+o2*v.5+%a2' l8
+d4d4d+4 f4>a+4<a+4  g+2g4 f4.d+dd+    f2d4 >a+4.<c>a+4  g+2g4 f2.<
+d4d4d+4 f4>a+4<a+4  g+2g4 f4f4g4    g+2f4 f2g+4  a+2f+4 f+2a+4
+'fl' c1^1^4 r2.
+##63
+'st' l1
+f. d+. f. d+. f. d+. d+. f. ^.
+;
+

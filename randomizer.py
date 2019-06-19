@@ -38,8 +38,9 @@ from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NORE
 from locationrandomizer import (get_locations, get_location, get_zones, get_npcs)
 from chestrandomizer import mutate_event_items, get_event_items
 from towerrandomizer import randomize_tower
-from musicrandomizer import randomize_music
+from musicrandomizer import randomize_music, manage_opera, insert_instruments
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu, show_original_names, improve_dance_menu, y_equip_relics, fix_gogo_portrait)
+from dialoguemanager import manage_dialogue_patches
 from decompress import Decompressor
 from character import get_characters, get_character, equip_offsets
 from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, MAKEOVER_MODIFIER_CODES, options
@@ -5759,9 +5760,17 @@ def randomize():
             improve_dance_menu(fout)
     reseed()
 
-    if options.is_code_active('johnnydmad') or options.is_code_active('johnnyachaotic'):
-        f_mchaos = options.is_code_active('johnnyachaotic')
-        music_log = randomize_music(fout, options=options, f_mchaos=f_mchaos, form_music_overrides=form_music)
+    has_music = options.is_any_code_active(['johnnydmad', 'johnnyachaotic'])
+    if has_music or options.is_code_active('alasdraco'):
+        data = insert_instruments(fout, 0x310000)
+        opera = None
+        
+    if options.is_code_active('alasdraco')
+        opera = manage_opera(fout, has_music)
+    reseed()
+    
+    if has_music:
+        music_log = randomize_music(fout, options=options, opera=opera, form_music_overrides=form_music)
         log(music_log, section="music")
     reseed()
 
@@ -5861,6 +5870,8 @@ def randomize():
     elif options.mode.name == "dragonhunt":
         the_end_comes_beyond_crusader()
 
+    manage_dialogue_patches(fout)
+    
     rewrite_title(text="FF6 BCEX %s" % seed)
     fout.close()
     rewrite_checksum()

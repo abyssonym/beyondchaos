@@ -1,0 +1,140 @@
+#TITLE Player Select
+#ALBUM Super Mario Bros. 2
+#COMPOSER Koji Kondo
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x7B~/0x0C/
+#WAVE 0x21 ~0x69~/0x08/
+#WAVE 0x22 ~0x18~/0x18/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x2B~/0x2B/
+#WAVE 0x2A ~0x5A~/0x11/
+
+#def pi= |0 'vp' o5 %e1 p72 m /k0/
+#def pd= |0 'vp' o5 %e1 p56 m0,18,87 /k2/
+#def vi= |1 'vv' o4 %e1 p64 m20,18,239 /k0/
+#def bs= |2 'vb' o6 %e1 p64 m /k0/
+
+#def vp= v48
+#def vv= v64
+#def vb= v72
+
+#def global= t144 %x232 %v50 %b0,40 %f0,0
+
+#drum "k"=5a |8 v32 p64 %e0 m /k0/
+#drum "c"=6c |9 v80 p64 %e1 m /k0/
+#drum "s"=5d |A v80 p32 %e1 m %r24 /k0/
+#drum "h"=5g |A v80 p32 %e1 m %r27 /k0/
+#drum "t"=5b |A v80 p32 %e0 m %r25 /k0/
+#drum "o"=5g |A v80 p32 %e1 m %r0 /k0/
+
+{1}
+'global' 'pi+o1'
+[3c12c24[3r12c24]] erdr
+$##
+l12 'pi+o1' e8r8e8re24rc24>ra24g4  <c8r8c8rc24>ra24rf+24e4
+<e8r8e8re24rc24>ra24<e8e8c16r2...
+##
+e8r8e8re24rc24>ra24g4  <c8r8c8rc24>ra24rf+24e4
+<e8r8e8re24rc24>ra24<e8e8 c16r16r2 'vi+o2'c8d8d+8
+##
+[e8r8e8re24rd8r24d8e8 d16r16c16r16c24>br<c8r24>a8b8<c8
+d8r8d8rd24rc8r24>b8a16r8. b8<c8c+8d8r8rj2>g8r24<]
+##
+#^^
+'pi'g8r24
+;
+
+{2}
+'pi'
+g12g24[3r12g24] f+12f+24[3r12f+24] f12f24[3r12f24] brfr
+$##
+'pi' l12 g8r8g8rg24re24re24c4 f+8r8f+8rf+24rd24rd24c4
+f8r8f8rf24rd24>rb24<g8g8e16r2...
+##
+g8r8g8rg24re24re24c4 f+8r8f+8rf+24rd24rd24c4
+f8r8f8rf24rd24>rb24<g8g8e16r16r2 'vi+o1'e8f8f+8
+##
+g+8r8g+8rg+24rf+8r24f+8g+8  e16r16e16r16e24dre8r24c8d8e8
+f+8r8f+8rf+24re8r24d8c16r8. d8e8f8f+8r8r>b8r24<
+##
+'pi+o1*v.8' l24
+e12d+e12b g12e<e12>b  <d12>ba12b g+12fe12d
+c12>b<c12d e12d+e12a  g+12ed12d+ a12eg12f+
+f12ef12a <e12d>a12g+  g12<e>g12f+ f12<d>a12a+
+b12a+b12a g12f>a12b<  g12f>b12a< f12>ba12g
+;
+
+{3}
+'bs'
+[3c12c24[3r12c24]] >grbr
+$##
+'bs-o1' [[4cr][4dr][4gr]c16r2...]
+##
+#^^
+##
+[erf+rgrg+b arbr<cr>ba  drerfrf+a rgaa+br4.]
+##
+#^^
+;
+
+{4}
+"k2k2k2k4k4"
+$##
+["!!!o"
+[12"kc"] "kccc c24c24c24c12c24 c12c24c12c24"]
+##
+#^^
+##
+["!!!o" [12"kc"] "kcccc2"]
+##
+#^^
+;
+
+{5}
+"t2t2t2t4t4"
+$##
+["!!!o" [14"sh"]"h24h24h24h12h24h12h24h12h24"]
+##
+#^^
+##
+[12"sh"] "thhhtt4o"
+##
+'vi+o1' l12 g+8r8g+8rg+24rf+8r24f+8g+8  e16r16e16r16e24dre8r24c8d8e8
+f8r8f8rf24re8r24d8c16r8. d8e8f8f8r8r 'pi-o1'b8r24
+;
+
+{6}
+'pd+o1'
+[3c12c24[3r12c24]] erdr
+$##
+l12 'pd+o1' [e8r8e8re24rc24>ra24g4  <c8r8c8rc24>ra24rf+24e4
+<e8r8e8re24rc24>ra24<e8e8c16r2...]
+##
+#^^
+##
+[4r1]
+##
+l8 "!!!o" [12"sh"] "thhhtt4o"
+;
+
+{7}
+'pd'
+g12g24[3r12g24] f+12f+24[3r12f+24] f12f24[3r12f24] brfr
+$##
+'pd' l12 [g8r8g8rg24re24re24c4 f+8r8f+8rf+24rd24rd24c4
+f8r8f8rf24rd24>rb24<g8g8e16r2...]
+##
+#^^
+##
+[4r1]
+##
+'pd+o1*v.8' l24 ~k2~
+e12d+e12b g12e<e12>b  <d12>ba12b g+12fe12d
+c12>b<c12d e12d+e12a  g+12ed12d+ a12eg12f+
+f12ef12a <e12d>a12g+  g12<e>g12f+ f12<d>a12a+
+b12a+b12a g12f>a12b<  g12f>b12a< f12>ba12g ~k0~
+;

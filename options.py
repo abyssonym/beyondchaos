@@ -95,6 +95,7 @@ class Options:
 
 ANCIENT_CAVE_PROHIBITED_CODES = [
     "airship",
+    "alasdraco",
     "notawaiter",
     "strangejourney",
     "worringtriad",
@@ -129,12 +130,12 @@ ALL_MODES = [
     Mode(name="katn",
          description="Play the normal story up to Kefka at Narshe, with extra wackiness. Intended for racing.",
          forced_codes=["madworld"],
-         prohibited_codes=["airship", "worringtriad", "QGWURNGNSEIMKTMDFBIX", "HAKCSBKC"],
+         prohibited_codes=["airship", "alasdraco", "worringtriad", "QGWURNGNSEIMKTMDFBIX", "HAKCSBKC"],
          prohibited_flags=["d", "k", "r"]),
     Mode(name="dragonhunt",
          description="Kill all 8 dragons in the World of Ruin. Intended for racing.",
          forced_codes=["worringtriad"],
-         prohibited_codes=["airship"])
+         prohibited_codes=["airship", "alasdraco"])
 ]
 
 ALL_FLAGS = [
@@ -164,6 +165,7 @@ ALL_FLAGS = [
 
 NORMAL_CODES = [
     Code('airship', "AIRSHIP MODE"),
+    Code('alasdraco', "JAM UP YOUR OPERA MODE"),
     Code('partyparty', "CRAZY PARTY MODE"),
     Code('bravenudeworld', "TINA PARTY MODE"),
     Code('suplexwrecks', "SUPLEX MODE"),

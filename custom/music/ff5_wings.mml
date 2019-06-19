@@ -1,0 +1,84 @@
+#TITLE Spreading Grand Wings
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0E
+#WAVE 0x21 -- 0x1B
+#WAVE 0x22 -- 0x02
+#WAVE 0x23 -- 0x0D
+#WAVE 0x24 -- 0x0F
+#WAVE 0x25 -- 0x22
+#WAVE 0x26 -- 0x14
+
+{1}
+l16t140%b0,70%v50%x190%f0,0v110p55|0m12,20,195%e1 $1 [2o6f2a+2  
+a1  r4f4a+4a4  g4f4<d2  c1  
+^2^4>a8b8  <c1  ^2^4r4  ]>a+2a4a+4  
+a4g2^4  r1  r1  a+2a4a+4  
+a4g2^4  r4a+4a4a+4  <c4>g4a4a+4  a1  
+^2^4g8a8  <d1  ^2^4r4  
+;1
+
+l16
+{5}
+l16v60p45|1%e1 $2 [2o4f<cfa<c>afc>f<cfa<c>afc  
+>f<cfa<c>a<cfafc>a<fc>af  >f<dfa<d>afd>f<dfa<d>afd  >f<dfa<d>a<dfafd>a<fd>af  
+>a<cea<c>aec>a<cea<c>aec  >a<cea<c>a<ceaec>a<ec>ae  >g<ceg<c>gec>g<ceg<c>gec  
+>g<ceg<c>g<cegec>g<ec>ge  ]>g<dga+<d>a+gd>g<dga+<d>a+gd  >d+a+<d+ga+ga+<d+gd+>a+g<d+>a+gd+  
+>g<dga+<d>a+gd>g<dga+<d>a+gd  >c<ceg<c>g<cegec>g<ec>ge  >g<dga+<d>a+gd>g<dga+<d>a+gd  
+>d+a+<d+ga+ga+<d+gd+>a+g<d+>a+gd+  >g<dga+<d>a+gd>g<dga+<d>a+gd  
+>c<ceg<c>g<cegec>g<ec>ge  >a<c+ea<c+>aec+>a<c+ea<c+>aec+  >a<dea<d>a<deaec+>a<ec+>ae  
+>da<dgagd>ada<dgagd>a  <<f+d>af+<d>af+daf+d>a<f+d>af+  
+;2
+
+l16
+{3}
+l16v115p60|2m12,20,195 $3 [2o5[14f8]e8e8[16d8][16a8]<[16c8]>][2g8g8  
+g8g8g8g8g8g8d+8d+8  d+8d+8d+8d+8f8f8g8g8  g8g8g8g8g8g8<c8c8  c8c8c8c8c8c8>][16a8]<[16d8  
+]
+;3
+
+l16
+{2}
+l16v50p65|3m12,20,195%e1 $4 [2%a10o5a2<d2  c1  ^1  
+^2d2  e1  ^2c4d4  e1  
+^1  ]>a+2<d2  >g1  %a15v80r4a+4a4a+4  
+<d4c4>g4a4  %a10v60a+2<d2  >g1  %a15v70r4a+4a4a+4  
+<c4>g4a4a+4  %a10v60a1  g2a2  <d1  
+^1  
+;4
+
+l16
+{6}
+l16v60p70|3m12,20,195%e1 $5 [2%a10v60o5f1  ^4v80c4d4e4  
+f1  ^1  v60a1  ^1  
+g1  ^4v80e4f4g4  ]v60d1  d+2d+4f4  
+%a10v75r4d4c4d4  f4e4>a+4<c4  %a10v60d1  d+2d+4f4  
+d1  e1  c+1  d2c+2  
+a1  ^1  
+;5
+
+l16
+{7}
+l16p75|3m12,20,195%e1 $6 [2%a10v80o5c2>a+2  
+a1  <d1  ^1  c1  
+^1  c1  ^1  ]>g1  
+^2v100d+4f4  g1  r1  v80g1  
+^2v100d+4f4  g1  v80g4a+4a4g4  a1  
+b2a2  <g1  f+1  
+;6
+
+l16
+{8}
+l16v45p67|4 $7 o5a8aar8aa
+;7
+
+l16
+{4}
+l16v127p62 $8 o5|5a4|6f4  
+r8|5a8|6f4|5a4|6f8|5a8  r8a8|6f8|5a8
+;8
+
+l16

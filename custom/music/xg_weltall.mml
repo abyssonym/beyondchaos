@@ -1,0 +1,254 @@
+#TITLE Steel Giant
+#ALBUM Xenogears
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x43~/0x0D/
+#WAVE 0x21 ~0x1A~/0x1A/
+#WAVE 0x22 ~0x6A~/0x0E/
+#WAVE 0x23 ~0x08~/0x08/
+#WAVE 0x24 ~0x1B~/0x1B/
+#WAVE 0x25 ~0x2C~/0x2C/
+#WAVE 0x28 ~0x16~/0x16/
+#WAVE 0x2A ~0x81~/0x14/
+#WAVE 0x2B ~0x8E~/0x12/
+
+#def global= t157 %v30 %b0,100 %f0,0 %x240
+
+#def str= |0 ~o4~/o5/
+#def tub= |1 ~o7~/o7/
+#def pet= |2 ~o4~/o6/
+#def hrn= |3 o5
+#def hrp= |4 o5 p0 %r15
+#def cbs= |5 o5 ##oct3
+#def tmp= |8 o4
+
+#def 02= 'pet' p40
+#def 03= 'pet' p40
+#def 04= 'tub' p30
+#def 05= 'tub' p30
+#def 06= 'tub' p30
+#def 07= 'hrn' p77
+#def 08= 'hrn' p77
+#def 09= 'hrn' p77
+#def 10= 'hrn' p77
+#def 11= 'str' p64
+#def 12= 'str' p25
+#def 13= 'str' p85
+#def 13b= 'str' p75
+#def 14= 'str' p120
+#def 15= 'tub' p100
+#def 15b= 'cbs' p100 v83 %a4%r5
+#def 18= 'tmp' p45
+
+#def stab= %s5
+#def s8= %y2%r25
+#def s10= %y2%r24
+#def s12= %y1%r22
+#def s16= %y1%r20
+#def s18= %y1%r19
+#def s21= %y0%r18
+#def s24= %y0%r15
+#def s0= %y7%r9
+#def fade= v48,8^4
+#def long= %r8
+#def longer= %r4
+#def longest= %r1
+
+#def v87t= v63
+#def v101t= v73
+#def v113t= v82
+#def v122t= v89 ##mix 93 vel 122 -> 89
+#def v127t= v93 ##mix 93 vel 127 -> 93
+#def v62b= v31
+#def v80b= v40 ##mix 86 vel 80 -> 54
+#def v101b= v36
+#def v102b= v52
+#def v104b= v30 ##mix 74 vel 104 -> 60
+#def v110b= v32 ##mix 74 vel 110 -> 64
+#def v113b= v57
+#def vfb= v168,52
+#def v115b= v33 ##mix 74 vel 115 -> 66
+#def v118h= v44 ##mix 64 vel 118 -> 59
+#def v123h= v53 ##mix 55 vel 123 -> 53
+#def vfh= v144,63
+#def v62s= v43
+#def v84s= v16v120,56 ##mix 25 to 85 vel 84 -> 16 to 56
+#def v85s= v16v96,56
+#def vfs= v144,76
+#def v87s= v40 ##mix 88 vel 87 -> 60
+#def v101s= v69 ##mix 88 vel 101 -> 69
+#def v107s= v74 ##mix 88 vel 107 -> 74
+#def v110s= v80
+#def v113s= v78
+#def v107d= v71
+#def v123d= v82
+#def vi= m48,18,223
+#def vil= m16,16,223
+
+#drum "y"=5f |B v80 p40 %a%r17
+#drum "z"=5f |B v80 p70 %a3%r17
+#drum "s"=5a+ |A p64
+#drum "a"=5a+ |A p64 v80 ##127
+#drum "b"=5a+ |A p64 v69 ##111
+#drum "c"=5a+ |A p64 v66 ##105
+#drum "d"=5a+ |A p64 v62 ##99
+#drum "x"=5a+ |A p64 v58 ##92
+#drum "e"=5a+ |A p64 v53 ##85
+#drum "f"=5a+ |A p64 v43 ##69
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'global' %e1
+"z2"
+$
+'11''v110s' l2 'vi''long'
+d1 g1 a1 a+<c    d1 d+c d1 d+f  m
+##
+[[l8 'stab''s16''v113s'g4.'v101s'g+4f4'v107s'g4'v101s'g
+'s24''v113s'g+'v101s'f'v113s'g'v107s''s18'c]%k-3]%k0
+##
+'12''v101s''long' [[4c+eg+<c+d+j4c+>g+e]eg+<c+>>  [4cea<cej4c>ae]a<ce>>]
+##
+l4 [[['02''v122t''stab''s16'<d+ '12''v87s''stab''s16'<d+d+ m3]m-6
+'02''v122t''stab''s24'<d+ '12''v87s''stab''s16'<d+ m-1]%k0]
+##
+'11''v84s''vi''long'<<d+1d1> 'v85s'a+1g2.'fade'
+;
+
+{2}
+l32 v8v96,90 [16"s"] %e1
+$
+'02''stab' l16
+[[['s10''v87t'a'v101t'a'v113t'a4]^2a+4.j2g4.]<c4.>]
+##
+[['02''stab''s8''v127t' l8 g4.
+'05''stab''s16''v104b'd+4c4
+'02''stab''s8''v127t' ggg4
+'08''v123h' l32 rgg+aa+4]%k-3]%k0
+##
+['11''v107s''vi''long' l2 <c+1d+1e1f+g+ m
+'05''v113b''stab''s10' l16 [r4a4.a4.aaa4aaa2]]
+##
+l4 [[['08''v118h''stab''s24'f+ '13b''v87s''stab''s16'f+f+ m2]m-4
+'08''v118h''stab''s24'f+ '13b''v87s''stab''s16'f+ m-1]%k0]
+##
+'hrp' l2> v50c <v56d v61g v56g v50g v43g l8 v35gv26d+v23d2^8
+'18''v107d'c8
+;
+
+{3}
+%e1
+'18' r4. 'v107d'c
+$
+[4'18''v123d'd4.d1.'v107d'c]
+##
+[['18''v123d'g2..g4g4 l32^ '09''v123h'dd+ef4]%k-3]%k0
+##
+l8 [[3'18''v123d'c+4.c+2'v107d'>g+<]'v123d'c+4.>g+4.<c+4 j2,330
+[3'v123d'c4.c2'v107d'>g<]'v123d'c4.c4>'v107d'g'v123d'<c>'v107d'g]
+$330 >[3'v123d'a4.a2'v107d'<e>]'v123d'a4.a4a<e>a
+##
+< l4
+[[d+2.d+2.>a+<d+ %k-1]%k0]
+##
+c4. 'hrp'l2> v54a+ <v60a+ v54a+ v47a+ v40a+ v31a+8
+'08'v12'vfh''vi'g2.'fade'm
+;
+
+{4}
+%e1r2
+$
+l16 [4"!!!o a8.eb8a4e8b8eb a8e8e8a8e8"j4"e8a8eb"]":e:a8fedb"
+##
+["a4e8a4e8a8"[4"eba8"] "^8e8a4e8a8ebe8a8e8"j2"b8a8e8"]"e8a8eb"
+##
+[[3"a8.feea4e8eb8f"]"bffebffeaffexdcb"
+"a8feb8a4e8b8eb" ["a8.feea4e8eb8f"] "a8fea8.e8a8eae8b"]
+##
+[4"aeeee8a4e8a8ee eea4eeeea8"j4"a8ee"]"fedb"
+##
+"a8" 'hrp'l2> v51d+ <v57d+ v56d+ v51d+ v44d+ v37d+4.
+'09'v12'vfh''vi'd+2.'fade'm
+;
+
+{5}
+%e1
+r2
+$
+'15''stab''s10' l8 >>
+[[[3'v113b'd'v62b'dd]d 'v113b'd+'v62b'd+d+ j2 'v113b'c'v62b'cc]
+j2 'v113b'f'v62b'dc] 'v113b'f'v62b'ff
+##
+[['v113b''s12'g'v80b'gg'v113b'g+4f4
+'s21'g4's12'g's21'g+'v80b'f'v113b'g'v80b''s12'c] %k-3]%k0
+##
+l4 '14''vi''v101s''longer'>[g+1^1^1b2g+2 j2 a1^1^1eaba]
+l2 '09''long'v61c v64d v65e v67a v70b < v72c v76d v77e m
+##
+l4 '15''stab''s16'>>
+[[[3'v113b'd+'v102b'd+j3d+]%k-1]%k0]
+##
+r4 'hrp'l2> v52g <v58g v55d v49d v42d v34d4
+'05'v8'vfb'c2..'s18'd+8
+;
+
+{6}
+%e1
+r2
+$
+'13''stab''s10' l8 >
+[[[3'v113s'a'v62s'aa]a 'v113s'a+'v62s'a+a+ j2 'v113s'g'v62s'gg]
+<'v113s'c'v62s'cc>]
+##
+'04''stab''s16' l8 m
+[['v115b'g4.'v104b'g+4f4 'v115b'g4'v104b'g's21''v115b'g+'v104b'f'v115b'g's16''v110b'c
+]%k-3]%k0
+##
+[ '08''v123h''vi''long' c+1d+1e1f+2g+2
+'11''v107s''longer' <([16a4])]m
+##
+l4 '14'>'stab''s16'
+[[['v113s'a+'v87s'a+a+m3]m-6'v113s'a+'v87s'a+ m-1]%k0]
+##
+'13''vil''longer''v85s' ([12d+4])(v16'vfs'a+4a+4a+4'fade')m
+;
+
+{7}
+%e1
+r2
+$
+'04''stab''s12''v101b' l4
+[4d.d2..d+.c.]
+##
+l8 [['s16''v115b'd4.'v104b'c+4>a+4<'v115b'd4'v104b'd
+'s21''v115b'd+'v104b'c'v115b'd'v104b''s16'>g<]%k-3]%k0
+##
+['15b' ([16c+4])
+'05''v113b''stab''s10' l16 [r4e4.e4.eee4eee2]]
+##
+'03''s24''v122t' [[a+2.<c+2.>a+2 %k-1]%k0]
+##
+'14''vil''longest''v85s'> ([12g4]'vfs'g4g4g4'fade')m
+;
+
+{8}
+%e1
+r2
+$
+[4"!!!o y1^4" '06''stab''s12''v101b'>g+4.f4.]
+##
+[4"!!!o y2..y4y4.^4"]
+##
+[4"y1^1^1^2z2"]
+##
+[3"y2.y2.y2"]"y2.y2.z2"
+##
+'15b'c1^1^1
+'05'v8'vfb'>a+2..'s18'a+8
+;

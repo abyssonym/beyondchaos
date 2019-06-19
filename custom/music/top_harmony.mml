@@ -1,0 +1,190 @@
+#TITLE Harmonious Moment
+#ALBUM Tales of Phantasia
+#COMPOSER Motoi Sakuraba
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x0B~/0x0B/
+#WAVE 0x21 ~0x92~/0x06/
+#WAVE 0x22 ~0x08~/0x08/
+#WAVE 0x23 ~0x74~/0x0A/
+#WAVE 0x24 ~0x87~/0x33/
+#WAVE 0x25 ~0x07~/0x07/
+#WAVE 0x26 ~0x1B~/0x1B/
+#WAVE 0x27 ~0x02~/0x02/
+#WAVE 0x28 ~0x2E~/0x2E/
+#WAVE 0x29 ~0x85~/0x2B/
+#WAVE 0x2A ~0x2F~/0x2F/
+
+#def po= |0 'p' o5 p77 %e1 m24,16,207 %r1
+#def vo= |1 'v' ~o5~/o5/ p60 %e1 m48,18,199 %r3
+#def tp= |2 't' o5 p64 %e1 m48,18,239 %r8
+#def cl= |3 'c' o5 p75 %e1 m48,18,239 %a11%r9
+#def ac= |4 'a' o5 p51 %e1 m48,18,223 %r11
+#def fl= |5 'f' o4 p60 %e1 m48,18,239 %r11
+#def hp= |6 'h' o5 p82 %e1 m %a12
+#def bs= |7 'b' o8 p60 %e0 m %y4%s5
+
+#def p= v24
+#def v= v32
+#def t= v64
+#def c= v24
+#def a= ~v48~/v32/
+#def f= v32
+#def h= v40
+#def b= v127
+
+#drum "m"=5e |A v64 p113 %e0
+#drum "n"=5e |A v28 p113 %e0
+#drum "s"=5g |9 v80 p62 %e0
+#drum "t"=5g |9 v64 p62 %e0 
+#drum "b"=5e |8 v80 p48 %e0
+#drum "c"=5e |8 v64 p48 %e0
+
+#def global= t120 %x255 %b0,85 %v50 %f0,0
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'global' l16
+"s8.c8csc8tsc"
+$## 2
+'po+o2*v.75'
+[e8r8.c+8r8e8r d4^c+4>b8^24g+48 a4^b4<c+8.> e2.<
+e8r8.c+8r8e8r d4^c+4>b8^24g+48  j2  a2^8.^24g+48 a4.g+4.<]
+a4.g+4.f+4.g+4.
+## 18
+'ac'
+a4^b4<c+8. d4^c+4>b8.  a2^8.r g+4.<e4.
+d4^c+4>b8. a2^8.r  <d4^c+4>b8r a4.g+4.
+## 26
+'cl'
+g4^<(d24c+24)d24^^4 c+8d8e8e8d8c+8>  g4^<(d+24d24)d+24^^4 d2.
+>b4^<c4d8. c+4^>a4.r<  c4^d4e8. d2^8.r
+## 34
+'ac'
+g4^<(d24c+24)d24^^4 c+8d8e8e8d8c+8>  g4^<(d+24d24)d+24^^4 d2.
+>b4^<c4d8. c+4^>a4.r<  c4^d4e8. d2^8.r
+;
+
+{2}
+l16 "m8.n8nm8.n8n"
+$## 2
+'vo' l2
+c+.d.e1. c+.d.e1^8d4.  c+.d.e1. c+.d.c+4.e4.d4.e4.
+## 18
+f+4.g+8.a8. b.  <c+.> b.    a8^8.g+4f+8. e.  a8^8.g+4f+8. e.
+## 26
+'hp' l16
+[[gb<dgd>b][a<c+eaec+>][g<cd+gd+c>][gb<dgd>b]
+ [gb<ege>b][a<c+eaec+>][g<cegec>] <f+gf+d>agf+df+af+d]
+## 34
+#^^
+;
+
+{3}
+r2.
+$## 2
+'bs-o3' %r14 l32
+[a8.ar16.<a16>r8ar<c8d16  d8.dr16.<d16>r8drg8g+16
+a8.>ar16.<a16>r8ar<d8d+16  e8.>er16.<e16>r8erg8g+16
+a8.ar16.<a16>r8ar<c8d16  d8.dr16.<d16>r8drg8g+16 j2
+a8.>ar16.<a16>r8ar<d8d+16  e8>e16r8e16e16b16e16g8g+16]
+> a8m48,-5^4 e8m48,-5^4 m16,5a4. <e8m48,-5^4>
+## 18
+f+8.f+r16.<f+16>r8f+r<c+8f+16  d8.dr16.<d16>r8drg8g+16
+a8.>ar16.<a16>r8ar<d8d+16  e8.>er16.<e16>r8er<c8c+16
+d8.dr16.<d16>r8drg8g+16  a8.>ar16.<a16>r8ar<c8c+16
+d8.dr16.<d16>r8dr>g8g+16  a4.e4.
+## 26
+%r9 g2. a2. <c2.> g2. e2. a2. <c2. d8.m108,-12^16^2 %r11
+## 34
+l16>
+grgrggg4. a2. <crcrccc4.> g2.   e4.<e4.> a4.<a4.  crcrccc4. d4..>eff+gg+
+;
+
+{4}
+r2.
+$## 2
+l16 [24"s8.c8csc8tsc"]
+## 18
+#^^
+## 26
+'vo-o1' b2. <c+2. c4.d+4. d4.>b1^8< c+2. c2. >a2.
+## 34
+"!!!o" l16
+[4"m8.n8mnmnm8n m8.n8nm8.n8n"]
+;
+
+{5}
+r2.
+$## 2
+'po+o1*v.7' l16
+[4r8c+][4r8d][4r8c+]>[4r8b]<
+[4r8c+][4r8d][4r8c+][4r8e]
+[4r8c+][4r8d][4r8c+]>[4r8b]<
+[4r8c+][4r8d]>a4.g+4.a4.b4.<
+## 18
+< l2 'p*v.5' c+. d. c+. >b.  a. <c+.> a. <c+4.>b4.
+## 26
+'vo' g1.  g4.g4.  g1.  a2.g2.f+2.
+## 34
+'cl' l16
+d4^g24g24g24^^4 a8b8<c+8c+8>b8a8  d+4^<(c24>a+24)<c24^^4> g2.
+g4^a4b8. a4^e4.r  e4^f+4g8. a4.
+'po+o1*v.67' a+b<cc+dd+
+;
+
+{6}
+r2.
+$## 2
+'po*v.7' l16
+[4r8e][4r8f+][12r8e][4r8f+][4r8e][r8a][r8g+]
+[4r8e][4r8f+][12r8e][4r8f+]e4.e4.d4.e4.
+## 18
+< l2 'p*v.5' f+. f+. e. e.    f+. e. f+. e4.e4.
+## 26
+'fl' l16
+g4^<(d24c+24)d24^^4 c+8d8e8e8d8c+8>  g4^<(d+24d24)d+24^^4 d2.
+>b4^<c4d8. c+4^>a4.r<  c4^d4e8. d2^8.r
+## 34
+'tp'
+g4^<(d24c+24)d24^^4 c+8d8e8e8d8c+8>  g4^<(d+24d24)d+24^^4 d2.
+>b4^<c4d8. c+4^>a4.r<  c4^d4e8. d2^8.r
+;
+
+{7}
+r2.
+$## 2
+'ac+o1*v.58' l16 %a10
+[e8r8.c+8r8e8r d4^c+4>b8^24g+48 a4^b4<c+8.> e2.<
+e8r8.c+8r8e8r d4^c+4>b8^24g+48  j2  a2^8.^24g+48 a4.g+4.<]
+a4.g+4.f+4.g+4.
+## 18
+'tp*v.67'
+a4^b4<c+8. d4^c+4>b8.  a2^8.r g+4.<e4.
+d4^c+4>b8. a2^8.r  <d4^c+4>b8r a4.g+4.
+## 26
+&22r 'cl-p50*v.4' %a15
+g4^<(d24c+24)d24^^4 c+8d8e8e8d8c+8>  g4^<(d+24d24)d+24^^4 d2.
+>b4^<c4d8. c+4^>a4.r<  c4^d4e8. &122d2
+## 34
+'vo-o1' b2.<c+2. c4.d+4. d4.>b8^1< c+2.c2.>a2.
+;
+
+{8}
+r2.
+$## 2
+l16 [24"m8.n8nm8.n8n"]
+## 18
+#^^
+## 26
+&22r 'fl+p50*v.4'
+g4^<(d24c+24)d24^^4 c+8d8e8e8d8c+8>  g4^<(d+24d24)d+24^^4 d2.
+>b4^<c4d8. c+4^>a4.r<  c4^d4e8. &122d2
+## 34
+'vo' g1. g4.g4. g1. a2.g2.f+2.
+;

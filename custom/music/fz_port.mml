@@ -1,0 +1,190 @@
+#TITLE Port Town
+#ALBUM F-Zero
+#COMPOSER Yumiko Kanki
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x82~/0x0E/
+#WAVE 0x21 ~0x42~/0x20/
+#WAVE 0x22 ~0x41~/0x06/
+#WAVE 0x23 ~0x7c~/0x08/
+#WAVE 0x24 ~0x97~/0x31/
+#WAVE 0x25 ~0x4D~/0x02/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x5C~/0x21/
+#WAVE 0x2E ~0x11~/0x11/
+#WAVE 0x2F ~0x0F~/0x0F/
+
+#def global= t95 %x240 %v40 %b0,85 %f0,0
+
+#def brs= |0 'vbr' o6 m48,18,239 %r10
+#def vb1= @3 'vv1' o5 m48,18,239 %y1%s2
+#def vb2= |1 'vv2' ~o4~/o5/ m48,18,203
+#def cho= |2 'vch' o5 m18,18,223 %a5%r9
+#def ch2= |2 'vch' o5 %y4%s3
+#def hrn= |3 'vhn' o5 m48,18,223
+#def bep= |4 'vbe' ~o6~/o4/ m %a10%y4%s3
+#def bas= |5 'vbs' ~o7~/o8/ m p78
+#def buz= @0 'vbz' o4 m23,18,223
+
+#def vbr= v64
+#def vv1= v48
+#def vv2= v24
+#def vch= v48
+#def vc2= v32
+#def vhn= ~v24~/v32/
+#def vbs= v80
+#def vbz= v24
+#def vbe= v40
+
+#def pr= p113p72,127
+#def pl= p15p72,0
+#def pr2= p96p72,127
+#def pl2= p32p72,0
+
+#def cr= p72,113
+#def cl= p72,15
+
+#drum "k"=5f |8 v96 p64 %e0
+#drum "s"=5b |9 v96 p64 %e0
+#drum "h"=5a |F v28 p64 %e1
+#drum "o"=5a |E v24 p64 %e1
+
+{1}$
+'global' %e1
+'vb1+o1' l2
+['pr'c+'pr'g+'pr'g'pr'd+'pr'e'pr'c+'pr'd+'pr'>b<]
+## 9
+'brs+o1' p64 l16
+[c+8.>b32a+32g+<c+^2>ba+  rg+rf+rd+g+2r8<]
+## 13
+l32
+>[3g+8.f+g+ f+8.ef] d+4.r8
+<[g+8.f+g+ f+8.ef] g+8.f+c+>a+8.<cc+d+4.>r16f+g+
+## 17
+l16
+[<[c+8rc+^4]c+8.>b32<c+32d+>b^2r8]
+## 21
+<[[f+8.e32d+32c+f+8.]c+1]
+;
+
+{2}$
+'vb1' l2 %e1
+['pl'f+'pl'<c+'pl'c'pl'>g+'pl'a'pl'f+'pl'g+'pl'e]
+## 9
+'hrn' p12 l8
+[g+.g+4.g+4.. a+.a+4.a+4..]
+## 13
+'bep' p115 l16
+[10'vbe*v1.26'<c+d+r>'vbe*v.95'g+]
+['vbe*v1.26'<c+dr>'vbe*v.95'g+]
+[4'vbe*v1.26'<c+d+r>'vbe*v.95'g+]
+## 17
+'hrn' p12 l32
+[g+8.f+ed+4] f+8.ed+ e8.d+c+  >b8.<c+d+ e16d+16c+16>b16<
+f+8.g+a b4  g+8.ab <c+4>    a8.b<c+> b8.<c+d+  e8.c+d+ e16d+16e16f+16
+## 21
+c+8.c+>b a16<c+8.  d+8.c+>ba16<c+8.    >g+1<
+[c+8.c+>b a16<c+8.]   >g+1
+;
+
+{3}$
+'bas-o2' l16
+[32'vbs*v1.26'd+'vbs*v1.14'd+d+d+]
+## 9
+'vbs*v1.26'[[[7e]>b<][[7d+]>a+<]]
+## 13
+'vbs*v1.08'>a<e'vbs*v1.26'aaaa'vbs*v1.08'>a<a
+>b<f+'vbs*v1.26'bbbb'vbs*v1.08'>b<b
+c+g+'vbs*v1.26'<c+c+c+c+'vbs*v1.08'>c+<c+>
+'vbs'c+g+'vbs*v1.26'<c+>bg+f+'vbs*v1.08'c+>b
+'vbs*v1.08'a<e'vbs*v1.26'aaaa'vbs*v1.08'>a<a
+da'vbs*v1.26'<dddd'vbs*v1.08'>dd
+d+a+'vbs*v1.26'<d+d+d+d+'vbs*v1.08'>d+<d+>
+'vbs'g+g+'vbs*v1.26'g+g+f+f+'vbs*v1.08'd+d+
+## 17
+'vbs'ee'vbs*v1.26'e'vbs'd+32e32 'vbs*v1.26'e'vbs'd+32e32e'vbs*v1.26'e
+'vbs'f+f+'vbs*v1.26'f+'vbs'e32f+32 'vbs*v1.26'f+'vbs'e32f+32f+f+
+['vbs'c+c+'vbs*v1.26'c+'vbs'>b32<c+32 'vbs*v1.26'c+'vbs'>b32<c+32c+c+]
+'vbs'dd'vbs*v1.26'd'vbs'c+32d32 'vbs*v1.26'd'vbs'c+32d32dd
+>'vbs'bb'vbs*v1.26'b'vbs'a32b32 'vbs*v1.26'b'vbs'a32b32bb<
+['vbs'c+c+'vbs*v1.26'c+'vbs'>b32<c+32 'vbs*v1.26'c+'vbs'>b32<c+32c+c+]
+## 21
+>'vbs'aa'vbs*v1.26'a'vbs'g+32a32 'vbs*v1.26'a'vbs'g+32a32aa
+'vbs'bb'vbs*v1.26'b'vbs'a32b32 'vbs*v1.26'b'vbs'a32b32bb<
+['vbs'c+c+'vbs*v1.26'c+'vbs'>b32<c+32 'vbs*v1.26'c+'vbs'>b32<c+32c+c+]
+'vbs'ee'vbs*v1.26'e'vbs'e32e32 'vbs*v1.26'e'vbs'e32e32ee
+'vbs'dd'vbs*v1.26'd'vbs'd32d32 'vbs*v1.26'd'vbs'd32d32dd
+['vbs'c+c+'vbs*v1.26'c+'vbs'>b32<c+32 'vbs*v1.26'c+'vbs'>b32<c+32c+c+]
+;
+
+{4}$
+l16
+"k.k32sk k32kk32sk"
+;
+
+{5}$
+'cho+o2' l2 %e1 p15
+r1r1r1r1
+'cr'c+'cl'g+'cr'g'cl'd+'cr'e'cl'c+'cr'd+'cl'>b
+## 9
+'hrn' p115 l8
+[d+.d+4.d+4.. c+.c+4.c+4..]
+## 13
+p12 [e32e32e8.] [d+32d+32d+8.] [e32e32e8.] [f+32f+32f+8.]
+[e32e32e8.] [6f+32f+32f+8.]
+## 17
+'bep+o1' p127 l32
+c+d+>'vbe*1.26'g+16r16 [4 p0 'vbe'<c+d+>'vbe*1.26'g+16r8 p127 'vbe'<c+d+>'vbe*1.26'j4g+16r8]
+a16r8 p0 'vbe'<c+d>'vbe*1.26'a16r8 p127 'vbe'<c+d> [3 'vbe*1.26'g+16r8 p0 'vbe'<c+d+>'vbe*1.26'g+16r8 p127 j3 'vbe'<c+d+>]r16
+## 21
+'hrn' p115 l32
+b8.g+f+e16b8. b8.g+f+e16a8.  e4f+4e4c+4
+b8.g+f+d+16g+8. b8.g+f+e16g+8.  e4d+4e4f+4
+;
+
+{6}$
+'vb2+o1' l2 %e1
+['pr'c+'pr'g+'pr'g'pr'd+'pr'e'pr'c+'pr'd+'pr'>b<]
+## 9
+'hrn+o1' p64 l16
+[c+8.>b32a+32g+<c+^2>ba+  rg+rf+rd+g+2r8<]
+## 13
+'brs*v.67'
+p24 [e32e32e8.] [d+32d+32d+8.] [e32e32e8.] [f+32f+32f+8.]
+[e32e32e8.] [6f+32f+32f+8.]
+## 17
+'ch2' p64 l16
+[<[c+8rc+^4]c+8.>b32<c+32d+>b^2r8]
+## 21
+'brs'
+[[f+8.e32d+32c+f+8.]c+1]
+;
+
+{7}$
+'vb2' l2 %e1
+['pl'f+'pl'<c+'pl'c'pl'>g+'pl'a'pl'f+'pl'g+'pl'e]
+## 9
+'cho*v.67' p64 l1
+[<c+>g+]
+## 13
+'ch2' p115 l16
+[10'vc2*v1.26'<c+d+r>'vc2*v.95'g+]
+['vc2*v1.26'<c+dr>'vc2*v.95'g+]
+[4'vc2*v1.26'<c+d+r>'vc2*v.95'g+]
+## 17
+'ch2+o1' p127 l32
+c+d+>'vc2*1.26'g+16r16 [4 p16 'vc2'<c+d+>'vc2*1.26'g+16r8 p112 'vc2'<c+d+>'vc2*1.26'j4g+16r8]
+a16r8 p16 'vc2'<c+d>'vc2*1.26'a16r8 p112 'vc2'<c+d> [3 'vc2*1.26'g+16r8 p16 'vc2'<c+d+>'vc2*1.26'g+16r8 p112 j3 'vc2'<c+d+>]r16
+## 21
+'cho*v.75+o1' p64
+c+2 d+8.m24,-2^8^8. e1
+c+2 c+8.m24,-5^8^8. c+1
+;
+
+{8}$
+l16
+"h.o32hh o.h.h"
+;

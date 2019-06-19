@@ -1,0 +1,177 @@
+#TITLE Fighting of the Spirit
+#ALBUM Tales of Phantasia
+#COMPOSER Shinji Tamura
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x41~/0x06/
+#WAVE 0x21 ~0x7C~/0x09/
+#WAVE 0x22 ~0x6F~/0x00/
+#WAVE 0x24 ~0x6B~/0x02/
+#WAVE 0x25 ~0x3A~/0x3A/
+#WAVE 0x28 0x22
+#WAVE 0x29 ~0x71~/0x14/
+#WAVE 0x2A 0x0F
+#WAVE 0x2B ~0x50~/0x12/
+#WAVE 0x2C ~0x88~/0x11/
+
+#def global= t88 %x224 %v50 %b0,90 %f0,0
+
+#def syn= |1 ~o5~/o6/ ~v90~/v64/ %e1 m48,18,239 p54
+#def sye= |1 ~o5~/o6/ ~v30~/v21/ %e1 m48,18,239 p74
+#def vox= |0 ~o5~/o4/ v56 %e1 m48,18,207 p64
+#def vx2= |5 ~o4~/o4/ v56 %e1 m p64
+#def clv= ~|2~/@1%y3%s3%r13/ ~o6~/o4/ %e1 'cl80' m12,9,239 p94
+#def hch= @6 o5 %e1 %y6%s1%r13 v24 m p34
+#def bas= |4 o6 v64 %e0 m p64
+
+#def cl80= ~v100~/v40/
+#def cl70= ~v88~/v35/
+#def cl60= ~v75~/v30/
+#def cl50= ~v63~/v25/
+#def h100= v24
+#def h90= v22
+#def h80= v19
+#def h70= v17
+#def h105= v25
+#def h110= v26
+#def h115= v28
+
+#drum "y"=5a |B %r17 %y3%s3 v112 %e1 p64
+#drum "z"=5a |B %r17 %y4%s2 v112 %e1 p64
+#drum "k"=5f |8 v100 %e0 p64
+#drum "j"=5f |8 v72 %e0 p64
+#drum "s"=5f+ |9 v100 %e1 p64
+#drum "t"=5f+ |9 v63 %e0 p64
+#drum "u"=5f+ |9 v70 %e0 p64
+#drum "h"=5a |A v48 %e0 p64
+#drum "a"=5a |A v30 %e0 p64
+#drum "b"=5a |A v38 %e0 p64
+#drum "c"=5a |A v41 %e0 p64
+#drum "p"=5a |C v48 %e0 p64 %y4%s1
+#drum "q"=5a |C v48 %e0 p64 %y4%s2
+#drum "r"=5a |C v48 %e0 p64 %y4%s4
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'global' 'syn' >>~v50~/v36/a1&136^ l24 ~v56,90~/v56,64/ b<df+a<c+eg+
+$
+'syn' l16 $103 m6,1b8.b8.a4..b<cd  e8.>a4..b8<c8d8
+c>b12r24g12r24g12r24g8.b8<c8d8  c>b12r24a^4(m12,4c4^m12,-4^e)r
+m6,1b8.b8.a4..b<cd  e4^d8c>b8.a^4
+a8b<crdre8.drcr>br  <c>br(a4.m48,-5a4m24,5e8.)
+## 11
+<(m32,2d4^d8)c>b4b12<c12d12  c4>b4a4g4<
+(m32,2d4^d8)cc8>b8<f8e8  d4^c8>b32<c32>b4a8g8
+[a4ab<cd8dc8>b8a8]      a4ab<cg8gf8e8d8  >b4^<cde8dc>b8abr
+## 19
+b8.a^2ab<cd e8.>a^2ab<ce  dcr>br<cr>brarggegb a2^egeaebe
+b8.a^2ab<cd e8.>a^2ab<ce  dcr>br<cr>brarggegb a2^edcdc>bg j1,0
+## 27
+<[[cc>b<cr>br<drc>br<c8r8] ddcdrcrerdcrd8r8 cc>b<cr>br<drc>br<c8r8 $0]
+;
+
+{2}
+['clv'> l16 a['cl70'e8'cl80'g8]'cl70'e'cl80'<c>'cl60'e'cl80'b'cl60'e'cl80'a'cl60'e]
+$
+'vox' l8 <e.d.c2>g f2^gab <e4d4>b4g4 a2l16ea<c>a<ec>ae
+l8 <e.d.c2>g f4a4<c4f4 e4d4>b4g4 a2l16ea<c>a<ec>ae
+## 11
+l8 f2.ga g2a4b4  a2f.g.a g4.b<d.c.>b    
+l16 [f4fgab8ba8g8f8] f4fga<e8ed8g8f8 l8 e>b<eg+bg+eb
+## 19
+l4 edc>b ab<ce  d>bgb aea<c    edc>b ab<ce  d>bgb <c1
+## 27
+'syn' l16 >[aaaarara raara8r8] bbabrar<cr>barb8r8
+[3aaaarara raara8r8] bbabrar<cr>barb8r8 aaaarara raara8r8
+;
+
+{3}
+'bas'> v120a2...v100a32v110a32v120a1
+$
+'bas' l16 [aega8ega8egeaege fcef8cef8cecfcec gdfg8dfg8dfdgdfg aega8ega8e<c>ebeae]
+## 11
+[f.r.f8cdc ffrf8cdc  g.r.g8ded ggrg8bag  j2,317  [ffrf8cdc] g.r.g8ded gdbdadgd]
+$317 f.r.f8cdc ffrf8cfc  e8re8rg+e g+8g+a8.b8
+## 19
+[ a[ega8]e<c>ebeae f[cdf8]cacgcfc g[dfg8]dbdadgd a[ega8]egeae<c>e ]
+## 27
+aagarg12r24araara6r12 ffefre12r24frffrf6r12
+ggfgrf12r24grggrg6r12 aagargra12r24aara6r12
+aagargra12r24aara8g8  ffefre12r24frffrf6r12
+ggfgrf12r24grggrg8g+8 aagarg12r24araarab<c>a
+;
+
+{4}
+"k4k4k4k4" l16 "tjjtjjtj" "u"v74"\s"v84"\s"v94"\s"v104"\s"v114"\s"v120"\s"v127"\s"
+$
+[4"!!!o k8s8kksk8ks8k"j4"ks8"]":k:sss"
+[4"!!!o k8s8kksk8"j4"ks8kks8"]":k:s8ks8ss"
+## 11
+[7"k8sk8.s8"]"k8sk8s8s"    ["k8s8kks8"]"k8s8kksk8ks8kks8" [3"k8s8kks8"]"skkskkss"
+## 19
+[4"!!!o k8s8kksk8ks8k"j4"ks8"]":k:sss"
+[4"!!!o k8s8kksk8"j4"ks8kks8"]":k:skkssss"
+## 27
+"!!!o k8s8kks8 k8s8kk32k32s8    k8s8kks8 k8s8kks8"
+"k8s8kks8 k8s8kk32k32s8    k8s8kks8 k8s8ksss"
+"k8s8kksk ^ks8kks8    k8s8kksk ^ks8kks8"
+"k8s8kksk ^ks8kks8    k8s8kksk ^ks8s4"
+;
+
+{5}
+'hch' l16 [4<e>a<c>a<d>a<c>g]
+$
+'clv'> l16 [3aega[3^ega]] aega8ega8<c>babag8
+[aega[3^ega]] aega8ega8ege<c>ebe aega8eae<c>ebeaeg8
+## 11
+[4 f8'cl50'f'cl80'a8'cl50'a'cl80'<c8'cl50'c'cl80'e8'cl50'e'cl80'd8c8>
+j4 g8'cl50'g'cl80'b8'cl50'b'cl80'<c8'cl50'c'cl80'd8'cl50'd'cl80'c8>b8]
+e8'cl50'e'cl80'g+8'cl50'g+'cl80'b8'cl50'b'cl80'<e8'cl50'e'cl80'g+8b8>
+## 19
+l16 [ a[3ega8]ega f[3cfa8]cfa b[3dgb8]dgb a[ega8] j2 ega<c>bag ] bbabage
+## 27
+l8 "!!!o yqrpqprz yprprprp yprprprz yprprprp"
+'vx2' >a2.<ce> f2<e4d4>  g2<c4d4> l16 a2^<<c>aeaec>a
+;
+
+{6}
+"y1"&136"y" 'syn'> l24 v50v56,90 r48 c+eg+b<df+a48
+$
+'hch' l16 [eab<c>bae<c> ebeaebe<c>    fafbf<c>f<d> f<c>fbfafb
+gbg<c>g<d>g<e> g<d>g<c>gbgb    eaebe<c>e<d> e<c>ebeaeb]
+## 11
+[4 <e>af<e c>a<e>a f<ec>a <e>af<e  j4  d>bg<f d>b<d>b g<fd>b <d>bg<f>]
+d>bg+e g+b<d>b g+b<d>b <g+e>b<g+
+## 19
+[[[5ec>a<]e] [5e>bg<]e [5ec>a<]e]
+## 27
+'hch' l16 [16'h100'<c>'h80'a][8'h100'<d>'h80'b][7'h100'<c>'h80'a]'h100'<c'h80'c
+l8 "!!!o yprprprz yprprprp yprprprz yprprprp"
+;
+
+{7}
+'sye' r8 >>~v17~/v12/a1&136^ l24 ~v56,30~/v56,21/ b<df+a
+$
+l16 ["!!!o y8ha" [15"baha"]]
+## 11
+"y8a8h8a8" [7"b8a8h8a8"]    "y8a8h8a8" [6"b8a8h8a8"] "b8a8bbch"
+## 19
+"y8ha" [31"baha"]
+## 27
+'hch' l16 r32 [8'h90'b'h70'e] [8'h90'b'h70'f]
+[8'h90'<c>'h70'g] [7'h90'b'h70'e]'h90'a r32
+[16'h100'<c>'h80'a] [8'h100'<d>'h80'b] [7'h100'<c>'h80'a]'h100'<c'h110'c
+;
+
+{8}
+r1&160r 'sye'> l24 ~v17~/v12/~v56,30~/v56,21/ r48 c+eg+ l48 b<c+def+g+a
+$
+'sye' [j2,827%j103$827
+&162 r1r1r1r1 'hch' l16 'h70'<e>
+[8'h90'b'h70'e] [8'h90'b'h70'f] [8'h90'<c>'h70'g] [7'h90'b'h70'e]'h105'a'h115'<er.
+;

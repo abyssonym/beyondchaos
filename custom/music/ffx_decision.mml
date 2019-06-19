@@ -15,7 +15,7 @@
 
 #def global= t89 %v25 %b0,70 %f0,0 %x104
 
-#def elp=~|0~v80 p62 %e1 m48,18,175 ~o5~/o5/ /@3%y3%s3/%r12
+#def elp=~|0~v80 p62 %e1 m48,18,199 ~o5~/o5/ /@3%y3%s3/%r12
 #def st1= |1 v50 p24 %e1 m48,18,207 o5 %r4
 #def st2= |1 v24 p74 %e1 m48,18,207 o5 %r5
 #def flt= |2 v80 p62 %e1 m48,18,223 o5 %r7

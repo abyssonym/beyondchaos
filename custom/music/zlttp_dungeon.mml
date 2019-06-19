@@ -1,0 +1,116 @@
+#TITLE Sanctuary Dungeon
+#ALBUM Legend of Zelda: A Link to the Past
+#COMPOSER Koji Kondo
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x0D~/0x0D/
+#WAVE 0x21 ~0x1C~/0x1C/
+#WAVE 0x22 ~0x2C~/0x2C/
+#WAVE 0x23 ~0x7F~/0x08/
+#WAVE 0x24 ~0x73~/0x0E/
+
+#def st= |0 %a10%r9 m24,18,203 's' o5 %s4%y0
+#def ho= |3 m24,18,231 'h' o5 %r7
+#def bg= |1 m 'b' %a8 o6
+#def cb= |2 m 'c' o7 %a9
+#def tr= |4 m28,18,231 't' ~o5~/o6/ %r13
+
+#def s= v80
+#def h= ~v32~/v40/
+#def c= v32
+#def b= v16
+#def t= ~v56~/v32/
+
+#def global= t34 %x240 %v50 %b0,85 %f0,0
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'global' %e1 p74 'st-o1'
+c+1 c+1 d+4.>b2<g4..>g+4..t96,71g4.<a+8 a+2..^32r16.
+$##
+'bg-o2' p64
+[16b16][16a+16][16a16][16a+16]
+##
+'ho' l16 %s7
+a4.g+ab4.ag+ c+2..%s1c+24c24c+24%s7  g4.f+ga4.gf+ >b2..%s1b24a+24b24%s7
+a+4^16<c+f<c+c4.>g+8< c>b^4(fe^2)  d+4^dd+g+<d4.>a+8 a1
+;
+
+{2}
+%e1 p54 'st-o2'
+[r16g2...] r16<e2..f+4..>g4..f+4.<a16 a2..^32r16.
+$##
+p74 'st'
+r16c+4c+4c+4.. r16c4c4c4.. >r16b4b4b4..< r16c4c4c4..
+r16c+4c+4c+4.. r16c4c4c4.. >r16b4b4b4.. r16a+4a+4a+4..<
+r16f4f4f4.. r16e4e4e4.. r16g4g4g4.. r16g+4g+4g+4..
+;
+
+{3}
+%e1 p84 'st-o2'
+[rf+2..] r<f2..> a+2..<c4.<d+2..^32r16.
+$##
+p54 'st'
+rd4d4d4. rc+4c+4c+4. rc4c4c4. rc+4c+4c+4.
+rd4d4d4. rc+4c+4c+4. rc4c4c4. >rb4b4b4.<
+rf+4f+4f+4. rf4f4f4. rg+4g+4g+4. ra4a4a4.
+;
+
+{4}
+%e1 p44 'st-o1'
+[r.f+2.^16] r.a2..>a2..b4^16 b2
+'bg-o2' p64 [8b16]
+$##
+p84 'st'
+r.a4a4a4^16 r.g+4g+4g+4^16 r.g4g4g4^16 r.g+4g+4g+4^16
+r.a4a4a4^16 r.g+4g+4g+4^16 r.g4g4g4^16 r.f+4f+4f+4^16
+<r.c+4c+4c+4^16 r.c4c4c4^16 r.d+4d+4d+4^16 r.e4e4e4^16
+;
+
+{5}
+%e1 p94 'st-o1'
+[r4c2.] r4g+2...f2.^16f4 f2..^32r16.
+$##
+'cb-o2' p64
+[16b16][16a+16][16a16][16a+16]
+##
+'bg-o2'
+[16b16][16a+16][16a16][16g+16]
+< [16d+16][16d16][16f16][16f+16]
+;
+
+{6}
+%e1 p34 'st-o1'
+r1 r4r16d2^8. r4r16c2...e2.^16e. e2..^32r16.
+$##
+[4r1]
+##
+'cb-o2' p64
+[16b16][16a+16][16a16][16g+16]
+< [16d+16][16d16][16f16][16f+16]
+;
+
+{7}
+r1r1r1r1r2.
+%e1 p64 'cb-o2'
+[8b16]
+$##
+[4r1]
+'tr' l16 %s7
+a4.g+ab4.ag+ c+2..%s1c+24c24c+24%s7  g4.f+ga4.gf+ >b2..%s1b24a+24b24%s7
+a+4^16<c+f<c+c4.>g+8< c>b^4(fe^2)  d+4^dd+g+<d4.>a+8 a1
+;
+
+{8}
+r1r1r1r1r1r4
+$##
+'st*v.5' p44 l16
+r8.[3c+da8]^ r8.[3cc+g+8]^ r8.[3>b<cg8]^ r8.[3cc+g+8]^
+r8.[3c+da8]^ r8.[3cc+g+8]^ r8.[3>b<cg8]^ r8.[3>a+b<f+8]^ 
+r8.[3ff+<c+8>]^ r8.[3ef<c8>]^ r8.[3gg+<d+8>]^ r8.[3g+a<e8>]^ 
+;

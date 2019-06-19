@@ -1,0 +1,164 @@
+#TITLE Freeze
+#ALBUM Tales of Phantasia
+#COMPOSER Motoi Sakuraba, Shinji Tamura
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x1B~/0x1B/
+#WAVE 0x21 ~0x8C~/0x31/
+#WAVE 0x22 ~0x7F~/0x0E/
+#WAVE 0x23 ~0x74~/0x35/
+#WAVE 0x24 ~0x33~/0x33/
+#WAVE 0x25 ~0x0D~/0x0D/
+#WAVE 0x26 ~0x02~/0x02/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x56~/0x14/
+#WAVE 0x2A ~0x37~/0x37/
+
+#def init= t90 %x240 %v40 %b0,100 %f0,0
+
+#def hp= |0 o5 'h' p80 %e1 m
+#def pi= |1 ~o5~/o4/ 'p' p64 %e1 m
+#def tp= |2 ~o5~/o6/ 't' p74 %e1 m48,18,231 %a14%r8
+#def cl= |3 ~o5~/o6/ 'c' p64 %e1 m48,18,223 %a11%r8
+#def ob= |4 o5 'o' p54 %e1 m48,18,223 %a13%r6
+#def st= |5 o5 's' %e1 m48,18,207 %a13%r7
+#def bs= |6 o8 'b' p64 %e0 %r11 m48,18,193
+
+#def 05= 'st' p74
+#def 06= 'st' p54
+
+#def h= v52
+#def p= v64
+#def t= v40
+#def c= v40
+#def o= v52
+#def s= v32
+#def b= v96
+
+#drum "k"=5b |8 v72 p64 %e0
+#drum "s"=5b |9 v72 p64 %e1
+#drum "b"=5a |A v56 p40 %e1
+#drum "a"=5a |A v12 p40 %e1
+
+#def ( %l1
+#def ) %l0
+
+{1} 'init' $
+[4r1] 'pi+o3' l12
+gf+e>bab gf+e>bab  b6a4ea4^ga    f+gf+gf+d f+gab<c+d  e>a<ed>a6 b6<c6d8c+48c48>
+b4^6g f+gf+gf+d  e6>a^2.    'cl+o1 'g6f+6d6e6>b4b a1
+## 13
+'ob' l4
+e1^1 e1^1  e2e2 cdea  <ed>a<c d1>    g2d1^1e2
+## 24
+'cl+o1' l12
+d4^def6a6<d6 f6e8m8,-1^24d6c6>f3
+d+6f6g6a+8m8,-1^24a6g6 a6g8m8,-1^24f6g+6g6f8m8,-1^24
+d+4^d6d+6d+dd+g <c4^dcc4^24m8,-1^24>b6
+## 30
+d3def6a8m8,-1^24<d6 f6e6d6c8m8,-1^24>f3  d+6f8m8,1^24g6a+6a6g6 a8m8,-1^24g6f6g+6g8m8,-1^24f6
+d+3d6d+6d+dd+g <c4^24m8,-1^24>a+g+a+6d+dd+6   c6fgm6,1g3a+6<c6 m6,1e1 f1
+;
+
+{2} $
+'hp-o2' l12
+[5[rb<eb<e>b>][r<cfa<e>a>]]
+rb<eb<e>breb<ebe>  [rfa<dad>]
+## 13
+[8b<cg>]<[8dea][8cea][cfa][3dfa]a+af a+aa+<d>a+f
+[4gd>a+<][4gd>b<]e>gb<de>b< degdeb
+## 24
+'05' l6
+f1 a+2a2   g2g3a+ a<gfc>g+f   g2<c3d c3g g2
+## 30
+'tp-o1*v1.1' l12
+r6a6<d6a2 f3g6a2  r6d+>a+<d+gg6d6a+6 <d3>a6g+6a+6<c6
+d+dc>gfd+gd+c>g<cd+ d+3fd+f6>a+6<a+6   g+gfcf3c6f6 g+3g+3g+3 d+2c+2
+;
+
+{3} $
+'bs-o2' l2
+[5eeff] eef l12 f6fefg
+## 13
+l4
+a2g2 <dc>ge  f2.c f1    a2g2 f2e2  d2c2 >a+1<
+d+1> [4a4] l12 aaa<e>a<d> a<deae>a<
+## 24
+d4ad6 c4^c6  >a+4<cde f6c6>f6<
+d+4a+d+6 g6d6g6   d4ade f4^f6
+c3<c6> a+3a+6   g+3g+6 g3g6
+## 30
+d4ad6c3c6 >a+4<cdef6c6>f6<  d+4a+d+6g6d6g6 d4adef3f6
+c3<c6>a+3a+6 g+3g+6g3g6  f3f6d+3d+6 c+4c+4c+4c+6g+  [4c+4]
+;
+
+{4} $
+l12
+[12"k6b6.k k6b^4"]
+## 13
+l6 [18"!!!o baa"] "kbasbk ksbkss"
+## 24
+l12 [5"k6b6sk k6b6s6"] "k6b6sk a6b6a6"
+## 30
+[8"!!!o k6b6sk k6b6s6"] "k6b6sk k6s6s6"
+;
+
+{5} $
+'05-o1' l1 
+[6b<c>]
+## 13
+'06-o1' l4
+g2g1^g a1a1  e1c2e2 f2a2a+1   a+1g1a1
+## 24
+'tp-o1' l2
+aa <dc>   a+<d dc   cc d+d
+## 30
+'05' l2
+f1 a+a  gd fc    cg <c>a+  g+g+ g+g+  ff
+;
+
+{6} $
+[4r1] 'pi+o3*v.4+p10' l12 &22r
+gf+e>bab gf+e>bab  b6a4ea4^ga    f+gf+gf+d f+gab<c+d  e>a<ed>a6 b6<c6d8c+48c48>
+b4^6g f+gf+gf+d  e6>a^2.    'cl+o1*v.4+p10' g6f+6d6e6>b4b &170a1
+## 13
+'05' l4
+c2>b1^b< c1c1  c1c1 d1d1   d1d1d1
+## 24
+'hp' l12
+[fedfa<d>] fedfa+<d> cfga<c>a
+a+agfd+d >a+<dgaa+<d>   afefdf g+fefcf
+[>g<cdd+g<c>] cd+g+a+<c>g+ gdcgd>b<
+## 30
+[fedfa<d>] fedfa+<d> cfga<c>a
+a+agfd+d >a+<dgaa+<d>    afefdf g+fefcf
+[>g<cdd+g<c>]  cd+g+a+<c>g+ a+d+dd+>a+<d+
+[cfgg+<c>g+] [>g+<c+d+c+fc+] >g+<c+d+fc+d+ fg+<c+d+c+>g+
+;
+
+{7} $
+[12r1]
+## 13
+'ob*v.5+p20' l4 &22r
+e1^1 e1^1  e2e2 cdea  <ed>a<c d1>    g2d1^1&74e2
+## 24
+'06-o1' l6
+a1 <d2f2   d+2d3>a+< f2f2   d+2g3g g3c>g2<
+## 30
+d1 d2f2  d+2>a+2< d2>g+2    g2<c2 d+2>a+<d+>a+<  c2c2 >g+2<c+2  >g+2c+2
+;
+
+{8} $
+[23r1]
+## 24
+'cl+o1*v.4+p10' l12 &22r
+d4^def6a6<d6 f6e8m8,-1^24d6c6>f3
+d+6f6g6a+8m8,-1^24a6g6 a6g8m8,-1^24f6g+6g6f8m8,-1^24
+d+4^d6d+6d+dd+g <c4^dcc4^24m8,-1^24>b6
+## 30
+d3def6a8m8,-1^24<d6 f6e6d6c8m8,-1^24>f3  d+6f8m8,1^24g6a+6a6g6 a8m8,-1^24g6f6g+6g8m8,-1^24f6
+d+3d6d+6d+dd+g <c4^24m8,-1^24>a+g+a+6d+dd+6   c6fgm6,1g3a+6<c6 m6,1e1 &170f1
+;

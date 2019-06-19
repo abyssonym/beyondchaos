@@ -1,0 +1,198 @@
+#TITLE Between Two Worlds
+#ALBUM Treasure of the Rudras
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
+
+#WAVE 0x20 0x0D
+#WAVE 0x21 0x2C
+#WAVE 0x22 0x92
+#WAVE 0x23 0x73
+#WAVE 0x24 0x1B
+#WAVE 0x28 0x16
+#WAVE 0x29 0x8E
+
+#def init= t96 %x240 %v40 %b0,85 %f0,0
+
+#def st= |0 %e1 o5 's' p64 %k-4  m48,18,207
+#def sc= |0 %e1 o4 's' p64 %k-19 m48,18,207
+#def cb= |1 %e1 o7 'c' p64 %k-19 m48,18,199
+#def cs= |1 %e1 o8 'c' p64 %k-4  m48,18,199
+#def vx= |2 %e1 o5 'v' p48 %k-12 m48,18,231
+#def hn= |3 %e1 o5 'b' p56 %k-7  m48,18,223
+#def hp= |4 %e1 o4 'r' p80 %k0   m48,18,199
+#def kd= |8 %e1 o2 'k' p64 %k5   m
+
+#def s= v32
+#def sf= v48,32
+#def c= v52
+#def cf= v48,52
+#def v= v40
+#def b= v96
+#def r= v24
+#def k= v96
+#def kf= v48,96
+
+#drum "y"=5e |9 v80 p64 %y18 %k0
+#drum "z"=5g |9 v80 p80 %y18 %k0
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1} 'init' $
+'st+o1' l16 %a9%r8
+c4d4>b4g4 e4refg   a2
+<e2g4^fed   c8>b8g+8b8a2
+<e4refe d2>   b4^g+ab<c4>b4
+<e4a4d4rdef   >b4<e4'sf*v2,2'a2
+## 8
+a4 >a<cea  g4 ^fed    >g+b<df edc>b  a2
+<c4> eab<c  ded>b ^<cde    fed+e cd>b<c>  a2
+<agfe dc>b<c  d>be<e >be<dc    >b<c>ba g+abg+  aea<c ^dc>b
+<e>a<a>a <g+>a<a>a  <br<drcr>br    g+8eb ^eg+b  a2
+## 16
+d>af<e ^>a<fg  afcb gdb<c>    [a8.b8.<c8>]
+d>af<e ^>a<fg  afcb gdb<c>    a2 e>a<ed ^c>bg<
+d>af<e ^>a<fg  afcb gdb<c>    [a8.b8.<c8>]
+d>af<e ^>a<fg  afcb gdb<c>    g+abg+ abg+a  bg+ab ab<cd>
+## 24
+c4d4>b4g4  e4refga2    <e2g4^fed  c8>b8g+8b8a2<
+e4refed2  >b4^g+ab<c2   e4a4d4rdef  >b4<e4a2
+;
+
+{2} $
+'cb+o1*v.5' %a9%r8
+c2>a+2 g2g+4a+4
+<c2>a+2 g2<c2
+c2>a+2 g2g+4a+4
+<c2>a+2 'cf*4,.75'g2<c4.>>g8
+## 8
+'cs-o3' %a9%r8
+[3a2b2 <e2a4.>e8] a2<e2 e2>'cf*2,.33'a2
+## 16
+'cb*v.5' %a9%r8 l8
+f4.gg+4a+4   c2g4d+4
+f4.gg+4a+4   c2^d+fg
+f4.gg+4a+4   c2.dd+
+f4.gg+4a+4   'c'g4f4d+4d4
+## 24
+'cs-o3' %a9%r8
+[4a2g2 <e2>a2]
+;
+
+{3} $
+'hp+o1' l32
+c8^8a+8^8  g8^d+^a+^4
+l16 c8^8 g8^8  c+^g+8 ^g^8
+c8^8 <c8^8>  >a+^<g^ <d+4>
+^8e8 ^c^g  ^f^<c ^4>
+l32 ^8f8 ^8c8   ^8>a+^<g^<d+4>
+l16 ^8e8 ^8c8   ^f^8 d+^a+8
+^8f8 ^8f8   ^d+^a+ ^4
+c8^8 <c^>e^   c^g+^ <f4
+## 8
+'kd+o1'
+[3c1 ^2..>g8<] c2c2 c4c4 'kf*v2,.4'[16c32]
+## 16
+'hp+o1' l16
+[4a+^c+^  <c^>f^    <c+^>g+^  <d+^>g^
+j4 f^<c^   ^2.>]
+l32 ^>c^g^e^<c ^>g^<e^c^g  ^e^<c^>g^<e ^4
+## 24
+'sc+o3' %a9%r8 l16 p32
+[20gr][4fr][d+r][dr][4d+r][4gr][4fr][12gr][4fr][4dr][4d+r]
+;
+
+{4} $
+'hp+o1' l32
+r8f8^8>a+8  ^8a+^<g^<d+4
+l16 ^8>e8 ^8c8  ^f^8 d+^a+8
+^8f8 ^8f8  ^d+^a+ ^4
+c8^8 <c^>e^  c^g+^ <f4>
+l32 c8^8 <c8^8>   g8^d+^a+^4
+l16 c8^8 g8^8   c+^g+8 ^g^8
+c8^8 <c8^8>   >a+^<g^ <d+4>
+^8e8 ^c^g   ^f^<c ^8
+'hn' l32 %r10 cdd+f l16
+## 8
+g4<d+4drcr>a+4   b4grbr<c4>c4
+g4d+rcr>b4<g4   f4g4c2
+<c4>gr<cr>b4g4   f4d4d+4c4
+g4crd+r>b4<g4   g4g4c2
+## 16
+'hp+o1' l16
+[4rf^>a+  ^<g+^c+    ^f^<c+  ^>d+^a+
+j4 ^g+^<f  ^2.>]
+l32 >>g^<e^c^g^ e^<c^>g^<e^  c^g^e^<c^ g4
+## 24
+'sc+o3' %a9%r8 l16 p96
+[4cr]>[4a+r] [4br]<[8cr]> [4a+r] [8gr]<[4cr]>[4a+r][4br]<[8cr]>[4a+r][8gr]
+;
+
+{5} $
+'vx+o1' %a10%r10 l16
+c4c+4>a+4g4   e4^efgg+4g4
+f2a+2   <c4>e4f2
+g+4^g+a+g+g2   e4^cc+d+f4d+4
+f2a+2   <c2f2>
+## 8
+g+2g2 c2f2
+f2g4<c4> g4g+4f2
+<c2>e2 e2f2
+<c2>g2 g4e4f2
+## 16
+'v*v2' l8
+<[4c+4.d+ f4gg+ j4f1]e1
+## 24
+'v' l4
+g+a+gd+ cgf2   g+2g2 egf2
+g+2g2 e2f2   g+2g2 e2f2
+;
+
+{6} $
+'sc+o1' %a9%r8
+c2>a+2 g2g+4a+4
+<c2>a+2 g2<c2
+c2>a+2 g2g+4a+4
+<c2>a+2 'sf*4,'g2<c4.>>g8
+## 8
+'s*v.67'p96<<<<
+c2>a+2 b2g2
+<c2>b2 b2g2
+<c2>b2 b2<c2
+c2>b2 b2<c2
+## 16
+'sc' %a9%r8 l8
+f4.gg+4a+4   c2g4d+4
+f4.gg+4a+4   c2^d+fg
+f4.gg+4a+4   c2.dd+
+f4.gg+4a+4   'kd+o1*v.3''kf*v4,'[32c32]
+## 24
+'vx+o1' %a10%r10 l4
+cccc >g<cc2   c2c2 ccc2
+c2c2 c2c2   c2c2 c2c2
+;
+
+{7} $
+[15r2] 'kd+o1*v.3''kf*v2,.8'[8c16]
+## 8
+'sc+o2*v.67' %a9%r8 p32
+g2f2 g2d+2
+g2g2 g2d+2
+g2g2 g2g2
+g2g2 g2g2
+## 16
+[7r1] 'sc+o2*v.67' %a9%r8 b4b4b4b4
+## 24
+<'s' l16
+[4d+r][8dr][8d+r][4dr] >[4br]<[4cr][4d+r][8dr][8d+r][4dr]>[4br]<[4cr]
+;
+
+{8} $
+[15r2] 'kd+o1*v.3''kf*v2,.8'r32[7c16]c32
+## 8
+[3"!!!oy1^1"] "y2z2 y4y4z2"
+## 16
+[7r1] 'sc+o3*v.67' %a9%r8 g4f4d+4d4
+## 24
+"!!!oy1" [7^1]
+;

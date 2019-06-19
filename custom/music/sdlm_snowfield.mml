@@ -26,7 +26,7 @@
 #def oboe= |2 o5 v64 %e1 m48,18,223
 #def pizza= |3 v127 %e1 m
 #def piano= |4 o5 %e1 m
-#def timp= |A o4 v80 %e1 m
+#def timp= |A o3 v80 %e1 m
 
 #def 01= 'oboe' p64
 #def 02= 'timp' p64

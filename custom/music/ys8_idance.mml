@@ -1,0 +1,228 @@
+#TITLE Iclucian Dance
+#ALBUM Ys VIII: Lacrimosa of Dana
+#COMPOSER Mitsuo Singa
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x69~/0x00/
+#WAVE 0x21 ~0x8B~/0x0c/
+#WAVE 0x22 ~0x8C~/0x00/
+#WAVE 0x23 0x1E
+#WAVE 0x24 0x1C
+#WAVE 0x2A 0x22
+#WAVE 0x2B ~0x56~/0x14/
+#WAVE 0x2C ~0x85~/0x00/
+#WAVE 0x2D ~0x84~/0x17/
+#WAVE 0x2E ~0x8E~/0x12/
+#WAVE 0x2F ~0x8F~/0x11/
+
+#def global= t145 %x224 %v50 %b0,100 %f0,0
+
+#def vio= ~|0~/@6/ ~v40~/v40/ p40 %e1 ~o5~/o4/ m48,18,239 %r4
+#def rpl= |1 'rpv' p50 %e1 o5 m
+#def rpi= |1 'rpv' 'pr' %e1 o5 m
+#def hpi= ~|2~/|1/ 'hpv' 'pr' %e1 ~o6~/o6/ m
+#def mpi= ~|2~/|1/ 'mpv' 'pr' %e1 ~o6~/o6/ m
+#def epi= @3 'epv' p64 %e1 o6 m48,18,223 %y3%s3%r8
+#def epiq= @3 'epvq' p64 %e1 o6 m48,18,223 %y3%s3%r8
+#def bas= |4 v40 p64 %e0 o4 m
+#def dis= |3 v48 p70 %e0 o5 m %y2%s3%r5
+#def rpv= v36 
+#def hpv= v28 
+#def mpv= v80 
+#def epv= v64
+#def epvm= v42
+#def epvq= v24
+#def pr= p80
+
+#drum "y"=5g |E v80 p64 %e1 %r19
+#drum "z"=5g |E v48 p96 %e1 %r22
+#drum "k"=5f |A v80 p64 %e0
+#drum "s"=5g |B v80 p64 %e0
+#drum "t-"=5b |B v64 p64 %e0
+#drum "t"=5b |B v64 p64 %e1
+#drum "u"=5b |B v48 p64 %e1
+#drum "v"=5b |B v32 p64 %e1
+#drum "p-"=5a |F v32 p50 %e0 %s7%r24
+#drum "p"=5a |F v48 p64 %e0 %s7%r24
+#drum "o-"=5f |F v48 p50 %e1 %s7%r22
+#drum "o"=5f |F v64 p50 %e1 %s7%r22
+#drum "r"=6c+ |F v48 p96 %e1 %y4%s0%r26
+#drum "c"=~4f |C p96 v24 %e0~ /6c |D p96 v24 %e0/
+#drum "c+"=~4f |C p96 v80 %e1~ /6c |D p96 v80 %e1/
+#drum "d"=~4b |C p96 v80 %e1~ /6f |D p96 v80 %e1/
+
+#drum "j"=~4a+~/4f /'4g ' |D p30 ~v104~/v64/ %e0
+#drum "i"=~5c+~/4g+/'4a+' |D p40 ~v104~/v64/ %e0
+#drum "h"=~5f+~/5c+/'5d+' |D p50 ~v104~/v64/ %e0
+#drum "g"=~5g+~/5d+/'5f ' |D p60 ~v104~/v64/ %e0
+#drum "f"=~5b ~/5f+/'5g+' |D p70 ~v104~/v64/ %e0
+#drum "e"=~6d ~/5a /'5b ' |D p80 ~v104~/v64/ %e0
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1} 'global'
+'vio' l16 <aaaararaar 'mpi' l8 e<c>b
+$
+'mpi' e2^e<c>b e2^e<c>b16.<d+32  e2.dc >b<c>a4.e<c>b
+[[e2^e<c>b] <e2.dc24d24c24> b<c>j2a4.e<c>b]g4.e<c>b
+##10 p.melody
+# 10-13 from above
+e2^e<c>b16<c16> e2^e<c>b <e'hpv'c4>g4'mpv'g.g. g2.<dc24d24c24>
+l16 b'rpi'efeg+aag+b<cc>b<edef g+edc>bag+fedc>bag+fe<
+##20 p.melody + some 4x piano stuff -> epiano
+l8 g4'mpi'<c>be2.<c>be4<c>b <e2.dc>b<c>a2 l16"!!!o ddcc"
+l8 'hpi'>g4<'mpv'<c>be4'hpv'>gg<'mpv'r4<c>be'rpi'a^12g12g12
+f2e2 e2^'epi'eb4
+##28 epiano -> fiddle
+l16 <c4.>aga4.fe f2(a8.a+32b32<c8)d8>  b4g8e1^4e8g8f8
+e4.(d2c8) >b2^8<g+4<e8> a2.b4a32<&90c 'vio'>gb<dgb<cdm12,2g
+##36 fiddle
+l16 m12,1b4.aga4.(fe) f2(a8b8)<c8d8>  b8.rg8<m12,2d1deg8(f24g24f24)e8d.m6,-3^32
+c4.>a4.<c4 d4^.m6,-2^32>b4^.m6,2^32<d4  e1...dm6,-1c+
+>m6,1b-1 bbbbrbrbbr4..
+;
+
+{2}
+'rpl' l16 aaaararaa2
+$
+'rpl' [e8.ee8e8.ee8e8e8 d8.dd8d8.dd8d8d8 g8.gg8g8.gg8g8g8 e8.ee8e8.ee8e8e8]
+##10 violin high
+'vio' l16  f1 g2..fg a2..ga b2..ab <c2..>b<c d2..cd e1^2.d8c8>
+b1. m24,4^8 <e8<c8>b24<c24>b24
+##20 violin
+l8 e2^e<c>b16<c32>b32 e2^e<c>b24<c24>b24
+<m6,1e-2.d16.m6,-2^32(c24d24c24)> b<c>a4.e<c>b24<c24>b24
+e2^e<c>b16<c32>b32 e2^e<c>b
+<e16.m6,-2^32>m6,-2f+<dc>m6,1b-(a32b32a32e32)m6,1ge m24,1%r9a-1
+##28 p.harmony, epiano2
+'rpi' l8 c4.c4.df c.c4..cde  >b4bb4.b<d 'hpi'[5<e16>b16g16]e16
+'rpi' f4ff4.ff 'epiq'r4.e16r16'epv'e4b4 'epvq'r2ea>a<a'epv'r64&93ba2
+##36 epiano, p.melody
+"!!!oy4." 'epi''epvm' l16 (fe)f4.(c>b<) c1 'epvq'>b2<e8>b8<e8>g8e4.'epvm'<<deg8f8e8d8
+c4.>a4.<c4> g4.(e4g8)'mpi'<d4 ec>ae <c>aec aec>a< ec>ae
+c>a<cf afc>a< c>a<fc af<c>a  eg+ag+ b<c>bb <cdcd edef  eeeerereere8<c8>b8
+;
+
+{3}
+'bas' l16 aaaararaa8r4.
+$
+'bas' [16a4.a8]
+##10 bass
+d4d8a8d4e8f8 [e8.eg8b8] [f4a8<c8>] [e4g8b8]
+[d4f8a8] [e4g8b8] f2[3f4.f8]
+e4g+8bg+ b8b8<d8d+8 e8e8>b8b8 g+8g+8e8e8
+##20 bass
+[4a4.a8] a4.aa a4.a8 a4a2a4 a4.a8 a4.a8 a4a4a4a8a8
+b4<d8>b8 e8e8g+8e8 aa8a8aa8a4g4
+##28 bass
+l8 f4.f4.<cf f4.f4.dd+ e4.ee4.ee.e.e4eee>
+d.a16<d4d.>a16<d4 e.>b16<e4edc>b a.a16a<e>a4a<e> g4g4g<d4>g
+##36 bass
+f4.f4f<ce f4.ff4d4 e4.ee4.e e4.e4>b<d+e
+l16 d8.>a<drd8d8>a8<d4 e8.>b<e4e8d8c8>b8
+[f4f8<c8>f8.ff8<c8>] b4.b8b4.b8 eeeereree8r4.
+;
+
+{4}
+l16 "tttt8t8tt8k24k24k24s4"
+$
+[["!!!o k4s4k4s4" j2 "k4s4ks8.s4"] j2 "k4s8.sks8.k8cc"] ":s:k4s4ks8.ksks"
+##10 perc
+"k4s8.sks8.s8.s" "k4s8.sks8.s8s8" "k4s8.sk4s8tt" "k4s8.sk4s8s8"
+"k4s8.sks8.s8s8" "k4s8.sk4s8s8" "k4s8.sks8.s8.s" "k4s8.sks8.s8tt"
+"k4ks8ssksskstt ksss"l24"f16f16gfgh16h16ihij16j16jij"l16
+##20 perc
+[7"!!!ok4s4"]"ks8.s4" [3"k4s4"]"k4s8ss"
+"k4t8ss k8t8t8.s" "f8ffh8hhj4j4"
+##28 perc
+"k4s8hijs8ks8tt" "k4s8hijs8.s8t24u24v24"
+"k4s8hijs8.s8tt" "k4s8hijs8s8st24u24v24"
+"k4s8.sk4s8tt" "k8.t-s8.skt-8.s8tt"
+"k8.sk8ttk4s8tt" "k8s8s8.sks8.tuvt"
+##36 perc
+[["k4s8hij"j2"s8.s8tt"]j2":j:s8.s8t24u24v24"]":j:s8t-8st24u24v24"
+["k4s8tt"]"k4s8.skt-8.s8tt" ["k4s8tt"]"k4s8.skt-8.s8tt"
+"ksts ktst ktuv gghh    isss8s8ss8 hhiijj"
+;
+
+{5}
+'rpl' l16 eeeereree2
+$
+'rpl' [c8.c8.c4c8c8c8 >b8.b8.b4b8b8b8< e8.e8.e4e8e8e8 c8.c8.c4c8c8c8]
+##10 p.harmony, darbuk
+l8 'pr' a4<c4.e4e> bb16b16b4.<e4e [>a<cec] e4d4.>g4g8
+<d4c4.d4e ^e16e.e4e16e.e >a<c4c>a<c.c.c1
+l16 "!!!o dddd8d8ddddd8.d8^1"
+##20 p.rhythm (top), darbuk
+'rpi' e8.ee8e8.ee8e8e8 f8.ff8f8.ff8fg8.  g8.gg8g8.gg8g8g8 e8.ee8e8.ee8eg8.
+e8.ee8g4e8e8e8 f8.ff8f8.ff8.e8. d2>a2 "!!!o dddd8d8dd4d4"
+##28 p.rhythm mid (top at 33)
+'rpi' l8 >[a.a.a4aaa] g.g.g4ggg b4bb4.bb
+a.a.a4aaa <[e4ee4.ee] d4dd4.dd
+##36 p.harmony
+[c4cc4.de] >b4bb.b4bb16 b4bb4.bb
+"!!!oy4." 'rpi'd4'mpv'd4.'hpv' l16 <g>bgb<g8e>bgb<e8e>bge
+'rpv' l8 [e4ee4.ee] g+4g+g+4.g+g+ l16 g+g+g+g+8g+8g+g+2
+;
+
+{6}
+'hpi' l16 eeeereree2
+$
+'hpi'> l8 g1 f2.ff g1 e2."!!!o d16d16"'hpi'>g
+g1 f2.fg g1 [4l16"!!!o ccd"j4"d"]^
+##10 violin low
+'vio'> d1 e1 f1 e1 d1 e1 f1 ^1 e1^1
+##20 p.rhythm (mid)
+'rpi' l8 c.c.c4ccc >b.b.b4bb<e e.e.[5e] cc4cc4c16.e32^
+c.c.e.e16ccc >b.b.b4<c.c. >a2e2< c2.d4
+##28 p.rhythm (low - mid at 33), darbuk
+>f4.f4.<cc> f4f4f4fg  e4e4e4eb g.g.g4ggg
+f4f4f4ff b.b.b4bbb <c.c.c4ccc l16"!!!o ddddc+d8.ddc+8c+c+dc+"
+##36 p.rhythm (mid)
+'rpi'> l8 a.a.a4aaa a.a.a4aab [g.g.g4ggg]
+a4aa4.aa b4b<d4.>bb <[c.c.c4ccc]
+e.e.e4eee l16 eeee8e8ee2
+;
+
+{7}
+l16 "pppp8p8po4y4."
+$
+[[6"!!!o p4"]"p8.p^4" j2,709 [6"p4"]"o-8.o-^4"] $709 [6"p4"]"p8.egj"
+##10 cymbal
+[16^8"!or8"]"r8r8"[7^8"r8"] ^8"o4o8p-p-o4o4o8p-p-o4o4." "y1^1"
+##20 cymbal
+"y8"[6"p4"]"p8.p^4" [6"p4"]"o-8.o-8."
+"y8"[7"p4"]"p8" [4"!oz8r8"] 'rpi'>a2 "!!!oy4y4"
+##28 cymbal
+l8 "y.r.rr4p-o p-16p-16o4rr4o4" "r.r.rr4.o4 p4oo2"
+"y.r.rr.r.r r.r.rr.r.r2  rr.r.r r.r.rr.r.^"
+##36 cymbal, dist
+l8 "^.r.rr4.o4 o4rr4o4" "y.r.rr4.o4 p4rr4oo."
+"rr.rr.r.r r.r.rr.r16"'epi'ee
+r."!!!o r.r r.r.r r.r.r r.r^."
+'dis' e2e2 l16 eeeereree8r4.
+"!!!o y8"
+;
+
+{8}
+'rpl' l16 > aaaararaa2
+$
+'rpl' l8 > [8a4aa4aa4]
+##10 p.rhythm, crash, dist
+"!!!oy2^" 'rpi'a4a b2^b4b f4a4f4a4 g4gg^2
+a4a4.a4a ^b16b.b4b16b.b "!!!oy2^" 'dis'fr16fr16f2.ff ([8e4])
+##20 p.rhythm (last), dist
+'rpi' l8 > [3a4aa4aa4]a4aa4aa<c> a4aa4aaa a4aa4a.a.
+'dis' b4<d>be2 a1
+##28 blank, dist, p.rhythm low
+l8 r1r1r1 e2.ee
+'rpi' c4.c4.c4> g+4g+4g+4g+g+ a4a4a4aa b.b.b4bbb
+##36 p.rhythm low, cymbal
+f4f4f4fe f4f4f4fg e4e4e.e.e e4e4e4ee
+f.f.f4fff g.g.g4ggg [a4a4a4aa]
+b4b4b4bb "!!!o k2 o2"
+;

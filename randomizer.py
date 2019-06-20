@@ -1451,7 +1451,7 @@ def manage_skips():
 
     def handleGau(split_line): # Replace events that should be replaced if we are auto-recruiting Gau
         # at least for now, divergent paths doesn't skip the cutscene with Gau
-        if options_.is_code_active("divergent"):
+        if options_.is_code_active("QGWURNGNSEIMKTMDFBIX"):
             return
         if options_.shuffle_commands or options_.replace_commands or options_.random_treasure:
             writeToAddress(split_line[0], split_line[1:])

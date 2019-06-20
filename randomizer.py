@@ -5765,7 +5765,7 @@ def randomize():
         data = insert_instruments(fout, 0x310000)
         opera = None
         
-    if options_.is_code_active('alasdraco')
+    if options_.is_code_active('alasdraco'):
         opera = manage_opera(fout, has_music)
     reseed()
     

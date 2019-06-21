@@ -110,7 +110,7 @@ def patch_dialogue(id, from_text, to_text, index=None, battle=False):
     patches[id][(from_text.lower(), index)] = to_text
     
 def load_patch_file(fn):
-    filepath = safepath(os.path.join('data', 'script', fn + ".txt"))
+    filepath = os.path.join('data', 'script', fn + ".txt")
     try:
         with open(filepath, "r") as f:
             lines = f.readlines()

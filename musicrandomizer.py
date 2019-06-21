@@ -1402,7 +1402,7 @@ def manage_opera(fout, affect_music):
     
     singer_options = []
     try:
-        with open(safepath(os.path.join('custom','opera.txt'))) as f:
+        with open(os.path.join('custom','opera.txt')) as f:
             for line in f.readlines():
                 singer_options.append([l.strip() for l in line.split('|')])
     except IOError:
@@ -1545,7 +1545,7 @@ def manage_opera(fout, affect_music):
     opath = os.path.join("custom","opera")
     #load scholar graphics
     try:
-        with open(safepath(os.path.join(opath, "ralse.bin")),"rb") as f:
+        with open(os.path.join(opath, "ralse.bin"),"rb") as f:
             sprite = f.read()
     except IOError:
         print(f"failed to open custom/opera/ralse.bin")
@@ -1556,11 +1556,11 @@ def manage_opera(fout, affect_music):
         
     #load new graphics into merged slot
     try:
-        with open(safepath(os.path.join(opath, f"{merge[4]}")),"rb") as f:
+        with open(os.path.join(opath, f"{merge[4]}"),"rb") as f:
             sprite = f.read()
     except IOError:
         try:
-            with open(safepath(os.path.join("custom","sprites", f"{merge[4]}")),"rb") as f:
+            with open(os.path.join("custom","sprites", f"{merge[4]}"),"rb") as f:
                 sprite = f.read()
         except:
             print(f"failed to open custom/opera/{merge[4]} or custom/sprites/{merge[4]}")
@@ -1580,11 +1580,11 @@ def manage_opera(fout, affect_music):
     for cname, c in char.items():
         #print(f"{cname} -> {c.name}")
         try:
-            with open(safepath(os.path.join(opath, f"{c.sprite}.bin")),"rb") as f:
+            with open(os.path.join(opath, f"{c.sprite}.bin"),"rb") as f:
                 sprite = f.read()
         except IOError:
             try:
-                with open(safepath(os.path.join("custom","sprites", f"{c.sprite}.bin")),"rb") as f:
+                with open(os.path.join("custom","sprites", f"{c.sprite}.bin"),"rb") as f:
                     sprite = f.read()
             except:
                 print(f"failed to open custom/opera/{c.sprite}.bin or custom/sprites/{c.sprite}.bin")
@@ -1788,7 +1788,7 @@ def create_sprite(sprite, extra_tiles=None):
     
 def read_opera_mml(file):
     try:
-        file = safepath(os.path.join('custom','opera',f'{file}.mml'))
+        file = os.path.join('custom','opera',f'{file}.mml')
         with open(file, "r") as f:
             mml = f.read()
         return mml

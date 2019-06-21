@@ -5,7 +5,7 @@ from character import get_character, get_characters
 from locationrandomizer import get_location, get_locations, NPCBlock
 from monsterrandomizer import change_enemy_name
 from utils import (WOB_TREASURE_TABLE, WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
-                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer, dialogue_to_bytes)
+                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer, dialogue_to_bytes, bytes_to_dialogue)
 
 
 alt_zone_eater_recruit = None
@@ -310,7 +310,7 @@ def recruit_gogo_insert(fout, recruit_info):
 
 class WoRRecruitInfo(object):
     def __init__(self, label, event_pointers, recruited_bit_pointers, location_npcs,
-                 dialogue_pointers, name_pointer, num_name_bytes,
+                 dialogue_pointers, name_pointer, num_name_bytes, old_char_id,
                  shop_menu_bit_pointers=[], palette_pointers=[],
                  caseword_pointers=None, prerequisite=None, special=None,
                  name_npcs=[], name_extra=[], name_camera=(0,0),
@@ -320,6 +320,7 @@ class WoRRecruitInfo(object):
         self.recruited_bit_pointers = recruited_bit_pointers
         self.location_npcs = location_npcs
         self.dialogue_pointers = dialogue_pointers
+        self.old_char_id = old_char_id
         self.name_pointer = name_pointer
         self.num_name_bytes = num_name_bytes
         self.caseword_pointers = caseword_pointers
@@ -352,9 +353,17 @@ class WoRRecruitInfo(object):
             npc = location.npcs[npc_id]
             npc.graphics = self.char_id
             npc.palette = get_character(self.char_id).palette
-        for index, offset in self.dialogue_pointers:
-            fout.seek(get_dialogue_pointer(fout, index) + offset)
-            fout.write(bytes([self.char_id + 2]))
+        for index in self.dialogue_pointers:
+            start = get_dialogue_pointer(fout, index)
+            end = get_dialogue_pointer(fout, index + 1)
+            fout.seek(start)
+            bs = fout.read(end - start)
+            text = bytes_to_dialogue(bs)
+            old_name_placeholder = bytes_to_dialogue(bytes([self.old_char_id + 2]))
+            new_name_placeholder = bytes_to_dialogue(bytes([self.char_id + 2]))
+            text = text.replace(old_name_placeholder, new_name_placeholder)
+            fout.seek(start)
+            fout.write(dialogue_to_bytes(text))
         if self.caseword_pointers:
             for location in self.caseword_pointers:
                 fout.seek(location)
@@ -523,7 +532,8 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             event_pointers=locke_event_pointers + locke_event_pointers_2,
             recruited_bit_pointers=[0xc3195],
             location_npcs=[(0x139, 0)],
-            dialogue_pointers=[(0x984, 0x6), (0x984, 0x44), (0x988, 0x0), (0x989, 0x2), (0xa20, 0x0), (0xa21, 0x0), (0xa22, 0x16), (0xa23, 0x2), (0xa24, 0x0), (0xa28, 0x0), (0xa2a, 0x7), (0xa2c, 0x7), (0xa2c, 0x2d), (0xa2d, 0x0), (0xa2d, 0xc), (0xa2d, 0x6c), (0xa2e, 0x0), (0xa2e, 0xc5), (0xa2f, 0x0), (0xa30, 0x2), (0xa31, 0x0), (0xa34, 0x0), (0xa35, 0x0)],
+            dialogue_pointers=[0x984, 0x988, 0x989, 0xa20, 0xa21, 0xa22, 0xa23, 0xa24, 0xa28, 0xa2a, 0xa2c, 0xa2d, 0xa2e, 0xa2f, 0xa30, 0xa31, 0xa34, 0xa35],
+            old_char_id=1,
             name_pointer=0xC2B81,
             num_name_bytes=4,
             name_show_full_party=True),
@@ -532,7 +542,8 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             event_pointers=[0xc429c, 0xc429e, 0xc42a2, 0xc42a4, 0xc42a7, 0xc42aa],
             recruited_bit_pointers=[0xc42ae],
             location_npcs=[(0xb5, 2), (0xb4, 8)],
-            dialogue_pointers=[(0x9f2, 0x1b), (0x9f9, 0x0), (0x9fb, 0x0), (0x9fd, 0x0), (0x9fe, 0x0), (0x9ff, 0x0), (0xa00, 0x0), (0xa01, 0x0), (0xa02, 0x0), (0xa03, 0x0), (0xa04, 0x0), (0xa05, 0x0), (0xa06, 0x0), (0xa08, 0x138), (0xa0b, 0x0), (0xa0c, 0xb)],
+            dialogue_pointers=[0x9f2, 0x9f9, 0x9fb, 0x9fd, 0x9fe, 0x9ff, 0xa00, 0xa01, 0xa02, 0xa03, 0xa04, 0xa05, 0xa06, 0xa08, 0xa0b, 0xa0c],
+            old_char_id=2,
             name_pointer=0xC402A,
             num_name_bytes=4),
         WoRRecruitInfo(
@@ -540,8 +551,9 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             event_pointers=[0xa6c0e, 0xc5aa8, 0xc5aaa, 0xc5aae, 0xc5ab0, 0xc5ab3, 0xc5ab6],
             recruited_bit_pointers=[0xc5aba],
             location_npcs=[(0x131, 1)],
-            dialogue_pointers=[(0x8a7, 0x2), (0x8a7, 0x5), (0x8a7, 0x1d), (0x8a8, 0x1), (0x8a8, 0x5), (0x8a9, 0x0), (0x8aa, 0x0), (0x8ab, 0x0), (0x8ac, 0x2), (0x8ad, 0x0), (0x8ae, 0x0), (0x8b1, 0x0), (0x954, 0x0), (0x95a, 0x0)],
+            dialogue_pointers=[0x8a7, 0x8a8, 0x8a9, 0x8aa, 0x8ab, 0x8ac, 0x8ad, 0x8ae, 0x8b1, 0x954, 0x95a],
             caseword_pointers=[0xa6af1, 0xa6b0c, 0xa6bbd],
+            old_char_id=5,
             name_pointer=0xC590B,
             num_name_bytes=7,
             name_npcs=[0] + list(range(2,17))),
@@ -551,7 +563,8 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             recruited_bit_pointers=[0xc542a],
             location_npcs=[(0x16a, 3)],
             prerequisite=0x08,
-            dialogue_pointers=[(0x8c2, 0x0), (0x8c3, 0x18), (0x8c4, 0x0), (0x8c5, 0x0)],
+            dialogue_pointers=[0x8c2, 0x8c3, 0x8c4, 0x8c5],
+            old_char_id=7,
             name_pointer=0xC5316,
             name_npcs=list(range(3)) + list(range(4,10)),
             num_name_bytes=4,
@@ -561,7 +574,8 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             event_pointers=[0xb4e09, 0xb4e0b, 0xb4e0f, 0xb4e11, 0xb4e14, 0xb4e17],
             recruited_bit_pointers=[0xb4e1b],
             location_npcs=[(0x161, 3), (0x15d, 21), (0xd0, 3)],
-            dialogue_pointers=[(0xa18, 0x0), (0xa8d, 0x0), (0xa99, 0x7), (0xa9d, 0x0), (0xa9d, 0x11), (0xa9e, 0x0), (0xa9f, 0x3b), (0xaa0, 0xb0), (0xabd, 0x55), (0xabe, 0x10), (0xabe, 0x95), (0xac0, 0x7), (0xac1, 0x0), (0xac2, 0x0)],
+            dialogue_pointers=[0xa18, 0xa8d, 0xa99, 0xa9d, 0xa9d, 0xa9e, 0xa9f, 0xaa0, 0xabd, 0xabe, 0xabe, 0xac0, 0xac1, 0xac2],
+            old_char_id=8,
             name_pointer=0xB4D0D,
             num_name_bytes=5,
             name_npcs=list(range(3)) + list(range(4,6))),
@@ -570,7 +584,8 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             event_pointers=[0xc49d1, 0xc49d3, 0xc49da, 0xc49de, 0xc49e2, 0xc4a01, 0xc4a03, 0xc4a0c, 0xc4a0d, 0xc4a2b, 0xc4a37, 0xc4a3a, 0xc4a43, 0xc4a79, 0xc4a7b, 0xc4ccf, 0xc4cd1, 0xc4cd5, 0xc4cd7, 0xc4cdb, 0xc4cde, 0xc4ce1, 0xc4ce5, 0xc4cf4, 0xc4cf6, 0xc5040, 0xc5042, 0xc5048, 0xc504a, 0xc504d, 0xc5050], 
             recruited_bit_pointers=[0xc4cd9, 0xc4cfa, 0xc5046],
             location_npcs=[(0x09A, 1), (0x09A, 2), (0x096, 0), (0x09E, 13)],
-            dialogue_pointers=[(0x8cf, 0x0), (0x8d1, 0x0), (0x8d2, 0x1), (0x8d2, 0x2a), (0x8d3, 0x0), (0x8d4, 0x0), (0x8d5, 0x0), (0x8d6, 0x11), (0x8d7, 0x2b), (0x8d8, 0x0), (0x8d9, 0x0), (0x8db, 0x0), (0x8dc, 0x0), (0x8dd, 0x0), (0x8df, 0x0), (0x8df, 0x44), (0x8e0, 0x0), (0x8e5, 0x0), (0x8eb, 0x0), (0x8ec, 0x0), (0x8f0, 0x0), (0x8f6, 0xb), (0x8f7, 0x5), (0x8f8, 0x0), (0x8f9, 0x0), (0x8fa, 0x0), (0x8fb, 0x1f), (0x8fc, 0x0), (0x8fe, 0x12), (0x900, 0xb), (0x903, 0xf), (0x906, 0x9), (0x90b, 0x14)],
+            dialogue_pointers=[0x8cf, 0x8d1, 0x8d2, 0x8d3, 0x8d4, 0x8d5, 0x8d6, 0x8d7, 0x8d8, 0x8d9, 0x8db, 0x8dc, 0x8dd, 0x8df, 0x8e0, 0x8e5, 0x8eb, 0x8ec, 0x8f0, 0x8f6, 0x8f7, 0x8f8, 0x8f9, 0x8fa, 0x8fb, 0x8fc, 0x8fe, 0x900, 0x903, 0x906, 0x90b],
+            old_char_id=0,
             name_pointer=0xC446F,
             num_name_bytes=4,
             name_npcs=[0] + list(range(2,20)),
@@ -583,6 +598,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             shop_menu_bit_pointers=[0xC3A5A],
             location_npcs=[(0x02C,0)],
             dialogue_pointers=[],
+            old_char_id=0xA,
             palette_pointers=[0xC3A56],
             special=moogle_cave_recruit,
             name_pointer=None,
@@ -594,7 +610,8 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             recruited_bit_pointers=[0xCD7A6],
             shop_menu_bit_pointers=[0xCD7A8],
             location_npcs=[(0x11B, 1), (0x15, 1)],
-            dialogue_pointers=[(0x5fa, 0x6), (0x5fa, 0x20)],
+            dialogue_pointers=[0x5fa],
+            old_char_id=0xD,
             palette_pointers=[0xCD7A3],
             prerequisite=0x0A,
             special=sasquatch_cave_recruit,
@@ -608,7 +625,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
         if alternate_gogo:
             recruit_info.append(alt_zone_eater_recruit)
         else:
-            recruit_info.append(WoRRecruitInfo("Falcon", [], [], [], dialogue_pointers=[(0xa07, 0xc)], special=falcon_recruit, name_pointer=None, num_name_bytes=None))
+            recruit_info.append(WoRRecruitInfo("Falcon", [], [], [], dialogue_pointers=[0xa07], old_char_id=0xB, special=falcon_recruit, name_pointer=None, num_name_bytes=None))
     
     if not alternate_gogo:
         candidates.append(0x0C)
@@ -619,7 +636,8 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
                 recruited_bit_pointers=[0xB823E],
                 shop_menu_bit_pointers=[0xB823C],
                 location_npcs=[(0x116, 0)],
-                dialogue_pointers=[(0xa0e, 0xd), (0xa0f, 0x0), (0xa10, 0x0)],
+                dialogue_pointers=[0xa0e, 0xa0f, 0xa10],
+                old_char_id=0xC,
                 palette_pointers=[0xB81E4],
                 special=zoneeater_recruit,
                 name_pointer=0xB81CF,
@@ -1150,7 +1168,8 @@ def _setup_alternate_zone_eater(fout, include_gau):
                 gau_event.location + len(bytes_1) + len(bytes_2) + 9,], 
                 recruited_bit_pointers=[gau_event.location + len(bytes_1) + len(bytes_2) + 13],
                 location_npcs=[(0x116, 0)],
-                dialogue_pointers=[(0x286, 0x0), (0x286, dialogue_bytes.find(dialogue_to_bytes("<GAU>", null_terminate=False), 1))],
+                dialogue_pointers=[0x286],
+                old_char_id=0xB,
                 name_pointer=gau_event.location,
                 num_name_bytes=7
             )

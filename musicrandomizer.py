@@ -1352,12 +1352,12 @@ def randomize_music(fout, options_, opera=None, form_music_overrides={}):
         events += "W"
     if options_.is_code_active('halloween'):
         events += "H"
-    f_mchaos = 'johnnyachaotic' in codes
+    f_mchaos = options_.is_code_active('johnnyachaotic')
     
     fout.seek(0)
     data = fout.read()
     data = process_custom_music(data, opera=opera, f_mchaos=f_mchaos, eventmodes=events)
-    if 'ancientcave' not in codes and 'speedcave' not in codes and 'racecave' not in codes:
+    if not options_.is_any_code_active(['ancientcave', 'speedcave', 'racecave']):
         data = process_map_music(data)
     data = process_formation_music_by_table(data, form_music_overrides=form_music_overrides)
     

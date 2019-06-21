@@ -1,0 +1,165 @@
+#TITLE Dawn
+#ALBUM Breath of Fire
+#COMPOSER Yasuaki Fujita
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x46~/0x0D/
+#WAVE 0x21 ~0x8B~/0x31/
+#WAVE 0x22 ~0x7A~/0x08/
+#WAVE 0x23 ~0x72~/0x0E/
+#WAVE 0x24 ~0x07~/0x07/
+#WAVE 0x25 ~0x1C~/0x1C/
+#WAVE 0x27 ~0x16~/0x16/
+#WAVE 0x28 ~0x81~/0x81/
+#WAVE 0x2C ~0x8E~/0x12/
+
+#def init= t94 %x240 %v40 %b0,85 %f0,0
+
+#def st= |0 's' ~o5~/o5/ %e1 m48,18,207
+#def pi= |1 'p' ~o5~/o4/ %e1 m 
+#def ph= |1 'i' ~o5~/o4/ %e1 m ~%y0%s3 %r5~
+#def hn= |2 'h' o5 %e1 m48,18,223
+#def tp= |3 't' ~o5~/o6/ %e1 m48,18,231
+#def fl= |4 'f' o4 %e1 m48,18,239
+#def bs= |5 'b' ~o7~/o7/ %e0 m %y1%s3
+#def kd= |7 'k' o6 %e1 m
+
+#def s= v64
+#def p= ~v64~/v48/
+#def i= v96
+#def h= ~v80~/v48/
+#def t= ~v52~/v44/
+#def f= v40
+#def b= v40
+#def k= v56
+
+#def k1= 'k*v1.2'p84
+#def k2= 'k'p60
+#def kf= v96,56
+
+#drum "y"=5c+ |C v96 p32 %y17 %e1
+#drum "s"=5f+ |8 v40 p60 %e0
+#def df= v32v24,40
+
+{1} 'init' $
+'fl+o1' l8 p64
+[%r12 g2^>g<cg g4.f16e16f4>b4<  %r7c1.>j2g2<]
+'st*v.67' %r10 p70 l24 cde fga  b<cd efg
+##9
+l8 a2^gfe g1 g2^fd+d f1
+##13
+c+2^c+d+f d+1  e1 f+1  g2a2 %a4b2%a%r17 [<e8>b24b24b24]
+;
+
+{2} $
+'pi+o1' l16
+p18 p48,68
+[ gedc> p0,96,100 [3g<cdegedc>] g+gg+f
+[3<c>gfedcde]<c>ef<c>b<cd>b<]
+##9
+p'kd-o3''k2'f+4^12
+'ph+o1' p75
+c8d12d16e16e12f12f12g12 g8a8a12a+24a24g24&104a
+^6g4g+8<c8>f8f8f12 g16g16g+8c+12d+12f12^2
+##13
+'tp+o1'p60
+r2r8 [c+32%r25^32%r][c+16%r25^16%r]c+16.%r25^16.%rd+32%r25^32%r10d+2.
+p84
+r4. %r[3e48%r25^48%r]e16.%r25^16.%r>a32<%r25^32%r11e4
+r4. %r[3f+48%r25^48%r]f+16.%r25^16.%rd+32%r25^32%r11f+4
+r8 %r[3g48%r25^48%r][g16%r25^16%r]
+r8 %r[3a48%r25^48%r][3a24%r25^24%r]
+%a4%r12b2
+p84 [ %r<e12%r25^24> [3%rb48%r25^48]]
+;
+
+{3} $
+'bs-o2' l8 p85
+[[8c]>[8f]<[8c]>ffff<dd>gg<]
+##9
+'hn-o1' %r8 p92 l2
+g<c> a1 <c.>f4 <d+>a+
+##13
+^4^12a+12<d+12a+ ^4>g+12<c+12g+12g+
+'st*v.67' %r5 p48
+a1 b1 <c2d2 %a4 e2 %a%r17 [g+8e24e24e24]
+;
+
+{4} $
+'kd-o3' l24
+['k2'f+4.'k1'<ccc>'k2'f+2  ^4.'k1'<c16c16c8>'k2'f+8f+8f+16f+16
+f+2.^8'k1'<j2ccc> 'k2'f+1] c32c32c32c32> 'k2'f+2
+'k*v.3''kf*v,2'p85 [24f+48]
+##9
+'st*v.67' %r5 p48 l1
+a+ag+f+
+##13
+'kd-o2'
+'k1' c4. 'k2' >f+16f+16< 'k1' c8 'k2' >f+8< 'k1' c8 'k2' >f+16f+16<
+'k1' c4. 'k2' >f+24f+24f+24< 'k1' c8 'k2' >f+8< 'k1' c16c16 'k2' >f+8<
+"!!!o" l24
+"s8"'df'"sss s8s8 s8"'df'[6"s48"] "s4"
+"s8"'df'"sss s8s8 "'df'"ssss8 s8sss"
+"s8"'df'"sss s8s8 s8"'df'[6"s48"] "s8s8"
+'tp+o1' %a4%r12 g+2
+'kd-o2' l24
+['k1'c8>'k2'f+f+f+<]
+;
+
+{5} $
+'hn-o1' l4 %r8 p92
+[g2<c2 g2.d  c2...>g16< c2e>b]
+##9
+'st*v.67+o1' %r6 p96 l1
+&10r&182e c c >a+
+##13
+'bs-o3' p85 l8
+[8f+][8g+][8g][8g+][4a]<[4d]
+'st+o1*v.67' p96 %a4%r10 g+2
+%a%r17 [b8g+24g+24g+24]
+;
+
+{6} $
+'st-o1' l4 %r6 p41
+[c1 f1 c1 f2dg]
+##9
+c1 f1 f1 d+1
+##13
+f+1 g+1 g1 g+1 g2<d2 %a4%r10 e2 %a%r17 [e8e24e24e24]
+;
+
+{7} $ r16.
+'fl+o1*v.5' l8 p96
+[%r12 g2^>g<cg g4.f16e16f4>b4<  %r7c1.>j2g2<]
+'st*v.5' l24 cde fga  b<cd ef
+##9-ish
+'ph+o1*v.7' p75 k2
+&60r c8d12d16e16e12f12f12g12 g8a8a12a+ag&104a
+^6g4g+8<c8>f8f8f12 g16g16g+8c+12d+12&106f k0
+##13
+'st*v.67' p96 %r10
+a+1<c+2c2
+'tp+o1' p84
+r4. %r[3c+48%r25^48%r]c+16.%r25^16.%r>f+32<%r25^32%r11c+4
+r4. %r[3d+48%r25^48%r]d+16.%r25^16.%r>b32<%r25^32%r11d+4
+r8 %r[3e48%r25^48%r][e16%r25^16%r]
+r8 %r[3f+48%r25^48%r][3f+24%r25^24%r]
+r2 p60 [ %rb12%r25^24 [3%rg+48%r25^48]]
+;
+
+{8} $
+[7r1]r2
+'st*v.5'p48 l24
+%l1cde fga b<cd efg%l0
+##9
+"y1^1^1^1"
+##13
+'st*v.67' %r5 p48
+f+1 g+1
+p96<
+c+1 d+1 e2 f+2
+r2 "!!!o y4y4"
+;

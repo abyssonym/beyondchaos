@@ -51,7 +51,7 @@
 #def sv6= v144,48
 #def sv7= v144,52
 #def sv8= v144,56
-#def pet= |1 ~o6~/o6/ ~v112~/v96/ p64 m48,18,237 %e1
+#def pet= |1 ~o6~/o6/ ~v96~/v96/ p64 m48,18,237 %e1
 #def hrn= |2 ~o5~/o5/ v72 p40 m48,18,237 %e1
 #def org= |3 o6 v28 p64 m48,18,209 v0,7,255 %a12 %e1
 #def bas= |5 o5 ~v127~/v48/ p64 m  %e0
@@ -108,9 +108,9 @@ $
  a+ g  e <C> g  e <C+>g     e <E> g  e <D+>e <C+>e
 <D+>g+ a+<C> g  g+ a+ d+    g+ c  c+ d+>G+ A+<c >G+
 ##at 51: trumpet, horn
-'pet'l8< ~v56~
+'pet'l8<
 g+4g+f+4g+e4 ed+4ec+4>b4 a2<g+2^1^1 r1
-'hrn' ~v112~
+'hrn'
 f+4f+e4f+d+4 d+c+4d+>b4a4 g+2<f+2^1^1 r1
 ##at 63: sqw1
 'sqw' ~v72~/v96/m48,18,237 l8

@@ -28,8 +28,9 @@ for line in open(MAP_BATTLE_BG_TABLE):
 
 maplocations = {}
 maplocations_reverse = {}
+maplocations_override = {}
 for line in open(LOCATION_MAPS_TABLE):
-    a, b = tuple(line.strip().split(':'))
+    a, b, *c = line.strip().split(':')
     b = b.strip().strip(',').split(',')
     locids = []
     for locid in b:
@@ -44,6 +45,8 @@ for line in open(LOCATION_MAPS_TABLE):
     for locid in sorted(locids):
         maplocations[locid] = a
         maplocations_reverse[a].append(locid)
+    if c:
+        maplocations_override[a] = c[0]
 
 
 def add_location_map(location_name, mapid):
@@ -79,27 +82,50 @@ class NPCBlock():
         f.seek(self.pointer)
         value = read_multi(f, length=4)
         self.palette = (value & 0x1C0000) >> 18
-        self.unknown = (value & 0x200000) >> 21
+        self.bg2_scroll = (value & 0x200000) >> 21
         self.membit = (value & 0x1C00000) >> 22
         self.memaddr = (value & 0xFE000000) >> 25
         self.event_addr = value & 0x3FFFF
-        self.x = ord(f.read(1))
-        self.y = ord(f.read(1))
+        
+        byte4 = ord(f.read(1))
+        self.x = byte4 & 0x7f
+        self.show_on_vehicle = (byte4 & 0x80) >> 7
+        
+        byte5 = ord(f.read(1))
+        self.y = byte5 & 0x3F
+        self.speed = (byte5 & 0xC0) >> 6
+        
         self.graphics = ord(f.read(1))
-        self.graphics_index = ord(f.read(1))
-        self.facing = ord(f.read(1))
+        
+        byte7 = ord(f.read(1))
+        self.move_type = byte7 & 0xF
+        self.sprite_priority = (byte7 & 0x30) >> 4
+        self.vehicle = (byte7 & 0xC0) >> 6
+        
+        byte8 = ord(f.read(1))
+        self.facing = byte8 & 0x03
+        self.no_turn_when_speaking = (byte8 & 0x4) >> 2
+        self.layer_priority = (byte8 & 0x18) >> 3
+        self.special_anim = (byte8 & 0xe0) >> 5
         f.close()
 
     def write_data(self, fout, nextpointer):
         fout.seek(nextpointer)
-        value = (self.event_addr | (self.palette << 18) | (self.unknown << 21)
+        value = (self.event_addr | (self.palette << 18) | (self.bg2_scroll << 21)
                  | (self.membit << 22) | (self.memaddr << 25))
         write_multi(fout, value, length=4)
-        fout.write(bytes([self.x]))
-        fout.write(bytes([self.y]))
-        fout.write(bytes([self.graphics]))
-        fout.write(bytes([self.graphics_index]))
-        fout.write(bytes([self.facing]))
+        
+        byte4 = (self.x & 0x7f) | ((self.show_on_vehicle & 0x1) << 7)
+        
+        byte5 = (self.y & 0x3F) | ((self.speed & 0x3) << 6)
+
+        byte6 = self.graphics
+        
+        byte7 = (self.move_type & 0xF) | ((self.sprite_priority & 0x3) << 4) | ((self.vehicle & 0x3) << 6)
+
+        byte8 = (self.facing & 0x03) | ((self.no_turn_when_speaking & 0x1) << 2) | ((self.layer_priority & 0x3) << 3) | ((self.special_anim & 0x7) << 5)
+
+        fout.write(bytes([byte4, byte5, byte6, byte7, byte8]))
 
 
 class EventBlock():
@@ -220,7 +246,9 @@ class Location():
             self.altname = "%x" % self.locid
 
     def __repr__(self):
-        if self.name:
+        if self.locid in mapnames:
+            return self.altname
+        elif self.name:
             return "%x %s" % (self.locid, self.name)
         else:
             return self.altname
@@ -619,12 +647,25 @@ class Location():
         else:
             return self.fset.rank()
 
-    def mutate_chests(self, guideline=None, crazy_prices=False):
+    def mutate_chests(self, guideline=None, crazy_prices=False, no_monsters=False):
+        if not self.chests:
+            return
+
+        rank = None
+        override = maplocations_override.get(maplocations[self.locid], None)
+        if (self.attacks & 0x80 == 0 or override) and self.locid in maplocations:
+            location = maplocations[self.locid]
+            if override:
+                location = override
+            fsets = {get_location(l).fset
+                     for l in maplocations_reverse[location]
+                     if get_location(l).attacks & 0x80 != 0}
+            if fsets:
+                rank = min(fsets, key=lambda f: f.rank()).rank()
+        else:
+            rank = self.rank()
         for c in self.chests:
-            if self.fset.setid == 0:
-                c.set_rank(None)
-            else:
-                c.set_rank(self.rank())
+            c.set_rank(rank)
 
         if guideline is None:
             if len(self.chests) > 0:
@@ -643,20 +684,21 @@ class Location():
         random.shuffle(self.chests)
         for c in self.chests:
             if self.locid in range(0x139, 0x13d) and c.empty:
-                c.mutate_contents(monster=True, guideline=guideline)
+                c.mutate_contents(monster=True, guideline=guideline, crazy_prices=crazy_prices)
                 continue
             elif self.locid == 0x147:
                 pass
 
             # No monster-in-a-box in the ZoneEater falling ceiling room.
             # It causes problems with the ceiling event.
-            monster = False if self.locid == 280 and c.memid in range (232, 235) else None
+            in_falling_ceiling_room = self.locid == 280 and c.memid in range (232, 235)
+            monster = False if in_falling_ceiling_room or no_monsters else None
             c.mutate_contents(guideline=guideline, crazy_prices=crazy_prices, monster=monster)
             if guideline is None and hasattr(c, "value") and c.value:
                 guideline = value
 
     def unlock_chests(self, low, high, monster=False,
-                      guarantee_miab_treasure=False, enemy_limit=None):
+                      guarantee_miab_treasure=False, enemy_limit=None, crazy_prices=False):
         if len(self.chests) == 1:
             low = (low + high) // 2
         dist = (high - low) // 2
@@ -667,7 +709,7 @@ class Location():
             c.value = value
             c.mutate_contents(monster=monster, enemy_limit=enemy_limit,
                               guarantee_miab_treasure=guarantee_miab_treasure,
-                              uniqueness=len(self.chests) != 1)
+                              uniqueness=len(self.chests) != 1, crazy_prices=crazy_prices)
             if random.randint(1, 5) >= 4:
                 c.set_new_id()
 
@@ -1016,6 +1058,14 @@ def lookup_reachable_entrances(entrance):
 
     entrances = entrance.location.entrances
     return [e for e in entrances if e.entid in reachdict[key]]
+
+
+def get_npcs():
+    npcs = []
+    for l in get_locations():
+        npcs.extend(l.npcs)
+    return npcs
+
 
 if __name__ == "__main__":
     from sys import argv

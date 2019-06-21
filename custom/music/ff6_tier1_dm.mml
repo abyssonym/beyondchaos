@@ -4,8 +4,8 @@
 # Converted from binary by mfvitools
 
 #VARIANT ~_
-#VARIANT ~! tier1
-#VARIANT ?! tier2
+#VARIANT ~* tier1
+#VARIANT ?* tier2
 #VARIANT ?_ tier3
 
 #WAVE 0x20 -- 0x25  #C.Organ
@@ -24,7 +24,7 @@ l16%x180%b0,100%f0,0%v50@32p64%e1 $3 t65v60r2o5a+4<c4  c+1
 r2>a+4<c4  f1  r2>a+4<c4  c+1  
 r2>a+4<c4  f2t96,50^2  t55>d+4g4f+4a+8<c8  d+4g4f+4a+8<c8  
 t60d1  ^1  c1  ^1  
-!:4441! r32v40>c4d+4d4c4  >b4<c8d8c2  d+1  d2d+2  
+*:4441* r32v40>c4d+4d4c4  >b4<c8d8c2  d+1  d2d+2  
 c4d+4d4c4  >b4<c8d8c2  c2>b2  v70t95[2[4d+fgd+fgg+fg<cd+cdc>b<d  
 >]<j2,2 fgg+fdd+fd>b<cd>bgabg  <cdd+c>g+a+<c>g+fgg+fdd+fd  ] $2 
 ;3
@@ -36,7 +36,7 @@ l16 $6 @32p64%e1v60r2o5f4g4
 g+1  r2f4g4  <c+1  r2>f4g4  
 g+1  r2f4g4  <c+1  >c4d4d+4f4  
 <c4d4d+4f4  r4a4a+2  r4<c4>a+2  r4g4a2  
-r4a+4a2  !:4442! r32v40>g2g+2  g1  a+2<c2  
+r4a+4a2  *:4442* r32v40>g2g+2  g1  a+2<c2  
 >b2<c2  >g2g+2  g1  g+2g2  
 @36p64%e0o5[2[2v90av40a32a32[7v60av40a32a32][2v90av40a32a32][6v60av40a32a32]]j2,5 [4v40v24,90a32a32a32a32av50v12,90a32a32a4  
 ]] $5 
@@ -48,7 +48,7 @@ $4443
 l16 $9 v60@32p64%e1r2o5d+4d4  c+1  r2d+4d4  g+1  
 r2d+4d4  c+1  r2d+4d4  g+1  
 >g4a+4a+4<c+4  g4a+4a+4<c+4  r4f+4g2  r4a4g2  
-r4d+4f+2  r4g4f+2  !:4443! r32v40>d+2f2  d2d+2  
+r4d+4f+2  r4g4f+2  *:4443* r32v40>d+2f2  d2d+2  
 g2g+2  g1  d+2f2  d2d+2  
 f1  [2v70@35p80%e1[2o7r4c2^4  r4c8.rc4>b4  ]j2,8 v40@3%e1o8p120p96,10c32>a+32g+32g32g+32g32f32d+32f32d+32d32c32d32c32>b32g+32p120p96,10<g32f32d+32d32d+32d32c32>b32<d32c32>b32a32b32a32g32f32  
 p10p96,120<g+32g32f32d+32f32d+32d32c32f32d+32d32c32d32c32>a+32g+32<p10p96,120d32c32>b32a32b32a32g32f32g32f32d+32d32d+32d32c32>b32  
@@ -61,7 +61,7 @@ $4444
 l16 $12 v120@39p30%e1o6c1  r1  c1  r1  
 c1  r1  c1  r1  
 v80@38p100%e1o3%a5r8a2e2  ^8a2e4v60%a@32p64%e1r4  o6d4d+2r4  f4d+2r4  
-c4d2r4  d+4d2 !:4444! r32v120@34p50%e1o5%l1c4  d+4d4c4>b4  <c8d8c2%l0v80>a+2  
+c4d2r4  d+4d2 *:4444* r32v120@34p50%e1o5%l1c4  d+4d4c4>b4  <c8d8c2%l0v80>a+2  
 <c2>b2  <c2v120%l1c4d+4  d4c4>b4<c8d8  c2%l0v80c2  
 >b2v120[2[2r4<c2  ^4r4c8.rc4  >b4]j2,11 r1  r1  
 ] $11 
@@ -73,7 +73,7 @@ $4445
 l16@33p64%e1 $15 v60o5c1  ^1  ^1  ^1  
 ^1  ^1  ^1  ^1  
 c4>a+4f+4f4  c4d4d+4f4  <d1  ^1  
-c1  ^1  !:4445! r32v30c1  ^1  
+c1  ^1  *:4445* r32v30c1  ^1  
 v60d+4g4f4d+4  d4d+8f8d+2  v30c1  ^2^8v60g8<c8>a+8  
 g+8g8f8d+8d4g4  [2[2v80c8r2r4.  c8c8r2r4  ]j2,14 v60f2g2  
 g+4f4d4>b4  <] $14 
@@ -84,7 +84,7 @@ l16
 $4446
 l16@40%e1 $18 [8o5p20p96,110v80v96,30[2c48c48<c48>c48<c48>c48<<c48>>c48<c48>c48<c48>c48c48c48<c48>c48<c48>c48<g48>c48<c48>c48<c48>c48p96,20v80v96,30]]v100p64c4>a+4  
 f+4f4c4d4  d+4f4<d1  ^1  c1  
-^1  !:4446! r32v40<c1  %l1^1  v80d+4g4f4d+4  
+^1  *:4446* r32v40<c1  %l1^1  v80d+4g4f4d+4  
 d4d+8f8d+2  %l0v40c1  %l1^2^8v80g8<c8>a+8  g+8g8f8d+8d4g4  
 %l0[2[2v120c>v80[15c32r32][2v120<cv80>c32r32][12c32r32]<]j2,17 >v70[8f][8g]g+g+g+g+ffffd  
 dddgggg<] $17 
@@ -96,7 +96,7 @@ $4447
 l16v120@38p75%e0 $21 o4a1  ^2a2  a1  
 ^2a2  a1  ^2a2  a1  
 ^2a2  a1  r1  r4a4a2  
-^4a4a2  ^4a4a2  ^4a4a2  !:4447! ^32^1  
+^4a4a2  ^4a4a2  ^4a4a2  *:4447* ^32^1  
 r1  r1  r1  r1  
 r1  r1  [2[2a8^2r4.  a8a8^2^4  
 ]j2,20 a2a2  a2a2  ] $20 
@@ -109,7 +109,7 @@ l16v120@37p40%e1 $24 o4c1
 ^4.c24c24c24c4.c24c24c24  c1  ^4.c24c24c24c4.c24c24c24  c1  
 ^4.c24c24c24c4.c24c24c24  c1  ^4.c24c24c24c8c8c8c8  c1  
 r1  d4>a4<d4.d24d24d24  d4>a4<d4.d24d24d24  c4>g4<c4.c24c24c24  
-c4>g4<c2  !:4448! r32r1  r1  r1  
+c4>g4<c2  *:4448* r32r1  r1  r1  
 r1  r1  r1  r1  
 [2[2c1  c8c2^4.  ]j2,23 >f8.f32f32f4g8.g32g32g4  g+4g+4g8<d8>g8<d8  
 ] $23 

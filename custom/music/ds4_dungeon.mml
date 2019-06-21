@@ -1,0 +1,124 @@
+#TITLE All Together Now
+#ALBUM Legacy of the Wizard (Dragon Slayer IV)
+#COMPOSER Yuzo Koshiro
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x4D~/0x02/
+#WAVE 0x21 ~0x4F~/0x33/
+#WAVE 0x22 ~0x44~/0x1d/
+#WAVE 0x23 ~0x60~/0x1C/
+#WAVE 0x24 ~0x20~/0x20/
+#WAVE 0x25 ~0x69~/0x0A/
+#WAVE 0x26 ~0x97~/0x1B/
+#WAVE 0x28 ~0x88~/0x11/
+#WAVE 0x29 ~0x71~/0x14/
+
+#def init= t190 %x240 %v40 %b0,85 %f0,0
+
+#def bs= |0 v80 p54 %e1 ~o5~/o6/
+#def sx= |1 v80 p74 %e1 ~o4~/o3/
+#def dl= |2 v64 p54 %e1 o6 %r10 m24,18,239
+#def gp= |3 ~v68~/v64/ p74 %e1 ~o6~/o7/ m24,18,239 %a12 %y2%s3 %r10
+#def ce= |4 v48 p64 %e1 o5 m24,18,223
+#def fi= |5 v52 p74 %e1 o5 m24,18,223
+#def gt= |6 v48 p54 %e1 ~o7~/o6/ %y3%s3 m24,18,207
+
+#cdef \ %p1
+#cdef _ %p0
+#cdef ( %l1
+#cdef ) %l0
+
+#drum "h"=5f |8 %e1 v80 %y6%s0%r20 p94
+#drum "m"=5f |8 %e1 v30 %y2%s2%r20 p74
+#drum "n"=5f |8 %e1 v15 %y2%s2%r20 p54
+#drum "r"=5f |8 %e1 v80 %y0%s2%r20 p104
+#drum "s"=6c |9 %e0 v48 %a15%r28 p32
+#drum "t"=5g+ |9 %e0 v24 %a9%r28 p32
+ 
+#def bassup= v40v96,96
+#def bassdn= v96,64
+
+{1}
+'init' $
+'bs' l12 [4cc<c>cfcgca+c<c>c]
+>[a+a+<a+>a+<d+>a+<f>a+<g+>a+<a+>a+]
+g+g+<g+>g+<c>g+<d+>g+<f>g+<g+>g+  a+a+<a+>a+<d+>a+<f>a+<g+>a+<a+>a+
+<[4cc<c>cfcgca+c<c>c]
+##
+[[cc<c>cfcgca+c<c>c]
+>[a+a+<a+>a+<d+>a+<f>a+<g+>a+<a+>a+]<]
+##
+>[g+g+<g+>g+<c>g+<d+>g+<f>g+<g+>g+  a+a+<a+>a+<d+>a+<f>a+<g+>a+<a+>a+]<
+[cc<c>cfcgca+c<c>c]
+;
+
+{2}
+'sx' l12 %l1 $
+[4'bassup' \c_c<\c_>c\f_c 'bassdn' \g_c\a+_c\<c>_c]
+>['bassup' \a+_a+<\a+_>a+<\d+_>a+ 'bassdn' <\f_>a+<\g+_>a+<\a+_>a+]
+'bassup' \g+_g+<\g+_>g+<\c_>g+ 'bassdn' <\d+_>g+<\f_>g+<\g+_>g+
+'bassup' \a+_a+<\a+_>a+<\d+_>a+ 'bassdn' <\f_>a+<\g+_>a+<\a+_>a+
+<[4'bassup' \c_c<\c_>c\f_c 'bassdn' \g_c\a+_c\<c>_c]
+##
+[['bassup' \c_c<\c_>c\f_c 'bassdn' \g_c\a+_c\<c>_c]
+>['bassup' \a+_a+<\a+_>a+<\d+_>a+ 'bassdn' <\f_>a+<\g+_>a+<\a+_>a+]<]
+##
+>['bassup' \g+_g+<\g+_>g+<\c_>g+ 'bassdn' <\d+_>g+<\f_>g+<\g+_>g+
+'bassup' \a+_a+<\a+_>a+<\d+_>a+ 'bassdn' <\f_>a+<\g+_>a+<\a+_>a+]<
+['bassup' \c_c<\c_>c\f_c 'bassdn' \g_c\a+_c\<c>_c]
+;
+
+{3} $ l6
+'dl-o1' c1 <c1 gfgc1 <c2> g1d1 f2c2d+2f2
+&159g1^1 %g1[11g+64m1]%k0%g0 <g1^1
+##
+'gp' l6
+[cdd+fgc ^dd+fgc  dd+fdc>a+ ^<dd+fd+f 'ce+o1']
+##
+'fi' l6 %r15
+<c>g+d+g+d+ca+fdfd>a+<
+<c>g+d+g+d+c>a+<dfdfa+
+<c>gfe1.
+;
+
+{4} $ l2
+'dl-o1+p10' &2r c1 <&190c1 c>&194g1 <<&94c2> a+1>a+1 <c>fg+a+
+&159<c1^1 %g1[11c+64m1]%k0%g0 <c1^1
+##
+'fi*v.5' l6
+(cdd+f)g(c ^dd+f)g(c  dd+)f(dc)>a+ ^<dd+fd+f
+'gt' cdd+fgc ^dd+fgc  dd+fdc>a+ ^<dd+fd+f
+##
+'dl-o1*v.5' l3
+d+g+^ df^ d+g+^ df^ c1^1
+;
+
+{5} $ l6
+[6[7"hnm"] "rnm"] "hnm rnm rnm rnm"
+;
+
+{6} $ l6
+'dl+o1*v.5' p94 r1 r1 r2gfgc1 ^1^1^1^1
+^1^1^1^1
+##
+l6 "!!!o"
+[4"ttsts t^tstst"]
+##
+'fi*v.8' l6 %r6
+(<c>g+(d+g+(d+c(a+f(df(d>a+<
+(<c>g+(d+g+(d+c(>a+<d(fd(fa+
+(<c>g(fe1.)
+;
+
+{7} $
+[12r1]
+##
+[4r1] l6
+'ce+o1*v.8+p20' rcdd+fgc ^dd+fgc  dd+fdc>a+ ^<dd+fd+
+##
+l6 "!!!o"
+[4"s^s^st"] "stst^^ s^^ s^^"
+;

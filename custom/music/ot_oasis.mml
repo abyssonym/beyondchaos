@@ -1,0 +1,279 @@
+#TITLE Oasis in the Sparkling Sands
+#ALBUM Octopath Traveler
+#COMPOSER Yasunori Nishiki
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x49~/0x0D/
+#WAVE 0x21 ~0x97~/0x01/
+#WAVE 0x22 ~0x1B~/0x1B/
+#WAVE 0x23 ~0x95~/0x31/
+#WAVE 0x24 ~0x4E~/0x05/
+#WAVE 0x25 ~0x1C~/0x1C/
+#WAVE 0x26 ~0x7A~/0x08/
+#WAVE 0x28 ~0x57~/0x2E/
+#WAVE 0x29 ~0x85~/0x00/
+
+#def global= t133 %x255 %v40 %b0,85 %f0,0
+
+#def str= |0 ~o4~/o5/ m48,18,207
+#def vio= |4 ~o4~/o6/ 'v' p80 m48,18,207 'vr'
+#def dlc= |3 ~o6~/o4/ 'd' p76 ~m12,18,107~/m12,18,207/ %y0%s1
+#def gt1= |1 ~o6~/o5/ 'g' p48 m24,18,199 ~%y3%s3~ /%r13/
+#def gt2= |2 o6 'h' p16 m %y3%s1
+#def hrn= |6 o5 'n' p48 m %r10
+#def mba= |2 o5 'm' p96 m %a12
+#def bas= |5 o7 'b' p64 m48,18,199 %y0%s2%r6
+
+#def conga= ~o5~ p72 m /|8/
+#def co= ~|8~/o5/
+#def cs= ~|9~/o6/
+#def ch= 'c*v1.25'
+#def cl= 'c*v.6'
+#def cm= 'c*v.8'
+
+#def c= v72
+#def g= v64
+#def h= v32
+#def v= ~v80~/v52/
+#def b= v64
+#def s= v14
+#def d= ~v48~/v120/
+#def m= v56
+#def n= v32
+
+#def i= v20v144,52
+#def vf= ~v48,80~/v48,64/
+#def sf= ~v144,14~/v144,14/
+
+#def vr= %r5
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'global' r1&90r $
+%e1 l4 'vio+o1'
+m6,1e32
+## 3
+m6,-1^(dc)  %r14m8,1em144,-1^'vr'e  (d32e32d8.^)c  >(k12a+32k0&90a+)g+  g2.%r11^^1^1<
+'vr'(f32e8..)dc  ('vf*v2,.5'f2'v'e)  (b32a+...g+8.m12,-1^16)  'v*v.5''vf*v.67,'g6%r15^3'vr'r48(&44f  'v*v.75''vf*v2,1.25'e2%r13^2%r9^1^1)'vr''v'
+## 19
+(f12e6)(dc)  m16,1e12%r14^24^m32,-1^8'vr'e  (d24e24d24^4.m12,-2d)  (>a+24<c24>a+24^%r17^8)'vr'g+  'v*v.75''vf*2,1.25'g2%r12^1^1'v'cd
+## 27
+'vf*v.67,1.4'd+.'vr''v'f8g  'vf*v,1.33'%r16m8,-2g%r19a+8r.'v''vr'  d+.m8,2d+8m8,2f  (g24f24^6)d+m8,2c
+'v*v.75''vf*v2,1.25'c2^8%r14[39^8] 'dlc+o1' cd
+## 39
+[[d+d32d+32d8.c fd+d] j2,151 c1.
+[d+d32d+32d8.c fd+j2d]f g1.]
+## 51
+#^ [d+d32d+32d8.c fd+d]
+$151 [c+c32c+32c8.>a+< d+c+j2c]d+
+## 59
+[fd+32f32d+8.c+ g+gd+]
+fd+32f32d+8.c+ a+g+d+    fd+32f32d+8.f a+g+d+
+f1. g1
+##70
+'conga' l8
+'cs''c'%e0c'co''cm'd'cs''cl'>a'co'b<
+'cs''c'%e1a4 'co''cl'%e0g'c'g+4 'cs''cl'>a+<  'co'%e1'ch'<e4.> 'cl'%e0f+'cm'g'c'c+
+'cs'%e1b4 >'cl'%e0b<'c''co'f+4 'cl'd+  'c'%e1<e4> 'cm'['cs'>%e0a+<'co'c+]
+'cs'%e1'c'a+4 'cl'c'cm'c+4 'co'e  'ch'%e1<c4c4.>'cs'%e0'c'd16.
+;
+
+{2}
+$ 'bas-o2' l8 %e1
+r1.
+## 3
+[4c1^4.>g< c1.]
+## 19
+c2.<c2>c16.r32c  c1^c16.r32fg    c1^frg  c1^4>g.r16
+## 27
+g+4.g+16.r32g+4 a+2^r  g+4..r16g+4 a+2.
+<c1<c4.>c  c1.
+c1^4.c16r16  c1^4fg
+## 39
+[[g+2^d+ g+.r16g+2]  j2  f2^cf2f16r16g16r16]    c2^gc2.
+## 51
+[g+2^d+ g+.r16g+2]  [d+2^>a+<d+.r16d+2]
+## 59
+[a+2^f a+.r16a+2]   f+2^c+ f+.r16f+2   d+2^>a+< d+.r16d+2
+d2^>a<d4d4a4  g1.
+##71
+%r17'b*v.5' g1^1^1
+;
+
+{3}
+[9 $ 'gt1-o1' %e1 l8
+ ^g4<e4<c>> ^g+4<f4<c>>]
+## 19
+[cg<deg<c>> cg+<cfj2g+<c>>]a+<c>>
+[[cg<deg<c>> cg+<cfg+<c>>]
+## 27
+j2,331 [>g+<cd+g<<cd+>> >a+<df<fa+f>]]$331
+#^ [cg<deg<c>> cg+<cfg+<c>>]
+cg<deg<c>> cg+<cd+g+<d+>>    cg<deg<c>> cg+<cfg+<c>>
+>## 39
+'g*v1.33'
+[g+<cd+g+<cd+g+cd+j2>g+<c>d+>]^c>d+>  fa<cfa<cf>a<c>fc>f
+[[g+<cd+g+<cd+g+cd+>g+<c>d+>] j2 ce<geg<cfc>g+fc>g]
+## 51
+#^ [g+<cd+g+<cd+g+cd+>g+<c>d+>]
+['gt1-o2*v1.33'd+a+<d+f+a+<d+'mba'f+>a+<f>a+<j2d+>a+]f+>a+'gt1-o2*v1.33'
+## 59
+[a+<c+fa+<c+fg+c+g>a+<d+>a+>]
+f+<c+f+a+<c+fa+c+g+c+d+c+>>  f+a+<c+ga+<d+a+d+g+c+d+>a+>
+fa<dfa<dfd>afd>a    b<dgb<dg>> b32<b32<g32b32^8^2
+##71
+r1. [10
+;
+
+#other tracks for this final guitar chord:
+#(string) gt1-o1 d32g8..^2
+#(drum) drum16 gt1 d8.^2
+
+{4}
+[9 $ 'gt1' %e1 l4
+rdg rcg+]
+## 19
+'str+o1' p32 v0 l8
+['sf*v,2.4'([3ge]) ([3g+f]) ([3ge]) 'sf'([3g+f])]
+## 27
+'s*v1.5'['sf*v,2.5'([3d+c]) 'sf*v,1.5' ([3fd])]
+'s*v.5''sf*v,2.3'([3ge]) ([3g+f]) ([3ge]) 'sf'([3fc])
+'s*v.5''sf*v,2.2'([3ge]) ([3a+d+]) ([3ge]) 'sf'([3fc])
+>## 39
+p40 ['s*v1.5''sf*v,2'g+2.'sf*v,2.5'^2.'sf*v,3'^2.'sf*v,3.5'^2. j2 f2.'sf*v,1.5'^2.]
+p32 'sf*v,3'([3ge])'sf*v,1.5'([3g+c])
+## 51
+p40 's*v1.5''sf*v,2'g+2.'sf*v,2.5'^2.'sf*v,3'^2.'sf*v,3.5'^2.
+'sf*v,4'f+2.'sf*v,3'^2.'sf*v,2.15'^2.'sf*v,1.5'^2.
+## 59
+'sf*v,3'f2.'sf*v,4'^2.'sf*v,2.67'^2.'sf*v,1.5'^2.
+'sf*v,3'f1.    'sf*v,2'g2.'sf*v,1.5'^2.
+'sf*v,2.5'f2.'sf*v,3.5'^2.'sf*v,5'g2.'sf*v,1.5'^2.
+##71
+%r17 ^1. [10
+;
+
+{5}
+$ 'conga' r1.
+## 3
+'c''co'%e1c4. 'cs'%e0c4. >a2.<
+'co'%e1c4. 'cs'%e0c4. >a< 'cm''co'e'c'e4 'cs'g+'co'g
+%e1c4. 'cs'%e0c4. %e1g+2.
+'co'c4 'cs'%e0'cl'c'c'c4 'cl'c  'c'%e1g+4 [%e0c'cl'>a<'c']
+'co'%e1c4 'cs'%e0'cl'c'c'd4.  %e1g+4. >a4 'cl'%e0a<
+'co''c'%e1c4 'cs''cl'%e0c'c'c4.  g+4>a4 'vio+o1'%e1d32%r26^16.'conga''cs''cl'>%e0a<
+'co'%e1'c'c4 'cl'%e0d'cs''c'>a<'cl''co'd4  'cs''c'>a4.< 'co'd'cs'>a<c
+'co'%e1c4 %e0e'cs'>b4< 'cl''co'c'cs'>b'c'b<'co'%e1g+4 'cs'%e0g+'co'a
+## 19
+%e1c4 'cs''cl'%e0c'c'c'co''cm'f'cl'f  'cs''c'%e1g4 'co''cl'%e0f'cs''c'c'cm'c'cl'c
+'co'%e1'c'c4 'cs'%e0'cl'c'c'c4.  %e1g+4 %e0['cs''c'c'co''cm'f]
+'c'%e1c4 %e0'cs''cl'c'c'c4.  %e1a4. 'co''ch'e4.
+'c'c4 %e0'cs''cl'c'c'c4.  %e1'co''ch'<g4> %e0'cs''c'd4 'co'c4
+## 27
+%e1c4. 'cs''cm'%e0>a+<'co'd+4  'c'e2.
+'cs'%e1g+4 %e0[>'cl'a'c'a<'co'j2f4]e4 'cs'g+'co'f
+%e1c4 'cs'%e0'cl'>b'c'b4.<  %e1a2^ 'co''cl'>%e0g+16'cm'g+16<
+'c'c4 'cs'>'cl'a+'cm'a+4 'cl'a+<  'c'%e1a4 %e0'cm'['cs'>b<'co'j2f]'cl'f
+'c'%e1c4 'cs'>%e0'cl'b'c'b4 'cl'b<  'co'%e1'c'd4. %e0d'cs'ca
+'co'%e1c2. 'cs'%e0c2 >'cl'g'c'g<
+## 39
+['co''c'%e1<c>%e0'cl'c'cm'c'c''cs'd+4j2 'cl'>a<  'co''c'f4 f4. 'cs''cl'>b<]
+'co''cl'd+  'c'<%e1c%e0>c'cs'e4. >'cl'b16'cm'b16<
+'co''c'f'cl'c'cm'c'c''cs'>g4< 'co'c  'cs'>g4. g<'co'c'cl'c
+'c'f'cl'c'c'c'cs'c+4 'cl'c  'c'c+4 d4. 'co''cl'c
+'c'%e1<c>%e0'cl'c'c'c'cs'c4 'co''cl'f  'c'<%e1c%e0>'cm'd+'c'g+'cl'c'cs'c'co'c
+'cs''c'>%e1a%e0<'co''cl'e'cm'e'cs''c'>a4.<  %e1a4 %e0[>b<'co''cl'd'cs''c']
+## 51
+%e1f+'cl''co'%e0d+'cs'c'c'c'co'd+'cl'd+  'c''cs'>b2^< 'cl''co'f
+'c''cs'%e1f+4 %e0'co'e'cs'>a+4 'cl'a+<  'c'e2^ 'cl'f
+'co''c'%e1f+4 %e0d+f4 d+  'cs'%e1a+4 'co'%e0f+'cm'd'c'f+4
+'cs'a+4. c4 'co'g+  'cs'g+4 d+4 g+'cs''cl'f+
+## 59
+'co''c'c'cs''cm'c'cl'c'co''c'g+4 c  'cs'c+4 'co''cl'c+'c'f'cs'>b'cl'a+<
+'co''c'c'cl'c+f'c'g+'cl'f'cs'>a+<  ['cs''c'c+'co''cl'd]'c'd+'cl'd
+'c'%e1f+'cm'%e0d'cl'c+'cs''c'c4 'co'd  'cs'>b<'co''cm'c4. 'cs'c'co''cl'c
+'c''cs'%e1d'cl''co'%e0c+'cs'>a<'c'd4 'co''cl'd  'cs''c'%e1f'co'%e0g'cm'c+4 'cs'd'co'd
+'c'%e1d+4 %e0['cl'c'c'd+4]  'cs''cm'>a<'co''c'e'cl'd+'cs''cm'>b
+'c'a<'co''cl'c'cm'c+'cs'>b4< 'co'c  'cs''c'>b16   'gt1' d8.^2
+##71
+%r15>>g1^1^1
+;
+
+{6}
+[9 $ 'gt1-o1' %e1 l2
+c.c.]
+## 19
+'str-o1' p80
+'s*v.67' g2. 's' g+2. 's*v1.33' g2. 's*v1.67' g+2.
+'sf*v,2.5' g2. 'sf*v,3.5' g+2. 'sf*v,3' g2. 'sf' g+2.
+## 27
+< p64 ['s*v2''sf*v,3'c2.%r15d2.%r]
+'sf'c2. p80 's*v2''sf*v.67,3.33'g+2.'sf*v,2.67'g2.'sf*v,1.5'f2.
+'sf*v,3'e2. g+2. e2. 'sf*v,1.5'c2.
+## 39
+l8 [p56('sf*v,2'c2.'sf*v,2.5'c2.'sf*v,3'c2.'sf*v,3.5'c2.) j2,649
+'hrn'r4.fafa<[3%r7cj3%r25^]'str*v1.5']$649  p56 'sf*v,2.67'(c2.'sf*v,1.5'c2.)
+## 51
+'s*v1.5''sf*v,2'(c2.'sf*v,2.5'c2.'sf*v,3'c2.'sf*v,3.5'c2.)
+'sf*v,4'(d+2.'sf*v,3'd+2.'sf*v,2.15'd+2.'sf*v,1.5'd+2.
+## 59
+'sf*v,3'(>a+2.'sf*v,4'a+2.'sf*v,2.67'a+2.'sf*v,1.5'a+2.<)
+'sf*v,2.25'(f+2f+2f+2)    's*v3''sf*v,2'(c+2.'sf*v,1.5'c+2.)
+'sf*v,2.5'(c2.'sf*v,3.5'c2.)'sf*v,5'(d2.'sf*v,1.5'd2.)
+##71
+%r17 ^1. [10
+;
+
+{7}
+[9 $ 'gt2-o1' %e1 l8
+'i'cg<deg<c>> 'i'cg+<cfg+<c>>]
+## 19
+'str+o1' p40 v0 l8
+['sf*v,2.4'([3e>g<]) ([3f>g+<]) ([3e>g<]) 'sf'([3f>g+<])]
+## 27
+p56 ['s''sf*v,2.67'c2. 's*v4'%r16f2.%r]
+p40 's*v.5''sf*v,2.3'([3e>g<]) ([3f>g+<]) ([3e>g<]) 'sf'([3c>f<])
+'s*v.5''sf*v,2.2'([3e>g<]) ([3f>a+<]) ([3e>g<]) 'sf'([3c>f<])
+>## 39
+p48 [('s*v1.5''sf*v,2'd+2.'sf*v,2.5'd+2.'sf*v,3'd+2.'sf*v,3.5'd+2.)
+j2 (c2.'sf*v,1.5'c2.)]   'sf*v,2.67'e2.'sf*v,1.5'd+2.
+## 51
+'s*v1.5''sf*v,2'(d+2.'sf*v,2.5'd+2.'sf*v,3'd+2.'sf*v,3.5'd+2.)
+'mba-p56' [r2.d+8r8c+8r8j2>a+8r8<]d+8r8 'str*v1.5'p48
+## 59
+'sf*v,3'(c+2.'sf*v,4'c+2.'sf*v,2.67'c+2.'sf*v,1.5'c+2.)
+'sf*v,3'(c+2c+2c+2)    'sf*v,2'(d+2.'sf*v,1.5'd+2.)
+p64 'sf*v,2'(>a2.'sf*v,3'a2.)'sf*v,5'(b2.b2'sf*v.5,1.5'b4)
+##71
+%r16 ^1. [10
+;
+
+{8}
+$ [18r2.]
+## 19
+'gt2-o1' %e1 l8
+['i'cg<deg<c>> 'i'cg+<cfj2g+<c>>]a+<c>>
+['i'cg<deg<c>> 'i'cg+<cfg+<c>>]
+## 27
+['i'>g+<cd+g<<cd+>> 'i'>a+<df<fa+f>]
+['i'cg<deg<c>> 'i'cg+<cfg+<c>>]
+'i'cg<deg<c>> 'i'cg+<cd+g+<d+>>    'i'cg<deg<c>> 'i'cg+<cfg+<c>>
+## 39
+'str-o1' p64
+[('s*v1.5''sf*v,2'g+2.'sf*v,2.5'g+2.'sf*v,3'g+2.'sf*v,3.5'g+2.)
+j2 (a2.'sf*v,1.5'a2.)]   'sf*v,2.67'g2.'sf*v,1.5'g+2.
+## 51
+'s*v1.5''sf*v,2'(g+2.'sf*v,2.5'g+2.'sf*v,3'g+2.'sf*v,3.5'g+2.)
+'sf*v,4'(a+2.'sf*v,3'a+2.'sf*v,2.15'a+2.'sf*v,1.5'a+2.)
+## 59
+'s''sf*v,2'(>a+2.'sf*v,4'a+2.'sf*v,2.5'a+2.'sf'a+2.<)
+'sf*v,2'(a+2.'sf*v,3'a+2.'sf*v,2.25'a+2.'sf*v,1.5'a+2.)
+r1r1r4 'gt1-o1*v1.33' d32g8..^2
+##71
+^1^1^1
+;

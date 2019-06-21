@@ -4,8 +4,8 @@
 # Converted from binary by mfvitools
 
 #VARIANT ~_
-#VARIANT ~! tier1
-#VARIANT ?! tier2
+#VARIANT ~* tier1
+#VARIANT ?* tier2
 #VARIANT ?_ tier3
 
 #WAVE 0x20 -- 0x25  #C.Organ
@@ -27,7 +27,7 @@ $26 t115[2o5[4[3g+8r8g+8g8]g+8g8b4  ]<[2<c+2>>c+2  <<c+4>>c+4<g2
 ga+fgg+dfg+gceg<c>ca+c  g+cecfcg+ct85r1  r1  r8f8d8d+8f8gfd+8d8  
 d+8r8a4r12f+12d+12c12>a12f+12  g8r8<b4r2  t100<c>gfcc+>g+<d+c+c8.>ff+b<c+f+  
 fc>a+<cc+d+g+f+g+d+c+d+ef+ba  g+8<c+8>b8f+8e8a8g+8d+8  <c+>g+f+c+d>a<edc+8.>f+g<cdg  
-g+8t95<c+8t90>b8t85<c+8t40drr8t40e8t20d8 ! :4441!
+g+8t95<c+8t90>b8t85<c+8t40drr8t40e8t20d8 * :4441*
 ;26
 
 {2}
@@ -38,7 +38,7 @@ $28 [2o5[4[3e8r8e8d+8]e8d+8d4  ]<[2g+2>>g+2  <<g+4>>g+4<<d2  ][2b2>>b2
 <<b4>>b4<<f2  ]]r1  r1  r2g4>g8g+8  
 a+8<c>a+g+8g8g+4f8g8  g+8a+g+g8f8g4f+4  g2<c8r8f+4  r2r4d4  
 r2r1  r1  r1  r1  
-c+8f+8e8f+8gr8.a8g8  !:4442 !
+c+8f+8e8f+8gr8.a8g8  *:4442 *
 ;28
 
 {3}
@@ -50,7 +50,7 @@ $30 [2[4o4[6c+8r8
 <<d+2]]v80@33p64%e1o5c+4.c4.  >a+4^8g+4.g2  g+2a+1  
 <f4d+4c+4c4  >b4<c4d4>g4  <c8r8>c4r2  g8r8g4r2  
 r1  r1  <<d+8c+8>b8a+8a8f+8d+8g+8  g+8.g+f+8g+ab>b<c+de8>b8  
-a+8g+8g8d+8dr8.a+8g+8 ! :4443!
+a+8g+8g8d+8dr8.a+8g+8 * :4443*
 ;30
 
 {4}
@@ -63,7 +63,7 @@ r2c2  r2>b2  r2a+2  r2b2
 r2a+2  ]r1  r1  r2r1  
 r1  r1  v60@32p64%e1o5f+8r8d+4r2  d8r8g4r2  
 r1  r1  r1  r1  
-f8d+8d8>a+8ar8.<f8d+8 ! :4444 !
+f8d+8d8>a+8ar8.<f8d+8 * :4444 *
 ;32
 
 {5}
@@ -72,7 +72,7 @@ l16 $4445 v120@37p40%e1
 $34 [2[4o4c+4>g+4<c+4>g+4  <c+4>g+4<c+8>g+8b4  ]<[2c+2>g+2  
 <c+4>g+4<c2  ][2e2>b2  <e4>b4<d+2  ]]
 [12r1]  r2 
-!:4445 !
+*:4445 *
 ;34
 
 {6}
@@ -84,7 +84,7 @@ r1  r1  r2r4o5%g1v80v48,20[8a32][4v30v96,100[16a32]v96,30[16a32]]
 $36 %g1[2[8v30v96,100[16a32]v96,30[16a32]][7r2  
 r4v100v48,30[8a32]]r1  ]
 [12r1]  r2
-!%g0 :4446 !
+*%g0 :4446 *
 ;36
 
 {7}
@@ -93,7 +93,7 @@ l16 $4447 v120@38p70%e0
 $38 [2o4[4a2a2  a1  ][8^2a2  
 ]] 
 [12r1]  r2
-!:4447!
+*:4447*
 ;38
 
 l16 $4448 v80@35p80%e1
@@ -103,5 +103,5 @@ o7[2r8c+r8.c+r8.c+r8.c+r  r8c+r8.c+r8.c+rd4  ] ?
 r8c+r8.c+r8.c+rd4  ]r2c+2  r2c2  r2c+2  
 r2c2  r2>b2  r2a+2  r2b2  
 r2a+2  ]
-[12r1]  r2  !:4448!
+[12r1]  r2  *:4448*
 ;40

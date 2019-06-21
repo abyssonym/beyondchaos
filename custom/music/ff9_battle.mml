@@ -1,0 +1,293 @@
+#TITLE Battle 1
+#ALBUM Final Fantasy IX
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x69~/0x00/ Syn. Brass
+#WAVE 0x21 ~0x7F~/0x0e/ Trumpet
+#WAVE 0x22 ~0x08~/0x0A/ Horn
+#WAVE 0x23 ~0x49~/0x0D/ Strings
+#WAVE 0x24 ~0x58~/0x25/ Organ
+#WAVE 0x25 ~0x92~/0x36/ Choir
+#WAVE 0x26 ~0x5d~/0x00/ OD.Guitar
+#WAVE 0x27 ~0x1c~/0x1C/ bass
+#WAVE 0x2A ~0x22~/0x22/ kick
+#WAVE 0x2B ~0x56~/0x14/ snare
+#WAVE 0x2C ~0x84~/0x17/ tom
+#WAVE 0x2E ~0x8E~/0x12/ crash
+#WAVE 0x2F ~0x8F~/0x0F/ hihat
+
+#def global= t160 %x240 %v40 %b0,85 %f0,0
+
+#def syb= ~|0~/@6/ ~o5~/o4/ %y2%s5%r5
+#def pet= |1 ~o5~/o6/
+#def hrn= |2 o5
+#def str= |3 ~o4~/o5/
+#def org= ~|4~/@0|4/ %y4%s3 o4 ~%r0%a10~
+#def cho= |5 ~o5~/o4/ /%a2%r9/
+#def odr= ~|6%r5~/@1 %y1%s3/ ~o6~/o5/
+#def bas= |7 o6
+
+#def sybv= ~v48~/v24/
+#def petv= ~v40~/v56/
+#def strv= v64
+#def hrnv= ~v40~/v32/
+#def orgv= ~v48~/v40/
+#def chov= ~v56~/v24/
+#def odrv= ~v32~/v32/
+#def basv= v72
+
+#def stvs= v192,64
+
+#def 01= 'syb''sybv' p24
+#def b1= 'syb''sybv' p59
+#def 02= 'syb''sybv' p104
+#def b2= 'syb''sybv' p69
+#def 03= 'pet''petv' p44
+#def 03= 'pet''petv' p44
+#def 05= 'hrn''hrnv' p104
+#def 06= 'hrn''hrnv' p104
+#def 07= 'hrn''hrnv' p104
+#def 08= 'str''strv' p14
+#def 09= 'str''strv' p19
+#def 10= 'str''strv' p24
+#def 11= 'str''strv' p24
+#def 12= 'str''strv' p29
+#def 13= 'str''strv' p34
+#def 14= 'str''strv' p34
+#def 15= 'str''strv' p39
+#def 16= 'org''orgv' p94
+#def 17= 'org''orgv' p94
+#def 18= 'org''orgv' p94
+#def 19= 'org''orgv' p94
+#def 20= 'cho''chov' p124
+#def 21= 'cho''chov' p64
+#def 22= 'cho''chov' p4
+#def 23= 'odr''odrv' p64
+#def 24= 'odr''odrv' p64
+#def 25= 'odr''odrv' p64
+#def 27= 'bas''basv' p64
+
+#def vi1= m48,18,207
+#def vi2= m48,18,223
+#def vi3= m48,18,239
+
+#drum "k"=5f |A v96 p64 %e0
+#drum "s"=5e |B v96 p64 %e0
+#drum "h"=~6d+ |F v80 %y6%s0~ /5a |F v48/ p72 %e0
+#drum "i"=~6d+ |F v64 %y6%s0~ /5a |F v36/ p72 %e0
+#drum "o"=~6c |F v64 %y0s0~ /5a+ |E v48 %y2%s0/ p72 %e0
+#drum "p"=~6c |F v48 %y0s0~ /5a+ |E v36 %y2%s0/ p72 %e0
+#drum "c"=~5a~/4b/ |C v112 p96 %e1
+#drum "a"=~5f+~/4g+/ |C v96 p72 %e1
+#drum "f"=~5c+~/4d+/ |C v80 p50 %e1
+#drum "y"=5f |E v96 p52 %e1 /%y0%s0/
+#drum "z"=5g |E v96 p96 %e1 /%y0%s0/
+
+{1}
+'global' %e1
+'01-o1*v.95' l24 dfg+b<df g+b<dfg+b
+r1r1$
+'10*v.72' l16 [r8a8br8.<c8>br8. <d8cr8.e8dr8. f8e4>]
+##8
+"!!!o z4.y4.z2"
+'03+o1*v.8' l8 'vi3' %r8 agfe l4 d.e.f.g.ab
+##12
+'10*v.72' l16 [r8a8br8.<c8>br8. <d8cr8.e8dr8. f8e4>]
+##16
+'01+o1*v.75' l8 [c4.d4.e4 g4.f+4dd+e  b4.a1.r    c4.d4.e4 >a4.a4.g4 a1...r<]
+##24
+#^^
+##32
+'03+o1*v.88' l16 %r8 frerfrcr>ar<crf4^1  grf+rgrdr>br<drg4^1
+##36
+'23+o1*v.5' l8 m12,2 d+4.'odrv*v.7'f4.e4 d4.c4dc4  >b2^ab<c d1
+##40
+'03*v.88' l16 %r8 a4.b4.<c4 d1 drc+rdr>brgrbr<fre8 ^1
+##44
+e4.e4d+8e4 f+4.f+4e8f+4 %r4 g1^1
+'06*v.78' 'vi2' %r6 g1 l16 r8 >grbr<drgrdrgrbr
+m;
+
+{2}
+%e1
+'02-o2*v.95' l24 fg+b<dfg+ b<dfg+b<d
+r1r1$
+'08+o2' %r20 l8 [16'strv*v.7'e'strv*v.37'e]
+##8
+'16+o2*.76' l8 d>af<e>af <f>f<e>f <dc>b<c
+d>bg<e>bg <f>g<e>g <dc>b<cdc>
+##12
+l4 'vi1' a^.b. <c^.d. e^.f+. g1>
+##16
+'orgv*v.67' l8 [er4er4d4]    l2 ef+ga a1.g eded
+##24
+'10+o2*v.33' l16 [r8e8cr8. f+8cr8.f+r  r8g8cr8. f+8cr8.f+r]
+r8f8cr8. g8cr8.ar  r8g8dr>br< f8dr>br<fr>
+'stvs*v,.6'r8a8g+rar <c8>br<cr e8'stvs*v,.9'd+rer a8g+rar <c8>'strv*v.16'br<cr
+##32
+m"!!!o y1" ^8
+'05-o1*v.78' 'vi2' l16 ar<drfr a4grfr  d4.e4.f4  gr>br<ergrbrergrbr
+##36
+'hrnv*v.7' <c4.c4.c4 d1 d4.d4.d4 e1>
+##40
+'hrnv*v.78' r1 f4.g4.a4 b1 g4.a4.b4
+##44
+'23+o1*v.65' l8 c4.c4>b<c4 d4.d4cd4  f4.e^2 d4.c4dc4 >b1
+'07-o1*v.78' 'vi2' l16 r8drgrbr<dr>br<drgr
+m;
+
+{3}
+'23-o1*v.95' l24 dfg+b<df g+b<dfg+b
+'27-o2' l8 
+$302 [[3'basv*v.75'a'basv*v.70'a]'basv*v.75'g'basv*v.70'g$0] j1,0
+$
+'27-o2' l8
+[ [j2,308%j302$308 ]
+##8
+l8  [4fr4]fr[4gr4]grgr 
+##12
+'27-o2' l8
+[ [j2,316%j302$316 ]
+##16
+l8 ['basv*v.75'ar4area+g+ ar4aregg+  [j2,320%j302$320
+'basv*v.75' fr4fr4<cr>gr4gr<d>bg+  [j2,324%j302$324 ]
+##24
+#^^
+##32
+'basv*v.75' f4.f4.e4 d4.d4.ef g4.g4.f4 e4.e4.e4
+##36
+f4.f4.f4 f+4.f+4.f+4 g4.g4.g4 g+4.g+4.g+4
+##40
+a4.a4.e4 d4.d4.ef g4.g4.d4 c4.c4.c>b
+##44
+a4.<a4.g4 f+4.f+4.f+4 g4.d4fa4 g4.<c4dc>f+ g4.g4.d4
+"!!!o c4.aho4."
+;
+
+{4}
+'24-o2*v.95' l24 fg+b<dfg+ b<dfg+b<d
+[8"k4"]
+$
+l24 [14"!!!o k4"]"cafk8s4"
+##8
+l8 "a4fckfaffckfaf16f16ca24a24a24f" l8 [5"!ok4"]"ksk"
+##12
+[16"k4"]
+##16
+l4 ["k.k^.k.kk8s" [8"k"]]
+##24
+l8 "kohkh4ho k4.k4ks4" [8"k4"] "k4.k^2 k4.k4ks4" [8"k4"]
+##32
+["k4sk4.s4 k4sk4ks4 k4sk4.s4 k4sk4ksk"]
+##36
+#^^
+##40
+"koskhos4 koskhks4 koskhos4 koskhksk"
+##44
+"k4skhos4 k4skhks4 k4sk4.s4 k4sk4ksk k4sk4."
+&46 "s4    a4."&50"f4"   "ks4"
+;
+
+{5}
+r1r1.%e1
+$
+'13*v.59' l16 [ [4e8er8.] j2 r8b8a4] g+8a4r8
+##8
+'05-o1*v.74' 'vi2' %r19 l8 a<dfefd>a<d%r9f2.> %r19 rgb<dfc>b<d%r9g2.r4
+##12
+'08+o2' %r20 l8 [14'strv*v.7'e'strv*v.37'e]
+'02-o1*v.75' l24 ab<c f+ec l16 def+g
+##16
+'sybv*v.65' l8 'vi3' [a4.b4.<c4 e4.d4>bb<c  f+4.e1.r >a4.b4.<c4> f4.f4.f4 e1...r]
+##24
+#^^
+##32
+'24-o1' c1^1d1^1
+##36
+<'odrv*v.7' l8 m12,2a+4.<c4.c4 c4.>f+^2 g2^f+ga g+1>
+##40
+'odrv' l1 efde
+##44
+<'odrv*v.65' l8 g4.g^2 a4.a^2
+'10+o1*v.82' %r20 l8 [<d>dg<c> dg<d>d] [<d>dgb dg<d>d]
+m;
+
+{6}
+r1r1.%e1
+$
+'09+o1' %r20 l8 [16'strv*v.7'a'strv*v.37'a]
+##8
+'24-o1''vi3' c1..d1^1
+##12
+'13*v.59' l16 [[4r8e8er]j2r8b8a4]
+'01*v.75' l24 cde age l16 f+gab
+##16
+'16*v.67''vi1' l8  [ar4ar4g4]  l2 aa<cc c1.>b<  l8 a<ac>a<ad>a<a> a<ae>a<ad>a<a>
+##24
+[er4er4d4] l2 ef+gd f1.g
+'13+o1*v.33' 'stvs*v,.6'c4.>b4.a4'stvs*v,.9'^8e4.c4>'strv*v.16'a4
+##32
+m'23-o2' %p1 f1^1g1^1 %p0
+##36
+'07-o1*v.7' %r6 'vi2' l8 a4.a4.g4 f+1  b4.b4.a4 g+1
+##40
+'10+o1*v.82' %r20 l8 rea<c> ea<e>e  <f>fa<d> fa<f>f  <d>dgb dg<d>d  <e>eg<c> eg<e>e
+##44
+'05+o1*v.78' %r6 c4.c4>bag f+4.f+4ef+4 g1^1
+'16+o1*v.77' l8 bgdbgd<d>d bdadg>b<fr
+m;
+
+{7}
+r1r1.%e1
+$
+'12*v.65' l16 [r4gr8.a8gr8. b8ar8.<c8>br8. <d8c4>]
+##8
+'23-o2' %p1 f1..g1^1 %p0
+##12
+'17+o1*v.76' 'vi1' l4 rr.g. a^.g. a^.b. <c1
+##16
+"!!!o z.y^.hhhh8o8" %e1
+'18+o1*v.67''vi1' l2 cded f1.f>    l8 %l1 a<<e>>[a4<<f+>>]a<<g>>[a4<<f+>>]
+##24
+'13+o1*v.33' l16 [4 r8a8erar a8f+rar8.] [r8a8frar b8frj2ar8.]r4
+'stvs*v,.6'r8e8r8er a8r8ar <c8'stvs*v,.9'r8cr e8r8er a8r8'strv*v.16'ar
+##32
+m'20*v.75' l1 aabb
+##36
+'25*v.7' 'vi3' l8 m12,2g4.a4.g4 f+4.d^2 d1 e1
+##40
+l8 '16+o2*v.77' c>aea<c>e<e>e <d>afa<d "!!!oo"'16+o2*v.77'%e1 f>f
+bgdgbd<d>d <c>geg<c "!!!oo"'16+o2*v.77'%e1 e>e
+##44
+<c>aea <c>e<e>e  af+df+ a"!!!oo"'16+o2*v.77'%e1 e>e
+<c>gd<c> gd<d>d  <c>d<d>d <c>l16cdfdg<c>
+'10+o1*v.82' %r20 l8 g>gb<d> gb<g>g  <g>gb<d> gb<g>g
+m;
+
+{8}
+r1r1.
+$
+r1r1r1r2. "y4"
+##8
+"k4k2k4k2k4" "z4.y4.z2.h8o8i4"
+##12
+l8 "h4i4hoh4" ["oih4hoh4"] "oih4h4h4"
+##16
+[4"h4"]^1 [15"h4"]"h8o8" [8"!oh4"]
+##24
+"z4.y^2" [4"!!!o hoh4h4h4" j4 "hoh4h4ho"]
+##32
+[4"h4hoh4h4"]
+##36
+[7":o:h4ho"]"h4yo"
+##40
+l1 '20*v.75+o1'%e1 c>ab<c
+##44
+'10+o2*v.82' %r20 l8 e>ea<c> ea<e>e  <d>df+a df+<d>d
+"!!!o y4h4hoh4 h4h4hoh4 y4h4hoh4"
+'17+o1*v.77'%e1 grfrdrdr
+;

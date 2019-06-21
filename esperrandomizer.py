@@ -1,4 +1,4 @@
-from utils import hex2int, int2bytes, Substitution, utilrandom as random
+from utils import ESPER_TABLE, hex2int, int2bytes, Substitution, utilrandom as random
 from skillrandomizer import get_ranked_spells, get_spell
 from functools import reduce
 
@@ -67,11 +67,12 @@ def allocate_espers(ancient_cave, espers, characters, fout):
     characters = [c for c in characters if c.id in char_ids]
     
     chars_for_esper = []
+    max_rank = max(espers, key=lambda e: e.rank).rank
     for e in espers:
         num_users = 1
-        if random.randint(1,10) == 10:
+        if e.id not in [15, 16] and random.randint(1,25) >= 25 - max_rank + e.rank:
             num_users += 1
-            while num_users < 15 and random.choice([True, False, False]):
+            while num_users < 15 and random.choice([True] + [False] * (e.rank + 2)):
                 num_users += 1
         users = random.sample(characters, num_users)
         chars_for_esper.append([c.id for c in users])
@@ -252,3 +253,26 @@ class EsperBlock:
         spellrates.append((spell, learnrate))
         spellrates = sorted(spellrates, key=lambda s_l1: s_l1[0].spellid)
         self.spells, self.learnrates = list(zip(*spellrates))
+
+
+all_espers = None
+
+
+def get_espers(sourcefile):
+    global all_espers
+    if all_espers:
+        return all_espers
+
+    all_espers = []
+    for i, line in enumerate(open(ESPER_TABLE)):
+        line = line.strip()
+        if line[0] == '#':
+            continue
+
+        while '  ' in line:
+            line = line.replace('  ', ' ')
+        c = EsperBlock(*line.split(','))
+        c.read_data(sourcefile)
+        c.set_id(i)
+        all_espers.append(c)
+    return get_espers(sourcefile)

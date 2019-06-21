@@ -1,0 +1,130 @@
+#TITLE Battle 2
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 -- ~0x75~ /0x16/
+#WAVE 0x21 -- ~0x9A~ /0x0E/
+#WAVE 0x22 -- ~0x6B~ /0x02/
+#WAVE 0x23 -- ~0x0D~ /0x0D/
+#WAVE 0x24 -- ~0x6D~ /0x12/
+#WAVE 0x25 -- ~0x81~ /0x14/
+
+
+{1}
+l16t165%b0,70%v70%x190%f0,0 $1
+l16v100p70|3%e1 o4[2f+8g+8a8<c+8f8f+8  g+8a8>f+8g+8a8<c8c+8f8  
+f+8g+8>f+8g+8a8<c+8e8f+8  g+8a8>f+8g+8a8<c+8f8f+8  g+8a8>]
+[4r1]
+v125p65|0%e1 [2[3o4f+2c+2  
+]^4c+4f+4c+4  f+2c+2  f+2c+2  >a2e2  
+^4e4a4e4  ][2<c+8c+2^8>g+4  ]a4.e4.a4  ^8e4.a4e4  
+b4.f+4.b4  ^8f+4.b4f+4  <d4.>a4.<d4  ^8>a4.<d4>a4  
+<c+1  v25v192,125[16c+]>f+1  r2r4r1  r2r4r1  
+r1  <d4>a4<d4>a4  <d4>a4<d4>a4  g4d4g4d4  
+g4d4g4d4  
+;1
+
+l16
+{2}
+l16v100p62|1%e1 $2 [12r1  ][2~o5~/o6/f+4frf+rg+4f+rg+r  
+a4g+rf+rg+rf+rf4  f+1  ^2^4r4  f+4frf+rg+4f+rg+r  
+a4g+rarb4arbr  <c+1  ^2^4r4  ]c+4crc+rd+4f+4  
+erd+rc+4d+4c4  c+1  ^1  >b1  
+^1  <d4>arf+4ar<d4  ^4>a4<d4f+4  f1  
+^1  r1  r2r4r1  r2r4r1  
+r1  g+4f+2^4  ^1  <c+4>b2^4  
+^1  
+;2
+
+l16
+{3}
+l16v115p60|2 $3 o5f+1  ^2<c+2  >f+1  
+^2c+2  f+8g+8a8<c+8f8f+8g+8a8  >f+8g+8a8<c8c+8f8f+8g+8  >f+8g+8a8<c+8e8f+8g+8a8  
+>f+8g+8a8<c+8f8f+8g+8a8  >f+8f+8f+8f+8f+8f+8f+8f+8  f+8f+8f+8f+8f+8f+8f+8f+8  
+f+8f+8f+8f+8f+8f+8f+8f+8  f+8<c8f+8f8e8d+8d8c+8  >[2f+8<c+4>c+8f+8<c+4>c+8  
+f+8<c+4>c+8f+8<c+4>c+8  f+8f+8f+8f+8f+8f+8f+8f+8  f+8g+8a8<c+8e8d+8c+8>a8  
+f+8<c+4>c+8f+8<c+4>c+8  f+8<c+4>c+8f+8<c+8>f+8g+8  a4.<e4.>e4  a4.<e4d8c+8>a8  
+]c+8c+8r8<c+8r8c+8>g+4  c+8c+8r8<c+8r8c+8>g+4  are8are8are8are8  
+are8are8are8a8<c+8  >brf+8brf+8brf+8brf+8  brf+8brf+8brf+8b8<c+8  
+dr>a8<dr>a8<dr>a8<dr>a8  <dr>a8<dr>a8<dr>a8g+8f+8  f4.<c+4.>g+4  
+c+4.d+4.f4  f+8g+8a8b8a8g+8f+8g+8  a8b8a8g+8f+8r8f+8g+8  a8b8a8g+8f+8g+8a8b8  
+a8g+8f+8r8f+8g+8a8b8  a8g+8f+8g+8a8b8a8g+8  f+8g+8a8b8d4d2  ^4^1  
+g4g2^4  ^1  
+;3
+
+l16
+{4}
+l16v100p45|3%e1 $4 r2o7c+2  c1  
+r2e2  d+1  r2c+2  c1  
+r2e2  d+1  >c+rc+rc+rc+rdrdrdrdr  d+rd+rd+rd+rdrdrdrdr  
+c+rc+rc+rc+rdrdrdrdr  d+rd+rd+rd+rdrdrdrdr  [2c+rc+rc+rc+rdrdrdrdr  
+d+rd+rd+rd+rdrdrdrdr  >f+2^8g+8a8<c+8  c4>g+4<e4d+4  c+rc+rc+rc+rdrdrdrdr  
+d+rd+rd+rd+rdrdrdrdr  c+2e2  a1  ]>g+rg+rg+rg+rarararar  
+a+ra+ra+ra+rarararar  <<c+4>a8e4a8<c+4  ^4>a4<c+4e4  d+4.>b4.f+4  
+^1  >f+4.g+4.a4  ^1  g+1  
+^1  >>f+8g+8a8b8a8g+8f+8g+8  a8b8a8g+8f+8r8<a8b8  <c+8d+8c+8>b8a8b8<c+8d+8  
+c+8>b8a8r8a8b8<c+8d+8  c+8>b8a8b8<c+8d+8c+8>b8  a8b8<c+8d+8<g+4f+2  
+^4^1  <c+4>b2^4  ^1  
+;4
+
+l16
+{6}
+l16v100p50|3%e1 $5 r2o6c+2  
+c1  r2e2  d+1  r2c+2  
+c1  r2e2  d+1  >ararararbrbrbrbr  
+<crcrcrcr>brbrbrbr  ararararbrbrbrbr  <crcrcrcr>brbrbrbr  [2ararararbrbrbrbr  
+<crcrcrcr>brbrbrbr  >f+2^8g+8a8<c+8  c4>g+4<e4d+4  ararararbrbrbrbr  
+<crcrcrcr>brbrbrbr  a2b4<d4  c+1  >]ererererf+rf+rf+rf+r  
+grgrgrgrf+rf+rf+rf+r  <c+4>a8e4a8<c+4  ^4>a4<c+4e4  d+4.>b4.f+4  
+^1  d4.e4.f+4  ^1  f1  
+^1  >f+8g+8a8b8a8g+8f+8g+8  a8b8a8g+8f+8r8<a8b8  <c+8d+8c+8>b8a8b8<c+8d+8  
+c+8>b8a8r8<c+8d+8e8f+8  e8d+8c+8d+8e8f+8e8d+8  c+8d+8e8f+8d4d2  
+^4^1  g4g2^4  ^1  
+;5
+
+l16
+{5}
+l16p55|5 $6 [8r1  
+]o5[2[3v90a4.v50a24a24a24]v90a8a8a8a8  ][4[3v90a4.v50a24a24a24]v90a8a8a8a8  
+a4.v50a24a24a24v90a2  v50r8a24a24a24v90a8v50a24a24a24v90a8v50a24a24a24v90a4  
+][2[2v90a2^4v50r8a24a24a24  ][3v90a4.v50a24a24a24]v90a8a8a8a8  ][2v90a4.v50a24a24a24][4v90a8v50a24a24a24][2v60a8v30aa  
+v65a8v32aav70a8v35aav75a8v37aav80a8v40aa  v85a8v42aav90a4]v55a8v27aav60a8v30aa  
+v65a8v32aav70a8v35aav75a8v37aav80a8v40aa  v85a8v42aav90aaaa[2v90a4v192,5[24a24]r2  
+r4]
+;6
+
+l16
+{8}
+l16v100p70|3%e1 $7 o5[8r1]
+<r1  r1  
+r1  r1  [2r1  r1  
+r1  r1  r1  r1  
+r1  r1  ]r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r1  r2r4r1  r2r4r1  
+r1  a4a2^4  ^1  <d4d2^4  
+^1  
+;7
+
+l16
+{7}
+l16v100p57|4%e1 $8 o5a1  r1  a1  
+r1  a1  r1  a1  
+r1  a1  r1  r1  
+r1  [2a1  r1  r1  
+r1  r1  r1  r1  
+r1  ]r1  r1  r1  
+r1  r1  r1  r1  
+r1  r1  r1  r1  
+r2r4r1  r2r4r1  r1  
+r1  a1  r1  a1  
+
+;8
+
+l16

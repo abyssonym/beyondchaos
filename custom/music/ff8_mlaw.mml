@@ -1,0 +1,147 @@
+#TITLE Martial Law
+#ALBUM Final Fantasy VIII
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x43~/0x06/ pad
+#WAVE 0x21 ~0x0D~/0x0D/ strings
+#WAVE 0x22 ~0x97~/0x1B/ clavi
+#WAVE 0x23 ~0x01~/0x01/ guitar
+#WAVE 0x24 ~0x02~/0x02/ bass
+#WAVE 0x2A ~0x22~/0x22/ kick
+#WAVE 0x2B ~0x56~/0x21/ snare
+#WAVE 0x2C ~0x5F~/0x2F/ shaker
+#WAVE 0x2D ~0x2B~/0x2B/ rim
+
+#def global= t120 %b0,30 %v70 %x224 %f0,0
+
+#def pad= |0 %e1 v24 %a3%r7 ~o4~/o5/ m
+#def str= |1 %e1 v48 %r5 o5 m16,16,207
+#def clv= |2 %e1 v48 p100 %r12 ~o6~/o5/ m48,18,207
+#def cll =|2 %e1 v12 p100 %y3%s3 ~o6~/o5/ m48,18,207
+#def gtr= |3 %e1 v72 p45 o5 %r12 m48,18,63
+#def elp= @3 %e1 v64 p85 %y3%s3%r11 o5 m48,18,239
+#def bas= |4 %e1 v127 p64 %y4%s3%r12 o8 m
+
+#def ba= v127
+#def bb= v104
+
+#cdef ( %l1
+#cdef ) %l0
+
+#drum "b"=3c %e1 p56 v127 |B /%r14/
+#drum "k"=5f %e0 p64 v127 |A
+#drum "m"=5g+ %e0 p45 v32 |C
+#drum "n"=5g+ %e0 p45 v16 |C
+#drum "r"=5a %e1 p85 v127 |D
+#drum "s"=5g+ %e1 p64 ~v127~/v96/ |B
+
+{1}
+'global'
+$
+'bas'>> l8 [gr4gr4g1^'bb'd 'ba'gr4gr4&176g'bb'f6f+6
+  'ba'gr4gr4g1^'bb'c 'ba'gr4gr4g2..'bb'dfa'ba']
+  gr4gr4g1^'bb'd 'ba'gr4gr4g2^'bb'd4dfd
+##21
+['ba'gr4gr4g1^'bb'd 'ba'gr4gr4g1^'bb'f16f+16
+'ba'gr4gr4g1^'bb'd 'ba'gr4gr4j2g2..'bb'dfa]
+g2<d'bb'c16r.'ba'>a+f4
+##37
+[gr4gr4g4.<g4gf4df> ggr2ggr2r'bb'dfd'ba']
+##45
+>a+r4a+r4a+1^<'bb'c 'ba'dr4dr4d1^'bb'f16e16'ba'
+d+r4d+r4d+2.'bb'g+2 'ba'a1^1
+;
+
+{2}
+$
+'clv' l32 r2r8.r<dg1&186^ fa1&186^ cf1&186^ >a<d1&180^>
+a+<dg1&180^ cfa1&180^> g<cf1&180^> fa<d4^1
+[16"!!!or4"]
+##21
+'elp' l8 <g4.f^1. e4.d^1. c4.>a+^1. a4.g^1.
+<g4.f^1. e4.d^1. c4.>a+^1. a4.g4.<g4^1
+##37
+l8 [r4dr4er4 fr4er4cr ddr2ddj2r1]r2r 'str' p40 (dg<c)
+##45
+d4.c^1.> a4.g^1. <d4.c^1f2 e1^1
+;
+
+{3}
+$
+'pad' l1 p64 g^ <d^> a+^ >b^<
+g^ e^ g^ %r4 a^^^^^
+##21
+'gtr' l8 [>g<cdg^1. >g<dea^1. >g<cd+a+^1. >g<dfa^1.]
+##37
+'elp' l8 [r4dr4er4 fr4er4cr ddr2ddr1]
+##45
+l4 <d.f.a^1 g1 l16 r8aa+ afdcc+8c>a+8gf8
+g8a+r <c8>ga+8 <c8d fc+df gd<c>g+ afdc d8c>a+8 fd8^1^4<b2.
+;
+
+{4}
+$
+[16"nnmn"]
+[4"knmknnknnnmnnnsk"] ["knmknnknnnmnnnmk"]
+##21
+[["knrk rnkn rnrn r4.k" j2 "knrk rnkn rnrn rk4k"] "knrk rnkn rnrn rk.k."]
+##37
+"k4.k4.k4 ^2..k kk^2kk ^2^k.k." "k4.k4.k4 ^2..k kk^2kk ^2^k4k"
+##45
+l8 ["knmk nnkn nnmn n4sk" j2 "knmk nnkn nnmn nksk"] "knmn" [3"nnmn"]
+;
+
+{5}
+$
+'pad' l1 p30 <c^> e^ c^ a^
+d^ <d^ c^ %r4 ([24e4])
+##21
+'elp' l8 <c4.c^1.> g4.g^1. d+4.d+^1. c4.c^1.
+<c4.c^1.> g4.g^1. d+4.d+^1. c4.c4.<c4^1
+##37
+[16"!!!onnmn"]
+##45
+'elp' l4 f.g.<c^1> 'str' p60 ([8d])([6f])<(cc)>([8b])
+;
+
+{6}
+$
+'clv' l16 r2r8.a+1^1 <c1^1> g1^1 f^4^1
+l32 r2r8.r64<c(f64>a+1)&183^ <d(g64c1)&183^ >g+<(d64>g1)&183^ g<(c64>f4)^1
+l8 ["!!!o n4.n4.m1^n"]
+##21
+'elp' l8 <d4.d^1.> a4.a^1. g4.g^1. d4.d^1.
+<d4.d^1.> a4.a^1. g4.g^1. d4.d4.<d4^1
+##37
+'cll'< l8 [r4dr4er4 fr4er4cr ddr2ddr1]
+##45
+'str' l4 p60 ([8f]) 'elp' a1   r2<f8r4.r1r4.g16r16r2r1r4e2.
+;
+
+{7}
+$
+'pad' l4 p100 ([8d])([8a])([8f])([8e])
+<([8c])>([8a])([8d])%r4([24g])
+##21
+l8 [8"!!!o r4mn n4r4 n4m4 nnrn"]
+##37
+[8"!!!o ^2b2"]
+##45
+'elp' l4 g.<f.d^1 d1 'str' p50 %a2([4c])%a15 ([6g])(gg)([8f+])
+;
+
+{8}
+$
+'clv' l32 r2r8.r64<cf1&186^ dg1&186^ >g+<d1&186^ >g<c4^1^64
+l8 [4"n4.n4.m1mn"] r1r1r1r1
+##21
+l8 [8"!!!o n2 ^4m4 ^2 ^4m4"]
+##37
+'cll' l8 [r4dr4er4 fr4er4cr ddr2ddr1]
+##45
+l8 [3"!!!o n4.n4.m2.^nmn"] "n1^4" 'elp' <f+2.
+;

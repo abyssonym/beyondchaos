@@ -1,0 +1,87 @@
+#TITLE For the Granted Bonds // Bonded by the Soul
+#ALBUM Legend of Mana
+#COMPOSER Yoko Shimomura
+#ARRANGED emberling
+
+#WAVE 0x20 0x0A
+#WAVE 0x21 0x0D
+#WAVE 0x22 0x08
+#WAVE 0x23 0x32
+#WAVE 0x24 0x01
+
+#def ob= |0 o5 %r7 m48,18,223 %e1
+#def st= |1 o5 %r3 m48,18,207 %e1
+#def br= |2 o5 %r5 m48,18,192 %e1
+#def gh= |3 o5 %r12 m48,18,63 %e1
+#def gl= |4 o5 %r12 m48,18,63 %e1
+
+#def global= t76 %x192 %v50 %b0,70 %f0,0
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+$'global' 'ob' v73 p64
+v120,107 d+4.ba+4(b<c+>) rv73v48,107d+4b)(v97a+v107b)<c+.r16
+v73v48,112 d+4.v107(c+16>b16)a+4v87g+4  v107r<d+c+>ba+4v87g+.r16
+v107d+4.<d+c+4(d+e)> rd+4<d+(c+d+)e.r16
+d+4.(c+16>b16)a+4f+4 r<d(c+>b)a4g.r16
+f+4.<dc+4(de)> rf+4<d(c+d)e.r16
+>b4f+4e4.c+ <d4>a4t79t192,70g4.e
+d2t75t48,62^4t24,40^r t76 r1r1
+;
+
+{2}
+$'gh' v123 p64
+r>d+b4rg+<e>g+ rd+bd+rg+<e>g+
+rf+<d+4>rb<g+>b rf+<d+>f+rb<g+>b
+rf+<d+4>rf+<c+>f+ rd+bd+rc+a+c+
+r>b<g+4r>a+<f+>a+ rb<f+>br<c+a+c+>
+rf+<d4r>b<g>b r<dbdr>b<g>b
+r<db4re<c+>e rf<d4>rg<e>g
+ra<f>ar>a<f<c> rd+b4rg+<e>g+ rd+bd+rg+<e>g+
+;
+
+{3}
+r1r1 $'st' v43 p50
+f+2g+2f+2g+2
+v45 d+4.<d+c+4d+e> rd+4<d+c+d+e.r16
+d+4.c+16>b16a+4f+4 r<dc+>ba4g.r16
+r<df+ba+4b<c+> d4f+ba+b<c+4
+d4>b<c+>b4a4 v43<f4v45ded4c4 d2...r16
+v43 >> d+2e2 (>b4<d+4)e2 d+2e2 f+2e2
+;
+
+{4}
+$'br' v84 p80
+r1r1r1 d+2e2
+v77 [8f+2]
+v84 f+2g2 f+2g2 f+2e2 a2g2 a2...r16
+r1r1
+;
+
+{5}
+$'gl' v123 p64 l2
+> >g+<c+ >g+<c+ >b<e >b<e
+>ba+ g+f+ ed+ df+
+>b<e ge ga a+<c
+d>d g+<c+> g+<c+
+;
+
+{6}
+r1r1 $'st' v51 p55
+d+2e2 d+2e2
+v54 >b4.<ba+4b<c+> rv59>b4<ba+b<c+.r16>
+v54 b4.a+16g+16f+4d+4 rbf+f+f+4c+.r16
+b4<df+e4f+g> b4<df+ef+g4
+b4gae4e4 <v51d4>v54a+<c>g4g4 f2...r16
+v51 >>b2<c+2> (g+4b4)<c+2> b2<c+2 d+2c+2
+;
+
+{7}
+$'br' v84 p70
+r1r1r1 >b1<
+v77 [3d+2c+2]d2c+2
+v84 d1 d2e2 d2c+2 f2e2 f2...r16
+r1r1
+;

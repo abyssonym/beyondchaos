@@ -1,0 +1,172 @@
+#TITLE The Earth
+#ALBUM Lufia and the Fortress of Doom
+#COMPOSER Yasunori Shiono
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x0D~/0x0D/
+#WAVE 0x21 ~0x0E~/0x0E/
+#WAVE 0x22 ~0x07~/0x07/
+#WAVE 0x23 ~0x6B~/0x02/
+#WAVE 0x28 ~0x65~/0x22/
+#WAVE 0x29 ~0x5C~/0x21/
+#WAVE 0x2A ~0x11~/0x11/
+#WAVE 0x2E ~0x50~/0x12/
+#WAVE 0x2F ~0x0F~/0x0F/
+
+#def global= t116 %x232 %v40 %b0,85 %f0,0
+
+#drum "k"=5g |8 v80 p64 %e0 %k0
+#drum "s"=6c |9 v80 p64 %e1 %k0 /%y5%s3/
+#drum "c"=5g+ |F v40 p64 %e0 %k0
+#drum "d"=5g+ |F v30 p64 %e0 %k0
+#drum "t"=5f+ |A v48 p64 %e1 %k0
+#drum "y"=5f |E v127 p64 %r18 %e1 %k0
+
+#def str= %e1 |0 'vst' p80 o5 m48,18,203 %k4  %r4
+#def pet= %e1 |1 v80 p56 o6 m48,18,207 %k16 %r7
+#def flt= %e1 |2 'vfl' p72 o4 m48,18,239 %k23 %r8
+#def epi= %e1 @3 v40 p48 o5 m48,18,223 %k16 %y3%s3%r14
+#def bas= %e0 |3 v80 p64 o7 m          %k0
+
+#def vst= v44
+#def vfl= v64
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}$
+'global'
+'pet' l16
+cc+d+c^2>a+8g+8    a+8.<c^2.
+cc+d+c^2>a+8g+8    a+8.<d+8.>a+4.g+8g8
+##16.142
+g+8.c+8.g+2gg+    a+2g4d+4
+c+2^8c+8d+8f8    e2<c2
+##18.159
+cc+d+c^2>a+8g+8    a+8.<c^2.
+cc+d+c^2>a+8g+8    a+8.<d+8.>a+4.g+8g8
+##20.177
+g+8.c+8.g+2gg+    a+2g4d+4
+f1    ^4'flt-o2'a+8<c8c+8c8c+8g+8
+##22.195
+f1    ^4<c+4c4>g+4
+a+4.c+4.g+8.'vfl*v1.33'g32f+32'vfl'    f4>a+8<c8c+8c8c+8g+8
+##25.012
+f1    ^4<c+4c4>g+4
+a+8<c8c+4c4>g+4    a+2.>a+8<c+8
+##27.030
+d+2.>a+8<c+8    d+2g+4..'vfl*v1.33'g32f+32'vfl'
+f1    ^1
+;
+
+{2}$
+'epi-o1' l16
+[4fg+<cf>] [4d+ga+<d+>]
+[4c+fg+<c+>] [4cd+g<c>]
+##16.142
+[4c+fg+<c+>] [4d+ga+<d+>]
+[4c+fg+<c+>] [3ceg<c>]<ec>a+<c>
+##18.159
+[4fg+<cf>] [4d+ga+<d+>]
+[4c+fg+<c+>] [4cd+g<c>]
+##20.177
+[4c+fg+<c+>] [4d+ga+<d+>]
+fg+<cf g+fc>g+ fg+<cf> d+ga+<d+>    fg+<cf g+fc>g+ d+ga+<d+> ga+<d+g>
+##22.195
+[4g+fc+>g+<] [4a+gd+>a+<]
+[6<c>g+fc] [a+gd+>a+<]
+##25.012
+[4g+fc+>g+<] [4a+gd+>a+<]
+[<c>g+fc][a+gd+>a+<]  [4g+fc+>g+<]
+##27.030
+[8g+fc>g+<]
+[4gec>g<] >g<cegceg<c>eg<ceceg<c
+;
+
+{3}$
+'bas-o1' l16
+a8.a8.a8.aa8a8a8  g8.g8.g8.gg8g8g8  f8.f8.f8.ff8f8f8  e8.e8.e8.ee8e8e8
+##16.142
+f8.f8.f8.ff8f8f8  g8.g8.g8.gg8g8g8  f8.f8.f8.ff8f8f8 e8.e8.e8.ee8e8e8
+##18.159
+a8.a8.a8.aa8a8a8  g8.g8.g8.gg8g8g8  f8.f8.f8.ff8f8f8  e8.e8.e8.ee8e8e8
+##20.177
+d8.d8.d8.dd8d8d8  e8.e8.e8.ee8e8e8  a8.a8.a8.aa8a8g8  a2g2
+##22.195
+f8.f8.f8.ff8f8f8  g8.g8.g8.gg8g8g8  a8.a8.a8.aa8a8g8  a2g2
+##25.012
+f8.f8.f8.ff8f8f8  g8.g8.g8.gg8g8g8  a8.a8.a8g8.g8.g8  f8.f8.f8.ff8f8f8
+##27.030
+[f8.f8.f8.ff8f8f8]    [e8.e8.e8.ee8e8e8]
+;
+
+{4}$
+[15"k8.k8.s8.k16k8s8k8"]"k2k4s8t8"
+##22.195
+[3"!ok8.k8.s8.k16k8s8k8"]"k2k4s8t8"
+##25.012
+[8"!ok8.k8.s8.k16k8s8k8"]
+;
+
+{5}$
+'str-p6' l1
+c >a+2<'vst*v1.33'c4d+4  f d+
+##16.142
+c+ d+   f e
+##18.159
+'vst'c >a+2<'vst*v1.33'c4d+4  f d+
+##20.177
+c+ d+   f ^4c4>a+4g4
+##22.195
+g+ a+  <c ^4c4>a+4g4
+##25.012
+g+ a+  <c2d+2 f
+##27.030
+^ ^  g2.f4 e
+;
+
+{6}$
+'str*v1.33' l1
+>g+ (g2'vst'a+2)  g+ g
+##16.142
+f g   g+ g2<c2>
+##18.159
+'vst*v1.33'g+ (g2'vst'a+2)  g+ g
+##20.177
+f g2a+2   a+ g+8r2..
+##22.195
+c+ d+  f <f2d+2>
+##25.012
+c+ d+  f2g+2 <c
+##27.030
+^ ^  c2.>a+4 g
+;
+
+{7}$
+l16
+[120"cd"] "y2y2"
+##22.195
+[24"cd"] "y2y2"
+##25.012
+[64"cd"]
+;
+
+{8}$
+'str+p6' l1
+>g+ g  f d+
+##16.142
+c+ d+   f e2g2
+##18.159
+g+ g  f d+
+##20.177
+c+ d+2g2   <f ^8r2..>
+##22.195
+f g  g+ <c2>a+2
+##25.012
+f g  g+2<c2 f
+##27.030
+^ ^  g2.f4 e
+;

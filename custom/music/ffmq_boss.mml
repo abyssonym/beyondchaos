@@ -4,8 +4,8 @@
 #ARRANGED emberling
 # Converted from binary by mfvitools
 
-#VARIANT ~
-#VARIANT / nopatch
+#VARIANT ~ enh
+#VARIANT / nat
 
 #WAVE 0x20 -- 0x22
 #WAVE 0x21 -- ~0x56~/0x21/
@@ -17,8 +17,8 @@
 #WAVE 0x28 -- ~0x6C~/0x1E/
 #WAVE 0x29 -- ~0x74~/0x00/
 
-{1}
-l16t128%v60%x164%b0,60~v127~/v96/p64%e1%k2@40%r0~o4~/o5/a8e<c8>ea+8ea8egaa+g  
+{5}
+l16t128%v60%x164%b0,60%f0,0~v127~/v96/p64%e1%k2@40%r0~o4~/o5/a8e<c8>ea+8ea8egaa+g  
 e8<e8.e8.e8.e8.e8   $2 [2~o4~/o5/gaaa<c>[6a]<c8.>b8efff<c  >[8f]g8.gaaa<c>[6a]<c8.>b8f  
 fff<c>fffff<c>ffg8.]a2  <c2>b4g+4  a4b4f2  e2<d4c4  
 >b8ag+4^a2  <c2>b4<e4  >g+8a8b8g+8f2  e2g+8.<e8.d8.  
@@ -48,7 +48,7 @@ a+8ea8.gaa+<cj2,4 c4>g+4  <d+4>g+4] $4 >e2  <eer8ee<e8
 ;5
 
 l16
-{4}
+{8}
 l16v92p96@39%e1%s3%k2r1  
 o4ereee8ereee8b4  < $6 [2p96r4e4d2  c8.c8c>a<cf8agfd8.  r4e4d2  
 f8.f8ff8c4d4  ][11r1  ]c4g+4<c4d+4  r1  
@@ -56,7 +56,7 @@ r1  r1  >e8eee8e8eee8b4
 ;6
 
 l16
-{5}
+{1}
 l16/v60/~v32~p64m24,20,211~|9~/@0/%e1m0%k2~o6~/o5/ae>a<<c>gca+f>a+<ae>a<gaa+g  
 ae>g+ba+b<ed+eg+gg+bag+8   $9 @6v70o5>a4<e4dedcdc>bg  f8<c>b8ga2^8  
 <a8ea8e<ed2^  >>a8.f8cfa<c8dc>b4  a4<e4dedc>b<c>bg  f8<c>b8ga2^8  
@@ -90,7 +90,7 @@ b8bb8b8b]v110p64c8.p96v40b8b8b  b8bb8b8b[2b8bb8b8b  b8bb8b8b]v110p64c1
 ;11
 
 l16
-{8}
+{4}
 l16v127p64@33%k8%e0o4@33b32b32@32[5b]@33b32b32@32[5b]@35%k0<f32e32ddc>b8@32%k8b8@35%k0b%k8@32b8@35%k0a  
 %k8@32b8@33bb8bb24@35%k0<e24d24> $12 %k8[2@32b8@33b8]@32b8@33b@32b8  b@33b8[3@32b8@33b8]b@32b8.[2b8@33b8@32]b8  
 @33b@32b8b@33b8[2@32b8@33b8]@32bb@33bb@32b@33b  bb[2@32b8@33b8]@32b8@33b@32b8b@33b8[3@32b8  

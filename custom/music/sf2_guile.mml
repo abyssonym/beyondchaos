@@ -1,0 +1,190 @@
+#TITLE Guile
+#ALBUM Street Fighter II
+#COMPOSER Yoko Shimomura
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x7C~/0x0B/
+#WAVE 0x21 ~0x82~/0x0E/
+#WAVE 0x22 ~0x4F~/0x08/
+#WAVE 0x23 ~0x43~/0x0D/
+#WAVE 0x24 ~0x1C~/0x1C/
+#WAVE 0x28 ~0x22~/0x22/
+#WAVE 0x29 ~0x56~/0x21/
+#WAVE 0x2A ~0x6E~/0x17/
+#WAVE 0x2F ~0x8E~/0x12/
+
+#def global= t125 %x232 %v50 %b0,70 %f0,0
+
+#def ld= |1 'l' ~o6~/o6/ %e1 m48,18,239 %r7
+#def tp= ~|0~/|1/ 't' ~o5~/o6/ %e1 m48,18,239 %r10%y0%s4
+#def hn= |2 'h' ~o6~/o5/ %e1 m48,18,223 %r9
+#def st= |3 's' ~o4~/o5/ %e1 m48,18,207 %r5
+#def ep= @3 'p' o5 %e1 m %y4%s1%r15
+#def ly= ~|2~/|0/ 'y' ~o6~/o6/ %e1 m48,18,223 %r13
+#def bs= |4 'b' ~o7~/o7/ %e1 m %y2%s1%r9
+
+#def l= v72
+#def t= v48
+#def h= ~v48~/v48/
+#def s= v64
+#def p= v64
+#def y= ~v48~/v48/
+#def b= v80
+
+#def fl= %r25^16%r7
+#def ft= %r25^16%r10
+#def fy= %r25^16%r13
+
+#drum "k-"=5g |8 p64 %e0 v64
+#drum "k+"=5g |8 p64 %e0 v88
+#drum "k"=5g |8 p64 %e0 v112
+#drum "s-"=5a |9 p64 %e1 v56 /%y3%s3/
+#drum "s+"=5a |9 p64 %e1 v76 /%y3%s3/
+#drum "s"=5a |9 p64 %e1 v96 /%y3%s3/
+#drum "t"=5a |9 p64 %e1 v116 /%y3%s3/
+#drum "c"=~5b~/5e/ |A p124 %e0 v96
+#drum "a"=~5f+~/4b/ |A p94 %e0 v96
+#drum "f"=~5d+~/4g+/ |A p34 %e0 v96
+#drum "d"=~5c~/4f/ |A p4 %e0 v96
+#drum "x"=5f+ |F p64 %e1 v96 %r16
+#drum "y"=5f |F p110 %e1 v96 %r16
+#drum "z"=5e |F p18 %e1 v96 %r16
+#drum "y-"=5f |F p110 %e1 v96 %r18
+#drum "z-"=5e |F p18 %e1 v96 %r18
+
+{1}$
+'global'
+'ld+o1' l16 p64
+[[d+rd+drdd+4..d+d8] d+drd+8drfrfd+8d8>a+8<]>
+## 7
+c2^8drd+f8. g8.gfra+4g+rgg+8.  d4d+8.fr8>a+8<d8f8 g+4a+8.gr8grfd8.
+c2^8drd+f8. g8.gg+rf4f8gg+8.  a+2^8<crdd+8. g4f4d4>a+4<
+## 15
+c2^8d8d+8f8 c2^8drd+f8.  g1..>a+ra+<c
+g+2^8grfg8. f4d+4d4>a+4<  c4>g1.a+ra+8<
+## 23
+c2^8drd+f8g ^8.g+r8f4drcd8.  d4d+8.fr8>a+8.<frg+ ^4.gfg4f8d+8
+c2^8d8d+8f8 f2^8grd+d8.  d8d+c^1.>a+ra+8<
+##31
+c2^8drd+f8g ^4c8.a+8.g+rgrf8  dd+rc^2.^2.r4
+;
+
+{2}$
+'tp' l16 p18
+[[grgfrfg4..gf8] gfrg8frg+rg+g8f8d8]
+## 7
+p119
+[[d+drd+4.rdr8d+6r48] fd+rf4.rd+r8f6r48 j2 ff12r24rg4^rfr8g8.] f8r8g4.ffr8g8
+## 15
+[g1 f1 <d+drd+^4.d+8.d8. d+rd+drdd+4.j2drd+8>]d+rd8>
+## 23
+d+drd+4..dr rd+8d+8.rf8.d+8frfrfd+8.  fd+r8f4.dr8frg ^4.frgrgrgf8.
+d+1 d+2d2  drdd+4..d+8.d8. d+rd+drdd+4.grf8
+##31
+d+2...d+ ^4..d^2  dd12r24d+4..d+8.d8. d+rd+drdd+4.d+rd8
+;
+
+{3}$
+'bs-o2' l16 p64
+c2^fgfd+dc>a+  g+2^g+<gg+rg+rg+>  d+frf4f8grg8ga+8<
+c8a+<cr>a+<c>c8fgfd+dc>a+  g+8<gg+rgg+>g+8g+<gg+rg+rg+>  d+frf4f8grg8ga+<c>
+## 7
+a+<crc4..c8rcrc> gg+rg+4..g+8g+rg+<g+>  g+a+ra+4..a+8ra+ra+ fgr8g4^ga+<cd+dcd>
+a+<crc4..c8rcrc> gg+rg+4..g+8g+rg+<g+>  g+a+ra+4..a+8ra+ra+ fgr8g4^ga+<cgfd>a+
+## 15
+[g8.g+rg+rg+g+8.rg+r<gg+> g+8.a+ra+ra+a+8.ra+r<g+a+>
+a+<crc^4.c8rcrc> j2 a+<crc4.>ga+<cdd+d>a+]a+<crcr>a+<c8.>ga+g<dd+d>a+
+## 23
+a+<crc4..c8rcrd+ ^8.fr8f4f8d+rd+f  >g+a+r8a+4.a+8.<drd+ ^8.d+r8d+8d+8.d+rd+rd>
+g8.g+rg+rg+g+8.rg+r<gg+> g+8.a+ra+ra+a+8.rgra+g  a+<crc4..c8rcrc> a+<crc8.c8.>ga+<cdd+d>a+
+##31
+g8.g+rg+rg+g+8.rg+r<g>g+ ^8.a+ra+ra+a+8.rgra+g
+a+<crc4..c8rcrc> a+<crcr>a+<c8.>ga+g<dd+d>a+
+;
+
+{4}
+l16 ["k4k4^k-k+ks4"] "kk8.s8.k4ksc8a" 
+$## 4
+["!!!o k4s8.k8.kks4"]  "kk8.s8.k8ca8af8s"
+## 7
+"k4s8.k8.kks4 k4s8k8.k8ks8k8" "k4s8.k8.kks4 kk8.s8k8.k8ks8k8"
+"k4s8.k8.kks4 k4s8k8.k8ks8k8" "k4s8.k8.kks4 k4k4ks8skss8"
+## 15
+"k8.ksk8kk4s4 k4s8.kk4s8k8" "k4s8.k8.kks4 k4s8k8.k8ss8k8"
+"k8.ksk8kk4s4 k4s8.kk4s8k8" "k4s8.k8.kks4 k8sk8sk8.ca8f24f24f24d24d24d24"
+## 23
+"k4s8.kk4s8.k ^8.ks8k8k4s8k8" "k4s8.kk4sk8k ^8.ks8k8k4s4"
+"k8.ksk8kk4s4 k8.ks8.kk4s8k8" "sk8s4k8sk8s8f8 k4s8k8.a8fskss"
+##31
+"k8.ksk8kk4s8.k ^8.ks8.kk8"l48%g1"s-s-s+s+ss"%g0"t4"l16
+"ks8k4.c32c32cas8fd k8sk8sk8.ss8s8af"
+"k4s8.k8k-k+ks4 k4s8.k8k-k+ks4 kk8.s8.k8k8ksc8a"
+;
+
+{5}$
+'st' p64
+[c1 c1 c4..d16^2]
+## 7
+'hn-o1' l16
+d+2^8frgg+8. a+4.<c4^r>a+<c8.>  a+4<c8.d>r8f8a+8<d8 f4g8.d>r8a+ra+a+8.
+d+2^8frgg+8. <c2^8.rd+d+8.  f2^8grfd+8. d4d4f4g4
+## 15
+['ep+o1' [4 gd+c>g+<][4gfd>a+<]c. 'tp+o1*v.5'd+drd+8.d32
+'ep+o1' d+dc>a+g+gfg 'st' c8.dr8d+4^fgrj2g+8]f8
+## 23
+'hn'
+d+2^8frgg8a+ ^6r48<c>r8g+8^12r24frff8.  >a+4<c8.dr8d8.drf ^4^rd+dd+4d8c8
+d+2^8g8g+8g8 a+4..rg+4g4  f8fd+^2. 'tp*v.5'r.d+rd+drdd+4.d+rd32
+##31
+'hn'
+d+2^8frgg+8a+ ^4g8.g8.frd+rd+8  ffrd+^2. 'tp*v.5'r.d+rd+drdd+4.d+rd32
+;
+
+{6}$
+'tp+o1' l16 p119
+[[crc>a+ra+<c4..c>a+8<] c>a+r<c8>a+r<crcc8>a+8f8<]
+## 7
+p18>
+[[c>ar<c^4r8>a+r8<c6r48] dcrd^4r8cr8d6r48 j2 dd12r24rd4^rdr8d8.] d8r8d4.ddr8d8
+## 15
+[d+1 d+2d2 <c>a+r<c^4.c8.>a+8. <crc>a+ra+<c4.j2>a+r<c8>]cr>a+8
+## 23
+c>a+r<c^4.>a+r8<c8c ^8.c8.c8crcrcc8.  dcr8d4.>a+r8<drd+ ^4.drd+rd+rd+d8.
+c1 >a+1<  cr>a+<c^4.c8.>a+8.< crc>a+ra+<c4.d+rd8
+##31
+c2...>a+ ^1  <c>a+r<c4..c8.>a+8.< crc>a+ra+<c4.cr>a+8
+;
+
+{7}$
+'ly+o1' l16 p64
+[[d+rd+drdd+4..d+d8] d+drd+8drfrfd+8d8>a+8<]>
+## 7
+c2^8drd+f8. g8.gfra+4g+rgg+8.  d4d8.fr8>a+8<d8f8 g+4a+8.gr8grfd8.
+c2^8drd+f8. g8.gg+rf4f8gg+8.  a+2^8<crdd+8. g4f4d4>a+4<
+## 15
+c2^8d8d+8f8 c2^8drd+f8.  g1..>a+ra+<c
+g+2^8grfg8. f4d+4d4>a+4<  c4>g1.a+ra+8<
+## 23
+c2^8drd+f8g ^8.g+r8f4drcd8.  d4d+8.fr8>a+8.<frg+ ^4.gfg4f8d+8
+c2^8d8d+8f8 f2^8grd+d8.  d8d+c^1.>a+ra+8<
+##31
+c2^8drd+f8g ^4c8.a+8.g+rgrf8  dd+rc^2.^2.r4
+;
+
+{8}
+l16 "y2.k4 z2.k4 ^2.^a8f"
+$## 4
+"!!!o y1z1 ^2^af8fk8f"
+## 7
+"y1^1^1^1 z1^1^1y-4z2."
+## 15
+"y1z1^1^1 y1z1^1y-8.z-8.x8^2"
+## 23
+"y1^1^1^1 ^1^1y-8.z^1.."
+##31
+"y1^1y-8.z^2af"r8 "y-8.z-8.x8^2"   "y1z1..^a8f"
+;
+

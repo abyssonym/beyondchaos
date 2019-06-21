@@ -9,43 +9,45 @@
 #WAVE 0x20 ~0x82~ /0x0E/ Brass Lead
 #WAVE 0x21 ~0x74~ /0x0B/ Rock Organ
 #WAVE 0x22 ~0x44~ /0x2C/ Bassy Pluck or Contrabass
-#WAVE 0x23 ~0x1c~ /0x1C/ Bass Guitar
+#WAVE 0x23 ~0x4A~ /0x1C/ Bass Guitar
 #WAVE 0x24 ~0x7d~ /0x00/ Clean Lead
 #WAVE 0x25 ~0x60~ /0x00/ Grand Piano
+#WAVE 0x26 ~0x72~ /0x00/ pads
 
 #WAVE 0x27  0x22          Kick
 #WAVE 0x28  ~0x21~ /0x21/ Snare
-#WAVE 0x29  ~0x66~ /0x17/ Tom
-#WAVE 0x2A  0x0F          Hi-Hat (temp?)
+#WAVE 0x29  ~0x84~ /0x17/ Tom
+#WAVE 0x2A  0x00          Hi-Hat (temp?)
 #WAVE 0x2B  ~0x68~ /0x11/ Hi-Hat
-#WAVE 0x2C  ~0x6D~ /0x12/ Cymbal
+#WAVE 0x2C  ~0x8E~ /0x12/ Cymbal
 
-#def global= t188 %v36 %x232 %b0,70 %f0,0
+#def global= t188 %v36 %x232 %b0,85 %f0,0
 
 #def organ= |1 p48 ~v32 o6 %a6~ /v40 o6 %a6/
 #def organ2= |1 p48 ~v56 o6 %s20~ /v40 o6/
-#def lead1= p40 'L1v' ~|5 v96 %y7%s6%r0 o6~ /|0 v104p o6/
-#def L1v= m22,13,255
-#def L1v0= m33,23,222
-#def L1v1= m22,13,255
-#def L1v2= 
+#def lead1= p40 'L1v' ~|5 v96 %y7%s6%r5 o6~ /|0 v104p o6/
+#def L1v= m24,18,255
+#def L1v0= m48,18,231%r1
+#def L1v1= m18,16,247%r3
+#def L1v2= %r5
 #def lead2= p72 ~|4 v72 m o5~ /@6 v80 %a14%y0%s6 o4/
-#def lead3= p64 |0 m22,13,255 ~v127 o7~ /v112 o7/
-#def lead4= p48 |1 v72 o6 m36,17,216
-#def celesta_solo= @3 v64p96v24,20,255%y0%s0%r0 o4
-#def celesta_duo= @3 v64p64v24,20,255%y0%s0%r0 o6
-#def deepness= v ~|5 v112 o4 %r6 m96,32,192~ /|2 v72 o6/
-#def deepness2= v ~|5 v80 o4 %a0%r6 m96,15,255~ /|2 v72 o6/
+#def lead3= p64 |0 m24,18,255 ~v127 o7~ /v112 o7/
+#def lead4= p48 |1 v72 o6 m36,18,215
+#def celesta_solo= @3 v64p96v24,18,255%y0%s0%r0 o4
+#def celesta_duo= @3 v64p64v24,18,255%y0%s0%r0 o6
+#def deepness= v ~|5 v104 o4 %r6 m96,32,199~ /|2 v72 o6/
+#def deepness2= v ~|5 v80 o4 %a0%r6 m96,18,255~ /|2 v72 o6/
+#def deepness3= v ~|5 v72 o4 %r6 m48,18,207~ /|2 v72 o6/
 #def atmosynth= p80 |2 ~v56 o6 %a6%s7%r1~ /v36 o7/
 #def atmosynth2= p80 |2 ~v64 o6~ /v72 o7/
-#def pad1= ~|3 v60 %a3%y4%s4 o5~ /|2 v96 %a2%y4%s4 o6/
-#def pad2= ~|3 v48 %a5%y2%s4 o5~ /|2 v96 %a4%y2%s4 o6/
-#def bass= |3 v64 p52 o5
+#def pad1= ~|6 v80 %a3%y4%s4 o5~ /|2 v96 %a2%y4%s4 o6/
+#def pad2= ~|6 v64 %a5%y2%s4 o5~ /|2 v96 %a4%y2%s4 o6/
+#def bass= |3 ~v112~/v64/ p52 ~o6~/o5/
 #def midpluck= p32 ~|2 v64 %r12 o5~ /@0 v72 %s2%y5%r12 o4/
-#def lowpluck= ~|3 v56 %a5%s4 o6~ /|2 v96 o5 %a >/ 
+#def lowpluck= ~|6 v56 %a5%s4 o5~ /|2 v96 o5 %a >/ 
 #def secretharmony= ~|0 v64 o6~ /|0 v56 o6/
 #def cv=v127
-#def hv=v64
+#def hv=v48
 
 ##### ORGAN #####
 {1} 'global' %e1 'organ' l8
@@ -93,7 +95,7 @@ c4. 'l1v0'd4.^1 'l1v1'^1 'l1v2'^1 'l1v' >r4
 $28 l8
 'lead2'
 [r2r16.a32b-ag g4.c4.g4 a2^cfa a4.b-4.<c4>   j2
-b2rdgb- <c4.>a-4.e-r16f16 g4.f1^4r4.]
+b-2rdgb- <c4.>a-4.e-r16f16 g4.f1^4r4.]
 b-4.r4b-<cd e-4.d4.>b-r16.<c32 d4.c1 r4>fa<c
 d4.c4^16e-16f4 d.r2.
 
@@ -129,7 +131,7 @@ c4.d4.a4.g4.f4e4
 
 $38
 v p112 'pad1' L1
-ggfab<c>b-a
+ggfab-<c>b-a
 ggfg- g<c4.d4.>b-4a^2^4
 %yv72 a8.r16 a4r8a4r8a8r8 a8r2..
 
@@ -204,7 +206,7 @@ p
 
 $58
 'pad1' p80 l1
->b-<c>a<d>b<e->c2.<c4^>
+>b-<c>a<d>b-<e->c2.<c4^>
 b-<c>a<d> b-<e-4.d4.>b-4c^2.r8
 %yv72 c8 d4.c4.f8r8 a8.r16r2.
 
@@ -212,7 +214,7 @@ l1 ~'lowpluck'~
 d ^ c       d
 d ^ d4.d2^8 d4.d2^8
 d ^ c       d
-/v127</ ~'deepness'~
+/v127</ ~'deepness3'~
 f4.g8^1. a4.g8^1. g1^1^1 g1 
 
 'atmosynth2' j2,59 j1,99
@@ -290,7 +292,8 @@ $79 l8
 {6} l8
 v96p56 o5
 [4r1]
-'cv'|Cg4.'hv'|Bg|Agg|Bg|Ag g|Bg|Agg|Bg|Ag|Bg|Ag |Bg|Agg|Bg|Agg|Bg|Ag g1
+#'cv'|Cg4.'hv'|Bg|Agg|Bg|Ag g|Bg|Agg|Bg|Ag|Bg|Ag |Bg|Agg|Bg|Agg|Bg|Ag g1
+'cv'|Cg4.'hv*v1.33'|B%s0%y0g%y6gg%y0g%y6g g%y0g%y6gg%y0g%y6g%y0g%y6g %y0g%y6gg%y0g%y6gg%y0g%y6g g1
 $[2
 p56 o5 l4
 'cv'|Cg 'hv'|B[15g] 'cv'|Cg 'hv'|B[12g]'cv'|Cg'hv'|Bg'cv'|Ca

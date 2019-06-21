@@ -1,0 +1,85 @@
+#TITLE Town Veiled In White
+#ALBUM Octopath Traveler
+#COMPOSER Yasunori Nishiki
+#ARRANGED Cecil188
+
+#WAVE 0x20 0x0C
+#WAVE 0x21 0x69
+#WAVE 0x22 0x20
+#WAVE 0x23 0x0D
+#WAVE 0x24 0x37
+#WAVE 0x25 0x94
+
+#drum "b+"=5b- |4 v80 p64 %e1
+#drum "b"=5b- |4 v40 p64 %e1
+#drum "b-"=5b- |4 v16 p64 %e1
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+t90 %x224 %v50 %b0,100 %f0,0
+$ |0 v96 p64 %e1 o7
+l2 d->a-b-f<d->a-r1<d->a-b-f3a-6<c3d-6c6>a-6f6e-3a-6f<d->a-b-f<d->a-r2f6g-6a-6b-r6<c6d-6e-f3c3d-6c6>b-r1 v127 d->a-b-f<d->a-r1<d->a-b-f3a-6<c3d-6c6>a-6f6e-3a-6f6r3 <d->a-b-f<d->a-rf6g-6a-6b-r6<c6d-6e-f3c3d-6c6>b-r1
+;
+
+{2}
+$ |0 v96 p64 %e1 o4
+l6 g-<d-g-a-2>g-<d-a-b-2[>f<cga-2]>g-<d-g-a-2>g-<d-a-b-2>b-<fb-<c2>>b-<f<fd-c>f>g-<d-g-a-2>g-<d-a-b-2[>f<cga-2]>e-b-<fg-2>e-<cfa-2>b-<f<cd-2>>b-<f<d-c>b-f>>g-<d-g-a-2>g-<d-a-b-2[>f<cga-2]>g-<d-g-a-2>g-<d-a-b-2>b-<fb-<c3r6>>b-<f<fd-c>f l12 v127 [>g-<d-g-d-b-<cd-c>b-a-d-a-][>f<ca-fa-<ce-c>a-fa-d-]>e-b-<g->b-<g-b-<d->b-g-fe->b-f<ca-ca-<ce-c>a-<c>a-e->b-<<d-c>b-fb-d-fe-d-cd->b-1
+;
+
+{3}
+$ |5 v16 p64 %e1 o6 m48,18,207 %r1
+l1 [8 r] <d-^^^>%r2b-<cd-.%r12^2
+##measure 17-24
+v64 |3 %a4%r2 >>>r6(b-6<c6d-.)e-c>r6(b-6<c6d-.)f.. l24 v80 %r3 <(cd-e-fg-a-
+##measure 25-32
+l1 v96 b-)fa-<c2>a-2g-fb-.%r15^2
+;
+
+{4}
+$
+l6 [4"^2b+bb-^1^1^1"]
+|2 v32 p64 %e1 o7
+ l2 d->a-b-f<d->a-r1<d->a-b-f3a-6<c3d-6c6>a-6f6e-3a-6f6r3 v64<d->a-b-f<d->a-rf6g-6a-6b-r6<c6d-6e-f3c3d-6c6>b-r1 
+;
+
+{5}
+$ |3 v16 p64 %e1 o6 m48,18,207 %a7%r2
+l1 [8 r] <d-^^^>%r6b-<cd-.%r12^2
+##measure 17-24
+v192,64 %r6 >>>e-6g-6a-6b-.a-^ v16v192,64 e-6g-6a-6b-. v64 <c3d-6e-3d-6c2>b-2
+##measure 25-32
+l1 |1 v32 b-b-a-^b-<c>b-.%r12^2
+;
+
+{6}
+$ |3 v8 p64 %e1 o5 m48,18,207 %a7%r3
+l1 [8 r] <d-^^^>%r7b-<cd-.%r15^2
+##measure 17-24
+|3 v32 p64 %e1 o5 m48,18,207 %a2%r6
+l1 r6(g-6a-6b-.)<e-c>r6(g-6a-6b-.)<f.. l24 v80 %a15 > e-fg-a-b-<c
+##measure 25-32
+l1 v64 d->b-<ce-2c2d-cd-.r2
+;
+
+{7}
+$
+[16r1]
+##measure 17-24
+|3 %e1 v64 p64 %a6%r2 o3
+l1 r2g-.f^g-^b-^
+##measure 25-32
+g-^f^e-f%r10b-^
+;
+
+{8}
+$
+[16r1]
+##measure 17-24
+[7r1] r2.
+l24 v32 o6 |5 %e1 %a4%r3 m48,18,207
+(cd-e-fg-a-
+##measure 25-32
+l1 v48 b-)fa-<c2>a-2g-ff%r10^1
+;

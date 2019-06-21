@@ -1,0 +1,168 @@
+#TITLE Lost Child of Time
+#ALBUM Chrono Cross
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#VARIANT ~! enh
+#VARIANT /! nat
+#VARIANT ~_ tr
+
+#WAVE 0x20 ~0x96~/0x19/
+#WAVE 0x21 ~0x43~/0x0D/
+#WAVE 0x22 ~0x42~/0x20/
+#WAVE 0x23 ~0x60~/0x1c/
+#WAVE 0x24 ~0x8B~/0x00/
+#WAVE 0x25 ~0x05~/0x05/
+#WAVE 0x26 ~0x62~/0x1b/
+#WAVE 0x28 ~0x16~/0x16/
+#WAVE 0x2A ~0x91~/0x24/
+
+#def global= %x224 !t72 %v70 %b0,70 %f0,0! _t55t255,72 %v255,70 %b255,70 %f255,0_
+
+#def bas= |0 ~o2~/o1/ 'pi1' p100 m /%r1%y0%s0/
+#def st1= |1 ~o4~/o5/ v28 p10 m48,18,207 'sr'
+#def st2= |1 ~o4~/o5/ v4 p10 m
+#def vib= |2 ~o5~/o6/ v56 p64 m24,18,63 %y3%s2
+#def vio= |5 o5 v80 p56 m12,18,239
+#def elp= |6 ~o4~/o5/ v52 m48,18,127 'pr' /%a9/
+#def bel= |A ~o5~/o6/ v32 m0,18,31 p100 %y1%s0%r3
+#def gpi= |3 ~o4~/o5/ ~v112~/v56/ p64 m %y1%s2
+#def pia= ~|4~/@3 %y2%s2%r12/ o5 v64 m
+#def ti= |8 v32 o2 p64 m
+
+#def vi4= %r13
+#def vi16= %r19
+
+#def pi1= v127
+#def pi2= v108
+#def piup= v48,127
+
+#def extp= %r11
+#def exts= %a1%r15
+#def pr= %r15
+#def sr= %a3%r19
+#def trem= v120,24
+#def troff= v40,0
+
+{1}
+'global' %e1 $
+'bas' l8
+f+2^'pi2'<c+> 'pi1'f+2.    f+2^'pi2'<c+> 'pi1'f+1.
+[6f+2^'pi2'<c+> 'pi1'f+2.]
+##
+<[3'pi1'c2^'pi2'c+]^ l16 cd+'piup'f+af+ed+c+ l8 c^2>
+##
+l8 ['pi1'b2..'pi2'<f+> 'pi1'b2^'pi2'<c+'pi1'd'pi2'f+>
+'pi1'b2..'pi2'<f+> b2<d4f+4>]
+%r14b4 'st2' l4 v0,8,255'trem'<c^4.'troff'^^4.v
+;
+
+{2}
+_|F v69p64 o4 %e1_
+_v216,43 [3a32a4a32a16] v216,17 [3a32a4a32a16] v144,0 [a32a4a32a16]_
+## main
+%e1 $
+!r1r1r1! r2.
+['vib' l4 c+d+e f+g+a g+d+f+ c+c2 j2,214
+'vio'  [r'vi4'g+'vi16'f+2  'vi4'f'vi16'f+]] $214
+##
+'gpi' [3c2.]
+'st2' l4 v0,8,255'trem'a^4.'troff'^^4.v
+##
+'pia'p74 l4 [v40a+v39a+a+v40a+ aav39av40a 
+v39a+a+v40a+v41a+ v38av41av38a+2]
+%r14a+ 'st2' l4 v0,8,255'trem'a+^4.'troff'^^4.v
+_r1r1r1_
+;
+
+{3}
+%e1 $
+'elp' p84 l4
+rc+2. c2. c+2. d+1.
+[c+2. c2.] [4c+2.] c+2. c2. c+2. c2
+##
+l4 ['bel'c 'pia'p84<c2 j2 'bel'c 'pia'p84b2]
+'st2' v0,8,255'trem'f+^4.'troff'^^4.v
+##
+'pia'p54 l4 [v40f+f+v38f+v40f+ v41ffv40ff f+v38f+v40f+v38f+ v40fv38fv39f+2]
+%r14f+ 'st2' l4 v0,8,255'trem'f+^4.'troff'^^4.v
+;
+
+{4}
+%e1 $
+'st1' <
+r8..c+2. c2. c+2. 'exts'd+1.'sr'
+c+2. c2. c+2. d+2.    [5c+2.] c2. c+2. d+2^32
+##
+'ti' v144,64 [18d+24] v144,48 [18d+24] v144,96 [18d+24]
+'st2' l4 v0,8,255'trem'd+^4.'troff'^^4.v
+##
+'pia'p44 l4 [v41dv39ddv40d v41c+v40c+c+v41c+
+v40dv39dv39dd v41c+v39c+v40d2]
+%r14e 'st2' l4 v0,8,255'trem'e^4.'troff'^^4.v
+;
+
+{5}
+_|F v69p64 o5k2 %e1 &1r_
+_v216,43 [3a32a4a32a16] v216,17 [3a32a4a32a16] v144,0 [a32a4a32a16]_
+_k0 &191r_
+## main
+%e1 $
+'elp' p44 l4 >
+! ra2. g+2. a2. <c1.> !
+[a2. g+2.] [4a2.] a2. g+2. a2. g+2
+##
+'pia'p54 l4 re2rd+2re2
+'st2' l4 v0,8,255'trem'c^4.'troff'^^4.v
+##
+'pia' [p127>>> v127b1^1^1^2v20<<<<p84c+2>]
+<%r16c4 'st2' %a15v0,6,255'trem'[20a+32]'troff'[20a+32]v
+## for train
+_ 'elp' p44 l4 > ra2. g+2. a2. <c1.> _
+;
+
+{6}
+%e1 $
+'st1'
+r8..a2. g+2. a2. 'exts'<c1.>'sr'
+a2. g+2. a2. <c2.>    [5a2.] g+2. a2. <c2^32
+##
+'gpi'> [3c2.]
+'st2' %a15v0,6,255'trem'[30a48]'troff'[30a48]v
+##
+[8r1] 'st2'< %a15v0,6,255'trem'[42c48]'troff'[30c48]v
+;
+
+{7}
+_@4%s0 v69p64 %n1%c22 %e1%g1_
+_v216,43 [3c32c4c32c16] v216,17 [3c32c4c32c16] v144,0 [c32c4c32c16]_
+_%n0%c0 %g0 &185r_
+## main
+%e1 $
+'st1'
+! r8.. [3f+2.] 'exts'f+1.'sr' !
+[11f+2.] f+2^32
+##
+'pia'p74 l4 rg+2rg2rg+2
+'st2' %a15v0,6,255'trem'[20f+32]'troff'[20f+32]v
+##
+[8r1] 'st2' %a15v0,6,255'trem'r64[27f+32]f+64'troff'^64[19f+32]r64v
+## train
+_ 'st1' r8.. [3f+2.] 'exts'f+1.'sr' _
+;
+
+{8}
+_@4%s0 v69p64 %p1 %e1%g1_
+_v216,43 [3d32d4d32d16] v216,17 [3d32d4d32d16] v144,0 [d32d4d32d16]_
+_%p0 %g0_
+## main
+%e1 $
+![51r4]! _[39r4]_
+##
+'ti' v144,64 r48[17d24]d48 v144,48 ^48[17d24]d48 v144,96 ^48[17d24]d48
+'st2' %a15v0,6,255'trem'r64[19c32]c64'troff'^64[19c32]r64v
+##
+[8r1] 'st2' %a15v0,6,255'trem'&2r[41e48]&2e'troff'&2^[29e48]&2rv
+## train
+_r1r1r1_
+;

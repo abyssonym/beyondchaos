@@ -42,11 +42,13 @@
 037:Figaro Castle
 039:Figaro Castle-various rooms
 03B:Figaro Castle-various rooms
+03C:Figaro Castle-library
 03D:Figaro Castle-various basement rooms
 044:Cave to South Figaro (World of Ruin)
 045:Cave to South Figaro (World of Balance)
 04A:South Figaro (World of Ruin)
 04B:South Figaro (World of Balance)
+04E:South Figaro pub
 051:South Figaro-Large House
 053:South Figaro-Large House, basement
 054:South Figaro-Duncan's House, basement
@@ -72,7 +74,8 @@
 07B:Doma Castle-inner rooms
 07D:Doma Castle-dimmed with enemies (from Cyan's dream)
 07E:Doma Castle-dimmed rooms with enemies (from Cyan's dream)
-07F:Duncan's House--World of Ruin
+07F:Duncan's Cabin--World of Ruin, exterior
+080:Duncan's Cabin--World of Ruin, interior
 083:Crazy Old Man's House--World of Ruin
 084:Phantom Forest--Entrance
 085:Phantom Forest--Recovery Spring
@@ -140,6 +143,7 @@
 0E9:Opera House--Stage, fighting
 0EB:Opera House--Rafters
 0EC:Opera House--Castle Scene
+0EE:Opera House--Dressing Room
 0EF:Opera House--Rafters (alone)
 0F2:Vector
 0F3:Vector--Imperial Castle
@@ -162,9 +166,9 @@
 11C:Maranda--World of Balance
 11D:Doma (after liberation?)
 11F:Kefka's Domain
-120:(?)--Inn
-121:(?)--Weapon Shop
-122:(?)--Armor Shop
+120:Maranda--Inn
+121:Maranda--Weapon Shop
+122:Maranda--Armor Shop
 125:Kefka's Domain
 126:Kefka's Domain
 127:Kefka's Domain

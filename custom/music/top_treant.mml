@@ -1,0 +1,186 @@
+#TITLE Forest of the Treant
+#ALBUM Tales of Phantasia
+#COMPOSER Motoi Sakuraba, Shinji Tamura
+#ARRANGED emberling
+
+#WAVE 0x20 0x53
+#WAVE 0x21 0x0A
+#WAVE 0x22 0x1B
+#WAVE 0x23 0x43
+#WAVE 0x24 0x18
+#WAVE 0x28 0x22
+#WAVE 0x29 0x56
+#WAVE 0x2A 0x2F
+#WAVE 0x2B 0x5A
+
+#def init= t122 %x240 %v40 %b0,85 %f0,0
+
+#def cl= %e1 |0 o4 'c' %r14 m 
+#def ob= %e1 |1 o5 'o' m48,18,223
+#def hp= %e1 |2 o5 'h' m
+#def st= %e1 |3 o4 's' m48,18,207
+#def bs= %e0 |4 o7 'b' m48,18,199
+
+#def c= v48
+#def o= v52
+#def h= v40
+#def s= v28
+#def b= v104
+
+#cdef ( %l1
+#cdef ) %l0
+
+#def 2= 'c*v.5'
+#def 3= 'c*v.25'
+#def 4= 'c*v.125'
+
+#def shkv= v32
+#drum "a"=5g |A p80 'shkv' %e1
+#drum "b"=5g |A p80 'shkv*v.8' %e1
+#drum "c"=5g |A p80 'shkv*v.6' %e1
+#drum "q"=6c |9 p64 %e1 v40
+#drum "r"=6c |9 p64 %e1 v60
+#drum "s"=6c |9 p64 %e1 v80
+#drum "k"=6c |8 p64 %e0 v80
+#drum "f"=6c |B p40 %e1 v12 %y29
+#drum "g"=6c |B p40 %e1 v20 %y29
+#drum "h"=6c |B p40 %e1 v28 %y29
+#drum "i"=6c |B p40 %e1 v36 %y29
+
+
+{1} 'init' $
+'cl+o1*v1.2' l8 p64
+d2a4g4  ^4e4f4.e  d4e4.dc4
+[3r2a4g4  ^4e4f4.e  d4e4.dc4]
+## 17
+'ob' %a9%y3%s5%r10
+[3r2a4 g2e4 f4.ed4 e4.dc4]
+r2a4 g2<c4> b4.ag4 f4.edc
+## 33
+'st+o1' %a8%y4%s4%r8 l16
+[4r8f%r25^[%r8f%r25^8.] %r8r8e%r25^j4,140[%r8e%r25^8.]] $140 %r8e%r25^8.%r8e4
+##41
+'ob' %a9%y3%s5%r10 l8
+[3r2a4 g2e4 f4.ed4 e4.dc4]
+r2a4 g2<c4> b4.ag4 f4.edc
+## 57
+d4e4fc d2.  c4d4e>a< c2.    d4e4fc d4ag4f  >a4<c+4ec+ g4.fe4
+## 65
+a2g4 f2ga  g2f4 e4f4ge    d2f4 a4g4.f16e16  f2g16f16e16d16 e2.
+;
+
+{2} $
+'hp+o1' l8 p64
+[28d>fa<dc>a bfa<c>bf<]
+## 17
+#^^
+## 33
+#^^
+## 41
+#^^
+## 57
+> [fdfgad] [ecefgc] [fdfgad] c+>a<c+de>a< a>a<g>a<e>a<
+## 65
+[d>a+<def>a+<] [c>a<cde>a<] [d>b<def>b<] >a+ga+<dgd e>a<c+de>a
+;
+
+{3} $
+'st' p64 %a8%y4%s4%r8
+d1[5^1]
+['cl+o2' p64
+rda<e'c*v.85'e'c*v.7'e'c*v.55'e'c*v.4'e'c*v.25'e'c*v.15'e ^1..]
+## 17
+'st+o1'  %a8%y4%s4%r8 l8
+[d2.c2.>b2.a+2a4 <] d4.ef4 e2c4 d2. c2. d2. c2.>b2.a+2a4<
+## 33
+l16 [4r8d%r25^[%r8d%r25^8.] %r8r8c%r25^j4,340[%r8c%r25^8.]] $340 %r8c%r25^8.%r8c4
+## 41
+'bs-o2' l8
+[d2.c2.>b2.a+2.<] [d4.>a+<d4 c2.>b2.a+2.<]
+## 57
+> a+2^a+ a+2a+4  a2^a a2a4   a+2^a+ a+2a+4  a2^a <c+4.de4>
+## 65
+a+2^a+ a+2a+4  a2^a a2a4   b2^b b2b4  a+2a+4 <c+2c+4
+;
+
+{4} $
+[20"^acacb ^ba^b^"]
+## 17
+#^^
+## 33
+#^^
+## 41
+[7"!!!o kfghik s4.fgh"] "kfghik s4.qrs"
+## 57
+[3"!!!o kfghik s4.fgh"] "kfghik s4.qrs"
+## 65
+"kh4rk4 k4kr4k kr4kh4 kr4krr"
+"kh4kr4 k4krkh k4khr4 kh4krs"
+;
+
+{5} $
+'cl+o1' l8 p24
+[10d'2'd'3'd'c'efr    e'2'e'3'e'4'e'c'c'2'c
+'c'd'2'd'3'd'c'ef'2'f   'c'e'2'e'3'e'c'aa'2'a]
+## 17
+#^^
+## 33
+#^^
+## 41
+'st+o1' %a8%y4%s4%r10 l8 p64
+[d2. c2. >b2. a+2a4<] d4.ef4 e2c4 d2. c2. d2. c2. >b2. a+2a4<
+## 57
+d2. a4g4f4 e2. c2.    d2. d4e4f4 e2>a4< c+2>a4<
+## 65
+f2e4 d2. e2d4 c2.  >b2.< d2g4 f2. e2.
+;
+
+{6} $ r8
+'cl+o1*v.4' l8 p74
+d2a4g4  ^4e4f4.e  d4e4.dc4
+[3r2a4g4  ^4e4f4.e  d4e4.dc4]
+## 17
+'ob*v.4' %a9%y3%s4%r10
+[3r2a4 g2e4 f4.ed4 e4.dc4]
+r2a4 g2<c4> b4.ag4 f4.edc
+## 33
+'st+o1*v.3' %a8%y4%s4%r8 l16
+[4r8f%r25^[%r8f%r25^8.] %r8r8e%r25^j4,640[%r8e%r25^8.]] $640 %r8e%r25^8.%r8e8
+## 41
+"!!!o" l8
+[16"^acacb ^ba^b^"]
+## 57
+#^^
+## 65
+#^^
+;
+
+{7} r8 $ 
+'hp+o1*v.3' l8 p54
+[28d>fa<dc>a bfa<c>bf<]
+## 17
+#^^
+## 33
+#^^
+## 41
+#^^
+## 57
+> [fdfgad] [ecefgc] [fdfgad] c+>a<c+de>a< a>a<g>a<e>a<
+## 65
+[d>a+<def>a+<] [c>a<cde>a<] [d>b<def>b<] >a+ga+<dgd e>a<c+de>a
+;
+
+{8} r8 $
+[32r2.]
+## 33
+'st+o1*v.3' %a8%y4%s4%r8 p74
+l16 [4r8d%r25^[%r8d%r25^8.] %r8r8c%r25^j4,840[%r8c%r25^8.]] $840 %r8c%r25^8.%r8c4
+## 41
+'ob*v.4' %a9%y3%s5%r10 l8
+[3r2a4 g2e4 f4.ed4 e4.dc4]
+r2a4 g2<c4> b4.ag4 f4.edc
+## 57
+d4e4fc d2.  c4d4e>a< c2.    d4e4fc d4ag4f  >a4<c+4ec+ g4.fe4
+## 65
+a2g4 f2ga  g2f4 e4f4ge    d2f4 a4g4.f16e16  f2g16f16e16d16 e2.
+;

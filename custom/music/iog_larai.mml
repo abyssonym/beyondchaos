@@ -1,0 +1,207 @@
+#TITLE Awakening the Wind
+#ALBUM Illusion of Gaia
+#COMPOSER Yasuhiro Kawasaki
+#ARRANGED emberling
+
+#VARIANT ~ enh
+#VARIANT / nat
+
+#WAVE 0x20 ~0x49~/0x0D/
+#WAVE 0x21 ~0x94~/0x2C/
+#WAVE 0x22 ~0x0A~/0x0A/
+#WAVE 0x23 ~0x03~/0x03/
+#WAVE 0x28 ~0x16~/0x16/
+#WAVE 0x29 ~0x50~/0x12/
+#WAVE 0x2A ~0x77~/0x27/
+
+#def global= t66 %x224 %v40 %b0,85 %f0,0
+
+#def 1= |1 p89 %y0%s6%r4 m
+#def 2= |8 p39 m
+#def 3= |0 p39 %a11%r4 m48,18,207
+#def 4= |2 p39 %a12%s5%r10 m24,18,223
+#def 5= |3 p89 %a8%s4%r10 m24,18,223
+#def 6= |0 p89 %a11%r4 m48,18,207
+#def 7= |A p64 /%y4%s2/ m
+
+#def v1= ~v116~/v109/ ##v109
+#def v2= v106
+#def v3= v69
+#def v4= v68 ##v79
+#def v5= v64 ##v105
+#def v5b= v88
+#def v6= v69
+#def v7= v80
+
+#def o1= ~o6~/o7/
+#def o2= o4
+#def o3= ~o5~/o6/
+#def o4= ~o6~/o6/
+#def o5= o6
+#def o6= ~o5~/o6/
+#def o7= o5
+
+#cdef ( %l1
+#cdef ) %l0
+
+#drum "y"=~5e~/5c/ |9 p64 v64 %y2%s0%r15
+
+#def q5=%a15
+#def s5=%a8
+#def q3=%a11
+#def s3=%a2
+
+{1}
+'global' %e1
+$
+'5''v5*v.75''o5' l16
+aegc+fedc+ d8>a4.<  rfefdefg+ a2
+raegfedc+ d.'q'd32's5'a4.  [raga<c>'v5*v.62'(b48<c48>b48)'v5*v.75'ag]
+d4e4f4g4 [4aa+]a2
+l12 a6egc+f eda6eg  c+feda6 egc+fed
+l16 gggr gggr8. 'v5*v.92'gggr8.
+[##10
+'3''v3*v.75''o3' l16
+['s3'd2'q3'c+4..'s3'd+^2'q3'd2
+'s3'd2'q3'c+4..'s3'd+^1]
+'5''v5b*v.92''o5-o1' l16
+d4r>a+<cd c+8.>a<e8.d+  ^4rdc>g+ g4r4<  d4r>a+<cd c+2
+(c32>a+32<c4..) (d+32d32d+4..) (g+32g32g+2...)
+##23
+['6''v6*v.85''o6' l16
+rfec+>a+aga a+<defagfe  rfec+>a+aa+<c+ defaefa'v6*v.75'<d]
+]##44
+'v6*v.85'c+c+>a+a+ aagg aaa+a+ <'v6*v.75'c+c+dd c+1
+;
+
+{2}
+%e1
+$
+'6''v6*v.92''o6-o1' l16
+f2.a1^4  f2.a4^r4.'v6'a12r24r'v6*v.92'a4.
+a4g4g+2 <c+1  f3^3a3^3
+l12 'v6'a6egc+fed
+l16 <c+c+c+r [c+c+c+r8.]
+[##10
+'6''v6*v.75''o6-o1' l16
+'s3'a+2'q3'a4..'s3'g+^2'q3'g2
+'s3'a+2'q3'a4..'s3'g+^1
+'4''v4*v.92''o4-o1' l16
+f2e4c+8.c^2>a+2<  f2e4c+8.c^1
+f2e4c+8.c^2>a+2<  f2e8.a4<c
+l12 ^[3>g+d+<j3c]d+c>g+<  [c>g+d+<d+c>g+<]
+##23
+'4''o4' l16
+['v4*v.75'rd'v4*v.85'c+>agfef ga+<cdfedc+  rdc+>agfga a+<cdfcdfa+]
+]##44
+aagg ffee ffgg aaa+a+ a1
+;
+
+{3}
+%e1
+$
+'1''v1''o1-o1' l16
+d>d8.a8.<c8.>g8.c8. b>b8.<f8.a+8.f8.>a+8.<<
+d>d8.a8.<c8.>g8.c8. br4.b12r24rf4.
+a+2b2 a2a8g8f8e8
+l12 [4da][4cg][4a+f]
+l16 aaar [aaar8.]
+[##10
+[6r8g2^8.c+eg^1] g2^8d+8c8d8
+##23
+r2r8g4. a1 r8g2.. a1
+]##44
+'v1*v.85'[8(ae)]a1
+;
+
+{4}
+%e1
+$
+'2''o2-o1' %k-1
+l16 'v2*v.92' [5<d>a8]<d> [4<d>a8$0]
+l48 $402 'v2*v.62'ba'v2*v.75'bab'v2*v.85'a'v2*v.92'bab'v2'ab'v2*v1.06'a j1,0
+l16 'v2*v.92' [5<d>a8]<d d4>a8.<d8.>a8    [j2,405%j402$405
+'v2*v.92' [4<d8>a8][<dd>aa]<d24d24d24>a24a24a24    [j2,407%j402$407
+'v2*v.92' [10<d12>a12]<d12>     [j2,409%j402$409
+'v2*v.92' <ddd8 ddd4 ddd4>
+[##10
+[[r8a8.'v2*v.62'a'v2*v.75'aa'v2*v.92'<d4>a8.a j2
+r8<d8>a4^a32'v2*v.62'a32'v2*v.92'a8    [j2,412%j402$412 ]
+l12 r'v2*v.62'aa'v2*v.75'aaaa'v2*v.85'aa'v2*v.92'aaa]
+l8 'v2'<d4>'v2*v.92'a4[<d4>a4][<d>a]  <dd>aa[8<d>a]<d16d16>a16a16 [j2,423%j402$423
+##23
+l16 ^2^8'v2*v1.12'<d4. 'v2*v.92'[d4>a4<] ^8d8[3d8>a8<][3dd>aa<]> [j2,426%j402$426
+]##44
+'v2*v.85'[14<d>a] [j2,446%j402$446
+;
+
+{5}
+%e1
+$
+'3''v3*v.92''o3-o1' l16
+a2.f2.d2  a2.f4^r4.'v3'f12r24r'v3*v.92'f4.
+'4''v4*v.75''o4-o1' l16
+a+4<c4d4e4  [4fg]e2
+l12 f6c+e>a<d c+>a<f6c+e  >a<dc+>a<f6 c+e>a<dc+>a<
+l16 eeer [eeer8.]
+[##10
+[4r1] '6''v6*v.75''o6-o1' l16
+'s3'a+2'q3'a4..'s3'g+^2'q3'g2
+'s3'a+2'q3'a4..'s3'g+^1
+'3''v3*v.75''o3' l16
+'s3'd2'q3'c+4..'s3'd+^2'q3'd2
+'s3'd2'q3'c+4..'s3'd+^1 ^1
+##23
+['5''v5b*v.75''o5-o1' l16
+rfec+>a+aga a+<defagfe  rfec+>a+aa+<c+ defaefaj2'v5b*v.05'<d>]<d
+]##44
+c+c+>a+a+ aagg aaa+a+ <c+c+dd c+1
+;
+
+{6}
+%e1
+$
+'4''v4*v.75''o4' l16
+aegc+fedc+ d8>a4.<  rfefdefg+ a2
+raegfedc+ d.d32a4.  [rfefa'v4*v.62'(g48a48g48)fe'v4*v.75']
+'3''v3*v.92''o3-o1' l16
+d4e4d2 g1 a3^3<d3^3d3^3
+'v3'eeer eeer8. 'v3*v1.06'eeer8.
+[##10
+[8r1] '6''v6*v.75''o6-o1' l16
+'s3'a+2'q3'a4..'s3'g+^2'q3'g2
+'s3'a+2'q3'a4..'s3'g+^1 ^1
+##23
+['3''v3*v.75''o3' l16
+rfec+>a+aga a+<defagfe  rfec+>a+aa+<c+ defaefa<d]
+]##44
+'v3*v.85'c+c+>a+a+ aagg aagg 'v3*v.75'aaa+a+ <c+1
+;
+
+{7}
+%e1
+$
+'7''v7*v.92''o7' %k-3 l16
+f1^1f1f4..'v7*v.75'fr8'v7*v.92'f4.
+^1r1 [3f3^3] ['v7*v.75'cc'v7*v.92'c8]r8'v7*v.75'cc'v7*v.92'c4
+[##10
+[8r1] r8>a+2..< r1 a+1 r1r1
+##23
+>a+1r1a+1r1<
+]##44
+c1c1
+;
+
+{8}
+%e1
+$
+l16 "y1^1y1y4.. y8.y4."
+"^1^1" [3"y3^3"] ["yyy8"]"^8yyy4"
+[##10
+[8^1] "^8y2..^1y1^1^1"
+##23
+"y1^1y1^1"
+]##44
+"y1y1"
+;
+

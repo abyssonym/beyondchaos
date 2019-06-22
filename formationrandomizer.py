@@ -4,6 +4,11 @@ from utils import read_multi, write_multi, utilrandom as random
 from math import log
 from monsterrandomizer import monsterdict
 
+# Guardian x4, Broken Dirt Drgn, Kefka + Ice Dragon
+REPLACE_FORMATIONS = [0x20e, 0x1ca, 0x1e9, 0x1fa]
+KEFKA_EXTRA_FORMATION = 0x1FF  # Fake Atma
+NOREPLACE_FORMATIONS = [0x232, 0x1c5, 0x1bb, 0x230, KEFKA_EXTRA_FORMATION]
+
 fsetdict = None
 formdict = None
 

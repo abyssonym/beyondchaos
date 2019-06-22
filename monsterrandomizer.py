@@ -5,8 +5,11 @@ from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
                    make_table, utilrandom as random)
 from skillrandomizer import SpellBlock, get_spell, get_ranked_spells
 from itemrandomizer import get_ranked_items, get_item
-from namerandomizer import generate_attack
+from namerandomizer import generate_attack, generate_name
 
+
+# Dummied Umaro, Dummied Kefka, Colossus, CzarDragon, ???, ???
+REPLACE_ENEMIES = [0x10f, 0x136, 0x137]
 
 stat_order = ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
               'def', 'mdef', 'mpow']
@@ -96,6 +99,21 @@ specialdict["hp drain"] = 0x30
 specialdict["mp drain"] = 0x31
 reverse_specialdict = dict([(v, k) for (k, v) in specialdict.items()])
 ranked = [specialdict[key] for key in ranked]
+
+
+def change_enemy_name(fout, enemy_id, name):
+    pointer = 0xFC050 + (enemy_id * 10)
+    fout.seek(pointer)
+    monster = get_monster(enemy_id)
+    monster.changed_name = name
+    name = name_to_bytes(name, 10)
+    fout.write(name)
+
+
+def randomize_enemy_name(fout, enemy_id):
+    name = generate_name()
+    change_enemy_name(fout, enemy_id, name)
+    return name
 
 
 def read_ai_table(table):
@@ -592,8 +610,8 @@ class MonsterBlock:
         fout.seek(self.specialeffectpointer)
         fout.write(bytes(random.randint(0, 0x21)))
 
-        options = sorted(set(range(0, 0x5A)) - set([0, 0x1C]))
-        self.attackanimation = random.choice(options)
+        candidates = sorted(set(range(0, 0x5A)) - set([0, 0x1C]))
+        self.attackanimation = random.choice(candidates)
 
     def mutate_graphics_swap(self, candidates):
         chosen = self.choose_graphics(candidates)
@@ -701,8 +719,9 @@ class MonsterBlock:
         self.stats['mp'] = int(
             round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
 
-    def mutate_ai(self, change_skillset=True, itembreaker=False, randombosses=False, madworld=False, darkworld=False, safe_solo_terra=True):
-        if self.name[:2] == "L." and randombosses == False:
+    def mutate_ai(self, options_, change_skillset=True, safe_solo_terra=True):
+        itembreaker = options_.is_code_active("collateraldamage")
+        if self.name[:2] == "L." and not options_.is_code_active("randombosses"):
             change_skillset = False
         elif "guardian" in self.name.lower():
             return
@@ -717,22 +736,24 @@ class MonsterBlock:
             e = s1.unreflectable == s2.unreflectable
             f = s1.abort_on_allies == s2.abort_on_allies
             return (a and b and c and d and e and f)
-        if madworld: 
+        if options_.mode.name == "katn":
+            restricted = [0xEA, 0xC8]
+        elif options_.is_code_active("madworld"):
             restricted = []
         else:
             restricted = [0x13, 0x14]
 
         banned = restricted
-        # No blizzard or tek laser in solo terra
+        # No blizzard, mega volt, or tek laser in solo terra
         if safe_solo_terra:
             from formationrandomizer import get_fset
             for id in [0x39, 0x3A]:
                 fset = get_fset(id)
                 for f in fset.formations:
                     if self in f.present_enemies:
-                        banned.extend([0xB5, 0xBA])
+                        banned.extend([0xB5, 0xB8, 0xBA])
                         break
-            
+
         oldskills = sorted([s for s in all_spells if s.spellid in skillset],
                            key=lambda s: s.rank())
         if change_skillset:
@@ -1174,7 +1195,7 @@ class MonsterBlock:
             self.statuses[3] |= 0x04  # reraise
             self.stats['hp'] = 0xFFFF
 
-        self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFFFF)
+        self.stats['mp'] = level_boost(self.stats['mp'], limit=0xFFFE)
 
         def fuddle(value, limit=0xFFFF):
             low = value // 2
@@ -1529,14 +1550,14 @@ class MonsterBlock:
 
     @property
     def goodspecial(self):
-        good = set(range(10, 0x1F))
+        good = set(range(0x10, 0x1F))
         good.remove(0x12)  # slow
         good.remove(0x14)  # stop
         good.remove(0x19)  # frozen
         good.remove(0x1D)  # disappear
         good.add(0x04)  # vanish
         good.add(0x0A)  # image
-        return self.special in good
+        return self.special & 0x3f in good
 
     @property
     def physspecial(self):
@@ -1608,7 +1629,11 @@ class MonsterBlock:
 
         self.special = special
 
-    def mutate(self, change_skillset=None, itembreaker=False, randombosses=False, madworld=False, darkworld=False, safe_solo_terra=True):
+    def mutate(self, options_, change_skillset=None, safe_solo_terra=True):
+        randombosses = options_.is_code_active("randombosses")
+        darkworld = options_.is_code_active("darkworld")
+        madworld = options_.is_code_active("madworld")
+
         if change_skillset is None:
             change_skillset = randombosses or not (self.is_boss or self.boss_death)
             manual_change = False
@@ -1622,21 +1647,19 @@ class MonsterBlock:
             self.mutate_affinities(odds=5 if madworld else 10)
         if madworld or random.randint(1, 10) > 5:
             # do this before mutate_control
-            if self.stats['level'] <= 7:
-                 self.mutate_special(darkworld=darkworld, narshesafe=True)
-            else:
-                 self.mutate_special(darkworld=darkworld)
+            narshesafe = options_.mode.name == 'katn' or self.stats['level'] <= 7
+            self.mutate_special(darkworld=darkworld, narshesafe=narshesafe)
         if manual_change and change_skillset:
             value = 10
         else:
             value = random.randint(1, 10)
         if value > 1:
             if value == 2:
-                self.mutate_ai(change_skillset=False,
-                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
+                self.mutate_ai(options_=options_, change_skillset=False,
+                               safe_solo_terra=safe_solo_terra)
             else:
-                self.mutate_ai(change_skillset=change_skillset,
-                               itembreaker=itembreaker, randombosses=randombosses, madworld=madworld, darkworld=darkworld, safe_solo_terra=safe_solo_terra)
+                self.mutate_ai(options_=options_, change_skillset=change_skillset, 
+                               safe_solo_terra=safe_solo_terra)
         self.mutate_control()
 
     def swap_ai(self, other):
@@ -1829,8 +1852,8 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
                 m.swap_ai(n)
                 continue
 
-            # No blizzard or tek laser in solo terra
-            banned_narshe_skills = [0xB5, 0xBA]
+            # No blizzard, mega volt, or tek laser in solo terra
+            banned_narshe_skills = [0xB5, 0xB8, 0xBA]
             
             banned_from_narshe = any(b in m.get_skillset()
                                      for b in banned_narshe_skills)
@@ -1995,3 +2018,35 @@ def get_metamorphs(filename=None):
         mm.id = i
         metamorphs.append(mm)
     return get_metamorphs()
+
+
+def get_collapsing_house_help_skill():
+    status_specials = []
+    all_skills = []
+    from formationrandomizer import get_fset
+    for id in [0x80]:
+        fset = get_fset(id)
+        for f in fset.formations:
+            for m in f.present_enemies:
+                if not m.physspecial and not m.goodspecial:
+                    status_specials.append(m.special & 0x3F)
+                skills = m.get_skillset(ids_only=False)
+                all_skills.extend([z for z in skills
+                    if (z.target_enemy_default or z.target_everyone) and z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]])
+
+    if status_specials:
+        sleep_index = ranked.index(specialdict["sleep"])
+        worst_special = max(status_specials, key=lambda s: ranked.index(s))
+        worst_special_index = ranked.index(worst_special)
+        if worst_special_index >= sleep_index or random.choice([True, False]):
+            status = reverse_specialdict[worst_special]
+            if status == "zombie":
+                status = "zombify"
+            elif status[-2:] == "ed":
+                status = status[:-2]
+            elif status[-1] == "e":
+                status = status[:-1]
+            return status
+    
+    worst_skill = max(all_skills, key=lambda s: s.rank())
+    return worst_skill.name + "-"

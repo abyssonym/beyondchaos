@@ -1,6 +1,4 @@
-
-
-from utils import utilrandom as random
+from utils import SHOP_TABLE, utilrandom as random
 from itemrandomizer import get_ranked_items, get_item
 
 # Despite documentation, these are the only pricings available.
@@ -175,6 +173,29 @@ class ShopBlock:
         priciest = max(items, key=lambda i: i.price)
         return priciest.price
 
+
 def buy_owned_breakable_tools(fout):
     fout.seek(0x3b7f4)
     fout.write(b'\x27')
+
+
+all_shops = None
+
+
+def get_shops(sourcefile):
+    global all_shops
+    if all_shops:
+        return all_shops
+
+    shop_names = [line.strip() for line in open(SHOP_TABLE).readlines()]
+    all_shops = []
+    for i, name in zip(range(0x80), shop_names):
+        if "unused" in name.lower():
+            continue
+        pointer = 0x47AC0 + (9*i)
+        s = ShopBlock(pointer, name)
+        s.set_id(i)
+        s.read_data(sourcefile)
+        all_shops.append(s)
+
+    return get_shops(sourcefile)

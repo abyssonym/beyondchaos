@@ -1,4 +1,5 @@
-from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution
+import math
+from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution, get_dialogue_pointer, dialogue_to_bytes
 from itemrandomizer import get_ranked_items, get_item
 from formationrandomizer import get_formations, get_fsets
 
@@ -11,9 +12,10 @@ done_items = []
 
 appropriate_formations = None
 
-EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x09, 0x19, 0x1b, 0x22, 0x24, 0x33, 0x38,
-                 0x39, 0x3a, 0x42, 0x43, 0x50, 0x59, 0x5e, 0x64, 0x73, 0x7f,
-                 0xd1, 0xe3]
+EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x06, 0x09, 0x19, 0x1b, 0x1c, 0x22, 0x24,
+                 0x33, 0x38, 0x39, 0x3a, 0x3f, 0x42, 0x43, 0x4f, 0x50, 0x59,
+                 0x5e, 0x64, 0x65, 0x73, 0x79, 0x7f, 0x9f, 0xaf, 0xd1, 0xde,
+                 0xe3]
 
 
 def add_orphaned_formation(formation):
@@ -63,7 +65,7 @@ def get_appropriate_formations():
     if appropriate_formations is not None:
         return appropriate_formations
 
-    from randomizer import NOREPLACE_FORMATIONS
+    from formationrandomizer import NOREPLACE_FORMATIONS
     formations = get_formations()
     formations = [f for f in formations if not f.battle_event]
     formations = [f for f in formations if f.formid not in
@@ -130,6 +132,102 @@ def mark_taken_id(taken):
     assert 1 <= taken < 0x200
     if taken in valid_ids:
         valid_ids = [i for i in valid_ids if i != taken]
+
+
+def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_limit):
+    global a
+    appropriate_formations = get_appropriate_formations()
+    formations = [f for f in appropriate_formations if
+                  f.get_guaranteed_drop_value() >= value * 100]
+    orphaned_formations = get_orphaned_formations()
+    orphaned_formations = [f for f in orphaned_formations
+                               if f not in used_formations]
+    extra_miabs = get_extra_miabs(0)
+    
+    if guarantee_miab_treasure:
+        extra_miabs = []
+        orphaned_formations = []
+        candidates = []
+    else:
+        if len(extra_miabs) > 1:
+            extra_miabs = get_extra_miabs(rank)
+        if orphaned_formations or extra_miabs:
+            max_rank = math.inf if clock else 1.5 * rank - 150
+            formations = [f for f in formations if f.rank() >= rank and f.rank() < max_rank]
+            formations = formations[:random.randint(1, 3)]
+            if not clock:
+                orphaned_formations = [f for f in orphaned_formations
+                if f.rank() < 1.5 * rank - 150 and f.get_guaranteed_drop_value() >= value * 10 - 1000]
+                max_extra_miab_rank = 5/4000 * rank * rank + 3/2*rank - 300
+                extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank]
+        candidates = (orphaned_formations + extra_miabs)
+        candidates = [c for c in candidates if c not in used_formations]
+        candidates = [c for c in candidates
+                      if c.formid not in banned_formids]
+    candidates = sorted(set(candidates), key=lambda f: f.rank())
+    
+    if len(candidates) != 1:
+        candidates += formations
+    candidates = [c for c in candidates if c not in used_formations]
+    candidates = [c for c in candidates
+                  if c.formid not in banned_formids]
+            
+    if enemy_limit is not None:
+        candidates = [f for f in candidates if f.rank() <= enemy_limit]
+
+    rank_multiplier = 1.5
+    value_divisor = 2
+    while not candidates:
+        max_rank = max(rank,rank_multiplier * rank - 200)
+        min_value = value * 100/value_divisor - 1500
+        orphaned_formations = get_orphaned_formations()
+        orphaned_formations = [f for f in orphaned_formations
+                if f.rank() <= max_rank and f.get_guaranteed_drop_value() >= min_value / 3 - 1200]
+        extra_miabs = get_extra_miabs(0)
+        max_extra_miab_rank = 5/4000 * rank * rank + 3/2*rank - 300
+        extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank * rank_multiplier]
+        candidates = [c for c in candidates if c not in used_formations]
+        candidates = [c for c in candidates
+                      if c.formid not in banned_formids]
+        if len(candidates) != 1:
+            formations = [c for c in appropriate_formations if c.rank() <= max_rank and c.get_guaranteed_drop_value() >= min_value]
+        
+            formations = [c for c in formations if c not in used_formations]
+            formations = [c for c in formations
+                          if c.formid not in banned_formids]
+            formations = formations[:2]
+            candidates += formations
+
+        rank_multiplier *= 1.25
+        value_divisor *= 2
+        if rank_multiplier < 5 and enemy_limit is not None:
+            candidates = [f for f in candidates
+                          if f.rank() <= enemy_limit]
+            candidates = sorted(candidates, key=lambda f: f.rank())
+            half = len(candidates) // 2
+            candidates = candidates[half:]
+            index = random.randint(0, half) + random.randint(0, half)
+            index = min(index, len(candidates)-1)
+            candidates = candidates[index:]
+
+    candidates = sorted(candidates, key=lambda f: f.rank())
+    if orphaned_formations:
+        index = max(
+            0, len([c for c in candidates if c.rank() <= rank])-1)
+        index = mutate_index(index, len(candidates), [False, True],
+                             (-3, 2), (-1, 1))
+    else:
+        index = 0
+        index = mutate_index(index, len(candidates), [False, True],
+                             (-1, 4), (-1, 1))
+
+    chosen = candidates[index]
+    for m in chosen.present_enemies:
+        m.auxloc = "Monster-in-a-Box"
+
+    banned_formids.append(chosen.formid)
+    used_formations.append(chosen)
+    return chosen
 
 
 class ChestBlock:
@@ -207,6 +305,10 @@ class ChestBlock:
                 item = get_item(self.contents)
                 s += item.name
         return s
+
+    @property
+    def is_clock(self):
+        return self.effective_id in [2, 10, 31, 51, 61, 62, 69, 103]
 
     def set_content_type(self, contenttype):
         if self.effective_id >= 0x100:
@@ -295,6 +397,7 @@ class ChestBlock:
 
         items = get_ranked_items()
         itemids = [i.itemid for i in items]
+
         if self.treasure:
             try:
                 index = itemids.index(self.contents)
@@ -313,76 +416,31 @@ class ChestBlock:
         orphaned_formations = [f for f in orphaned_formations
                                if f not in used_formations]
         extra_miabs = get_extra_miabs(0)
-        if orphaned_formations or extra_miabs:
-            chance -= 2
-            chance = max(chance, 1)
 
         if monster is True:
             chance = 1
         elif monster is False:
             chance += 3
             chance = min(chance, 50)
+        else:
+            if orphaned_formations or extra_miabs:
+                chance -= 2
+                chance = max(chance, 1)
 
-        formations = get_appropriate_formations()
-        formations = [f for f in formations if
+        appropriate_formations = get_appropriate_formations()
+        formations = [f for f in appropriate_formations if
                       f.get_guaranteed_drop_value() >= value * 100]
         if 1 <= chance <= 3 and (self.rank or formations):
             # monster
             self.set_content_type(0x20)
-
-            rank = self.rank or min(formations, key=lambda f: f.rank()).rank()
-            if guarantee_miab_treasure:
-                extra_miabs = []
-                orphaned_formations = []
-                candidates = []
-            else:
-                if len(extra_miabs) > 1:
-                    extra_miabs = get_extra_miabs(rank)
-                if orphaned_formations or extra_miabs:
-                    formations = [f for f in formations if f.rank() >= rank]
-                    formations = formations[:random.randint(1, 3)]
-
-                candidates = (orphaned_formations + extra_miabs)
-            candidates = sorted(set(candidates), key=lambda f: f.rank())
-            if len(candidates) != 1:
-                candidates += formations
-            candidates = [c for c in candidates if c not in used_formations]
-            candidates = [c for c in candidates
-                          if c.formid not in banned_formids]
-
-            if enemy_limit is not None:
-                candidates = [f for f in candidates if f.rank() <= enemy_limit]
-
-            if not candidates:
-                candidates = (formations +
-                              get_orphaned_formations() + get_extra_miabs(0))
-                if enemy_limit is not None:
-                    candidates = [f for f in candidates
-                                  if f.rank() <= enemy_limit]
-                    candidates = sorted(candidates, key=lambda f: f.rank())
-                    half = len(candidates) // 2
-                    candidates = candidates[half:]
-                    index = random.randint(0, half) + random.randint(0, half)
-                    index = min(index, len(candidates)-1)
-                    candidates = candidates[index:]
-
-            candidates = sorted(candidates, key=lambda f: f.rank())
-            if orphaned_formations:
-                index = max(
-                    0, len([c for c in candidates if c.rank() <= rank])-1)
-                index = mutate_index(index, len(candidates), [False, True],
-                                     (-3, 2), (-1, 1))
-            else:
-                index = 0
-                index = mutate_index(index, len(candidates), [False, True],
-                                     (-1, 4), (-1, 1))
-
-            chosen = candidates[index]
-            for m in chosen.present_enemies:
-                m.auxloc = "Monster-in-a-Box"
-
-            banned_formids.append(chosen.formid)
-            used_formations.append(chosen)
+            
+            from locationrandomizer import get_location
+            rank = self.rank
+            if self.is_clock or not rank:
+                rank = min(formations, key=lambda f: f.rank()).rank()
+            
+            chosen = select_monster_in_a_box(rank=rank, value=value, clock=self.is_clock or monster is True, guarantee_miab_treasure=guarantee_miab_treasure, enemy_limit=enemy_limit)
+            drops = [e.drops for e in chosen.present_enemies]
             chosen = get_2pack(chosen)
             # only 2-packs are allowed
             self.contents = chosen.setid & 0xFF
@@ -448,21 +506,26 @@ class EventItem:
             desc = "*%s" % desc
         return desc
     
-    def mutate_contents(self, cutscene_skip=False):
+    def mutate_contents(self, cutscene_skip=False, crazy_prices=False, no_monsters=False):
         from chestrandomizer import ChestBlock
         c = ChestBlock(0x0, 0x0)
         c.memid = 0
         c.contenttype = self.contenttype
         c.contents = self.contents
         
-        c.mutate_contents(monster=self.monster)
+        cannot_show_text = not self.text or (cutscene_skip and self.cutscene_skip_pointer)
+        monster = self.monster
+        if no_monsters or cannot_show_text:
+            monster = False
+        
+        c.mutate_contents(monster=monster, crazy_prices=crazy_prices)
         # If we can't show text, we don't want it to be GP,
         # because that event takes 3 bytes instead of 2,
         # and I'd have to rearrange or remove stuff to fit it.
         # So just make sure it's an item.
-        if not self.text or (cutscene_skip and self.cutscene_skip_pointer):
+        if cannot_show_text:
             while c.contenttype != 0x40:
-                c.mutate_contents(monster=False)
+                c.mutate_contents(monster=False, crazy_prices=crazy_prices)
                     
         self.contenttype = c.contenttype
         self.contents = c.contents
@@ -495,9 +558,23 @@ class EventItem:
             self.pointer = prev_pointer
         elif self.pointer == 0xCD59E:
             event_item_sub.bytestring = bytes([0x94, # Pause 60 frames
-            0x66, 0xE5, 0xC6, self.contents,  # Show text 0x06E5 at bottom, no text box, with item self.contents
+            0x66 if self.contenttype == 0x40 else 0x67, 0xE5, 0xC6, self.contents,  # Show text 0x06E5 at bottom, no text box, with item self.contents
             0xFE]) # return
             event_item_sub.set_location(0x10CF4A)
+            event_item_sub.write(fout)
+            
+            # Change Lone Wolf text to say item placeholder instead of gold hairpin
+            event_item_sub.bytestring = dialogue_to_bytes(      
+                "<line>Grrrr…<line>"
+                "You’ll never get this<line>" +
+                ("“<item>”!" if self.contenttype == 0x40 else "“<GP>00 GP”!"))
+            event_item_sub.set_location(get_dialogue_pointer(fout, 0x6e5))
+            event_item_sub.write(fout)
+            
+            # Because it takes up more slightly space
+            # move Lone Wolf talking into a subroutine
+            event_item_sub.bytestring = bytes([0xB2, 0x4A, 0xCF, 0x06])
+            event_item_sub.set_location(0xCD581)
             event_item_sub.write(fout)
 
 # TODO: Maybe this should be in a text file
@@ -579,10 +656,10 @@ duplicate_event_item_skip_dict = {
 def get_event_items():
     return event_items_dict
     
-def mutate_event_items(fout, cutscene_skip=False):
+def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monsters=False):
     event_item_sub = Substitution()
     event_item_sub.set_location(0x9926)
-    event_item_sub.bytestring = bytes([0x8A, 0xD6]) # pointer to new event command 66
+    event_item_sub.bytestring = bytes([0x8A, 0xD6, 0x99, 0xd6]) # pointer to new event commands 66 and 67
     event_item_sub.write(fout)
     event_item_sub.set_location(0x9934)
     event_item_sub.bytestring = bytes([0x13, 0xD6, 0x26, 0xD6, 0x71, 0xD6]) # pointers to new event commands 6D, 6E, and 6F
@@ -604,6 +681,9 @@ def mutate_event_items(fout, cutscene_skip=False):
     
     # 66 : (4 bytes) Show text $AAAA with item name $BB and wait for button press
     0xA5, 0xED, 0x85, 0x1A, 0x8D, 0x83, 0x05, 0xA9, 0x01, 0x20, 0x70, 0x9B, 0x4C, 0xBC, 0xA4,
+    
+    # 67 : (4 bytes) Show text $AAAA with number $BB and wait for button press
+    0xA5, 0xED, 0x85, 0x1A, 0x85, 0x22, 0x64, 0x24, 0x20, 0xE5, 0x02, 0xA9, 0x01, 0x20, 0x70, 0x9B, 0x4C, 0xBC, 0xA4,
     ])
     event_item_sub.write(fout)
     
@@ -613,23 +693,25 @@ def mutate_event_items(fout, cutscene_skip=False):
     fout.write(phoenix_events)
     
     # End some text boxes early so they don't show the item.
-    event_item_sub.bytestring = bytes([0x00])
-    for location in [0xD3376, 0xD345C, 0xD848D, 0xE14A7, 0xE291E, 0xE299F]:
+    for location, text in [
+        (get_dialogue_pointer(fout, 0x137), "I understand your unease.<line>"
+            "But even as we speak, innocent lives are being lost…<page>"
+            "Please. We need your abilities.<line>"
+            "This relic will keep you safe."),
+        (get_dialogue_pointer(fout, 0x13e), "BANON: A lucky charm. Take it!"),
+        (get_dialogue_pointer(fout, 0x30e), "I heard…<line>"
+            "In my name you send Lola many things…<page>"
+            "I wish to thank you.<line>"
+            "Please accept this as a token of my appreciation."),
+        (get_dialogue_pointer(fout, 0x6ce), "Took the treasure from Lone Wolf, the pickpocket!"),
+        (get_dialogue_pointer(fout, 0x752), "And this is from the Emperor himself…"),
+        (get_dialogue_pointer(fout, 0x754), "Your behavior at the banquet was impeccable. Please take this as well!")
+    ]:
         event_item_sub.set_location(location)
+        event_item_sub.bytestring = dialogue_to_bytes(text)
         event_item_sub.write(fout)
-
-    # Change Lone Wolf text to say item placeholder instead of gold hairpin
-    event_item_sub.bytestring = bytes([0x1A, 0x62, 0x5E, 0x00])
-    event_item_sub.set_location(0xE1936)
-    event_item_sub.write(fout)
-    
-    # Because it takes up more slightly space
-    # move Lone Wolf talking into a subroutine
-    event_item_sub.bytestring = bytes([0xB2, 0x4A, 0xCF, 0x06])
-    event_item_sub.set_location(0xCD581)
-    event_item_sub.write(fout)
     
     for location in event_items_dict:
         for e in event_items_dict[location]:
-            e.mutate_contents(cutscene_skip=cutscene_skip)
+            e.mutate_contents(cutscene_skip=cutscene_skip, no_monsters=no_monsters)
             e.write_data(fout, cutscene_skip=cutscene_skip)

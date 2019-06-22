@@ -5853,7 +5853,8 @@ def randomize():
 
     manage_banon_life3()
     allergic_dog()
-    y_equip_relics(fout)
+    # This is disabled because it's exploitable. :(
+    #y_equip_relics(fout)
     fix_gogo_portrait(fout)
 
     if options_.replace_commands or options_.shuffle_commands:

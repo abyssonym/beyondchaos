@@ -2038,7 +2038,7 @@ def get_collapsing_house_help_skill():
         sleep_index = ranked.index(specialdict["sleep"])
         worst_special = max(status_specials, key=lambda s: ranked.index(s))
         worst_special_index = ranked.index(worst_special)
-        if worst_special_index >= sleep_index or random.choice([True, False]):
+        if worst_special_index >= sleep_index or not all_skills or random.choice([True, False]):
             status = reverse_specialdict[worst_special]
             if status == "zombie":
                 status = "zombify"
@@ -2048,5 +2048,8 @@ def get_collapsing_house_help_skill():
                 status = status[:-1]
             return status
     
-    worst_skill = max(all_skills, key=lambda s: s.rank())
-    return worst_skill.name + "-"
+    if all_skills:
+        worst_skill = max(all_skills, key=lambda s: s.rank())
+        return worst_skill.name + "-"
+    
+    return "hitt"

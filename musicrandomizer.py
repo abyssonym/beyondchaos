@@ -489,14 +489,12 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
     # build choice lists
     intensitytable = {}
     for song in songconfig.items('Imports'):
+        if song[0].endswith("_tr") or song[0].endswith("_dm") or song[0].endswith("_vic"): continue
         canbe = [s.strip() for s in song[1].split(',')]
         intense, epic = 0, 0
         event_mults = {}
         if f_mchaos:
             for ident, s in songtable.items():
-                if ident.endswith("_tr"): continue
-                if ident.endswith("_dm"): continue
-                if ident.endswith("_vic"): continue
                 s.choices.append(song[0])
         for c in canbe:
             if not c: continue

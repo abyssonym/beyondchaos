@@ -11,7 +11,7 @@
 #WAVE 0x22 ~0x7B~/0x31/
 #WAVE 0x23 ~0x58~/0x1b/
 
-#def global= t122 %v50 %b0,70 %x240 %f0,1
+#def global= t122 %v50 %b0,70 %x240 %f0,0
 
 #def string= |0 o5
 #def organ= |1 o6

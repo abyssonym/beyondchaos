@@ -1953,7 +1953,8 @@ def recolor_character_palette(pointer, palette=None, flesh=False, middle=True, s
         new_style_palette = None
         if skintones and char_hues:
             new_style_palette = generate_character_palette(skintones, char_hues, trance=trance)
-            if random.randint(1, 100) == 1:
+            # aliens, available in palette 5 only
+            if flesh and random.randint(1, 20) == 1:
                 transformer = get_palette_transformer(middle=middle)
                 new_style_palette = transformer(new_style_palette)
         elif trance:
@@ -2625,7 +2626,10 @@ def manage_palettes(change_to, char_ids):
         char_palette_pool.append(random.choice(list(range(0, twinpal))+list(range(twinpal, 6))))
         while True:
             random.shuffle(char_palette_pool)
+            #make sure terra, locke, and edgar are all different
             if twinpal in char_palette_pool[0:2]:
+                continue
+            if char_palette_pool[0] == char_palette_pool[1]:
                 continue
             break
         char_palette_pool = char_palette_pool[:4] + [twinpal, twinpal] + char_palette_pool[4:]
@@ -2703,9 +2707,14 @@ def manage_palettes(change_to, char_ids):
                      ((28, 22, 16), (22, 13, 6)),
                      ((28, 23, 15), (22, 16, 7)),
                      ((27, 23, 15), (20, 14, 9))]
+        snowmanvampire = ((29, 29, 30), (25, 25, 27))
         if christmas_mode or random.randint(1, 100) > 50:
-            skintones.append(((29, 29, 30), (25, 25, 27)))
+            skintones.append(snowmanvampire)
         random.shuffle(skintones)
+        # no vampire townsfolk
+        if snowmanvampire in skintones[:6] and not christmas_mode:
+            skintones.remove(snowmanvampire)
+            skintones = skintones[:5] + [snowmanvampire]
 
     for i in range(6):
         pointer = 0x268000 + (i*0x20)
@@ -5164,10 +5173,10 @@ def randomize():
     if BETA:
         print("WARNING: This version is a beta! Things may not work correctly.")
 
+    previous_rom_path = ''
     if len(args) > 2:
         sourcefile = args[1].strip()
     else:
-        previous_rom_path = ''
         try:
             config = configparser.ConfigParser()
             config.read('bcex.cfg')

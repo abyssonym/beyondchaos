@@ -2203,7 +2203,7 @@ def get_free_portrait_ids(swap_to, change_to, char_ids, char_portraits):
 def get_sprite_swaps(char_ids, male, female, vswaps):
     sprite_swap_mode = options_.is_code_active('makeover')
     wild = options_.is_code_active('partyparty')
-    clone_mode = options_.is_code_active('attackoftheclones')
+    clone_mode = options_.is_code_active('cloneparty')
     replace_all = options_.is_code_active('novanilla') or options_.is_code_active('frenchvanilla')
     external_vanillas = False if options_.is_code_active('novanilla') else (options_.is_code_active('frenchvanilla') or clone_mode)
     if not sprite_swap_mode:

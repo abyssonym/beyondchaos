@@ -78,7 +78,9 @@ class Options:
             if code.name == code_name:
                 self.active_codes.add(code)
                 if code in MAKEOVER_MODIFIER_CODES:
-                     self.activate_code("makeover")
+                    self.activate_code("makeover")
+                if code in RESTRICTED_VANILLA_SPRITE_CODES:
+                    self.activate_code("frenchvanilla")
                 return
 
     def activate_flag(self, flag_name: str):
@@ -233,14 +235,17 @@ MAKEOVER_MODIFIER_CODES = [
     Code('frenchvanilla', "EQUAL RIGHTS MAKEOVER MODE"),
     Code('cloneparty', "CLONE COSPLAY MAKEOVER MODE")
 ]
+RESTRICTED_VANILLA_SPRITE_CODES = []
   
 makeover_groups = ["boys", "girls", "kids", "pets", "potato"]
 for mg in makeover_groups:
+    no = Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE")
     MAKEOVER_MODIFIER_CODES.extend([
-        Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE"),
+        no,
         Code('hate'+mg, f"RARE {mg.upper()} MODE"),
         Code('like'+mg, f"COMMON {mg.upper()} MODE"),
         Code('love'+mg, f"{mg.upper()} WORLD MODE")])
+    RESTRICTED_VANILLA_SPRITE_CODES.append(no)
 
 
 # TODO: do this a better way

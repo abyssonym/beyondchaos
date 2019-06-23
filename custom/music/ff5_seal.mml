@@ -1,0 +1,91 @@
+#TITLE Sealed Away
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x0A
+#WAVE 0x21 -- 0x30
+#WAVE 0x22 -- 0x45
+#WAVE 0x23 -- 0x6B
+#WAVE 0x24 -- 0x75
+#WAVE 0x25 -- 0x9c
+#WAVE 0x26 -- 0x1B
+#WAVE 0x27 -- 0x33
+
+#def so= o4
+#def co= o6
+
+{1}
+l16t120%b0,85%v40%x180%f0,0r1  r1   $1 v88p70|0%r8m24,20,203%e1[2o6d+4d4>b2  
+^2<d+4d4  >b4<c4>a+2  g+4.a+g+g1  r1  
+]g4g+4f4.<d+8  d4d+4>b8<c8d+8g+8  g2^4f4  c+1  
+>g4g+4f4.<d+8  d4d+4>b8<c8d+8g+8  g4.f8d+8c+8>a8a+8  <c+1  
+v100p70|1%e0o4%k2[2c4c4c4c4  c4c4c4c4  ]%k0
+;1
+
+l16
+{2}
+l16r1  r1   $2 p55|2m12,20,195%e1%r6
+[2%a15v75'so-o1'[10g8<gr>][4g+8<g+r>][2[3g8<gr>]f8<g+r  >]<]%a5v60<c1  
+^1  c+2d+2  f1  c1  
+^1  c+2d+2  f1
+v100p50|5 %e1[2rr32r64'co'v50f+64v100g8rg32rr32g+32r8r32g32rr32f4  g8.g32rr32g32rr32g+32r8r32g32rr32g+8.g+  ]
+;2
+
+l16
+{7}
+l16r1  r1   $3 p65|2m12,20,195%e1%r8
+[2%a15v75'so-o1'[10c8<cr>][4c+8<c+r>][2[3c8<cr>]>a+8<<c+r  
+>]<]%a7v75d+2f2  g2g+2  f2d+2  c+1  
+d+2f2  g2g+2  f2d+2  c+1  
+[4r1]
+;3
+
+l16
+{3}
+l16v115p60|3m12,20,195o6[16c8] $4 [2o6[20c8][8c+8][2c8c8c8c8c8  
+c8>a+8a+8<]>][16g+8]<[16c+8]>f8f8f8  f8f8f8f8f8g+8g+8g+8  g+8g+8g+8g+8g+8<c+8c+8c+8  
+c+8c+8c+8c+8c+8>>a+8<a+8>a+8  <a+8>a+8<a+8>a+8<a+8[2<c2  ^4c+4c2  
+^4>a+4]
+;4
+
+l16
+{5}
+l16v125p75|4%e1o4c4c4  c4c4c4c4  c4c4 $5 [2c4c4  
+c4c4c4c4  c4c4c4c4  c+4c+4c+4c+4  c4c4c4>a+4  
+<c4c4c4>a+4  <]>g+4g+4g+4g+4  g+4g+4g+4g+4  <c+4c+4c+4c+4  
+c+4c+4c+4c+4  >f4f4f4f4  g+4g+4g+4g+4  <c+4c+4c+4c+4  
+>a+4a+4a+4a+4  [2<c2^4c+4  c2^4>a+4  ]<
+;5
+
+l16
+{4}
+l16r1  
+r1   $6 v60p52|6%e1[2o5[5cd+g<cd+g<cd+>>][2c+fg+<c+fg+<c+f  >>][2cd+g<cd+g<cd+>>cd+g<cc+fa+<c+  
+>>]]>[4g+<cd+g+<cd+g+<c>>>][4g+<c+fg+<c+fg+<c+  >>>][2g+<cfg+<cfg+<c>>>][2g+<cd+g+<cd+g+<c  
+>>>][2g+<c+fg+<c+fg+<c+>>>][2a+<c+fa+<c+fa+<c+  >>>]<<<v100p52|5%e1[2'co+o1'r8c8rc32rr32c+32r8r32c32rr32>a+4  
+<c8.c32rr32c32rr32c+32r8r32c32rr32d+8.d+  ]
+;6
+
+l16
+{6}
+l16v100p47%e1|5'co-o2'c8<c32rr32>c8<c32rr32>c8<c32rr32>c+8<c+32rr32  
+>c8<c32rr32>c8<c32rr32>c8<c32rr32>>a+8<a+32rr32   $8 [2'co-o2'4c8<c32rr32>c8<c32rr32>c8<c32rr32>c8<c32rr32  
+>c8<c32rr32>c8<c32rr32>c8<c32rr32>c8<c32rr32  >c8<c32rr32>c8<c32rr32>c+8<c+32rr32>c+8<c+32rr32  
+>c+8<c+32rr32>c+8<c+32rr32>c8<c32rr32>c8<c32rr32  >c8<c32rr32>>a+8<a+32rr32c8<c32rr32>c8<c32rr32  
+>c8<c32rr32>>a+8<a+32rr32]g+8<g+32rr32>g+8<g+32rr32  >g+8<g+32rr32>g+8<g+32rr32>g+8<g+32rr32>g+8<g+32rr32  
+>g+8<g+32rr32>g+8<g+32rr32c+8<c+32rr32>c+8<c+32rr32  >c+8<c+32rr32>c+8<c+32rr32>c+8<c+32rr32>c+8<c+32rr32  
+>c+8<c+32rr32>c+8<c+32rr32>f8<f32rr32>f8<f32rr32  >f8<f32rr32>f8<f32rr32>>g+8<g+32rr32>g+8<g+32rr32  
+>g+8<g+32rr32>g+8<g+32rr32c+8<c+32rr32>c+8<c+32rr32  >c+8<c+32rr32>c+8<c+32rr32>>a+8<a+32rr32>a+8<a+32rr32  
+>a+8<a+32rr32>a+8<a+32rr32%e0[2c4<cr>a+r  c8<cr>c+8<c+r>c8<crcr>a+r  
+c8<cr>>a+8<a+r]%e1
+;8
+
+{8}
+l16r1  r1   $ v48p70|7%r8m24,20,203%e1[2o6d+4d4>b2  
+^2<d+4d4  >b4<c4>a+2  g+4.a+g+g1  r1  
+]g4g+4f4.<d+8  d4d+4>b8<c8d+8g+8  g2^4f4  c+1  
+>g4g+4f4.<d+8  d4d+4>b8<c8d+8g+8  g4.f8d+8c+8>a8a+8  <c+1  
+[4r1]
+;

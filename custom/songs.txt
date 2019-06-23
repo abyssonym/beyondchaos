@@ -117,6 +117,7 @@ ff5_hurry:      I70, G00, unforgiven
 ff5_lenna:      gau*2, awakening, rachel, town_ruin, ruin
 ff5_library:    H4, gogo, zozo, owzer*2, strago*2, dream, phoenix, ancient, H:omen3, H:kefka, H:catastrophe, H:shadow, H:spinachrag, H:what, H:umaro, H:engine, H:gate
 ff5_mountain:   grandfinale, setzer, returners, johnny, moogles, gogo, mountain, mount2, engine
+ff5_seal:       shadow, umaro*2, zozo, owzer, train, tomb, gate, ancient, dream, phoenix
 ff5_theme:      fanfare, prelude, setzer*2, locke*2, figaro, falcon
 ff5_void:       ruin, floatingcont, kefkastower, engine*2, ancient, dream
 ff5_wings:      fanfare, setzer, locke, chocobo, blackjack*2

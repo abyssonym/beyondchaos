@@ -16,7 +16,7 @@
 1179:maria->{Maria}
 1181:maria->{Maria}
 1182:impresario->{IMPRESARIO}
-1189:west->{OperaWest}|west's->{operaWest}'s|east->{operaEast}|the->*|draco->{Draco}|his->{dracoEir}|maria->{Maria}|she->{mariaEy}
+1189:west->{OperaWest}|west's->{operaWest}'s|east->{operaEast}|the->*|draco->{Draco}|his->{dracoEir}|maria->{Maria}|she->{mariaEy}|is->{mariaPlu?Are:Is}
 1190:maria->{Maria}
 1196:impresario->{IMPRESARIO}
 1202:maria->{Maria}|draco->{Draco}
@@ -25,7 +25,7 @@
 1209:draco->{Draco}
 1211:draco->{Draco}
 1213:prince->{RalseTitle}|ralse->{ralse}
-1215:prince->{RalseTitle}|ralse->{ralse}|him->{ralseEm}
+1216:prince->{RalseTitle}|ralse->{ralse}|him->{ralseEm}
 1220:draco->{DRACO}|maria->{Maria}
 1221:draco->{DRACO}
 1222:prince->{RalseTitle}|ralse->{ralse}|the@3->*|east->{operaEast}

@@ -30,6 +30,7 @@ for i in range(0xFF):
 dialoguebytetable["'"] = dialoguebytetable["’"]
     
 dialogue_vars = {}
+dialogue_flags = set()
 dialogue_patches = {}
 dialogue_patches_battle = {}
 script_ptrs = {}
@@ -70,6 +71,12 @@ def dialogue_to_bytes(text, null_terminate=True):
 def set_dialogue_var(k, v):
     dialogue_vars[k.lower()] = v
     
+def set_dialogue_flag(f, v=True):
+    if v:
+        dialogue_flags.add(f.lower())
+    elif f in dialogue_flags:
+        dialogue_flags.remove(f)
+        
 def set_pronoun(name, gender, force=True):
     gender = gender.lower()
     name = name.lower().capitalize()
@@ -89,12 +96,16 @@ def set_pronoun(name, gender, force=True):
             
     if gender == "male":
         pset = ("he", "him", "his", "his", "he's")
+        set_dialogue_flag(name + "Plu", False)
     elif gender == "female":
         pset = ("she", "her", "her", "hers", "she's")
+        set_dialogue_flag(name + "Plu", False)
     elif gender == "object":
         pset = ("it", "it", "its", "its", "it's")
+        set_dialogue_flag(name + "Plu", False)
     else:
         pset = ("they", "them", "their", "theirs", "they're")
+        set_dialogue_flag(name + "Plu")
         gender = "neutral"
         
     pmap = ("Ey", "Em", "Eir", "Eirs", "EyIs")
@@ -244,19 +255,30 @@ def patch(text):
         match = re.search("\{(.+)\}", text)
         if not match: break
         
-        if match[1].lower() not in dialogue_vars:
-            print(f"warning: dialogue variable {match[1]} not defined")
-            var = match[1]
-        else:
-            var = dialogue_vars[match[1].lower()]
-        
-        if match[1].upper() == match[1]:
-            var = var.upper()
-        elif match[1][0] in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+        # handle conditionals/flags
+        if "?" in match[1]:
+            flag, opts = match[1].split('?',1)
             try:
-                var = var[0].upper() + var[1:]
-            except IndexError:
-                var = var.capitalize()
+                textiftrue, textiffalse = opts.split(':',1)
+            except ValueError:
+                textiftrue = opts
+                textiffalse = ""
+            var = textiftrue if flag.lower() in dialogue_flags else textiffalse
+        # handle variables
+        else:
+            if match[1].lower() not in dialogue_vars:
+                print(f"warning: dialogue variable {match[1]} not defined")
+                var = match[1]
+            else:
+                var = dialogue_vars[match[1].lower()]
+            
+            if match[1].upper() == match[1]:
+                var = var.upper()
+            elif match[1][0] in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+                try:
+                    var = var[0].upper() + var[1:]
+                except IndexError:
+                    var = var.capitalize()
             
         text = text[0:match.start()] + var + text[match.end():]
             

@@ -115,7 +115,7 @@ figaroguard.bin,Figaro Guard,male,true,1,figaroguard-p.bin,,
 fire.bin,Fire,neutral,true,15,fire-p.bin,,potato
 firion.bin,Firion,male,true,1,firion-p.bin,firion,
 fish.bin,Fish,neutral,true,1,fish-p.bin,,pets
-fouroldmen.bin,One of the Four Old Men,male,true,7,fouroldmen-p,,
+fouroldmen.bin,One of the Four Old Men,male,true,7,fouroldmen-p.bin,,
 fran.bin,Fran,female,true,0,fran-p.bin,fran,
 frog.bin,Frog (Glenn),male,true,14,frog-p.bin,frog|glenn,
 froggy.bin,Froggy,neutral,true,14,froggy-p.bin,frog,pets

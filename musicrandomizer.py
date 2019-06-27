@@ -1682,7 +1682,7 @@ def manage_opera(fout, affect_music):
         set_dialogue_var("MariaQueen", "king")
         set_dialogue_var("MariaWife", "husband")
     elif char['Maria'].gender == "object":
-        set_dialogue_var("MariaTheGirl", char['Maria'].title + char['Maria'].name)
+        set_dialogue_var("MariaTheGirl", char['Maria'].title + " " + char['Maria'].name)
         set_dialogue_var("MariaQueenBad", "mine")
         set_dialogue_var("MariaQueen", "prize")
         set_dialogue_var("MariaWife", "collection")

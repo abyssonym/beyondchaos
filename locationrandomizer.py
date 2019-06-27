@@ -647,7 +647,7 @@ class Location():
         else:
             return self.fset.rank()
 
-    def mutate_chests(self, guideline=None, crazy_prices=False, no_monsters=False):
+    def mutate_chests(self, guideline=None, crazy_prices=False, no_monsters=False, uncapped_monsters=False):
         if not self.chests:
             return
 
@@ -684,7 +684,7 @@ class Location():
         random.shuffle(self.chests)
         for c in self.chests:
             if self.locid in range(0x139, 0x13d) and c.empty:
-                c.mutate_contents(monster=True, guideline=guideline, crazy_prices=crazy_prices)
+                c.mutate_contents(monster=True, guideline=guideline, crazy_prices=crazy_prices, uncapped_monsters=uncapped_monsters)
                 continue
             elif self.locid == 0x147:
                 pass
@@ -693,12 +693,12 @@ class Location():
             # It causes problems with the ceiling event.
             in_falling_ceiling_room = self.locid == 280 and c.memid in range (232, 235)
             monster = False if in_falling_ceiling_room or no_monsters else None
-            c.mutate_contents(guideline=guideline, crazy_prices=crazy_prices, monster=monster)
+            c.mutate_contents(guideline=guideline, crazy_prices=crazy_prices, monster=monster, uncapped_monsters=uncapped_monsters)
             if guideline is None and hasattr(c, "value") and c.value:
                 guideline = value
 
     def unlock_chests(self, low, high, monster=False,
-                      guarantee_miab_treasure=False, enemy_limit=None, crazy_prices=False):
+                      guarantee_miab_treasure=False, enemy_limit=None, crazy_prices=False, uncapped_monsters=False):
         if len(self.chests) == 1:
             low = (low + high) // 2
         dist = (high - low) // 2
@@ -709,7 +709,8 @@ class Location():
             c.value = value
             c.mutate_contents(monster=monster, enemy_limit=enemy_limit,
                               guarantee_miab_treasure=guarantee_miab_treasure,
-                              uniqueness=len(self.chests) != 1, crazy_prices=crazy_prices)
+                              uniqueness=len(self.chests) != 1, crazy_prices=crazy_prices,
+                              uncapped_monsters=uncapped_monsters)
             if random.randint(1, 5) >= 4:
                 c.set_new_id()
 

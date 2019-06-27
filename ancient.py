@@ -1093,7 +1093,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
                 enemy_limit = None
             l.unlock_chests(int(low), int(high), monster=monster,
                             guarantee_miab_treasure=True,
-                            enemy_limit=enemy_limit)
+                            enemy_limit=enemy_limit, uncapped_monsters=options_.is_code_active('bsiab'))
 
         l.write_data(fout)
 

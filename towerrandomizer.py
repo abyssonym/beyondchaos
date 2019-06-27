@@ -302,7 +302,8 @@ def remap_maps(routes):
         if not ANCIENT:
             if loc.locid not in towerlocids:
                 loc.make_tower_flair()
-                loc.unlock_chests(200, 1000)
+                from options import options_
+                loc.unlock_chests(200, 1000, uncapped_monsters=options_.is_code_active('bsiab'))
                 fsets = get_new_fsets("kefka's tower", 20)
                 fset = random.choice(fsets)
                 for formation in fset.formations:

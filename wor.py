@@ -650,8 +650,6 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
     random.shuffle(prerequisite_info)
     recruit_info = prerequisite_info + noname_info + unrestricted_info
     prerequisite_dict = dict()
-    for info in prerequisite_info:
-        prerequisite_dict[info.prerequisite] = []
     wor_free_char = None
     collapsing_house_char = None
 
@@ -659,14 +657,14 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
         valid_candidates = candidates
         if info.prerequisite:
             valid_candidates = [c for c in candidates
-                                if c != info.prerequisite and c not in prerequisite_dict[info.prerequisite]]
+                                if c != info.prerequisite and c not in prerequisite_dict.get(info.prerequisite, [])]
         if (not info.name_pointer) and info.special not in [moogle_cave_recruit, sasquatch_cave_recruit, zoneeater_recruit]:
             valid_candidates = [c for c in valid_candidates if c not in [0xA, 0xC, 0xD]]
         candidate = random.choice(valid_candidates)
         candidates.remove(candidate)
         info.char_id = candidate
         if info.prerequisite:
-            prerequisite_dict[info.prerequisite].append(candidate)
+            prerequisite_dict.setdefault(candidate, []).append(info.prerequisite)
         if info.special == falcon_recruit:
             wor_free_char = candidate
         

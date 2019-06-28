@@ -16,6 +16,7 @@ blord_2tower:   setzer, locke, chocobo, blackjack, johnny, falcon*2, mount2
 blord_ruins:    train, gate, ancient*2, magitek*2, engine, phoenix
 bof1_dawn:      prelude, omen3*2, falcon, serpent*2
 bof2_battle:    I65, G05, unforgiven, grandfinale, battle
+bof2_dragnier:  espers, strago, town_ruin, serpent*2, tomb, ancient, gate*2, dream
 cc_arni:        town*2, village
 cc_dragonia:    H2, omen3, zozo, kefkastower, owzer, dream*2, ancient
 cc_dragonia_tr: H2, train
@@ -61,6 +62,7 @@ cv4_beginning_tr: train
 cv4_chandeliers: H4, kefka, gogo, owzer*2, fanatics, serpent, tomb, dream, H:omen3, H:gestahl, H:shadow, H:spinachrag
 ds4_dungeon:    gate, ancient, magitek, engine, dream, phoenix*2, kefkastower
 ds4_lyll:       blackjack, falcon, mountain, mount2, serpent, setzer
+ds4_world:      setzer, chocobo, blackjack, moogles, strago, mountain
 eo3_waves:      I50, G99, atma*2, kefkastower, dmad5
 evo_boss:       I85, G40, boss*2, unforgiven
 ff1_battle:     I10, G00, battle, grandfinale, unforgiven
@@ -270,6 +272,7 @@ sd3_faith:      I55, G70, boss, atma, grandfinale, umaro
 sd3_flight:     setzer, chocobo, blackjack*2, mountain
 sd3_mana:       I80, G45, boss*2, atma, metamorphosis*2, catastrophe, grandfinale, unforgiven, ancient, magitek, dream, floatingcont*2, phoenix, kefkastower
 sd3_paths:      gogo, mountain*2, serpent, mount2, cave, forest
+sd3_sea:        daryl*2, coin, gau*2, tomb, dream, ruin
 sd3_tension:    I50, G60, boss*2, grandfinale, setzer, locke, savethem, chocobo, blackjack, johnny*2
 sd3_winter:     W4, omen3*2, daryl, owzer, narshe*2, town_ruin, ruin*2, cave, train, serpent, ancient, dream, W:celes, W:coin, W:rachel, W:relm, W:shadow, W:umaro, W:zozo, W:martiallaw, W:mountain, W:espers*2, W:forest
 sdlm_bonds:     prelude, omen3, rachel, gau, town_ruin

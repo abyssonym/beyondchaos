@@ -1,0 +1,156 @@
+#TITLE Ground Theme
+#ALBUM Legacy of the Wizard
+#COMPOSER Yuzo Koshiro
+#ARRANGED emberling
+
+#WAVE 0x20 0x07
+#WAVE 0x21 0x73
+#WAVE 0x22 0x0A
+#WAVE 0x23 0x43
+#WAVE 0x24 0x97
+#WAVE 0x25 0x9C
+#WAVE 0x26 0x6B
+#WAVE 0x28 0x22
+#WAVE 0x29 0x81
+#WAVE 0x2F 0x8F
+
+#def init= t67 %x240 %v40 %b0,85 %f0,0
+
+#def fl= |0 o5 'f' %e1 m24,18,239
+#def hn= |1 o6 'h' %e1 m24,18,223 %s4
+#def ob= |2 o6 'o' %e1 m24,18,215
+#def st= |3 o5 's' %e1 m24,18,207
+#def gt= |4 o7 'g' %e1 m24,18,199
+#def cv= |5 o7 'c' %e1 m24,18,199
+#def bs= |6 o7 'b' %e0 m
+
+#def f= v32
+#def h= v64
+#def o= v52
+#def of= v48,52
+#def s= v40
+#def g= v40
+#def c= v48
+#def b= v96
+
+#drum "o"=5b |F %e1 v40 p80 %y0%s2 %g0
+#drum "p"=5b |F %e1 v20 p80 %y0%s2 %g0
+#drum "c"=5b |F %e1 v40 p80 %y0%s5 %g0
+#drum "d"=5b |F %e1 v20 p80 %y0%s5 %g0
+#drum "s"=5d+ |9 %e1 v80 p64 %g0
+#drum "t"=5d+ |9 %e1 v50 p64 %g0
+#drum "k"=5g |8 %e0 v80 p64 %g0
+#drum "l"=5f+ |9 %e1 v80 p64 %g1
+#drum "m"=5f+ |9 %e1 v50 p64 %g1
+#drum "n"=5f+ |9 %e1 v40 p64 %g1
+
+{1} 'init'
+'fl' p96 l24 %r14
+[6af+dbgd] afcdc>ga8g8
+$## 2
+'cv-o2' p40 l24
+ar12ar12a<adar12  gf+48r48c+drgf+rc+dr12>
+gr12gr12ab48r48a<er12  dc+>a<d48r.>a<crcl48grer>grl24
+ar12ar12a48r48<a48r48gar12  gf+c+d48r48>af+<f+ral48f+rerdrl24
+dr12d>ab<l48drgrarf+gf+rgr  d8e8g8ardrc24
+## 6
+l48
+a+8d+&2rc+32d+&2rr16.d+&2rc+32d+&2ra+16r32
+g+8g&2rg32g&2rr16.g+32g&2rd+32r32f32r32
+d+8d+&2rc+32d+&2rr16.d+&2rc+32d+&2rf+&2rr16
+a+8d+&2rc+32d+&2rr16.d+&2rc+32d+&2rr16.
+g+8d+&2rf32d+&2rr16.f&2rc+32d+&2rr32g16
+f8g&2rd32d+&2rr16.f&2ra&2r<c32r32>a&2rr32
+d8g&2rf32g&2rr16.<d8f16[3g32>g&2rr32<]a32d&2rr32g8
+;
+
+{2}
+'ob*v.5' p40 l8 %r7
+d2 c2 >b2 'of*v2,'a+<d24c24>g24ag
+$## 2
+'ob-o1' p40 %r7
+l8 f+4ga e4f+4 g4de fl24^efc>g<cdeg
+l8 f+4ga e4f+4 g4dg <dc>ga
+## 6
+a+^12<d+^24a+ ^gg+a+ d+4.^12
+'hn' p80 %r10
+a+4g+4^24 g+^12g24^4 g^12f24^4 >g4<d4g4.^24
+'ob-o1' p40 %r7 d24e24
+;
+
+{3}
+'bs-o1' p64 l24
+d2 c2 >b4.^ga a+12ra+12r<cccccc
+$## 2
+'bs-o1' p64
+[dr12dr12ddddr12 cr12cr12ccccr12 >br12br12bbbbr12 a+r12a+r12<cccccc]
+## 6
+d+r12d+r12[4d+]r12 c+r12c+r12[4c+]r12 cr12cr12[4c]r12 > br12br12[4b]r12
+a+r12a+r12[4a+]r12 g+r12g+r12[4g+]r12 gr12gr12[4g]r12 gr12gr12[6g]
+;
+
+{4}
+ l24 "o4.^dc o4.^dc o4.^d48c48p48o48"
+"s12ks12k s48k48ks k48n48m48k48n48m48"
+$## 2
+["!!!o m8m8m8m12m48n48   m8m8mnnm12"j2"m48n48"]":m:s"
+["!!!o m8m8m8m12m48n48   m8m8mnnm"j2"^m48n48"]":m:ks"
+## 6
+"!!!o" l32
+[4 "k^dc s^dc ks^^ s^^48l48m48" j4 "k^k^ s^ks dskp s^^48l48m48"]
+"lkkslksklskklk^48l48m48"
+;
+
+{5}
+'st-o1' p88 %r13
+a2 a2 f+2 d4^12 'cv-o1' p64 a24r24g24r24
+$## 2
+'hn-o1*v.8' p80 %r10 l8
+f+4ga e4c+4 d4>a<e d4>g<c
+d4>a<d ef+c+e d4>b<c dec>g<
+## 6
+'h'
+d+2 c+2 c^12a+24^<d+12  d+4d+4r24 d+^12d+4^24 c^12c12l24c>afcf d4g4<d4.^>de
+;
+
+{6}
+'cv-o1' p64 l24
+d2 c2 >b4.^ga a+12.a+12.<c12fce>g
+$## 2
+'gt*v.67' p96 %a8
+[f+d>a<gd>a<]  [ec+>a<f+d>a<]
+d>ba<f+d>b<d>ba<f+e>b<  [dc+>a<]ec>g<f+c>g<
+[f+d>a<gd>a<]  ec+>a<f+d>a<f+c+>a<f+e>a<
+d>bg<f+d>b<d>bg<gec  dc+>a<ec>a<ec>g<f+c>g<
+## 6
+"!!!o" l32
+[4 "m^^^ m^^^ m^p^ l^o^" j4 "m^dc mdc^ mc^^ l^o^"]
+"o^^o^^o^^o^^o^o^"
+;
+
+{7}
+'gt' p64 p0,64,96 l24 %a8
+[6af+dbgd] afcadcaa+gafg p
+$## 2
+'hn-o1*v.3' p100 %r10 r12
+l8 f+4ga e4f+4 g4de fl24^efc>g<cdeg
+l8 f+4ga e4f+4 g4dg <dc>ga
+## 6
+a+^12<d+^24a+ ^gg+a+ d+4.^24
+'st*v.7' p60 %a7%r9 l24
+a+4g+2g2 %a10fgafc>f %a7g4d4 g2
+;
+
+{8}
+'fl*v.5' p32 l24 %r14
+r[6af+dbgd] afcdc>ga8g8<
+$## 2
+'fl*v.33'%r14 [f+d>a<gd>a<]  [ec+>a<f+d>a<]
+d>ba<f+d>b<d>ba<f+e>b<  [dc+>a<]ec>g<f+c>g<
+[f+d>a<gd>a<]  ec+>a<f+d 'cv-o1'c+'fl*v.33'%r14 f+c+>a<f+e>a<
+d>b 'cv-o2'g'fl*v.33'%r14 f+d>b<d>bg<gec  dc+>a<ec>a<ec>g<f+c
+## 6
+'cv-o1' p40 l48
+d+8r4. c+8r4>a+8<    c8r4>a+8< d+8r4.
+d+8r4r16d+16 c8r4.   b4r16g8<c16 [4d32r16]d8
+r24;

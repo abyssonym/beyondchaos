@@ -28,10 +28,10 @@ Madsiur, Gi Nattak, Ameratsu, Arodrick, Astaroth, B1llygo4t, Badass, Brun, Bryan
 Individual credits:
 
 
-Astaroth: Edea-Kramer, Cloud-Darkness, Rosa, Atma, Opera Celes, Aerith, Elena, Rude, Tifa, Yuna, Vaan, Fang, Hope, Lightning, Sazh, Snow, Vanille, Lenneth
+Astaroth: Edea-Kramer, Cloud-Darkness, Rosa, Atma, Opera Celes, Aerith, Elena, Rude, Tifa, Yuna, Vaan, Fang, Hope, Lightning, Sazh, Snow, Vanille, Lenneth, Dark Elf, Antlion, Cagnazzo, Omega, Tiamat
 
 
-Badass: Granny, Ryu, Cat, Chrono, Cyrus, Frog, Robo, Slash, Mr Saturn, Berserker, Gaffgarion, Bowser, Mario, Yoshi, Megaman X, Samus Suit, Samus Zero, Bubble Dragon, Duran, SoE Boy, Sonic, Ness, cat portrait, robo portrait, slash portrait, sonic portrait, Donkey Kong, Donkey Kong Portrait, Falco, Falco Portrait
+Badass: Granny, Ryu, Cat, Chrono, Cyrus, Frog, Robo, Slash, Mr Saturn, Berserker, Gaffgarion, Bowser, Mario, Yoshi, Megaman X, Samus Suit, Samus Zero, Bubble Dragon, Duran, SoE Boy, Sonic, Ness, cat portrait, robo portrait, slash portrait, sonic portrait, Donkey Kong, Donkey Kong Portrait, Falco, Falco Portrait, Astronaut, Bomberman, Excitebiker
 
 Christian: Tifa
 
@@ -49,21 +49,21 @@ fnrrfygmschnish: heartless
 
 Funkydiscogod: batman 
 
-jameswhite89: johnny, boco, zok, bird, bomb, merchant, black mage, blue mage, grenade, mini, hunter, timemage, tonberry, baby, fish, goku, flea, vader, noctis, noctis portrait berserker portrait, link portrait, bird portrait, bowser portrait, fish portrait, flea portrait, interceptor portrait, returner portrait, squall portrait, ultros portrait, vader portrait, stilzkin portrait, tonberry portrait, pig portrait, golbez portrait, heartless portrait, johnny portrait, bomb portrait
+jameswhite89: johnny, boco, zok, bird, bomb, merchant, black mage, blue mage, grenade, mini, hunter, timemage, tonberry, baby, fish, goku, flea, vader, noctis, noctis portrait berserker portrait, link portrait, bird portrait, bowser portrait, fish portrait, flea portrait, interceptor portrait, returner portrait, squall portrait, ultros portrait, vader portrait, stilzkin portrait, tonberry portrait, pig portrait, golbez portrait, heartless portrait, johnny portrait, bomb portrait, Merchant, cactuar, tingle, eggman
 
 junjinka: zidane
 
-kugawattan: mr saturn, bartz, gilgamesh, borghen, bandit, archer, bartz portrait
+kugawattan: mr saturn, bartz, gilgamesh, borghen, bandit, archer, bartz portrait, caped terra, headdy
 
 matthew50: whitemage
 
-metroidquest: dark cecil, frog, gestahl, kain, paladin cecil, cecil amano, magus, black mage portrait, dark cecil portrait, frog portrait, kain portrait, paladin cecil portrait
+metroidquest: dark cecil, frog, gestahl, kain, paladin cecil, cecil amano, magus, black mage portrait, dark cecil portrait, frog portrait, kain portrait, paladin cecil portrait, magus
 
-mickichiba: ryu, dark cecil, tay cecil, adult relm, aeria, sephiroth, pikachu
+mickichiba: ryu, dark cecil, tay cecil, adult relm, aeria, sephiroth, pikachu, van
 
 one reaver: gabranth, garland
 
-Poco Loco: Rosa, Arvis, Baram, chupon, clyde, cultist, dancer, daryl, dion, draco, dragon, fairy, figaro guard, gestahl, lone wolf, maduin, narshe guard, rachel, returner, scholar, siegfried, thief, ultros, vargas, laguna, squall, beatrix, eiko, kuja, vivi, tidus, draco portrait, siegfried portrait
+Poco Loco: Rosa, Arvis, Baram, chupon, clyde, cultist, dancer, daryl, dion, draco, dragon, fairy, figaro guard, gestahl, lone wolf, maduin, narshe guard, rachel, returner, scholar, siegfried, thief, ultros, vargas, laguna, squall, beatrix, eiko, kuja, vivi, tidus, draco portrait, siegfried portrait, pig
 
 rjenyawd: Tiny moogle
 
@@ -93,13 +93,15 @@ unknown credit goes out to - dragoon, potato, peach, cloud portrait, daryl portr
 
 Filipinac: Vaan, Zero, Squall, Auron 
 
-Loneredmage: Matoya, Impressario, impressario portrait 
+Loneredmage: Matoya, Impressario, impressario portrait, Papyrus, alphys
 
 Darkmage: Cid, Rydia, Yang ukyoluvr: Ike, pikachu 
 
 Frootzcat: Nall Fanffx_2: Squall
 
 Halkel: Princess Peach, Mallow, Geno, Bowser Jr, Sonic, Bowser Jr Portrait, Peach Portrait, Mario Portrait, Luigi Portrait
+
+Tsushiy: Celes Amano, Celes Beatrix, Clyde Edge, Cyan Auron, Edgar Scholar, Celes Yuna, Cyan Cape, Cyan Judge, Cyan Leo, Cyan New, Cyan Samurai, Cyan Siegfried, Gogo Exdeath, Gogo New, Locke Amano, Locke Armor, Moogle hoodie, Relm ponytail, relm white mage, sabin edgar, sabin seifer, sabin vargas, sabin wakka, strago fusoya, strago new, strago Tellah, locke firion, locke squall, moogle hat, moogle cait sith, relm pigtail, relm yuffie, relm yuna, sabin new, strago cid, strago magus, terra dressy, terra rydia, umaro banon, umaro kimhari
 
 Scarabenigma: Eiko
 
@@ -115,9 +117,13 @@ Smash: Lenneth portrait, Generic Cavalier Male (figarguard) portrait
 
 Kagebunji: Tortoise portrait
 
+video boy mal: young terra
+
 Bluzhu: Retro Link, Buu, Dogstahl, Dogstahl Portrait, Stalfos, Kiki, Kirby, Cucco
 
-CtrlxZ - Curation, Compilation, Editting, and BC preparation as well as Ramza, Reno, Seifer, Squall, Chupon, Retro Pikachu, Bartz, Kelgar, Edge, Holy Dragoon, Sephiroth, Barret, Zack, Clock, Turtle, Byuu, Sion, Marle, Yang, FF7 Cid, FF4 Cid, Rydia Child, Vaan, etc
+Hoxnorf: Neptune, Nepgear, Freya, Iffy, Rom, Uni, Cirno, Reimu
+
+CtrlxZ - Curation, Compilation, Editting, and BC preparation as well as Ramza, Reno, Seifer, Squall, Chupon, Retro Pikachu, Bartz, Kelgar, Edge, Holy Dragoon, Sephiroth, Barret, Zack, Clock, Turtle, Byuu, Sion, Marle, Yang, FF7 Cid, FF4 Cid, Rydia Child, Vaan, StarFox etc
 
 
 

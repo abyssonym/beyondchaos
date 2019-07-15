@@ -3,7 +3,8 @@ Song conversions:
     emberling -- blord_2tower, blord_ruins
                  bof1_dawn
                  bof2_battle, bof2_dragnier
-                 cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life, cc_pyre
+                 cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life, cc_pyre,
+                 cc_world2
                  crys_fields, crys_mountain, crys_tower
                  ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair, ct_frog
                  ct_keeper, ct_mountain, ct_night, ct_revolution, ct_rhythm,
@@ -25,14 +26,15 @@ Song conversions:
                  ff8_mlaw, ff8_triad, ff8_witches
                  ff9_battle, ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
                  ffx_battle, ffx_calm, ffx_gagazet, ffx_via, ffx_zanarkand
-                 ff12_barheim, ff12_estersand, ff12_ozmone, ff12_paramina
+                 ff12_barheim, ff12_crystal, ff12_estersand, ff12_ozmone,
+                 ff12_paramina
                  ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
                  ffmq_fossil, ffmq_gale, ffmq_lava, ffmq_light, ffmq_rock,
                  ffmq_tower, ffmq_tristam, ffmq_victory
                  fz_port, fz_white1
                  gd3_desert
                  iog_larai, iog_whispers
-                 lal_theme
+                 lal_labyrinth, lal_theme
                  lo_battle
                  lu1_battle, lu1_final, lu1_world
                  lu2_battle
@@ -40,9 +42,10 @@ Song conversions:
                  mmx_prologue
                  ng3_defeat
                  ob_battle
-                 ot_oasis, ot_sunshade
+                 ot_cliftlands, ot_oasis, ot_sunshade
                  rd_summer
                  rs2_heroes
+                 rs3_gwain, rs3_julian
                  sd2_8bells, sd2_always, sd2_angel, sd2_boss, sd2_city,
                  sd2_desert, sd2_eternal, sd2_flammie, sd2_forest, sd2_forget,
                  sd2_ghost, sd2_hope, sd2_intruder, sd2_jema, sd2_legend,
@@ -63,8 +66,8 @@ Song conversions:
                  wc2_orc1
                  xc1_valakn
                  xc2_morardain, xc2_tantal
-                 xg_boss, xg_flight, xg_tears, xg_weltall
-                 ys3_time
+                 xg_boss, xg_flight, xg_lahan, xg_tears, xg_weltall
+                 ys3_house, ys3_time
                  ys8_idance
     Gi Nattak -- cc_arni, cc_flame, cc_miguel
                  ct_boss2

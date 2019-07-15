@@ -1,0 +1,102 @@
+#TITLE Silent Labyrinth
+#ALBUM Live-A-Live
+#COMPOSER Yoko Shimomura
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#WAVE 0x20 -- 0x92
+#WAVE 0x21 -- 0x94
+#WAVE 0x22 -- 0x96
+#WAVE 0x23 -- 0x1B
+#WAVE 0x24 -- 0x86
+#WAVE 0x25 -- 0x22
+#WAVE 0x26 -- 0x21
+
+#def 3o= o6
+
+{1}
+l16t86%x255%v50%b0,100%f0,0%e1%k4|0%r0p84v10v192,50o5%l1g1  v50g+1  a+1  g+1  
+ $1 %l1g1  g+1  a+1  g+1  
+%l1g1  ^1  g+1  ^1  
+a+1  ^1  g+a+g+2^4.  ^4g4f4%l0|1v20v48,62a+4  
+v45<c8>%l1a+g+%l0v30v72,50g2^4  %r10^2^4%yv30v36,55g4  v45%l1fgv30v72,50%l0g+2^4.  
+%r10^2^4%yv30v36,55g+4  v45a+8%l1g+a+v30v72,50%l0g2%r10^4  ^4%yv30v36,55g4v45f4d+4  
+%l1fgfd+v30v72,50%l0f2^4  %r10^2^4%y%l1v30v36,55f8v45d+d  %l1d+f%l0v25v72,55g2^4.  
+%r14^4|0%r0%l1v25v48,65g4v55f4d+4  fgfd+f2^4  ^2d+4d4  d+dc2^4.  
+^1  v45d1  ^2^4v25v48,50g+4  v40
+;1
+
+l16
+{2}
+l16%e1%k4|2p64r1  
+r1  r1  r1   $2 [2v105o3c8<c8v95<c8r4.v85g64<c8.^32^64  
+r4>>g+64<c+8.^32^64g+64<c+4.^^32^64  ]>[8r8v125>>c8<c8r4.v105g64<c8.^32^64  
+r4v125>>c4<c4v105g64<c8.^32^64  ][2r8v125>>c8<c8r4.v105g64<c8.^32^64  
+r4v125>>c4<c4v105g64<c8.^32^64  r8v125>>c8<c8r4.v105g64<d8.^32^64  
+r4v125>>c4<c4v105g64<d8.^32^64  ]
+;2
+
+l16
+{3}
+l16p127%e1%k4|3r1  
+%y7%s3%r21r1  r1  r1   $3 r2r4v80'3o-o1'c32^64c+32^64f32^48a+32^48g+32^48  
+v45c32^64c+32^64f32^48a+32^48g+32^48v20c32^64c+32^64f32^48a+32^48g+32^48r4v80<g+32^64f32^64c+32^48c32^48>g32^48  
+v45<g+32^64f32^64c+32^48c32^48>g32^48v20<g+32^64f32^64c+32^48c32^48>g32^48r4v80c32^64c+32^64f32^48a+32^48g+32^48  
+v62c+f<c+>f<c+fc+f<c+>fc+fc+>f<c+>f  v65<[2[2v65>d+<cd+cd+<c>d+<cd+c>d+<c>d+cd+c  
+][2>f<cfcf<c>f<cfc>f<c>fcfc  ][2>g<cgcg<c>g<cgc>g<c>gcgc  ][2>f<cfcf<c>f<cfc>f<c>fcfc  
+]][2[2>d+<cd+cd+<c>d+<cd+c>d+<c>d+cd+c  ][2>df<d>f<dfdf<d>fdfd>f<d>f  
+<]]
+;3
+
+l16
+{4}
+l16p0%e1%k4|3r1  %y7%s3%r21r1  r1  r1  
+ $4 r1  v80'3o-o1'fd+c+c>a+v45<d+c+c>a+v20<d+c+c>a+r8.  v80<cc+fg+<cv45>c+fg+<cv20>c+fg+<cr8.  
+v80>>g+<c+g+c+g+<c+>g+<c+g+c+>g+<c+>g+c+g+c+  >v70[2[2cg<c>g<cgcg<c>gcgc>g<c>g  
+][2cg+<c>g+<cg+cg+<c>g+cg+c>g+<c>g+  ][2cg<c>g<cgcg<c>gcgc>g<c>g  
+][2cg+<c>g+<cg+cg+<c>g+cg+c>g+<c>g+  ]][2[2cg<c>g<cgcg<c>gcgc>g<c>g  
+][2cg+<c>g+<cg+cg+<c>g+cg+c>g+<c>g+  ]]
+;4
+
+l16
+{5}
+l16|0%e1%k4%r0%l1p44v10v192,50o5c1  
+v50^1  ^1  ^1   $5 %l1c1  
+^1  ^1  ^1  %l1c1  
+^1  c1  ^1  c1  
+^1  c1  ^4^2%l0|1v20v48,62g4  v45g8%l1gfv30v72,50%l0d+2^4  
+%r10^2^4%yv30v36,55d+4  v45%l1ccv30v72,50%l0f2^4.  %r10^2^4%yv30v36,55f4  
+v45g8%l1fgv30v72,50%l0d+2%r10^4  ^4%yv30v36,55d+4v45d4c4  %l1c+d+c+cv30v72,50%l0c+2^4  
+%r10^2^4%y%l1v30v36,55c+8v45c>b  %l1<cd%l0v25v72,55d+2^4.  %r14^4|0%l1%r0v25v48,65d+4v55d4c4  
+dd+dcd2^4  ^2>g4f4  gfd+2^4.  ^1  
+v30f1  ^2^4v20v48,50<d4  v40
+;5
+
+l16
+{6}
+l16%e1%k4|1p64v36o3%l1 c1  
+c1  c1  c1   $6 %l0%l1 c1  
+c1  c1  c1  %l0%l1 c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  c1  c1  
+c1  c1  
+;6
+
+l16
+{7}
+l16%e1%k4|4%y7%s2%r21p64v42o4[4<c>a+g+g][4<c+>a+g+g][4<d+>a+g+g][4<c+c>a+g+  
+] $7 v47[4<c>a+g+g][4<c+>a+g+g][4<d+>a+g+g][4<c+c>a+g+  ]v52[2[8<c>a+g+g][8<c+>a+g+g][8<d+>a+g+g][8<c+c>a+g+  
+]][2[8<c>a+g+g][8a+g+gf]]
+;7
+
+l16
+{8}
+l16%e1p64r1  r1  r1  r1  
+ $8 |5v60o6c8c8|6%y4%s3v88>g+2^4  ^1  <r1  r1  
+[12|5v60c8c8|6%y4%s3v88>g+2^4  ^1  <]
+;8
+
+l16

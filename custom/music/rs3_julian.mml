@@ -1,0 +1,83 @@
+#TITLE Julian's Theme
+#ALBUM Romancing SaGa 3
+#COMPOSER Kenji Ito
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#WAVE 0x20 0x07
+#WAVE 0x21 0x50
+#WAVE 0x22 0x54
+#WAVE 0x23 0x02
+#WAVE 0x24 0x57
+#WAVE 0x25 0x3C
+#WAVE 0x26 0x5F
+#WAVE 0x27 0x22
+
+#def timbale= |5%y4%s2%r17p88
+
+{1}
+l16t110%v20%b0,65%f0,0 $1 r1  r1  m48,18,207[2v53o5|0p60%e1c+4^>a+<c+d+4f8f+g+a+  
+r<c+rc+c+>a+<c+d+r>a+8.rg+a+f+  rf+g+frff+d+rd+fc+4^  r>b<c+d+fd+ff+ra+rg+rf+8g+  
+f8d+f4^v96,44^2  r2r8.d+8v53ff+a+  <c+8.d+r8>f+rb8.a+r8g+r  r8f+rff+ra+4.^r8  
+r8d+ff+fd+g+8d+g+a+8.r8  <c+8.d+r8>f+rb8.a+r8g+r  r8f+ff+g+a+b4<d+8.>b8  
+a+r8a+r8a+ra+r4.r  ]
+;1
+
+l16
+{8}
+l16 $2 r1  r1  v40o6|1p58%e1%r18%a14[2[6r1  
+]g1  ^1  r1  g1  
+^1  g^8g^8g^g8^4.  ]
+;2
+
+l16
+{2}
+l16o5|2p50%e1%r16 $3 v56c+rc+8rc+rc4>a+8.<c8  
+c+rc+8rc+rd+4c+8.c8  [2v56c+^64r64r32c+8rc+rc4>a+8.<c8  c+^64r64r32c+8rc+rd+4c+8.d+8  
+d+^64r64r32d+8rd+rd+8c+d+f8.c+8  d+^64r64r32d+8rd+rf4f+8.g+8  r8c+^64r64r32rc+rc8>a+<cc+8.c8  
+r8c+^64r64r32rc+rd+2r  d+8.>b8.<d+8f8.c+8.f8  r8>a+^64r64r32ra+r<c4c+8.c8  
+r8d+^64r64r32rd+rd+8c+d+f8.r8  d+8.>b8.<d+8f8.c+8.f8  r8c+^64r64r32rc+rd+8ef+g+8f+e8  
+d+r8d+r8d+r>a+r<v66c+d+8c+c8  ]
+;3
+
+l16
+{3}
+l16o4|2p50%e1%r16 $4 v56a+ra+8ra+rg+2^  
+a+ra+8ra+rg+2^  [2[3v56a+^64r64r32a+8ra+rg+2^  ]f+^64r64r32f+8rf+rg+2^  
+r8a+^64r64r32ra+rg+2^  r8a+^64r64r32ra+rg+2r  f+2g+2  r8f+^64r64r32rf+rg+2^  
+r8a+^64r64r32ra+rg+4.^r8  f+2g+2  r8a+^64r64r32ra+rg+2^  g+r8g+r8g+rf+rv66f+g+8f+f8  
+]
+;4
+
+l16
+{4}
+l16v103|3p64%a11%r14 $5 o6d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  
+<d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  [2<d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  
+<d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  b8a+b8f+ba+8g+a+<f8.>a+8  g+8f+g+8<d+>g+<c+8>b<c+>g+8.<c+8  
+d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  <d+8c+d+8>a+<d+>g+2r  b8a+b8f+b<c+8>b<c+>g+8.<c+8  
+d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  b8a+b8f+b<c+8>b<c+>a+8.r8  b8a+b8f+b<c+8>b<c+>g+8.<c+8  
+>f+8g+f+8<f+c+e8d+e>b8.<e8  d+r8d+r8d+rd+r4r>g+8  ]
+;5
+
+l16
+{5}
+l16 $6 o5|4v64p40g+8d8g+8dg+rg+rdg+8d8  
+g+8d8g+8dg+rg+rdg+8d8  [2|4p40v64[5g+8d8g+8dg+rg+rdg+8d8  ]g+8d8g+8dg+r'timbale'v58a8daad8  
+|4%yp40v64g+8d8g+8dg+rg+rdg+8d8  g+8d8g+8dg+rg+rdg+8d8  g+8d8g+8dg+r4.'timbale'v60a8  
+|4%yp40v64g+8d8g+8dg+rg+rdg+8d8  g+8d8g+8dg+rg+rdg+8d8  'timbale'v71a^8a^8a8a8^4.  
+]
+;6
+
+l16
+{6}
+l16v38o6|6 $7 [4r8p28e4p100e8][2[17r8p28e4p100e8  
+]r2[4r8p28e4p100e8  ]p28er8p100er8p28e8p100e8r4p64e8  ]
+;7
+
+l16
+{7}
+l16v68o5|7p64 $8 [8g4][2[33g4]g8.g2  
+r[8g4]g^8g^8g8g8^4  g8]
+;8
+
+l16

@@ -30,7 +30,7 @@ from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monster
                                get_collapsing_house_help_skill)
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
-                            reset_cursed_shield, unhack_tintinabar)
+                            reset_cursed_shield, unhardcode_tintinabar)
 from esperrandomizer import (get_espers, allocate_espers)
 from shoprandomizer import (get_shops, buy_owned_breakable_tools)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS, get_formations, get_fsets,
@@ -2801,7 +2801,7 @@ def manage_items(items, changed_commands=None):
     wild_breaks = options_.is_code_active('electricboogaloo')
 
     set_item_changed_commands(changed_commands)
-    unhack_tintinabar(fout)
+    unhardcode_tintinabar(fout)
     extend_item_breaks(fout)
 
     for i in items:

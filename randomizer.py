@@ -3202,6 +3202,7 @@ def manage_treasure(monsters, shops=True, no_charm_drops=False):
 def manage_chests():
     crazy_prices = options_.is_code_active('madworld')
     no_monsters = options_.mode.name == 'katn'
+    uncapped_monsters = options_.is_code_active('bsiab')
     locations = get_locations(sourcefile)
     locations = sorted(locations, key=lambda l: l.rank())
     for l in locations:
@@ -3212,7 +3213,7 @@ def manage_chests():
                     if c.contenttype == 0x40 and c.contents == 166:
                         c.contents = 33
 
-        l.mutate_chests(crazy_prices=crazy_prices, no_monsters=no_monsters)
+        l.mutate_chests(crazy_prices=crazy_prices, no_monsters=no_monsters, uncapped_monsters=uncapped_monsters)
     locations = sorted(locations, key=lambda l: l.locid)
 
     for m in get_monsters():
@@ -5677,7 +5678,7 @@ def randomize():
         manage_treasure(monsters, shops=True, no_charm_drops=katn)
         if not options_.is_code_active('ancientcave'):
             manage_chests()
-            mutate_event_items(fout, cutscene_skip=options_.is_code_active('notawaiter'), crazy_prices=options_.is_code_active('madworld'), no_monsters=katn)
+            mutate_event_items(fout, cutscene_skip=options_.is_code_active('notawaiter'), crazy_prices=options_.is_code_active('madworld'), no_monsters=katn, uncapped_monsters =options_.is_code_active('bsiab'))
             for fs in fsets:
                 # write new formation sets for MiaBs
                 fs.write_data(fout)
@@ -5862,8 +5863,7 @@ def randomize():
 
     manage_banon_life3()
     allergic_dog()
-    # This is disabled because it's exploitable. :(
-    #y_equip_relics(fout)
+    y_equip_relics(fout)
     fix_gogo_portrait(fout)
 
     if options_.replace_commands or options_.shuffle_commands:

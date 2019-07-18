@@ -189,6 +189,7 @@ ALL_FLAGS = [
 NORMAL_CODES = [
     Code('airship', "AIRSHIP MODE"),
     Code('alasdraco', "JAM UP YOUR OPERA MODE"),
+    Code('bsiab', "UNBALANCED MONSTER CHESTS MODE"),
     Code('partyparty', "CRAZY PARTY MODE"),
     Code('bravenudeworld', "TINA PARTY MODE"),
     Code('suplexwrecks', "SUPLEX MODE"),

@@ -556,7 +556,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             old_char_id=5,
             name_pointer=0xC590B,
             num_name_bytes=7,
-            name_npcs=[0] + list(range(2,17))),
+            name_npcs=[0, 2, 4, 6, 8, 10]),
         WoRRecruitInfo(
             label = "Fanatics' Tower",
             event_pointers=[0xc5418, 0xc541a, 0xc541e, 0xc5420, 0xc5423, 0xc5426],
@@ -588,7 +588,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             old_char_id=0,
             name_pointer=0xC446F,
             num_name_bytes=4,
-            name_npcs=[0] + list(range(2,20)),
+            name_npcs=[0] + list(range(6,15)),
             name_extra=[0x73, 0x32, 0x33, 0x01, 0x02, 0x04, 0x14], # Keep door open
             name_camera=(-2,4)),
         WoRRecruitInfo(
@@ -650,8 +650,6 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
     random.shuffle(prerequisite_info)
     recruit_info = prerequisite_info + noname_info + unrestricted_info
     prerequisite_dict = dict()
-    for info in prerequisite_info:
-        prerequisite_dict[info.prerequisite] = []
     wor_free_char = None
     collapsing_house_char = None
 
@@ -659,14 +657,14 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
         valid_candidates = candidates
         if info.prerequisite:
             valid_candidates = [c for c in candidates
-                                if c != info.prerequisite and c not in prerequisite_dict[info.prerequisite]]
+                                if c != info.prerequisite and c not in prerequisite_dict.get(info.prerequisite, [])]
         if (not info.name_pointer) and info.special not in [moogle_cave_recruit, sasquatch_cave_recruit, zoneeater_recruit]:
             valid_candidates = [c for c in valid_candidates if c not in [0xA, 0xC, 0xD]]
         candidate = random.choice(valid_candidates)
         candidates.remove(candidate)
         info.char_id = candidate
         if info.prerequisite:
-            prerequisite_dict[info.prerequisite].append(candidate)
+            prerequisite_dict.setdefault(candidate, []).append(info.prerequisite)
         if info.special == falcon_recruit:
             wor_free_char = candidate
         
@@ -679,7 +677,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
 def _manage_gogo_recruitment(fout, collapsing_house_char):
     character_specific_locations = {
         0: { 'map': 0xE2, 'x': 84, 'y': 17, 'facing': 0, 'move': True }, # Zozo tower top *Terra only*,
-        #1: { 'map': 0xC5, 'x': 45, 'y': 13, 'facing': 1 }, # Kohlingen Rachel's house *Locke only*, TODO: This is pre-falcon
+        #1: *Locke only*
         2: { 'map': 0x120, 'x': 56, 'y': 40, 'facing': 3 }, # Maranda inn *Cyan only*,  No move
         5: { 'map': 0x80, 'x': 76, 'y': 31, 'facing': 1 }, # Duncan's house *Sabin only*, No move
         7: { 'map': 0x158, 'x': 54, 'y': 18, 'facing': 0, 'move': True }, # Thamasa exterior *Strago only*,
@@ -688,20 +686,20 @@ def _manage_gogo_recruitment(fout, collapsing_house_char):
         #11: # *Mog only*,
         #13: # *Umaro only*,
     }
-    
+
     # Can't be used for collapsing_house_char
     pre_falcon_locations = [
         { 'map': 0x14A, 'x': 12, 'y': 24, 'facing': 1 }, # Albrook pub No move
         { 'map': 0x4E, 'x': 72, 'y': 38, 'facing': 3 }, # South Figaro pub, No move
         { 'map': 0x3C, 'x': 100, 'y': 16, 'facing': 0, 'move': True }, # Figaro castle library
     ]
-    
+
     general_locations = [
         { 'map': 0x1C, 'x': 11, 'y': 39, 'facing': 2, 'move': True }, # Narshe inn
         { 'map': 0xCA, 'x': 51, 'y': 19, 'facing': 0, 'move': True }, # Jidoor relic shop 
         { 'map': 0xEE, 'x': 99, 'y': 18, 'facing': 3, 'move': True }, # Opera house dressing room
     ]
-    
+
     candidates = list(set(range(0,0xd)) - {0x3, 0x4, 0x6, 0x9, 0xc})    # Exclude mandatory chars, Shadow, and Gogo
     char_index = random.choice(candidates)
     

@@ -135,7 +135,6 @@ def mark_taken_id(taken):
 
 
 def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_limit):
-    global a
     appropriate_formations = get_appropriate_formations()
     formations = [f for f in appropriate_formations if
                   f.get_guaranteed_drop_value() >= value * 100]
@@ -143,6 +142,9 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
     orphaned_formations = [f for f in orphaned_formations
                                if f not in used_formations]
     extra_miabs = get_extra_miabs(0)
+    
+    normal_rank_limit = lambda rank: 2 * rank - 125
+    special_rank_limit = lambda rank: 5/4000 * rank * rank + 7/4*rank - 300
     
     if guarantee_miab_treasure:
         extra_miabs = []
@@ -152,13 +154,13 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
         if len(extra_miabs) > 1:
             extra_miabs = get_extra_miabs(rank)
         if orphaned_formations or extra_miabs:
-            max_rank = math.inf if clock else 1.5 * rank - 150
+            max_rank = math.inf if clock else normal_rank_limit(rank)
             formations = [f for f in formations if f.rank() >= rank and f.rank() < max_rank]
             formations = formations[:random.randint(1, 3)]
             if not clock:
                 orphaned_formations = [f for f in orphaned_formations
-                if f.rank() < 1.5 * rank - 150 and f.get_guaranteed_drop_value() >= value * 10 - 1000]
-                max_extra_miab_rank = 5/4000 * rank * rank + 3/2*rank - 300
+                if f.rank() < normal_rank_limit(rank) and f.get_guaranteed_drop_value() >= value * 10 - 1000]
+                max_extra_miab_rank = special_rank_limit(rank)
                 extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank]
         candidates = (orphaned_formations + extra_miabs)
         candidates = [c for c in candidates if c not in used_formations]
@@ -178,13 +180,13 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
     rank_multiplier = 1.5
     value_divisor = 2
     while not candidates:
-        max_rank = max(rank,rank_multiplier * rank - 200)
+        max_rank = max(rank,rank_multiplier * normal_rank_limit(rank))
         min_value = value * 100/value_divisor - 1500
         orphaned_formations = get_orphaned_formations()
         orphaned_formations = [f for f in orphaned_formations
                 if f.rank() <= max_rank and f.get_guaranteed_drop_value() >= min_value / 3 - 1200]
         extra_miabs = get_extra_miabs(0)
-        max_extra_miab_rank = 5/4000 * rank * rank + 3/2*rank - 300
+        max_extra_miab_rank = special_rank_limit(rank)
         extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank * rank_multiplier]
         candidates = [c for c in candidates if c not in used_formations]
         candidates = [c for c in candidates
@@ -384,7 +386,7 @@ class ChestBlock:
 
     def mutate_contents(self, guideline=None, monster=None,
                         guarantee_miab_treasure=False, enemy_limit=None,
-                        uniqueness=False, crazy_prices=False):
+                        uniqueness=False, crazy_prices=False, uncapped_monsters=False):
         global used_formations, done_items
 
         if self.do_not_mutate and self.contents is not None:
@@ -436,10 +438,10 @@ class ChestBlock:
             
             from locationrandomizer import get_location
             rank = self.rank
-            if self.is_clock or not rank:
+            if self.is_clock or not rank or uncapped_monsters:
                 rank = min(formations, key=lambda f: f.rank()).rank()
             
-            chosen = select_monster_in_a_box(rank=rank, value=value, clock=self.is_clock or monster is True, guarantee_miab_treasure=guarantee_miab_treasure, enemy_limit=enemy_limit)
+            chosen = select_monster_in_a_box(rank=rank, value=value, clock=self.is_clock or monster is True or uncapped_monsters, guarantee_miab_treasure=guarantee_miab_treasure, enemy_limit=enemy_limit)
             drops = [e.drops for e in chosen.present_enemies]
             chosen = get_2pack(chosen)
             # only 2-packs are allowed
@@ -506,7 +508,7 @@ class EventItem:
             desc = "*%s" % desc
         return desc
     
-    def mutate_contents(self, cutscene_skip=False, crazy_prices=False, no_monsters=False):
+    def mutate_contents(self, cutscene_skip=False, crazy_prices=False, no_monsters=False, uncapped_monsters=False):
         from chestrandomizer import ChestBlock
         c = ChestBlock(0x0, 0x0)
         c.memid = 0
@@ -518,7 +520,7 @@ class EventItem:
         if no_monsters or cannot_show_text:
             monster = False
         
-        c.mutate_contents(monster=monster, crazy_prices=crazy_prices)
+        c.mutate_contents(monster=monster, crazy_prices=crazy_prices, uncapped_monsters=uncapped_monsters)
         # If we can't show text, we don't want it to be GP,
         # because that event takes 3 bytes instead of 2,
         # and I'd have to rearrange or remove stuff to fit it.
@@ -656,7 +658,7 @@ duplicate_event_item_skip_dict = {
 def get_event_items():
     return event_items_dict
     
-def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monsters=False):
+def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monsters=False, uncapped_monsters=False):
     event_item_sub = Substitution()
     event_item_sub.set_location(0x9926)
     event_item_sub.bytestring = bytes([0x8A, 0xD6, 0x99, 0xd6]) # pointer to new event commands 66 and 67
@@ -713,5 +715,5 @@ def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monster
     
     for location in event_items_dict:
         for e in event_items_dict[location]:
-            e.mutate_contents(cutscene_skip=cutscene_skip, no_monsters=no_monsters)
+            e.mutate_contents(cutscene_skip=cutscene_skip, no_monsters=no_monsters, uncapped_monsters=uncapped_monsters)
             e.write_data(fout, cutscene_skip=cutscene_skip)

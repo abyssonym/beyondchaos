@@ -901,7 +901,7 @@ def manage_commands_new(commands):
                     continue
                 randomskill_names.add(s.name)
                 c.targeting = 0x2
-                if s.spells:
+                if not s.spells:
                     c.targeting = 0x4
                 elif len({spell.targeting for spell in s.spells}) == 1:
                     c.targeting = s.spells[0].targeting

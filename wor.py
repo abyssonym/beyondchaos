@@ -79,11 +79,12 @@ def recruit_mog_insert(fout, recruit_info):
     
     fout.seek(recruit_info.name_pointer)
     extra_bytes = fout.read(recruit_info.num_name_bytes)
+    level_average_bytes = bytes([0x77, 0x0A]) if recruit_info.special == zone_eater_recruit else bytes([])
     maybe_name_sub = Substitution()
     maybe_name_sub.set_location(maybe_name_location)
     maybe_name_sub.bytestring = bytes([
         0xC0, 0x9F, 0x02, name_low, name_mid, name_high - 0x0A,
-    ]) + extra_bytes + bytes([0xFE])
+    ]) + extra_bytes + level_average_bytes + bytes([0xFE])
     maybe_name_sub.write(fout)
     
     name_jump = Substitution()
@@ -376,9 +377,9 @@ class WoRRecruitInfo(object):
 
         if self.char_id == 0xA and self.special != moogle_cave_recruit:
             recruit_mog_insert(fout, self)
-        if self.char_id == 0xC and self.special not in [sasquatch_cave_recruit, moogle_cave_recruit, zoneeater_recruit]:
+        if self.char_id == 0xC and self.special not in [sasquatch_cave_recruit, moogle_cave_recruit, zone_eater_recruit]:
             recruit_gogo_insert(fout, self)
-        if self.char_id == 0xD and self.special not in [sasquatch_cave_recruit, moogle_cave_recruit, zoneeater_recruit]:
+        if self.char_id == 0xD and self.special not in [sasquatch_cave_recruit, moogle_cave_recruit, zone_eater_recruit]:
             recruit_umaro_insert(fout, self)
 
 
@@ -432,19 +433,31 @@ def sasquatch_cave_recruit(fout, char_id):
         gogo_sub.set_location(0xCD811)
         gogo_sub.bytestring = bytes([0x4B, 0x0D, 0xCA]) # shrouded in odd clothing
         gogo_sub.write(fout)
+        
+        gogo_sub.set_location(0xCD79A)
+        gogo_sub.bytestring = bytes([0x40, 0x0C, 0x0C]) # assign Gogo properties to Gogo
+        gogo_sub.write(fout)
         return
 
     if char_id == 0x0D:
         return
-        
-    # Skip over rename
+
     sasquatch_cave_recruit_sub = Substitution()
+    # Level average character instead of setting Umaro's properties
+    sasquatch_cave_recruit_sub.set_location(0xCD79A)
+    sasquatch_cave_recruit_sub.bytestring = bytes([0x77, char_id, 0xFD]) 
+    sasquatch_cave_recruit_sub.write(fout)
+
+    # Skip over rename
     sasquatch_cave_recruit_sub.set_location(0xCD7F5)
-    sasquatch_cave_recruit_sub.bytestring = bytes([0xC0, 0x27, 0x01, 0x40, 0xD8, 0x02])
+    sasquatch_cave_recruit_sub.bytestring = bytes([
+        
+        0xC0, 0x27, 0x01, 0x40, 0xD8, 0x02 # jump
+    ])
     sasquatch_cave_recruit_sub.write(fout)
 
 
-def zoneeater_recruit(fout, char_id):
+def zone_eater_recruit(fout, char_id):
     if char_id == 0x0C:
         return
 
@@ -454,13 +467,13 @@ def zoneeater_recruit(fout, char_id):
         umaro_sub.bytestring = bytes([0x4B, 0xF9, 0xC5]), # Admirer of bone-carvings text
         return
 
-    prefix = [0xFD] * 4 if char_id == 0x0A else []
+    prefix = [0xFD] * 4 if char_id == 0x0A else [0x77, char_id]
 
     # Skip over rename
-    zoneeater_recruit_sub = Substitution()
-    zoneeater_recruit_sub.set_location(0xB81CF)
-    zoneeater_recruit_sub.bytestring = bytes(prefix + [0x3D, char_id, 0xC0, 0x27, 0x01, 0x00, 0x82, 0x01])
-    zoneeater_recruit_sub.write(fout)
+    zone_eater_recruit_sub = Substitution()
+    zone_eater_recruit_sub.set_location(0xB81CF)
+    zone_eater_recruit_sub.bytestring = bytes(prefix + [0x3D, char_id, 0xC0, 0x27, 0x01, 0x00, 0x82, 0x01])
+    zone_eater_recruit_sub.write(fout)
 
 
 def manage_wor_recruitment(fout, shuffle_wor, random_treasure, include_gau, alternate_gogo):
@@ -606,7 +619,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
         ),
         WoRRecruitInfo(
             label = "Sasquatch Cave",
-            event_pointers=[0xCD79E, 0xCD7A0, 0xCD7A1, 0xCD7A4, 0xCD81D, 0xCD820],
+            event_pointers=[0xCD79B, 0xCD79C, 0xCD79E, 0xCD7A0, 0xCD7A1, 0xCD7A4, 0xCD81D, 0xCD820],
             recruited_bit_pointers=[0xCD7A6],
             shop_menu_bit_pointers=[0xCD7A8],
             location_npcs=[(0x11B, 1), (0x15, 1)],
@@ -639,7 +652,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
                 dialogue_pointers=[0xa0e, 0xa0f, 0xa10],
                 old_char_id=0xC,
                 palette_pointers=[0xB81E4],
-                special=zoneeater_recruit,
+                special=zone_eater_recruit,
                 name_pointer=0xB81CF,
                 num_name_bytes=4,
             ))
@@ -658,7 +671,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
         if info.prerequisite:
             valid_candidates = [c for c in candidates
                                 if c != info.prerequisite and c not in prerequisite_dict.get(info.prerequisite, [])]
-        if (not info.name_pointer) and info.special not in [moogle_cave_recruit, sasquatch_cave_recruit, zoneeater_recruit]:
+        if (not info.name_pointer) and info.special not in [moogle_cave_recruit, sasquatch_cave_recruit, zone_eater_recruit]:
             valid_candidates = [c for c in valid_candidates if c not in [0xA, 0xC, 0xD]]
         candidate = random.choice(valid_candidates)
         candidates.remove(candidate)

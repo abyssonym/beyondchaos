@@ -1,0 +1,129 @@
+#TITLE A Quiet Moment
+#ALBUM Ys III: Wanderers from Ys
+#COMPOSER Mieko Ishikawa
+#ARRANGED emberling
+
+#WAVE 0x20 0x74
+#WAVE 0x21 0x1B
+#WAVE 0x22 0x1C
+#WAVE 0x23 0x61
+#WAVE 0x24 0x1D
+#WAVE 0x25 0x0D
+#WAVE 0x28 0x22
+#WAVE 0x29 0x56
+#WAVE 0x2A 0x5A
+#WAVE 0x2B 0x84
+
+#def init= t107 %x240 %v40 %b0,85 %f0,0
+
+#def cl= |0 %e1 'c' o5 p80 m24,18,223 'cr'
+#def hp= |1 %e1 'h' o5 p40 m
+#def bs= |2 %e0 'b' o7 p72 m %y2%s3%r6
+#def vi= |3 %e1 'v' o3 p80 m24,18,239 'vr'
+#def md= |4 %e1 'm' o5 p56 m
+#def st= |5 %e1 's' o5 p32 m24,18,207 %a5'sr'
+
+#def c= v48
+#def h= v48
+#def b= v80
+#def v= v64
+#def m= v40
+#def s= v24
+
+#def x= %r18
+#def cr= %r10
+#def vr= %r7
+#def sr= %r11
+
+#drum "k"= 5a  %e0 |8 v64 p64
+#drum "s"= 5g  %e1 |9 v64 p64
+#drum "h"= 5b  %e1 |A v32 p64 %y0%s0
+#drum "t"= 5a+ %e0 |B v88 p80
+#drum "u"= 5f  %e0 |B v88 p48
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1} 'init' $
+'cl' l8
+a4<e'x'^4'cr'e  (dc)>bag+e    a4b4<c4>  f+2^'x'^'cr'
+a4<e'x'^4'cr'e  (dc)>bag+e    a4(ab)<(ce)  g4f+4d4
+##9
+'vi+o2' l8
+d4e4d4  c4.>b<c4    d4e4d4 >a2.<
+d4e4d4  c4>b4<c4    >b2.< g+4e2
+##17
+d4e4d4  c4.>b<c4    d4e4d4 >a2.<
+d4e4d4  c4>b4<c4    >b2.< e2.
+;
+
+{2} $
+'hp-o1' l8
+[3a<egab<c  d4c4.>a>] a<egab<c  dcdef+g
+##9
+[d>fa<cde  c>bab<c>a    <d>fa<cde  c>b<a2
+d>fa<cde  c>bab<c>a    beg+b<de  g+eg+b<de>]
+##17
+#^^
+;
+
+{3} $
+'bs-o3' l8
+[3a2.<d2^d>] a2^a a4<cdeg
+##9
+[3d4.dfa >a4.a<gf] >e2^e ebg+<edg+
+##17
+[3d4.dfa >a4.a<gf] >e2^e e4g+ab<c
+;
+
+{4} $
+[[7 "k4s4hh"] "k4s4tu"]
+##9
+#^^
+##17
+[7 "k4s4hh"] "k4ttuu"
+;
+
+{5} $
+'md' l2
+[3c. >b.<] c. d.
+##9
+>fa4< c.  >a. e.    a<d4 ec4>  b. g+.
+##17
+< l8 'm*v1.33'
+a4<e4.e  fedec>a    f4a4b<d  c2.>
+a4<e4.e  g4d4e4    d2. >b4<d4>b4
+;
+
+{6} $ &2r
+'md+o1' l2
+[3e. d.] e. g4b8a8f+8d8
+##9
+>a<d4 >a.<  d. >ab8<c8    d4>a4<f4 e4.d8e4    d. >b4<c4&46d4
+##17
+'hp*v.67' l8
+d>a<e>a<d>a< fgabgf  d2fd e2.
+d>a<e>a<d>a< gfec>a<c  be<c>e[<d>e]<c>eb4
+;
+
+{7} $ &1r
+'md' l2
+a. f+. a. f+g4 a. f+. a. b.
+##9
+df4 e.  f. c.    f. a<c4>  g+. e4>b4<d4
+##17
+'hp*v.5' &11r l8
+d>fa<cde  c>bab<c>a    <d>fa<cde  c>b<a2
+d>fa<cde  c>bab<c>a    beg+b<de  g+eg+b<de16>
+;
+
+{8} $
+[8r2.]
+##9
+'st' l8
+(d4e4d4)  (c4.>b<c4)    (d4e4d4) (>a2.<)
+(d4e4d4)  (c4>b4<c4)    (>b2.<) (g+4e2)
+##17
+(d4e4d4)  (c4.>b<c4)    (d4e4d4) (>a2.<)
+(d4e4d4)  (c4>b4<c4)    (>b2.<) (e2.)
+;

@@ -1,0 +1,217 @@
+#TITLE The Cliftlands
+#ALBUM Octopath Traveler
+#COMPOSER Yasunori Nishiki
+#ARRANGED emberling
+
+#WAVE 0x20 0x63
+#WAVE 0x21 0x54
+#WAVE 0x22 0x32
+#WAVE 0x23 0x18
+#WAVE 0x28 0x22
+#WAVE 0x29 0x14
+#WAVE 0x2A 0x37
+#WAVE 0x2B 0x30
+#WAVE 0x2C 0x50
+
+#def init= t82 %x255 %v45 %b0,90 %f0,0
+
+#def fl= |0 o3 %e1 p56 m24,18,239 'f'
+#def gt= |1 o5 %e1 p80 m 'g' %r12
+#def gp= |2 o5 %e1 p80 m 'p' %r18
+#def gc= |2 o5 %e1 p80 m 'c' %r12
+#def bs= |3 o7 %e1 p48 m 'b' %r10
+
+#def f= v100
+#def g= v56
+#def p= v40
+#def c= v48
+#def b= v64
+
+#def ff= v48,100
+
+#cdef ( %l1
+#cdef ) %l0
+
+#drum "t"= 6e v16 |8 %e1 p64
+#drum "c"= 5e v48 |B %e1 p32
+#drum "b+"= 5d+ v80 |9 %e1 p64 %a10
+#drum "b"= 5d+ v80 |9 %e1 p64 %a9
+#drum "b-"= 5d+ v80 |9 %e1 p64 %a8
+#drum "d"= 5a v40 |8 %e0 p64
+
+#drum "j"= 6g v24 |A %e1 p64 %r0
+#drum "k"= 6g v20 |A %e1 p56 %r19
+#drum "l"= 6g v16 |A %e1 p56 %r19
+#drum "m"= 6g v12 |A %e1 p56 %r19
+
+#drum "x"=5g+ v56 |C %e1 p64 %r17
+#drum "y"=5f  v56 |C %e1 p64 %r17
+#drum "y+"=5f  v56 |C %e1 p64 %r14
+#drum "z"=5e  v56 |C %e1 p64 %r17
+#drum "r"=5f  v32 |C %e1 p64 %a3%r17
+
+{1}
+'init' $
+'fl' l8 %r12
+(df)
+g%r15^%r12(a48&20gf)    g<d(d+48&44d)
+(d32&42c)(c'f*v.8'd'f'>)    (ag%r18^)%r12f
+g%r15^%r12(a48&20gf)    g<f(d^12d+48d48)
+c4(d48&20c>a+<)    %r15d4%r12>(df)
+##6
+g%r15^%r12(a48&20gf)    g<d(d+48d8.d+48d48)
+c4'f*v1.2'^'f'd>    (ag%r18^)%r12'f*v.8'f'f'
+(a+a)g%r15^%r12    (a+a)(f48&20g)f
+g2%r15^4 %r12(c16d16d+16f16)
+##10
+'f*v.67''ff*v,1.2'g2'f'(<c4>g4)
+'f*v.67''ff*v,1.2'a+2'f'(g4.f48g48f12)
+'f*v.67''ff*v,1.2'%r9(d2..c)%r12
+'f'd4(f64g64&42f)%r15^4%r12(df)
+'f*v.8''ff*v.5,1.2'g4'f'(a48&20gf)  (gfg)<d
+(c64d64&42c)>a+%r15^4.%r12<(cd)
+'f*v.8''ff*v,1.2'(d+48&92d)  'f'(d+48d48&40c>a+4)
+'f*v.67''ff*v,1.2'a1'f'
+##18
+[g4(a48&20gf)]
+(g<d)(d+48&68d)(>a+48<&20c>(a+a)
+g4(aa+)<(c4>a+<c)
+(d4d+f)(d>a+48<&20c>(a+a)
+g4(g+48&20gf)  g4(a48&20gf)
+g<d(d+48&44d)%r15^%r12(c64d64c16.>a+a)
+%r16g4%r12(aa+)<%r16c4%r12>(a+64<c64>a+16.a)
+'ff*v,1.2'^12&176%r14g
+##26
+'gt-o1' %a9 l2 gfd+dcc+dr4
+;
+
+{2} r4 $
+'bs-o2' l8
+g4.gd+2 f4.fg2  g4.gd+2 f4.d+16r16d2
+##6
+g4.gd+2 f4.fg2  d+4.d+f2 g4.dgg4.
+##10
+l16
+c4.>gr<crc4d8  d+4.>a+r<d+rd+4d+8    [d4.>ar<drd4a8]
+d+4.>a+r<d+rd+4fr  g4.drgrg4f8    d+4.>a+r<d+rd+4d+8  d4.ar<'b*v1.5'd8c8>'b*v1.2'ar'b'dr
+##18
+>'b*v1.4'g4.grf4.<'b'fr  d+4.d+r d4a8d8
+c4.'b*v1.5'>cr'b*v1.33'f4<c8>d8  a+4.%r18a+r<dr'b*v1.5'd8d8>'b'%r10a+8
+'b*v1.4'g4.gr f4.<'b'fr  d+4.d+8 d4a8d8
+c2d2 >'b*v1.2'g1<
+##26
+'b' l2 gfd+dcc+d4.a8d
+;
+
+{3} r4 $
+'gp-o1' l8
+ga+<dg> d+<gd+>a+  fa<cf16r16> g<gd>a+
+ga+<dg> d+<gd+>a+  fa<c>d+ da<df16.r32>
+##6
+ga+<dg> d+<gd+>a+  fa<cf16r16> g<gd>a+
+d+ga+<d+> fa<fc16.r32>   g<gd>a+  &2g&2a+<&2d&90g>
+##10
+cg<c>g <d+4g4>  d+g<d+>a+ <g>a+<d+>a+    [da<d>a <f>a<d4>]
+[d+a+<d+>a+ <g>a+<d+>a+ j2 >g<d<d>a+ <g>a+<d>a+] da<d>a %r12&2d&2a<&2d&90f+
+##18
+'gp' &2r
+g4g16r. f4f16r.  d+4d+16r. f4fr
+d+4d+r f4fr    f4f.r.f+f+r
+g4gr f4fr    d+4d+r f4f&22r
+'gp-o1' &2d+&2g<&2c&90d+>    &2f&2a<&2d&90f>
+g<gd>a+    &2g&2a+<&2d&90g>
+##26
+ga+<dg> fa<cf> d+<gd+>a+ da<df> cg<cd+> c+ea<c+> d<gd>a
+&2f+&2a&2<d&90f+
+;
+
+{4} r4 $
+'gt-o1' %a9 l2
+gd+fg gd+fd
+##6
+gd+fg d+fg%a15g
+##10
+l8
+"t4cttc4t" "t2tt4t"    "t4cttc4t" "t4.ttt4t"
+"t4c4tc4t" "t2tt4t"    "t4cttc4t" "t4.ttb+bb-"
+##18
+"d4bdddbd  d4bdddb4    d4bdd4bd d4bddbb16b."
+"d4bdddbd  d4bddbb4    d2t2  d4bdddb4"
+##26
+'gt-o1' %a10 l8 ra+4. ra4. r4.a+ ra4. rg4. re4. r4.a %a15f+2
+;
+
+{5} r4 $
+'gt-o1' %a10 l8
+ra+4. <rg4.> ra4. <rg4.>    ra+4. <rg4.> ra4. ra4.
+##6
+ra+4. <rg4.> ra4. <rg4.>    rg4. ra4. <rg4.> %a15&2r&94a+
+##10
+%a9 c2.<g4>    d+2^a+4a+
+d1 d1
+d+1    r4.a+4a+4a+
+d+1   d2%a15d "!!!o r4."
+##18
+'gt-o1'
+a+4a+16r. a4a16r.    g4g16r. a4ar
+g4gr a4ar    a+4a+.r.%r18aar%r12
+a+4a+r a4ar   g4gr a4ar
+&2r&94g &2r&94a r<g4.>&2r&94a+
+##26
+'gt' %a11 l4 rd rc rd+ rd rc >ra< rd %a15&2r&94>a
+;
+
+{6} r4 $
+'gt' %a11 l4
+rd rd+  rc8.r16 rd    rd rd+  rc rd8..r32
+##6
+rd rd+  rc8.r16 rd    >ra+< rf8..r32  rd %a15r48&92d>
+##10
+%a12 l8 rg4%a9g4g4g%a12    <r4d+2d+4>
+[ra4r<f2>]
+r2<g2>    >g2<<g2>
+ra+4a+4a+4a+   <r4d4>%a15&2r&22a "!!!o z4."
+##18
+'gc' &1r
+d4d16r. c4c16r.    >a+4a+16r.< d4dr
+c4cr c4cr    d4d.r.%r18ddr%r12
+d4dr c4cr    >a+4a+r< d4dr
+'gt' r64&92c r48&92d    r4d4 r48&92d
+##26
+'gt' %a12 l8 r4.g r4.f rg4. r4.f r4.d+ r4.c+ rg4. %a15r48&92d
+;
+
+{7} r4 $
+'gt' %a12 l8
+r4.g r4.>a+<  r4.f16r16 r4.>a+<    r4.g r4.>a+  r4.d+ <r4.f16.r32
+##6
+r4.g r4.>a+<  r4.f16r16 r4.>a+<    r4.d+ r4.c16.r32  >r4.a+< %a15r32&90g
+##10
+%a11 r4c2.    >r4.a+<g2
+[r4d2d4]
+>ra+4a+4a+4a+<  r4d2d4
+r4d2d4   >ra4a<%a15r48&92d
+##18
+"!!!o" l16
+[12"klml jlml"]
+'gt-o1'd+2f2    g2g2
+##26
+'gt' %a15 r1r1r1r2r32&90f+
+;
+
+{8} r4 $
+[8r1]
+##10
+'gt' %a10 l8
+r2d+2>    rg2..
+[r4.a4a4a]
+<r4d+2d+4>    rd2..
+r2<g2  r2%a15r32&90f+
+##18
+l8 "!!!o y4c4.c4."    'gt-o1'd+4d+16r. d4dr
+"!!!o ^4c4.c4."    'gt-o1'f4f.r. "!!!o xz4"
+"y4c4.c4."    'gt-o1'd+4d+r d4dr
+"!!!o y+1"   'gt-o1'r4.a+<r32&90g
+##26
+[4r1]
+;

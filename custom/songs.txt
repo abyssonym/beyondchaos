@@ -16,6 +16,7 @@ blord_2tower:   setzer, locke, chocobo, blackjack, johnny, falcon*2, mount2
 blord_ruins:    train, gate, ancient*2, magitek*2, engine, phoenix
 bof1_dawn:      prelude, omen3*2, falcon, serpent*2
 bof2_battle:    I65, G05, unforgiven, grandfinale, battle
+bof2_dragnier:  espers, strago, town_ruin, serpent*2, tomb, ancient, gate*2, dream
 cc_arni:        town*2, village
 cc_dragonia:    H2, omen3, zozo, kefkastower, owzer, dream*2, ancient
 cc_dragonia_tr: H2, train
@@ -28,6 +29,7 @@ cc_life:        omen3, rachel*2
 cc_miguel:      grandfinale, ruin*2, rachel, tomb
 cc_miguel_tr:   train
 cc_pyre:        ruin, train, cave, gate*2, phoenix*2, ancient
+cc_world2:      omen3, daryl, coin, relm, awakening, town_ruin, balance*2, forest
 crys_fields:    chocobo, johnny, gogo, moogles*2, mountain, setzer
 crys_mountain:  I25, G55, grandfinale, unforgiven, falcon, mount2*2, serpent, floatingcont
 crys_tower:     setzer, locke, chocobo, blackjack, mount2*2, mountain
@@ -61,6 +63,7 @@ cv4_beginning_tr: train
 cv4_chandeliers: H4, kefka, gogo, owzer*2, fanatics, serpent, tomb, dream, H:omen3, H:gestahl, H:shadow, H:spinachrag
 ds4_dungeon:    gate, ancient, magitek, engine, dream, phoenix*2, kefkastower
 ds4_lyll:       blackjack, falcon, mountain, mount2, serpent, setzer
+ds4_world:      setzer, chocobo, blackjack, moogles, strago, mountain
 eo3_waves:      I50, G99, atma*2, kefkastower, dmad5
 evo_boss:       I85, G40, boss*2, unforgiven
 ff1_battle:     I10, G00, battle, grandfinale, unforgiven
@@ -171,6 +174,7 @@ ffx_seymour:    I99, G80, atma, dmad5
 ffx_via:        H2, omen3, celes, zozo, train*2, cave, tomb*2, phoenix, ancient
 ffx_zanarkand:  celes*2, daryl, coin*2, ruin*2
 ff12_barheim:   owzer, martiallaw, cave, train*2, dream, ancient*2, tomb
+ff12_crystal:   omen3, espers*2, tomb, gate*2, ancient, dream, phoenix, ruin
 ff12_estersand: locke, chocobo, moogles, balance*2, veldt, mountain*2, mount2, serpent
 ff12_ozmone:    returners, moogles, gogo, veldt*2, mountain*2, forest, serpent
 ff12_paramina:  W4, omen3*2, gestahl*2, catastrophe, narshe*2, martiallaw, town_ruin, ruin*2, cave*2, tomb, ancient, assault, W:shadow, W:awakening, W:cyan, W:troops*2, W:umaro, W:zozo, W:owzer, W:balance, W:train*2, W:serpent, W:espers*2, W:forest
@@ -195,6 +199,7 @@ iog_whispers:   H2, zozo, owzer*2, ruin*2, forest*2, cave*2, tomb*2, dream, trai
 iog_womb:       W2, prelude, daryl, coin, rachel, awakening, ruin, forest, tomb, espers
 jts_stage1:     I10, G60, battle, johnny, chocobo, magitek*2, floatingcont, mount2, assault
 lagoon_spirits: celes, awakening, owzer, ruin, forest*2, cave*2, tomb, espers, ancient, train
+lal_labyrinth:  zozo, ruin, cave, train*2, tomb, gate, ancient, dream*2, phoenix
 lal_theme:      I20, G80, setzer*2, locke*2, figaro, returners, savethem, falcon, mount2, floatingcont
 lo_battle:      I05, G75, battle*2, grandfinale, cyan, umaro, assault*2
 lu1_battle:     I60, G0, battle*2, unforgiven, chocobo
@@ -213,11 +218,14 @@ met3_surface:   omen3*2, gestahl, cyan, shadow, returners, troops, ruin, tomb, p
 mmx_prologue:   I35, G25, grandfinale, unforgiven, chocobo, blackjack, johnny, magitek, floatingcont, mount2, assault
 ng3_defeat:     omen3, celes, shadow, zozo, train, espers, tomb, ancient
 ob_battle:      I40, G50, battle*2, boss, metamorphosis*2, unforgiven, serpent, assault
+ot_cliftlands:  omen3, relm, shadow, gau*2, town_ruin, balance, mountain, cave, forest, tomb, dream
 ot_oasis:       relm, gau, village*2, town, town_ruin*2, strago
 ot_stillsnow:   coin*2, narshe, ruin*2, town_ruin*2, forest, tomb, W:prelude, W:omen3*2, W:celes, W:daryl, W:rachel, W:awakening, W:cave, W:espers
 ot_sunshade:    shadow*2, spinachrag, zozo*2, narshe, martiallaw
 rd_summer:      omen3*2, celes, daryl*2, coin, rachel, espers, town_ruin, ruin, forest, tomb*2, dream
 rs2_heroes:     I50, G75, boss, catastrophe, grandfinale
+rs3_gwain:      catastrophe, assault, umaro, phoenix, dream, fanatics*2, phoenix, kefkastower
+rs3_julian:     prelude, chocobo, johnny, village, forest
 rs3_underwater: omen3, shadow, owzer, narshe*2, town_ruin*2, ruin, cave*2, tomb*2, gate, phoenix, ancient
 rsms_battle:    I50, G65, battle*2, unforgiven
 sd1s_boss:      I50, G40, boss*2, unforgiven, floatingcont
@@ -270,6 +278,7 @@ sd3_faith:      I55, G70, boss, atma, grandfinale, umaro
 sd3_flight:     setzer, chocobo, blackjack*2, mountain
 sd3_mana:       I80, G45, boss*2, atma, metamorphosis*2, catastrophe, grandfinale, unforgiven, ancient, magitek, dream, floatingcont*2, phoenix, kefkastower
 sd3_paths:      gogo, mountain*2, serpent, mount2, cave, forest
+sd3_sea:        daryl*2, coin, gau*2, tomb, dream, ruin
 sd3_tension:    I50, G60, boss*2, grandfinale, setzer, locke, savethem, chocobo, blackjack, johnny*2
 sd3_winter:     W4, omen3*2, daryl, owzer, narshe*2, town_ruin, ruin*2, cave, train, serpent, ancient, dream, W:celes, W:coin, W:rachel, W:relm, W:shadow, W:umaro, W:zozo, W:martiallaw, W:mountain, W:espers*2, W:forest
 sdlm_bonds:     prelude, omen3, rachel, gau, town_ruin
@@ -307,10 +316,12 @@ xc2_tantal:     W4, omen3, gestahl, zozo, narshe*2, train*2, ruin*2, serpent, es
 xg_boss:        I85, G50, boss*2, metamorphosis, grandfinale, troops, savethem, assault
 xg_chuchu:      spinachrag*2, what*2, moogles, gogo, strago, village
 xg_flight:      I30, G90, grandfinale, locke*2, setzer, returners, savethem*2, falcon, assault
+xg_lahan:       relm, johnny, spinachrag, moogles, village*2, town
 xg_mermaid:     daryl*2, coin, rachel, espers*2, tomb, ancient
 xg_tears:       celes*2, rachel, awakening, ruin
 xg_weltall:     I50, G50, boss*2, metamorphosis, grandfinale, unforgiven*2, savethem*2, assault
 ys1_wars:       I25, G90, battle, grandfinale, chocobo, falcon, magitek, floatingcont*2, kefkastower, mount2, assault
+ys3_house:      shadow, gogo, owzer, strago, village, dream
 ys3_time:       I5, G65, battle, unforgiven, locke, setzer, chocobo, blackjack, gogo, mount2, engine, floatingcont*2
 ys3_wings:      setzer*2, locke, savethem, blackjack, chocobo, serpent*2, mountain, mount2
 ys8_idance:     chocobo, blackjack, johnny*2, falcon*2, mountain, mount2*2, serpent, setzer, dream, ancient

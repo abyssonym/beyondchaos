@@ -1,0 +1,174 @@
+#TITLE Shore of Dreams ~ Another World
+#ALBUM Chrono Cross
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#WAVE 0x20 0x4D
+#WAVE 0x21 0x61
+#WAVE 0x22 0x06
+#WAVE 0x23 0x54
+#WAVE 0x24 0x0C
+
+#def init= t86 %x240 %v40 %b0,85 %f0,0
+
+#def bs= |0 o6 'b' p64 %r10
+#def vi= |1 o3 'v' p70
+#def ch= |2 o5 'c' 
+#def gt= |3 o5 'g' p48 %y1%s3
+#def pi= |4 o5 'p' p84
+
+#def b= v96
+#def v= v72
+#def c= v40
+#def g= v64
+#def p= v40
+
+#def vf= v56v48,72
+
+#cdef ( %l1
+#cdef ) %l0
+
+
+{1} 'init'
+'bs-o2' l16
+r4. a8<
+$##2
+m12,2c2..c24m4,2^48^>
+a+2^.r32<f8>a+8<f8>
+f2^8^32r32<cf24m10,2^12m2,-2^8
+$ c2^8 r>g<cdc8
+##6
+d2..c24m4,2^12>
+a+2^8.r<f8>a+8
+f2^8^32r32<cf24m10,2^12m2,-2^8
+c2^8 r>g<cdc8
+##10
+d2..c8
+>a+2^8f4a+8<
+&71fm6,2^8m2,-2&37^c8.f8
+c2^8c8>g8<c8
+##14
+>a+2..a+8
+a4.<e4.>a4<
+d4.a4.d4
+<m12,2&21cm4,-2&15^>a32.r64rga8%r16^4%r10d4
+##18
+>a+4.<f4.>a+4
+a4.<e4.>a4
+g2^8g8<d8>g8
+a2^8^32r32<dg24m10,2&14^m3,-2&26^
+a4.g4.e4
+##23
+d2.^rd8 >a+2.^ra+8 f2.^rf8<
+;
+
+{2} %e1
+'ch+o1*v.67' p96
+%a2 d2
+$##2
+'gt-o1' l16
+d2d2 >a+2a+4.<<d8>  f4.<g8>f2 c4.<f8>c4.<e8>
+##6
+'vi+o1' l8 %r8 m48,18,239
+['vf'd2<'vf'd2>   'vf'f2.(df)
+'vf'a2^a+4(a24a+48a16)  'vf'g2.(fe)]
+##10
+#^^
+##14
+'vf'd2'vf'(f4..e32f32)    'vf'e2'vf'c4.>a<
+cd16.%r20^32%r5'vf'd1..
+##18
+%r8r4d4'vf'f4..(e32f32    'vf'e2)'vf'g2
+^%r17^%r8g4'vf'd4.(e16f16)  'vf'%r5e1^1
+;
+
+{3} %e1
+'ch*v.67' p32
+%a2 a2
+$##2
+'gt-o1' l8
+ra.a^.a.a. rf.f^.f.f. <rc.c^.c.c.> rg.g^.g.g.
+##6
+[[da.a.] [>a+<f.f.]  [f<c.c.>] [cg.g.]]
+##10
+#^^
+##14
+[>a+<f.f.] [>a<e.e.] [4da.a.]
+##18
+[>a+<f.f.] [>a<e.e.] [>g<d.d.] >a<e.e4>a<ea. <a1
+;
+
+{4} %e1
+r2
+$##2
+'gt*v.8' l16
+r8.f8.ef4f8.ef  r8.f8.ef4e^4  r8.a4a4a+8.a8  r8.g4g4f^4
+##6
+[r8.f8.ef4f8.ef  r8.f8.ef4e8.d8  r8.a8.ga4a+8.a8 r8.g8.fg4f8.e8]
+##10
+#^^
+##14
+r8.d8.cd4d8.cd  r8.c8.>b<c4c8.>b<c   r8.e8.cd4e8.cd4e8.cd4e8.cd
+##18
+r8.d8.cd4d8.cd  r8.c8.>b<c4c8.>b<c>  r8.b8.ab4b8.ab <r8.c+8.>b<c+d8e8f8e8^1
+;
+
+{5} %e1
+r2
+$##2
+'ch+o1' %y2%s2%r15 l4 p96
+[3[8d][8c]]
+##6
+#^^
+##10
+#^^
+##14
+[4d][4c][8d]
+##18
+[4d][4c][4d][4c+]%y0c+1
+;
+
+{6} %e1
+r2
+$##2
+'ch' %y2%s2%r15 l4 p32
+[3[12a][4g]]
+##6
+#^^
+##10
+#^^
+##14
+[4a][4g][8a]
+##18
+[4a][4g][8a]%y0a1
+;
+
+{7} %e1
+r2
+$##2
+'pi+o1' l4
+[3[8d][8c]]
+##6
+#^^
+##10
+#^^
+##14
+[4d][4c][8d]
+##18
+[4d][4c][4d][4c+]c+1
+;
+
+{8} %e1
+r2
+$##2
+'pi' l4
+[3[12a][4g]]
+##6
+#^^
+##10
+#^^
+##14
+[4a][4g][8a]
+##18
+[4a][4g][4b][4a]a1
+;

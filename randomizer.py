@@ -5793,6 +5793,12 @@ def randomize():
     reseed()
     
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
+    if options_.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+        no_kutan_skip_sub = Substitution()
+        no_kutan_skip_sub.set_location(0xAEBC2)
+        no_kutan_skip_sub.bytestring = bytes([0x27, 0x01])
+        no_kutan_skip_sub.write(fout)
+
     write_all_locations_misc()
     for fs in fsets:
         fs.write_data(fout)

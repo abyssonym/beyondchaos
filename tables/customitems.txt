@@ -642,7 +642,7 @@ breakeffect         29
 speedvigor          47
 magstam             02
 power               0
-hitmdef             69
+hitmdef             45
 name_icon           e2
 mblockevade         05
 statboost1          40

@@ -70,6 +70,11 @@ z b3
 7 bb
 8 bc
 9 bd
+! be
 ? bf
+/ c0
+: c1
+" c2
+' c3
 - c4
 . c5

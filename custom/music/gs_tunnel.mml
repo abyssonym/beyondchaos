@@ -1,0 +1,225 @@
+#TITLE Tunnel Ruins
+#ALBUM Golden Sun
+#COMPOSER Motoi Sakuraba
+#ARRANGED emberling
+
+#WAVE 0x20 0x46
+#WAVE 0x21 0x93
+#WAVE 0x22 0x03
+#WAVE 0x23 0x02
+#WAVE 0x27 0x16
+#WAVE 0x28 0x22
+#WAVE 0x29 0x56
+#WAVE 0x2A 0x84
+#WAVE 0x2C 0x8E
+#WAVE 0x2F 0x8F
+
+#def init= t116 %x240 %v40 %b0,100 %f0,0
+
+#def sy= @3 o5 %e1 p90 'y' m48,18,239
+#def st= |0 o6 %e1 p70 's' m48,18,207
+#def ch= |1 o5 %e1 p40 'c' m48,18,215
+#def fl= |2 o5 %e1 p80 'f' m48,18,223 %y3%s3
+#def fs= |2 o4 %e1 p90 'y' m48,18,239
+#def bs= |3 o6 %e0 p60 'b' m
+#def kd= |7 o4 %e1 p50 'k' m
+#def sl= @0 o6 %e1 p70 'l' m6,18,239 %y3%s2
+
+#def y=v28
+#def s=v72
+#def c=v48
+#def f=v80
+#def b=v96
+#def l=v16
+#def k=v96
+#def kf= v48v144,96
+
+#drum "y"=5f |C v112 p85 %e1 %r17
+#drum "q"=5g+ |F v40 p45 %e1 %y2%s0
+#drum "r"=5g+ |F v64 p45 %e1 %y2%s0
+#drum "h"=5f+ |F v64 p95 %e1 %y5%s0
+#drum "k"=5f |8 v80 p64 %e0
+#drum "s"=5b |9 v80 p64 %e1
+
+#drum "c"=5a |A v127 p85 %e1
+#drum "a"=5f |A v127 p65 %e1
+#drum "f"=5c+ |A v127 p45 %e1
+
+#drum "y-"=5f |C v0 p85 %e1 %r18
+#drum "q-"=5g+ |F v0 p45 %e1 %y2%s0
+#drum "r-"=5g+ |F v0 p45 %e1 %y2%s0
+#drum "h-"=5f+ |F v0 p95 %e1 %y5%s0
+#drum "k-"=5f |8 v0 p64 %e0
+#drum "s-"=5b |9 v0 p64 %e1
+        
+#drum "c-"=5a |A v0 p85 %e1
+#drum "a-"=5f |A v0 p65 %e1
+#drum "f-"=5c+ |A v0 p45 %e1
+
+#drum "x"=5r
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1} 'init' $
+'ch-o1' l4
+[efb <c>bf  efb <cd>b    efb <c>ab  <edc> b2.]
+##17
+<[4c1] d1d+1d1d+2d2>
+##25
+[b2. <c2. c+2. d2.>]
+##33
+<c+1> b1 a1 g+1 <c+1 d1 f+1 f1
+##41
+c1 c1 c1 c1 d1 d+1 d1 d+2d2
+;
+
+{2} $
+'sy' l16
+[[(efb<c efb<c efe>b>)]
+(ab<ce ab<ce aec>a>)  (gg+<dg g+<dgg+ gd>g+g>)
+(efb<c efb<c efbe)  (efbf e>bfe fbc>b)
+(eb<eb <e>be>b)<<(be>be)>  (efb<c efb<c ef>b<c>>)]
+##17
+'st' l8
+e4.d4.c4 d2f2  e2ag+ab <c2>f2
+g2f.d+.d d+2c.d.d+ d2g1d2>
+##25
+l16 e%r23^ %rf%r23^ %rd%r23^ %rf%r23^ %re%r23^8.
+'sy' l16 (g+ab<e fg+ab <efde)
+'st-o1' l16 e%r23^ %rf%r23^ %rd%r23^ %rf%r23^ %re%r23^8.
+'sy+o2' l24 ([g+abdef>]g+ab<eg+b)
+'st-o1' l16 e%r23^ %rf%r23^ %rd%r23^ %rf%r23^ %re%r23^8.
+'fs+o2' l8 %a%a8%r10 (ag+ab<c4)
+'st-o1' l16 e%r23^ %rf%r23^ %rd%r23^ %rf%r23^ %re%r23^8.
+'sy+o2' l32 (bag+fedc>b ag+ab<c>bag+ fedc>bag+e)
+##33
+'fl' %r7 l16
+f+ff+8^2r8c+8 'f*v1.5'[dc+>b<]'f'c+2^12r24  f+g+a2.r8 b4f4a4g+4
+'f*v1.5'f+edc+ >b<c+>a<c+ >g+<c+>f+<c+ >f<c+>f+<c+>
+f+ff+g+ab<c+d c+>b<c+dff+g+a  'f'b4.ag+a2 g+4f4c+4>g+4
+##41
+'st' l8
+e4.d4.c4 d2f2  e2ag+ab <c2>f2
+g2f.d+.d d+2c.d.d+ d2g1d2>
+;
+
+{3} $
+'bs-o1' l8
+[[3ef][3b<c>][3aa+][3gg+] [3ef][3b<c>] <ef>b<c>g+a efef j2 <e16e16e16f16>]ef
+##17
+[[[6a]<a>a %k1]%k0] [[6b]<b>b %k1]%k0 [6b]<b>b <cccc>gg<g>g
+##25
+[24ef]
+##33
+[4[f+f+<f+>f+ <ef+>f+j2e]<f+16f+16>]
+##41
+[[[6a]<a>a %k1]%k0] [[6b]<b>b %k1]%k0 [6b]<b>b <cccc>gg<g>g
+;
+
+{4} $
+'kd-o1' l4
+[e8e2ee.ee.e. 'kf'[12e16]]
+l8 ["khkhsh16h16" "khkhs"j2"f"]":s:s16s16"
+[3"!!!o k16r16rksrr"] "k16r16rkc16c16a16a16f16f16"
+##17
+'kd-o1' l8
+a4a4a4a4 a+4a+4a+4a+f  a4a4aeae a+4a+4a+4a+f
+"!!!o" l8
+[3"khsh kh16k16sh"] "khshs16s16c16c16a16a16f16f16"
+##25
+l8 ["khkhsh16h16" "khkhs"j2"f"]":s:s16s16"
+[3"!!!o k16r16rksrr"] "k16r16rkc16c16a16a16f16f16"
+##33
+[[3"khsh kh16k16sh"] "khsh"j2"s16s16c16c16a16a16f16f16"]
+l24 "ssccaa ffccaf"
+##41
+'sy+o1' %a12%r12 l4
+c.d.e f2ef  g.a.^ <e.d.^   d2>g2< l8 c.d.d+f.d+.d
+l16 [5>b<cd]>b< dd+fd d+fgd >b<bgd >bgd>b
+;
+
+{5} $
+'sy*v.33' l16 r8
+[[(efb<c efb<c efe>b>)]
+(ab<ce ab<ce aec>a>)  (gg+<dg g+<dgg+ gd>g+g>)
+(efb<c efb<c efbe)  (efbf e>bfe fbc>b)
+(eb<eb <e>be>b)<<(be>be)>  (efb<c efb<c ef>j2b<c>>)]
+##17
+'ch-o1'
+e1f1e1f1 f+1g1f+1g2g2
+##25
+[e2.f2.f+2.g2.]
+##33
+a1 g+1 f+1 f1  a1 b1 <c+1 c+1
+##41
+l8 [3"kr4r sr4r"] "kr4r sr4s16s16"
+[3"kr4r sr4r"] "kr4r" l16 "ccaaffss"
+;
+
+{6} $
+["y4" [8^4] 'kd-o1''kf'r32[11e16]e32]
+"!!!oy4" [23^4]
+##17
+"!!!o" l8
+[[3"k-h-s-h- k-h-16k-16s-h-"] "k-h-s-h-s-16s-16c-16c-16a-16a-16f-16f-16"]
+##25
+["xh-xh-xh-16h-16 xh-xh-s-4"]
+[4"x16r-16r- x4 r-r-"]
+##33
+'sy*v1.5+o1' l16 %a10%y6%s2%r10
+f+ff+8^2r8c+8 [dc+>b<]c+2^12r24  f+g+a2.r8 b4f4a4g+4
+f+edc+ >b<c+>a<c+ >g+<c+>f+<c+ >f<c+>f+<c+>
+f+ff+g+ab<c+d c+>b<c+dff+g+a  b4.ag+a2 g+4f4c+4>g+4
+##41
+'sl' l8 %p1
+e4.d4.c4
+d4.%p0"!!!ok"'sl'%p1f2
+e4.%p0"!!!ok"'sl'%p1ag+ab
+<c4.%p0"!!!ok"'sl'%p1f2
+g4.%p0"!!!ok"'sl'%p1f.d+.d
+d+4.%p0"!!!ok"'sl'%p1c.d.d+
+d4.%p0"!!!ok"'sl'%p1g2
+g4.%p0"!!!ok"'sl'%p1d2 %p0
+;
+
+{7} $
+[48r4]
+##17
+'sl' l8 %p1
+e4.d4.c4 d2f2  e2ag+ab <c2>f2
+g2f.d+.d d+2c.d.d+ d2g1d2>
+##25
+'l*v.67' %r15 [4efdfe4 ^2.] %p0
+##33
+'fl*v.67-%s2' %r7 l16 &22r
+f+ff+8^2r8c+8 'f'[dc+>b<]'f*v.67'c+2^12r24  f+g+a2.r8 b4f4a4g+4
+'f'f+edc+ >b<c+>a<c+ >g+<c+>f+<c+ >f<c+>f+<c+>
+f+ff+g+ab<c+d c+>b<c+dff+g+a  'f*v.67'b4.ag+a2 g+4f4c+4>&26g+4
+##41
+'ch-o1' l1
+e f e f f+ g f+ g2g2
+;
+
+{8} $
+[48r4]
+##17
+["y1^1^1^1"]
+##25
+"y2." ^8
+'sy*v.33' l16 (g+ab<e fg+ab <efde)
+r2.
+'sy+o2*v.33' l24 ([g+abdef>]g+ab<eg+b)
+r2.
+'fs+o2*v.5' l8 %a%a8%r10 (ag+ab<c4)
+r2.
+'sy+o2*v.33' l32 (bag+fedc>b ag+ab<c>bag+ fedc
+##33
+["!!!oy1^1^1^1"]
+##41
+"y4."&22"k" l4 'sy+o1*v.5' %r12
+d.e f2ef  g.a.^ <e.&98d
+&118"!!!oy" 'sy+o1*v.5'
+g2< l8 c.d.d+f.d+.d
+l16 [5>b<cd]>b< dd+fd d+fgd >b<bgd >b&14g
+;

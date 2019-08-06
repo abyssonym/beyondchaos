@@ -1,0 +1,268 @@
+#TITLE Tyrian: The Song
+#ALBUM Tyrian
+#COMPOSER Alexander Brandon
+#ARRANGED emberling
+
+#WAVE 0x20 0x7C
+#WAVE 0x21 0x45
+#WAVE 0x22 0x69
+#WAVE 0x23 0x0B
+#WAVE 0x24 0x74
+#WAVE 0x25 0x9C
+#WAVE 0x26 0x1C
+#WAVE 0x28 0x22
+#WAVE 0x29 0x56
+#WAVE 0x2A 0x16
+#WAVE 0x2E 0x88
+#WAVE 0x2F 0x0F
+
+#def init= t131 %x240 %v40 %b0,85 %f0,0
+
+## 33 Finger Bass -> Synth Bass
+## 34 Pick Bass -> Clavinet
+## 40 Violin -> Fiddle
+## 42 Cello -> Fiddle
+## 47 Timpani -> Timpani
+## 48 String Ensemble -> Atmo Strings
+## 50 SynthStrings1 -> Atmo Strings
+## 63 Synth Brass 2 -> Perc Organ
+## 80 Square Lead -> Clarinet
+## 81 Sawtooth Lead -> FF6 @2
+## 90 Polysynth -> Sawtooth (or layer Synth Bass + Sawtooth for bass line)
+## 95 Sweep Pad -> Atmo Strings pmod off Sawtooth
+
+#def ps= |0 o5 'p' %e1 m48,18,223
+#def st= |1 o4 's' %e1 m48,18,207
+#def vi= |2 o5 'f' %e1 m48,18,231
+#def or= |3 o6 'o' %e1 m48,18,215
+#def sq= |4 o5 'q' %e1 m48,18,255
+#def cv= |5 o7 'c' %e0 m
+#def bs= |6 o7 'b' %e0 m %y3%s3%r12
+#def kd= |A o5 'k' %e1 m
+#def xt= @2 o5 'x' %e1 m48,18,255 %a11%y2%s5
+##def xt= |0 o5 'p' %e1 m48,18,255 %a10
+
+#def sw= |1 o4 m0,18,199 v0,64,207 %p1 v64v255,127 %e1
+#def sm= |0 o7 v16 m0,64,223 %a0%r6 
+
+#def p= v80
+#def s= v64
+#def f= v64
+#def o= v76
+#def q= v64
+#def c= v64
+#def b= v80
+#def k= v112
+#def x= v32
+
+#def cf= v192,64
+
+#drum "k"=5a |8 p64 v96 %e0
+#drum "s"=5a |9 p64 v96 %e1
+#drum "h"=5a |F p40 v32 %e1
+#drum "y"=5g |E p40 v72 %e1 %r14
+#drum "p"=5a |E p40 v32 %e1 %y5%s0
+
+#def 2= p-88
+#def 3= p-82
+#def 4= p-76
+#def 5= p-70
+#def 6= p-64
+#def 7= p-58
+#def 8= p-52
+
+{1} 'init'
+r1r1r1 'st' '2' %a11%r16 l8
+[5daa+agada gacgfec>a<]
+$##15
+'vi-o2*v.8' '3' %a7%r5 d1^1 d1^1
+##'xt+o1*v.9' %r12 l16
+'ps+o1*v.9' %a9%r12 l16
+fed>a^4a+2 g4fec8d8e4.  d8e8f8g8a8a+ag4 f4g4e2
+'2' <dc>a+a<c>a+ag a+agfagfe  fed>a<edc>g< defdecfe    [8defg]
+##27
+'sq+o1*v.8' '8' %y5%s1%r16
+r64&45 [8^4f4]
+'ps+o1*v.8' '3' %r7 l16
+r64 a1...gf e1d1  a1...gf e1&189d
+##39
+'st*v1.1' '3' %r17 l16
+[4afef] [3a+ede]a+<c>a+g  [4<d>fef] [<f>a+aa+]<fc>a+<cfede
+[a>aga<adcd]  [gede][gc>a+<c]   [4f>aga<] [e>a+ga+<][c>geg<]
+##47
+'ps*v.9' '2' %r14 l8
+[d.e.f e.f.g  f.g.a g.e.c]
+daa+agada gacgfec>a<   d.e.f e.f.g f.g.a g.a.a+
+l16 aec+e >a+afe c+>aa+a<<a+aeg  a2c+2
+;
+
+{2}
+'sm-o2' '4' l1
+d[8^]
+'ps-o2*v.8' l16 '5' %r22
+[4 [ddddd8] dddd ]
+$##15
+'cv-o2' '7' l16 &2r
+[<frdredcd >ra<rc>rgr8  [aa+ar8.]r4]
+defgr8ar frgrerfr  grara+r<cr> a+r<c>a+ardr
+[3<frdredcd >ra<rc>rgr8  [aa+ar8.]j3r4]&46r
+##27
+'st-o1' '2' l8 %a9%r14
+[3[a+a+<f>a+<e>a+<f>a+] [aa<f>a<e>a<f>a]]
+##39
+'st*v1.1-o1' '2' %a11%r8 l16
+a2..a+a g2f4e4  a1 a+2<c2    d1 d2f4e4  d1 >a+8.<d8f8.c2
+##47
+'6'  d1 d2c2 >a1 a2g2<    d1 d2e2 f1 f2g2
+l8 ec+>a+fea<c+e e1
+;
+
+{3}
+'sw-o2' '4' l1
+d[7^]%r15^
+%p0v
+'bs-o2*v.8' '4' l16 %a11%r20
+[4 [ddddd8] dddd ]
+$##15
+'bs-o2*v.8' '4' l16 %a11%r20
+[12 [ddddd8] dddd ]
+##27
+'bs-o3*v.8' '4' l16 %a11%r20
+[3[[a+a+a+a+r8]r4] <[[ddddr8]r4]>]
+##39
+'bs-o2' '5' l16
+[d^2..c d^^2efgfec  d^2..c d^^4efgagfegfe]
+##47
+[ddfdedfd r4.de  ffr4. eer8cccc] >
+[4 a+a+r8'b*v.6'a+a+'b*v.8'a+a+'b'a+a+r4.]
+[3ar]aa<c+rc+reree> aar8[5a]rarr4
+;
+
+{4}
+'sm-o3' '6' l1
+d^^^^
+'st' '2' l8 %r7
+d1.efg4 a1.a+afg
+e1.def<c d1f2e2
+$##15
+"!!!o" l8
+[3"k4s4k4s4 k4s4k.k16sk k4s4k4s4" j3 "k4s4kks4"]
+"kkskkk16kk16k"
+##27
+l16
+"k4s4k8s4. k4s4k8s4kk"  ["!!!o k4s4k8s8s8ss"]
+["k4s4k8s4."] ["k4s4k8s8s8ss"]
+["k4s4k8s4."] ["k4s4k8s8s8s"j2"s"]^
+##39
+'kd-o2' '8' l16
+[8[3d8ddj3d8]]
+##47
+'ps*v.8' '3' %r14 l8
+r12  d.e.f e.f.g  f.g.a g.e.c16
+f.g.a g.a.a+  a.<c.d c.>g.&20e
+r12  daa+agada gacgfec>a16
+a+.<c.d c.d.e d.e.f e.f.g
+aec+>a+a<c+e&20a r12a2&80c+2
+;
+
+{5}
+'sw-o3' '6' l1
+d^^^ %r15^
+%p0v  'bs-o2*v.8' '7' l16
+[3drdrr1..]
+'cv-o2*v.2''cf' [16dr]
+$##15
+'ps-o2*v.7' '5' l16 %r22
+[ [ddddd8] dddd ]
+[ [aaaaa8] aaaa ]
+'xt+o1*v.9' %r12 '2' l16
+rfed>a^4a+2 g4fec8d8e4.  d8e8f8g8a8a+ag4 f4g4e4..
+'3' r64  afedgedc fdc>a+<ec>a+a  <c>a+af<c>a+gc a<cd>a<c>g<dc
+d4d4>a4a4<<[3defg]defg32.
+##27
+'sq' '7' l16 %y4%s3%r16
+[3['s*v.7'a+'s*v.6'a+'s*v.5'a+'s*v.4'a+
+<['s*v.7'f's*v.6'f's*v.5'f's*v.4'f j2
+'s*v.7'e's*v.6'e's*v.5'e's*v.4'e]>]
+['s*v.7'a's*v.6'a's*v.5'a's*v.4'a
+<['s*v.7'f's*v.6'f's*v.5'f's*v.4'f j2
+'s*v.7'e's*v.6'e's*v.5'e's*v.4'e]>]]
+##39
+'st*v.8' '6' %a11%r8 l8
+ d2..c d2.>a+<c  d2...c16 d2f4e4
+ f1 f2g2  a4.f16e16f2 a+2g2
+##47
+'or-o2*v1.1' '7' %a8%r3
+d1 d2c2 d1 d2c2
+'vi-o3' %a8%r3
+a+1^1 a+1 a+1
+a2<c+2>a1
+;
+
+{6}
+r1r1r1 'st*v.9' '3' %a11%r16 l8
+[5^16daa+agada gacgfec>a16<]
+$##15
+"!!!o" l16
+[12["hhhh h8"]"hhh"j12"h"]^
+##27
+'ps-o2*v.7' l16 '5' %r22
+[[a+a+a+a+r8]r4] <[[ddddr8]r4]
+'st+o1*v.8' l16 '6' %a8%r5
+r64 a1...gf e1&189d %r20 ^64^ %r5 a2...f2..edc2.d4>&189a
+##39
+'st-o2*v.8' l8 '7' %r6
+d1 d2.fe  d2...c16 d2f4g4
+'or-o2*v1.1' l16 %a8%r3
+d2...c d2.f8ec  d2..c8 >a+2<c2
+##47
+'kd-o2' '8' l8 d 'or-o1*v1.1' %a8%y3%s3 [31d]
+'cv-o2*v.7' '4' l16 [31a+r]a+a+ >
+[3ar]aa<c+rc+reree> aar8[5a]rarr4
+;
+
+{7}
+[5r1] 'ps*v.6' '5' %r17 l16
+[ddaaa+a+aaggaaddaa ggaaccggffeecc>aa<]
+r1r1r1..."!!!ok16k16"
+$##15
+'cv-o3' '8' l16
+[d8d8<<ed>>d8d8rd8<g>d8  d8d4d8d8.d8.d8]
+d8d8r8d8d8<g>d8rd8 d8d8<a+r>d8d8<<c>>d8rd8
+[3 d8d8<<ed>>d8d8rd8<g>d8 j3 d8d4d8d8.d8.d8] dddd8.dd4d.r8..
+##27
+[4r1]
+'ps-o2*v.7' l16 '5' %r22
+[[a+a+a+a+r8]r4] <[[ddddr8]r4]>
+[[a+a+a+a+r8]r4] <<[[ddddr8]r4]
+##39
+"!!!o" l16
+"y1^1^1^1"
+[4["pppp p8"]"p8pp"]
+##47
+'or-o2' '4' l16 %y3%s3
+[ddfdedfd r4.de  ffr4. eer8cccc]
+'vi-o2' '8' %a10%y2%s4 [32d8]
+"!!!o y1^1"
+;
+
+{8}
+[5r1] 'bs-o3' '7' l8
+[3ddr1..]
+'cv-o3*v.2''cf' [5d] %r20d%r [8d] l16 dddd
+$##15
+'ps-o2*v.7' '6' l16 %r22 r64
+[<ffddedcd d>aa<cc>ggg  aa+adddaa+ a[7d]]
+defgggaa ffggeeff ggaaa+a+<cc> a+a+<c>a+aadd
+[3<ffddedcd d>aa<cc>ggg  aa+adddaa+ aj3,826[7d]]$826[6d]d32.
+##27
+[4r1]
+'sq+o1*v.8' '8' %y5%s1%r16
+[16^4f4]
+##39
+'or-o2' '4' l16 %y3%s3
+[dr2..c drr2efgfec  dr2..c drr4efgagfegfe]
+##47
+"!!!o"
+"y1" [9^1]
+;

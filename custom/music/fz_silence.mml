@@ -1,0 +1,216 @@
+#TITLE Silence
+#ALBUM F-Zero
+#COMPOSER Yumiko Kanki
+#ARRANGED emberling
+
+#WAVE 0x20 0x42
+#WAVE 0x21 0x82
+#WAVE 0x22 0x9A
+#WAVE 0x23 0x4F
+#WAVE 0x24 0x58
+#WAVE 0x25 0x9B
+#WAVE 0x26 0x9C
+#WAVE 0x27 0x1C
+#WAVE 0x28 0x22
+#WAVE 0x29 0x56
+#WAVE 0x2A 0x5A
+#WAVE 0x2B 0x6E
+#WAVE 0x2C 0x12
+
+#def init= t156 %x240 %v40 %b0,85 %f0,0
+
+#def vb= |0 o4 'v' %e1 m
+#def br= |1 o6 'b' %e1 m48,18,239
+#def tp= |2 o5 't' %e1 m48,18,231
+#def sx= |3 o6 's' %e1 m48,18,223
+#def hc= |4 o5 'h' %e1 m %y0
+#def or= |5 o4 'o' %e1 m48,18,207
+#def cv= |6 o6 'c' %e0 m
+#def bg= |7 o7 'g' %e0 m %y2%s5%r10
+#def ep= @3 o5 'p' %e1 m48,18,215 %y2%s3%r13
+
+#def v=v56
+#def b=v72
+#def t=v48
+#def s=v16
+#def h=v24
+#def o=v72
+#def c=v52
+#def g=v96
+#def p=v48
+
+#drum "k"=5a |8 %e0 v96 p64
+#drum "s"=5g |9 %e1 v96 p64
+#drum "h"=5a+ |A %e1 v64 p48 %y5%s0
+#drum "i"=5a+ |A %e1 v48 p48 %y5%s0
+#drum "o"=5d+ |A %e1 v96 p48 %y0%s0
+#drum "y"=5f |C %e1 v88 p80 %r19
+#drum "z"=5d+ |C %e1 v88 p96 %r19
+#drum "a"=5d+ |B %e1 v96 p90 %r15
+#drum "b"=4b  |B %e1 v96 p90 %r15
+#drum "c"=4g  |B %e1 v96 p90 %r15
+#drum "d"=4d  |B %e1 v96 p90 %r15
+
+
+{1} 'init'
+'vb' p72
+d+.a+16r<f^2>   d+.a+16r<f4.g4>
+$
+'vb' p72
+d+.a+16r<f^2>   d+.a+16r<f4.g4>
+c+.g+16r<d+^2>  c+.g+16r<d+4.f4>
+>b.<f+16r<c+^2>  >b.<f+16r<c+4.d+4>
+>a.<e16rb^2     >a.<e16rb4.<c+4>
+##
+f+.<c+16rg+^2>  e.b16r<f+^2>  d+.a+16r<f^2>
+'tp+o2' %y0%s5%r19
+r12d+16c+48^d+f+d+12^48r48^ d+6r48d+16
+##
+'br+o1' %y2%s5%r12 l8
+f+1 f2.c+4  f+1 f2.g+4    f+1 e2.e4  [g2^gaa+]
+##
+[f+2^f+g+a+] g+1
+'tp+o1' %y0%s5%r19
+rg+a+g+<c+.d+.f+
+;
+
+{2}
+r1r1
+$
+'hc+o1' p127 l1
+g+ g c+ ^   d+ f+ g+ e
+##
+c+ g+ a+
+'br+o1' l8 %y2%s5%r15
+r12d+16c+48^d+f+d+12^48r48^ d+6r48d+16
+##
+'tp' %y0%s5%r9 l8
+[b2.a+g+ ^1]  b2.a+g+ b1  <d2.d4 d2.d4
+##
+c+2.c+4 c+2.c+4 d+4c+c^2
+%r19
+>rg+a+g+<c+.d+.f+
+;
+
+{3}
+r1r1
+$
+'bg-o2' p80 l8
+d+2^<d+4.>  d+2^<d+4>d+
+c+2^<c+4.>  c+2^<c+4>c+
+>b2^<b4.>   b2^<b4>b
+a2^<a4.>    a2^<a4>a
+##
+f+4.<f+4.c+4> e4.<e4.>b4 d+4.<d+4.>a+4
+<< r12d+16c+48^d+f+d+12^48r48^ d+6r48d+16
+##
+l16>
+[3 g+4r8f+g+>a+8b8<c8c+8 j3 r8<c+4>g+8d+erfrf+rg]
+d4r8c+d>b8<c8c+8d8  [d+4r8dd+>a+8a+8<d+8>a+8<]
+##
+[d+4r8c+d+>a+8a+8<d+8>a+8<]  f4r8d+fc8c8f8<c8>
+l8 rg+a+g+ <c+.d+.f+
+;
+
+{4}
+l16
+["hiiikiih hiiikiii"]
+$
+"!!!o"
+[8"hiiikiih hiiikiii"]
+##
+[3"hiiikiih hiiikiii"]
+l8 "^12k16k48^kkk4k6^48k16"
+##
+"!!!o" l8
+[5[3"k4s4"] "^ks4"]
+##
+["k4s4"]
+"^kssa16bbc16c16d16"
+;
+
+{5}
+'vb-o1' p0
+d+.a+16r<f^2>   d+.a+16r<f4.g4>
+$
+'vb-o1' p0
+d+.a+16r<f^2>   d+.a+16r<f4.g4>
+c+.g+16r<d+^2>  c+.g+16r<d+4.f4>
+>b.<f+16r<c+^2>  >b.<f+16r<c+4.d+4>
+>a.<e16rb^2     >a.<e16rb4.<c+4>
+##
+f+.<c+16rg+^2>  e.b16r<f+^2>  d+.a+16r<f^2>
+'br' l8 %y2%s5%r15 p64
+r12d+16c+48^d+f+d+12^48r48^ d+6r48d+16
+##
+'or+o1' l8 %y1%s6%r2
+f+1 f2.c+4  f+1 f2.g+4    f+1 e2.e4  [g2^gaa+]
+##
+[f+2^f+g+a+] g+1
+'br' l8 %y2%s5%r15
+rg+a+g+<c+.d+.f+
+;
+
+{6}
+'ep' p96
+d+.a+16r<f^2>   d+.a+16r<f4.g4>
+$
+'ep' p96
+d+.a+16r<f^2>   d+.a+16r<f4.g4>
+c+.g+16r<d+^2>  c+.g+16r<d+4.f4>
+>b.<f+16r<c+^2>  >b.<f+16r<c+4.d+4>
+>a.<e16rb^2     >a.<e16rb4.<c+4>
+##
+f+.<c+16rg+^2>  e.b16r<f+^2>  d+.a+16r<f^2>
+r12 "!!!o h16o48^8i16i16o16i16o4o8h16h16"
+##
+'cv-o1' p32 l16
+g+4<f+4>a+<f+r>b<f+4   r8c+8f4>d+<fr>f<c+4>
+g+4<f+4>a+<f+r>b<f+4   r8c+8f4>d+<fr>f<g+4>
+g+4<f+4>a+<f+r>b<f+4>   d4<e4>b<erce4>
+[d+4<g4>a+<gr>a+<a8a+8>]
+##
+[d+4<f+4>a+<f+r>a+<g+8a+8>]
+f4<g+4cg+rcg+4
+'br-o1' %y2%s5%r22 l8
+rg+a+g+<c+.d+.f+
+;
+
+{7}
+r1r1
+$
+'sx+o1'> p96 l1
+g+ g c+ ^   d+ f+ g+ e
+##
+c+ g+ a+
+'cv' l8
+r12d+16c+48^d+f+d+12^48r48^ d+6r48d+16
+##
+"!!!o" l16
+[5"hiiio8ih hiiio8ii"  "hiiio8ih hiiio8o8"]
+##
+"hiiio8ih hiiio8ii"
+'cv' l8
+rg+a+g+<c+.d+.f+
+;
+
+{8}
+'ep-o1' p96
+d+.a+16r<f^2>   d+.a+16r<f4.g4>
+$
+'ep-o1' p96
+d+.a+16r<f^2>   d+.a+16r<f4.g4>
+c+.g+16r<d+^2>  c+.g+16r<d+4.f4>
+>b.<f+16r<c+^2>  >b.<f+16r<c+4.d+4>
+>a.<e16rb^2     >a.<e16rb4.<c+4>
+##
+f+.<c+16rg+^2>  e.b16r<f+^2>  d+.a+16r<f^2>
+"!!!o y4^24 z8y8 z4 y4"
+##
+'cv-o1' p32 l16
+[3 r4b4rbr8a+8g+8  j3  r4g+4rg+r8g+4] r4b4rbr8b4
+<[r4d4rdr8d4]
+##
+[r4c+4rc+r8c+4]  r4c+8c8rcr8c4
+"!!!o y1"
+;

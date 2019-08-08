@@ -20,8 +20,8 @@ Song conversions:
                  ff5_excastle, ff5_final, ff5_home, ff5_hurry, ff5_lenna,
                  ff5_library, ff5_mountain, ff5_seal, ff5_theme, ff5_void,
                  ff5_wings, ff5_world1
-                 ff7_battle, ff7_corel, ff7_costa, ff7_hurry, ff7_rebirth,
-                 ff7_reunion, ff7_snow, ff7_weapon
+                 ff7_battle, ff7_corel, ff7_costa, ff7_gun, ff7_hurry,
+                 ff7_rebirth, ff7_reunion, ff7_snow, ff7_weapon
                  ff8_battle, ff8_boss, ff8_horizon, ff8_landing, ff8_lion,
                  ff8_mlaw, ff8_triad, ff8_witches
                  ff9_battle, ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
@@ -31,14 +31,17 @@ Song conversions:
                  ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
                  ffmq_fossil, ffmq_gale, ffmq_lava, ffmq_light, ffmq_rock,
                  ffmq_tower, ffmq_tristam, ffmq_victory
-                 fz_port, fz_white1
+                 fft_apoplexy
+                 fz_port, fz_silence, fz_white1
                  gd3_desert
+                 gs_tunnel
                  iog_larai, iog_whispers
                  lal_labyrinth, lal_theme
                  lo_battle
                  lu1_battle, lu1_final, lu1_world
                  lu2_battle
                  met3_surface
+                 mi_scummbar
                  mmx_prologue
                  ng3_defeat
                  ob_battle
@@ -63,6 +66,7 @@ Song conversions:
                  top_cold, top_freeze, top_harmony, top_mint, top_spirit,
                  top_treant, top_victory, top_world1, top_world3
                  totr_arrow, totr_worlds
+                 tyr_theme
                  wc2_orc1
                  xc1_valakn
                  xc2_morardain, xc2_tantal

@@ -1,0 +1,330 @@
+#TITLE Apoplexy
+#ALBUM Final Fantasy Tactics
+#COMPOSER Hitoshi Sakimoto
+#ARRANGED emberling
+
+#VARIANT * part1
+#VARIANT ` part2
+#VARIANT *` _default_
+
+#WAVE 0x20 0x49
+#WAVE 0x21 0x0D
+#WAVE 0x22 0x2C
+#WAVE 0x23 0x9A
+#WAVE 0x24 0x7A
+#WAVE 0x25 0x0E
+#WAVE 0x28 0x16
+#WAVE 0x2F 0x8E
+
+#def init= t160 %x240 %v40 %b0,85 %f0,0
+
+#def sl= |0 o4 's' p80
+#def se= |1 o5 'e' p64
+#def cb= |2 o7 'c' p48
+#def tp= |3 o5 't' p72
+#def hn= |4 o5 'h' p56
+#def tb= |5 o6 'b' p68
+#def kd= |8 o5 'k' p60
+
+#def s=v64
+#def e=v40
+#def c=v96
+#def t=v44
+#def h=v56
+#def b=v66
+#def k=v72
+#def kf=v48,72
+
+#drum "y"=4a |F v96 %r17 p76
+
+#cdef ( %l1
+#cdef ) %l0
+
+#def x= %r24^6%r
+
+{1} 'init' %e1 $ *
+['sl+o1' %y0%s4%r22 l12
+[3a+6d+ >a+<g+d+]>b<d+f+g+<c+f>
+a+6d+ >a+<g+d+ >b<d+f+g+<c+f >a<df+>a<af+ >b<e>b<g+>b<b>]
+##9
+[[3<c6>fca+f]c+fg+a+<d+g
+c6>fca+f c+fg+a+<d+g >b<eg+>b<bg+ c+f+c+a+c+<c+>>]
+##18
+l16 %g1[4f+fd+c+][4a+g+f+f][4<c+c>a+g+]<[4f+fd+c+]%g0
+##21
+'se'm48,18,207 %r8 l4 rcgf+a+a<c+c f+2g2>
+##24
+%r14 l12
+[3c6c6cc d6dd4 d+6d+d+4 f6ff4]
+##28
+#^
+f+6f+6f+f+ g+6g+g+4 a6aa4 b6bb4 <
+c+6c+6c+c+ d+6d+d+4 e6ee4 f+6f+f+4    g6g6gg a6aa4 a+6a+a+4 <c6cc4>
+##36
+l4 a12 %r22^6 %r8 dag+ <c1>
+##38
+%y0%s6%r25 l12
+[[3f6f6ff]c+c+c+d+d+d+  e6e6ee [6f+][6g+]aaaf+f+f+< 'e*v.75']
+m*`##46 - part2
+r1r1
+[4'tb-o1' %y0%r23 l12
+ %s6 g+6g+g+g+g+
+[3 %s5%r23a+6a+ %s7%r7a+4
+   %s5%r23b6b %s7%r7b4 m3]%k0
+<%s5%r23g6g %s4g4]
+##64
+%r%r10 m48,18,215 l8> 'b*v1.2'
+f+4.rg+4.r a12r6e4.r<dr  c+4.r>f+12r6b12r6 e4.rd4.r
+<c+4.rd+4.r e12r6>b4.r<ar  g+4.rc+12r6f+12r6 >b4.ra4.r
+d+4.rf4.r f+12r6c+4.rbr  a+4.rd+12r6g+12r6 c+4.r>b4.r<
+a+4.r<c4.r c+12r6>g+4.r<g+r f+4.r>b12r6<e12r6> a4.rg4.r
+`;
+
+{2} %e1 $ *
+['kd-o2' l24
+[5g+4]g+8ag+g+g+12g+6g+8.g+32g+32
+g+4g+8g+g+g+g+12g+6g+8.g+32g+32
+[<d+8>g+g+g+] l12 g+<g+>g+<d+>g+<g+>]
+##9
+[l24 [4g4][g4g8gggg12g6g8.g32g32] [<d8>ggg] l12 g<g>g<d>g<g>]
+##18
+'tp+o2' [[%y0%s6%r23 l12
+c+6>a+a+6<d+d+6c+%s4c+c>a+
+'hn+o1']'tp+o1']
+##21
+%y0%s5%r23> [5f+f+6f+6f+]<[6f+]
+##24
+%s4g6 >>%r%r13 [c6cc d6dd4d+6d+d+4f6ff4 j2c6]
+##28
+c6c6cc d6dd4 d+6d+d+4 f6ff4   f+6f+6f+f+ g+6g+g+4 a6aa4 b6bb4
+<< l8 m48,18,223 d+4.rf4.rf+r>b4.r<b6r12 a4.rdrgr c4.r>a+4.r
+##36
+<a12 %r23^6 ^2. %y0%s6 >>> l12  [g+g+g+<d+d+d+]
+##38
+'hn*v1.5' %r7
+[r4c+4g+4.f+16f16c+2 %r23^4%r7 <c+>g+<c+>
+l8 b%r23^%r7 a%r23^%r7 g+%r23^%r7 f+%r23^%r7 l12 ff+g+<c+2%r23^4%r7>]
+m*`##46 - part2
+'se-o1' %y0%r25 
+[72 %s5g+6%s6g+12]
+##64
+<< l12
+[ [%r25%s6b6b bbb [3%r25%s6b6b %s7%r11b4]] %k2]%k0
+[%r25%s6d+6d+ d+d+d+ [3%r25%s6d+6d+ %s7%r11d+4]]
+%r25%s5f6f fff [3%r25%s6f6f %s7%r11f4]
+%r25%s6f+6f+ f+f+f+    %r25%s6f+6f+ %s7%r11f+4
+%r25%s6e6e %s7%r11e4   %r25%s6c6c %s7%r11c4
+`;
+
+{3} %e1 $ *
+['cb-o2' %y0%s5%r19 l4
+[12g+]%s2d+d+%s5g+%s2d+]
+##9
+%s5[[12g]<dd>g<d>]
+##18
+%r%r6 <c1>f2d+2c+1c4>a+2^8%r19^8
+##21
+'kd-o1' [10c4] [6c12]
+##24
+v255,0[4c4] ^1^1^1
+##28
+'tb-o1' %r10 l8 m48,18,215
+a4.rb4.r <c4>f2<f6r12  d+2>g+4<c+r> f+4.re4.r
+d+4.rf4.r f+4>b4.r<b6r12  a4.rdrgr c4.r>a+4.r m
+##36
+ar 'sl' %r10 d4a4g+4
+'hn-o1' %y0%s5%r23 l12
+[g+g+g+<d+d+d+]
+##38
+'kd-o1' l24
+[[4c+4][c+4c+8c+c+c+c+12c+6c+8.c+32c+32] [c+8c+c+c+] l12 >a<a>ab<b>b<]
+*`##46 - part2
+'kd-o2' l12
+g+1^1
+<[^1^1^2.'k*v.4''kf'[6d24]>g+1
+^1..<d>g+<d>g+2.<d32'k*v.4''kf*v.875,'[7d32]d2>g+<dg+dg+d]
+##64
+'tp+o1' %y0%r23 l12
+[4 %s6 f+6f+ f+f+f+ [3 %s6 f+6f+ %s0 f+4 ]]
+>[3 %s6 a+6a+ a+a+a+ [3 %s6 a+6a+ %s0 a+4 ]]
+%s6 b6b bbb  %s6 b6b %s0 b4  %s6 a6a %s0 a4 %s6 g6g %s0 g4
+`;
+
+{4} %e1 $ *
+['hn' %y0%s6%r23 l12
+[a+6a+6a+a+][a+6a+6a+a+ bbb <c+c+c+>]< [6d][6e]]
+##9
+[[c6c6cc][c6c6cc c+c+c+d+d+d+] [6e][6f+]]
+##18
+'tp+o1' %y0%s6%r23 l12
+a+6f+ f+6a+ a+6a+ %s4a+f+c+
+'hn' %y0%s6%r23 
+f+6c+ c+6g+ g+6f+ %s4f+c+c+
+'tp' %y0%s6%r23
+[a+6f+ f+6a+ a+6a+ %s4a+f+c+]
+##21
+%s5 [4c+c+6c+6c+]<c+c+6c+6c+ c+c+c+<c+c+c+
+##24
+%s4c1^1 'se-o1' %r14 [g6g6gg a6aa4 a+6a+a+4 <c6cc4>]
+##28
+#^
+<c+6c+6c+c+ d+6d+d+4 e6ee4 f+6f+f+4
+f+6f+6f+f+ g+6g+g+4 a6aa4 b6bb4  <  c6c6cc d6dd4 d+6d+d+4 f6ff4 >
+##36
+m48,18,215 a12 %r25^6 %r8> d4a4g+4 <c1
+##38
+%y0%s6%r25 l12
+[[3g+6g+6g+g+]eeef+f+f+ a6a6aa [6b]<[9c+]>bbb< 'e*v.75']
+m*`##46 - part2
+'sl-o2*v2' %y0%s4%r22 l12
+g+1^1
+[g+1^1^1^2dg+<dg+d>g+
+g+1 <d>g+<d>d4 <bf>bf4  ^4<<d>f>bdb<f<d4  f>bf>bfb<c+g<c+gc+>g>]
+##64
+'cb-o2*v.8' l3
+[b'x' c+'x' d'x' e'x']
+f+'x' g+'x' a'x' b'x'   c+'x' d+'x' e'x' f+'x'
+[d+'x' f'x' f+'x' g+'x']
+>a+'x'< c'x' c+'x' d+'x'   >a'x' b'x' <c'x' d4
+'kd*v.4-o1''kf'[6d24]
+`;
+
+{5} %e1 $ *
+['se+o1' %y0%s6%r25 l12
+[g6g6gg][g6g6gg f+f+f+ g+g+g+] [6a][6b]]
+##9
+[[a6a6aa][a6a6aa g+g+g+a+a+a+] [6b]<[6c+]>]
+##18
+c+6>a+ a+6<d+ d+6c+ %s4c+c>a+
+'tb-o2' %y0%s0%r21 f2d+2 l4 f+a+<cc+ f+a+<cc+>
+##21
+%s6 l12 [6c6c6cc]
+##24
+c1^1^1^1
+##28
+'tp-o1' %r13 m48,18,223 l8 a4.rb4.r <c4r2f6r12  d+2>g+4<c+r> f+4.re4.r
+l12 f+6f+6f+f+ g+6g+g+4 a6aa4 b6bb4   <c6c6cc d6dd4 d+6d+d+4 f6ff4
+##36
+m'kd-o1' d1 > g+4g+4 [6g+12]
+##38
+['sl' %r17 l16
+[6(c+c>a+g+<)] 'l*v1.3'(ag+f+e) (bag+f+)>'l'
+[(ag+f+e)][(bag+f+)][(<c+c>a+g+)]<'l*v1.3'(ag+f+e) (bag+f+)]
+*`##46 - part2
+'se+o1' %y0%s5%r25 l12
+g+1^1
+^1^1^1^4<d2.
+^1^1c+4>b2.^1
+<g+1^1^1^2> %s4>fb<fbf>b
+>>g+4<<<<%s5d2.>
+%s4 f>b<f>f4 <<d>g+d>g+4  ^4<<f>g+d>f<dg+<f4  g+d>g+d>g+d<ea+<e>a+<e>a+
+##64
+'tp-o2*v1.2' %r12 l8 m48,18,223
+[b4.r<c+4.r d12r6>a4.r<gr  f+4.r>b12r6<e12r6> a4.rg4.r
+<f+4.rg+4.r a12r6e4.r<j2dr c+4.r>f+12r6b12r6 e4.rd4.r>  %k-1]%k0
+d+r c+4.r>f+12r6b12r6 e4.rd4.r  m
+`;
+
+{6} %e1 $ *
+['tb-o1' %y0%s6%r23 l12
+[d+6d+6d+d+][d+6d+6d+d+ f+f+f+g+g+g+] [6a][6b]]
+##9
+[[f6f6ff][f6f6ff g+g+g+a+a+a+] [6b]<[6c+]>]
+##18
+'se' %y0%s6%r25 l12
+a+6f+ f+6a+ a+6a+ %s4a+f+c+
+[%s6 c+6>a+ a+6<d+ d+6c+ %s4c+c>a+<<<]>>>> %s6 c+6>a+ a+6<d+ d+6c+ %s4c+c>a+<
+##21
+<%s5 [4<c>cgcf+g]<'e*v.6'[<c>cgcf+g]
+##24
+'cb-o2' [16%rc8%r24^8]
+##28
+%r6 l8
+c4.re4.r f6r12>a+4.r<a+6r12  g+4.rc+6r12f+6r12> b2a2
+g+4.ra+4.r b6r12e4.r<e6r12  d4.r>g6r12<c6r12> f2d+2
+##36
+"!!!oy1" 'hn-o1' %y0%s5%r23 l12
+d+d+d+ g+g+g+ <d+d+d+ <ccc
+##38
+'tb-o2' m48,18,215 [[14%r10c+8 %r23^8] %r10>a4b4<]
+m*`##46 - part2
+'se-o1' %y0%r25
+[72 %s5d+6%s6d+12]
+##64
+<< l12
+[ [ %s6 e6e eee [3 %s6 e6e %s0 e4 ]] %k4]%k0
+> [ %s6 g+6g+ g+g+g+ [3 %s6 g+6g+ %s0 g+4 ]]
+<   %s6 c6c ccc [3 %s6 c6c %s0 c4]
+    %s6 e6e eee e6e %s0 e4 > %s6 b6b %s0 b4 %s6 a6a %s0 a4
+`;
+
+{7} %e1 $ *
+['se+o1' %y0%s6%r25 l12
+[d+6d+6d+d+][d+6d+6d+d+ d+d+d+fff] [6f+][6g+]]
+##9
+[[f6f6ff][f6f6[5f]ggg][6g+][6a+]]
+##18
+r1[>> %s6
+a+6f+ f+6a+ a+6a+ %s4a+f+c+ j2 << %s6 a+6f+ f+6a+ a+6a+ %s4a+f+c+]
+##21
+%s6 [4a+a+6a+6a+] < %r %g1 [6cc+] %g0 >
+##24
+%r14 l12
+[3c6c6cc d6dd4 d+6d+d+4 f6ff4]
+##28
+#^
+[f+6f+6f+f+ g+6g+g+4 a6aa4 b6bb4] <c6c6cc d6dd4 d+6d+d+4 f6ff4
+##36
+'tb-o2' m48,18,215 %r10 d4 r2. > g+2..r8
+##38
+[m"!!!oy2" 'se-o1*v1.33' %r8 m48,18,207
+g+4.f+16f16c+2 r4 <c+>g+<c+>
+l8 b%r23^%r7 ar g+r f+r l12 ff+g+<c+2r4>]
+m*`##46 - part2
+'se-o2' %y0%s4%r25
+g+1^1 g+1[7^1]
+['tp-o1' %r14 l12
+d+rd+d+d+d+ frff4 f+rf+f+4 g+rg+g+4 araa4 brbb4 <crcc4 drdd6r]
+##64
+%y0%r23
+[ [ %s6 b6b bbb [3 %s6 b6b %s0 b4 ]] %k2]%k0
+  [ %s6 d+6d+ d+d+d+ [3 %s6 d+6d+ %s0 d+4 ]]
+    %s6 f6f fff  [3 %s6 f6f %s0 f4]
+    %s6 f+6f+ f+f+f+ f+6f+ %s0 f+4 %s6 e6e %s0 e4 %s6 d6d %s0 d4
+`;
+
+{8} %e1 $ *
+["y2" 'hn' %y0%s6%r23 l12
+g6g6gg [g6g6gg d+d+d+fff] [6f+][6g+]]
+##9
+["!!!oy2" 'hn' %y0%s6%r23 a6a6aa[a6a6aa fffggg][6g+][6a+]]
+##18
+'cb-o2*v.5' %r6 c1 >f2d+2 c+1 'hn' %y0%s6%r23 f+6cc+6g+g+6f+%s4f+c+c+
+##21
+%s6 r1 [3a+a+6a+6a+][6a+]
+##24
+"!!!oy1^1^1^1"
+##28
+'sl-o1*v.5' l8 m48,18,207
+d4.r'l'>e4.r f6r12a+4.ra+6r12  g+4.r<c+6r12>f+6r12 b2a2
+g+4.ra+4.r b6r12e4.re6r12  <d4.r>g6r12<c6r12> f2d+2
+##36
+<d12%r24^6^2. <<%r8 c1
+##38
+'se+o1' %y0%s6%r25 l12
+[[3c+6c+6c+c+]>aaabbb< c+6c+6c+c+ [6d+][6f]eeed+d+d+<'e*v.75']
+m*`##46 - part2
+'se+o1' %y0%s5%r25 l12
+d+1^1
+^1^1^1^4a2.
+^1^1g+4g+2.^1
+<d+1^1^1^1
+^4>g2.^1^1^1
+##64
+'sl-o2*v.8' %r9 m48,18,207 l6
+[b3r <c+3r d3r e3r>]
+f+3r g+3r a3r b3r < c+3r d+3r e3r f+3r>
+[d+3r f3r f+3r g+3r]
+a+3r <c3r> c+3r d+3r   a3r b3r <c3r> d3r
+m
+`;

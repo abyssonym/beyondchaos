@@ -1,0 +1,111 @@
+#TITLE Apoplexy (fanfare fragment)
+#ALBUM Final Fantasy Tactics
+#COMPOSER Hitoshi Sakimoto
+#ARRANGED emberling
+
+#WAVE 0x20 0x00
+#WAVE 0x21 0x49
+#WAVE 0x22 0x00
+#WAVE 0x23 0x00
+#WAVE 0x24 0x7A
+#WAVE 0x25 0x0E
+#WAVE 0x28 0x16
+#WAVE 0x2F 0x8E
+
+#def init= t160 %x240 %v40 %b0,85 %f0,0
+
+#def sl= |0 o4 's' p80
+#def se= |1 o4 'e' p64
+#def cb= |0 o4 'c' p48
+#def tp= |5 o6 't' p72
+#def hn= |4 o5 'h' p56
+#def tb= |5 o6 'b' p68
+#def kd= |8 o5 'k' p60
+
+#def s=v64
+#def e=v40
+#def c=v96
+#def t=v44
+#def h=v56
+#def b=v66
+#def k=v72
+#def kf=v48,72
+
+#drum "y"=4a |F v96 %r17 p76
+
+#cdef ( %l1
+#cdef ) %l0
+
+#def x= %r24^6%r
+
+{1} %e1 'init'
+##36
+'se+o1' m48,18,207 %r8
+l4 a12 %r22^6 %r8 dag+ <c1>
+$##38
+'se+o1'%y0%s6%r25 l12
+[[3f6f6ff]c+c+c+d+d+d+  e6e6ee [6f+][6g+]aaaf+f+f+< 'e*v.75']
+;
+
+{2} %e1 
+##36
+'tp+o1' %r13
+a12 %r23^6 ^2. %y0%s6 >>> l12  [g+g+g+<d+d+d+]
+$##38
+'hn*v1.5' %r7
+[r4c+4g+4.f+16f16c+2 %r23^4%r7 <c+>g+<c+>
+l8 b%r23^%r7 a%r23^%r7 g+%r23^%r7 f+%r23^%r7 l12 ff+g+<c+2%r23^4%r7>]
+;
+
+{3} %e1 
+##36
+'tb-o2' l8 %r10 ar 'sl' %r10 d4a4g+4
+'hn-o1' %y0%s5%r23 l12
+[g+g+g+<d+d+d+]
+$##38
+'kd-o1' l24
+[[4c+4][c+4c+8c+c+c+c+12c+6c+8.c+32c+32] [c+8c+c+c+] l12 >a<a>ab<b>b<]
+;
+
+{4} %e1
+##36
+'se' %r14
+m48,18,215 a12 %r25^6 %r8> d4a4g+4 <c1
+$##38
+'se' %y0%s6%r25 l12
+[[3g+6g+6g+g+]eeef+f+f+ a6a6aa [6b]<[9c+]>bbb< 'e*v.75']
+;
+
+{5} %e1
+##36
+'kd-o1' d1 > g+4g+4 [6g+12]
+$##38
+['sl' %r17 l16
+[6(c+c>a+g+<)] 'l*v1.3'(ag+f+e) (bag+f+)>'l'
+[(ag+f+e)][(bag+f+)][(<c+c>a+g+)]<'l*v1.3'(ag+f+e) (bag+f+)]
+;
+
+{6} %e1
+##36
+"!!!oy1" 'hn-o1' %y0%s5%r23 l12
+d+d+d+ g+g+g+ <d+d+d+ <ccc
+$##38
+'tb-o2' m48,18,215 [[14%r10c+8 %r23^8] %r10>a4b4<]
+;
+
+{7} %e1
+##36
+'tb-o2' l12 m48,18,215 %r10 d4 r2. > g+2..r8
+$##38
+[m"!!!oy2" 'se-o1*v1.33' %r8 m48,18,207
+g+4.f+16f16c+2 r4 <c+>g+<c+>
+l8 b%r23^%r7 ar g+r f+r l12 ff+g+<c+2r4>]
+;
+
+{8} %e1
+##36
+'sl-o1' d12%r24^6^2. <<%r8 c1
+$##38
+'se+o1' %y0%s6%r25 l12
+[[3c+6c+6c+c+]>aaabbb< c+6c+6c+c+ [6d+][6f]eeed+d+d+<'e*v.75']
+;

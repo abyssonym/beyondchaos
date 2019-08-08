@@ -1,0 +1,222 @@
+#TITLE Scumm Bar
+#ALBUM The Secret of Monkey Island
+#COMPOSER Michael Z. Land
+#ARRANGED emberling
+
+#WAVE 0x20 0x03
+#WAVE 0x21 0x08
+#WAVE 0x22 0x9B
+#WAVE 0x23 0x80
+#WAVE 0x28 0x22
+#WAVE 0x29 0x2B
+#WAVE 0x2A 0x5E
+#WAVE 0x2B 0x85
+#WAVE 0x2C 0x57
+
+#def fl= |0 o4 'f' p77 %e1 'v' m24,18,223
+#def hn= |1 o5 'h' p55 %e1 't' m24,18,207
+#def ox= |2 o4 'o' p88 %e1
+#def bs= |3 o7 'b' p64 %e0 m %y3%s3%r10
+#def or= 'ox' 'x'
+
+#def f=v64
+#def h=v24
+#def o=v48
+#def b=v56
+
+#def w=%r14
+#def t=%r7
+#def r=%s6
+#def wr=%r25
+#def tr=%r25
+#def rh=%s4
+#def oh='or-%s2'
+#def x='r'%y0%r25
+#def xh='rh'%y0%r25
+
+#drum "k"=5g+ |8 v64 %e0 p64
+#drum "s"=5a |9 v48 %e1 p64
+#drum "w"=6c+ |A v64 %e1 p64
+#drum "c"=5e |C v48 %e1 p64
+#drum "d"=5g+ |B v48 %e1 p64
+
+#def init= t179 %x240 %v40 %b0,85 %f0,0
+
+{1} 'init' $
+'fl' l8
+g'wr'^'w'gaa+'wr'^'w'ag
+<[c'wr'^'w']c4>a+a
+g'wr'^'w'gaa+'wr'^'w'ag
+<[d'wr'^'w']d2^2."!!!okk"
+##6
+'fl+o1'
+[d'wr'^'w'dd+f'wr'^'w'j2f'wr'^'w']f+'wr'^'w'
+g'wr'^'w'd'wr'^'w'd+4dc
+d4c>a+<c4>a+a
+##10
+g4'wr'^'w'aa+4^16'wr'^16'w'<c
+dd+dc>a+"!!!ok"'fl'g'wr'^'w'
+<g4.dd+4dc>
+a+4a4a+'wr'^'w'g4
+##14
+^1
+'wr'^"!!!odc4ccds"
+"ks4d16d16ddcc"
+"ccsddc"'fl'd4
+;
+
+{2} $
+'bs-o2' l16
+g8>g8r8grg4.r4. <crcrc8r8d+8r8
+g8>g8r8grg4r4 <d.r32d8r8drd4r8>f+8
+g8r8a8r8a+ra+8<c8r8>
+##6
+a+ra+r8.a+ra+2
+r4a+ra+ra+8r8a8r8
+<g8>g8r8grg2
+^8r8grg8<d8r8d8r8
+##10
+g8>g8r8grg2
+'hn'g8'tr'^8'bs-o3'grg8<d8r8drdr
+g8>g8r8grg2
+r4<drd8g8r8g8r8>
+##14
+g8g8'oh'g8'bs-o3'grg2
+^r8.grg8<d8"!!!os8"'bs-o2'd8r8
+'hn+o1'd4'tr'^2't'd8'tr'^8
+'t'd+8'tr'^4't'd+4.'tr'^4
+;
+
+{3} $
+"kk4.kccc dcswkkss   kksskccc dccww4.s  k4k4wccc"
+##6
+"dc4sk2 cccdsccd    ckcck2 ^c4dckc4"
+##10
+"cdccw"'or-o1'g<'rh'g>g
+'hn'd'tr'^"!!!occdc"'oh'g"!!!oc"
+"dckcssw4"
+"c4.dkscc"
+##14
+"ckcck"'or-o1'g<'rh'g>'r'g
+'hn'a+'tr'^'oh'g'hn'a+4.'tr'^4
+'t'a+4'tr'^2't'a+'tr'^
+<'t'c'tr'^4't'c4.'tr'^4
+;
+
+{4} $
+'or-o1' l8
+r[a+'rh'<a+>'r'a+4]
+g<<'rh'c>>'r'g 'hn+o1'c2
+>a+.'tr'^16 'oh'a+>'r'a+4.<'rh'a+>'r'a+
+[^f+<'rh'a>'r'f+]
+'hn+o1'd2. 'oh+o1'd 'hn+o1''tr'd8
+##6
+'t'd'tr'^'oh+o1'd'hn+o1'd'tr'^4'oh+o1'd>'r'd
+^d<d>'rh'd'r'f>f+'hn+o1'd'tr'^
+'t'd'tr'^'oh'a+>a+<'r'd>a+<'rh'a+>'r'a+
+<d4'rh'a+>'r'a+4a<%r't'a4
+##10
+"!!!okk"'oh'g>g4.<d>'r'd
+^d<'rh'g'hn'g4.'tr'^'or-o1'g
+^a+<'rh'a+>'r'a+4g<'rh'a+>'r'a+
+^f+<'rh'a>'r'a4g<'rh'g>'r'g
+##14
+'hn'g'tr'^'oh'd'hn'g4..'tr'^8.
+'t'g'tr'^4't'g4.'oh'g>g
+'hn'g4'tr'^2't'g'tr'^
+'t'g'tr'^4't'g4."!!!occ"
+;
+
+{5} $
+'or-o1' l8
+r[g<'rh'g>'r'g4]
+d+<'rh'g>'r'd+ 'hn' g2
+^8.'tr'^16 'oh'g>'r'g4.<'rh'g>'r'g
+<^4'rh'f+2f+4
+'hn'a2..'tr'^
+##6
+'t'a+'tr'^'oh'a+'hn'a+'tr'^4'oh'a+>'r'a+
+^a+<'rh'a+>a+4"!!!os"'hn'a'tr'^
+'t'a+'tr'^'oh'g>g4'r'g<'rh'g>'r'g
+^4<'rh'g>'r'g4.<%r't'f+4
+##10
+'x'^>g<'rh'd>'r'd4.'rh'a+>'r''o*v.67'a+
+'hn-o1'a+'tr'^'oh'd'hn'd4.'tr'^"!!!ok"
+"k"'or-o1'g<'rh'g>'r'g4.<'rh'g>'r'g
+^4<'rh'f+>f+4'r'>a+<<'rh'd>'r'd
+##14
+'hn'd'tr'^4't'd4^16'tr'^16'oh'd>'r'd
+^d<'rh'd>'r'ga+d<'rh'd4
+^4."!!!ok^2"
+"kk4kssks"
+;
+
+{6} $
+'oh' l8
+r4d2d4
+^4d+4'r'c>g<<'rh'c>>'r'g
+<c>a+<'rh'd2d4
+^4d2d4
+^>'r'f+<<'rh'd>>'r'a<d>f+<'rh'a>'r'a
+##6
+"!!!okk"'oh'f'r'd4.'rh'f4
+^4f2%r't'<d>>'xh'a
+<d>a+<'rh'd2d4
+^4d2d>'r'a
+##10
+^>'o*v.67'a+<'rh''o'a+>'o*v.67'a+^2
+^'r'a+<'rh''o'a+>'r''o*v.67'a+"!!!ok"'or-o2*v.67'a+<<'rh''o'd"!!!os"
+^4'oh'd2d4
+^4d2>a+>'r'a+
+##14
+"!!!ok"'or-o2*v.67'a+<'o''rh'a+>g"!!!ow"'or-o2*v.67'a+<'o''rh'a+>'o*v.67''r'a+
+^a+<'o''rh'a+'r'd"!!!owwk4"
+"^4.s4.s4"
+"w4.ww4w4"
+;
+
+{7} $
+r2 "s4.s"
+"s4"'oh'c4'hn'd+2
+d.'tr'^16^2.
+"!!!ow2s2"
+'hn'f+2..'tr'^
+##6
+'t'f'tr'^4't'f'tr'^2
+^2.'ox''t'f+>'xh'f+
+"!!!ok"'or-o1'g4"!!!oww2"
+^2..'or-o1'f+
+##10
+"!!!ow4.w^2"
+^4.'or-o2*v.67'a+"!!!oss"'oh-o1'a+4
+"!!!ow4.w^2"
+"^2s4k4"
+##14
+'hn-o1'a+'tr'^4't'a+4.'tr'^4
+<'t'd'tr'^4't'd4.'oh-o1'a+4
+^1
+^1
+;
+
+{8} $
+r1
+"w2w"'or-o1'd+<'rh'c>'r'd+
+"!!!os"'or-o1'g ^2.
+^1
+^4<'rh'd4."!!!os"'oh'd"!!!ow"
+##6
+"w4."'or-o1'a+^2
+^2.<'rh'd4
+'hn'g'tr'^4"!!!os^2"
+"^2ss4."
+##10
+"s4.k^2"
+^4.'hn-o1'a+4.'tr'^4
+^1
+^1
+##14
+"!!!oww4"'or-o1'd"!!!os2"
+^4.'or-o2*v.67'a+4."!!!ow4"
+^1
+^1
+;

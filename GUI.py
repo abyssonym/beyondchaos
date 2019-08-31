@@ -1,7 +1,9 @@
 import sys
 
 from PyQt5 import QtGui, Qt
-from PyQt5.QtWidgets import *
+from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, QHBoxLayout, QLineEdit, \
+    QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, QTabWidget
+from PyQt5.uic.properties import QtCore
 
 
 class FlagButton(QPushButton):
@@ -10,12 +12,12 @@ class FlagButton(QPushButton):
         self.setText(text)
         self.value = value
 
+
 class FlagCheckBox(QCheckBox):
     def __init__(self, text, value):
         super(FlagCheckBox,self).__init__()
         self.setText(text)
         self.value = value
-
 
 
 class Window(QWidget):
@@ -28,6 +30,15 @@ class Window(QWidget):
         self.top = 200
         self.width = 650
         self.height = 600
+
+        self.romText = ""
+
+        self.aesthetic = {}
+        self.experimental = {}
+        self.gamebreaking = {}
+        self.major = {}
+        self.minor = {}
+        self.simple = {}
 
         self.InitWindow()
 
@@ -67,16 +78,17 @@ class Window(QWidget):
 
         romLabel = QLabel("ROM:")
         TopHBox.addWidget(romLabel)
-        romInput = QLineEdit()
-        romInput.setPlaceholderText("Required")
-        TopHBox.addWidget(romInput)
+        self.romInput = QLineEdit()
+        self.romInput.setPlaceholderText("Required")
+        TopHBox.addWidget(self.romInput)
         browseButton = QPushButton("Browse")
+        browseButton.clicked.connect(lambda: self.openFileChooser())
         TopHBox.addWidget(browseButton)
         seedLabel = QLabel("Seed:")
         TopHBox.addWidget(seedLabel)
-        seedInput = QLineEdit()
-        seedInput.setPlaceholderText("Optional")
-        TopHBox.addWidget(seedInput)
+        self.seedInput = QLineEdit()
+        self.seedInput.setPlaceholderText("Optional")
+        TopHBox.addWidget(self.seedInput)
 
         topGroupBox.setLayout(TopHBox)
 
@@ -161,7 +173,7 @@ class Window(QWidget):
 
         for x in range(23):
             cbox = FlagCheckBox("Flag name here " + str(x), "Hi" + str(x))
-            #cbox.setStyleSheet("font:bold; font-size:14px")
+            # cbox.setStyleSheet("font:bold; font-size:14px")
             cbox.setCheckable(True)
             cbox.setToolTip(cbox.value)
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.buttonClicked(temp))
@@ -170,6 +182,8 @@ class Window(QWidget):
 
         tab1.setLayout(flagGrid)
 
+        # this is the line in the layout that displays the string of selected flags
+        #   and the button to save those flags
         widget = QWidget()
         widgetHBoxLayout = QHBoxLayout()
         widgetHBoxLayout.addWidget(QLabel("Text-string of selected flags:"))
@@ -196,7 +210,7 @@ class Window(QWidget):
         return groupBoxTwo
 
     def GroupBoxThreeLayout(self):
-        bottomGroupBox = QGroupBox("Generation Options")
+        bottomGroupBox = QGroupBox()
         bottomHBox = QHBoxLayout()
 
         bottomHBox.addWidget(QLabel("Saved flag selection: "))
@@ -226,6 +240,14 @@ class Window(QWidget):
     # Function to test button click / lambda expression functionality
     def buttonClicked(self, value):
         print(str(value))
+
+    def openFileChooser(self):
+        file_path = QFileDialog.getOpenFileName(self, 'Open File', './', filter="All Files(*.*);;Text Files(*.txt)")
+        if file_path[0]:
+            print(str(file_path[0]))
+
+        # QtCore.QString(file_path)
+        self.romInput.setText(str(file_path[0]))
 
 
 if __name__ == "__main__":

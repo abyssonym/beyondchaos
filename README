@@ -1,8 +1,8 @@
 FF6 Beyond Chaos EX Randomizer
 a fork of Abyssonym's FF6 Beyond Chaos Randomizer
-Version:    3.0.1
-Date:       June 21, 2019
-URL:        https://github.com/subtractionsoup/beyondchaos
+Version:    3.1.5
+Date:       September 2, 2019
+URL:        https://github.com/subtractionsoup/beyondchaos/releases/latest
 Discord:    https://discord.gg/S3G3UXy
 
 --- QUICKSTART ---
@@ -11,7 +11,7 @@ Requirements:
     If not running Windows, install Python 3.7+.
 
 Running the randomizer:
-    Windows users: run beyondchaos_ex.exe.
+    Windows users: run beyondchaos_ex.exe (found in beyondchaos_windows.zip attached to the release).
 	If you're using a version prior to Windows 10 and get an error message, try this: https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows
 
     Other users: run "randomizer.py" using Python version 3.7+ (It DOES NOT work with python 2.)
@@ -115,11 +115,26 @@ Q: I heard that there are secret codes. What are they?
 A: Secret codes can be entered when the randomizer asks you for flags. They can do everything from make silly cosmetic changes to major gameplay changes. Mostly they're secret because it's recommended you play through the randomizer at least once without them before using them.
 Here are a few that ARE okay to use on your first time:
 
-    capslockoff - Character names will not be in all-caps by default
-    partyparty - a super version of the s flag. This also randomizes the sprites for Kefka, the soldiers, merchants, Esper Terra, Imp, Banon, and Leo.
-    makeover - replaces (most) sprites with ones not in the original game, such as Samus or Rydia.
-    johnnydmad - replaces the music tracks with tracks not in the original game. For example, you might hear music from Secret of Mana or Tales of Phantasia.
-    notawaiter - skips some of the cutscenes. It skips all of the ones through Kefka @ Narshe, and a few of the longer ones after that.
+    * capslockoff - Character names will not be in all-caps by default
+    * partyparty - a super version of the s flag. This also randomizes the sprites for Kefka, the soldiers, merchants, Esper Terra, Imp, Banon, and Leo.
+    * makeover - replaces (most) sprites with ones not in the original game, such as Samus or Rydia.
+    * johnnydmad - replaces the music tracks with tracks not in the original game. For example, you might hear music from Secret of Mana or Tales of Phantasia.
+    * notawaiter - skips some of the cutscenes. It skips all of the ones through Kefka @ Narshe, and a few of the longer ones after that.
+	* alasdraco - randomizes the sprites, voices, and a few other things in the opera
+
+If you want to customize the sprites chosen by the makeover code, there are a few options:
+    * novanilla - no characters will have sprites chosen from the vanilla game.
+	* frenchvanilla - sprites from the vanilla game can be chosen, but with equal probability to new sprites. (Makeover normally forces a few vanilla sprites to be included.)
+	* cloneparty - Allows, and even encourages, multiple versions of the same character to be selected. For example, one character might look like kid Rydia and another like adult Rydia. Or three characters could be three different versions of Garnet: in her normal outfit, in a gown, or dressed as a white mage.
+	
+    The following codes use tags. Sprites are tagged with certain categories, and these codes alter the chance of selecting sprites in those categories. Replace "<tag>" with one of the valid tags. Valid tags are: boys, girls, kids, pets, and potato (i.e., inanimate objects or otherwise very silly sprites). If you exclude too many sprites from the pool, sprites from the vanilla game will fill in the rest.
+	* no<tag> - e.g., noboys, excludes sprites with the given tag from being selected.
+	* hate<tag> - e.g., hatepotato, makes sprites with the given tag less likely to appear.
+	* like<tag> - e.g., likepets, makes sprites with the given tag more likely to appear.
+	* love<tag> - e.g. lovekids, allows ONLY sprites with the given tag to be selected. If you use more than one "love" code, sprites with AT LEAST ONE of those tags will be allowed.
+	
+After your first time, if you want an extra challenge (believe it or not, some people do):
+	* dancingmaduin -  this makes it so each esper can only be equipped certain randomly selected characters.
 
 The rest are here, in ROT13, but—again—it's recommended that you play through the randomizer without codes at least once before you use them:
     nvefuvc
@@ -144,7 +159,6 @@ The rest are here, in ROT13, but—again—it's recommended that you play throug
     ercynprrirelguvat
     nyypbzobf
     enaqbzobbfg
-    qnapvatznqhva
     znffrssrpg
     fhcreangheny
     znqjbeyq
@@ -153,6 +167,7 @@ The rest are here, in ROT13, but—again—it's recommended that you play throug
     qnexjbeyq
     enaqbzobffrf
     wbuaalnpunbgvp
+	gurfpranevbabggnxra
 
 Q: What level should I be for the final dungeon?
 A: It really depends on your gear and what builds you have access to. I usually end up going there around level 35-40, but it doesn't hurt to have a few absurdly high level characters to tank hits.
@@ -200,7 +215,7 @@ Q: Does Beyond Chaos EX work on a real Super Nintendo?
 A: Absolutely! Beyond Chaos has been tested on both Super Everdrive and SD2SNES, and it works 100% perfectly.
 
 Q: I found a bug!
-A: The best thing to do is report it on the Beyond Chaos Discord in the #bugs channel. Please include the seed number and flags used. (The easiest way is to copy and paste the first line of the .txt file.)
+A: The best way to report it is on the Beyond Chaos Discord in the #bugs channel. Please include the seed number and flags used. (The easiest way is to copy and paste the first line of the .txt file.)
 
 --- CONTRIBUTORS ---
     Abyssonym - original Beyond Chaos creator

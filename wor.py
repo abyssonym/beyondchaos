@@ -625,7 +625,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             location_npcs=[(0x11B, 1), (0x15, 1)],
             dialogue_pointers=[0x5fa],
             old_char_id=0xD,
-            palette_pointers=[0xCD7A3],
+            palette_pointers=[0xCD7A4],
             prerequisite=0x0A,
             special=sasquatch_cave_recruit,
             name_pointer=None,

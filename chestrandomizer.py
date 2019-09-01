@@ -438,7 +438,7 @@ class ChestBlock:
             
             from locationrandomizer import get_location
             rank = self.rank
-            if self.is_clock or not rank or uncapped_monsters:
+            if (self.is_clock or not rank or uncapped_monsters) and formations:
                 rank = min(formations, key=lambda f: f.rank()).rank()
             
             chosen = select_monster_in_a_box(rank=rank, value=value, clock=self.is_clock or monster is True or uncapped_monsters, guarantee_miab_treasure=guarantee_miab_treasure, enemy_limit=enemy_limit)

@@ -1,0 +1,21 @@
+b	Make the game more balanced by removing exploits such as Joker Doom, Vanish/Doom, and the Evade/Mblock bug.
+c	Randomize palettes and names of various things.
+d	Randomize final dungeon.
+e	Randomize esper spells and levelup bonuses.
+f	Randomize enemy formations.
+g	Randomize dances
+i	Randomize the stats of equippable items.
+k	Randomize the clock in Zozo
+l	Randomize blitz inputs.
+m	Randomize enemy stats.
+n	Randomize window background colors.
+o	Shuffle characters' in-battle commands
+p	Randomize the palettes of spells and weapon animations.
+q	Randomize what equipment each character can wear and character stats.
+r	Randomize character locations in the world of ruin.
+s	Swap character graphics around.
+t	Randomize treasure, including chests, colosseum, shops, and enemy drops.
+u	Umaro risk. (Random character will be berserk)
+w	Generate new commands for characters, replacing old commands.
+z	Always have "Sprint Shoes" effect.
+!	Recommended new player flags

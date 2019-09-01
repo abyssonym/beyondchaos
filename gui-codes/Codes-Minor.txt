@@ -1,0 +1,8 @@
+naturalstats		No Espers will grant stat bonuses upon leveling up.
+quikdraw			All characters look like imperial soldiers, and none of them have Gau's Rage skill.
+replaceeverything	All vanilla skills that can be replaced, are replaced.
+allcombos			All skills that get replaced with something are replaced with combo skills.
+supernatural		Makes it so that any character with the Magic command will have natural magic.
+electricboogaloo	Increases the list of spells that items can break and proc for. Items can break for potentially any spell, and weapons can potentially proc any spell excluding SwdTechs, Blitzes, Slots, and a couple other skills.
+randombosses		Causes boss skills to be randomized similarly to regular enemy skills. Boss skills can change to similarly powerful skills.
+rushforpower		Reverts the Vargas fight to the way it was before Beyond Chaos EX.

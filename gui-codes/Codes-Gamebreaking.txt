@@ -1,0 +1,2 @@
+airship				The party will have access to the airship immediately after leaving Narshe. Chocobo stables can also be used to acquire the airship. Doing events out of order can cause softlocks.
+equipanything		Items that are not equippable normally can now be equipped as weapons or shields. These often give strange defensive stats or weapon animations.

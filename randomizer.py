@@ -2,6 +2,7 @@
 
 import configparser
 from time import time, sleep, gmtime
+import re
 from sys import argv, exit
 from shutil import copyfile
 import os
@@ -19,7 +20,7 @@ from utils import (COMMAND_TABLE, LOCATION_TABLE,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes, shuffle_char_hues, generate_character_palette, set_randomness_multiplier,
                    mutate_index, utilrandom as random, open_mei_fallback,
-                   dialogue_to_bytes)
+                   dialogue_to_bytes, bytes_to_dialogue)
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              RandomSpellSub, MultipleSpellSub, ChainSpellSub,
                              get_ranked_spells, get_spell)
@@ -4609,30 +4610,17 @@ def manage_clock():
     wrong_hours = [0, 1, 2, 3, 4, 5]
     wrong_hours.remove(hour)
     random.shuffle(wrong_hours)
-    hour_to_hex = [
-        dialogue_to_bytes('2', null_terminate=False),
-        dialogue_to_bytes('4', null_terminate=False),
-        dialogue_to_bytes('6', null_terminate=False),
-        dialogue_to_bytes('8', null_terminate=False),
-        dialogue_to_bytes('10', null_terminate=False),
-        dialogue_to_bytes('12', null_terminate=False)]
+    hours = ['2', '4', '6', '8', '10', '12']
 
-    f = open(sourcefile, 'r+b')
-    start = 0xDACC7
-    end = 0xDAD18
-    f.seek(start)
-    hour_strings = f.read(end - start)
-    f.close()
-
-    hour_strings = hour_strings[0:6] + hour_to_hex[wrong_hours[0]] + hour_strings[7:21] + hour_to_hex[wrong_hours[1]] + hour_strings[22:42] + hour_to_hex[wrong_hours[2]] + hour_strings[43:48] + hour_to_hex[wrong_hours[3]] + hour_strings[50:75] + hour_to_hex[wrong_hours[4]] + hour_strings[77:]
-
-    if hour >= 4: # double digit hour
-        hour_strings = hour_strings + b'\0'
-
-    hour_text_sub = Substitution()
-    hour_text_sub.bytestring = bytes(hour_strings)
-    hour_text_sub.set_location(start)
-    hour_text_sub.write(fout)
+    hour_texts = []
+    for i in range(0, 5):
+        start = get_dialogue_pointer(fout, 0x416 + i)
+        end = get_dialogue_pointer(fout, 0x417 + i)
+        fout.seek(start)
+        text_bytes = fout.read(end-start)
+        text = bytes_to_dialogue(text_bytes)
+        text = re.sub(r'\d+(?=:00)', hours[wrong_hours[i]], text)
+        hour_texts.append(text)
 
     ptr_start = 0xCE602
     ptr_index = 0x416
@@ -4640,7 +4628,7 @@ def manage_clock():
     f = open(outfile, 'r+b')
     offset = 0
 
-    #adjust text pointers
+    # Adjust text pointers, because some strings may be slightly longer or shorter now.
     for i in range(1, 5):
         location = ptr_start + (ptr_index+i) * 2
         f.seek(location)
@@ -4654,6 +4642,12 @@ def manage_clock():
         write_multi(f, ptr + offset, 2)
 
     f.close()
+    
+    for i in range(0, 5):
+        hour_text_sub = Substitution()
+        hour_text_sub.bytestring = dialogue_to_bytes(hour_texts[i])
+        hour_text_sub.set_location(get_dialogue_pointer(fout, 0x416 + i))
+        hour_text_sub.write(fout)
 
     # Change text that says "Hand's pointin' at the two."
     if minute != 0:
@@ -4738,22 +4732,18 @@ def manage_clock():
     second_text_sub1.set_location(get_dialogue_pointer(fout, 0x421))
     second_text_sub1.write(fout)
 
-    if wrong_seconds[1] != 1:
-        text = "The second hand of my watch is pointing at "
-        # In the original game, this clue says "four" and is redundant. It should say "two".
-        second_text_sub2 = Substitution()
-        if wrong_seconds[1] == 0:
-            text += "two."
-        elif wrong_seconds[1] == 2:
-            text += "six."
-        elif wrong_seconds[1] == 3:
-            text += "8."
-        else:
-            text += "ten."
-
-        second_text_sub2.bytestring = dialogue_to_bytes(text)
-        second_text_sub2.set_location(get_dialogue_pointer(fout, 0x425))
-        second_text_sub2.write(fout)
+    # In the original game, this clue says "four" and is redundant. It should say "two".
+    # Because the original game doesn't compress this as much as it could, but
+    # Divergent paths changes and jam up your opera mode do, I'm changing it to use 
+    # numerals in all cases so it'll be consistent and fit in the space without adjusting
+    # pointers. The proper thing would be to run all text changes into a manager that
+    # writes them out once at the end, but I'm too lazy for that right now.
+    text = f"The second hand of my watch is pointing at {(wrong_seconds[1] + 1) * 2}."
+        
+    second_text_sub2 = Substitution()
+    second_text_sub2.bytestring = dialogue_to_bytes(text)
+    second_text_sub2.set_location(get_dialogue_pointer(fout, 0x425))
+    second_text_sub2.write(fout)
 
 
 def manage_santa():

@@ -3,7 +3,9 @@ import sys
 
 from PyQt5 import QtGui, Qt
 from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, QHBoxLayout, QLineEdit, \
-    QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, QTabWidget
+    QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, QTabWidget, QInputDialog, QDialog, QPlainTextEdit, \
+    QScrollArea
+import json
 
 
 class FlagButton(QPushButton):
@@ -36,6 +38,7 @@ class Window(QWidget):
         self.romText = ""
         self.mode = ""
         self.flags = ""
+        self.flagString = ""
 
         # dictionaries to hold flag data
         self.aesthetic = {}
@@ -52,7 +55,7 @@ class Window(QWidget):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
-        self.loadCodes()
+        self.initCodes()
         self.CreateLayout()
 
         self.show()
@@ -172,7 +175,7 @@ class Window(QWidget):
             cbox = FlagCheckBox(flagname, flagname)
             # cbox.setStyleSheet("font:bold; font-size:14px")
             cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['Explanation'])
+            cbox.setToolTip(flagdesc['explanation'])
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("simple", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
@@ -186,7 +189,7 @@ class Window(QWidget):
             cbox = FlagCheckBox(flagname, flagname)
             # cbox.setStyleSheet("font:bold; font-size:14px")
             cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['Explanation'])
+            cbox.setToolTip(flagdesc['explanation'])
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("aesthetic", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
@@ -199,7 +202,7 @@ class Window(QWidget):
             cbox = FlagCheckBox(flagname, flagname)
             # cbox.setStyleSheet("font:bold; font-size:14px")
             cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['Explanation'])
+            cbox.setToolTip(flagdesc['explanation'])
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("major", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
@@ -212,7 +215,7 @@ class Window(QWidget):
             cbox = FlagCheckBox(flagname, flagname)
             # cbox.setStyleSheet("font:bold; font-size:14px")
             cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['Explanation'])
+            cbox.setToolTip(flagdesc['explanation'])
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("minor", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
@@ -225,7 +228,7 @@ class Window(QWidget):
             cbox = FlagCheckBox(flagname, flagname)
             # cbox.setStyleSheet("font:bold; font-size:14px")
             cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['Explanation'])
+            cbox.setToolTip(flagdesc['explanation'])
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("experimental", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
@@ -238,7 +241,7 @@ class Window(QWidget):
             cbox = FlagCheckBox(flagname, flagname)
             # cbox.setStyleSheet("font:bold; font-size:14px")
             cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['Explanation'])
+            cbox.setToolTip(flagdesc['explanation'])
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("gamebreaking", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
@@ -247,20 +250,34 @@ class Window(QWidget):
 
         # this is the line in the layout that displays the string of selected flags
         #   and the button to save those flags
-        widget = QWidget()
-        widgetHBoxLayout = QHBoxLayout()
-        widgetHBoxLayout.addWidget(QLabel("Text-string of selected flags:"))
-        flagString = QLineEdit()
-        flagString.setReadOnly(True)
-        flagString.setStyleSheet("background:lightgrey;")
-        flagString.setText("string of selected flags here...")
-        widgetHBoxLayout.addWidget(flagString)
-        saveButton = QPushButton("Save flags selection")
-        widgetHBoxLayout.addWidget(saveButton)
+        widgetV = QWidget()
+        widgetVBoxLayout = QVBoxLayout()
+        widgetV.setLayout(widgetVBoxLayout)
 
-        widget.setLayout(widgetHBoxLayout)
+        widgetVBoxLayout.addWidget(QLabel("Text-string of selected flags:"))
+
+        self.flagString = QLineEdit()
+        self.flagString.setReadOnly(True)
+        self.flagString.setStyleSheet("background:lightgrey;")
+        widgetVBoxLayout.addWidget(self.flagString)
+
+        saveButton = QPushButton("Save flags selection")
+        saveButton.clicked.connect(lambda : self.saveSeed())
+        widgetVBoxLayout.addWidget(saveButton)
+
+        # This part makes a group box and adds the selected-flags display
+        #   and a button to show help
+        flagTextWidget = QGroupBox()
+        flagTextHBox = QHBoxLayout()
+        flagTextHBox.addWidget(widgetV)
+        helpButton = QPushButton("Flag Help")
+        helpButton.setStyleSheet("font-size:12px; height:60px")
+        helpButton.clicked.connect(lambda: self.showFlagHelp())
+        flagTextHBox.addWidget(helpButton)
+        flagTextWidget.setLayout(flagTextHBox)
+
         tabVBoxLayout.addWidget(tabs)
-        tabVBoxLayout.addWidget(widget)
+        tabVBoxLayout.addWidget(flagTextWidget)
 
         middleRightGroupBox.setLayout(tabVBoxLayout)
         # ------------- Part two (right) end ---------------------------------------
@@ -272,6 +289,7 @@ class Window(QWidget):
 
         return groupBoxTwo
 
+    # Bottom groupbox consisting of saved seeds selection box, and button to generate seed
     def GroupBoxThreeLayout(self):
         bottomGroupBox = QGroupBox()
         bottomHBox = QHBoxLayout()
@@ -300,9 +318,31 @@ class Window(QWidget):
         bottomGroupBox.setLayout(bottomHBox)
         return bottomGroupBox
 
-    # Function to test button click / lambda expression functionality
-    def flagButtonClicked(self, dictionary, value):
+    # --------------------------------------------------------------------------------
+    # -------------- NO MORE LAYOUT DESIGN PAST THIS POINT ---------------------------
+    # --------------------------------------------------------------------------------
 
+    # opens input dialog to get a name to assign a desired seed flagset, then saves all dictionaries
+    #   to a text file under that flagset name.
+    def saveSeed(self):
+        dictionaries = [self.simple, self.aesthetic, self.major,
+                        self.minor, self.experimental, self.gamebreaking]
+
+        text, okPressed = QInputDialog.getText(self, "Save Seed", "Enter a name for this flagset", QLineEdit.Normal, "")
+        if okPressed and text != '':
+            print(f"{text}.txt saved!")
+
+            f = open(f"saved_flagsets/{text}.txt", "w")
+            for l in dictionaries:
+                # print(l)
+                f.write(str(l) + "\n")
+            f.close()
+
+    # (MAKE THIS CLEANER IN THE FUTURE)
+    # When flag is selected/unselected, updates flag value in appropriate dictionary
+    #   Also updates textbox with updated string of flags
+    def flagButtonClicked(self, dictionary, value):
+        # This part updates the appropriate dictionary (CLEAN THIS)
         if dictionary == "simple":
             if not self.simple[value]['checked']:
                 self.simple[value]['checked'] = True
@@ -334,6 +374,22 @@ class Window(QWidget):
             else:
                 self.gamebreaking[value]['checked'] = False
 
+        # This part updates the textbox with the string of flag values
+        dictionaries = [self.simple, self.aesthetic, self.major,
+                        self.minor, self.experimental, self.gamebreaking]
+        s = ""
+        for d in dictionaries:
+            space = False
+            for name, info in d.items():
+                if info['checked']:
+                    s = s + name
+                    space = True
+            if space:
+                s = s + " "
+
+        print(s)  # print to console for testing
+        self.flagString.setText(s)
+
     # Opens file dialog to select rom file and assigns it to value in parent class
     def openFileChooser(self):
         file_path = QFileDialog.getOpenFileName(self, 'Open File', './', filter="All Files(*.*);;Text Files(*.txt)")
@@ -343,8 +399,10 @@ class Window(QWidget):
         # display file location in text input field
         self.romInput.setText(str(file_path[0]))
 
-    # opens text files containing code flags/descriptions and puts data into separate dictionaries
-    def loadCodes(self):
+    # (MAKE THIS CLEANER IN THE FUTURE)
+    # (At startup) Opens text files containing code flags/descriptions and
+    #   puts data into separate dictionaries
+    def initCodes(self):
         codeLists = ["Codes-Aesthetic.txt", "Codes-Experimental.txt", "Codes-Gamebreaking.txt",
                      "Codes-Major.txt", "Codes-Minor.txt", "Codes-Simple.txt"]
 
@@ -356,38 +414,38 @@ class Window(QWidget):
                     for l in content:
                         temp = re.split('\t|\n', l)
                         temp = list(filter(None, temp))
-                        self.aesthetic[temp[0]] = {'Explanation': temp[1], 'checked': False}
+                        self.aesthetic[temp[0]] = {'explanation': temp[1], 'checked': False}
 
                 elif fileList == "Codes-Experimental.txt":
                     for l in content:
                         temp = re.split('\t|\n', l)
                         temp = list(filter(None, temp))
                         # print(temp)
-                        self.experimental[temp[0]] = {'Explanation': temp[1], 'checked': False}
+                        self.experimental[temp[0]] = {'explanation': temp[1], 'checked': False}
 
                 elif fileList == "Codes-Gamebreaking.txt":
                     for l in content:
                         temp = re.split('\t|\n', l)
                         temp = list(filter(None, temp))
-                        self.gamebreaking[temp[0]] = {'Explanation': temp[1], 'checked': False}
+                        self.gamebreaking[temp[0]] = {'explanation': temp[1], 'checked': False}
 
                 elif fileList == "Codes-Major.txt":
                     for l in content:
                         temp = re.split('\t|\n', l)
                         temp = list(filter(None, temp))
-                        self.major[temp[0]] = {'Explanation': temp[1], 'checked': False}
+                        self.major[temp[0]] = {'explanation': temp[1], 'checked': False}
 
                 elif fileList == "Codes-Minor.txt":
                     for l in content:
                         temp = re.split('\t|\n', l)
                         temp = list(filter(None, temp))
-                        self.minor[temp[0]] = {'Explanation': temp[1], 'checked': False}
+                        self.minor[temp[0]] = {'explanation': temp[1], 'checked': False}
 
                 elif fileList == "Codes-Simple.txt":
                     for l in content:
                         temp = re.split('\t|\n', l)
                         temp = list(filter(None, temp))
-                        self.simple[temp[0]] = {'Explanation': temp[1], 'checked': False}
+                        self.simple[temp[0]] = {'explanation': temp[1], 'checked': False}
 
         # print(self.aesthetic)
         # print(self.experimental)
@@ -395,6 +453,86 @@ class Window(QWidget):
         # print(self.major)
         # print(self.minor)
         # print(self.simple)
+
+    # Open second window and display list of flags and their descriptions
+    # (CLEAN THIS UP)
+    def showFlagHelp(self):
+        dia = QDialog()
+        dia.setWindowTitle("Flag Descriptions")
+        dia.setGeometry(300, 300, 600, 550)
+
+        tab = QTabWidget()
+
+        tab1 = QScrollArea()
+        tab1wid = QWidget()
+        tab.addTab(tab1, "Simple")
+        tab1layout = QVBoxLayout()
+        for flagname, flagdesc in self.simple.items():
+            tab1layout.addWidget(QLabel(f"{flagname}  -  {flagdesc['explanation']}"))
+        tab1layout.addStretch(1)
+        tab1wid.setLayout(tab1layout)
+        tab1.setWidgetResizable(True)
+        tab1.setWidget(tab1wid)
+
+        tab2 = QScrollArea()
+        tab2wid = QWidget()
+        tab.addTab(tab2, "Aesthetic")
+        tab2layout = QVBoxLayout()
+        for flagname, flagdesc in self.aesthetic.items():
+            tab2layout.addWidget(QLabel(f"{flagname}  -  {flagdesc['explanation']}"))
+        tab2layout.addStretch(1)
+        tab2wid.setLayout(tab2layout)
+        tab2.setWidgetResizable(True)
+        tab2.setWidget(tab2wid)
+
+        tab3 = QScrollArea()
+        tab3wid = QWidget()
+        tab.addTab(tab3, "Major")
+        tab3layout = QVBoxLayout()
+        for flagname, flagdesc in self.major.items():
+            tab3layout.addWidget(QLabel(f"{flagname}  -  {flagdesc['explanation']}"))
+        tab3layout.addStretch(1)
+        tab3wid.setLayout(tab3layout)
+        tab3.setWidgetResizable(True)
+        tab3.setWidget(tab3wid)
+
+        tab4 = QScrollArea()
+        tab4wid = QWidget()
+        tab.addTab(tab4, "Minor")
+        tab4layout = QVBoxLayout()
+        for flagname, flagdesc in self.minor.items():
+            tab4layout.addWidget(QLabel(f"{flagname}  -  {flagdesc['explanation']}"))
+        tab4layout.addStretch(1)
+        tab4wid.setLayout(tab4layout)
+        tab4.setWidgetResizable(True)
+        tab4.setWidget(tab4wid)
+
+        tab5 = QScrollArea()
+        tab5wid = QWidget()
+        tab.addTab(tab5, "Experimental")
+        tab5layout = QVBoxLayout()
+        for flagname, flagdesc in self.experimental.items():
+            tab5layout.addWidget(QLabel(f"{flagname}  -  {flagdesc['explanation']}"))
+        tab5layout.addStretch(1)
+        tab5wid.setLayout(tab5layout)
+        tab5.setWidgetResizable(True)
+        tab5.setWidget(tab5wid)
+
+        tab6 = QScrollArea()
+        tab6wid = QWidget()
+        tab.addTab(tab6, "Gamebreaking")
+        tab6layout = QVBoxLayout()
+        for flagname, flagdesc in self.gamebreaking.items():
+            tab6layout.addWidget(QLabel(f"{flagname}  -  {flagdesc['explanation']}"))
+        tab6layout.addStretch(1)
+        tab6wid.setLayout(tab6layout)
+        tab6.setWidgetResizable(True)
+        tab6.setWidget(tab6wid)
+
+        tablayout = QVBoxLayout()
+        tablayout.addWidget(tab)
+        dia.setLayout(tablayout)
+        dia.exec()
 
 
 if __name__ == "__main__":

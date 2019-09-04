@@ -95,7 +95,7 @@ class Options:
                       if c not in self.active_codes and c.name != "repairpalette"]
         
         i = random.randint(1,7)
-        if i == 1:
+        if i <= 2:
             secret_codes = [c for c in NORMAL_CODES if c.is_cyphered and not self.is_code_active(c)]
             if secret_codes:
                 candidates = secret_codes
@@ -229,6 +229,7 @@ NORMAL_CODES = [
     Code('johnnyachaotic', "MUSIC MANGLING MODE"),
     #Code('sometimeszombies', "OLD CHARACTER PALETTE MODE"),
     Code('HAKCSBKC', 'ALTERNATE GOGO MODE', key1='application', key2='octetstream'),
+    Code('QGWURNGNSEIMKTMDFBIX', 'DIVERGENT PATHS MODE', key1='power', key2='panda')
 ]
 
 MAKEOVER_MODIFIER_CODES = [
@@ -264,7 +265,6 @@ SPECIAL_CODES = [
 
 
 TOP_SECRET_CODES = [
-    Code('QGWURNGNSEIMKTMDFBIX', 'DIVERGENT PATHS MODE', key1='power', key2='panda')
 ]
 
 ALL_CODES = NORMAL_CODES + MAKEOVER_MODIFIER_CODES + CAVE_CODES + SPECIAL_CODES + TOP_SECRET_CODES

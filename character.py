@@ -51,6 +51,8 @@ class CharacterBlock:
         self.natural_magic = None
         self.palette = None
         self.wor_location = None
+        self.command_objs = []
+        self.stats = {}
 
     def __repr__(self):
         s = "{0:02d}. {1}".format(self.id+1, self.newname) + "\n"
@@ -194,7 +196,7 @@ class CharacterBlock:
         }
 
         if not read_only:
-            run_chance = random.randint(0,99)
+            run_chance = random.randint(0, 99)
             for i, prob in enumerate(run_map[run]):
                 run_chance -= prob
                 if prob < 0:
@@ -205,7 +207,7 @@ class CharacterBlock:
             # Also don't randomize Terra's level because it gets added for
             # every loop through the title screen, apparently.
             if not start_in_wor and self.id != 0:
-                level_chance = random.randint(0,99)
+                level_chance = random.randint(0, 99)
                 for i, prob in enumerate(level_map[level]):
                     level_chance -= prob
                     if level_chance < 0:

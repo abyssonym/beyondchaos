@@ -29,7 +29,7 @@ class Code:
     description: str
     key1: str = ''
     key2: str = ''
-    
+
     @property
     def is_cyphered(self):
         return self.key1 and self.key2
@@ -42,25 +42,24 @@ class Code:
         if name in s:
             return True, s.replace(name, '')
         return False, s
-        
+
 
 @dataclass
 class Options:
     mode: Mode
     active_flags: Set[Flag] = field(default_factory=set)
     active_codes: Set[Code] = field(default_factory=set)
-    
 
     def __post_init__(self):
         for flag in ALL_FLAGS:
             setattr(self, flag.attr, False)
-            
+
     def is_code_active(self, code_name: str):
         for code in self.active_codes:
             if code.name == code_name:
                 return True
         return False
-        
+
     def is_any_code_active(self, code_names: List[str]):
         for code in self.active_codes:
             if code.name in code_names:
@@ -93,17 +92,17 @@ class Options:
     def random_unused_code(self):
         candidates = [c for c in NORMAL_CODES
                       if c not in self.active_codes and c.name != "repairpalette"]
-        
-        i = random.randint(1,7)
+
+        i = random.randint(1, 7)
         if i <= 2:
             secret_codes = [c for c in NORMAL_CODES if c.is_cyphered and not self.is_code_active(c)]
             if secret_codes:
                 candidates = secret_codes
-            
+
         elif i <= 4:
             new_codes = MAKEOVER_MODIFIER_CODES + [c for c in NORMAL_CODES if c.name in ["alasdraco"]]
             new_codes = [c for c in new_codes
-                            if not self.is_code_active(c)]
+                         if not self.is_code_active(c)]
             if new_codes:
                 candidates = new_codes
 
@@ -128,9 +127,9 @@ ANCIENT_CAVE_PROHIBITED_CODES = [
 
 
 ANCIENT_CAVE_PROHIBITED_FLAGS = [
-"d",
-"k",
-"r",
+    "d",
+    "k",
+    "r",
 ]
 
 ALL_MODES = [
@@ -166,7 +165,7 @@ ALL_FLAGS = [
     Flag('w', 'replace_commands', 'Generate new commands for characters, replacing old commands.'),
     Flag('z', 'sprint', 'Always have "Sprint Shoes" effect.'),
     Flag('b', 'fix_exploits', 'Make the game more balanced by removing exploits such as Joker Doom, '
-              'Vanish/Doom, and the Evade/Mblock bug.'),
+                              'Vanish/Doom, and the Evade/Mblock bug.'),
     Flag('m', 'random_enemy_stats', 'Randomize enemy stats.'),
     Flag('c', 'random_palettes_and_names', 'Randomize palettes and names of various things.'),
     Flag('i', 'random_items', 'Randomize the stats of equippable items.'),
@@ -238,7 +237,7 @@ MAKEOVER_MODIFIER_CODES = [
     Code('cloneparty', "CLONE COSPLAY MAKEOVER MODE")
 ]
 RESTRICTED_VANILLA_SPRITE_CODES = []
-  
+
 makeover_groups = ["boys", "girls", "kids", "pets", "potato"]
 for mg in makeover_groups:
     no = Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE")
@@ -286,14 +285,14 @@ class FourSquare:
         k = set(key)
         k_remainder = set(string.ascii_uppercase.replace('J', '')) - k
         return sorted(k, key=key.index) + sorted(k_remainder)
-        
+
     def encypher(self, plaintext: str):
         plaintext = "".join([c for c in plaintext if c.isalpha()])
         plaintext = plaintext.lower()
         if len(plaintext) % 2 == 1:
             plaintext = plaintext + 'x'
         plaintext = plaintext.replace('j', 'i')
-        
+
         cyphertext = ''
         for i in range(0, len(plaintext), 2):
             j = i+1
@@ -301,18 +300,18 @@ class FourSquare:
             i_row, i_col = divmod(i_index, 5)
             j_index = self.plaintable.index(plaintext[j])
             j_row, j_col = divmod(j_index, 5)
-            
+
             cyphertext += self.cyphertable1[i_row*5 + j_col]
             cyphertext += self.cyphertable2[j_row*5 + i_col]
-            
+
         return cyphertext
-    
-    def decypher(self, cyphertext:str):
+
+    def decypher(self, cyphertext: str):
         if len(cyphertext) % 2 == 1:
             raise ValueError
         if 'J' in cyphertext:
             raise ValueError
-        
+
         plaintext = ''
         for i in range(0, len(cyphertext), 2):
             j = i+1
@@ -320,7 +319,7 @@ class FourSquare:
             i_row, i_col = divmod(i_index, 5)
             j_index = self.cyphertable2.index(cyphertext[j])
             j_row, j_col = divmod(j_index, 5)
-            
+
             plaintext += self.plaintable[i_row*5 + j_col]
             plaintext += self.plaintable[j_row*5 + i_col]
 

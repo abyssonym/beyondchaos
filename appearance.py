@@ -7,7 +7,7 @@ from monsterrandomizer import change_enemy_name
 from utils import (CHARACTER_PALETTE_TABLE, EVENT_PALETTE_TABLE, FEMALE_NAMES_TABLE, MALE_NAMES_TABLE,
                    MOOGLE_NAMES_TABLE, RIDING_SPRITE_TABLE, SPRITE_REPLACEMENT_TABLE,
                    generate_character_palette, get_palette_transformer, hex2int, name_to_bytes,
-                   open_mei_fallback, read_multi, shuffle_char_hues, 
+                   open_mei_fallback, read_multi, shuffle_char_hues,
                    Substitution, utilrandom as random, write_multi)
 
 def recolor_character_palette(fout, pointer, palette=None, flesh=False, middle=True, santa=False, skintones=None, char_hues=None, trance=False):
@@ -288,8 +288,10 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
             self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
             self.uniqueids = [s.strip() for s in uniqueids.split('|')] if uniqueids else []
             self.groups = [s.strip() for s in groups.split('|')] if groups else []
-            if self.gender == "female": self.groups.append("girls")
-            if self.gender == "male": self.groups.append("boys")
+            if self.gender == "female":
+                self.groups.append("girls")
+            if self.gender == "male":
+                self.groups.append("boys")
             self.weight = 1.0
 
             if fallback_portrait_id == '':
@@ -311,7 +313,6 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
             return self.portrait_filename is not None and self.portrait_palette_filename is not None
 
         def is_on(self, checklist):
-            val = False
             for g in self.uniqueids:
                 if g in checklist:
                     return True
@@ -457,7 +458,8 @@ def manage_character_appearance(fout, preserve_graphics=False):
                     sprite = f.read()
             except:
                 continue
-            if len(sprite) >= rc[2]: sprite = sprite[:rc[2]]
+            if len(sprite) >= rc[2]:
+                sprite = sprite[:rc[2]]
             fout.seek(rc[1])
             fout.write(sprite)
 
@@ -575,7 +577,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     fout.seek(0x2D1D00)
 
-    for i in range(19):
+    for _ in range(19):
         portrait_data.append(fout.read(0x320))
 
     fout.seek(0x2D5860)
@@ -817,7 +819,8 @@ def manage_palettes(fout, change_to, char_ids):
         palette = [read_multi(fout, length=2) for _ in range(size)]
         palette = transformer(palette)
         fout.seek(pointer)
-        [write_multi(fout, c, length=2) for c in palette]
+        for c in palette:
+            write_multi(fout, c, length=2)
 
     recolor_palette(0x2cfd4, 23)
     recolor_palette(0x268000+(7*0x20), 16)

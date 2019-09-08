@@ -1,9 +1,9 @@
 import copy
 
-from utils import (hex2int, write_multi, read_multi, ENEMY_TABLE,
+from utils import (write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    make_table, utilrandom as random)
-from skillrandomizer import SpellBlock, get_spell, get_ranked_spells
+from skillrandomizer import get_spell, get_ranked_spells
 from itemrandomizer import get_ranked_items, get_item
 from namerandomizer import generate_attack, generate_name
 
@@ -35,47 +35,47 @@ monsterdict = {}
 
 globalweights, avgs = None, {}
 
-statusdict = {"blind": (0, 0x01),
-              "zombie": (0, 0x02),
-              "poison": (0, 0x04),
-              "magitek": (0, 0x08),
-              "vanish": (0, 0x10),
-              "imp": (0, 0x20),
-              "petrify": (0, 0x40),
-              "death": (0, 0x80),
-              "condemned": (1, 0x01),
-              "near death": (1, 0x02),
-              "image": (1, 0x04),
-              "mute": (1, 0x08),
-              "berserk": (1, 0x10),
-              "confuse": (1, 0x20),
-              "seizure": (1, 0x40),
-              "sleep": (1, 0x80),
-              "float": (2, 0x01),
-              "regen": (2, 0x02),
-              "slow": (2, 0x04),
-              "haste": (2, 0x08),
-              "stop": (2, 0x10),
-              "shell": (2, 0x20),
-              "protect": (2, 0x40),
-              "reflect": (2, 0x80),
-              "cover": (3, 0x01),
-              "runic": (3, 0x02),
-              "reraise": (3, 0x04),
-              "morph": (3, 0x08),
-              "casting": (3, 0x10),
-              "disappear": (3, 0x20),
-              "interceptor": (3, 0x40),
-              "floating": (3, 0x80)}
-reverse_statusdict = dict([(value, key) for (key, value)
-                           in list(statusdict.items())])
+statusdict = {
+    "blind": (0, 0x01),
+    "zombie": (0, 0x02),
+    "poison": (0, 0x04),
+    "magitek": (0, 0x08),
+    "vanish": (0, 0x10),
+    "imp": (0, 0x20),
+    "petrify": (0, 0x40),
+    "death": (0, 0x80),
+    "condemned": (1, 0x01),
+    "near death": (1, 0x02),
+    "image": (1, 0x04),
+    "mute": (1, 0x08),
+    "berserk": (1, 0x10),
+    "confuse": (1, 0x20),
+    "seizure": (1, 0x40),
+    "sleep": (1, 0x80),
+    "float": (2, 0x01),
+    "regen": (2, 0x02),
+    "slow": (2, 0x04),
+    "haste": (2, 0x08),
+    "stop": (2, 0x10),
+    "shell": (2, 0x20),
+    "protect": (2, 0x40),
+    "reflect": (2, 0x80),
+    "cover": (3, 0x01),
+    "runic": (3, 0x02),
+    "reraise": (3, 0x04),
+    "morph": (3, 0x08),
+    "casting": (3, 0x10),
+    "disappear": (3, 0x20),
+    "interceptor": (3, 0x40),
+    "floating": (3, 0x80)}
+reverse_statusdict = {(value, key) for (key, value) in list(statusdict.items())}
 
 early_bosses = [
-308, # head
-333, # ipooh
-341, # rizopas
-262, # ghosttrain
-300  # ultros 1
+    308, # head
+    333, # ipooh
+    341, # rizopas
+    262, # ghosttrain
+    300  # ultros 1
 ]
 
 elemlist = ["fire", "ice", "bolt", "bio", "wind", "pearl", "earth", "water"]
@@ -87,17 +87,17 @@ ranked = ["casting", "near death", "floating", "regen", "poison", "blind",
           "sleep", "confuse", "stop", "petrify", "zombie",
           "morph", "frozen", "death", "interceptor", "magitek",
           "rage", "dance", "disappear"]
-specialdict = [k for (k, v) in sorted(list(statusdict.items()),
-               key=lambda k_v: k_v[1])]
-specialdict = dict([(k, i) for (i, k) in enumerate(specialdict)])
+specialdict = [k for (k, v) in sorted(statusdict.items(),
+                                      key=lambda k_v: k_v[1])]
+specialdict = {k: i for (i, k) in enumerate(specialdict)}
 specialdict["rage"] = 0x18
 specialdict["dance"] = 0x10
-del(specialdict["float"])
-del(specialdict["cover"])
+del specialdict["float"]
+del specialdict["cover"]
 specialdict["frozen"] = 0x19
 specialdict["hp drain"] = 0x30
 specialdict["mp drain"] = 0x31
-reverse_specialdict = dict([(v, k) for (k, v) in specialdict.items()])
+reverse_specialdict = {v: k for (k, v) in specialdict.items()}
 ranked = [specialdict[key] for key in ranked]
 
 
@@ -165,15 +165,28 @@ class MonsterBlock:
         self.ambusher = False
         self.set_id(monster_id)
         self.attackname = "Special"
+        self.graphics = None
+        self.morph = 0
+        self.misc1 = 0
+        self.misc2 = 0
+        self.immunities = []
+        self.absorb = 0
+        self.null = 0
+        self.weakness = 0
+        self.attackanimation = 0
+        self.statuses = []
+        self.special = 0
+        self.oldlevel = 0
+        self.items = []
 
     def determine_location(self):
         from formationrandomizer import get_formations, get_fsets
         from locationrandomizer import get_locations, get_zones
-        formations = set([f for f in get_formations()
-                          if self in f.present_enemies])
+        formations = {f for f in get_formations()
+                      if self in f.present_enemies}
         fsets = [fs for fs in get_fsets() if len(fs.formations) == 4]
         fsets = [fs for fs in fsets if formations & set(fs.formations)]
-        if len(fsets) == 0:
+        if not fsets:
             return ""
 
         def score_location(location):
@@ -243,7 +256,7 @@ class MonsterBlock:
             s = "reflect break?"
         else:
             s = ""
-            if not (self.special & 0x40):
+            if not self.special & 0x40:
                 s += "damage + "
             s += reverse_specialdict[special & 0x3F]
         if self.special & 0x80:
@@ -324,11 +337,7 @@ class MonsterBlock:
             namewidth = max(len(name) for name in newnames) + 1
 
             def get_shortname(name):
-                if name in shortnames:
-                    newname = shortnames[name]
-                else:
-                    newname = name
-                return newname
+                return shortnames.get(name, name)
 
             values = {}
             for name in statnames:
@@ -426,8 +435,7 @@ class MonsterBlock:
     def display_name(self):
         if hasattr(self, "changed_name"):
             return self.changed_name.strip('_')
-        else:
-            return self.name.strip('_')
+        return self.name.strip('_')
 
     @property
     def inescapable(self):
@@ -469,8 +477,7 @@ class MonsterBlock:
         for action in self.aiscript:
             if ord(action[0]) == 0xF6 and ord(action[1]) != 0x00:
                 return True
-        else:
-            return False
+        return False
 
     def set_id(self, i):
         self.id = i
@@ -536,13 +543,13 @@ class MonsterBlock:
     def increase_enemy_difficulty(self, limit=99):
         level = self.stats['level']
         diff = limit - level
-        
+
         level_add = diff//2
-        if level <=7:
+        if level <= 7:
             level_add = diff//16
         elif level <= 15:
             level_add = diff//8
-        elif level <=30:
+        elif level <= 30:
             level_add = diff//4
 
         factors = {
@@ -575,13 +582,13 @@ class MonsterBlock:
 
         for stat in self.stats:
             self.stats[stat] *= factors.get(stat, 1)
-            
+
         if self.stats['evade%'] == 0:
             self.stats['evade%'] = level//2
 
         if self.stats['mblock%'] == 0:
             self.stats['mblock%'] = level//4
-        
+
         stat_max = {
             'hp': 65535,
             'speed': 235
@@ -735,7 +742,7 @@ class MonsterBlock:
             d = s1.healing == s2.healing
             e = s1.unreflectable == s2.unreflectable
             f = s1.abort_on_allies == s2.abort_on_allies
-            return (a and b and c and d and e and f)
+            return a and b and c and d and e and f
         if options_.mode.name == "katn":
             restricted = [0xEA, 0xC8]
         elif options_.is_code_active("madworld"):
@@ -1098,14 +1105,14 @@ class MonsterBlock:
                 # trigger phase change at 640 or 768 HP
                 for i, a in enumerate(self.aiscript):
                     if a[0:3] == bytearray([0xFC, 0x06, 0x36]):
-                        self.aiscript[i] = bytearray([0xFC, 0x06, 0x36, random.randint(5,6)])
+                        self.aiscript[i] = bytearray([0xFC, 0x06, 0x36, random.randint(5, 6)])
                         break
         if name == 'tunnelarmr':
             self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
             self.aiscript = self.aiscript[4:]
         if name == "leader":
             self.stats['hp'] = 400 + random.randint(0, 50) + random.randint(0, 50)
-        if name == "merchant" or name == "officer":
+        if name in ("merchant", "officer"):
             stealmessage = bytearray([0xFC, 0x01, 0x05, 0x05])
             deathmessage = bytearray([0xFC, 0x12, 0x00, 0x00])
             index = self.aiscript.index(stealmessage)
@@ -1113,7 +1120,7 @@ class MonsterBlock:
 
         if name == 'whelk':
             self.aiscript = self.aiscript[4:]
-            
+
         if tutmessage:
             self.aiscript = [a for a in self.aiscript if a != tutmessage]
 
@@ -1574,16 +1581,16 @@ class MonsterBlock:
 
         branch = random.randint(1, 10)
         if darkworld:
-            branches = [3,5]
+            branches = [3, 5]
         else:
-            branches = [7,9]
+            branches = [7, 9]
         if branch <= branches[0]:
             # regular special
             valid = set(range(0, 0x0F))
             if narshesafe and not darkworld:
                 valid = [0, 2, 3, 5, 8, 9, 0xb, 0xc, 0xd, 0xe, 0xf,
                          0x10, 0x12, 0x14, 0x18, 0x30, 0x31, 0x80]
-            else: 
+            else:
                 valid = [0, 1, 2, 3, 5, 6, 7, 8, 9, 0xb, 0xc, 0xd, 0xe, 0xf,
                          0x10, 0x12, 0x14, 0x18, 0x19, 0x30, 0x31, 0x80]
             if random.randint(1, 1000) != 1000:
@@ -1658,7 +1665,7 @@ class MonsterBlock:
                 self.mutate_ai(options_=options_, change_skillset=False,
                                safe_solo_terra=safe_solo_terra)
             else:
-                self.mutate_ai(options_=options_, change_skillset=change_skillset, 
+                self.mutate_ai(options_=options_, change_skillset=change_skillset,
                                safe_solo_terra=safe_solo_terra)
         self.mutate_control()
 
@@ -1724,7 +1731,7 @@ class MonsterBlock:
         funcs['speed'] = lambda m: m.stats['speed']
         funcs['elements'] = lambda m: max(1, bin(m.absorb | m.null).count('1'))
         funcs['immunities'] = lambda m: max(1, sum(bin(i).count('1')
-                                            for i in m.immunities))
+                                                   for i in m.immunities))
         funcs['itemrank'] = lambda m: max(1, m.itemrank())
 
         if not avgs:
@@ -1847,14 +1854,14 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
         else:
             to_swap = get_swap_index(index)
             n = candidates[to_swap]
-            
+
             if not safe_solo_terra:
                 m.swap_ai(n)
                 continue
 
             # No blizzard, mega volt, or tek laser in solo terra
             banned_narshe_skills = [0xB5, 0xB8, 0xBA]
-            
+
             banned_from_narshe = any(b in m.get_skillset()
                                      for b in banned_narshe_skills)
             banned_from_narshe |= any(b in n.get_skillset()
@@ -2032,11 +2039,11 @@ def get_collapsing_house_help_skill():
                     status_specials.append(m.special & 0x3F)
                 skills = m.get_skillset(ids_only=False)
                 all_skills.extend([z for z in skills
-                    if (z.target_enemy_default or z.target_everyone) and z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]])
+                                   if (z.target_enemy_default or z.target_everyone) and z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]])
 
     if status_specials:
         sleep_index = ranked.index(specialdict["sleep"])
-        worst_special = max(status_specials, key=lambda s: ranked.index(s))
+        worst_special = max(status_specials, key=ranked.index)
         worst_special_index = ranked.index(worst_special)
         if worst_special_index >= sleep_index or not all_skills or random.choice([True, False]):
             status = reverse_specialdict[worst_special]
@@ -2047,9 +2054,9 @@ def get_collapsing_house_help_skill():
             elif status[-1] == "e":
                 status = status[:-1]
             return status
-    
+
     if all_skills:
         worst_skill = max(all_skills, key=lambda s: s.rank())
         return worst_skill.name + "-"
-    
+
     return "hitt"

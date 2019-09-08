@@ -1,38 +1,42 @@
-from utils import ESPER_TABLE, hex2int, int2bytes, Substitution, utilrandom as random
-from skillrandomizer import get_ranked_spells, get_spell
 from functools import reduce
+
+from skillrandomizer import get_ranked_spells, get_spell
+from utils import ESPER_TABLE, hex2int, int2bytes, Substitution, utilrandom as random
 
 items = None
 
-rankbounds = {0: 25,
-              1: 50,
-              2: 80,
-              3: 105,
-              4: None}
+rankbounds = {
+    0: 25,
+    1: 50,
+    2: 80,
+    3: 105,
+    4: None}
 
-bonus_ranks = {0: [0xFF, 0x0, 0x3, 0xD],
-               1: [0x9, 0xB, 0xF],
-               2: [0x1, 0x4, 0xA, 0xC, 0xE],
-               3: [0x2, 0x5, 0x8, 0x10],
-               4: [0x6]}  # Lv -1 bonus decided elsewhere
+bonus_ranks = {
+    0: [0xFF, 0x0, 0x3, 0xD],
+    1: [0x9, 0xB, 0xF],
+    2: [0x1, 0x4, 0xA, 0xC, 0xE],
+    3: [0x2, 0x5, 0x8, 0x10],
+    4: [0x6]}  # Lv -1 bonus decided elsewhere
 
-bonus_strings = {0: "HP + 10%",
-                 1: "HP + 30%",
-                 2: "HP + 50%",
-                 3: "MP + 10%",
-                 4: "MP + 30%",
-                 5: "MP + 50%",
-                 6: "HP + 100%",
-                 7: "LV - 1",
-                 8: "LV + 50%",
-                 9: "STR + 1",
-                 0xA: "STR + 2",
-                 0xB: "SPD + 1",
-                 0xC: "SPD + 2",
-                 0xD: "STA + 1",
-                 0xE: "STA + 2",
-                 0xF: "MAG + 1",
-                 0x10: "MAG + 2"}
+bonus_strings = {
+    0: "HP + 10%",
+    1: "HP + 30%",
+    2: "HP + 50%",
+    3: "MP + 10%",
+    4: "MP + 30%",
+    5: "MP + 50%",
+    6: "HP + 100%",
+    7: "LV - 1",
+    8: "LV + 50%",
+    9: "STR + 1",
+    0xA: "STR + 2",
+    0xB: "SPD + 1",
+    0xC: "SPD + 2",
+    0xD: "STA + 1",
+    0xE: "STA + 2",
+    0xF: "MAG + 1",
+    0x10: "MAG + 2"}
 
 spells = None
 used = set([])
@@ -41,18 +45,11 @@ used_bonuses = set([])
 
 def get_candidates(myrank, set_lower=True):
     global used
-    lower_bound, upper_bound = None, None
-    if myrank in rankbounds:
-        upper_bound = rankbounds[myrank]
-    if upper_bound is None:
-        upper_bound = 999
+    upper_bound = rankbounds.get(myrank, 999)
+    lower_bound = rankbounds.get(myrank-1, 0) if set_lower else 0
 
-    if myrank-1 in rankbounds and set_lower:
-        lower_bound = rankbounds[myrank-1]
-    else:
-        lower_bound = 0
-    candidates = [s for s in spells if s.rank() in
-                        range(lower_bound, upper_bound)]
+    candidates = [s for s in spells
+                  if s.rank() in range(lower_bound, upper_bound)]
     if not candidates:
         candidates = spells
     fresh = [s for s in candidates if s not in used]
@@ -63,14 +60,14 @@ def get_candidates(myrank, set_lower=True):
 
 def allocate_espers(ancient_cave, espers, characters, fout):
     char_ids = list(range(12)) + [13] # everyone but Gogo
-    
+
     characters = [c for c in characters if c.id in char_ids]
-    
+
     chars_for_esper = []
     max_rank = max(espers, key=lambda e: e.rank).rank
     for e in espers:
         num_users = 1
-        if e.id not in [15, 16] and random.randint(1,25) >= 25 - max_rank + e.rank:
+        if e.id not in [15, 16] and random.randint(1, 25) >= 25 - max_rank + e.rank:
             num_users += 1
             while num_users < 15 and random.choice([True] + [False] * (e.rank + 2)):
                 num_users += 1
@@ -79,54 +76,63 @@ def allocate_espers(ancient_cave, espers, characters, fout):
 
     if not ancient_cave:
         chars_for_esper[12] = chars_for_esper[11]   # make Odin and Raiden equippable by the same person/people
-        
-    char_mask_for_esper = [ 
-        reduce( lambda x, y: x | y,
-                [1 << char_id for char_id in chars_for_esper[e.id]]
-                ) for e in espers
+
+    char_mask_for_esper = [
+        reduce(lambda x, y: x | y,
+               [1 << char_id for char_id in chars_for_esper[e.id]]
+               ) for e in espers
     ]
 
     for e in espers:
         e.chars = ", ".join([c.newname for c in characters if c.id in chars_for_esper[e.id]])
-    
+
     # do substitution
     esper_allocator_sub = Substitution()
     esper_allocator_sub.set_location(0x31B61)
-    esper_allocator_sub.bytestring = [0x20,0x00,0xF8]
+    esper_allocator_sub.bytestring = [0x20, 0x00, 0xF8]
     esper_allocator_sub.write(fout)
-    
+
     esper_allocator_sub.set_location(0x35524)
-    esper_allocator_sub.bytestring = [0x20,0x07,0xF8]
+    esper_allocator_sub.bytestring = [0x20, 0x07, 0xF8]
     esper_allocator_sub.write(fout)
-    
+
     esper_allocator_sub.set_location(0x358E1)
     esper_allocator_sub.write(fout)
-    
+
     esper_allocator_sub.set_location(0x359B1)
     esper_allocator_sub.write(fout)
-    
+
     esper_allocator_sub.set_location(0x35593)
-    esper_allocator_sub.bytestring = [0xA9,0x2C]
+    esper_allocator_sub.bytestring = [0xA9, 0x2C]
     esper_allocator_sub.write(fout)
-    
+
     esper_allocator_sub.set_location(0x355B2)
-    esper_allocator_sub.bytestring = [0x20,0x2E,0xF8]
+    esper_allocator_sub.bytestring = [0x20, 0x2E, 0xF8]
     esper_allocator_sub.write(fout)
-    
+
     esper_allocator_sub.set_location(0x358E8)
-    esper_allocator_sub.bytestring = [0xC9,0x20,0xF0,0x16]
+    esper_allocator_sub.bytestring = [0xC9, 0x20, 0xF0, 0x16]
     esper_allocator_sub.write(fout)
-    
+
     esper_allocator_sub.set_location(0x3F800)
-    
-    esper_allocator_sub.bytestring = [0xAA, 0xB5, 0x69, 0x8D, 0xF8, 0x1C, 0x60, 0xDA, 0x08, 0x85, 0xE0, 0x0A, 0xAA, 0xE2, 0x10, 0xDA, 0xAD, 0xF8, 0x1C, 0x0A, 0xAA, 0xC2, 0x20, 0xBF, 0x67, 0x9C, 0xC3, 0xFA, 0x3F, 0x58, 0xF8, 0xC3, 0xF0, 0x05, 0x28, 0xFA, 0x4C, 0x76, 0x55, 0x28, 0xFA, 0xA9, 0x28, 0x4C, 0x95, 0x55, 0xBD, 0x02, 0x16, 0xC9, 0x80, 0xB0, 0x0F, 0xFA, 0xA6, 0x00, 0xBF, 0x4B, 0xF8, 0xC3, 0xF0, 0x07, 0x8D, 0x80, 0x21, 0xE8, 0x80, 0xF4, 0x60, 0x9C, 0x80, 0x21, 0x4C, 0xD9, 0x7F, 0x82, 0x9A, 0xA7, 0xC3, 0xAD, 0xFF, 0x9E, 0xAA, 0xAE, 0xA2, 0xA9, 0xBE, 0x00] + [i for sublist in map(int2bytes, char_mask_for_esper) for i in sublist]
+
+    esper_allocator_sub.bytestring = [
+        0xAA, 0xB5, 0x69, 0x8D, 0xF8, 0x1C, 0x60, 0xDA, 0x08, 0x85, 0xE0, 0x0A, 0xAA, 0xE2, 0x10, 0xDA, 0xAD, 0xF8, 0x1C, 0x0A, 0xAA, 0xC2,
+        0x20, 0xBF, 0x67, 0x9C, 0xC3, 0xFA, 0x3F, 0x58, 0xF8, 0xC3, 0xF0, 0x05, 0x28, 0xFA, 0x4C, 0x76, 0x55, 0x28, 0xFA, 0xA9, 0x28, 0x4C,
+        0x95, 0x55, 0xBD, 0x02, 0x16, 0xC9, 0x80, 0xB0, 0x0F, 0xFA, 0xA6, 0x00, 0xBF, 0x4B, 0xF8, 0xC3, 0xF0, 0x07, 0x8D, 0x80, 0x21, 0xE8,
+        0x80, 0xF4, 0x60, 0x9C, 0x80, 0x21, 0x4C, 0xD9, 0x7F, 0x82, 0x9A, 0xA7, 0xC3, 0xAD, 0xFF, 0x9E, 0xAA, 0xAE, 0xA2, 0xA9, 0xBE, 0x00] + [
+            i for sublist in map(int2bytes, char_mask_for_esper) for i in sublist]
     esper_allocator_sub.write(fout)
-    
+
 class EsperBlock:
     def __init__(self, pointer, name, rank):
         self.pointer = hex2int(pointer)
         self.name = name
         self.rank = int(rank)
+        self.spells = []
+        self.learnrates = []
+        self.bonus = None
+        self.id = None
 
     def set_id(self, esperid):
         self.id = esperid
@@ -153,7 +159,7 @@ class EsperBlock:
         if spells is None:
             spells = get_ranked_spells(filename, magic_only=True)
         self.spells, self.learnrates = [], []
-        for i in range(5):
+        for _ in range(5):
             learnrate = ord(f.read(1))
             spell = ord(f.read(1))
             if spell != 0xFF and learnrate != 0:
@@ -167,7 +173,7 @@ class EsperBlock:
         for learnrate, spell in zip(self.learnrates, self.spells):
             fout.write(bytes([learnrate]))
             fout.write(bytes([spell.spellid]))
-        for i in range(5 - len(self.spells)):
+        for _ in range(5 - len(self.spells)):
             fout.write(b'\x00')
             fout.write(b'\xFF')
         fout.write(bytes([self.bonus]))

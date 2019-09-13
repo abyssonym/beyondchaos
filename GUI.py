@@ -1,10 +1,12 @@
+import fnmatch
+import os
 import re
 import sys
 
 from PyQt5 import QtGui, Qt
 from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, QHBoxLayout, QLineEdit, \
     QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, QTabWidget, QInputDialog, QDialog, QPlainTextEdit, \
-    QScrollArea
+    QScrollArea, QMessageBox
 import json
 
 
@@ -27,7 +29,7 @@ class Window(QWidget):
     def __init__(self):
         super().__init__()
 
-        # window geometry info
+        # window geometry data
         self.title = "Beyond Chaos Randomizer"
         self.left = 200
         self.top = 200
@@ -47,6 +49,22 @@ class Window(QWidget):
         self.major = {}
         self.minor = {}
         self.simple = {}
+        self.dictionaries = [self.simple, self.aesthetic, self.major,
+                        self.minor, self.experimental, self.gamebreaking]
+        self.savedPresets = {}
+
+        # ui elements
+        self.comboBox = QComboBox()
+
+        # ----------- Begin buiding program/window ------------------------------
+
+        # checking for saved data directory
+        if not os.path.exists('saved_flagsets'):
+            os.mkdir('saved_flagsets')
+
+        # pull data from files
+        self.initCodes()
+        self.compilePresets()
 
         # create window using geometry data
         self.InitWindow()
@@ -55,9 +73,10 @@ class Window(QWidget):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
 
-        self.initCodes()
+        # build the UI
         self.CreateLayout()
 
+        # show program onscreen
         self.show()
 
     def CreateLayout(self):
@@ -81,7 +100,7 @@ class Window(QWidget):
 
         self.setLayout(vbox)
 
-    # Top groupbox consisting of ROM selection, and Sedd number input
+    # Top groupbox consisting of ROM selection, and Seed number input
     def GroupBoxOneLayout(self):
         topGroupBox = QGroupBox()
         TopHBox = QHBoxLayout()
@@ -179,7 +198,6 @@ class Window(QWidget):
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("simple", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
-
         tab1.setLayout(flagGrid)
 
         # ----------- tab2 -------------------------
@@ -193,8 +211,8 @@ class Window(QWidget):
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("aesthetic", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
-
         tab2.setLayout(flagGrid)
+
         # ----------- tab3 -------------------------
         flagGrid = QGridLayout()
         count = 0
@@ -206,8 +224,8 @@ class Window(QWidget):
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("major", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
-
         tab3.setLayout(flagGrid)
+
         # ----------- tab4 -------------------------
         flagGrid = QGridLayout()
         count = 0
@@ -219,8 +237,8 @@ class Window(QWidget):
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("minor", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
-
         tab4.setLayout(flagGrid)
+
         # ----------- tab5 -------------------------
         flagGrid = QGridLayout()
         count = 0
@@ -232,8 +250,8 @@ class Window(QWidget):
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("experimental", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
-
         tab5.setLayout(flagGrid)
+
         # ----------- tab6 -------------------------
         flagGrid = QGridLayout()
         count = 0
@@ -245,7 +263,6 @@ class Window(QWidget):
             cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("gamebreaking", temp))
             flagGrid.addWidget(cbox, count / 3, count % 3)
             count += 1
-
         tab6.setLayout(flagGrid)
 
         # this is the line in the layout that displays the string of selected flags
@@ -296,17 +313,16 @@ class Window(QWidget):
 
         bottomHBox.addWidget(QLabel("Saved flag selection: "))
 
-        combolist = ["Select flag preset (optional)",
-                "Dark Slash's formula",
-                "Muppets's Garbage Brew",
-                "Cecil's Murder Seed",
-                "CecilBot Special"]
-        comboBox = QComboBox()
-        for string in combolist:
-            comboBox.addItem(string)
-        bottomHBox.addWidget(comboBox)
+        self.comboBox.addItem("Select a preset")
+        for string in self.savedPresets:
+            self.comboBox.addItem(string)
+        self.comboBox.currentTextChanged.connect(lambda: self.updatePresetDropdown())
+        bottomHBox.addWidget(self.comboBox)
+
+
 
         deleteButton = QPushButton("Delete selection")
+        deleteButton.clicked.connect(lambda: self.deleteSeed())
         bottomHBox.addWidget(deleteButton)
 
         bottomHBox.addStretch(1)
@@ -325,18 +341,39 @@ class Window(QWidget):
     # opens input dialog to get a name to assign a desired seed flagset, then saves all dictionaries
     #   to a text file under that flagset name.
     def saveSeed(self):
-        dictionaries = [self.simple, self.aesthetic, self.major,
-                        self.minor, self.experimental, self.gamebreaking]
 
         text, okPressed = QInputDialog.getText(self, "Save Seed", "Enter a name for this flagset", QLineEdit.Normal, "")
         if okPressed and text != '':
             print(f"{text}.txt saved!")
 
-            f = open(f"saved_flagsets/{text}.txt", "w")
-            for l in dictionaries:
+            f = open(f"saved_flagsets/flagset_{text}.txt", "w")
+            for l in self.dictionaries:
                 # print(l)
                 f.write(str(l) + "\n")
             f.close()
+            self.savedPresets[text] = f"{text}.txt"
+            self.comboBox.addItem(text)
+
+    def deleteSeed(self):
+        seed = self.comboBox.currentText()
+
+        if not seed == "Select a preset":
+            response = QMessageBox.question(self, 'Delete confimation', f"Do you want to delete \'{seed}\'?",
+                                            QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
+            if response == QMessageBox.Yes:
+                print("You selected yes!")
+                if os.path.exists(f"saved_flagsets/flagset_{seed}.txt"):
+                    os.remove(f"saved_flagsets/flagset_{seed}.txt")
+                    del self.savedPresets[seed]
+                    self.comboBox.removeItem(self.comboBox.findText(seed))
+                    print(f"{seed} deleted!")
+            else:
+                print("You selected no!")
+
+    def updatePresetDropdown(self):
+        selectedPreset = self.comboBox.currentText()
+        print(selectedPreset + " selected")
+        self.loadPreset(selectedPreset)
 
     # (MAKE THIS CLEANER IN THE FUTURE)
     # When flag is selected/unselected, updates flag value in appropriate dictionary
@@ -375,10 +412,10 @@ class Window(QWidget):
                 self.gamebreaking[value]['checked'] = False
 
         # This part updates the textbox with the string of flag values
-        dictionaries = [self.simple, self.aesthetic, self.major,
-                        self.minor, self.experimental, self.gamebreaking]
+        # dictionaries = [self.simple, self.aesthetic, self.major,
+        #                 self.minor, self.experimental, self.gamebreaking]
         s = ""
-        for d in dictionaries:
+        for d in self.dictionaries:
             space = False
             for name, info in d.items():
                 if info['checked']:
@@ -533,6 +570,27 @@ class Window(QWidget):
         tablayout.addWidget(tab)
         dia.setLayout(tablayout)
         dia.exec()
+
+    # reads files from save directory and puts them in a list
+    def compilePresets(self):
+        for file in os.listdir('./saved_flagsets'):
+            if re.match(r'flagset_(.*).txt$', file):
+                print(file)
+                temp = list(re.split('[_.]', file))
+                self.savedPresets[temp[1]] = file
+                print(self.savedPresets)
+
+    # Reads dictionary data from text file and populates class dictionaries
+    def loadPreset(self, flagdict):
+        s = open(f'saved_flagsets/flagset_{flagdict}.txt', 'r')
+
+        for d in self.dictionaries:
+            d = eval(s.readline())
+            print(d)
+        s.close()
+
+
+
 
 
 if __name__ == "__main__":

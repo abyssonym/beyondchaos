@@ -88,8 +88,7 @@ def generate_attack():
 
     if len(modifier) + len(move) < 10:
         return ("%s %s" % (modifier, move)).strip()
-    else:
-        return modifier + move
+    return modifier + move
 
 if __name__ == "__main__":
     for i in range(0x100):

@@ -225,7 +225,7 @@ class AutoLearnRageSub(Substitution):
         learn_leap_sub.bytestring = bytes([0xEA] * 7)
         learn_leap_sub.set_location(0x2543E)
         learn_leap_sub.write(fout)
-        
+
         gau_cant_appear_sub = Substitution()
         gau_cant_appear_sub.bytestring = bytes([0x80, 0x0C])
         gau_cant_appear_sub.set_location(0x22FB5)
@@ -254,7 +254,7 @@ class AutoRecruitGauSub(Substitution):
         gau_stays_wor_sub.bytestring = bytes([0xD4, 0xFB])
         gau_stays_wor_sub.set_location(0xA5324)
         gau_stays_wor_sub.write(fout)
-        
+
         REPLACE_ENEMIES.append(0x172)
         super(AutoRecruitGauSub, self).write(fout)
 
@@ -315,6 +315,8 @@ def determine_new_freespaces(freespaces, myfs, size):
 class WindowBlock():
     def __init__(self, windowid):
         self.pointer = 0x2d1c00 + (windowid * 0x20)
+        self.palette = [(0, 0, 0)] * 8
+        self.negabit = 0
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -472,7 +474,7 @@ def randomize_slots(filename, fout, pointer):
             return jokerdoom
         elif i == 3:
             return None
-        elif i in [4, 5, 6]:
+        if i in [4, 5, 6]:
             half = len(spells) // 2
             index = random.randint(0, half) + random.randint(0, half)
         elif i == 2:
@@ -1733,7 +1735,7 @@ def manage_magitek():
     spells = get_ranked_spells()
     exploder = [s for s in spells if s.spellid == 0xA2][0]
     tek_skills = [s for s in spells if s.spellid in TEK_SKILLS]
-    targets = sorted(set([s.targeting for s in spells]))
+    targets = {s.targeting for s in spells}
     terra_used, others_used = [], []
     target_pointer = 0x19104
     terra_pointer = 0x1910C
@@ -3804,7 +3806,7 @@ def manage_clock():
         write_multi(f, ptr + offset, 2)
 
     f.close()
-    
+
     for i in range(0, 5):
         hour_text_sub = Substitution()
         hour_text_sub.bytestring = dialogue_to_bytes(hour_texts[i])
@@ -3896,12 +3898,12 @@ def manage_clock():
 
     # In the original game, this clue says "four" and is redundant. It should say "two".
     # Because the original game doesn't compress this as much as it could, but
-    # Divergent paths changes and jam up your opera mode do, I'm changing it to use 
+    # Divergent paths changes and jam up your opera mode do, I'm changing it to use
     # numerals in all cases so it'll be consistent and fit in the space without adjusting
     # pointers. The proper thing would be to run all text changes into a manager that
     # writes them out once at the end, but I'm too lazy for that right now.
     text = f"The second hand of my watch is pointing at {(wrong_seconds[1] + 1) * 2}."
-        
+
     second_text_sub2 = Substitution()
     second_text_sub2.bytestring = dialogue_to_bytes(text)
     second_text_sub2.set_location(get_dialogue_pointer(fout, 0x425))
@@ -4830,7 +4832,7 @@ def randomize():
         manage_treasure(monsters, shops=True, no_charm_drops=katn)
         if not options_.is_code_active('ancientcave'):
             manage_chests()
-            mutate_event_items(fout, cutscene_skip=options_.is_code_active('notawaiter'), crazy_prices=options_.is_code_active('madworld'), no_monsters=katn, uncapped_monsters =options_.is_code_active('bsiab'))
+            mutate_event_items(fout, cutscene_skip=options_.is_code_active('notawaiter'), crazy_prices=options_.is_code_active('madworld'), no_monsters=katn, uncapped_monsters=options_.is_code_active('bsiab'))
             for fs in fsets:
                 # write new formation sets for MiaBs
                 fs.write_data(fout)
@@ -4897,7 +4899,7 @@ def randomize():
     wor_free_char = 0xB  # gau
     alternate_gogo = options_.is_code_active('HAKCSBKC')
     if (options_.shuffle_wor or alternate_gogo) and not options_.is_code_active('ancientcave'):
-        include_gau = options_.shuffle_commands or options_.replace_commands or options_.random_treasure,
+        include_gau = options_.shuffle_commands or options_.replace_commands or options_.random_treasure
         wor_free_char = manage_wor_recruitment(fout,
                                                shuffle_wor=options_.shuffle_wor,
                                                random_treasure=options_.random_treasure,
@@ -4923,11 +4925,11 @@ def randomize():
     if has_music or options_.is_code_active('alasdraco'):
         data = insert_instruments(fout, 0x310000)
         opera = None
-        
+
     if options_.is_code_active('alasdraco'):
         opera = manage_opera(fout, has_music)
     reseed()
-    
+
     if has_music:
         music_log = randomize_music(fout, options_=options_, opera=opera, form_music_overrides=form_music)
         log(music_log, section="music")
@@ -4943,7 +4945,7 @@ def randomize():
 
     code_hint()
     reseed()
-    
+
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
     if options_.is_code_active('QGWURNGNSEIMKTMDFBIX'):
         no_kutan_skip_sub = Substitution()
@@ -5036,7 +5038,7 @@ def randomize():
         the_end_comes_beyond_crusader()
 
     manage_dialogue_patches(fout)
-    
+
     rewrite_title(text="FF6 BCEX %s" % seed)
     fout.close()
     rewrite_checksum()

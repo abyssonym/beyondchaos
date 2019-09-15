@@ -50,9 +50,27 @@ class Options:
     active_flags: Set[Flag] = field(default_factory=set)
     active_codes: Set[Code] = field(default_factory=set)
 
-    def __post_init__(self):
-        for flag in ALL_FLAGS:
-            setattr(self, flag.attr, False)
+    def __init__(self):
+        self.shuffle_commands = False
+        self.replace_commands = False
+        self.sprint = False
+        self.fix_exploits = False
+        self.random_enemy_stats = False
+        self.random_palettes_and_names = False
+        self.random_items = False
+        self.random_character_stats = False
+        self.random_espers = False
+        self.random_treasure = False
+        self.random_zerker = False
+        self.random_blitz = False
+        self.random_window = False
+        self.random_formations = False
+        self.swap_sprites = False
+        self.random_animation_palettes = False
+        self.random_final_dungeon = False
+        self.random_dances = False
+        self.random_clock = False
+        self.shuffle_wor = False
 
     def is_code_active(self, code_name: str):
         for code in self.active_codes:

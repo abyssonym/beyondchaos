@@ -638,7 +638,7 @@ class ChainSpellSub(MultiSpellSubMixin):
     def generate_bytestring(self):
         subpointer = self.location + self.get_overhead()
         self.spellsub.set_location(subpointer)
-        if not hasattr(self.spellsub, "bytestring"):
+        if not self.spellsub.bytestring:
             self.spellsub.generate_bytestring()
         high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
 

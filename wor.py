@@ -1357,7 +1357,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
     for l in event_items:
         if l.upper() in wobtreasurelocs + ["FIGARO CASTLE"]:
             for e in event_items[l]:
-                if e.contenttype == 0x40 and not e.multiple:
+                if e.content_type == 0x40 and not e.multiple:
                     wor_sub.bytestring += bytes([0x80, e.contents])
 
     # give the player a basic set of items.  These items are intended to

@@ -68,7 +68,7 @@ statusdict = {
     "disappear": (3, 0x20),
     "interceptor": (3, 0x40),
     "floating": (3, 0x80)}
-reverse_statusdict = {(value, key) for (key, value) in list(statusdict.items())}
+reverse_statusdict = {value: key for (key, value) in list(statusdict.items())}
 
 early_bosses = [
     308, # head

@@ -45,7 +45,7 @@ used_bonuses = set([])
 
 def get_candidates(myrank, set_lower=True):
     global used
-    upper_bound = rankbounds.get(myrank, 999)
+    upper_bound = rankbounds.get(myrank, 999) or 999
     lower_bound = rankbounds.get(myrank-1, 0) if set_lower else 0
 
     candidates = [s for s in spells

@@ -1735,7 +1735,7 @@ def manage_magitek():
     spells = get_ranked_spells()
     exploder = [s for s in spells if s.spellid == 0xA2][0]
     tek_skills = [s for s in spells if s.spellid in TEK_SKILLS]
-    targets = {s.targeting for s in spells}
+    targets = sorted({s.targeting for s in spells})
     terra_used, others_used = [], []
     target_pointer = 0x19104
     terra_pointer = 0x1910C
@@ -2375,7 +2375,7 @@ def manage_chests():
         if options_.random_clock:
             if l.locid in [221, 225, 226]:
                 for c in l.chests:
-                    if c.contenttype == 0x40 and c.contents == 166:
+                    if c.content_type == 0x40 and c.contents == 166:
                         c.contents = 33
 
         l.mutate_chests(crazy_prices=crazy_prices, no_monsters=no_monsters, uncapped_monsters=uncapped_monsters)

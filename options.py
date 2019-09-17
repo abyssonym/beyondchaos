@@ -49,28 +49,26 @@ class Options:
     mode: Mode
     active_flags: Set[Flag] = field(default_factory=set)
     active_codes: Set[Code] = field(default_factory=set)
-
-    def __init__(self):
-        self.shuffle_commands = False
-        self.replace_commands = False
-        self.sprint = False
-        self.fix_exploits = False
-        self.random_enemy_stats = False
-        self.random_palettes_and_names = False
-        self.random_items = False
-        self.random_character_stats = False
-        self.random_espers = False
-        self.random_treasure = False
-        self.random_zerker = False
-        self.random_blitz = False
-        self.random_window = False
-        self.random_formations = False
-        self.swap_sprites = False
-        self.random_animation_palettes = False
-        self.random_final_dungeon = False
-        self.random_dances = False
-        self.random_clock = False
-        self.shuffle_wor = False
+    shuffle_commands: bool = field(init=False, default=False)
+    replace_commands: bool = field(init=False, default=False)
+    sprint: bool = field(init=False, default=False)
+    fix_exploits: bool = field(init=False, default=False)
+    random_enemy_stats: bool = field(init=False, default=False)
+    random_palettes_and_names: bool = field(init=False, default=False)
+    random_items: bool = field(init=False, default=False)
+    random_character_stats: bool = field(init=False, default=False)
+    random_espers: bool = field(init=False, default=False)
+    random_treasure: bool = field(init=False, default=False)
+    random_zerker: bool = field(init=False, default=False)
+    random_blitz: bool = field(init=False, default=False)
+    random_window: bool = field(init=False, default=False)
+    random_formations: bool = field(init=False, default=False)
+    swap_sprites: bool = field(init=False, default=False)
+    random_animation_palettes: bool = field(init=False, default=False)
+    random_final_dungeon: bool = field(init=False, default=False)
+    random_dances: bool = field(init=False, default=False)
+    random_clock: bool = field(init=False, default=False)
+    shuffle_wor: bool = field(init=False, default=False)
 
     def is_code_active(self, code_name: str):
         for code in self.active_codes:

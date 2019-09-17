@@ -227,7 +227,7 @@ class Zone():
         try:
             location = get_location(locid)
             area_name = location.area_name
-        except ValueError:
+        except KeyError:
             area_name = "Unknown"
         return area_name
 
@@ -312,7 +312,7 @@ class Location():
     @property
     def area_name(self):
         if self.locid not in maplocations:
-            raise Exception("Area for location ID %s not known." % self.locid)
+            raise KeyError("Area for location ID %s not known." % self.locid)
         return maplocations[self.locid]
 
     @property

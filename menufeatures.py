@@ -81,14 +81,24 @@ def add_common_menu_stuff(fout):
         0x90, 0x31, # BCC Get_spell_attack_name
         0xC9, 0x51, # CMP #$51 If is an esper
         0x90, 0x18, # BCC Get_esper_attack_name
-        0xE9, 0x51, # SBC #$51
-        0xC2, 0x20, # REP #$20
-        0x29, 0xFF, 0x00, # AND $00FF
-        0x85, 0x38, # STA $38  -|
-        0x0A, # ASL             |
-        0x0A, # ASL             |
-        0x65, 0x38, # ADC $38   |
-        0x0A, # ASL            _| A *= 10
+#
+        0xC9, 0x55, # CMP #$55 If skean
+        0x90, 0x04, # BCC to_get_other_attack_name
+        0xC9, 0x5D, # CMP #$5D If swdtech
+        0x90, 0x03, # BCC to_get_swdtech_attack_name
+        # to get_other_attack_name:
+        0x4C, 0x4E, 0x1C, # JMP #$1CXX
+        # to get_swdtech_attack_name:
+        0x4C, 0x66, 0x1C, # JMP #$1CXX
+#
+        #0xE9, 0x51, # SBC #$51
+        #0xC2, 0x20, # REP #$20
+        #0x29, 0xFF, 0x00, # AND $00FF
+        #0x85, 0x38, # STA $38  -|
+        #0x0A, # ASL             |
+        #0x0A, # ASL             |
+        #0x65, 0x38, # ADC $38   |
+        #0x0A, # ASL            _| A *= 10
         0x69, 0xB9, 0xF7,   # ADC #$F7B9  A = start of attack name - #$E60000
         0xAA, # TAX
         0xA9, 0x0A, 0x00, # LDA #$000A
@@ -121,9 +131,11 @@ def add_common_menu_stuff(fout):
         0xA9, 0x07, 0x00, # LDA #$0007
         0xE2, 0x20, # SEP #$20
         0x6B, # RTL
-        # $F01871 Write Name of attack:
-        0xA5, 0x35, # LDA $35
-        0x85, 0x38, # STA $38
+        # $F01871 write_attack_name:
+        0x4C, 0x35, 0x1C, # JMP #$1CXX
+        0xEA, # NOP
+        #0xA5, 0x35, # LDA $35
+        #0x85, 0x38, # STA $38
         0x22, 0x21, 0x18, 0xF0, # JSR Get_attack_name
         0x86, 0x38, # STX $38
         0x85, 0x3D, # STA $3D   3D = length of name
@@ -131,7 +143,7 @@ def add_common_menu_stuff(fout):
         0x85, 0x3A, # STA $3A   38, 39, 3A = start of attack name
         0xA6, 0x36, # LDX $36
         0x86, 0x3B, # STX $3B
-        0x22, 0xA3, 0x18, 0xF0, # JSR #$F018A3
+        0x22, 0xA3, 0x18, 0xF0, # JSR #$F018A3 write_attack_text
         0x6B, # RTL
         # $F0188A WriteText?
         0xA6, 0x23, # LDX $23
@@ -146,22 +158,9 @@ def add_common_menu_stuff(fout):
         0xC8, # INY
         0x80, 0xED, # BRA
         0x6B, # RTL
-        # $F018A3:
+        # $F018A3 write_attack_text:
         0x4C, 0x00, 0x1C, # JMP $1C00
-        0xEA, 0xEA, # NOP * 2
-        #0xA6, 0x3B, # LDX $3B
-        #0xA0, 0x00, 0x00, # LDY #$0000
-        #Loop:
-        0xB7, 0x38, # LDA [$38], Y
-        0x9F, 0x00, 0x00, 0x7E, # STA $7E0000,X
-        0xA9, 0x20, # LDA #$20
-        0x9F, 0x01, 0x00, 0x7E, # STA $7E0001,X
-        0xE8, # INX
-        0xE8, # INX
-        0xC8, # INY
-        0xC6, 0x3D, # DEC $3D
-        0xD0, 0xED, # BNE Loop
-        0x6B, # RTL
+        ] + [0xEA] * 22 + [ # NOP * 22
 
         # $F018BC:
         0xA6, 0x1F, # LDX $1F
@@ -233,6 +232,7 @@ def add_common_menu_stuff(fout):
     
     common_sub.set_location(0x301C00)
     common_sub.bytestring = bytes([
+        #Print_attack_name:
         0xA9, 0x0A, # LDA #$0A
         0x85, 0x3F, # STA $3F
         0xA6, 0x3B, # LDX $3B
@@ -259,6 +259,53 @@ def add_common_menu_stuff(fout):
         0xE8, # INX
         0xC6, 0x3F, # DEC $3F
         0xD0, 0xEE, #BNE
+        0x6B, # RTL
+        
+        # $F01C35 write_attack_name:
+        0xA9, 0xE6, # LDA #$E6
+        0x85, 0x3A, # STA $3A   38, 39, 3A = start of attack name - set 3A here so get_attack_name can override it for swdtechs
+        0xA5, 0x35, # LDA $35
+        0x85, 0x38, # STA $38
+        0x22, 0x21, 0x18, 0xF0, # JSR Get_attack_name
+        0x86, 0x38, # STX $38   38, 39, 3A = start of attack name
+        0x85, 0x3D, # STA $3D   3D = length of name
+        0xA6, 0x36, # LDX $36
+        0x86, 0x3B, # STX $3B
+        0x22, 0xA3, 0x18, 0xF0, # JSR #$F018A3 write_attack_text
+        0x6B, # RTL
+
+        # $F01C4E Get other attack name
+        0xE9, 0x51, # SBC #$51
+        0xC2, 0x20, # REP #$20
+        0x29, 0xFF, 0x00, # AND $00FF
+        0x85, 0x38, # STA $38  -|
+        0x0A, # ASL             |
+        0x0A, # ASL             |
+        0x65, 0x38, # ADC $38   |
+        0x0A, # ASL            _| A *= 10
+        0x69, 0xB9, 0xF7,   # ADC #$F7B9  A = start of attack name - #$E60000
+        0xAA, # TAX
+        0xA9, 0x0A, 0x00, # LDA #$000A
+        0xE2, 0x20, # SEP #$20
+        0x6B, # RTL
+
+        # $F01C66 Get_swdtech_name
+        0xA9, 0xCF, # LDA #$CF
+        0x85, 0x3A, # STA $3A   # Set high byte of attack name start to #$CF
+        0xA5, 0x35, # LDA $35
+        0x38, # SEC
+        0xE9, 0x55, # SBC #$55
+        0xC2, 0x20, # REP #$20
+        0x29, 0xFF, 0x00, # AND $00FF
+        0x0A, # ASL             |
+        0x85, 0x38, # STA $38  -|
+        0x0A, # ASL             |
+        0x65, 0x38, # ADC $38   |
+        0x0A, # ASL            _| A *= 12
+        0x69, 0x40, 0x3C,   # ADC #$3C40  A = start of attack name - #$CF0000
+        0xAA, # TAX
+        0xA9, 0x0A, 0x00, # LDA #$000A
+        0xE2, 0x20, # SEP #$20
         0x6B, # RTL
     ])
     common_sub.write(fout)

@@ -1712,13 +1712,6 @@ class MonsterBlock:
         if self.rages is not None and other.rages is not None and random.choice([True, False]):
             self.rages = type(other.rages)(other.rages)
 
-    def itemrank(self):
-        items = self.items
-        items = [get_item(i) for i in items]
-        items = [i.rank() if i else 0 for i in items]
-        itemrank = items[0] + (items[1]*7) + ((items[2] + (items[3]*7))*2)
-        return itemrank / 32.0
-
     def rank(self, weights=None):
         global globalweights
         funcs = {}
@@ -1732,7 +1725,6 @@ class MonsterBlock:
         funcs['elements'] = lambda m: max(1, bin(m.absorb | m.null).count('1'))
         funcs['immunities'] = lambda m: max(1, sum(bin(i).count('1')
                                                    for i in m.immunities))
-        funcs['itemrank'] = lambda m: max(1, m.itemrank())
 
         if not avgs:
             monsters = get_monsters()
@@ -1743,17 +1735,14 @@ class MonsterBlock:
 
         if weights is None:
             if globalweights is None:
-                globalweights = [random.randint(0, 50) + random.randint(0, 50) for _ in avgs]
+                globalweights = {k:_randomweight(k) for k in avgs}
             weights = globalweights
         elif isinstance(weights, int):
-            weights = [50 for _ in avgs]
+            weights = {k:50 for k in avgs}
 
-        weights = dict(list(zip(sorted(avgs.keys()), weights)))
         LEVELFACTOR, HPFACTOR = len(avgs)*2, len(avgs)
         total = 0
         for key in sorted(avgs):
-            if key == "level":
-                weights[key] = max(50, weights[key])
             weighted = weights[key] * funcs[key](self) / avgs[key]
             if key == "level":
                 weighted *= LEVELFACTOR
@@ -1772,6 +1761,12 @@ class MonsterBlock:
             return True
         return False
 
+def _randomweight(key: str):
+    ranges = {'level': (50, 100),
+              'hp': (30, 100)}
+    min, max = ranges.get(key, (2, 100))
+    delta = max - min
+    return min + random.randint(0, delta/2 + delta%2) + random.randint(0, delta/2)
 
 def monsters_from_table(tablefile):
     monsters = []

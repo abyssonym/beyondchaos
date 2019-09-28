@@ -12,10 +12,10 @@ done_items = []
 
 appropriate_formations = None
 
-EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x06, 0x09, 0x19, 0x1b, 0x1c, 0x22, 0x24,
-                 0x33, 0x38, 0x39, 0x3a, 0x3f, 0x42, 0x43, 0x4f, 0x50, 0x59,
-                 0x5e, 0x64, 0x65, 0x73, 0x79, 0x7f, 0x9f, 0xaf, 0xd1, 0xde,
-                 0xe3]
+EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x06, 0x09, 0x19, 0x1a, 0x1b, 0x1c, 0x22, 0x24,
+                 0x33, 0x38, 0x39, 0x3a, 0x3f, 0x42, 0x43, 0x4f, 0x50, 0x59, 0x60,
+                 0x5e, 0x64, 0x65, 0x73, 0x79, 0x7f, 0x9f, 0xaf, 0xb6, 0xcf, 0xd1,
+                 0xde, 0xe3]
 
 
 def add_orphaned_formation(formation):
@@ -135,15 +135,15 @@ def mark_taken_id(taken):
 
 
 def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_limit):
-    appropriate_formations = get_appropriate_formations()
-    formations = [f for f in appropriate_formations if
+    formations = get_appropriate_formations()
+    formations = [f for f in formations if
                   f.get_guaranteed_drop_value() >= value * 100]
     orphaned_formations = get_orphaned_formations()
     orphaned_formations = [f for f in orphaned_formations
                                if f not in used_formations]
     extra_miabs = get_extra_miabs(0)
     
-    normal_rank_limit = lambda rank: 2 * rank - 125
+    normal_rank_limit = lambda rank: 9/5 * rank - 150
     special_rank_limit = lambda rank: 5/4000 * rank * rank + 7/4*rank - 300
     
     if guarantee_miab_treasure:
@@ -429,8 +429,8 @@ class ChestBlock:
                 chance -= 2
                 chance = max(chance, 1)
 
-        appropriate_formations = get_appropriate_formations()
-        formations = [f for f in appropriate_formations if
+        formations = get_appropriate_formations()
+        formations = [f for f in formations if
                       f.get_guaranteed_drop_value() >= value * 100]
         if 1 <= chance <= 3 and (self.rank or formations):
             # monster
@@ -438,11 +438,10 @@ class ChestBlock:
             
             from locationrandomizer import get_location
             rank = self.rank
-            if (self.is_clock or not rank or uncapped_monsters) and formations:
-                rank = min(formations, key=lambda f: f.rank()).rank()
-            
+            if self.is_clock or not rank:
+                rank = min(formations, key=lambda f: f.rank()).rank() if formations else 0
+
             chosen = select_monster_in_a_box(rank=rank, value=value, clock=self.is_clock or monster is True or uncapped_monsters, guarantee_miab_treasure=guarantee_miab_treasure, enemy_limit=enemy_limit)
-            drops = [e.drops for e in chosen.present_enemies]
             chosen = get_2pack(chosen)
             # only 2-packs are allowed
             self.contents = chosen.setid & 0xFF

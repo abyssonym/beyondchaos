@@ -190,10 +190,29 @@ Normal A9195 F4 1B FD
 Normal A919F F4 1B FD
 Normal A91A9 F4 1B FD
 Normal A91C7 FD FD FD
-# Gerad
+# Gerad Nikeah
 Normal A91E6 F4 1B FD
 Normal A920A F4 1B FD
 Normal A9222 F4 1B 1A 03 92 D1 FF D7 76 D6 78 FE
+# Boat to South Figaro
+Normal A928A 6A 5B 00 0E 0C 80 6C 01 00 71 5F 00 31 82 09 FF D0 AC D7 FE D7 77 D7 78 D6 7E FE
+# Gerad South Figaro
+Normal A8095 F4 1B C0 27 01 AE 80 00
+# Don't show robbers in the cave, instead set unused? event bit
+Normal A80BA D2 22
+# Instead of setting the bit to show Siegfried, set the bit that talking to him sets
+Normal A80BC D6 99
+# Turtle
+Normal A76E1 C0 22 01 B3 5E 00 FD
+Normal A76EF C0 27 01 6A 77 00
+Normal A776C D3 22
+# Instead of setting the bit to show Gerad in Figaro prison, set the bit that his event sets
+Normal A776E D4 6E
+# Tentacles
+Normal A6A4F C0 27 01 B7 6A 00
+# After Tentacles
+Normal A6AF4 C0 27 01 00 6B 00 
+Normal A6B19 BE 01 F7 6B 50 F0 0A C0 27 01 DC 6B 00
 Palette CA2FB 01
 Palette CA35D 0A
 Palette CA36B 0A

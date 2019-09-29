@@ -714,6 +714,9 @@ def manage_palettes(fout, change_to, char_ids):
             additional_celeses.append(npc)
         if npc.graphics not in charpal_options:
             continue
+        # Don't recolor shadowy Sabin on Mt. Kolts
+        if npc.locid in [0x60, 0x61]:
+            continue
         if npc.graphics in change_to:
             new_graphics = change_to[npc.graphics]
             if (npc.graphics, npc.palette) in palette_change_to:

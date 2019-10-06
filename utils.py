@@ -83,6 +83,38 @@ class Substitution(object):
         fout.write(bytes(self.bytestring))
 
 
+class AutoLearnRageSub(Substitution):
+    def __init__(self, require_gau):
+        self.require_gau = require_gau
+
+    @property
+    def bytestring(self):
+        # NOTE: This must be placed at a location called from C2/5EE5
+        bs = []
+        if self.require_gau:
+            bs += [0xAD, 0x0B, 0x30, 0x30, 0x03]
+        bs += [0x20, 0x07, 0x4A, 0xAD, 0x0A, 0x30, 0x60]
+        return bytes(bs)
+
+    def write(self, fout):
+        learn_leap_sub = Substitution()
+        learn_leap_sub.bytestring = bytes([0xEA] * 7)
+        learn_leap_sub.set_location(0x2543E)
+        learn_leap_sub.write(fout)
+        
+        gau_cant_appear_sub = Substitution()
+        gau_cant_appear_sub.bytestring = bytes([0x80, 0x0C])
+        gau_cant_appear_sub.set_location(0x22FB5)
+        gau_cant_appear_sub.write(fout)
+
+        vict_sub = Substitution()
+        vict_sub.bytestring = bytes([0x20]) + int2bytes(self.location, length=2)
+        vict_sub.set_location(0x25EE5)
+        vict_sub.write(fout)
+
+        super(AutoLearnRageSub, self).write(fout)
+
+
 texttable = {}
 f = open(TEXT_TABLE)
 for line in f:

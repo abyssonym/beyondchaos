@@ -170,7 +170,7 @@ class SpellBlock:
                 baseline = baseline * 2
 
             if self.physical:
-                baseline = baseline * 0.67
+                baseline = baseline * 0.6
             if self.unblockable:
                 baseline = baseline * 1.25
             if self.has_status:

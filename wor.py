@@ -2,6 +2,7 @@ import dataclasses
 
 from chestrandomizer import get_event_items
 from character import get_character, get_characters
+from dialoguemanager import get_dialogue, set_dialogue
 from locationrandomizer import get_location, get_locations, NPCBlock
 from monsterrandomizer import change_enemy_name
 from utils import (WOB_TREASURE_TABLE, WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
@@ -358,16 +359,11 @@ class WoRRecruitInfo:
             npc.graphics = self.char_id
             npc.palette = get_character(self.char_id).palette
         for index in self.dialogue_pointers:
-            start = get_dialogue_pointer(fout, index)
-            end = get_dialogue_pointer(fout, index + 1)
-            fout.seek(start)
-            bs = fout.read(end - start)
-            text = bytes_to_dialogue(bs)
+            text = get_dialogue(index)
             old_name_placeholder = bytes_to_dialogue(bytes([self.old_char_id + 2]))
             new_name_placeholder = bytes_to_dialogue(bytes([self.char_id + 2]))
             text = text.replace(old_name_placeholder, new_name_placeholder)
-            fout.seek(start)
-            fout.write(dialogue_to_bytes(text))
+            set_dialogue(index, text)
         if self.caseword_pointers:
             for location in self.caseword_pointers:
                 fout.seek(location)
@@ -1131,12 +1127,9 @@ def _setup_alternate_zone_eater(fout, include_gau):
     value |= (1 << gau_npc.membit)
     fout.seek(0xE0A0 + gau_npc.memaddr)
     fout.write(bytes([value]))
-
-    start = get_dialogue_pointer(fout, 0x286)
-    max_len = get_dialogue_pointer(fout, 0x287) - start
-    fout.seek(start)
-    dialogue_bytes = dialogue_to_bytes('<GAU>: Uwao, aooh!<wait 60 frames> I’m <GAU>!<wait 60 frames><line>I’m your friend!<wait 60 frames><line>Let’s travel together!')
-    fout.write(dialogue_bytes[:max_len-1] + bytes([0]))
+    
+    text = '<GAU>: Uwao, aooh!<wait 60 frames> I’m <GAU>!<wait 60 frames><line>I’m your friend!<wait 60 frames><line>Let’s travel together!'
+    set_dialogue(0x286, text)
 
     gau_event = Substitution()
     gau_event.set_location(0x305200)
@@ -1469,10 +1462,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
         ])
 
         text = "<SETZER>: But first we need to kill the dragons!"
-        dragon_text_sub = Substitution()
-        dragon_text_sub.bytestring = dialogue_to_bytes(text)
-        dragon_text_sub.set_location(get_dialogue_pointer(fout, 0x9AF))
-        dragon_text_sub.write(fout)
+        set_dialogue(0x9AF, text)
 
     else:
         wor_sub2.bytestring += bytearray([0x6B, 0x01, 0x00, 0x91, 0xD3, 0x00]) # go to WoR

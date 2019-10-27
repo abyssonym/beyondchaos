@@ -13,7 +13,7 @@ from appearance import manage_character_appearance
 from character import get_characters, get_character, equip_offsets
 from chestrandomizer import mutate_event_items, get_event_items
 from decompress import Decompressor
-from dialoguemanager import manage_dialogue_patches
+from dialoguemanager import manage_dialogue_patches, get_dialogue, set_dialogue, read_dialogue
 from esperrandomizer import (get_espers, allocate_espers, randomize_magicite)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS,
                                  get_formations, get_fsets, get_formation)
@@ -32,6 +32,7 @@ from musicrandomizer import randomize_music, manage_opera, insert_instruments
 from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, MAKEOVER_MODIFIER_CODES, options_
 from patches import allergic_dog, banon_life3, vanish_doom, evade_mblock, death_abuse, no_kutan_skip
 from shoprandomizer import (get_shops, buy_owned_breakable_tools)
+from sillyclowns import randomize_poem
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              RandomSpellSub, MultipleSpellSub, ChainSpellSub,
                              get_ranked_spells, get_spell)
@@ -80,7 +81,6 @@ TEK_SKILLS = (
     [0xBF, 0xCD, 0xD1, 0xD4, 0xD7, 0xDD, 0xE3])
 
 
-secret_codes = {}
 namelocdict = {}
 changed_commands = set([])
 
@@ -3716,162 +3716,89 @@ def manage_clock():
     second_sub.set_location(0xA96FE)
     second_sub.write(fout)
 
-    clockstr = "%d:%02d:%02d" % ((hour+1)*2, (minute+1) * 10, (second+1) * 10)
+    hour = (hour + 1) * 2
+    minute = (minute + 1) * 10
+    second = (second + 1) * 10
+    clockstr = f"{hour}:{minute:02}:%{second:02}"
     log(clockstr, section="zozo clock")
 
     # Change text of hints
-    wrong_hours = [0, 1, 2, 3, 4, 5]
+    wrong_hours = [2, 4, 6, 8, 10, 12]
     wrong_hours.remove(hour)
     random.shuffle(wrong_hours)
-    hours = ['2', '4', '6', '8', '10', '12']
 
     hour_texts = []
     for i in range(0, 5):
-        start = get_dialogue_pointer(fout, 0x416 + i)
-        end = get_dialogue_pointer(fout, 0x417 + i)
-        fout.seek(start)
-        text_bytes = fout.read(end-start)
-        text = bytes_to_dialogue(text_bytes)
-        text = re.sub(r'\d+(?=:00)', hours[wrong_hours[i]], text)
-        hour_texts.append(text)
-
-    ptr_start = 0xCE602
-    ptr_index = 0x416
+        text = get_dialogue(0x416 + i)
+        text = re.sub(r'\d+(?=:00)', str(wrong_hours[i]), text)
+        set_dialogue(0x416 + i, text)
 
     f = open(outfile, 'r+b')
     offset = 0
 
-    # Adjust text pointers, because some strings may be slightly longer or shorter now.
-    for i in range(1, 5):
-        location = ptr_start + (ptr_index+i) * 2
-        f.seek(location)
-        ptr = read_multi(f, 2)
-        if i <= 3:
-            if wrong_hours[i-1] >= 4:
-                offset += 1
-        elif wrong_hours[i-1] < 4:
-            offset -= 1
-        f.seek(location)
-        write_multi(f, ptr + offset, 2)
-
-    f.close()
-
-    for i in range(0, 5):
-        hour_text_sub = Substitution()
-        hour_text_sub.bytestring = dialogue_to_bytes(hour_texts[i])
-        hour_text_sub.set_location(get_dialogue_pointer(fout, 0x416 + i))
-        hour_text_sub.write(fout)
-
     # Change text that says "Hand's pointin' at the two."
-    if minute != 0:
-        text = "Hand’s pointin’ at the "
-        if minute == 1:
-            text += "four."
-        elif minute == 2:
-            text += "six."
-        elif minute == 3:
-            text += "8."
-        else:
-            text += "ten."
+    clock_number_text = { 10: "two", 20: "four", 30: "six", 40: "eight", 50: "ten"}
+    
+    if minute != 10:
+        text = get_dialogue(0x42A)
+        text = re.sub(r'two', clock_number_text[minute], text)
 
-        minute_text_sub = Substitution()
-        minute_text_sub.bytestring = dialogue_to_bytes(text)
-        minute_text_sub.set_location(get_dialogue_pointer(fout, 0x42A))
-        minute_text_sub.write(fout)
+        set_dialogue(0x42A, text)
 
-
-    wrong_seconds = [0, 1, 2, 3, 4]
+    wrong_seconds = [10, 20, 30, 40, 50]
     wrong_seconds.remove(second)
     random.shuffle(wrong_seconds)
 
     double_clue = sorted(wrong_seconds[:2])
     wrong_seconds = wrong_seconds[2:]
-
-    second_text_sub0 = Substitution()
-    second_text_sub0.set_location(get_dialogue_pointer(fout, 0x423))
-
-    if double_clue == [0, 1]:
+    
+    if double_clue == [10, 20]:
         text = "The seconds? They’re less than 30!"
-        second_text_sub0.bytestring = dialogue_to_bytes(text)
-        second_text_sub0.write(fout)
-
-    elif double_clue == [0, 2]:
+    elif double_clue == [10, 30]:
         text = "The seconds? They’re a factor of 30!"
-        second_text_sub0.bytestring = dialogue_to_bytes(text)
-        second_text_sub0.write(fout)
-
-    elif double_clue == [0, 3]:
-        text = "The seconds? They’re a square times 10"
-        second_text_sub0.bytestring = dialogue_to_bytes(text)
-        second_text_sub0.write(fout)
-
-    elif double_clue == [0, 4]:
+    elif double_clue == [10, 40]:
+        text = "The seconds? They’re a square times 10."
+    elif double_clue == [10, 50]:
         text = "The second hand’s in the clock’s top half."
-        second_text_sub0.bytestring = dialogue_to_bytes(text)
-        second_text_sub0.write(fout)
-
-    elif double_clue == [1, 2]:
+    elif double_clue == [20, 30]:
         text = "The seconds? They’re around 25!"
-        second_text_sub0.bytestring = dialogue_to_bytes(text)
-        second_text_sub0.write(fout)
-
-    elif double_clue == [1, 3]:
+    elif double_clue == [20, 40]:
         pass
         # Leave the clue as "The seconds? They’re divisible by 20!".
-
-    elif double_clue == [1, 4]:
+    elif double_clue == [20, 50]:
         text = "The seconds have four proper factors."
-        second_text_sub0.bytestring = dialogue_to_bytes(text)
-        second_text_sub0.write(fout)
-
-    elif double_clue == [2, 3]:
+    elif double_clue == [30, 40]:
         text = "The seconds? They’re around 35!"
-        second_text_sub0.bytestring = dialogue_to_bytes(text)
-        second_text_sub0.write(fout)
-
-    elif double_clue == [2, 4]:
+    elif double_clue == [30, 50]:
         text = "The seconds are an odd prime times 10!"
-        second_text_sub0.bytestring = dialogue_to_bytes(text)
-        second_text_sub0.write(fout)
-
-    elif double_clue == [3, 4]:
+    elif double_clue == [40, 50]:
         text = "The seconds? They’re greater than 30!"
-        second_text_sub0.bytestring = dialogue_to_bytes(text)
-        second_text_sub0.write(fout)
 
-    text = "Clock’s second hand’s pointin’ at " + str(wrong_seconds[0] + 1) + "0."
-    second_text_sub1 = Substitution()
-    second_text_sub1.bytestring = dialogue_to_bytes(text)
-    second_text_sub1.set_location(get_dialogue_pointer(fout, 0x421))
-    second_text_sub1.write(fout)
+    if double_clue != [20, 40]:
+        set_dialogue(0x423, text)
+
+
+    text = f"Clock’s second hand’s pointin’ at {wrong_seconds[0]}."
+    set_dialogue(0x421, text)
 
     # In the original game, this clue says "four" and is redundant. It should say "two".
-    # Because the original game doesn't compress this as much as it could, but
-    # Divergent paths changes and jam up your opera mode do, I'm changing it to use
-    # numerals in all cases so it'll be consistent and fit in the space without adjusting
-    # pointers. The proper thing would be to run all text changes into a manager that
-    # writes them out once at the end, but I'm too lazy for that right now.
-    text = f"The second hand of my watch is pointing at {(wrong_seconds[1] + 1) * 2}."
-
-    second_text_sub2 = Substitution()
-    second_text_sub2.bytestring = dialogue_to_bytes(text)
-    second_text_sub2.set_location(get_dialogue_pointer(fout, 0x425))
-    second_text_sub2.write(fout)
+    text = get_dialogue(0x425)
+    text = re.sub(r'four', clock_number_text[wrong_seconds[1]], text)
+    set_dialogue(0x425, text)
 
 
 def manage_santa():
-    Santasub = Substitution()
-    Santasub.bytestring = bytes([0x32, 0x3A, 0x47, 0x4D, 0x3A])
-
-    for index, offset in [(0x72, 0x3), (0x75, 0xa), (0x7c, 0x8), (0x8e, 0x27), (0x17e, 0xb), (0x1e1, 0x55), (0x1e7, 0x4b), (0x1eb, 0x3b), (0x20f, 0x11), (0x35c, 0xc), (0x36d, 0xd), (0x36e, 0x35), (0x36f, 0x2), (0x372, 0x2), (0x3a9, 0x8), (0x53a, 0x1e), (0x53f, 0x14), (0x53f, 0x62), (0x57c, 0x5), (0x580, 0xc), (0x5e9, 0x37), (0x5ec, 0xf), (0x5ee, 0x2e), (0x67e, 0x6), (0x684, 0x2), (0x686, 0x19), (0x6aa, 0x0), (0x6b3, 0x0), (0x6b7, 0x0), (0x6ba, 0x0), (0x6ef, 0x11), (0xa40, 0x15), (0x717, 0x3b), (0x721, 0x25), (0x723, 0x18), (0x726, 0x9), (0x775, 0x20), (0x777, 0x54), (0x813, 0x5), (0x814, 0x5), (0x818, 0x5), (0x823, 0x10), (0x851, 0x0), (0x869, 0x9), (0x86b, 0xc), (0x86c, 0x12), (0x89a, 0xe), (0x89b, 0xd), (0x89d, 0x3b), (0x8a3, 0xd), (0x8a5, 0x6), (0x8b1, 0x13), (0x8b6, 0x0), (0x8b8, 0xd), (0x8c6, 0x12), (0x8ca, 0x22), (0x8cb, 0x7), (0x8d2, 0x1a), (0x8d4, 0x13), (0x913, 0xd), (0x934, 0x21), (0x959, 0x37), (0x95d, 0x28), (0x960, 0x0), (0x979, 0x3a), (0x990, 0x16), (0x9ae, 0x28), (0x9e7, 0x1a), (0x9ef, 0x1c), (0xa07, 0x35), (0xa35, 0x25), (0xb76, 0x7), (0xba0, 0x11), (0xbc2, 0x0), (0xbc9, 0x8)]:
-        Santasub.set_location(get_dialogue_pointer(fout, index) + offset)
-        Santasub.write(fout)
+    for index in [0x72, 0x75, 0x7c, 0x8e, 0x17e, 0x1e1, 0x1e7, 0x1eb, 0x20f, 0x35c, 0x36d, 0x36e, 0x36f, 0x372, 0x3a9, 0x53a, 0x53f, 0x53f, 0x57c, 0x580, 0x5e9, 0x5ec, 0x5ee, 0x67e, 0x684, 0x686, 0x6aa, 0x6b3, 0x6b7, 0x6ba, 0x6ef, 0xa40, 0x717, 0x721, 0x723, 0x726, 0x775, 0x777, 0x813, 0x814, 0x818, 0x823, 0x851, 0x869, 0x86b, 0x86c, 0x89a, 0x89b, 0x89d, 0x8a3, 0x8a5, 0x8b1, 0x8b6, 0x8b8, 0x8c6, 0x8ca, 0x8cb, 0x8d2, 0x8d4, 0x913, 0x934, 0x959, 0x95d, 0x960, 0x979, 0x990, 0x9ae, 0x9e7, 0x9ef, 0xa07, 0xa35, 0xb76, 0xba0, 0xbc2, 0xbc9]:
+        text = get_dialogue(index)
+        text = re.sub(r'Kefka', "Santa", text)
+        set_dialogue(index, text)
 
     SANTAsub = Substitution()
     SANTAsub.bytestring = bytes([0x32, 0x20, 0x2D, 0x33, 0x20])
-    for index, offset in [(0x24, 0x0), (0x72, 0x17), (0x76, 0x0), (0x77, 0x0), (0x78, 0x0), (0x7a, 0x0), (0x7c, 0x36), (0x7d, 0x40), (0x7f, 0x3f), (0x80, 0x0), (0x90, 0x0), (0x90, 0x34), (0x94, 0x0), (0x97, 0x0), (0x9e, 0x0), (0x9f, 0x0), (0x1eb, 0x0), (0x1eb, 0x57), (0x203, 0x0), (0x204, 0x36), (0x205, 0x3e), (0x206, 0x0), (0x207, 0x0), (0x207, 0x2e), (0x207, 0x8d), (0x209, 0x0), (0x20a, 0x0), (0x20b, 0x0), (0x20c, 0x0), (0x20e, 0x0), (0x210, 0x0), (0x35b, 0x0), (0x35c, 0x25), (0x35c, 0x57), (0x35d, 0x0), (0x36b, 0x0), (0x36c, 0x0), (0x377, 0x0), (0x55c, 0x0), (0x55d, 0x0), (0x55e, 0x0), (0x56d, 0x0), (0x56f, 0x0), (0x570, 0x0), (0x573, 0x0), (0x575, 0x0), (0x576, 0x0), (0x585, 0x0), (0x587, 0x0), (0x66d, 0x0), (0x674, 0x0), (0x6b4, 0x0), (0x6b5, 0x0), (0x6b6, 0x0), (0x80f, 0x0), (0x813, 0x1a), (0x815, 0x0), (0x819, 0x0), (0x81a, 0x0), (0x81b, 0x0), (0x81c, 0x0), (0x81d, 0x0), (0x81e, 0x0), (0x81f, 0x0), (0x820, 0x0), (0x821, 0x0), (0x85d, 0x0), (0x85e, 0x0), (0x861, 0x0), (0x862, 0x0), (0x863, 0x0), (0x866, 0x0), (0x867, 0x0), (0x868, 0x0), (0x869, 0x4e), (0x86d, 0x0), (0x86e, 0x0), (0x871, 0x41), (0xbab, 0x23), (0xbac, 0x0), (0xbad, 0x0), (0xbaf, 0x0), (0xbb2, 0x0), (0xbc0, 0x0), (0xbc1, 0x0), (0xbc3, 0x0), (0xbc4, 0x0), (0xbc6, 0x0), (0xbc8, 0x0), (0xbca, 0x0), (0xc0b, 0x44c)]:
-        SANTAsub.set_location(get_dialogue_pointer(fout, index) + offset)
-        SANTAsub.write(fout)
+    for index in [0x24, 0x72, 0x76, 0x77, 0x78, 0x7a, 0x7c, 0x7d, 0x7f, 0x80, 0x90, 0x90, 0x94, 0x97, 0x9e, 0x9f, 0x1eb, 0x1eb, 0x203, 0x204, 0x205, 0x206, 0x207, 0x207, 0x207, 0x209, 0x20a, 0x20b, 0x20c, 0x20e, 0x210, 0x35b, 0x35c, 0x35c, 0x35d, 0x36b, 0x36c, 0x377, 0x55c, 0x55d, 0x55e, 0x56d, 0x56f, 0x570, 0x573, 0x575, 0x576, 0x585, 0x587, 0x66d, 0x674, 0x6b4, 0x6b5, 0x6b6, 0x80f, 0x813, 0x815, 0x819, 0x81a, 0x81b, 0x81c, 0x81d, 0x81e, 0x81f, 0x820, 0x821, 0x85d, 0x85e, 0x861, 0x862, 0x863, 0x866, 0x867, 0x868, 0x869, 0x86d, 0x86e, 0x871, 0xbab, 0xbac, 0xbad, 0xbaf, 0xbb2, 0xbc0, 0xbc1, 0xbc3, 0xbc4, 0xbc6, 0xbc8, 0xbca, 0xc0b]:
+        text = get_dialogue(index)
+        text = re.sub(r'KEFKA', "SANTA", text)
+        set_dialogue(index, text)
 
     BattleSantasub = Substitution()
     BattleSantasub.bytestring = bytes([0x92, 0x9A, 0xA7, 0xAD, 0x9A])
@@ -4048,13 +3975,12 @@ def sprint_shoes_hint():
     sprint_shoes = get_item(0xE6)
     spell_id = sprint_shoes.features['learnspell']
     spellname = get_spell(spell_id).name
-    hint = "Equip relics to gain a variety of abilities!<page>These teach me {}!".format(spellname)
-    sprint_sub = Substitution()
-    sprint_sub.set_location(get_dialogue_pointer(fout, 0xb8))
-    sprint_sub.bytestring = dialogue_to_bytes(hint)
-    sprint_sub.write(fout)
+    hint = f"Equip relics to gain a variety of abilities!<page>These teach me {spellname}!"
+    
+    set_dialogue(0xb8, hint)
 
     # disable fade to black relics tutorial
+    sprint_sub = Substitution()
     sprint_sub.set_location(0xA790E)
     sprint_sub.bytestring = b'\xFE'
     sprint_sub.write(fout)
@@ -4068,40 +3994,27 @@ def sabin_hint(commands):
 
     command = [c for c in commands.values() if c.id == command_id][0]
     hint = "My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {}.".format(command.name)
-    sabin_hint_sub = Substitution()
-    sabin_hint_sub.set_location(get_dialogue_pointer(fout, 0xb9))
-    sabin_hint_sub.bytestring = dialogue_to_bytes(hint)
-
-    sabin_hint_sub.write(fout)
+    
+    set_dialogue(0xb9, hint)
 
 
 def code_hint():
     if options_.is_any_code_active(["easymodo", "canttouchthis"]):
         return
 
-    max_len = 0x6D
-    while True:
-        codename = options_.random_unused_code()
+    codename = options_.random_unused_code()
 
-        hint = "MADUIN: But if you use the code “{}”… <wait 240 frames><wait 1 frame><page><line>You will probably be able to remain in this world as a human being… <wait 240 frames><wait 1 frame>".format(codename)
-        bytestring = dialogue_to_bytes(hint)
-        if len(bytestring) <= max_len:
-            break
+    hint = "MADUIN: But if you use the code “{}”… <wait 240 frames><wait 1 frame><page><line>You will probably be able to remain in this world as a human being… <wait 240 frames><wait 1 frame>".format(codename)
+    bytestring = dialogue_to_bytes(hint)
 
-    code_hint_sub = Substitution()
-    code_hint_sub.set_location(get_dialogue_pointer(fout, 0xBFD))
-    code_hint_sub.bytestring = bytestring
-    code_hint_sub.write(fout)
+    set_dialogue(0xBFD, hint)
 
 
 def house_hint():
     skill = get_collapsing_house_help_skill()
 
-    hint = "There are monsters inside! They keep {}ing everyone who goes in to help.".format(skill) # Leave off 'You using suitable Relics?' just to make sure there's enough room.
-    house_hint_sub = Substitution()
-    house_hint_sub.set_location(get_dialogue_pointer(fout, 0x8A4))
-    house_hint_sub.bytestring = dialogue_to_bytes(hint)
-    house_hint_sub.write(fout)
+    hint = f"There are monsters inside! They keep {skill}ing everyone who goes in to help. You using suitable Relics?".format(skill) 
+    set_dialogue(0x8A4, hint)
 
 
 def start_with_random_espers():
@@ -4476,6 +4389,8 @@ def randomize():
     if options_.is_code_active("QGWURNGNSEIMKTMDFBIX"):
         diverge(fout)
 
+    read_dialogue(fout)
+
     if options_.shuffle_commands or options_.replace_commands or options_.random_treasure:
         auto_recruit_gau()
         if options_.shuffle_commands or options_.replace_commands:
@@ -4805,6 +4720,9 @@ def randomize():
     reseed()
 
     code_hint()
+    reseed()
+
+    randomize_poem(fout)
     reseed()
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----

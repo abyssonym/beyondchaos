@@ -57,6 +57,7 @@ FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
 SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
 MOOGLE_NAMES_TABLE = path.join(custom_path, "mooglenames.txt")
 DANCE_NAMES_TABLE = path.join(custom_path, "dancenames.txt")
+POEMS_TABLE = path.join(custom_path, "poems.txt")
 
 def open_mei_fallback(filename, mode='r'):
     if not MEI:
@@ -160,6 +161,7 @@ f.close()
 reverse_dialoguetexttable = {v: k for k, v in dialoguetexttable.items()}
 reverse_dialoguetexttable["1104"] = "<wait 60 frames>"
 
+
 def hex2int(hexstr):
     return int(hexstr, 16)
 
@@ -180,11 +182,7 @@ def dialogue_to_bytes(text, null_terminate=True):
             i += 1
 
         if hex != "":
-            h = hex2int(hex)
-            while h > 255:
-                bs.append(h//256)
-                h %= 256
-            bs.append(h)
+            bs.extend(bytes.fromhex(hex))
 
     if null_terminate and bs[-1] != 0x0:
         bs.append(0x0)
@@ -192,22 +190,24 @@ def dialogue_to_bytes(text, null_terminate=True):
 
 
 def bytes_to_dialogue(bs):
-    text = ""
+    text = []
     i = 0
     while i < len(bs):
         c = bs[i]
+        if c == b'\x00':
+            break
         d = bs[i+1] if i + 1 < len(bs) else None
         if d and f"{c:02X}{d:02X}" in reverse_dialoguetexttable:
-            text += reverse_dialoguetexttable[f"{c:02X}{d:02X}"]
+            text.append(reverse_dialoguetexttable[f"{c:02X}{d:02X}"])
             i += 2
         elif f"{c:02X}" in reverse_dialoguetexttable:
-            text += reverse_dialoguetexttable[f"{c:02X}"]
+            text.append(reverse_dialoguetexttable[f"{c:02X}"])
             i += 1
         else:
             print(bs[i], f"{c:02X}{d:02X}" if d else f"{c:02X}")
             raise ValueError
 
-    return text
+    return "".join(text)
 
 
 def get_long_battle_text_pointer(f, index):

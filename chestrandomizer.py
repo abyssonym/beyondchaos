@@ -1,7 +1,10 @@
 import math
-from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution, get_dialogue_pointer, dialogue_to_bytes
-from itemrandomizer import get_ranked_items, get_item
+
+from dialoguemanager import set_dialogue
 from formationrandomizer import get_formations, get_fsets
+from itemrandomizer import get_ranked_items, get_item
+from utils import read_multi, write_multi, mutate_index, utilrandom as random, Substitution
+
 
 valid_ids = list(range(1, 0x200))
 banned_formids = [0]
@@ -586,12 +589,10 @@ class EventItem:
             event_item_sub.write(fout)
 
             # Change Lone Wolf text to say item placeholder instead of gold hairpin
-            event_item_sub.bytestring = dialogue_to_bytes(
-                "<line>Grrrr…<line>"
-                "You’ll never get this<line>" +
-                ("“<item>”!" if self.content_type == 0x40 else "“<GP>00 GP”!"))
-            event_item_sub.set_location(get_dialogue_pointer(fout, 0x6e5))
-            event_item_sub.write(fout)
+            text = ("<line>Grrrr…<line>"
+                   "You’ll never get this<line>" +
+                   ("“<item>”!" if self.content_type == 0x40 else "“<GP>00 GP”!"))
+            set_dialogue(0x6e5, text)
 
             # Because it takes up more slightly space
             # move Lone Wolf talking into a subroutine
@@ -715,23 +716,21 @@ def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monster
     fout.write(phoenix_events)
 
     # End some text boxes early so they don't show the item.
-    for location, text in [
-            (get_dialogue_pointer(fout, 0x137), "I understand your unease.<line>"
-                                                "But even as we speak, innocent lives are being lost…<page>"
-                                                "Please. We need your abilities.<line>"
-                                                "This relic will keep you safe."),
-            (get_dialogue_pointer(fout, 0x13e), "BANON: A lucky charm. Take it!"),
-            (get_dialogue_pointer(fout, 0x30e), "I heard…<line>"
-                                                "In my name you send Lola many things…<page>"
-                                                "I wish to thank you.<line>"
-                                                "Please accept this as a token of my appreciation."),
-            (get_dialogue_pointer(fout, 0x6ce), "Took the treasure from Lone Wolf, the pickpocket!"),
-            (get_dialogue_pointer(fout, 0x752), "And this is from the Emperor himself…"),
-            (get_dialogue_pointer(fout, 0x754), "Your behavior at the banquet was impeccable. Please take this as well!")
+    for index, text in [
+        (0x137, "I understand your unease.<line>"
+                "But even as we speak, innocent lives are being lost…<page>"
+                "Please. We need your abilities.<line>"
+                "This relic will keep you safe."),
+        (0x13e, "BANON: A lucky charm. Take it!"),
+        (0x30e, "I heard…<line>"
+                 "In my name you send Lola many things…<page>"
+                 "I wish to thank you.<line>"
+                 "Please accept this as a token of my appreciation."),
+        (0x6ce, "Took the treasure from Lone Wolf, the pickpocket!"),
+        (0x752, "And this is from the Emperor himself…"),
+        (0x754, "Your behavior at the banquet was impeccable. Please take this as well!")
     ]:
-        event_item_sub.set_location(location)
-        event_item_sub.bytestring = dialogue_to_bytes(text)
-        event_item_sub.write(fout)
+        set_dialogue(index, text)
 
     for location in event_items_dict:
         for e in event_items_dict[location]:

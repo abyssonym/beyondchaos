@@ -8,7 +8,7 @@
 # NOTE: FF3usME indexes are 1 lower than the actual ROM indexes used here
 
 import re, os
-from utils import dialoguetexttable, utilrandom as random, open_mei_fallback as open, read_multi, write_multi
+from utils import dialoguetexttable, bytes_to_dialogue, utilrandom as random, open_mei_fallback as open, read_multi, write_multi
 
 try:
     from sys import _MEIPASS
@@ -34,7 +34,9 @@ dialogue_flags = set()
 dialogue_patches = {}
 dialogue_patches_battle = {}
 script_ptrs = {}
+script = {}
 script_bin = None
+script_edited = False
 
 def safepath(vpath):
     if not MEI:
@@ -61,10 +63,14 @@ def dialogue_to_bytes(text, null_terminate=True):
             i += 1
 
         if hex != "":
-            bs.append(int(hex, 16))
+            bs.extend(bytes.fromhex(hex))
 
     if null_terminate:
         bs.append(0x0)
+    try:
+        out = bytes(bs)
+    except:
+        print(text, bs)
     return bytes(bs)
     
     
@@ -119,7 +125,14 @@ def patch_dialogue(id, from_text, to_text, index=None, battle=False):
     if id not in patches:
         patches[id] = {}
     patches[id][(from_text.lower(), index)] = to_text
-    
+
+def get_dialogue(id):
+    return script[id]
+
+def set_dialogue(id, text):
+    script[id] = text
+    script_edited = True
+
 def load_patch_file(fn):
     filepath = os.path.join('data', 'script', fn + ".txt")
     try:
@@ -150,26 +163,32 @@ def load_patch_file(fn):
                 match_idx = None
             if chgto == "*": chgto = None
             patch_dialogue(script_idx, chgfrom, chgto, index=match_idx)
-            
-def manage_dialogue_patches(fout):
-    global script_bin
-    
-    #don't do anything unless we need to
-    if not dialogue_patches and not dialogue_patches_battle:
-        return
-        
+
+
+def read_dialogue(fout):
     #load existing script & pointer table
     fout.seek(0xD0000)
     script_bin = fout.read(0x1F0FF)
-    script = {}
+    
     #TODO battle script
     
     fout.seek(0xCE600)
     bankidx = read_multi(fout, 2)
     for idx in range(0xC0C): #C0D through CFF pointers are repurposed
-        script_ptrs[idx] = read_multi(fout,2) + (0x10000 if idx > bankidx else 0)
-        script[idx] = read_script(idx)
+        script_ptrs[idx] = read_multi(fout,2) + (0x10000 if idx >= bankidx else 0)
         
+    for idx in range(0xC0C): #C0D through CFF pointers are repurposed
+        start = script_ptrs[idx]
+        end = script_ptrs.get(idx+1, 0)
+        script[idx] = bytes_to_dialogue(script_bin[start:end])
+
+def manage_dialogue_patches(fout):
+    global script_bin
+    
+    #don't do anything unless we need to
+    if not dialogue_patches and not dialogue_patches_battle and not script_edited:
+        return
+
     #TODO battle pointers
             
     #print(f"original script size is ${len(script_bin):X} bytes")
@@ -209,7 +228,8 @@ def manage_dialogue_patches(fout):
     for idx, text in script.items():
     ####TODO!!! rewrite to only re-encode dialogue if it is changed?
         lastlength = len(new_script) - offset
-        if first_high_index: lastlength -= 0x10000
+        if first_high_index:
+            lastlength -= 0x10000
         offset += lastlength
         if offset > 0xFFFF:
             if offset > 0x1FFFF or first_high_index is not None:

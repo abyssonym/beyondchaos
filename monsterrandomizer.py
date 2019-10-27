@@ -553,13 +553,13 @@ class MonsterBlock:
             level_add = diff//4
 
         factors = {
-            'mpow': 5//4,
-            'attack': 5//4,
-            'def': 5//4,
-            'mdef': 5//4,
-            'speed': 5//4,
-            'evade%': 5//4,
-            'mblock%': 9//8,
+            'mpow': 5/4,
+            'attack': 5/4,
+            'def': 5/4,
+            'mdef': 5/4,
+            'speed': 5/4,
+            'evade%': 5/4,
+            'mblock%': 9/8,
         }
 
         hp_add = (750, 1500) if level <= 30 else (2500, 5000)
@@ -570,18 +570,18 @@ class MonsterBlock:
         if self.is_boss and self.id not in early_bosses:
             hp_add = (0, 0)
             factors = {
-                'hp': 5//2,
-                'mpow': 3//2,
-                'attack': 3//2,
-                'def': 5//4,
-                'mdef': 5//4,
-                'speed': 3//2,
-                'evade%': 4//4,
-                'mblock%': 9//8,
+                'hp': 5/2,
+                'mpow': 3/2,
+                'attack': 3/2,
+                'def': 5/4,
+                'mdef': 5/4,
+                'speed': 3/2,
+                'evade%': 4/4,
+                'mblock%': 9/8,
             }
 
         for stat in self.stats:
-            self.stats[stat] *= factors.get(stat, 1)
+            self.stats[stat] = int(self.stats[stat] * factors.get(stat, 1))
 
         if self.stats['evade%'] == 0:
             self.stats['evade%'] = level//2
@@ -1180,22 +1180,21 @@ class MonsterBlock:
             low = value
             high = int(value + (value * (level / 100.0)))
             diff = high - low
-            value = value + random.randint(0, diff) + random.randint(0, diff)
+            value += -diff//4 + random.randint(0, diff) + random.randint(0, diff)
             if value & 0xFF == 0xFF:
                 value = value - 1
 
             return min(value, limit)
 
-        for stat in ['speed', 'attack', 'hit%', 'evade%', 'mblock%',
-                     'def', 'mdef', 'mpow']:
-            if stat in ['speed']:
+        for stat in stat_order:
+            if stat == 'speed':
                 limit = 230
             else:
                 limit = 0xFF
             boosted = level_boost(self.stats[stat], limit=limit)
             if stat in ['def', 'mdef']:
-                boosted = (self.stats[stat] + boosted) / 2.0
-            self.stats[stat] = int(boosted)
+                boosted = (self.stats[stat] + boosted) // 2
+            self.stats[stat] = boosted
 
         self.stats['hp'] = level_boost(self.stats['hp'], limit=0x10000)
         if self.stats['hp'] == 0x10000:

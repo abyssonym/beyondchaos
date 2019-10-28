@@ -289,7 +289,10 @@ def set_randomness_multiplier(multiplier):
     global RANDOM_MULTIPLIER
     RANDOM_MULTIPLIER = multiplier
 
-
+def clamp(n, lower_bound, upper_bound):
+    assert(lower_bound <= upper_bound)
+    return max(lower_bound, min(n, upper_bound))
+  
 def mutate_index(index, length, continuation=None, basic_range=None,
                  extended_range=None, disregard_multiplier=False):
     if length == 0:
@@ -308,11 +311,9 @@ def mutate_index(index, length, continuation=None, basic_range=None,
         extended_range = tuple(int(round(RANDOM_MULTIPLIER*v))
                                for v in extended_range)
 
-    index += utran.randint(*basic_range)
-    index = max(0, min(index, highest))
+    index = utran.randint(*(clamp(index + b, 0, highest) for b in basic_range))
     while utran.choice(continuation):
-        index += utran.randint(*extended_range)
-        index = max(0, min(index, highest))
+        index = utran.randint(*(clamp(index + e, 0, highest) for e in extended_range))
 
     return index
 

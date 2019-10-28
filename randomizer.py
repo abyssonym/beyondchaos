@@ -4531,6 +4531,7 @@ def randomize():
         else:
             replacement = ''
         flags = flags.replace(d, replacement)
+        flags = flags.replace('endless9', 'endless~nine~')
     flags = flags.replace('endless~nine~', 'endless9')
 
     if version and version != VERSION:

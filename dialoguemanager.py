@@ -189,7 +189,7 @@ def manage_dialogue_patches(fout):
             if (token.lower(), token_counter[token.lower()]) in patches:
                 line[i] = patch(patches[token.lower(), token_counter[token.lower()]])
             elif (token.lower(), None) in patches:
-                line[i] = patch(patches[token.lower(), None])
+                line[i] = patch(patches[token.lower(), None], token)
             #handle removing text along with following space
             if line[i] is None:
                 line[i] = ""
@@ -247,14 +247,14 @@ def split_line(line):
     split = re.split("(\$..|[A-Za-z']+|[^$A-Za-z']+)", line)
     return [s for s in split if len(s)]
         
-def patch(text):
+def patch(text, token):
     if text is None:
         return None
     #print(f"patching {text}", end="")
     while True:
         match = re.search("\{(.+)\}", text)
         if not match: break
-        
+
         # handle conditionals/flags
         if "?" in match[1]:
             flag, opts = match[1].split('?',1)
@@ -272,9 +272,9 @@ def patch(text):
             else:
                 var = dialogue_vars[match[1].lower()]
             
-            if match[1].upper() == match[1]:
+            if match[1].upper() == token:
                 var = var.upper()
-            elif match[1][0] in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
+            elif token[0] in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
                 try:
                     var = var[0].upper() + var[1:]
                 except IndexError:

@@ -1,7 +1,11 @@
+from dataclasses import dataclass, field
 from functools import reduce
+from itertools import chain, repeat
+from typing import List
 
+from dialoguemanager import patch_dialogue, set_dialogue_var
 from skillrandomizer import get_ranked_spells, get_spell
-from utils import ESPER_TABLE, hex2int, int2bytes, Substitution, utilrandom as random
+from utils import ESPER_TABLE, MAGICITE_TABLE, hex2int, int2bytes, Substitution, utilrandom as random
 
 items = None
 
@@ -260,9 +264,52 @@ class EsperBlock:
         spellrates = sorted(spellrates, key=lambda s_l1: s_l1[0].spellid)
         self.spells, self.learnrates = list(zip(*spellrates))
 
+@dataclass
+class Magicite:
+    address: int
+    original_esper_index: int
+    epser_index: int = field(init=False)
+    dialogue: List[int] = field(default_factory=list)
 
-all_espers = None
+def randomize_magicite(fout, sourcefile):
+    magicite = []
+    
+    espers = get_espers(sourcefile)
+    shuffled_espers = espers.copy()
+    random.shuffle(shuffled_espers)
 
+    with open(sourcefile, 'br') as s:
+        for line in open(MAGICITE_TABLE, 'r'):
+            line = line.split('#')[0].strip()
+            l = line.split(',')
+            address = int(l[0], 16)
+            dialogue = [int(d, 16) for d in l[1:]]
+            
+            s.seek(address)
+            instruction = ord(s.read(1))
+            esper_index = ord(s.read(1))
+            if instruction not in [0x86, 0x87] or esper_index < 0x36 or esper_index > 0x50:
+                print("Error in magicite table")
+                return
+            magicite.append(Magicite(address, esper_index - 0x36, dialogue))
+
+    for m in magicite:
+        original_name = espers[m.original_esper_index].name
+        m.esper_index = shuffled_espers[m.original_esper_index].id
+        new_name = espers[m.esper_index].name
+        for d in m.dialogue:
+            patch_dialogue(d, original_name, "{"+ original_name + "}")
+            patch_dialogue(d, original_name + "'s", "{"+ original_name + "Possessive}")
+            dotted_name = "".join(chain(*zip(original_name, repeat('.'))))[:-1]
+            patch_dialogue(d, dotted_name, "{" + original_name + "Dotted}")
+        set_dialogue_var(original_name, new_name)
+        set_dialogue_var(original_name + "Possessive", new_name + "'s")
+        dotted_new_name = "".join(chain(*zip(new_name, repeat('.'))))[:-1]
+        set_dialogue_var(original_name + "Dotted", dotted_new_name)
+        fout.seek(m.address + 1)
+        fout.write(bytes([m.esper_index + 0x36]))
+
+all_espers = None        
 
 def get_espers(sourcefile):
     global all_espers

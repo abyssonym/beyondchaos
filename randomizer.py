@@ -14,7 +14,7 @@ from character import get_characters, get_character, equip_offsets
 from chestrandomizer import mutate_event_items, get_event_items
 from decompress import Decompressor
 from dialoguemanager import manage_dialogue_patches
-from esperrandomizer import (get_espers, allocate_espers)
+from esperrandomizer import (get_espers, allocate_espers, randomize_magicite)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS,
                                  get_formations, get_fsets, get_formation)
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
@@ -4725,6 +4725,7 @@ def randomize():
 
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
     if options_.random_espers:
+        randomize_magicite(fout, sourcefile)
         if options_.is_code_active('dancingmaduin'):
             allocate_espers(options_.is_code_active('ancientcave'), get_espers(sourcefile), get_characters(), fout)
             nerf_paladin_shield()

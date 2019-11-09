@@ -7,7 +7,7 @@ from locationrandomizer import get_locations, get_location, get_npcs
 from monsterrandomizer import REPLACE_ENEMIES, get_monsters
 from shoprandomizer import get_shops
 from towerrandomizer import randomize_tower
-from utils import name_to_bytes, read_multi, Substitution, utilrandom as random, write_multi
+from utils import name_to_bytes, read_multi, Substitution, utilrandom as random, write_multi, AutoLearnRageSub
 
 
 def get_npc_palettes():

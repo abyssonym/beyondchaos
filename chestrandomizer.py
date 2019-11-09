@@ -17,13 +17,18 @@ EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x06, 0x09, 0x19, 0x1a, 0x1b, 0x1c, 0x22, 0x2
                  0x5e, 0x64, 0x65, 0x73, 0x79, 0x7f, 0x9f, 0xaf, 0xb6, 0xcf, 0xd1,
                  0xde, 0xe3]
 
+# Adding to event enemies increases the probability of early hard miabs significantly
+# without level limits, so put it back like it used to be.
+OLD_EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x09, 0x19, 0x1b, 0x22, 0x24, 0x33, 0x38,
+                 0x39, 0x3a, 0x42, 0x43, 0x50, 0x59, 0x5e, 0x64, 0x73, 0x7f,
+                 0xd1, 0xe3]
 
 def add_orphaned_formation(formation):
     global orphaned_formations
     orphaned_formations.append(formation)
 
 
-def get_orphaned_formations():
+def get_orphaned_formations(old_version=False):
     global orphaned_formations
     if orphaned_formations is not None:
         return orphaned_formations
@@ -32,8 +37,9 @@ def get_orphaned_formations():
     from monsterrandomizer import get_monsters
     monsters = get_monsters()
     extra_miabs = get_extra_miabs(0)
+    event_enemies = OLD_EVENT_ENEMIES if old_version else EVENT_ENEMIES
     for m in monsters:
-        if m.id in EVENT_ENEMIES:
+        if m.id in event_enemies:
             m.auxloc = "Event Battle"
             continue
         if not m.is_boss:
@@ -56,7 +62,7 @@ def get_orphaned_formations():
                         banned_formids.append(x.formid)
 
     orphaned_formations = sorted(orphaned_formations, key=lambda f: f.formid)
-    return get_orphaned_formations()
+    return get_orphaned_formations(old_version)
 
 
 def get_appropriate_formations():
@@ -133,11 +139,11 @@ def mark_taken_id(taken):
         valid_ids = [i for i in valid_ids if i != taken]
 
 
-def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_limit):
+def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_limit, old_version):
     formations = get_appropriate_formations()
     formations = [f for f in formations if
                   f.get_guaranteed_drop_value() >= value * 100]
-    orphaned_formations = get_orphaned_formations()
+    orphaned_formations = get_orphaned_formations(old_version)
     orphaned_formations = [f for f in orphaned_formations
                            if f not in used_formations]
     extra_miabs = get_extra_miabs(0)
@@ -153,10 +159,16 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
         if len(extra_miabs) > 1:
             extra_miabs = get_extra_miabs(rank)
         if orphaned_formations or extra_miabs:
-            max_rank = math.inf if clock else normal_rank_limit(rank)
+            max_rank = math.inf if (clock or old_version) else normal_rank_limit(rank)
             formations = [f for f in formations if f.rank() >= rank and f.rank() < max_rank]
-            formations = formations[:random.randint(1, 3)]
-            if not clock:
+
+            if old_version:
+                formations = formations[:random.randint(1, 3)]
+            else:
+                formations = [f for f in formations if f not in used_formations]
+                formations = [f for f in formations if f.formid not in banned_formids]
+                formations = formations[:random.randint(2, 6)]
+            if not (clock or old_version):
                 orphaned_formations = [f for f in orphaned_formations
                                        if f.rank() < normal_rank_limit(rank) and f.get_guaranteed_drop_value() >= value * 10 - 1000]
                 max_extra_miab_rank = special_rank_limit(rank)
@@ -181,12 +193,13 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
     while not candidates:
         max_rank = max(rank, rank_multiplier * normal_rank_limit(rank))
         min_value = value * 100/value_divisor - 1500
-        orphaned_formations = get_orphaned_formations()
+        orphaned_formations = get_orphaned_formations(old_version)
         orphaned_formations = [f for f in orphaned_formations
                                if f.rank() <= max_rank and f.get_guaranteed_drop_value() >= min_value / 3 - 1200]
         extra_miabs = get_extra_miabs(0)
         max_extra_miab_rank = special_rank_limit(rank)
         extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank * rank_multiplier]
+        candidates = (orphaned_formations + extra_miabs)
         candidates = [c for c in candidates if c not in used_formations]
         candidates = [c for c in candidates
                       if c.formid not in banned_formids]
@@ -197,7 +210,7 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
             formations = [c for c in formations if c not in used_formations]
             formations = [c for c in formations
                           if c.formid not in banned_formids]
-            formations = formations[:2]
+            formations = formations[:4]
             candidates += formations
 
         rank_multiplier *= 1.25
@@ -420,7 +433,7 @@ class ChestBlock:
             indexed_item = lowpriced[index]
 
         chance = random.randint(1, 50)
-        orphaned_formations = get_orphaned_formations()
+        orphaned_formations = get_orphaned_formations(uncapped_monsters)
         orphaned_formations = [f for f in orphaned_formations
                                if f not in used_formations]
         extra_miabs = get_extra_miabs(0)
@@ -432,7 +445,7 @@ class ChestBlock:
             chance = min(chance, 50)
         else:
             if orphaned_formations or extra_miabs:
-                chance -= 2
+                chance -= 2 if uncapped_monsters else 1
                 chance = max(chance, 1)
 
         formations = get_appropriate_formations()
@@ -448,8 +461,9 @@ class ChestBlock:
             if self.is_clock or not rank:
                 rank = min(formations, key=lambda f: f.rank()).rank() if formations else 0
 
-            chosen = select_monster_in_a_box(rank=rank, value=value, clock=self.is_clock or monster is True or uncapped_monsters, guarantee_miab_treasure=guarantee_miab_treasure, enemy_limit=enemy_limit)
+            chosen = select_monster_in_a_box(rank=rank, value=value, clock=self.is_clock or monster is True, old_version=uncapped_monsters, guarantee_miab_treasure=guarantee_miab_treasure, enemy_limit=enemy_limit)
             chosen = get_2pack(chosen)
+
             # only 2-packs are allowed
             self.contents = chosen.setid & 0xFF
         elif 4 <= chance <= 5:

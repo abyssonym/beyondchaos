@@ -1678,6 +1678,16 @@ def manage_balance(newslots=True):
 
     get_monsters(sourcefile)
     sealed_kefka = get_monster(0x174)
+    
+    if not options_.is_code_active('sketch'):
+        sketch_fix_sub = Substitution()
+        sketch_fix_sub.set_location(0x2F5C6)
+        sketch_fix_sub.bytestring = bytes([
+            0x80, 0xCA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0x4C, 0x09, 0xF8,
+            0xA0, 0x00, 0x28, 0xA9, 0x01, 0x1C, 0x8D, 0x89, 0xA0, 0x03, 0x00,
+            0xB1, 0x76, 0x0A, 0xAA, 0xC2, 0x20, 0xBD, 0x01, 0x20, 0x90, 0x02,
+            0x7B, 0x3A, 0xAA, 0x7B, 0xE2, 0x20, 0x22, 0xD1, 0x24, 0xC1, 0x80, 0xD7,
+            ])
 
 
 def manage_magitek():
@@ -4495,6 +4505,8 @@ def randomize():
     if options_.replace_commands and not options_.is_code_active('suplexwrecks'):
         if options_.is_code_active('quikdraw'):
             ALWAYS_REPLACE += ["rage"]
+        if options_.is_code_active('sketch'):
+            NEVER_REPLACE += ["sketch"]
         _, freespaces = manage_commands_new(commands)
         improve_gogo_status_menu(fout)
     reseed()

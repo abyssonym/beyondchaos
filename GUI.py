@@ -2,11 +2,13 @@ import fnmatch
 import os
 import re
 import sys
+import ast
+import pickle
 
 from PyQt5 import QtGui, Qt
 from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, QHBoxLayout, QLineEdit, \
     QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, QTabWidget, QInputDialog, QDialog, QPlainTextEdit, \
-    QScrollArea, QMessageBox
+    QScrollArea, QMessageBox, QErrorMessage
 import json
 
 
@@ -39,8 +41,9 @@ class Window(QWidget):
         # values to be sent to randomizer
         self.romText = ""
         self.mode = ""
+        self.seed = ""
         self.flags = ""
-        self.flagString = ""
+
 
         # dictionaries to hold flag data
         self.aesthetic = {}
@@ -54,7 +57,16 @@ class Window(QWidget):
         self.savedPresets = {}
 
         # ui elements
+        self.flagString = QLineEdit()
         self.comboBox = QComboBox()
+        self.tab1 = QWidget()
+        self.tab2 = QWidget()
+        self.tab3 = QWidget()
+        self.tab4 = QWidget()
+        self.tab5 = QWidget()
+        self.tab6 = QWidget()
+        self.middleLeftGroupBox = QGroupBox()
+        self.tablist = [self.tab1, self.tab2, self.tab3, self.tab4, self.tab5, self.tab6]
 
         # ----------- Begin buiding program/window ------------------------------
 
@@ -116,7 +128,7 @@ class Window(QWidget):
         seedLabel = QLabel("Seed:")
         TopHBox.addWidget(seedLabel)
         self.seedInput = QLineEdit()
-        self.seedInput.setPlaceholderText("Optional")
+        self.seedInput.setPlaceholderText("Optional - WILL NOT SAVE TO PRESETS!")
         TopHBox.addWidget(self.seedInput)
 
         topGroupBox.setLayout(TopHBox)
@@ -130,42 +142,49 @@ class Window(QWidget):
         middleHBox = QHBoxLayout()
 
         # ------------ Part one (left) of middle section ---------------------
-        middleLeftGroupBox = QGroupBox("Select mode")
+
+        self.middleLeftGroupBox.setTitle("Select Mode")
         midLeftVBox = QVBoxLayout()
 
         radioButton = QRadioButton("Normal (Default)")
         radioButton.setToolTip("Play through the normal story")
         radioButton.setChecked(True)
         radioButton.mode = "normal"
+        radioButton.clicked.connect(lambda : self.updateRadioSelection("normal"))
         midLeftVBox.addWidget(radioButton)
 
         radioButton = QRadioButton("Ancient Cave")
         radioButton.setToolTip("Play though a long randomized dungeon")
         radioButton.mode = "ancientcave"
+        radioButton.clicked.connect(lambda: self.updateRadioSelection("ancientcave"))
         midLeftVBox.addWidget(radioButton)
 
         radioButton = QRadioButton("Speed Cave")
         radioButton.setToolTip("Play through a medium-sized randomized dungeon")
         radioButton.mode = "speedcave"
+        radioButton.clicked.connect(lambda: self.updateRadioSelection("speedcave"))
         midLeftVBox.addWidget(radioButton)
 
         radioButton = QRadioButton("Race Cave")
         radioButton.setToolTip("Play through a short randomized dungeon")
         radioButton.mode = "racecave"
+        radioButton.clicked.connect(lambda: self.updateRadioSelection("racecave"))
         midLeftVBox.addWidget(radioButton)
 
         radioButton = QRadioButton("Kefka@Narshe")
         radioButton.setToolTip("Play the normal story up to Kefka at Narshe, "
                                "with extra wackiness. Intended for racing.")
         radioButton.mode = "katn"
+        radioButton.clicked.connect(lambda: self.updateRadioSelection("katn"))
         midLeftVBox.addWidget(radioButton)
 
         radioButton = QRadioButton("Dragon Hunt")
         radioButton.setToolTip("Kill all 8 dragons in the World of Ruin. Intended for racing.")
         radioButton.mode = "dragonhunt"
+        radioButton.clicked.connect(lambda: self.updateRadioSelection("dragonhunt"))
         midLeftVBox.addWidget(radioButton)
 
-        middleLeftGroupBox.setLayout(midLeftVBox)
+        self.middleLeftGroupBox.setLayout(midLeftVBox)
         # ------------- Part one (left) end ----------------------------------------------
 
         # ------------- Part two (right) of middle section --------------------------
@@ -174,97 +193,31 @@ class Window(QWidget):
         tabVBoxLayout = QVBoxLayout()
 
         tabs = QTabWidget()
-        tab1 = QWidget()
-        tab2 = QWidget()
-        tab3 = QWidget()
-        tab4 = QWidget()
-        tab5 = QWidget()
-        tab6 = QWidget()
-        tabs.addTab(tab1, "Simple")
-        tabs.addTab(tab2, "Aesthetic")
-        tabs.addTab(tab3, "Major")
-        tabs.addTab(tab4, "Minor")
-        tabs.addTab(tab5, "Experimental")
-        tabs.addTab(tab6, "Gamebreaking")
 
-        # ----------- tab1 -------------------------
-        flagGrid = QGridLayout()
-        count = 0
-        for flagname, flagdesc in self.simple.items():
-            cbox = FlagCheckBox(flagname, flagname)
-            # cbox.setStyleSheet("font:bold; font-size:14px")
-            cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['explanation'])
-            cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("simple", temp))
-            flagGrid.addWidget(cbox, count / 3, count % 3)
-            count += 1
-        tab1.setLayout(flagGrid)
+        # loop to add tab objects to 'tabs' TabWidget
+        tabNames = ["Simple", "Aesthetic", "Major", "Minor", "Experimental", "Gamebreaking"]
+        for tabObj, name in zip(self.tablist, tabNames):
+            tabs.addTab(tabObj, name)
 
-        # ----------- tab2 -------------------------
-        flagGrid = QGridLayout()
-        count = 0
-        for flagname, flagdesc in self.aesthetic.items():
-            cbox = FlagCheckBox(flagname, flagname)
-            # cbox.setStyleSheet("font:bold; font-size:14px")
-            cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['explanation'])
-            cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("aesthetic", temp))
-            flagGrid.addWidget(cbox, count / 3, count % 3)
-            count += 1
-        tab2.setLayout(flagGrid)
+        for t, d in zip(self.tablist, self.dictionaries):
+            flagGrid = QGridLayout()
+            count = 0
+            for flagname, flagdesc in d.items():
+                cbox = FlagCheckBox(flagname, flagname)
+                # cbox.setStyleSheet("font:bold; font-size:14px")
+                cbox.setCheckable(True)
+                if flagdesc['checked']:
+                    cbox.isChecked = True
+                cbox.setToolTip(flagdesc['explanation'])
+                cbox.clicked.connect(lambda checked, dic=d, cboxval=cbox.value: self.flagButtonClicked(dic, cboxval))
+                flagGrid.addWidget(cbox, count / 3, count % 3)
+                count += 1
+            t.setLayout(flagGrid)
 
-        # ----------- tab3 -------------------------
-        flagGrid = QGridLayout()
-        count = 0
-        for flagname, flagdesc in self.major.items():
-            cbox = FlagCheckBox(flagname, flagname)
-            # cbox.setStyleSheet("font:bold; font-size:14px")
-            cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['explanation'])
-            cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("major", temp))
-            flagGrid.addWidget(cbox, count / 3, count % 3)
-            count += 1
-        tab3.setLayout(flagGrid)
+        tabVBoxLayout.addWidget(tabs)
 
-        # ----------- tab4 -------------------------
-        flagGrid = QGridLayout()
-        count = 0
-        for flagname, flagdesc in self.minor.items():
-            cbox = FlagCheckBox(flagname, flagname)
-            # cbox.setStyleSheet("font:bold; font-size:14px")
-            cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['explanation'])
-            cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("minor", temp))
-            flagGrid.addWidget(cbox, count / 3, count % 3)
-            count += 1
-        tab4.setLayout(flagGrid)
-
-        # ----------- tab5 -------------------------
-        flagGrid = QGridLayout()
-        count = 0
-        for flagname, flagdesc in self.experimental.items():
-            cbox = FlagCheckBox(flagname, flagname)
-            # cbox.setStyleSheet("font:bold; font-size:14px")
-            cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['explanation'])
-            cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("experimental", temp))
-            flagGrid.addWidget(cbox, count / 3, count % 3)
-            count += 1
-        tab5.setLayout(flagGrid)
-
-        # ----------- tab6 -------------------------
-        flagGrid = QGridLayout()
-        count = 0
-        for flagname, flagdesc in self.gamebreaking.items():
-            cbox = FlagCheckBox(flagname, flagname)
-            # cbox.setStyleSheet("font:bold; font-size:14px")
-            cbox.setCheckable(True)
-            cbox.setToolTip(flagdesc['explanation'])
-            cbox.clicked.connect(lambda checked, temp=cbox.value: self.flagButtonClicked("gamebreaking", temp))
-            flagGrid.addWidget(cbox, count / 3, count % 3)
-            count += 1
-        tab6.setLayout(flagGrid)
-
+        #----------- tabs done ----------------------------
+        
         # this is the line in the layout that displays the string of selected flags
         #   and the button to save those flags
         widgetV = QWidget()
@@ -273,7 +226,7 @@ class Window(QWidget):
 
         widgetVBoxLayout.addWidget(QLabel("Text-string of selected flags:"))
 
-        self.flagString = QLineEdit()
+        # self.flagString = QLineEdit()
         self.flagString.setReadOnly(True)
         self.flagString.setStyleSheet("background:lightgrey;")
         widgetVBoxLayout.addWidget(self.flagString)
@@ -293,14 +246,13 @@ class Window(QWidget):
         flagTextHBox.addWidget(helpButton)
         flagTextWidget.setLayout(flagTextHBox)
 
-        tabVBoxLayout.addWidget(tabs)
         tabVBoxLayout.addWidget(flagTextWidget)
 
         middleRightGroupBox.setLayout(tabVBoxLayout)
         # ------------- Part two (right) end ---------------------------------------
 
         # add widgets to HBoxLayout and assign to middle groupbox layout
-        middleHBox.addWidget(middleLeftGroupBox)
+        middleHBox.addWidget(self.middleLeftGroupBox)
         middleHBox.addWidget(middleRightGroupBox)
         groupBoxTwo.setLayout(middleHBox)
 
@@ -338,21 +290,29 @@ class Window(QWidget):
     # -------------- NO MORE LAYOUT DESIGN PAST THIS POINT ---------------------------
     # --------------------------------------------------------------------------------
 
+
     # opens input dialog to get a name to assign a desired seed flagset, then saves all dictionaries
     #   to a text file under that flagset name.
     def saveSeed(self):
 
         text, okPressed = QInputDialog.getText(self, "Save Seed", "Enter a name for this flagset", QLineEdit.Normal, "")
         if okPressed and text != '':
-            print(f"{text}.txt saved!")
+            if os.path.exists(f"saved_flagsets/flagset_{text}.pickle"):
+                QMessageBox.about(self, "Error", "That presets already exists!")
+            else:
+                print(f"{text}.pickle saved!")
 
-            f = open(f"saved_flagsets/flagset_{text}.txt", "w")
-            for l in self.dictionaries:
-                # print(l)
-                f.write(str(l) + "\n")
-            f.close()
-            self.savedPresets[text] = f"{text}.txt"
-            self.comboBox.addItem(text)
+                with open(f"saved_flagsets/flagset_{text}.pickle", "wb") as handle:
+                    pickle.dump(self.simple, handle, protocol=None)
+                    pickle.dump(self.aesthetic, handle, protocol=None)
+                    pickle.dump(self.major, handle, protocol=None)
+                    pickle.dump(self.minor, handle, protocol=None)
+                    pickle.dump(self.experimental, handle, protocol=None)
+                    pickle.dump(self.gamebreaking, handle, protocol=None)
+                    pickle.dump(self.mode, handle, protocol=None)
+
+                self.savedPresets[text] = f"flagset_{text}.pickle"
+                self.comboBox.addItem(text)
 
     def deleteSeed(self):
         seed = self.comboBox.currentText()
@@ -362,70 +322,61 @@ class Window(QWidget):
                                             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if response == QMessageBox.Yes:
                 print("You selected yes!")
-                if os.path.exists(f"saved_flagsets/flagset_{seed}.txt"):
-                    os.remove(f"saved_flagsets/flagset_{seed}.txt")
+                if os.path.exists(f"saved_flagsets/flagset_{seed}.pickle"):
+                    os.remove(f"saved_flagsets/flagset_{seed}.pickle")
                     del self.savedPresets[seed]
                     self.comboBox.removeItem(self.comboBox.findText(seed))
                     print(f"{seed} deleted!")
             else:
                 print("You selected no!")
 
+    def updateRadioSelection(self, mode):
+        self.mode = mode
+        print(self.mode)
+
     def updatePresetDropdown(self):
-        selectedPreset = self.comboBox.currentText()
-        print(selectedPreset + " selected")
-        self.loadPreset(selectedPreset)
+        if (self.comboBox.currentText() != "Select a preset"):
+            selectedPreset = self.comboBox.currentText()
+            print(selectedPreset + " selected")
+            self.loadPreset(selectedPreset)
+        else:
+            self.clearUI()
 
-    # (MAKE THIS CLEANER IN THE FUTURE)
-    # When flag is selected/unselected, updates flag value in appropriate dictionary
-    #   Also updates textbox with updated string of flags
-    def flagButtonClicked(self, dictionary, value):
-        # This part updates the appropriate dictionary (CLEAN THIS)
-        if dictionary == "simple":
-            if not self.simple[value]['checked']:
-                self.simple[value]['checked'] = True
-            else:
-                self.simple[value]['checked'] = False
-        elif dictionary == "aesthetic":
-            if not self.aesthetic[value]['checked']:
-                self.aesthetic[value]['checked'] = True
-            else:
-                self.aesthetic[value]['checked'] = False
-        elif dictionary == "major":
-            if not self.major[value]['checked']:
-                self.major[value]['checked'] = True
-            else:
-                self.major[value]['checked'] = False
-        elif dictionary == "minor":
-            if not self.minor[value]['checked']:
-                self.minor[value]['checked'] = True
-            else:
-                self.minor[value]['checked'] = False
-        elif dictionary == "experimental":
-            if not self.experimental[value]['checked']:
-                self.experimental[value]['checked'] = True
-            else:
-                self.experimental[value]['checked'] = False
-        elif dictionary == "gamebreaking":
-            if not self.gamebreaking[value]['checked']:
-                self.gamebreaking[value]['checked'] = True
-            else:
-                self.gamebreaking[value]['checked'] = False
+    def clearUI(self):
+        self.mode = ""
+        self.seed = ""
+        self.flags = ""
+        self.seedInput.setText(self.seed)
+        self.flagString.setText(self.flags)
 
-        # This part updates the textbox with the string of flag values
-        # dictionaries = [self.simple, self.aesthetic, self.major,
-        #                 self.minor, self.experimental, self.gamebreaking]
-        s = ""
-        for d in self.dictionaries:
-            space = False
-            for name, info in d.items():
-                if info['checked']:
-                    s = s + name
-                    space = True
-            if space:
-                s = s + " "
+        for i in self.middleLeftGroupBox.findChildren((QRadioButton)):
+            if (i.mode == 'normal'):
+                i.setProperty('checked', True)
+                break
+            print(i)
 
-        print(s)  # print to console for testing
-        self.flagString.setText(s)
+        self.initCodes()
+        self.updateDictionaries()
+        # for j in self.dictionaries:
+        #     print(j)
+        self.updateFlagString()
+        self.updateFlagCheckboxes()
+
+
+    def flagButtonClicked(self, dictionary, value2):
+
+        for t, d in zip(self.tablist, self.dictionaries):
+            children = t.findChildren(FlagCheckBox)
+            for c in children:
+                if (c.isChecked()):
+                    d[c.value]['checked'] = True
+                else:
+                    d[c.value]['checked'] = False
+            #print(d)
+        #print("")
+        self.updateDictionaries()
+        self.updateFlagString()
+
 
     # Opens file dialog to select rom file and assigns it to value in parent class
     def openFileChooser(self):
@@ -574,7 +525,7 @@ class Window(QWidget):
     # reads files from save directory and puts them in a list
     def compilePresets(self):
         for file in os.listdir('./saved_flagsets'):
-            if re.match(r'flagset_(.*).txt$', file):
+            if re.match(r'flagset_(.*).pickle$', file):
                 print(file)
                 temp = list(re.split('[_.]', file))
                 self.savedPresets[temp[1]] = file
@@ -582,14 +533,63 @@ class Window(QWidget):
 
     # Reads dictionary data from text file and populates class dictionaries
     def loadPreset(self, flagdict):
-        s = open(f'saved_flagsets/flagset_{flagdict}.txt', 'r')
+        with open(f"saved_flagsets/flagset_{flagdict}.pickle", "rb") as handle:
+            #print("this works2")
 
+            self.simple = pickle.load(handle)
+            self.aesthetic = pickle.load(handle)
+            self.major = pickle.load(handle)
+            self.minor = pickle.load(handle)
+            self.experimental = pickle.load(handle)
+            self.gamebreaking = pickle.load(handle)
+            self.mode = pickle.load(handle)
+
+        self.updateDictionaries()
+
+        for i in self.dictionaries:
+            print(i)
+
+        self.updateFlagString()
+        self.updateFlagCheckboxes()
+        self.updateModeSelection()
+
+    def updateFlagString(self):
+        temp = ""
+        space = False
         for d in self.dictionaries:
-            d = eval(s.readline())
-            print(d)
-        s.close()
+            for flagname, flagdesc in d.items():
+                if flagdesc['checked']:
+                    temp += flagname
+                    space = True
+            if space:
+                temp += " "
+                space = False
+
+        self.flags = temp
+        self.flagString.setText(self.flags)
 
 
+    def updateFlagCheckboxes(self):
+        for t, d in zip(self.tablist, self.dictionaries):
+            children = t.findChildren(FlagCheckBox)
+
+            for c in children:
+                value = c.value
+                #print(value + str(d[value]['checked']))
+                if d[value]['checked']:
+                    c.setProperty('checked',True)
+                else:
+                    c.setProperty('checked', False)
+
+    def updateModeSelection(self):
+        for i in self.middleLeftGroupBox.findChildren((QRadioButton)):
+            if (i.mode == self.mode):
+                i.setProperty('checked', True)
+                break
+
+    def updateDictionaries(self):
+        self.dictionaries = [self.simple, self.aesthetic, self.major,
+                             self.minor, self.experimental, self.gamebreaking]
 
 
 

@@ -12,12 +12,3 @@ bsiab				Reverts the monster-in-a-box selection algorithm to be (mostly) the sam
 novanilla			Same as 'makeover' except sprites from the vanilla game are guaranteed not to appear.
 frenchvanilla		Same as 'makeover' except sprites from the vanilla game are selected with equal weight to new sprites rather than some being guaranteed to appear.
 cloneparty			Same as 'makeover' except instead of avoiding choosing different versions of the same character, it actively tries to do so.
-no					Used in conjunction with a suffix(boys, girls, kids, pets, potato(i.e. nopets)). Removes the subset of sprites from the potential sprites that can be used. If not enough sprites exist to fill all party members, vanilla sprites will be used.
-hate				Used in conjunction with a suffix(boys, girls, kids, pets, potato(i.e. hatepets)). Sprites from a subset will be less likely to appear.
-like				Used in conjunction with a suffix(boys, girls, kids, pets, potato(i.e. likepets)). Sprites from a subset will be less likely to appear.
-love				Used in conjunction with a suffix(boys, girls, kids, pets, potato(i.e. lovepets)). Only sprites from specified subsets will appear. If not enough sprites exist to fill all party members, vanilla sprites will be used.
-boys				Used in conjunction with a prefix(no, hate, like, love(i.e. noboys)). This suffix refers to all sprites that are flagged as male.
-girls				Used in conjunction with a prefix(no, hate, like, love(i.e. nogirls)). This suffix refers to all sprites that are flagged as female.
-kids				Used in conjunction with a prefix(no, hate, like, love(i.e. nokids)). This suffix refers to all sprites that are flagged as children.
-pets				Used in conjunction with a prefix(no, hate, like, love(i.e. nopets)). This suffix refers to all sprites that are flagged as non-human.
-potato				Used in conjunction with a prefix(no, hate, like, love(i.e. nopotato)). This suffix refers to all sprites that are flagged as inanimate objects or otherwise silly.

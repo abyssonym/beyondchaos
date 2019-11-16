@@ -1,9 +1,12 @@
 import fnmatch, os, re, sys, ast, pickle
 
+# import fix_qt_import_error
 from PyQt5 import QtGui, Qt
 from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, QHBoxLayout, QLineEdit, \
     QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, QTabWidget, QInputDialog, QDialog, QPlainTextEdit, \
     QScrollArea, QMessageBox, QErrorMessage
+
+print("Loading...")
 
 # Extended QButton widget to hold flag value - NOT USED PRESENTLY
 class FlagButton(QPushButton):
@@ -116,7 +119,7 @@ class Window(QWidget):
         romLabel = QLabel("ROM:")
         TopHBox.addWidget(romLabel)
         self.romInput = QLineEdit()
-        self.romInput.setPlaceholderText("Required")
+        self.romInput.setPlaceholderText("Required - Will save to presets")
         TopHBox.addWidget(self.romInput)
         browseButton = QPushButton("Browse")
         browseButton.clicked.connect(lambda: self.openFileChooser())
@@ -252,20 +255,21 @@ class Window(QWidget):
         widgetVBoxLayout.addWidget(saveButton)
 
         # This part makes a group box and adds the selected-flags display
-        #   and a button to show help
+        #   and a button to clear the UI
         flagTextWidget = QGroupBox()
         flagTextHBox = QHBoxLayout()
         flagTextHBox.addWidget(widgetV)
-        helpButton = QPushButton("Reset")
-        helpButton.setStyleSheet("font-size:12px; height:60px")
-        helpButton.clicked.connect(lambda: self.clearUI())
-        flagTextHBox.addWidget(helpButton)
+        clearUiButton = QPushButton("Reset")
+        clearUiButton.setStyleSheet("font-size:12px; height:60px")
+        clearUiButton.clicked.connect(lambda: self.clearUI())
+        flagTextHBox.addWidget(clearUiButton)
         flagTextWidget.setLayout(flagTextHBox)
 
         tabVBoxLayout.addWidget(flagTextWidget)
-
         middleRightGroupBox.setLayout(tabVBoxLayout)
         # ------------- Part two (right) end ---------------------------------------
+
+
 
         # add widgets to HBoxLayout and assign to middle groupbox layout
         middleHBox.addWidget(self.middleLeftGroupBox)
@@ -307,8 +311,9 @@ class Window(QWidget):
     # --------------------------------------------------------------------------------
 
 
-    # opens input dialog to get a name to assign a desired seed flagset, then saves all dictionaries
-    #   to a text file under that flagset name. Checks that file doesn't already exist.
+    # opens input dialog to get a name to assign a desired seed flagset, then saves all dictionaries,
+    #   selected mode, and rom file path to a text file under that flagset name. Checks that file
+    #   doesn't already exist.
     # files saved in .pickle format. overwrite not implemented currently. future updates will allow this.
     def saveSeed(self):
         self.romText = self.romInput.text()
@@ -354,11 +359,6 @@ class Window(QWidget):
             #else:
                 #print("You selected no!")
 
-    # when radio button is checked, update the main class variable
-    def updateRadioSelection(self, mode):
-        self.mode = mode
-        # print(self.mode)
-
     # when preset is selected from dropdown list, load the data into dictionaries
     #   and set the UI to reflect the settings stored in the preset.
     # if the only saved preset is deleted, or user selects initial value of
@@ -397,12 +397,8 @@ class Window(QWidget):
 
     # when flag UI button is checked, update corresponding dictionary values
     def flagButtonClicked(self):
-
-
         for t, d in zip(self.tablist, self.dictionaries):
             children = t.findChildren(FlagCheckBox)
-            #children = t.children()
-            #print(children)
             for c in children:
                 if (c.isChecked()):
                     d[c.value]['checked'] = True
@@ -412,7 +408,7 @@ class Window(QWidget):
         self.updateFlagString()
 
 
-    # Opens file dialog to select rom file and assigns it to value in parent class
+    # Opens file dialog to select rom file and assigns it to value in parent/Window class
     def openFileChooser(self):
         file_path = QFileDialog.getOpenFileName(self, 'Open File', './', filter="All Files(*.*);;Text Files(*.txt)")
         #if file_path[0]:
@@ -468,85 +464,86 @@ class Window(QWidget):
                         temp = list(filter(None, temp))
                         self.simple[temp[0]] = {'explanation': temp[1], 'checked': False}
 
+    # -------------------- Not currently in use -----------------------------------
     # Open second window and display list of flags and their descriptions
     # (CLEAN THIS UP)
-    def showFlagHelp(self):
-        dia = QDialog()
-        dia.setWindowTitle("Flag Descriptions")
-        dia.setGeometry(300, 300, 600, 550)
-
-        tab = QTabWidget()#
-
-        tab1 = QScrollArea() #tabObj
-        tab1wid = QWidget()# from self.tabs
-        tab.addTab(tab1, "Simple")#
-        tab1layout = QVBoxLayout()#
-        for flagname, flagdesc in self.simple.items():#
-            tab1layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))#
-        tab1layout.addStretch(1)#
-        tab1wid.setLayout(tab1layout)#
-        tab1.setWidgetResizable(True)#
-        tab1.setWidget(tab1wid)
-
-        tab2 = QScrollArea()
-        tab2wid = QWidget()
-        tab.addTab(tab2, "Aesthetic")
-        tab2layout = QVBoxLayout()
-        for flagname, flagdesc in self.aesthetic.items():
-            tab2layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-        tab2layout.addStretch(1)
-        tab2wid.setLayout(tab2layout)
-        tab2.setWidgetResizable(True)
-        tab2.setWidget(tab2wid)
-
-        tab3 = QScrollArea()
-        tab3wid = QWidget()
-        tab.addTab(tab3, "Major")
-        tab3layout = QVBoxLayout()
-        for flagname, flagdesc in self.major.items():
-            tab3layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-        tab3layout.addStretch(1)
-        tab3wid.setLayout(tab3layout)
-        tab3.setWidgetResizable(True)
-        tab3.setWidget(tab3wid)
-
-        tab4 = QScrollArea()
-        tab4wid = QWidget()
-        tab.addTab(tab4, "Minor")
-        tab4layout = QVBoxLayout()
-        for flagname, flagdesc in self.minor.items():
-            tab4layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-        tab4layout.addStretch(1)
-        tab4wid.setLayout(tab4layout)
-        tab4.setWidgetResizable(True)
-        tab4.setWidget(tab4wid)
-
-        tab5 = QScrollArea()
-        tab5wid = QWidget()
-        tab.addTab(tab5, "Experimental")
-        tab5layout = QVBoxLayout()
-        for flagname, flagdesc in self.experimental.items():
-            tab5layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-        tab5layout.addStretch(1)
-        tab5wid.setLayout(tab5layout)
-        tab5.setWidgetResizable(True)
-        tab5.setWidget(tab5wid)
-
-        tab6 = QScrollArea()
-        tab6wid = QWidget()
-        tab.addTab(tab6, "Gamebreaking")
-        tab6layout = QVBoxLayout()
-        for flagname, flagdesc in self.gamebreaking.items():
-            tab6layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-        tab6layout.addStretch(1)
-        tab6wid.setLayout(tab6layout)
-        tab6.setWidgetResizable(True)
-        tab6.setWidget(tab6wid)
-
-        tablayout = QVBoxLayout()
-        tablayout.addWidget(tab)
-        dia.setLayout(tablayout)
-        dia.exec()
+    # def showFlagHelp(self):
+    #     dia = QDialog()
+    #     dia.setWindowTitle("Flag Descriptions")
+    #     dia.setGeometry(300, 300, 600, 550)
+    #
+    #     tab = QTabWidget()#
+    #
+    #     tab1 = QScrollArea() #tabObj
+    #     tab1wid = QWidget()# from self.tabs
+    #     tab.addTab(tab1, "Simple")#
+    #     tab1layout = QVBoxLayout()#
+    #     for flagname, flagdesc in self.simple.items():#
+    #         tab1layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))#
+    #     tab1layout.addStretch(1)#
+    #     tab1wid.setLayout(tab1layout)#
+    #     tab1.setWidgetResizable(True)#
+    #     tab1.setWidget(tab1wid)
+    #
+    #     tab2 = QScrollArea()
+    #     tab2wid = QWidget()
+    #     tab.addTab(tab2, "Aesthetic")
+    #     tab2layout = QVBoxLayout()
+    #     for flagname, flagdesc in self.aesthetic.items():
+    #         tab2layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
+    #     tab2layout.addStretch(1)
+    #     tab2wid.setLayout(tab2layout)
+    #     tab2.setWidgetResizable(True)
+    #     tab2.setWidget(tab2wid)
+    #
+    #     tab3 = QScrollArea()
+    #     tab3wid = QWidget()
+    #     tab.addTab(tab3, "Major")
+    #     tab3layout = QVBoxLayout()
+    #     for flagname, flagdesc in self.major.items():
+    #         tab3layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
+    #     tab3layout.addStretch(1)
+    #     tab3wid.setLayout(tab3layout)
+    #     tab3.setWidgetResizable(True)
+    #     tab3.setWidget(tab3wid)
+    #
+    #     tab4 = QScrollArea()
+    #     tab4wid = QWidget()
+    #     tab.addTab(tab4, "Minor")
+    #     tab4layout = QVBoxLayout()
+    #     for flagname, flagdesc in self.minor.items():
+    #         tab4layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
+    #     tab4layout.addStretch(1)
+    #     tab4wid.setLayout(tab4layout)
+    #     tab4.setWidgetResizable(True)
+    #     tab4.setWidget(tab4wid)
+    #
+    #     tab5 = QScrollArea()
+    #     tab5wid = QWidget()
+    #     tab.addTab(tab5, "Experimental")
+    #     tab5layout = QVBoxLayout()
+    #     for flagname, flagdesc in self.experimental.items():
+    #         tab5layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
+    #     tab5layout.addStretch(1)
+    #     tab5wid.setLayout(tab5layout)
+    #     tab5.setWidgetResizable(True)
+    #     tab5.setWidget(tab5wid)
+    #
+    #     tab6 = QScrollArea()
+    #     tab6wid = QWidget()
+    #     tab.addTab(tab6, "Gamebreaking")
+    #     tab6layout = QVBoxLayout()
+    #     for flagname, flagdesc in self.gamebreaking.items():
+    #         tab6layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
+    #     tab6layout.addStretch(1)
+    #     tab6wid.setLayout(tab6layout)
+    #     tab6.setWidgetResizable(True)
+    #     tab6.setWidget(tab6wid)
+    #
+    #     tablayout = QVBoxLayout()
+    #     tablayout.addWidget(tab)
+    #     dia.setLayout(tablayout)
+    #     dia.exec()
 
     # reads files from save directory and puts them in a list
     # files are in the format of .pickle
@@ -586,6 +583,8 @@ class Window(QWidget):
         self.updateFlagCheckboxes()
         self.updateModeSelection()
 
+    # get seed generation parameters from UI to prepare for seed generation
+    # This will only show a confirmation dialog for now, will not actually generate a seed
     def generateSeed(self):
         self.romText = self.romInput.text()
         self.seed = self.seedInput.text()
@@ -593,6 +592,8 @@ class Window(QWidget):
             seed = "(none)"
         flags = (self.flags).strip().replace(" ", "\n----")
         #print(self.flags)
+
+        # This makes the flag string more readable in the confirm dialog
         message = ((f"Rom: {self.romText}\n"
                         f"Seed: {seed}\n"
                         f"Mode: {self.mode}\n"
@@ -634,6 +635,11 @@ class Window(QWidget):
                     c.setProperty('checked',True)
                 else:
                     c.setProperty('checked', False)
+
+    # when radio button is checked, update the main class variable
+    def updateRadioSelection(self, mode):
+        self.mode = mode
+        # print(self.mode)
 
     # enumerate radio button objects and set them to the currently set mode variable
     def updateModeSelection(self):

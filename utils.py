@@ -167,6 +167,12 @@ def hex2int(hexstr):
     return int(hexstr, 16)
 
 
+def shuffle_key_values(d):
+    keys = list(d.keys())
+    random.shuffle(keys)
+    shuffled = dict(zip(keys, d.values()))
+    d.update(shuffled)
+
 def dialogue_to_bytes(text, null_terminate=True):
     bs = []
     i = 0

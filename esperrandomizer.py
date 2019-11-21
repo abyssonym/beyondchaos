@@ -1,11 +1,14 @@
+import copy
 from dataclasses import dataclass, field
 from functools import reduce
 from itertools import chain, repeat
 from typing import List
 
 from dialoguemanager import patch_dialogue, set_dialogue_var
+from formationrandomizer import get_formation
+from monsterrandomizer import change_enemy_name, get_monster, MonsterGraphicBlock
 from skillrandomizer import get_ranked_spells, get_spell
-from utils import ESPER_TABLE, MAGICITE_TABLE, hex2int, int2bytes, Substitution, utilrandom as random
+from utils import ESPER_TABLE, MAGICITE_TABLE, hex2int, int2bytes, Substitution, utilrandom as random, shuffle_key_values
 
 items = None
 
@@ -274,9 +277,40 @@ class Magicite:
 def randomize_magicite(fout, sourcefile):
     magicite = []
 
+    # Some espers use 128x128 graphics, and those look like crap in the Ifrit/Shiva fight
+    # So make sure Ifrit and Shiva have espers with small graphics.
     espers = get_espers(sourcefile)
-    shuffled_espers = espers.copy()
-    random.shuffle(shuffled_espers)
+    shuffled_espers = {i: e for i, e in enumerate(espers)}
+    esper_graphics = [MonsterGraphicBlock(pointer=0x127780 + (5*i), name= "") for i in range(len(espers))]
+    for eg in esper_graphics:
+        eg.read_data(sourcefile)
+
+    # Ifrit's esper graphics are large. But he has separate enemy graphics that are fine.
+    ifrit_graphics = copy.copy(get_monster(0x109).graphics)
+    ifrit_id = [e.id for e in espers if e.name == "Ifrit"][0]
+    esper_graphics[ifrit_id] = ifrit_graphics
+
+    # Shuffle all espers except Ifrit and Shiva
+    can_be_large_espers =  {i: e for i, e in shuffled_espers.items() if e.name not in ["Shiva", "Ifrit"]}
+    shuffle_key_values(can_be_large_espers)
+    shuffled_espers.update(can_be_large_espers)
+    print([e.name for e in can_be_large_espers.values()])
+    
+    # Now shuffle small espers so Ifrit and Shiva get random graphics out of the ones they can use
+    small_espers = {i: e for i, e in shuffled_espers.items() if not esper_graphics[i].large}
+    shuffle_key_values(small_espers)
+    shuffled_espers.update(small_espers)
+    print([e.name for e in small_espers.values()])
+
+    tritoch_id = [e.id for e in espers if e.name == "Tritoch"][0]
+    if esper_graphics[tritoch_id].large:
+        tritoch_formations = [0x1BF, 0x1C0, 0x1E7, 0x1E8]
+        for g in tritoch_formations:
+            f = get_formation(g)
+            f.mouldbyte = 6 << 4
+            f.enemy_pos[0] = f.enemy_pos[0] & 0xF0 + 3
+            f.write_data(fout)
+            
 
     with open(sourcefile, 'br') as s:
         for line in open(MAGICITE_TABLE, 'r'):
@@ -296,7 +330,8 @@ def randomize_magicite(fout, sourcefile):
     for m in magicite:
         original_name = espers[m.original_esper_index].name
         m.esper_index = shuffled_espers[m.original_esper_index].id
-        new_name = espers[m.esper_index].name
+        new_name = shuffled_espers[m.original_esper_index].name
+
         for d in m.dialogue:
             patch_dialogue(d, original_name, "{"+ original_name + "}")
             patch_dialogue(d, original_name + "'s", "{"+ original_name + "Possessive}")
@@ -308,6 +343,18 @@ def randomize_magicite(fout, sourcefile):
         set_dialogue_var(original_name + "Dotted", dotted_new_name)
         fout.seek(m.address + 1)
         fout.write(bytes([m.esper_index + 0x36]))
+        print(f"{original_name}->{new_name}")
+
+    esper_monsters = [(0x108, "Shiva"), (0x109, "Ifrit"), (0x114, "Tritoch"), (0x115, "Tritoch"), (0x144, "Tritoch")]
+
+    for id, name in esper_monsters:
+        monster = get_monster(id)
+        esper_id = [e.id for e in espers if e.name == name][0]
+        replacement = shuffled_espers[esper_id]
+        change_enemy_name(fout, id, replacement.name)
+        mg = esper_graphics[replacement.id]
+        monster.graphics.copy_data(mg)
+        monster.graphics.write_data(fout)
 
 all_espers = None
 

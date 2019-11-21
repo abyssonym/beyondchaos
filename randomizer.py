@@ -4005,8 +4005,6 @@ def code_hint():
     codename = options_.random_unused_code()
 
     hint = "MADUIN: But if you use the code “{}”… <wait 240 frames><wait 1 frame><page><line>You will probably be able to remain in this world as a human being… <wait 240 frames><wait 1 frame>".format(codename)
-    bytestring = dialogue_to_bytes(hint)
-
     set_dialogue(0xBFD, hint)
 
 

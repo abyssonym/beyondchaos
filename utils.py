@@ -57,6 +57,7 @@ FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
 SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
 MOOGLE_NAMES_TABLE = path.join(custom_path, "mooglenames.txt")
 DANCE_NAMES_TABLE = path.join(custom_path, "dancenames.txt")
+PASSWORDS_TABLE = path.join(custom_path, "passwords.txt")
 POEMS_TABLE = path.join(custom_path, "poems.txt")
 
 def open_mei_fallback(filename, mode='r'):

@@ -32,7 +32,7 @@ from musicrandomizer import randomize_music, manage_opera, insert_instruments
 from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, MAKEOVER_MODIFIER_CODES, options_
 from patches import allergic_dog, banon_life3, vanish_doom, evade_mblock, death_abuse, no_kutan_skip
 from shoprandomizer import (get_shops, buy_owned_breakable_tools)
-from sillyclowns import randomize_poem
+from sillyclowns import randomize_passwords, randomize_poem
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              RandomSpellSub, MultipleSpellSub, ChainSpellSub,
                              get_ranked_spells, get_spell)
@@ -4723,6 +4723,7 @@ def randomize():
     reseed()
 
     randomize_poem(fout)
+    randomize_passwords()
     reseed()
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----

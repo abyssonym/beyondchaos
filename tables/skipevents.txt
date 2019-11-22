@@ -209,10 +209,11 @@ Normal A776C D3 22
 # Instead of setting the bit to show Gerad in Figaro prison, set the bit that his event sets
 Normal A776E D4 6E
 # Tentacles
-Normal A6A4F C0 27 01 B7 6A 00
+Normal A6A4F C0 27 01 AD 6A 00
+Normal A6AAD 3E 1B 3E 1C 3E 1D 3E 1E
 # After Tentacles
-Normal A6AF4 C0 27 01 00 6B 00 
-Normal A6B19 BE 01 F7 6B 50 F0 0A C0 27 01 DC 6B 00
+Normal A6AF2 3E 1A 45 31 06 D5 1D 0F C4 9C FF 93 96 5C C0 27 01 07 6B 00 
+Normal A6B0D BE 01 F7 6B 50 F0 0A C0 27 01 DC 6B 00
 Palette CA2FB 01
 Palette CA35D 0A
 Palette CA36B 0A

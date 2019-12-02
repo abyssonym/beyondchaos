@@ -609,7 +609,6 @@ class Window(QWidget):
                             f"Flags: \n----{flags}\n"
                             f"(Hyphens are not actually used in seed generation)"))
             messBox = QMessageBox.question(self, "Confirm Seed Generation?", message, QMessageBox.Yes| QMessageBox.Cancel)
-            print(messBox)
             if messBox == 16384:
                 finalFlags = self.flags.replace(" ", "")
                 bundle = f"{self.version}.{self.mode}.{finalFlags}.{self.seed}"

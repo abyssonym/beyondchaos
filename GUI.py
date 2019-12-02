@@ -1,12 +1,14 @@
 import fnmatch, os, re, sys, ast, pickle
-
-# import fix_qt_import_error
+from subprocess import call
 from PyQt5 import QtGui, Qt
 from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, QHBoxLayout, QLineEdit, \
     QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, QTabWidget, QInputDialog, QDialog, QPlainTextEdit, \
     QScrollArea, QMessageBox, QErrorMessage
 
-print("Loading...")
+print("Loading Complete! Any errors shown here should be reported to Green Knight")
+
+if sys.version_info[0] < 3:
+    raise Exception("Python 3 or a more recent version is required. Report this to Green Knight")
 
 # Extended QButton widget to hold flag value - NOT USED PRESENTLY
 class FlagButton(QPushButton):
@@ -37,7 +39,8 @@ class Window(QWidget):
 
         # values to be sent to randomizer
         self.romText = ""
-        self.mode = ""
+        self.version = ""
+        self.mode = "normal"
         self.seed = ""
         self.flags = ""
 
@@ -187,7 +190,7 @@ class Window(QWidget):
         # ------------- Part one (left) end ----------------------------------------------
 
         # ------------- Part two (right) of middle section - Flag tabs -----------------
-        middleRightGroupBox = QGroupBox("Flag Selection - Hover over for description")
+        middleRightGroupBox = QGroupBox("Flag Selection")
         tabVBoxLayout = QVBoxLayout()
         tabs = QTabWidget()
         tabNames = ["Simple", "Aesthetic", "Major", "Minor", "Experimental", "Gamebreaking"]
@@ -586,20 +589,33 @@ class Window(QWidget):
     # get seed generation parameters from UI to prepare for seed generation
     # This will only show a confirmation dialog for now, will not actually generate a seed
     def generateSeed(self):
-        self.romText = self.romInput.text()
-        self.seed = self.seedInput.text()
-        if self.seed == "":
-            seed = "(none)"
-        flags = (self.flags).strip().replace(" ", "\n----")
-        #print(self.flags)
 
-        # This makes the flag string more readable in the confirm dialog
-        message = ((f"Rom: {self.romText}\n"
-                        f"Seed: {seed}\n"
-                        f"Mode: {self.mode}\n"
-                        f"Flags: \n----{flags}\n"
-                        f"(Hyphens are not actually used in seed generation)"))
-        messBox = QMessageBox.question(self, "Confirm Seed Generation?", message, QMessageBox.Yes| QMessageBox.Cancel)
+        self.romText = self.romInput.text()
+        if self.romText == "":
+            QMessageBox.about(self, "Error", "You need to select a FFVI rom!")
+        else:
+            self.seed = self.seedInput.text()
+
+            displaySeed = self.seed
+            if self.seed == "":
+                displaySeed = "(none)"
+
+            flags = (self.flags).strip().replace(" ", "\n----")
+
+            # This makes the flag string more readable in the confirm dialog
+            message = ((f"Rom: {self.romText}\n"
+                            f"Seed: {displaySeed}\n"
+                            f"Mode: {self.mode}\n"
+                            f"Flags: \n----{flags}\n"
+                            f"(Hyphens are not actually used in seed generation)"))
+            messBox = QMessageBox.question(self, "Confirm Seed Generation?", message, QMessageBox.Yes| QMessageBox.Cancel)
+            print(messBox)
+            if messBox == 16384:
+                finalFlags = self.flags.replace(" ", "")
+                bundle = f"{self.version}.{self.mode}.{finalFlags}.{self.seed}"
+
+                # call(["python", "tester.py"])
+                call(["python", "randomizer.py", self.romText, bundle, "test"])
 
     # read each dictionary and update text field showing flag codes based upon
     #    flags denoted as 'True'

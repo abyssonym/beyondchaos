@@ -8,7 +8,6 @@ notawaiter			Up to Kefka at Narshe, the vast majority of mandatory cutscenes are
 johnnydmad			Randomizes music with regard to what would make sense in a given location.
 johnnyachaotic		Randomizes music with no regard to what would make sense in a given location.
 alasdraco			Randomizes the sprites of Maria, Draco, Ralse, the Impresario, the flowers Maria throws from the balcony, and the weight Ultros drops, as well as the singing voices and the names of the factions.
-bsiab				Reverts the monster-in-a-box selection algorithm to be (mostly) the same as versions prior to EX v3.
 novanilla			Same as 'makeover' except sprites from the vanilla game are guaranteed not to appear.
 frenchvanilla		Same as 'makeover' except sprites from the vanilla game are selected with equal weight to new sprites rather than some being guaranteed to appear.
 cloneparty			Same as 'makeover' except instead of avoiding choosing different versions of the same character, it actively tries to do so.

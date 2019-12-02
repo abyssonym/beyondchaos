@@ -6,3 +6,4 @@ supernatural		Makes it so that any character with the Magic command will have na
 electricboogaloo	Increases the list of spells that items can break and proc for. Items can break for potentially any spell, and weapons can potentially proc any spell excluding SwdTechs, Blitzes, Slots, and a couple other skills.
 randombosses		Causes boss skills to be randomized similarly to regular enemy skills. Boss skills can change to similarly powerful skills.
 rushforpower		Reverts the Vargas fight to the way it was before Beyond Chaos EX.
+bsiab				Reverts the monster-in-a-box selection algorithm to be (mostly) the same as versions prior to EX v3.

@@ -1,13 +1,16 @@
-import fnmatch, os, re, sys, ast, pickle
+from sys import version_info, exit, argv
+from pickle import load, dump
+from re import match, split
+from os import path, mkdir, listdir, remove
 from subprocess import call
 from PyQt5 import QtGui, Qt
-from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, QHBoxLayout, QLineEdit, \
-    QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, QTabWidget, QInputDialog, QDialog, QPlainTextEdit, \
-    QScrollArea, QMessageBox, QErrorMessage
+from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, \
+    QHBoxLayout, QLineEdit, QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, \
+    QTabWidget, QInputDialog, QScrollArea, QMessageBox
 
 print("Loading Complete! Any errors shown here should be reported to Green Knight")
 
-if sys.version_info[0] < 3:
+if version_info[0] < 3:
     raise Exception("Python 3 or a more recent version is required. Report this to Green Knight")
 
 # Extended QButton widget to hold flag value - NOT USED PRESENTLY
@@ -40,7 +43,7 @@ class Window(QWidget):
         # values to be sent to randomizer
         self.romText = ""
         self.version = ""
-        self.mode = "normal"
+        self.mode = "normal" # default
         self.seed = ""
         self.flags = ""
 
@@ -73,8 +76,8 @@ class Window(QWidget):
         # ----------- Begin buiding program/window ------------------------------
 
         # checking for saved data directory
-        if not os.path.exists('saved_flagsets'):
-            os.mkdir('saved_flagsets')
+        if not path.exists('saved_flagsets'):
+            mkdir('saved_flagsets')
 
         # pull data from files
         self.initCodes()
@@ -97,20 +100,17 @@ class Window(QWidget):
         # Primary Vertical Box Layout
         vbox = QVBoxLayout()
 
-        titleLabel = QLabel("Beyond Chaos Randomizer")
-        font = QtGui.QFont("Arial", 20, QtGui.QFont.Black)
+        titleLabel = QLabel("Beyond Chaos Randomizer (v3)")
+        font = QtGui.QFont("Arial", 24, QtGui.QFont.Black)
         titleLabel.setFont(font)
         titleLabel.setAlignment(Qt.Qt.AlignCenter)
         titleLabel.setMargin(25)
         vbox.addWidget(titleLabel)
 
-        # Adding first/top groupbox to the layout
-        vbox.addWidget(self.GroupBoxOneLayout())
-        # Adding second/middle groupbox
-        vbox.addWidget(self.GroupBoxTwoLayout())
-        # Adding third/bottom groupbox
-        vbox.addWidget(self.GroupBoxThreeLayout())
-        # vbox.addStretch(1)
+
+        vbox.addWidget(self.GroupBoxOneLayout()) # Adding first/top groupbox to the layout
+        vbox.addWidget(self.GroupBoxTwoLayout()) # Adding second/middle groupbox
+        vbox.addWidget(self.GroupBoxThreeLayout()) # Adding third/bottom groupbox
 
         self.setLayout(vbox)
 
@@ -123,7 +123,9 @@ class Window(QWidget):
         TopHBox.addWidget(romLabel)
         self.romInput = QLineEdit()
         self.romInput.setPlaceholderText("Required - Will save to presets")
+        self.romInput.setReadOnly(True)
         TopHBox.addWidget(self.romInput)
+
         browseButton = QPushButton("Browse")
         browseButton.clicked.connect(lambda: self.openFileChooser())
         TopHBox.addWidget(browseButton)
@@ -137,13 +139,14 @@ class Window(QWidget):
 
         return topGroupBox
 
+
     # Middle groupbox of sub-groupboxes. Consists of left section (game mode selection)
     #   and right section (flag selection -> tab-sorted)
     def GroupBoxTwoLayout(self):
         groupBoxTwo = QGroupBox()
         middleHBox = QHBoxLayout()
 
-        # ------------ Part one (left) of middle section - Mode radio buttons -------
+        # ------------ Part one (left side) of middle section - Mode radio buttons -------
 
         self.middleLeftGroupBox.setTitle("Select Mode")
         midLeftVBox = QVBoxLayout()
@@ -187,9 +190,9 @@ class Window(QWidget):
         midLeftVBox.addWidget(radioButton)
 
         self.middleLeftGroupBox.setLayout(midLeftVBox)
-        # ------------- Part one (left) end ----------------------------------------------
+        # ------------- Part one (left side) end ----------------------------------------------
 
-        # ------------- Part two (right) of middle section - Flag tabs -----------------
+        # ------------- Part two (right side) of middle section - Flag tabs -----------------
         middleRightGroupBox = QGroupBox("Flag Selection")
         tabVBoxLayout = QVBoxLayout()
         tabs = QTabWidget()
@@ -220,7 +223,6 @@ class Window(QWidget):
         ############## Checkboxes and inline descriptions #####################
 
         # loop to add tab objects to 'tabs' TabWidget
-
         for t, d, names in zip(self.tablist, self.dictionaries, tabNames):
             tabObj = QScrollArea()
             tabs.addTab(tabObj, names)
@@ -236,9 +238,7 @@ class Window(QWidget):
             tabObj.setWidgetResizable(True)
             tabObj.setWidget(t)
 
-
         tabVBoxLayout.addWidget(tabs)
-
         #----------- tabs done ----------------------------
         
         # this is the line in the layout that displays the string of selected flags
@@ -273,13 +273,13 @@ class Window(QWidget):
         # ------------- Part two (right) end ---------------------------------------
 
 
-
         # add widgets to HBoxLayout and assign to middle groupbox layout
         middleHBox.addWidget(self.middleLeftGroupBox)
         middleHBox.addWidget(middleRightGroupBox)
         groupBoxTwo.setLayout(middleHBox)
 
         return groupBoxTwo
+
 
     # Bottom groupbox consisting of saved seeds selection box, and button to generate seed
     def GroupBoxThreeLayout(self):
@@ -313,6 +313,53 @@ class Window(QWidget):
     # -------------- NO MORE LAYOUT DESIGN PAST THIS POINT ---------------------------
     # --------------------------------------------------------------------------------
 
+    # (MAKE THIS CLEANER IN THE FUTURE)
+    # (At startup) Opens text files containing code flags/descriptions and
+    #   puts data into separate dictionaries
+    def initCodes(self):
+        codeLists = ["Codes-Aesthetic.txt", "Codes-Experimental.txt", "Codes-Gamebreaking.txt",
+                     "Codes-Major.txt", "Codes-Minor.txt", "Codes-Simple.txt"]
+
+        for fileList in codeLists:
+            with open("gui-codes/" + fileList, 'r') as fl:
+                content = fl.readlines()
+
+                if fileList == "Codes-Aesthetic.txt":
+                    for l in content:
+                        temp = split('\t|\n', l)
+                        temp = list(filter(None, temp))
+                        self.aesthetic[temp[0]] = {'explanation': temp[1], 'checked': False}
+
+                elif fileList == "Codes-Experimental.txt":
+                    for l in content:
+                        temp = split('\t|\n', l)
+                        temp = list(filter(None, temp))
+                        self.experimental[temp[0]] = {'explanation': temp[1], 'checked': False}
+
+                elif fileList == "Codes-Gamebreaking.txt":
+                    for l in content:
+                        temp = split('\t|\n', l)
+                        temp = list(filter(None, temp))
+                        self.gamebreaking[temp[0]] = {'explanation': temp[1], 'checked': False}
+
+                elif fileList == "Codes-Major.txt":
+                    for l in content:
+                        temp = split('\t|\n', l)
+                        temp = list(filter(None, temp))
+                        self.major[temp[0]] = {'explanation': temp[1], 'checked': False}
+
+                elif fileList == "Codes-Minor.txt":
+                    for l in content:
+                        temp = split('\t|\n', l)
+                        temp = list(filter(None, temp))
+                        self.minor[temp[0]] = {'explanation': temp[1], 'checked': False}
+
+                elif fileList == "Codes-Simple.txt":
+                    for l in content:
+                        temp = split('\t|\n', l)
+                        temp = list(filter(None, temp))
+                        self.simple[temp[0]] = {'explanation': temp[1], 'checked': False}
+
 
     # opens input dialog to get a name to assign a desired seed flagset, then saves all dictionaries,
     #   selected mode, and rom file path to a text file under that flagset name. Checks that file
@@ -323,11 +370,9 @@ class Window(QWidget):
 
         text, okPressed = QInputDialog.getText(self, "Save Seed", "Enter a name for this flagset", QLineEdit.Normal, "")
         if okPressed and text != '':
-            if os.path.exists(f"saved_flagsets/flagset_{text}.pickle"):
+            if path.exists(f"saved_flagsets/flagset_{text}.pickle"):
                 QMessageBox.about(self, "Error", "That presets already exists!")
             else:
-                #print(f"{text}.pickle saved!")
-
                 with open(f"saved_flagsets/flagset_{text}.pickle", "wb") as handle:
                     pickle.dump(self.simple, handle, protocol=None)
                     pickle.dump(self.aesthetic, handle, protocol=None)
@@ -339,10 +384,10 @@ class Window(QWidget):
                     pickle.dump(self.romText, handle, protocol=None)
 
                 self.savedPresets[text] = f"flagset_{text}.pickle"
-                # update drop-down list with new preset
-                self.comboBox.addItem(text)
+                self.comboBox.addItem(text) # update drop-down list with new preset
                 index = self.comboBox.findText(text)
                 self.comboBox.setCurrentIndex(index)
+
 
     # delete preset. Dialog box confirms users choice to delete. check is done to ensure file
     #   exists before deletion is attempted.
@@ -353,14 +398,11 @@ class Window(QWidget):
             response = QMessageBox.question(self, 'Delete confimation', f"Do you want to delete \'{seed}\'?",
                                             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if response == QMessageBox.Yes:
-                #print("You selected yes!")
-                if os.path.exists(f"saved_flagsets/flagset_{seed}.pickle"):
-                    os.remove(f"saved_flagsets/flagset_{seed}.pickle")
+                if path.exists(f"saved_flagsets/flagset_{seed}.pickle"):
+                    remove(f"saved_flagsets/flagset_{seed}.pickle")
                     del self.savedPresets[seed]
                     self.comboBox.removeItem(self.comboBox.findText(seed))
-                    #print(f"{seed} deleted!")
-            #else:
-                #print("You selected no!")
+
 
     # when preset is selected from dropdown list, load the data into dictionaries
     #   and set the UI to reflect the settings stored in the preset.
@@ -369,10 +411,10 @@ class Window(QWidget):
     def updatePresetDropdown(self):
         if (self.comboBox.currentIndex() != 0): # text = "Select a preset"
             selectedPreset = self.comboBox.currentText()
-            #print(selectedPreset + " selected")
             self.loadPreset(selectedPreset)
         else:
             self.clearUI()
+
 
     # clear/reset UI and clear window object variables. Then reset data dictionaries
     #   to the default state of unset/unchecked flags and mode
@@ -387,16 +429,14 @@ class Window(QWidget):
             if (i.mode == 'normal'):
                 i.setProperty('checked', True)
                 break
-            #print(i)
 
         self.comboBox.setCurrentIndex(0)
 
         self.initCodes()
         self.updateDictionaries()
-        # for j in self.dictionaries:
-        #     print(j)
         self.updateFlagString()
         self.updateFlagCheckboxes()
+
 
     # when flag UI button is checked, update corresponding dictionary values
     def flagButtonClicked(self):
@@ -413,155 +453,25 @@ class Window(QWidget):
 
     # Opens file dialog to select rom file and assigns it to value in parent/Window class
     def openFileChooser(self):
-        file_path = QFileDialog.getOpenFileName(self, 'Open File', './', filter="All Files(*.*);;Text Files(*.txt)")
-        #if file_path[0]:
-            #print(str(file_path[0]))
+        file_path = QFileDialog.getOpenFileName(self, 'Open File', './',
+                                                filter="ROMs (*.smc *.sfc *.fig);;All Files(*.*)")
 
         # display file location in text input field
         self.romInput.setText(str(file_path[0]))
 
-    # (MAKE THIS CLEANER IN THE FUTURE)
-    # (At startup) Opens text files containing code flags/descriptions and
-    #   puts data into separate dictionaries
-    def initCodes(self):
-        codeLists = ["Codes-Aesthetic.txt", "Codes-Experimental.txt", "Codes-Gamebreaking.txt",
-                     "Codes-Major.txt", "Codes-Minor.txt", "Codes-Simple.txt"]
 
-        for fileList in codeLists:
-            with open("gui-codes/" + fileList, 'r') as fl:
-                content = fl.readlines()
-
-                if fileList == "Codes-Aesthetic.txt":
-                    for l in content:
-                        temp = re.split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.aesthetic[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-                elif fileList == "Codes-Experimental.txt":
-                    for l in content:
-                        temp = re.split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.experimental[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-                elif fileList == "Codes-Gamebreaking.txt":
-                    for l in content:
-                        temp = re.split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.gamebreaking[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-                elif fileList == "Codes-Major.txt":
-                    for l in content:
-                        temp = re.split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.major[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-                elif fileList == "Codes-Minor.txt":
-                    for l in content:
-                        temp = re.split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.minor[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-                elif fileList == "Codes-Simple.txt":
-                    for l in content:
-                        temp = re.split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.simple[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-    # -------------------- Not currently in use -----------------------------------
-    # Open second window and display list of flags and their descriptions
-    # (CLEAN THIS UP)
-    # def showFlagHelp(self):
-    #     dia = QDialog()
-    #     dia.setWindowTitle("Flag Descriptions")
-    #     dia.setGeometry(300, 300, 600, 550)
-    #
-    #     tab = QTabWidget()#
-    #
-    #     tab1 = QScrollArea() #tabObj
-    #     tab1wid = QWidget()# from self.tabs
-    #     tab.addTab(tab1, "Simple")#
-    #     tab1layout = QVBoxLayout()#
-    #     for flagname, flagdesc in self.simple.items():#
-    #         tab1layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))#
-    #     tab1layout.addStretch(1)#
-    #     tab1wid.setLayout(tab1layout)#
-    #     tab1.setWidgetResizable(True)#
-    #     tab1.setWidget(tab1wid)
-    #
-    #     tab2 = QScrollArea()
-    #     tab2wid = QWidget()
-    #     tab.addTab(tab2, "Aesthetic")
-    #     tab2layout = QVBoxLayout()
-    #     for flagname, flagdesc in self.aesthetic.items():
-    #         tab2layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-    #     tab2layout.addStretch(1)
-    #     tab2wid.setLayout(tab2layout)
-    #     tab2.setWidgetResizable(True)
-    #     tab2.setWidget(tab2wid)
-    #
-    #     tab3 = QScrollArea()
-    #     tab3wid = QWidget()
-    #     tab.addTab(tab3, "Major")
-    #     tab3layout = QVBoxLayout()
-    #     for flagname, flagdesc in self.major.items():
-    #         tab3layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-    #     tab3layout.addStretch(1)
-    #     tab3wid.setLayout(tab3layout)
-    #     tab3.setWidgetResizable(True)
-    #     tab3.setWidget(tab3wid)
-    #
-    #     tab4 = QScrollArea()
-    #     tab4wid = QWidget()
-    #     tab.addTab(tab4, "Minor")
-    #     tab4layout = QVBoxLayout()
-    #     for flagname, flagdesc in self.minor.items():
-    #         tab4layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-    #     tab4layout.addStretch(1)
-    #     tab4wid.setLayout(tab4layout)
-    #     tab4.setWidgetResizable(True)
-    #     tab4.setWidget(tab4wid)
-    #
-    #     tab5 = QScrollArea()
-    #     tab5wid = QWidget()
-    #     tab.addTab(tab5, "Experimental")
-    #     tab5layout = QVBoxLayout()
-    #     for flagname, flagdesc in self.experimental.items():
-    #         tab5layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-    #     tab5layout.addStretch(1)
-    #     tab5wid.setLayout(tab5layout)
-    #     tab5.setWidgetResizable(True)
-    #     tab5.setWidget(tab5wid)
-    #
-    #     tab6 = QScrollArea()
-    #     tab6wid = QWidget()
-    #     tab.addTab(tab6, "Gamebreaking")
-    #     tab6layout = QVBoxLayout()
-    #     for flagname, flagdesc in self.gamebreaking.items():
-    #         tab6layout.addWidget(QCheckBox(f"{flagname}  -  {flagdesc['explanation']}"))
-    #     tab6layout.addStretch(1)
-    #     tab6wid.setLayout(tab6layout)
-    #     tab6.setWidgetResizable(True)
-    #     tab6.setWidget(tab6wid)
-    #
-    #     tablayout = QVBoxLayout()
-    #     tablayout.addWidget(tab)
-    #     dia.setLayout(tablayout)
-    #     dia.exec()
-
-    # reads files from save directory and puts them in a list
     # files are in the format of .pickle
+    # reads all .pickle files from save directory and puts them in a list
     def compilePresets(self):
-        for file in os.listdir('./saved_flagsets'):
-            if re.match(r'flagset_(.*).pickle$', file):
-                #print(file)
-                temp = list(re.split('[_.]', file))
+        for file in listdir('./saved_flagsets'):
+            if match(r'flagset_(.*).pickle$', file):
+                temp = list(split('[_.]', file))
                 self.savedPresets[temp[1]] = file
-                #print(self.savedPresets)
+
 
     # Reads dictionary data from text file and populates class dictionaries
     def loadPreset(self, flagdict):
         with open(f"saved_flagsets/flagset_{flagdict}.pickle", "rb") as handle:
-            #print("this works2")
 
             # load line by line from .pickle file into each dictionary
             self.simple = pickle.load(handle)
@@ -576,31 +486,28 @@ class Window(QWidget):
         # update 'dictionaries' list with updated/populated data dictionaries
         self.updateDictionaries()
 
-        ### print each dictionary for testing
-        #for i in self.dictionaries:
-            #print(i)
-
         # call functions to update UI based upon preset data loaded from file
         self.romInput.setText(self.romText)
         self.updateFlagString()
         self.updateFlagCheckboxes()
         self.updateModeSelection()
 
-    # get seed generation parameters from UI to prepare for seed generation
-    # This will only show a confirmation dialog for now, will not actually generate a seed
+    # Get seed generation parameters from UI to prepare for seed generation
+    # This will show a confirmation dialog, and call the local randomizer.py file
+    #   and pass arguments to it
     def generateSeed(self):
 
         self.romText = self.romInput.text()
-        if self.romText == "":
+        if self.romText == "":  # Checks if user ROM is blank
             QMessageBox.about(self, "Error", "You need to select a FFVI rom!")
         else:
             self.seed = self.seedInput.text()
 
             displaySeed = self.seed
             if self.seed == "":
-                displaySeed = "(none)"
+                displaySeed = "(none)" # pretty-printing :)
 
-            flags = (self.flags).strip().replace(" ", "\n----")
+            flags = (self.flags).strip().replace(" ", "\n----") # more pretty-printing
 
             # This makes the flag string more readable in the confirm dialog
             message = ((f"Rom: {self.romText}\n"
@@ -609,11 +516,9 @@ class Window(QWidget):
                             f"Flags: \n----{flags}\n"
                             f"(Hyphens are not actually used in seed generation)"))
             messBox = QMessageBox.question(self, "Confirm Seed Generation?", message, QMessageBox.Yes| QMessageBox.Cancel)
-            if messBox == 16384:
+            if messBox == 16384:  # User selects confirm/accept/yes option
                 finalFlags = self.flags.replace(" ", "")
                 bundle = f"{self.version}.{self.mode}.{finalFlags}.{self.seed}"
-
-                # call(["python", "tester.py"])
                 call(["python", "randomizer.py", self.romText, bundle, "test"])
 
     # read each dictionary and update text field showing flag codes based upon
@@ -630,7 +535,6 @@ class Window(QWidget):
                 if flagdesc['checked']:
                     temp += flagname
                     space = True
-
 
         self.flags = temp
         self.flagString.setText(self.flags)
@@ -654,7 +558,6 @@ class Window(QWidget):
     # when radio button is checked, update the main class variable
     def updateRadioSelection(self, mode):
         self.mode = mode
-        # print(self.mode)
 
     # enumerate radio button objects and set them to the currently set mode variable
     def updateModeSelection(self):
@@ -671,6 +574,6 @@ class Window(QWidget):
 
 
 if __name__ == "__main__":
-    App = QApplication(sys.argv)
+    App = QApplication(argv)
     window = Window()
-    sys.exit(App.exec())
+    exit(App.exec())

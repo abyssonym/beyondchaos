@@ -374,14 +374,14 @@ class Window(QWidget):
                 QMessageBox.about(self, "Error", "That presets already exists!")
             else:
                 with open(f"saved_flagsets/flagset_{text}.pickle", "wb") as handle:
-                    pickle.dump(self.simple, handle, protocol=None)
-                    pickle.dump(self.aesthetic, handle, protocol=None)
-                    pickle.dump(self.major, handle, protocol=None)
-                    pickle.dump(self.minor, handle, protocol=None)
-                    pickle.dump(self.experimental, handle, protocol=None)
-                    pickle.dump(self.gamebreaking, handle, protocol=None)
-                    pickle.dump(self.mode, handle, protocol=None)
-                    pickle.dump(self.romText, handle, protocol=None)
+                    dump(self.simple, handle, protocol=None)
+                    dump(self.aesthetic, handle, protocol=None)
+                    dump(self.major, handle, protocol=None)
+                    dump(self.minor, handle, protocol=None)
+                    dump(self.experimental, handle, protocol=None)
+                    dump(self.gamebreaking, handle, protocol=None)
+                    dump(self.mode, handle, protocol=None)
+                    dump(self.romText, handle, protocol=None)
 
                 self.savedPresets[text] = f"flagset_{text}.pickle"
                 self.comboBox.addItem(text) # update drop-down list with new preset
@@ -474,14 +474,14 @@ class Window(QWidget):
         with open(f"saved_flagsets/flagset_{flagdict}.pickle", "rb") as handle:
 
             # load line by line from .pickle file into each dictionary
-            self.simple = pickle.load(handle)
-            self.aesthetic = pickle.load(handle)
-            self.major = pickle.load(handle)
-            self.minor = pickle.load(handle)
-            self.experimental = pickle.load(handle)
-            self.gamebreaking = pickle.load(handle)
-            self.mode = pickle.load(handle)
-            self.romText = pickle.load(handle)
+            self.simple = load(handle)
+            self.aesthetic = load(handle)
+            self.major = load(handle)
+            self.minor = load(handle)
+            self.experimental = load(handle)
+            self.gamebreaking = load(handle)
+            self.mode = load(handle)
+            self.romText = load(handle)
 
         # update 'dictionaries' list with updated/populated data dictionaries
         self.updateDictionaries()

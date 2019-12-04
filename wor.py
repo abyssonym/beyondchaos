@@ -478,6 +478,8 @@ def zone_eater_recruit(fout, char_id):
     zone_eater_recruit_sub.bytestring = bytes(prefix + [0x3D, char_id, 0xC0, 0x27, 0x01, 0x00, 0x82, 0x01])
     zone_eater_recruit_sub.write(fout)
 
+def collapsing_house_recruit(fout, char_id):
+    pass
 
 def manage_wor_recruitment(fout, shuffle_wor, random_treasure, include_gau, alternate_gogo):
     if alternate_gogo:
@@ -571,6 +573,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             name_pointer=0xC590B,
             num_name_bytes=7,
             name_npcs=[0, 2, 4, 6, 8, 10]),
+            special=collapsing_house_recruit
         WoRRecruitInfo(
             label="Fanatics' Tower",
             event_pointers=[0xc5418, 0xc541a, 0xc541e, 0xc5420, 0xc5423, 0xc5426],
@@ -681,6 +684,8 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             prerequisite_dict.setdefault(candidate, []).append(info.prerequisite)
         if info.special == falcon_recruit:
             wor_free_char = candidate
+        elif info.special == collapsing_house_recruit:
+            collapsing_house_char = candidate
 
         info.write_data(fout)
         get_character(candidate).wor_location = info.label

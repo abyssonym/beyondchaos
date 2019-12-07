@@ -519,7 +519,7 @@ class Window(QWidget):
             if messBox == 16384:  # User selects confirm/accept/yes option
                 finalFlags = self.flags.replace(" ", "")
                 bundle = f"{self.version}.{self.mode}.{finalFlags}.{self.seed}"
-                call(["python", "randomizer.py", self.romText, bundle, "test"])
+                call(["py", "randomizer.py", self.romText, bundle, "test"])
 
     # read each dictionary and update text field showing flag codes based upon
     #    flags denoted as 'True'

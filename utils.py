@@ -8,7 +8,7 @@ try:
     tblpath = path.join(_MEIPASS, "tables")
 except ImportError:
     # This is new
-    # this prepends the absolute file path of the calling script
+    # this prepends the absolute file path of the parent/calling script
     #   to the 'tables' directory - GreenKnight5
     bundle_dir = path.dirname(path.abspath(__file__))
     tblpath = path.join(bundle_dir, "tables")

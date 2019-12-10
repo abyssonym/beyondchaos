@@ -38,7 +38,7 @@ script_bin = None
 
 def safepath(vpath):
     # NEW
-    # this prepends the absolute file path of the calling script
+    # this prepends the absolute file path of the parent/calling script
     #   to the virtual path passed as a param - GreenKnight5
     vpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), vpath)
 
@@ -129,7 +129,7 @@ def load_patch_file(fn):
     filepath = os.path.join('data', 'script', fn + ".txt")
 
     # NEW
-    # this prepends the absolute file path of the calling script
+    # this prepends the absolute file path of the parent/calling script
     #   to filepath created above - GreenKnight5
     filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), filepath)
 

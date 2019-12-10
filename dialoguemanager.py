@@ -37,6 +37,11 @@ script_ptrs = {}
 script_bin = None
 
 def safepath(vpath):
+    # NEW
+    # this prepends the absolute file path of the calling script
+    #   to the virtual path passed as a param - GreenKnight5
+    vpath = os.path.join(os.path.dirname(os.path.abspath(__file__)), vpath)
+
     if not MEI:
         return vpath
     return [vpath, os.path.join(_MEIPASS, vpath)]
@@ -122,6 +127,12 @@ def patch_dialogue(id, from_text, to_text, index=None, battle=False):
     
 def load_patch_file(fn):
     filepath = os.path.join('data', 'script', fn + ".txt")
+
+    # NEW
+    # this prepends the absolute file path of the calling script
+    #   to filepath created above - GreenKnight5
+    filepath = os.path.join(os.path.dirname(os.path.abspath(__file__)), filepath)
+
     try:
         with open(filepath, "r") as f:
             lines = f.readlines()

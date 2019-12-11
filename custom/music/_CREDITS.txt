@@ -7,10 +7,11 @@ Song conversions:
                  cc_world2
                  crys_fields, crys_mountain, crys_tower
                  ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair, ct_frog
-                 ct_keeper, ct_mountain, ct_night, ct_revolution, ct_rhythm,
-                 ct_robo, ct_schala, ct_silent, ct_sewer, ct_theme, ct_truth,
-                 ct_tylair, ct_tyran, ct_zeal
+                 ct_forest, ct_keeper, ct_mountain, ct_night, ct_revolution,
+                 ct_rhythm, ct_robo, ct_schala, ct_silent, ct_sewer, ct_theme,
+                 ct_truth, ct_tylair, ct_tyran, ct_zeal
                  cv4_beginning, cv4_chandeliers
+                 doom2_doom
                  ds4_dungeon, ds4_lyll, ds4_world
                  eo3_waves
                  ff2_battle2, ff2_battleb, ff2_theme
@@ -21,13 +22,14 @@ Song conversions:
                  ff5_library, ff5_mountain, ff5_seal, ff5_theme, ff5_void,
                  ff5_wings, ff5_world1
                  ff7_battle, ff7_corel, ff7_costa, ff7_gun, ff7_hurry,
-                 ff7_rebirth, ff7_reunion, ff7_snow, ff7_weapon
+                 ff7_rebirth, ff7_reunion, ff7_sadbar, ff7_snow, ff7_weapon
                  ff8_battle, ff8_boss, ff8_horizon, ff8_landing, ff8_lion,
                  ff8_mlaw, ff8_triad, ff8_witches
                  ff9_battle, ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
                  ffx_battle, ffx_calm, ffx_gagazet, ffx_via, ffx_zanarkand
                  ff12_barheim, ff12_crystal, ff12_estersand, ff12_ozmone,
                  ff12_paramina
+                 ff14_azyslla
                  ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
                  ffmq_fossil, ffmq_gale, ffmq_lava, ffmq_light, ffmq_rock,
                  ffmq_tower, ffmq_tristam, ffmq_victory
@@ -39,7 +41,7 @@ Song conversions:
                  lal_labyrinth, lal_theme
                  lo_battle
                  lu1_battle, lu1_final, lu1_world
-                 lu2_battle
+                 lu2_battle, lu2_priphea
                  met3_surface
                  mi_scummbar
                  mmx_prologue

@@ -1,0 +1,136 @@
+#TITLE Priphea Flowers (Lufia's Theme)
+#ALBUM Lufia II: Rise of the Sinistrals
+#COMPOSER Yasunori Shiono
+#ARRANGED emberling
+
+#WAVE 0x20 0x54
+#WAVE 0x21 0x32
+#WAVE 0x22 0x6b
+#WAVE 0x23 0x07
+#WAVE 0x24 0x63
+
+#def init= t100 %x255 %v40 %b0,85 %f0,0
+
+#def gs= |0 o5 p72 m 'g' %k-15 %r12 %a9
+#def gp= |1 o5 p72 m 'a' %k-15 %r18
+#def gt= |1 o5 p72 m 'a' %k-15 %r12
+#def bs= |2 o6 p64 m 'b' %k2 %r10
+#def fl= |3 o4 p64 'f' %k1 m48,18,239 %r9
+#def tw= |4 o3 p56 'w' %k1 m48,18,239 %r14
+
+#def g=v72
+#def a=v104
+#def b=v64
+#def f=v56
+#def w=v26
+
+{1} 'init' %e1
+'fl' $ $1
+cd+g+  
+[a+4.g+4.^4
+a+<c>a+g+4<ccc
+cc+4>f2^
+^4.g+g+gfg
+d+2..<c+
+c+4c>g+4a+4a+ j2
+a+<c4>d+^2
+^^2cd+g+]
+a+<c>a+g+^2
+^^2<d+d+d+
+##18
+d+4g+4g4d+4  f4.d+16c+16c2    d+4g+4g4a+4 <c+4.c16>a+16g+4.g+
+f4g+4g4d+4  f4.d+16c+16c4.>a+   gg+4<d+4>fg+<c d+1..>cd+
+##27
+[g+4.d+4.g+4 a+4.d+4.a+4  <c4.>d+4.<c4 c+c>a+g+4g+a+g+
+<d+4.>g+4g+a+g+ <d+4.>g+4g+g+g  fg4g+4a+4. j2 <cc+4d+^2>]
+<c2^>a+g+g g+1.^a+g+a+ <c1.^>
+;
+
+{2} %e1
+'gp'
+r4. $
+[[cg<cd4e4.>]
+[>f<cfg4a4.]
+[>g<dga4b4.] j2
+cg<cd4e4.>
+>g<dga<c>bab]
+cg<cdfede> cg<cfe2
+##18
+[3>f<cfa >g<dgb  cg<ce gfc>g]
+>f<cfg4a4<c  c>dg<c4.dc> b1
+##27
+>cg<cd4.e4  >>a+<fa+<c4.d4  >>a<eab4.<c4  c>dg<c4.>b4
+acfg4a4a  g>b<ef4g4g   f>a<de4f4<c  c>dgb^2
+cg<cd4.e4  >>a+<fa+<c4.d4  >>a<eab4.<c4  c>dg<c4>b4g
+acfg4a4a  g>b<ef4g4g   f>a<de4f4<c  c>dgb^2
+[>a+<fa+<c4d4.>] cg<cd4e4g <c1>>
+;
+
+{3} 
+r4. $
+[16r1]
+'bs' l2
+[3cd g.d4] c1 <d1> d1
+##27
+l8
+[g2..g f2..f e2..e d2..d    c2..c >b2..b a2..a< d2..d]
+f2..f f2..f g2^<dc>b g1
+;
+
+{4} %e1
+'tw+o1' 
+;1
+
+{5} %e1
+r4. $ 'gs' 
+c1 c1 >f1 f1 g1 g1 <c1> g1<
+c1 c1 >f1 f1 g1 g1 <c1 c1
+##18
+l2
+[3fg <c1>] f1 'gt' g1 g1
+##27
+['gs' c1 >a+1 a1 'gt-o1' g1    f1 e1 d1 g1]
+'gs-o1' a+1 a+1 <c1^1
+;
+
+{6} %e1
+r4. $ 'gs'
+[rg2..] [rc2..] [rd2..] rg2.. rd2..
+[rg2..] [rc2..] [rd2..] [rg2..]
+##18
+<
+[3rc2d2g2.g]
+rc1d2.. 'gt+o1' d1
+##27
+'gs'
+[rg2.. rf2.. re2.. rd2..  rc2.. >rb2.. ra2..< rd2..]
+[rf2..] rg1...
+;
+
+{7} %e1
+r4. $ 'gs+o1'
+[r4c2.] >[r4f2.] [r4g2.] <r4c2.> r4g2. <
+[r4c2.] >[r4f2.] [r4g2.] <[r4c2.]
+##18
+[3r4f2g2 <c2c4>]
+r4f1g2. 'gt+o1' g1
+##27
+'gs+o1'
+r4c2. >r4a+2. r4a2. r4g2.    r4f2. r4e2. r4d2. r4g2.
+<r4c2. >r4a+2. r4a2. r4g2^g    r4f2. r4e2. r4d2. r4g2.
+[r4a+2.] <r4c1..
+;
+
+{8} %e1
+r4. $ 'gs+o1'
+[r4.d4e4.] >[r4.g4a4.] [r4.a4b4.] <r4.d4e4.> r4.a<c>bab <
+[r4.d4e4.] >[r4.g4a4.] [r4.a4b4.] <r4.dfede r4.fe2
+##18
+[3r4.a2b2 <egfr4>] r4.g4a4<c c4.c4.dc >b1
+##27
+r4.d4.e4 r4.c4.d4 r4.>b4.<c4 c4.c4.>b4
+a4.g4a4a g4.f4g4g f4.e4f4<c c4.>b^2<
+r4.d4.e4 r4.c4.d4 r4.>b4.<c4 c4.c4>b4r
+a4.g4a4a g4.f4g4g f4.e4f4<c c4.>b^2<
+[r4.c4d4.] r4.d4e4g <c1
+;

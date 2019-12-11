@@ -309,7 +309,7 @@ def insert_instruments(fout, metadata_pos= False):
             print("WARNING: malformed instrument info '{}'".format(smp))
             continue
         name, loop, pitch, adsr = inst[0:4]
-        filename = name + '.brr'
+        filename = (name + '.brr').lower()
         
         try:
             with open(os.path.join('data', 'samples', filename), 'rb') as f:

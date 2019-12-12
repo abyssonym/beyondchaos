@@ -248,7 +248,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     while sq and sq[0] in "1234567890,.+-x":
                         d += sq.pop(0)
                     cmd = c + ''.join([ch for ch in d if ch == ','])
-                    if cmd in tweaks:
+                    if d and (cmd in tweaks):
                         d = d.split(',')
                         e = tweaks[cmd][1].split(',')
                         sign = tweaks[cmd][0]
@@ -270,14 +270,14 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                                 except:
                                     warn("error parsing {} into {}".format(r.group(0), s))      
                                     dn = 0
-                            if sign is "*":
+                            if sign == "*":
                                 result = dn * en
-                            elif sign is "-":
+                            elif sign == "-":
                                 result = dn - en
-                            elif sign is "+":
+                            elif sign == "+":
                                 result = dn + en
                             if result < 0: result = 0
-                            if ((cmd is "v" or cmd is "p") and j==0) or ((cmd is "v," or cmd is "p,") and j==1):
+                            if ((cmd == "v" or cmd == "p") and j==0) or ((cmd == "v," or cmd == "p,") and j==1):
                                 if result > 127: result = 127
                             else:
                                 if result > 255: result = 255

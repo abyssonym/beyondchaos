@@ -101,6 +101,7 @@ ff4_overworld:  balance*2, setzer, mountain, falcon, serpent
 ff4_prologue:   prelude*2, omen3, grandfinale
 ff4_redwings:   omen3, figaro, setzer, troops*2, umaro, engine, assault
 ff4_restless:   I95, G20, unforgiven*2, assault
+ff4_rosa:       prelude, celes, daryl, coin, relm, rachel*2, awakening
 ff4_somewhere:  shadow, gestahl, zozo, ruin
 ff4_somewhere_tr: train
 ff4_sorrow:     prelude, coin*2, ruin

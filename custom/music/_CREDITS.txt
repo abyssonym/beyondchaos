@@ -21,8 +21,9 @@ Song conversions:
                  ff5_excastle, ff5_final, ff5_home, ff5_hurry, ff5_lenna,
                  ff5_library, ff5_mountain, ff5_seal, ff5_theme, ff5_void,
                  ff5_wings, ff5_world1
-                 ff7_battle, ff7_corel, ff7_costa, ff7_gun, ff7_hurry,
-                 ff7_rebirth, ff7_reunion, ff7_sadbar, ff7_snow, ff7_weapon
+                 ff7_battle, ff7_corel, ff7_costa, ff7_desert, ff7_gun,
+                 ff7_hurry, ff7_rebirth, ff7_reunion, ff7_sadbar, ff7_snow,
+                 ff7_weapon
                  ff8_battle, ff8_boss, ff8_horizon, ff8_landing, ff8_lion,
                  ff8_mlaw, ff8_triad, ff8_witches
                  ff9_battle, ff9_gargan, ff9_hills, ff9_hunt, ff9_rose

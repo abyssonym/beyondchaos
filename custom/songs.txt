@@ -135,6 +135,7 @@ ff7_5years:     omen3, gestahl*2, celes, daryl, zozo, narshe, ruin*2, train, for
 ff7_battle:     I45, G20, battle, grandfinale, unforgiven, savethem
 ff7_corel:      shadow, gau*2, zozo, narshe, martiallaw, town_ruin, ruin, dream
 ff7_costa:      prelude, spinachrag*2, town, veldt, moogles, village
+ff7_desert:     prelude, omen3, gau, ruin*2, train, tomb, zozo, cave
 ff7_gun:        I15, G70, grandfinale, troops, assault, savethem*2, floatingcont
 ff7_hurry:      I99, G00, unforgiven, magitek, floatingcont, engine, assault*2
 ff7_hurry2:     I35, G30, battle, metamorphosis, grandfinale, unforgiven, savethem*2

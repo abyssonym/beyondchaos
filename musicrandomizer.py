@@ -1648,7 +1648,18 @@ def manage_opera(fout, affect_music):
         ("Nintendo", "Sega"),
         ("Subs", "Dubs"),
         ("vampires", "werewolves"),
-        ("Guardia", "the Mystics")
+        ("Guardia", "the Mystics"),
+        ("the Ascians", "the Scions"),
+        ("Garlemald", "Eorzea"),
+        ("Garlemald", "Ala Mhigo"),
+        ("Garlemald", "Doma"),
+        ("Ul'dah", "Sil'dih"),
+        ("Amdapor", "Mhach"),
+        ("Amdapor", "Nym"),
+        ("Nym", "Mhach"),
+        ("Ishgard", "Dravania"),
+        ("the Oronir", "the Dotharl"),
+        ("Allag", "Meracydia")
         ]
     factions = random.choice(factions)
     if random.choice([False, True]):

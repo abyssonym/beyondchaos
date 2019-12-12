@@ -81,6 +81,7 @@ ff3_darkworld:  prelude, awakening, setzer, mountain, serpent
 ff3_eureka:     mountain, mount2, espers, dream, serpent, falcon, setzer
 ff3_warrior:    figaro, returners*2
 ff3_warrior_vic: fanfare*2
+ff3_world:      prelude, relm, village, balance*2
 ff4_airship:    blackjack*2, fanfare
 ff4_babil:      troops*2, mountain, mount2, returners, engine
 ff4_baron:      figaro, troops*2, returners, engine
@@ -212,7 +213,7 @@ iog_womb:       W2, prelude, daryl, coin, rachel, awakening, ruin, forest, tomb,
 jts_stage1:     I10, G60, battle, johnny, chocobo, magitek*2, floatingcont, mount2, assault
 lagoon_spirits: celes, awakening, owzer, ruin, forest*2, cave*2, tomb, espers, ancient, train
 lal_labyrinth:  zozo, ruin, cave, train*2, tomb, gate, ancient, dream*2, phoenix
-lal_mania:      I99, G70, fanfare, locke, johnny, dmad5
+lal_mania:      I99, G70, fanfare, locke, johnny, dmad5, chocobo
 lal_theme:      I20, G80, setzer*2, locke*2, figaro, returners, savethem, falcon, mount2, floatingcont
 lo_battle:      I05, G75, battle*2, grandfinale, cyan, umaro, assault*2
 lu1_battle:     I60, G0, battle*2, unforgiven, chocobo

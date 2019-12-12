@@ -15,7 +15,7 @@ Song conversions:
                  ds4_dungeon, ds4_lyll, ds4_world
                  eo3_waves
                  ff2_battle2, ff2_battleb, ff2_theme
-                 ff3_battle, ff3_warrior
+                 ff3_battle, ff3_warrior, ff3_world
                  ff4_calcobrena
                  ff5_battle, ff5_boss, ff5_bridge, ff5_cave, ff5_curse,
                  ff5_excastle, ff5_final, ff5_home, ff5_hurry, ff5_lenna,

@@ -318,6 +318,7 @@ top_cold:       W4, shadow, zozo, owzer, narshe*2, ruin*2, cave*2, tomb, serpent
 top_harmony:    relm, moogles*2, town, strago, village*2
 top_freeze:     W4, espers, awakening, town_ruin*2, serpent*2, forest, tomb, dream, W:prelude, W:omen3, W:relm, W:shadow, W:zozo, W:strago, W:village, W:town, W:martiallaw, W:ruin, W:balance, W:cave, W:gate, W:ancient, W:phoenix
 top_mint:       omen3, celes, rachel, awakening*2, town_ruin, tomb
+top_resur:      gestahl, catastrophe, assault, zozo, owzer, tomb, gate, ancient, fanatics, phoenix
 top_spirit:     I60, G65, grandfinale, unforgiven
 top_treant:     W2, omen3, daryl, coin, espers, ruin, serpent, forest*2, cave, tomb
 top_victory:    fanfare*2
@@ -332,6 +333,7 @@ xc1_valakn:     W4, omen3, celes, daryl, narshe, ruin*2, cave*2, tomb*2, W:prelu
 xc2_morardain:  grandfinale, setzer*2, moogles, umaro, martiallaw, falcon
 xc2_morardain_vic: fanfare
 xc2_tantal:     W4, omen3, gestahl, zozo, narshe*2, train*2, ruin*2, serpent, espers, gate, phoenix, cave, W:celes, W:cyan, W:gogo, W:umaro*2, W:owzer, W:balance, W:forest, W:floatingcont, W:kefkastower
+xcx_sylvan:     W2, omen3, espers*2, umaro, narshe, ruin, cave, tomb, gate, ancient, dream, phoenix
 xg_boss:        I85, G50, boss*2, metamorphosis, grandfinale, troops, savethem, assault
 xg_chuchu:      spinachrag*2, what*2, moogles, gogo, strago, village
 xg_flight:      I30, G90, grandfinale, locke*2, setzer, returners, savethem*2, falcon, assault
@@ -343,6 +345,8 @@ ys1_wars:       I25, G90, battle, grandfinale, chocobo, falcon, magitek, floatin
 ys3_house:      shadow, gogo, owzer, strago, village, dream
 ys3_time:       I5, G65, battle, unforgiven, locke, setzer, chocobo, blackjack, gogo, mount2, engine, floatingcont*2
 ys3_wings:      setzer*2, locke, savethem, blackjack, chocobo, serpent*2, mountain, mount2
+ys4_danan:      prelude, omen3, espers*2, strago, town_ruin, cave, tomb, dream, ancient, gate, phoenix
+ys4_danan_tr:   train
 ys8_idance:     chocobo, blackjack, johnny*2, falcon*2, mountain, mount2*2, serpent, setzer, dream, ancient
 zaol_overworld: figaro, returners
 zlttp_dungeon:  ruin, train*2, cave, tomb, dream, gate, phoenix, ancient

@@ -66,15 +66,17 @@ Song conversions:
                  smb2_select
                  so2_rescue, so2_victory, so2_world1
                  st_dungeon
-                 top_cold, top_freeze, top_harmony, top_mint, top_spirit,
-                 top_treant, top_victory, top_world1, top_world3
+                 top_cold, top_freeze, top_harmony, top_mint, top_resur, 
+                 top_spirit, top_treant, top_victory, top_world1, top_world3
                  totr_arrow, totr_worlds
                  tyr_theme
                  wc2_orc1
                  xc1_valakn
                  xc2_morardain, xc2_tantal
+                 xcx_sylvan
                  xg_boss, xg_flight, xg_lahan, xg_tears, xg_weltall
                  ys3_house, ys3_time
+                 ys4_danan
                  ys8_idance
     Gi Nattak -- cc_arni, cc_flame, cc_miguel
                  ct_boss2

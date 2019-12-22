@@ -410,6 +410,8 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
     native_prefix = "ff6_"
     isetsize = 0x20
     
+    windy_intro = random.choice([True, False, False])
+    
     def spoil(txt):
         global spoiler
         if 'Music' not in spoiler: spoiler['Music'] = []
@@ -426,6 +428,20 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             return name
         return "_".join(name.split("_")[0:2])
             
+    def variant_id(name, idx):
+        if name.endswith("_sfx") or name.endswith("_vic"):
+            name = name[:-4]
+        elif name.endswith("_tr"):
+            name = name[:-3]
+        if idx == 0x29 or idx == 0x4F or (idx == 0x5D and windy_intro):
+            return usage_id(name) + "_sfx"
+        elif idx == 0x20:
+            return usage_id(name) + "_tr"
+        elif idx == 0x2F:
+            return usage_id(name) + "_vic"
+        else:
+            return name
+        
     class SongSlot:
         def __init__(self, id, chance=0, is_pointer=True, data=b"\x00\x00\x00"):
             self.id = id
@@ -489,7 +505,6 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
     # build choice lists
     intensitytable = {}
     for song in songconfig.items('Imports'):
-        if f_mchaos and (song[0].endswith("_tr") or song[0].endswith("_dm") or song[0].endswith("_vic")): continue
         canbe = [s.strip() for s in song[1].split(',')]
         intense, epic = 0, 0
         event_mults = {}
@@ -671,12 +686,12 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         return True
         
     def process_mml(id, orig_mml, name):
-        def ruin_increment(m):
+        def wind_increment(m):
             val = int(m.group(1))
-            if val in [3, 4, 5, 6, 11, 12, 13, 14]:
+            if val in [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14]:
                 val += 2
             elif val in [7, 8, 15, 16]: 
-                val -= 4
+                val -= 6
             return "{{{}}}".format(val)
             return m.group(0)
             
@@ -686,11 +701,11 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         if id == 0x29:
             sfx = "sfx_zozo.mmlappend"
             is_sfxv = True
-        elif id == 0x4F or (id == 0x5D and random.choice([True, False, False])):
+        elif id == 0x4F or (id == 0x5D and windy_intro):
             sfx = "sfx_wor.mmlappend"
             is_sfxv = True
             try:
-                mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", ruin_increment, mml)
+                mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", wind_increment, mml)
             except ValueError:
                 print("WARNING: failed to add wind sounds ({})".format(name))
         elif id == 0x20:
@@ -836,30 +851,64 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                 s.data, s.inst = process_tierboss(tierboss[ident], used_songs=used_songs)
                 s.is_pointer = False
             # case: get song from MML
-            elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")) or isfile(os.path.join(MUSIC_PATH, usage_id(s.changeto) + ".mml")):
-                mml, variant = "", ""
-                akao = {}
-                try:
-                    with open(os.path.join(MUSIC_PATH, usage_id(s.changeto)) + ".mml", 'r') as mmlf:
-                        mml = mmlf.read()
-                except IOError:
-                    pass
-                if mml:
-                    akao = process_mml(s.id, mml, usage_id(s.changeto) + ".mml")
-                if s.changeto.count("_") >= 2:
-                    variant = s.changeto[len(usage_id(s.changeto)):]
-                    if variant[0] == "_" and len(variant) > 1: variant = variant[1:]
-                    if variant not in akao:
-                        variant = ""
-                        try:
-                            with open(os.path.join(MUSIC_PATH, s.changeto) + ".mml", 'r') as mmlf:
-                                mml = mmlf.read()
-                        except IOError:
-                            mml = ""
-                        if mml:
-                            akao = process_mml(s.id, mml, s.changeto + ".mml")
+            elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")) or isfile(os.path.join(MUSIC_PATH, usage_id(s.changeto) + ".mml")) or isfile(os.path.join(MUSIC_PATH, variant_id(s.changeto, s.id) + ".mml")):
+
+                target = variant_id(s.changeto, s.id)
+                potential_files = {}
+                found = False
+                print(f"choosing song for {s.id:0X} {ident}")
+                while True:
+                    print(f" targeting: {target}")
+                    file_to_check = target
+                    variant_to_check = ""
+                    while True:
+                        print(f'  checking - file "{file_to_check}", variant "{variant_to_check}"')
+                        mml, akao = "", {}
+                        if file_to_check in potential_files:
+                            print(f"   file was cached")
+                            mml, akao = potential_files[file_to_check]
                         else:
-                            akao = {}
+                            try:
+                                with open(os.path.join(MUSIC_PATH, file_to_check + ".mml"), 'r') as mmlf:
+                                    mml = mmlf.read()
+                                akao = process_mml(s.id, mml, file_to_check + ".mml")
+                                potential_files[file_to_check] = (mml, akao)
+                                print(f"   file read from disk")
+                            except IOError:
+                                print(f"   file was not found")
+                                potential_files[file_to_check] = ("", {})
+                        if akao and (variant_to_check in akao or variant_to_check == ""):
+                            #we found it
+                            print(f"   variant was found")
+                            variant = variant_to_check
+                            found = True
+                            break
+                        elif file_to_check.count("_") >= 2:
+                            #move a _foo_ from file to variant. if last one abort
+                            print(f"   variant was not found, continuing")
+                            file_to_check, _, variant_append = file_to_check.rpartition('_')
+                            variant_to_check += variant_append + '_'
+                            if variant_to_check.endswith('_'):
+                                variant_to_check = variant_to_check[:-1]
+                        else:
+                            print(f"   variant was not found, trying something new")
+                            break
+                    #stop if we found something
+                    if found:
+                        print(f"  we're done here")
+                        break
+                    #we didn't find anything, so delete the last bit from target
+                    elif target.count("_") >= 2:
+                        print(f"  retargeting")
+                        target, _, _ = target.rpartition('_')
+                    else:
+                        print(f"  fail case fallback")
+                        #i don't think we need an actual fail case here
+                        #that falls back to usage_id? should have already
+                        #gotten a positive on that if available
+                        mml, akao, variant = "", {}, ""
+                        break
+                
                 title = re.search("(?<=#TITLE )([^;\n]*)", mml, re.IGNORECASE)
                 album = re.search("(?<=#ALBUM )([^;\n]*)", mml, re.IGNORECASE)
                 composer = re.search("(?<=#COMPOSER )([^;\n]*)", mml, re.IGNORECASE)

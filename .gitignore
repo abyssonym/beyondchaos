@@ -1,5 +1,6 @@
 *.pyc
 *.smc
+ff6*.txt
 build/*
 dist/*
 beyondchaos_ex.spec

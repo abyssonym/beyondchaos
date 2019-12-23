@@ -3,8 +3,10 @@
 #COMPOSER Nobuo Uematsu
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT _*~ enh
+#VARIANT _*/ nat
+#VARIANT \`~ sfx
+#VARIANT _`~ tr
 
 #WAVE 0x20 ~0x46~/0x0D/ strings
 #WAVE 0x21 ~0x70~/0x1C/ bass
@@ -297,6 +299,7 @@ m[j2,683%j719$683
 ##93
 ;
 
+_
 {7}
 r1r1r1 '10''vl'> [c4.crc [3cr]]
 $##7,10
@@ -330,7 +333,9 @@ e2.d+2.d2.d2.
 ##93
 '23'm> [c4.c4c[9cr]]
 ;
+_
 
+*
 {8}
 '09''vl' [9r2] 3d+4.d+rd+ [3d+r]
 $##7
@@ -368,3 +373,15 @@ r4 '16' [4[3d+d]>ba+g+f+< r4j4,876[3d+d]>ba+g+b< r4]$876 d+dd+d>a+g+f+fg+f+
 ##93
 r1^1^1 '08''vh' $896 c4.drd+frg+rgr <crd+rdrfrg+rgr j1,0
 ;
+*
+
+\
+{7}r;
+\
+`
+$310 c4.$311drd+ dr>a+r<fr d+4.frg fefgg+a+ j1,0
+$719 [[3"!!!oh4hoh4"]"h4"j2"h2"]"hoh4" j1,0
+$225 cr4cr4>a+r r2g+r4g+r4a+ra+j1,0r m"!!!oy4"
+$896 c4.drd+frg+rgr <crd+rdrfrg+rgr j1,0
+{8}r;
+`

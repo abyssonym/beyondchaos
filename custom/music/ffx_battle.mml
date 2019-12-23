@@ -3,8 +3,10 @@
 #COMPOSER Nobuo Uematsu
 #ARRANGED emberling
 
-#VARIANT ~
-#VARIANT / nat
+#VARIANT *~
+#VARIANT */ nat
+#VARIANT `~ sfx
+#VARIANT `~ tr
 
 #WAVE 0x20 ~0x49~ /0x0D/ strings
 #WAVE 0x21 ~0x0E~ /0x0E/ trumpet
@@ -211,7 +213,7 @@ l1 c+^d+^ l2 e1.f+ a1.b a1.a a1^1
 l4 '8'[3g+.g+.g+.g+12g+24^] <d.d.d.d12d24^ v
 ;
 
-{8}
+{8} `r;` *
 l8
 ##at 1: sixth string
 'str''st1'<<[4['8'c+4'16'c+8]'8'c+4j4c+4c+4]'16'l16>v62v96,100def+g+ab<c+d
@@ -312,7 +314,7 @@ p 'fakechoir' l4 c+.c+.c+^1
 ##at 75:
 'saw''sa1' l8 %k1[j2,515j1,53 $515 [j2,516j1,53 $516 
 [j2,517j1,53 $517 >%k11 [j2,518j1,53 $518 <%k0
-;
+;*
 
 ## function for saw approximation (53 for 12 notes, 52 for 16, 51 for 32)
 l8 $51 [ $52 'sh'c'sm'c'sl'c'sh'c $53 ['sh'c'sm'c'sl'c]'sh'c'sl'c'sm'c'sh'c'sm'c'sl'c]]

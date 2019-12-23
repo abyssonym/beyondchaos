@@ -6,10 +6,10 @@ Song conversions:
                  cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life, cc_pyre,
                  cc_world2
                  crys_fields, crys_mountain, crys_tower
-                 ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair, ct_frog
-                 ct_forest, ct_keeper, ct_mountain, ct_night, ct_revolution,
-                 ct_rhythm, ct_robo, ct_schala, ct_silent, ct_sewer, ct_theme,
-                 ct_truth, ct_tylair, ct_tyran, ct_zeal
+                 ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_boss2,
+                 ct_fair, ct_frog, ct_forest, ct_keeper, ct_mountain, ct_night,
+                 ct_revolution, ct_rhythm, ct_robo, ct_schala, ct_silent,
+                 ct_sewer, ct_theme, ct_truth, ct_tylair, ct_tyran, ct_zeal
                  cv4_beginning, cv4_chandeliers
                  doom2_doom
                  ds4_dungeon, ds4_lyll, ds4_world
@@ -79,7 +79,6 @@ Song conversions:
                  ys4_danan
                  ys8_idance
     Gi Nattak -- cc_arni, cc_flame, cc_miguel
-                 ct_boss2
                  cv3_aquarius
                  evo_boss
                  ff1_battle, ff1_dungeon

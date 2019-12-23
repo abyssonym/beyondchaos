@@ -3,8 +3,9 @@
 #COMPOSER Masanori Adachi, Taro Kudou
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT \~ enh
+#VARIANT \/ nat
+#VARIANT _~ tr
 
 #WAVE 0x20 ~0x94~/0x0D/
 #WAVE 0x21 ~0x3B~/0x3B/
@@ -226,21 +227,21 @@ a8v37fa<c>fa<v32d+d+8d8f8>a+8<  e4v37d24e24v32d24^8c+4>a<c+ea48
 ## 22 - track 5/echo
 'bright'p39 v30 l16 r24 [j2,728%j422$728 v27d+f a4.g+gv30f+8v27fev32d+8v30e r48
 ## 30 - track 6e / 33 - track 6e / 37 - nothing
-'string'p78 r24 l16 v32e4v36(a+gec>v32l12g)a+<c+v29ega+
-l16v32d+4v36(a+gd+>a+v32l12g)a+<c+v29d+ga+
-l16v32d4v36(a+gd>a+v32l12g)aa+<v29dga+
-v32 l8 c+4g4a+4<c+4 r24v36d4.>v32a<c+>g<c+>g <v36d4.>v32a<c+>a+<cd
-l24 v36d6^r v29d+6^r v26d6^r v22c+6
+'string'p78 r24 l16 v32e4\v36\(a+gec>\v32\l12g)a+<c+\v29\ega+
+l16\v32\d+4\v36\(a+gd+>a+\v32\l12g)a+<c+\v29\d+ga+
+l16\v32\d4\v36\(a+gd>a+\v32\l12g)aa+<\v29\dga+
+\v32\ l8 c+4g4a+4<c+4 r24\v36\d4.>\v32\a<c+>g<c+>g <\v36\d4.>\v32\a<c+>a+<cd
+l24 \v36\d6^r v29d+6^r v26d6^r v22c+6
 ##38 - nothing
 &144[5r1] 'cembalo'v59p64 c8d8
 ;
 
 {8}
 %e1## 1 - track 1
-'bright'<p89 l16
-v43 <c>afc  v49 afc>a<  v55 c>afa  v61 fc>af<
-v43 <bg+e>b<  v49 g+e>bg+  v55 bg+eg+  v61 e>bg+e<
-v43 <ad+c>a<  v49 f+c>af+<  v55 d+>af+<c>  v61 f+d+cd+
+'bright'<p89 l16 _v49_
+\v43\ <c>afc  \v49\ afc>a<  \v55\ c>afa  \v61\ fc>af<
+\v43\ <bg+e>b<  \v49\ g+e>bg+  \v55\ bg+eg+  \v61\ e>bg+e<
+\v43\ <ad+c>a<  \v49\ f+c>af+<  \v55\ d+>af+<c>  \v61\ f+d+cd+
 $## 4 - track 4/6 (echo)
 'string'v42p64%a9%r13 r24<e8.^48 r16
 'bright'< v27p78 l8 edc>a+g+f+edc>a+v32g+4 << r24v27 d>b16

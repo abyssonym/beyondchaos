@@ -3,8 +3,10 @@
 #COMPOSER Kenji Hiramatsu
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT *~ enh
+#VARIANT */ nat
+#VARIANT `~ sfx
+#VARIANT `~ tr
 
 #WAVE 0x20 ~0x49~/0x0D/
 #WAVE 0x21 ~0x7F~/0x0E/
@@ -323,6 +325,7 @@ r1r1r1 "p4.p4.p-4"
 l16 "x2" v64p80v96,127%g1[8"!oz"]%g0p64 "!!oo8o8o8o4.s8."
 ;7
 
+*
 {8}
 {str}|0 v80 ~o4~/o5/ %e1{} ~%r13~ l16 p60
 ##2 str high o5-1/<, clarinet o6/-1
@@ -368,3 +371,9 @@ l16 %e0mp64[3"!!!o i4i8ij"] "i4p-8ij" "p-4i8ij" [3"!!!o i4i8ij"]
 ##49
 [4"k4"]"z1"%e1
 ;8
+*
+
+`
+{8}r;
+$825'gm'f+4.'go'f+4'gm'f+8'go'f+8'gm'f+8 j1,0
+`

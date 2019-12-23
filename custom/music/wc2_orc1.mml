@@ -3,8 +3,10 @@
 #COMPOSER Glenn Stafford
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT _*~ enh
+#VARIANT _*/ nat
+#VARIANT \`~ sfx
+#VARIANT _`~ tr
 
 #WAVE 0x20 ~0x94~/0x0D/ strings
 #WAVE 0x21 ~0x93~/0x06/ choir
@@ -269,6 +271,7 @@ l4 '14h''14hl''vi' <f+> '14''14h' d>bg+fc+>a '14hl'f ^1^1
 [5a]) ([5f+]) ([5g+]) ([5f+]) m
 ;
 
+_
 {7}
 $ %e1
 '05''tr''vi' v16 l8 v240,20 ([5ef]) v240,24 ([5ef]) v240,28 ([5ef]) v240,32 ([5ef])
@@ -293,7 +296,9 @@ l4 ([8f+]) ([8g+]) ([4a+]<[4c+])> ([4b]<dd)(ff)
 ##48
 '05''5vb''tr' l8 (f+4[39ff+]) m
 ;
+_
 
+*
 {8}
 $
 l16 $801 [[4"c8ccc8 r8rrr8"j4"mmm8 ttt8"]":r:mmmm tttt"] j1,0
@@ -320,3 +325,14 @@ l2 ["!!!o y1" %e1'04''4va'> f+f]
 ##48
 [j2,855%j801$855
 ;
+*
+
+\
+{7}r;
+\
+
+`
+{8}r;
+$801 [[4"c8ccc8 r8rrr8"j4"mmm8 ttt8"]":r:mmmm tttt"] j1,0
+`
+

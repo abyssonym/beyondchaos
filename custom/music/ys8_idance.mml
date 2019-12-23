@@ -3,8 +3,9 @@
 #COMPOSER Mitsuo Singa
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT *~ enh
+#VARIANT */ nat
+#VARIANT _~ tr
 
 #WAVE 0x20 ~0x69~/0x00/
 #WAVE 0x21 ~0x8B~/0x0c/
@@ -42,14 +43,14 @@
 #drum "k"=5f |A v80 p64 %e0
 #drum "s"=5g |B v80 p64 %e0
 #drum "t-"=5b |B v64 p64 %e0
-#drum "t"=5b |B v64 p64 %e1
-#drum "u"=5b |B v48 p64 %e1
-#drum "v"=5b |B v32 p64 %e1
+#drum "t"=5b |B v64 p64 *%e1* _%e0_
+#drum "u"=5b |B v48 p64 *%e1* _%e0_
+#drum "v"=5b |B v32 p64 *%e1* _%e0_
 #drum "p-"=5a |F v32 p50 %e0 %s7%r24
 #drum "p"=5a |F v48 p64 %e0 %s7%r24
-#drum "o-"=5f |F v48 p50 %e1 %s7%r22
-#drum "o"=5f |F v64 p50 %e1 %s7%r22
-#drum "r"=6c+ |F v48 p96 %e1 %y4%s0%r26
+#drum "o-"=5f |F v48 p50 *%e1* %s7%r22 _%e0_
+#drum "o"=5f |F v64 p50 *%e1* %s7%r22 _%e0_
+#drum "r"=6c+ |F v48 p96 *%e1* %y4%s0%r26 _%e0_
 #drum "c"=~4f |C p96 v24 %e0~ /6c |D p96 v24 %e0/
 #drum "c+"=~4f |C p96 v80 %e1~ /6c |D p96 v80 %e1/
 #drum "d"=~4b |C p96 v80 %e1~ /6f |D p96 v80 %e1/

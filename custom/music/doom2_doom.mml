@@ -4,6 +4,7 @@
 #ARRANGED emberling
 
 #VARIANT _
+#VARIANT ? sfx
 #VARIANT ? tr
 
 #WAVE 0x20 0x94 Trem. Strings

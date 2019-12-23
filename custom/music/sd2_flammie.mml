@@ -4,8 +4,10 @@
 #ARRANGED emberling
 # Converted from binary by mfvitools
 
-#VARIANT ~
-#VARIANT / nopatch
+#VARIANT *~
+#VARIANT */ nat
+#VARIANT `~ sfx
+#VARIANT `~ tr
 
 #WAVE 0x20 -- ~0x59~ /0x22/
 #WAVE 0x21 -- ~0x5C~ /0x21/
@@ -132,7 +134,7 @@ r2r4r8r8
 ;7
 
 l16
-{8}
+{8} `r;` *
 l16r48%e1p40@41r2o4v25gv27av28b<v30c>v31b<v33cv34dv36e  
  $8 p40v37@41o4a[6<cef>a]<cefrcef>a[6<cef  >a]<cefrcef>a[1<cef>a]<cef  
 >b<cdf+[7dega]rega[7dega  ]gfed>a[6<cef>a]<cefrcef  >a[6<cef>a]<cefr[3cef>a<]cef  
@@ -141,6 +143,5 @@ argfrfgrffrffrgr  f4^r8.ffrffrgr  argfrfdreereerf+r  e4^r8.eereerf+r
 grf+eref+reereerf+r  e4^r8.eereerf+r  grf+eref+r]p32<a8.g8.f8.  
 g8.f8e8f8.g48f48e48f2  ^4^1  >>b1  <c1  
 d1  g2^4ga<cd  
-;8
+;8 *
 
-l16

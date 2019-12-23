@@ -3,8 +3,10 @@
 #COMPOSER Yoko Shimomura
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT *~ enh
+#VARIANT */ nat
+#VARIANT `~ sfx
+#VARIANT `~ tr
 
 #WAVE 0x20 ~0x0B~/0x0B/
 #WAVE 0x21 ~0x5D~/0x00/
@@ -301,6 +303,7 @@ g1^1 a1^1
 'or*v.87-o1'p75 %y4%s4 [13b]<d>[14b] %r 'vof' <d1^4
 ;
 
+*
 {8}
 %e1 l16 "y8hh h8hh h8hh o8hh" [[3"h8hh"]"o8hh"] "x2.k4" "z4"[5"q4"]^2
 ## 7
@@ -325,4 +328,10 @@ l12 [ [j2,840%j841$840 ] ":p:ppp o6p" $841 "!!!o nhh o6p" j1,0
 ##54
 "y2.x8z8 y2.z4 z8.x8.z8^2"
 ;
+*
+
+`
+{8}r;
+$841 "!!!o nhh o6p" j1,0
+`
 

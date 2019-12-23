@@ -4,8 +4,10 @@
 #ARRANGED Gi Nattak
 # Converted from binary by mfvitools
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT *~ enh
+#VARIANT */ nat
+#VARIANT `~ sfx
+#VARIANT `~ tr
 
 #WAVE 0x20 ~0x5D~ /0x0B/
 #WAVE 0x21 ~0x60~ /0x08/
@@ -165,8 +167,8 @@ a8o5v40|7[24g+8g+g+]v104|9o5a2c+8  r4^8c+8r2  ^4^8v40|7[10g+8g+g+]o4v80|8~<~p100
 p60ggr4v104o5|9o5c+8r8c+8r8c+8  r8v40|7[8g+8g+g+]
 ;7
 
-l16
-{8}
+
+{8} `r;` *
 l16%e1 $8 v50p80|5o4~<v96~b2a+8  
 a+8r4a8a8r4g+8  r4^8g8<gg>g8<gg>g8  <gg>g8<gg>f+8<f+f+>f+8<f+f+>f+8  
 <f+f+>f+8<f+f+>e8<ee>e8<ee>e8  <ee>e8<ee>f+1  r2[4b8a8b8f+8  ][3g8a8g8<d8>]g8a8g8<d8  
@@ -188,5 +190,5 @@ r2^4g8<g8  >g8<g8>g8<g8>g8<g8>f+8<f+8  >f+8<f+8>g+8<g+8>a+8<a+8>b8<b8
 <g8>g8<g8>g8<g8>e8<e8>e8  <e8>e8<e8c+8>b8f+8<f+8>f+8  <f+8>f+8<f+8>f+8<f+8>b8r8<c8  
 >b8a8g8f+8e8e8<e8>e8  <e8>c+8<c+8>c+8<c+8>f+8<f+8>f+8  <f+8>f+8<e8d8c+8
 ;8
+*
 
-l16

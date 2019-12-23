@@ -3,8 +3,9 @@
 #COMPOSER Masanao Akahori
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT \~ enh
+#VARIANT \/ nat
+#VARIANT _~ tr
 
 #WAVE 0x20 ~0x1C~/0x1C/ bass
 #WAVE 0x21 ~0x95~/0x00/ lead2 (pluck)
@@ -25,17 +26,17 @@
 #def global= t135 %x224 %v50 %b0,70 %f0,0
 
 #def 06= |0 %e0 %k-1 o6      m
-#def 08=~|1~%e1 %k-1~o6~%r15%a13 m48,18,239 /@0o5%y1%s1/
+#def 08=~|1~%e1 %k-1~o6~\%r15%a13\ m48,18,239 /@0o5%y1%s1/
 #def 10= |2 %e1 %k-6~o6~     m48,18,239 /o7/
 #def 11= |3 %e1 %k8  o6 %r12 m48,18,239
 #def 12= |4 %e1 %k8  o6 %r15 m %y5%s0 
 #def 13= |5 %e1 %k-3~o5~%a11 m48,18,239 /o6/
-#def 14= |6 %e1 %k4     %r15 ~m~/m48,18,239/         
+#def 14= |6 %e1 %k4     \%r15\ ~m~/m48,18,239/         
 #def 15= |7 %e1 %k4  o6 %r13 m48,18,239
 #def l3=~|2~/|7/%k4  o6 %r13 m48,18,239 %e1
 #def t3=~|7~%e1 %k-6~o6~     m48,18,239 /|6o7/
 #def t0= |6 %e1 %k-6 ~o6~/o7/ ~m~/m48,18,239/
-#def d0=~|1~%e1 %k-6~o7~%r15%a11 m48,18,239 /@0o6%y1%s1/
+#def d0=~|1~%e1 %k-6~o7~\%r15%a11\ m48,18,239 /@0o6%y1%s1/
 
 #def 06a= '06' p64 v32
 #def 08a= '08' p74 ~v100~/v50/
@@ -63,7 +64,7 @@
 #drum "s"=5a |B v96 %e0 %k0 p64
 #drum "h"=5a |F v48 %e0 %k0 p64
 #drum "o"=5f |C v72 %e0 %k0 p64
-#drum "y"=5b |C v72 %e1 %k0 p64
+#drum "y"=5b |C v72 \%e1\ %k0 p64
 #drum "c"=5f |E v72 %e0 %k0 p64
 #drum "t"=4b |D v96 %e0 %k0 p89
 #drum "u"=4g |D v96 %e0 %k0 p64

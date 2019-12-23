@@ -592,7 +592,9 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         # 4. battle0 and battle1 chosen from I<boss0, G<max(50,boss1), sorted by G
         # 5. battle2 and battle3 chosen from I<boss2, G>battle1
         def intensity_subset(imin=0, gmin=0, imax=99, gmax=99):
-            return {k: v for k, v in intensitytable.items() if v[0] >= imin and v[0] <= imax and v[1] >= gmin and v[1] <= gmax and usage_id(k) not in used_songs}
+            subset = {k: v for k, v in intensitytable.items() if v[0] >= imin and v[0] <= imax and v[1] >= gmin and v[1] <= gmax and usage_id(k) not in used_songs}
+            print(f" SUBSET i{imin}-i{imax} g{gmin}-g{gmax}\n   {subset}")
+            return subset
             
         battlecount = len(battleids) + len(bossids)
         while len(intensitytable) < battlecount:
@@ -625,14 +627,25 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             bossprog = [b[0] for b in bossprog]
         else:
             tries=0
+            event_g_max = 33 if not f_mchaos else random.randint(33,50)
+            event_i_min = 33 if not f_mchaos else random.randint(20,33)
+            boss2_g_min = 66 if not f_mchaos else random.randint(40,66)
+            boss2_i_min = 60 if not f_mchaos else random.randint(40,60)
+            boss1_g_min = 22 if not f_mchaos else random.randint(10,30)
+            battle1_g_max = 50 if not f_mchaos else random.randint(50,70)
+            battle1_g_cap = 80 if not f_mchaos else random.randint(80,95)
             while True:
                 try:
-                    event, (ei, eg) = random.choice(list(intensity_subset(imin=33, gmax=33).items()))
-                    bt = min(ei,60) 
+                    print("event")
+                    event, (ei, eg) = random.choice(list(intensity_subset(imin=event_i_min, gmax=event_g_max).items()))
+                    bt = min(ei,boss2_i_min) 
 
-                    super, (si, sg) = random.choice(list(intensity_subset(imin=bt, gmin=66).items()))
-                    boss, (bi, bg) = random.choice(list(intensity_subset(imin=bt, gmin=max(22,eg), gmax=sg).items()))
-                    wt = min(80,max(bg, 50))
+                    print("super")
+                    super, (si, sg) = random.choice(list(intensity_subset(imin=bt, gmin=boss2_g_min).items()))
+                    print("boss")
+                    boss, (bi, bg) = random.choice(list(intensity_subset(imin=bt, gmin=max(boss1_g_min,eg), gmax=sg).items()))
+                    wt = min(battle1_g_cap,max(bg, battle1_g_max))
+                    print("balance")
                     balance = random.sample(list(intensity_subset(imax=bt, gmax=wt).items()), 2)
                     if balance[0][1][0] + balance[0][1][1] > balance[1][1][0] + balance[1][1][1]:
                         boutside, (boi, bog) = balance[1]
@@ -640,6 +653,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                     else:
                         boutside, (boi, bog) = balance[0]
                         binside, (bii, big) = balance[1]
+                        print("ruin")
                     ruin = random.sample(list(intensity_subset(imax=min(bi, si), gmin=max(bog,big)).items()), 2)
                     if ruin[0][1][0] + ruin[0][1][1] > ruin[1][1][0] + ruin[1][1][1]:
                         routside, (roi, rog) = ruin[1]

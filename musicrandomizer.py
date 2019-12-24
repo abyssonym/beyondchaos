@@ -508,9 +508,6 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         canbe = [s.strip() for s in song[1].split(',')]
         intense, epic = 0, 0
         event_mults = {}
-        if f_mchaos:
-            for ident, s in songtable.items():
-                s.choices.append(song[0])
         for c in canbe:
             if not c: continue
             if c[0] in eventmodes and ":" not in c:
@@ -521,6 +518,9 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         static_mult = 1
         for k, v in event_mults.items():
             static_mult *= v
+        if f_mchaos:
+            for ident, s in songtable.items():
+                s.choices.append(song[0]*static_mult)
         for c in canbe:
             if not c: continue
             if ":" in c and c[0] in eventmodes:

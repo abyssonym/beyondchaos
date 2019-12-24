@@ -923,6 +923,11 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                         mml, akao, variant = "", {}, ""
                         break
                 
+                #record variant - will this break stuff?
+                if variant and s.changeto != target:
+                    print(f"changeto != target ({s.changeto} || {target})")
+                    s.changeto = f"{file_to_check} (variant: {variant})"
+                    print(f"changeto changed to {s.changeto}")
                 title = re.search("(?<=#TITLE )([^;\n]*)", mml, re.IGNORECASE)
                 album = re.search("(?<=#ALBUM )([^;\n]*)", mml, re.IGNORECASE)
                 composer = re.search("(?<=#COMPOSER )([^;\n]*)", mml, re.IGNORECASE)

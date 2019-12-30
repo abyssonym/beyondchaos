@@ -76,6 +76,7 @@ ff3_world:      prelude, relm, village, balance*2
 ff4_airship:    blackjack*2, fanfare
 ff4_babil:      troops*2, mountain, mount2, returners, engine
 ff4_baron:      figaro, troops*2, returners, engine
+ff4_battle:     I15, G5, battle, grandfinale, unforgiven, chocobo, johnny, blackjack
 ff4_bomb:       metamorphosis, catastrophe, assault
 ff4_boss:       I65, G50, savethem, metamorphosis, grandfinale, boss*2
 ff4_calcobrena: kefka, grandfinale, gogo, dream
@@ -174,6 +175,7 @@ ff12_estersand: locke, chocobo, moogles, balance*2, veldt, mountain*2, mount2, s
 ff12_ozmone:    returners, moogles, gogo, veldt*2, mountain*2, forest, serpent
 ff12_paramina:  W4, omen3*2, gestahl*2, catastrophe, narshe*2, martiallaw, town_ruin, ruin*2, cave*2, tomb, ancient, assault, W:shadow, W:awakening, W:cyan, W:troops*2, W:umaro, W:zozo, W:owzer, W:balance, W:train*2, W:serpent, W:espers*2, W:forest
 ff14_azyslla:   gate, ancient, magitek, dream, floatingcont*2, fanatics, kefkastower*2
+ff14_battlem:   I10, G30, battle, metamorphosis, grandfinale, assault, savethem, phoenix
 ffmq_battle1:   I50, G15, battle*2
 ffmq_battle3:   I60, G95, atma, dmad5, grandfinale, kefkastower
 ffmq_boss:      I55, G60, boss*2

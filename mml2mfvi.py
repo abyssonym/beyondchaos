@@ -290,7 +290,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                                                     
             line = line.replace(r.group(0), s, 1)
             
-        mml[i] = line
+        mml[i] = line.replace('\n', ' ')
         
     #drums
     drums = {}

@@ -221,7 +221,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 tweaks[cmd] = (twx.group(1), twx.group(3))
                 mx = mx.replace(twx.group(0), "", 1)
             #
-            s = macros[m] if m in macros else ""
+            s = macros[m.lower()] if m.lower() in macros else ""
             p = 0
             if tweaks:
                 # "o,,": ("+", ",1,")

@@ -1,0 +1,89 @@
+
+#WAVE 0x20 0x1B harp
+#WAVE 0x21 0x07 flute
+#WAVE 0x22 0x0D strings
+#WAVE 0x23 0x80 bass
+#WAVE 0x28 0x22 kick
+#WAVE 0x29 0x5A hihat
+
+#def init= t87 %x240 %v40 %b0,85 %f0,0
+
+#def harp= |0 o6 'h' %e1 m
+#def flute= |1 o5 'f' %e1 m48,18,223
+#def strings= |2 o5 's' %e1 m48,18,207
+#def bass= |3 o5 'b' %e0 %r13 m
+
+#def h= v64
+#def f= v80
+#def s= v56
+#def b= v88
+#def sf= v24,56
+#def se= 's*v.5''sf'
+
+#drum "k"=5a |8 p78 v96 %e0
+#drum "h"=5f+ |9 p72 v48 %e0 %y5%s0
+#drum "i"=5f+ |9 p72 v48 %e0 %y4%s0
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'init' $
+'flute-o1' p66 l8
+[r4gaa+4<d4> f+1  r4gaa+4<d4 f4(d+d)c2>]
+##9
+<(dd+)d2>a+4< cdc2>a4  a+4.ag4.(f+16g16) <c4>a+4a2
+;
+
+{2}
+$ 'bass' p59 l16
+[[[grgr8.d8] d+rd+r8.j2a+r8.<f8d+8d8>] f+r8.a+r8.<d+8>]
+##9
+>a+2.<c4 d2^8f+rd4  c+4.e8g2 <c2>a4f+4
+;
+
+{3}
+$ 'strings' p84 l16
+['se'%r3g2...%r17^ 'se'%r3f+2...%r17^
+'se'%r3g2...%r17^'se'%r3a+2...%r17^]
+##9
+%r3'se'd2'se'f4'se'a+4  'se'a2'se'f+2
+'se'g2'se'a+2  'se'<c2...%r17^
+;
+
+{4}
+$ 'harp-o2*v1.2' p53 l16
+[4 [a+r<drgrdr>] [a+r<d+rf+rd+r>] ]
+##9
+[a+r<drfrdr>] [ar<drf+rdr>] [a+r<ergrer>] gr<crd+rgrar<crd+rf+r
+;
+
+{5}
+$ 'harp-o2' p47 l16
+[4 [drgra+rgr] [d+rf+ra+rf+r] ]
+##9
+[drfra+rfr] [drf+r<cr>f+r] [c+rera+rer] crd+rgra+r<crd+rf+rar
+;
+
+{6}
+$ 'strings' p78 l16
+['se'%r3d2...%r17^ 'se'%r3d+2...%r17^
+'se'%r3d2...%r17^'se'%r3f+2...%r17^]
+##9
+%r3'se'>f2'se'a+4<'se'd4    'se'c2...%r17^
+%r3'se'c+2'se'e2    'se'd+2...%r17^
+;
+
+{7}
+$ l16
+[8"khhh8.k8 khhh^4"]
+##9
+l8 [4"k4ikk4i4"]
+;
+
+{8}
+$ l48
+[16"hhh" r4..]
+##9
+[8"i2"]
+;

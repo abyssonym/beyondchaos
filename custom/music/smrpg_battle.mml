@@ -1,0 +1,186 @@
+#TITLE Fight Against Monsters
+#ALBUM Super Mario RPG
+#COMPOSER Yoko Shimomura
+#ARRANGED emberling
+##created with akao2mml alpha 0.8.5
+
+#WAVE 0x20 0x59 kick
+#WAVE 0x21 0x00 
+#WAVE 0x22 0x51 clap
+#WAVE 0x23 0x81 snare
+#WAVE 0x24 0x14 e.snare
+#WAVE 0x25 0x5A c.hihat
+#WAVE 0x26 0x8F o.hihat
+#WAVE 0x2A 0x82 trumpet
+#WAVE 0x2B 0x7C saw 
+#WAVE 0x2C 0x70 bass
+#WAVE 0x2D 0x97 guitar
+#WAVE 0x2E 0x83 calliope
+#WAVE 0x27 0x62 boop
+
+#def Ai= |A
+#def Bi= |B
+#def Ci= |C
+#def Di= |D %r17
+#def Ei= |E
+#def Fi= |7 %y5%s0
+
+#def Ao= o5
+#def Bo= o5
+#def Co= o3
+#def Do= o4
+#def Eo= o4
+#def Fo= o5
+
+#def 0v=   v100
+#def 0f= v1,100
+#def 1v=   v75
+#def 1f= v1,75
+#def 2v=   v100
+#def 2f= v1,100
+#def 3v=   v100
+#def 3f= v1,100
+#def 4v=   v100
+#def 4f= v1,100
+#def 5v=   v100
+#def 5f= v1,100
+#def 6v=   v100
+#def 6f= v1,100
+#def Av=   v100
+#def Af= v1,100
+#def Bv=   v50
+#def Bf= v1,50
+#def Cv=   v100
+#def Cf= v1,100
+#def Dv=   v80
+#def Df= v1,80
+#def Ev=   v100
+#def Ef= v1,100
+#def Fv=   v100
+#def Ff= v1,100
+
+#drum "b"= 5a |0 p64
+#drum "c+"= 5a |3 p64
+#drum "d"= 6g |4 p79
+#drum "d+"= 5g |2 p64
+#drum "e"= 5b |3 p49
+#drum "f+"= 6e |5 p64
+#drum "g"= 6c |6 p64
+
+#drum "s"= 6c |4 p64
+
+{1}t133 %x255%v50%b0,70%f0,0
+'1v*v.60'" !!!o " %g1%e1 %a14 "c+16"'1f*v36,.20'[4"c+16"]'1f*v84,1.00'[7"c+16"]
+r4 %g0
+%k16%e1$
+'Ai' p44[3'Ao-o1''Av*v.75'e8.r16f8[3r16'Ao-o1'g16]<c16r16>b12^48r48]e8.
+r16f8[3r16'Ao-o1'g16]<'Av*v.90'c16r16>b12^48r48<c8.r16>b8r16a16r16g16r16
+g16a16r16b16r16<c8>b16r16a12r24g2r8<c8.r16>b8r16a16r16g16r16g16a16r16b16
+r16g8a16r16b12r24<c2r8
+'Bi' {'RestRelease 24'}p84['Bo''Bv*v1.00'c4>f8.g16%r24^16%rg32%r24^16^32%r&2g%r24^32^48
+%ra16%r24^16%rb8]
+'Ai' p44['Ao-o1''Av*v.75'e8.r16f8[3r16'Ao-o1'g16]<c16r16>b12^48r48]r1r1
+r1r2r8'Av*v.70'f8e16r16d16r16;
+
+
+{2}r2.%k16%e1
+'Ci' {'RestRelease 26'}p64'Co-o2''Cv*v1.10'g8m16,-12^8$[7
+<'Cv*v1.10''Co-o1'c4>f8.g16%r26^16%r<'Cv*v.90'g32%r26^16^32>'Cv*v1.10'%r&2g%r26^32^48%ra16
+%r26^16%rb16<'Cv*v.90'b64%r26^32^64%r]'Cv*v1.10'c2.g8m16,-12^8[[3'Cv*v1.10'
+'Co-o1'c4>f8.g16%r26^16%r<'Cv*v.90'g32%r26^16^32%r>'Cv*v1.10'&2g%r26^32^48%ra16%r^16%rb16<'Cv*v.90'
+b64%r26^32^64%r]'Cv*v1.10'c4>f8.g16%r26^16%rg32%r26^32%r<'Cv*v.90'g32%r26^32%r>'Cv*v1.10'g16a16
+%r26^16%r<'Cv*v.90'b64%r26^32^64%r>'Cv*v1.10'b16];
+
+
+{5}r2.{P+}'0v*v1.20'" !!!o b4"$[15"b4"][3"b8b8"[15"b4"]]"b8b8";
+
+
+{3}{P+}
+'1v*v.60'" !!!o " %e1%g1 %a14 r32"c+32"
+'1f*v36,.20'^32[3"c+16"]"c+32" '1f*v84,1.00'^32[6"c+16"]"c+32" %g0
+'2v*v1.02'
+%e1"d+8"%e0'3v*v.70'"e16"'4v*v.78'"d16"$[4'4v*v.60'"d16"'3v*v.70'"e16"'5v*v1.02'
+"f+16"'3v*v.70'"e16"'2v*v1.16'%e1"d+8"%e0'5v*v1.02'"f+16"'3v*v.80'"e32
+"'3v*v.60'"e32"'4v*v.70'"d16e16"'5v*v1.02'"f+16"'3v*v.70'"e16"'2v*v1.16'
+%e1"d+16"%e0'4v*v.60'"d16"'5v*v1.02'"f+16"j4,401'4v*v.78'"d16"]$401%e1
+"d+16"%e0['4v*v.60'" !!!o d16"'3v*v.70'"e16"'5v*v1.02'"f+16"'3v*v.70'"e16
+"'2v*v1.16'%e1"d+8"%e0'5v*v1.02'"f+16"'3v*v.70'"e32"'3v*v.60'"e32"'4v*v.70'
+"d16e16"'5v*v1.02'"f+16"'3v*v.70'"e16"'2v*v1.16'%e1"d+16"%e0'4v*v.60'"d16
+"'5v*v1.02'"f+16"'4v*v.78'"d16"]'4v*v.60'"d16"'3v*v.70'"e16"'5v*v1.02'
+"f+16"'3v*v.70'"e16"'2v*v1.16'%e1"d+8"%e0'5v*v1.02'"f+16"'3v*v.70'"e32
+"'3v*v.60'"e32"'4v*v.70'"d16e16"'5v*v1.02'"f+16"'3v*v.70'"e16"'2v*v1.16'
+%e1"d+16"%e0'4v*v.60'"d16"'5v*v1.02'"f+16"%e1"d+16"
+%g1'1v*v.80'"c+16"'1f*v36,.20'[4"c+16"]'1f*v120,1.10'[10"c+16"]%g0
+%e0'4v*v.70'"d32"'4v*v.78'"d32"[3'4v*v.60'"d16"'3v*v.70'
+"e16"'5v*v1.02'"f+16"'3v*v.70'"e16"'2v*v1.16'%e1"d+8"%e0'5v*v1.02'"f+16
+"'3v*v.70'"e32"'3v*v.60'"e32"'4v*v.70'"d16e16"'5v*v1.02'"f+16"'3v*v.70'
+"e16"'2v*v1.16'%e1"d+16"%e0'4v*v.60'"d16"'5v*v1.02'"f+16"'4v*v.78'"d16
+"]'4v*v.60'"d16"'3v*v.70'"e16"'5v*v1.02'"f+16"'3v*v.70'"e16"'2v*v1.16'
+%e1"d+8"%e0'5v*v1.02'"f+16"'3v*v.70'"e32"'3v*v.60'"e32"'3v*v1.02'"e16"'4v*v.70'
+"d16"'3v*v.94'"e16"'4v*v.70'"d16"'3v*v1.02'"e16d16"'4v*v1.16'"d16"%e1"d+16
+"%e0r1r1r1'6v*v.94'"g8"'6v*v.78'"g8"'6v*v.94'"g16"'6v*v1.02'"g8"'6v*v.94'
+"g8"'6v*v.78'"g8g16"'6v*v.94'"g8"'6v*v1.02'"g16"'4v*v.70'"d32"'4v*v.78'
+"d32";
+
+
+{7}r1%k16%e1$
+'Ai' p84[4'Ao-o1''Av*v.75'c8.r16d8[3r16'Ao-o1'e16]a16r16g12^48r48]g8.r16
+g8r16f16r16e16r16e16f16r16g16r16g8g16r16f12r24e4'Av*v.80'f8e12r24d12r24
+'Av*v.75'g8.r16g8r16f16r16e16r16e16f16r16g16r16e8f16r16f12r24e4'Av*v.80'
+f8e12r24d12r24
+'Bi' {'RestRelease 24'}['Bo-o1''Bv*v1.00'g4d8.e16r16e32r16^32&2er32r48
+f16r16g8]
+'Ai' p44['Ao-o1''Av*v.75'c8.r16d8[3r16'Ao-o1'e16]a16r16g12^48r48]r1r1r1
+r2r8'Av*v.60'd8c16r16>b16r16;
+
+
+{4}r1%k16%e1$r1r2.r8
+'Di' p64p0,96,64'Do''Dv*v.90'e16g16[5'Do'e8e16
+e16f16f16f16g8g8g16<c16c16>b8]e2.[<'Do+o1'c16c16>b8e8e16e16f16f16f16g8
+g8g16]<c16c16>b8
+'Bi' p{'RestRelease 24'}p84['Bo''Bv*v1.00'
+c4>f8.g16%r24^16%rg32%r24^16^32%r&2g%r24^32^48%ra16%r24^16%rb8]
+'Ei' {'RestRelease 25'}p64'Eo''Ev*v.90'
+c6%r25^12%r>b12%r25^24%rb48%r25^24%ra16%r25^16%rg16%r25^16%r
+g16{'RestRelease 25'}a16%r25^16%rb16%r25^16<%rc8
+{'RestRelease 25'}>b16%r25^16%ra12%r25^24%r
+g2%r25^8%r<c6%r25^12%r>b12%r25^24%rb48%r25^24%ra16%r25^16%rg16%r25r16%rg16{'RestRelease 25'}a16%r25^16%rb16%r25^16
+%rg8{'RestRelease 25'}a16%r25^16%rb12%r25^24%r<c2%r25r8%r;
+
+
+{8}r1$%k16%e1r1r2.r16
+'Di' p64p0,96,64'Do''Dv*v.90'd8.[5'Dv*v.70''Do'c8
+c16c16d16d16d16e8e8e16g16g16g8]c2.['Do'g16g16g8c8c16c16d16d16d16e8e8e16
+]g16g16g8
+'Bi' p{'RestRelease 24'}p84['Bo-o1''Bv*v1.00'
+g4d8.e16%r24^16%re32%r25^16^32%r&2e%r24^32^48%rf16%r24^16%r24g8]%r24^1r1r1
+"!!!o" '4v' %k0 "s8s8s16s8s8s8s16s8s8";
+
+
+{6}r1%k16%e1
+'Fi' $[4p0'Fo-o1''Fv*v.60'c32r32p127'Fv*v.35'c32r32<'Fv*v.60'c32r32p0'Fv*v.35'
+c32r32>'Fv*v.60'c32r32p127'Fv*v.35'c32r32p64<'Fv*v.60'c32r32p0>c32r32p127
+'Fv*v.35'c32r32'Fv*v.60'c32r32p0'Fv*v.35'c32r32p64<'Fv*v.60'c32r32p0>c32
+r32p127'Fv*v.35'c32r32p64'Fv*v.60'g32r32<g32r32j4,801p127>c32r32p0'Fv*v.35'
+c32r32<'Fv*v.60'c32r32p127'Fv*v.35'c32r32>'Fv*v.60'c32r32p0'Fv*v.35'c32
+r32p64<'Fv*v.60'c32r32p127>c32r32p0'Fv*v.35'c32r32'Fv*v.60'c32r32p127'Fv*v.35'
+c32r32p64<'Fv*v.60'c32r32p127>c32r32p0'Fv*v.35'c32r32p64'Fv*v.60'g32r32
+<g32r32]
+$801 %k0%g1 '1v*v.80'r32"c+32"'1f*v36,.20'^32[3"c+16"]"c+32"'1f*v120,1.10'^32[9"c+16"]
+^32^16 %k16%g0
+[3p0>'Fi''Fo-o1'c32r32p127'Fv*v.35'c32r32<'Fv*v.60'c32r32p0'Fv*v.35'
+c32r32>'Fv*v.60'c32r32p127'Fv*v.35'c32r32p64<'Fv*v.60'c32r32p0>c32r32p127
+'Fv*v.35'c32r32'Fv*v.60'c32r32p0'Fv*v.35'c32r32p64<'Fv*v.60'c32r32p0>c32
+r32p127'Fv*v.35'c32r32p64'Fv*v.60'g32r32<g32r32p127>c32r32p0'Fv*v.35'c32
+r32<'Fv*v.60'c32r32p127'Fv*v.35'c32r32>'Fv*v.60'c32r32p0'Fv*v.35'c32r32
+p64<'Fv*v.60'c32r32p127>c32r32p0'Fv*v.35'c32r32'Fv*v.60'c32r32p127j3,802
+'Fv*v.35'c32r32p64<'Fv*v.60'c32r32p127>c32r32p0'Fv*v.35'c32r32p64'Fv*v.60'
+g32r32<g32r32]$802f32r32p0<'Fv*v.35'f32r32>'Fv*v.60'e32r32p127<'Fv*v.35'
+e32r32p64>'Fv*v.60'd32r32<'Fv*v.35'd32r32p0>'Fv*v.60'c32r32p127'Fv*v.35'
+c32r32<'Fv*v.60'c32r32p0'Fv*v.35'c32r32>'Fv*v.60'c32r32p127'Fv*v.35'c32
+r32p64<'Fv*v.60'c32r32p0>c32r32p127'Fv*v.35'c32r32'Fv*v.60'c32r32p0'Fv*v.35'
+c32r32p64<'Fv*v.60'c32r32p0>c32r32p127'Fv*v.35'c32r32p64'Fv*v.60'g32r32
+<g32r32p127>c32r32p0'Fv*v.35'c32r32<'Fv*v.60'c32r32p127'Fv*v.35'c32r32
+>'Fv*v.60'c32r32p0'Fv*v.35'c32r32p64<'Fv*v.60'c32r32p127>c32r32p0'Fv*v.35'
+c32r32'Fv*v.60'c32r32p127'Fv*v.35'c32r32p64<'Fv*v.60'c32r32p127>c32r32
+p0'Fv*v.35'c32r32p64'Fv*v.60'g32r32<g32r32;

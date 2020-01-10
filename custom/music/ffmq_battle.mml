@@ -1,0 +1,240 @@
+#TITLE Battle 1
+#ALBUM Final Fantasy Mystic Quest
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
+##created with akao2mml alpha 0.8.4
+
+#WAVE 0x20 0x22
+#WAVE 0x21 0x81
+#WAVE 0x22 0x5A
+#WAVE 0x23 0x6e
+#WAVE 0x25 0x6d
+#WAVE 0x26 0x6B
+#WAVE 0x28 0x1E
+#WAVE 0x2A 0x82
+
+#WAVE 0x2B 0x20
+#WAVE 0x2C 0x7C
+#WAVE 0x2D 0x42
+
+#def 2@i= |B %a9%r0
+#def 4@i= |C
+#def 7@i= |D %r0
+#def 0i= |0
+#def 1i= |1
+#def 2i= |2 %r19
+#def 3i= |3 %r19
+#def 5i= |5 %r20
+#def 6i= |6
+#def 8i= |8
+#def Ai= |A
+
+#def 2@o= o6
+#def 4@o= o6
+#def 7@o= o5
+#def 0o= o6
+#def 1o= o6
+#def 2o= o6
+#def 3o= o4
+#def 5o= o6
+#def 6o= o6
+#def 8o= o5
+#def Ao= o6
+
+#def 2@v= v150
+#def 2@f= v1,150
+#def 4@v= v150
+#def 4@f= v1,150
+#def 7@v= v100
+#def 7@f= v1,100
+#def 0v= v100
+#def 0f= v1,100
+#def 1v= v80
+#def 1f= v1,80
+#def 2v= v50
+#def 2f= v1,50
+#def 3v= v100
+#def 3f= v1,100
+#def 5v= v120
+#def 5f= v1,120
+#def 6v= v100
+#def 6f= v1,100
+#def 8v= v125
+#def 8f= v1,125
+#def Av= v100
+#def Af= v1,100
+
+## auto percussion  0x20
+#drum "h"= 5b
+## auto percussion  0x21
+#drum "i"= 5b
+## auto percussion  0x22
+#drum "j"= 5f
+## auto percussion  0x23
+#drum "k"= 5c
+#drum "l"= 5e
+#drum "m"= 5f
+#drum "n"= 5g
+#drum "o"= 5b
+## auto percussion  0x25
+#drum "p"= 5g
+#drum "q"= 5b
+
+
+
+{5}%x255t162%b0,70%f0,0%v50%k2'8v*v.65'%e1
+'8i' '8o-o1'%r0p64a8.m48,-13^4^16$101['8v*v.60'%r10'8o-o1'[a8a8<g8>a8<
+a8>]a8a8a4g8f4f8b8f8<c8>f8f8<d8>f8<c8>f8f8f4g4]a2[3a12r24]a8^4.<d4c8>b8
+a8[a8a8g8a4.<c8>b8^4<d8c4>e8b8f4f8e8f4.<c8>b8^4<c8>b4.g4][6r1]r2.r8<c8
+r8d8r8c8r8c8>b8g8[4[a8a8<g8>a8<a8>]a8a8a4g8f8^8f8b8f8<c8>f8f8<d8>f8<c8
+>f8f8f4g4];101
+
+
+{1}%e1r2%k2$201'Av*v.92'p64m24,18,207
+'Ai' %y[9r1]r2.r8'Ao-o1'a4.<c4>b8a8g8b4.<d8c4>b8<c8>a8^2.<e8d4c8c8>b4a8
+g8b8a2^8b8<c8>b4.<d8c4.e8f8^2.c8d4d8c8>b4<c8>b4m12,18,223
+'2@i' '2@v*v.30''2@o-o1'e2^8a8b8<c8d1c2>e2d1<c2>e8a8b8<c8>b4.g2^8'Av*v.40'
+
+'Ai' p81'Ao'c8e8d8>b8<e8>b8<c8r8r1p80
+'4@i' '4@v*v.40''4@o-o1'b4.<c8>a2^8e16f16g8a8b8<c8d8>b8^4.g8a1^4m48,-13
+^4<c8>b8<c8d8e8>a8<e8e4d16c16d8c16>b16<c12>b12a12b12a12g12a4b4<c8>b8<c8
+e16d16e8>a8<d8>a8<c8d8>b4<c8d8>b8<c8>a8b8g8a4e16a16<c8>e16a16<d8c8d8e4.
+f8e1^8^4m48,-13^4c8>a8r8a16b16<c8>a16b16<c8d8e8f8e8d4c4>b8b4.<c8>a2f16
+e16f16g16a16g16a16b16<c16>b16<c16d16e16d16c16>b16;201
+
+
+{6}m24,18,223%k2r2%e1p64$301'2@v*v.25'
+'2@i' %e1[20r1]'2@o-o1'a2c2>b1r1r1
+'Ai' p45'Av*v.40''Ao-o1'a8<c8>b8g8<c8>g8a8r8[9r1]p50
+'4@i' '4@v*v.25''4@o-o1'a8b8g8a8e8g8d8e4c16e16a8c16e16b8a8b8<c8^4d8c1^8
+^4m48,-13^4>a8e8r8f16g16a8f16g16a8b8<c8d8c8>b4a4g8g4.a8f2a16g16a16b16<
+c16>b16<c16d16e16d16e16f16g16f16e16d16;301
+
+
+{2}'7@v*v.40'p75
+'7@i' %e1%s3%r12%k2r2$401p0,192,24['7@o-o1'a8e8<c8>e8a8<e8>a8<d8>a8<c8
+>b8g8<e8c8>b8g8a8f8b8f8<c8>b8<c8d8>a8f8<e8d8c8d8>b8g8]a8e8<c8>e8a8<e8>
+a8<d8>e8a8<e8d4c8>b8r8r1r1r8f8<c8f4.r4r1r1r1r8>f8a8<f4.r4r1>a8e8<c8>e8
+a8<e8d8e8>b8g8<d8>g8b8<c8>b8g8<c8>a8<e8>a8<d8>a8<c8>e8d8g8b8<d8g8d8>b8
+<d8>a8e8<c8>e8a8<e8d8e8d8>g8b8<g8>b8<c8d8>b8<f8>a8<d8>g8<c8>b8r4r1r1r1
+r1r1r1r1r1r1r1r1r1r1r1r1r1r1;401
+
+
+{3}'6v*v.80'p64%k2
+'6i' r4'6o-o1'a16e16f16g16$502[[13a8]<e8>g8f4f8b8f8<c8>f8f8f4f8<f8>f8f4
+g4]a2a16r16a16r16a16r16<e4>a8a8<d4c8>b8a4a8g8a4e8g8b4[e8g8<c4>e8g8f4f8
+e8f4a8<c8>b4g8<c8>b4e8f8g8j2,501a8a8g8a4e8g8b4]$501a2^8<e8d8e8>g2^8<c8
+>b8<c8>f2^8a8<c8e8d2>g2a2^8<e8d8e8>g2^8<c8>b8<c8>f2^8<e8d8c8r8d8r8c8r8
+c8>b8g8[4[13a8]<e8>g8f4f8b8f8<c8>f8f8f4f8<f8>f8f4g4];502
+
+
+{7}'5v*v.70'p64
+'5i' %e0%r8r4'5o-o1'" !!!o q4"$601
+'5i' [" !!!o p4"
+'2i' '2v*v.70'[10" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4p8p4"
+'2i' '2v*v.70'[11" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4p4"]"p2."^8"p8"^2.^8"p4"
+'2i' '2v*v.70'[10" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4.p8p4"
+'2i' '2v*v.70'[11" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4p4p4"
+'2i' '2v*v.70'[9" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4.p8p4"
+'2i' '2v*v.70'[9" !!!o j8"]"j2."
+'5i' '5v*v.70'" !!!o p4"
+'2i' '2v*v.70'[14" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4"
+'2i' '2v*v.70'[6" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4"
+'2i' '2v*v.70'" !!!o j8j8"
+'5i' '5v*v.70'" !!!o p4"
+'2i' '2v*v.70'" !!!o j8j8"
+'5i' '5v*v.70'" !!!o p4"
+'2i' '2v*v.70'[14" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4"
+'2i' '2v*v.70'" !!!o j8j4j8"
+'5i' '5v*v.70'" !!!o p8p4p4p2"^8[4
+'5i' "p4"
+'2i' '2v*v.70'[10" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4p8p4"
+'2i' '2v*v.70'[11" !!!o j8"]
+'5i' '5v*v.70'" !!!o p4p4"];601
+
+
+{4}'1v*v1.27'p64
+'1i' %e0'1o-o1'" !!!o i32i32i16i8i16"<
+'3i' '3v*v1.27'" !!!o m16l16k16">$701[
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i4"
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4h8"
+'1i' '1v*v1.27'" !!!o i8i8"
+'0i' '0v*v1.27'" !!!o h4h8h4h8"
+'1i' '1v*v1.27'" !!!o i4"
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4h8"
+'1i' '1v*v1.27'" !!!o i8i8"
+'0i' '0v*v1.27'" !!!o h4h4"]"h4"r4<
+'3i' '3v*v1.27'" !!!o l8l8l8">
+'0i' '0v*v1.27'" !!!o h4"<
+'3i' '3v*v1.27'" !!!o o8n16l16k8">
+'1i' '1v*v1.27'" !!!o i8i8i8"
+'0i' '0v*v1.27'" !!!o h4h8"
+'1i' '1v*v1.27'" !!!o i4"
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h8h4h8"
+'1i' '1v*v1.27'" !!!o i4"
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4h8"
+'1i' '1v*v1.27'" !!!o i8i8"
+'0i' '0v*v1.27'" !!!o h4h4h8h8"
+'1i' '1v*v1.27'" !!!o i4"
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h8h4h8"
+'1i' '1v*v1.27'" !!!o i4"
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4"
+'1i' '1v*v1.27'" !!!o i8i16i16i16i16"<
+'3i' '3v*v1.27'" !!!o o16o16n8l16l16k16k16">
+'0i' '0v*v1.27'" !!!o h4.h8"
+'1i' '1v*v1.27'" !!!o i2"
+'0i' '0v*v1.27'" !!!o h8h4."
+'1i' '1v*v1.27'" !!!o i2"
+'0i' '0v*v1.27'" !!!o h4.h8"
+'1i' '1v*v1.27'" !!!o i2"
+'0i' '0v*v1.27'" !!!o h2h2h4.h8"
+'1i' '1v*v1.27'" !!!o i2"
+'0i' '0v*v1.27'" !!!o h8h4."
+'1i' '1v*v1.27'" !!!o i2"
+'0i' '0v*v1.27'" !!!o h4.h16h16"
+'1i' '1v*v1.27'" !!!o i4."
+'0i' '0v*v1.27'" !!!o h4h4h4"
+'3i' <'3v*v1.27'" !!!o o16o16n16n16l16l16">[4
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i4"
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4h8"
+'1i' '1v*v1.27'" !!!o i8i8"
+'0i' '0v*v1.27'" !!!o h4h8h4h8"
+'1i' '1v*v1.27'" !!!o i4"
+'0i' '0v*v1.27'" !!!o h8h8"
+'1i' '1v*v1.27'" !!!o i8"
+'0i' '0v*v1.27'" !!!o h4h8"
+'1i' '1v*v1.27'" !!!o i8i8"
+'0i' '0v*v1.27'" !!!o h4h4"];701

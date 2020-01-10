@@ -79,6 +79,7 @@ try:
         with open(file, 'r') as f:
             fn = os.path.split(file)[1]
             mml = f.read()
+            print(fn, end="", flush=True)
             akao = mml_to_akao(mml, fn, False)
         
         for ignored_variant in ["enh", "nat", "nopatch"]:
@@ -95,7 +96,9 @@ try:
                 variant = sfxv if sfxv in akao else "_default_"
                 with_effects = process_mml(sfxid, mml, fn)
                 sfx[effect] = len(with_effects[variant][0])
-                
+                print(".", end="", flush=True)
+        print()
+        
         most = 0
         for vari, data in akao.items():
             if len(data[0]) > most:
@@ -105,7 +108,7 @@ try:
             if v > sfxmost:
                 sfxmost = v
         db[fn] = (most, sfxmost, [(k, len(v[0])) for k, v in akao.items()], sfx)
-        print(".", end="", flush=True)
+        #print(".", end="", flush=True)
     print()
     
     if sort_by == 'filename':

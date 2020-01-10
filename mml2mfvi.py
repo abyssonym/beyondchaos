@@ -131,7 +131,7 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
             if line.startswith("#WAVE") and len(line) > 5:
                 for c in v:
                     if c in line:
-                        line = re.sub(c+'.*?'+c, '', line)
+                        line = re.sub(re.escape(c)+'.*?'+re.escape(c), '', line)
                 line = re.sub('[^x\da-fA-F]', ' ', line[5:])
                 tokens = line.split()
                 if len(tokens) < 2: continue
@@ -197,10 +197,10 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 pre = pre.replace("'", "").strip()
                 for c in ignore:
                     try:
-                        post = re.sub(c+".*?"+c, "", post)
+                        post = re.sub(re.escape(c)+".*?"+re.escape(c), "", post)
                     except Exception:
                         c = "\\" + c
-                        post = re.sub(c+".*?"+c, "", post)
+                        post = re.sub(re.escape(c)+".*?"+re.escape(c), "", post)
                     post = "".join(post.split())
                 macros[pre] = post.lower()
     
@@ -300,10 +300,10 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             s = s.split('#')[0].lower()
             for c in ignore:
                 try:
-                    s = re.sub(c+".*?"+c, "", s)
+                    s = re.sub(re.escape(c)+".*?"+re.escape(c), "", s)
                 except Exception:
                     c = "\\" + c
-                    s = re.sub(c+".*?"+c, "", s)
+                    s = re.sub(re.escape(c)+".*?"+re.escape(c), "", s)
             for c in ["~", "/", "`", "\?", "_"]:
                 s = re.sub(c, '', s)
             d = Drum(s.strip())

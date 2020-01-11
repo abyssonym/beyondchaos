@@ -47,7 +47,7 @@ def process_mml(id, orig_mml, name):
         sfx = "sfx_wor.mmlappend"
         is_sfxv = True
         try:
-            mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", wind_increment, mml)
+            mml = re.sub("\{[^}']*?([0-9]+)[^}]*?\}", wind_increment, mml)
         except ValueError:
             print("WARNING: failed to add wind sounds ({})".format(name))
     elif id == 0x20:

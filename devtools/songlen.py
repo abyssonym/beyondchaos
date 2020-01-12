@@ -13,6 +13,9 @@ sort_by = 'max_sfx_datasize'
 ##  (so if a _vic file overflows in rain/wind/train mode there's no problem
 ##   as long as it's not explicitly defined in songs.txt)
 
+## Add a command line parameter to check only songs with that string in filename
+## (much faster, if you only need one / a few)
+
 ###
 import glob, os, sys, traceback, re
 from pathlib import Path
@@ -72,8 +75,14 @@ def process_mml(id, orig_mml, name):
 sfxes = [ ("rain", 0x29, "sfx"), ("wind", 0x4F, "sfx"), ("train", 0x20, "tr") ]
 
 try:
-    files = glob.glob(os.path.join(in_path, "*.mml*"))
+    filter = ""
+    if len(sys.argv) >= 2:
+        filter = sys.argv[1]
     
+    files = glob.glob(os.path.join(in_path, "*.mml*"))
+    if filter:
+        files = [fn for fn in files if filter in fn]
+        
     db = {}
     for file in files:
         with open(file, 'r') as f:

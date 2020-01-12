@@ -1,26 +1,28 @@
 Song conversions:
     Cecil188 -- dc_garden, ot_stillsnow
-    emberling -- blord_2tower, blord_ruins
+    emberling -- bl_fahrenheit
+                 blord_2tower, blord_ruins
                  bof1_dawn
                  bof2_battle, bof2_dragnier
                  cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life, cc_pyre,
                  cc_world2
                  crys_fields, crys_mountain, crys_tower
-                 ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_boss2,
-                 ct_fair, ct_frog, ct_forest, ct_keeper, ct_mountain, ct_night,
-                 ct_revolution, ct_rhythm, ct_robo, ct_schala, ct_silent,
-                 ct_sewer, ct_theme, ct_truth, ct_tylair, ct_tyran, ct_zeal
+                 ct_600ad, ct_battle, ct_battle2, ct_bike, ct_bobonga,
+                 ct_boss2, ct_fair, ct_frog, ct_forest, ct_keeper, ct_mountain,
+                 ct_night, ct_revolution, ct_rhythm, ct_robo, ct_schala,
+                 ct_silent, ct_sewer, ct_theme, ct_truth, ct_tylair, ct_tyran,
+                 ct_zeal
                  cv4_beginning, cv4_chandeliers
                  doom2_doom
                  ds4_dungeon, ds4_lyll, ds4_world
                  eo3_waves
                  ff2_battle2, ff2_battleb, ff2_theme
                  ff3_battle, ff3_warrior, ff3_world
-                 ff4_battle, ff4_calcobrena, ff4_damcyan, ff4_rosa
-                 ff5_battle, ff5_boss, ff5_bridge, ff5_cave, ff5_curse,
-                 ff5_dawn, ff5_excastle, ff5_final, ff5_home, ff5_hurry,
-                 ff5_lenna, ff5_library, ff5_mountain, ff5_seal, ff5_theme,
-                 ff5_void, ff5_wings, ff5_world1
+                 ff4_battle, ff4_calcobrena, ff4_damcyan, ff4_giant, ff4_rosa
+                 ff5_bal, ff5_battle, ff5_boss, ff5_bridge, ff5_cave,
+                 ff5_curse, ff5_dawn, ff5_excastle, ff5_final, ff5_home,
+                 ff5_hurry, ff5_lenna, ff5_library, ff5_mountain, ff5_seal,
+                 ff5_theme, ff5_void, ff5_wings, ff5_world1
                  ff7_battle, ff7_corel, ff7_costa, ff7_desert, ff7_gun,
                  ff7_hurry, ff7_rebirth, ff7_reunion, ff7_sadbar, ff7_snow,
                  ff7_weapon
@@ -73,7 +75,7 @@ Song conversions:
                  st_dungeon
                  top_cold, top_freeze, top_harmony, top_mint, top_resur, 
                  top_spirit, top_treant, top_victory, top_world1, top_world3
-                 totr_arrow, totr_battle, totr_sion, totr_worlds
+                 totr_arrow, totr_battle, totr_ship, totr_sion, totr_worlds
                  tyr_theme
                  wc2_orc1
                  xc1_valakn
@@ -88,7 +90,7 @@ Song conversions:
                  evo_boss
                  ff1_battle, ff1_dungeon
                  ff3_darkworld, ff3_eureka
-                 ff4_airship, ff4_babil, ff4_giant, ff4_giant_remix,
+                 ff4_airship, ff4_babil, ff4_giant_remix,
                  ff4_golbez, ff4_longway, ff4_overworld, ff4_prologue,
                  ff4_redwings, ff4_restless, ff4_somewhere, ff4_sorrow,
                  ff4_town, ff4_troia, ff4_underworld, ff4_zeromus, ff4_zot

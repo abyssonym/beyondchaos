@@ -46,7 +46,7 @@
 6B: ts6b_bass,      4A04, FCA0, F 7 7  C
 6C: tr17_dguitar,   7B0C, D7C0, F 3 3  0 
 6D: ts6d_cymbal,    FA05, 0000, F 7 7 10
-6E: gi35_tom,       0000, 0000, F 7 7  0
+6E: gi35_tom,       0000, 0000, F 7 7 11
 6F: tr19_eguitar,   1E06, D28A, F 3 3  0
 70: tr3a_synbass,   E30D, E05A, F 7 7  0
 71: f503_x20_snare, 0000, 8000, F 7 7  0
@@ -89,7 +89,10 @@
 96: s31f_pizza,     5D0F, 0F60, F 7 7  A
 97: tr25_cguitar,   8208, E070, F 7 7  D 
 98: rd08_lawl,      0000, D700, F 7 7  F
-99: so2rena3,       1815, F900, F 0 2  0
+99: so2lena3,       1815, F900, F 0 2  0
 9A: ct24_trumpet,   9C06, E1C6, F 7 7  0
-9B: ll2a_organ,     E601, 2700, F 7 7  0
+9B: ll2A_organ,     E601, 2700, F 7 7  0
 9C: tr10_clavinet,  4F05, D260, F 7 7  F
+9D: r340_timbale,   0000, 0000, F 7 7  0
+9E: sm61_steel,     F207, A8A6, F 7 6 13
+9F: sm14_bassoon,   A404, FC68, F 7 7  0

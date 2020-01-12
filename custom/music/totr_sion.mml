@@ -1,3 +1,7 @@
+#TITLE Theme of SION
+#ALBUM Treasure of the Rudras
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
 ##created with akao2mml alpha 0.4.2
 
 #WAVE 0x20 0x06
@@ -8,7 +12,7 @@
 #WAVE 0x25 0x78
 
 #WAVE 0x28 0x46
-#WAVE 0x29 0x47
+#WAVE 0x29 0x9e
 
 #def 0i= |0
 #def 1i= |1
@@ -108,10 +112,10 @@ f+8c8g8<c8>c4<c8>d8f+8<]
 
 {6}
 {'Note table: 168 120 96 48 36 24 12'}
-%e1$
-'bel*v.15+o1' p64%a15%y5%s1%r17[%k-5
+%e1 $ r64
+'bel*v.20+o1' p64%a15%y5%s1%r10[%k-5
 g2^8c8d+8g8a+16a16a+2^4.a8>a8<c8d+8g8c8d+8g8g+16g16g+2^8g16f16d+16d16c4
 d8d+4c8>g8d+8<d+8.f8.g2^8f2^4.d+16d16c2>c16d+16g+16<c16>d16f16a+16<d16
 ]
 'str*v.33+o1' %a15%y0%s5%r0%k-31
->d1g1f1g1a+1c1a1a+2<c2;
+&189 >d1g1f1g1a+1c1a1a+2<c2;

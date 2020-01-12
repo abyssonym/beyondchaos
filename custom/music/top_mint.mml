@@ -10,7 +10,7 @@
 #WAVE 0x21 ~0x06~/0x06/
 #WAVE 0x22 ~0x1B~/0x1B/
 #WAVE 0x23 ~0x0A~/0x0A/
-#WAVE 0x24 ~0x78~/0x05/
+#WAVE 0x24 ~0x9F~/0x05/
 #WAVE 0x25 ~0x40~/0x08/
 #WAVE 0x26 ~0x02~/0x02/
 #WAVE 0x2A ~0x59~/0x22/
@@ -26,7 +26,7 @@
 #def choir2= |1 %a8%r7 p107 o5 v40 %e1 m48,18,207 ## tone 50 (ch5/higher)
 #def string= |0 %a6%r10 p84 o5 v40 %e1 m48,18,207 ## tone 49
 #def string2= |0 %a13%r10 p84 o5 v80 %e1 m
-#def soon= |4 %a8%r10 p64 ~o6~/o5/ v64 %e1 m48,18,231 ## tone 42
+#def soon= |4 %r10 p64 ~o6~/o5/ v48 %e1 m48,18,231 ## tone 42
 #def clari= |5 %a8%r10 p80 ~o4~/o5/ v80 %e1 m48,18,231 ## tone 63
 
 #def ocho= |3 %a7%r10 p30 ~o6~/o6/ ~v16~/v16/ %e1 m48,18,231
@@ -55,7 +55,7 @@
 $
 'oboe' [[>g+a+<  c2.f4 d+2.>a+<c c+2.>g+4<c2.]
 >a+<c  c+4>g+2gg+ a+2.gg+ a+4g2<d+c+ c2.>  fg  g+4f2gg+ a+4g2g+a+ <d+4c+4>g+4a+4 <c2.]^4
-'soon' &172>fr24<c+12 &92r&40cr6&28d+ >&164rg12r24 &172gr24g12
+'soon' %a2 &172>fr24%a8<c+12 &92r&40cr6&28d+ >&164rg12r24 &172gr24g12
 &92rm20,2&196b <r6&40d+&20r &124c>&20r&28e &164r 'clari' l8 fg
 g+1.g+.a+.<c> a+1g2..g+16g16 f2<c2 d+4c+4>g+4a+4< c1..
 ;
@@ -66,7 +66,7 @@ r4 $
 <c+>c+fg+<c+>c+f<c+ [c+>c+eg<] c>ceg<c>ce<c> fcfg+<c>fg+<c>
     [a+>a+<c+f] a+cd+ga+cd+a+ <d+c+>g+ec+eg+<c+ cc+>a+<cj2>g+a+gg+]
     l12 <v50c>v47g+v45fv43c+>v40a+v37g
-'soon' &168rc12r24 &100cr6&40c+&20r >&172a+r24g+12 &164rg+12r24
+'soon' %a8 &168rc12r24 &100cr6&40c+&20r >&172a+r24g+12 &164rg+12r24
 &100f<&188r&40c+r6&28c+ &116r>&28g&20r <&172c &20r 'eclair' f8
 'string2' l16 [4<'a'cr>'b'g+r'c'fr'd'cr] [4<'a'cr>'b'g+r'c'd+r'd'cr]
 [4<'a'cr>'b'g+r'c'fr'd'c+r] [4<'a'cr>'b'gr'c'er'd'cr]

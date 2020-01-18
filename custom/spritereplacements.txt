@@ -21,7 +21,7 @@ baku.bin,Baku,male,true,17,baku-p.bin,baku,
 balthier.bin,Balthier,male,true,1,balthier-p.bin,balthier,
 bananon.bin,Bananon,male,true,17,bananon-p.bin,banon|cid6,
 bandit.bin,Bandit,male,true,1,bandit-p.bin,,
-bangaa-rinok.bin,Rinok,male,true,1,bangaa-p.bin,bangaa,
+bangaa-rinok.bin,Rinok,female,true,1,bangaa-p.bin,bangaa,
 bangaa.bin,Bangaa,male,true,1,bangaa-p.bin,bangaa,
 barbariccia.bin,Barbariccia,female,true,6,barbariccia-p.bin,barbariccia,
 barret.bin,Barret,male,true,2,barret-p.bin,barret,
@@ -54,6 +54,7 @@ cactuar.bin,Cactuar,neutral,true,14,cactuar-p.bin,,potato
 cagnazzo.bin,Cagnazzo,male,true,18,cagnazzo-p.bin,cagnazzo,potato
 caitsith.bin,Cait Sith,male,true,10,caitsith-p.bin,reeve,pets
 cat.bin,Cat,neutral,true,17,cat-p.bin,,pets
+celes-amano.bin,Celes (Amano),female,true,6,,celes,
 celes-beatrix.bin,Celes (Beatrix costume),female,true,6,celes-beatrix-p.bin,celes|beatrix,
 celes-opera.bin,Celes as Maria,female,true,6,celes-opera-p.bin,celes,
 celes-yuna.bin,Celes (Yuna costume),female,true,6,,celes|yuna,

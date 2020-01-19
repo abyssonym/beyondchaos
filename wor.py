@@ -101,12 +101,12 @@ def recruit_mog_insert(fout, recruit_info):
     mog_npc = recruit_info.location_npcs[0][1] + 0x10
     hide_npcs = []
     show_npcs = []
-    if recruit_info.name_camera == (0,0):
+    if recruit_info.name_camera == (0, 0):
         name_camera = []
         name_camera_reverse = []
     else:
         c = _dir_to_camera_moves(recruit_info.name_camera)
-        d = _dir_to_camera_moves((-recruit_info.name_camera[0],-recruit_info.name_camera[1]))
+        d = _dir_to_camera_moves((-recruit_info.name_camera[0], -recruit_info.name_camera[1]))
         name_camera = [0x38, 0x30, 0x82 + len(c), 0xC1] + c + [0xFF]
         name_camera_reverse = [0x30, 0x82 + len(d), 0xC2] + d +[0xFF, 0x39]
     for npc in recruit_info.name_npcs:
@@ -145,8 +145,8 @@ def recruit_mog_insert(fout, recruit_info):
         0xCE, 0xFF, # Turn down for what?, end
     ] + hide_party + hide_npcs + [
         0xB2, 0x0F, 0xD0, 0x00, # Darken background
-    ] + name_camera +
-        [0x4B, 0xE0, 0xC6, # SLAM-dancing Moogle text
+    ] + name_camera + [
+        0x4B, 0xE0, 0xC6, # SLAM-dancing Moogle text
         0x92, # Pause for 30 frames
         mog_npc, 0x82, # begin queue for mog npc
         0x1D, 0xFF, # do graphical action 1D, end
@@ -568,8 +568,8 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             old_char_id=5,
             name_pointer=0xC590B,
             num_name_bytes=7,
-            name_npcs=[0, 2, 4, 6, 8, 10]),
-            special=collapsing_house_recruit
+            name_npcs=[0, 2, 4, 6, 8, 10],
+            special=collapsing_house_recruit),
         WoRRecruitInfo(
             label="Fanatics' Tower",
             event_pointers=[0xc5418, 0xc541a, 0xc541e, 0xc5420, 0xc5423, 0xc5426],
@@ -1127,7 +1127,7 @@ def _setup_alternate_zone_eater(fout, include_gau):
     value |= (1 << gau_npc.membit)
     fout.seek(0xE0A0 + gau_npc.memaddr)
     fout.write(bytes([value]))
-    
+
     text = '<GAU>: Uwao, aooh!<wait 60 frames> I’m <GAU>!<wait 60 frames><line>I’m your friend!<wait 60 frames><line>Let’s travel together!'
     set_dialogue(0x286, text)
 

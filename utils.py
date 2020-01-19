@@ -105,7 +105,7 @@ class AutoLearnRageSub(Substitution):
         learn_leap_sub.bytestring = bytes([0xEA] * 7)
         learn_leap_sub.set_location(0x2543E)
         learn_leap_sub.write(fout)
-        
+
         gau_cant_appear_sub = Substitution()
         gau_cant_appear_sub.bytestring = bytes([0x80, 0x0C])
         gau_cant_appear_sub.set_location(0x22FB5)
@@ -324,9 +324,9 @@ def set_randomness_multiplier(multiplier):
     RANDOM_MULTIPLIER = multiplier
 
 def clamp(n, lower_bound, upper_bound):
-    assert(lower_bound <= upper_bound)
+    assert lower_bound <= upper_bound
     return max(lower_bound, min(n, upper_bound))
-  
+
 def mutate_index(index, length, continuation=None, basic_range=None,
                  extended_range=None, disregard_multiplier=False):
     if length == 0:

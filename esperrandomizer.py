@@ -273,7 +273,7 @@ class Magicite:
 
 def randomize_magicite(fout, sourcefile):
     magicite = []
-    
+
     espers = get_espers(sourcefile)
     shuffled_espers = espers.copy()
     random.shuffle(shuffled_espers)
@@ -284,7 +284,7 @@ def randomize_magicite(fout, sourcefile):
             l = line.split(',')
             address = int(l[0], 16)
             dialogue = [int(d, 16) for d in l[1:]]
-            
+
             s.seek(address)
             instruction = ord(s.read(1))
             esper_index = ord(s.read(1))
@@ -309,7 +309,7 @@ def randomize_magicite(fout, sourcefile):
         fout.seek(m.address + 1)
         fout.write(bytes([m.esper_index + 0x36]))
 
-all_espers = None        
+all_espers = None
 
 def get_espers(sourcefile):
     global all_espers

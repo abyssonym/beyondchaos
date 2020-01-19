@@ -3,7 +3,8 @@
 import configparser
 from time import time, sleep, gmtime
 import re
-from sys import argv, exit
+import sys
+from sys import argv
 from shutil import copyfile
 import os
 from hashlib import md5
@@ -2927,7 +2928,8 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
             new_palette = transformer(raw_palette)
 
             fout.seek(pointer)
-            [write_multi(fout, c, length=2) for c in new_palette]
+            for c in new_palette:
+                write_multi(fout, c, length=2)
             done.append(pointer)
 
         for p in palettes:
@@ -2937,7 +2939,8 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
             raw_palette = [read_multi(fout, length=2) for i in range(0x80)]
             new_palette = transformer(raw_palette)
             fout.seek(p)
-            [write_multi(fout, c, length=2) for c in new_palette]
+            for c in new_palette:
+                write_multi(fout, c, length=2)
             done.append(p)
 
 
@@ -2952,20 +2955,23 @@ def manage_colorize_wor():
     raw_palette = [read_multi(fout, length=2) for i in range(0x80)]
     new_palette = transformer(raw_palette)
     fout.seek(0x12ed00)
-    [write_multi(fout, c, length=2) for c in new_palette]
+    for c in new_palette:
+        write_multi(fout, c, length=2)
 
     fout.seek(0x12ef40)
     raw_palette = [read_multi(fout, length=2) for i in range(0x60)]
     new_palette = transformer(raw_palette)
     fout.seek(0x12ef40)
-    [write_multi(fout, c, length=2) for c in new_palette]
+    for c in new_palette:
+        write_multi(fout, c, length=2)
 
     fout.seek(0x12ef00)
     raw_palette = [read_multi(fout, length=2) for i in range(0x12)]
     airship_transformer = get_palette_transformer(basepalette=raw_palette)
     new_palette = airship_transformer(raw_palette)
     fout.seek(0x12ef00)
-    [write_multi(fout, c, length=2) for c in new_palette]
+    for c in new_palette:
+        write_multi(fout, c, length=2)
 
     for battlebg in [1, 5, 0x29, 0x2F]:
         palettenum = battlebg_palettes[battlebg]
@@ -2974,7 +2980,8 @@ def manage_colorize_wor():
         raw_palette = [read_multi(fout, length=2) for i in range(0x30)]
         new_palette = transformer(raw_palette)
         fout.seek(pointer)
-        [write_multi(fout, c, length=2) for c in new_palette]
+        for c in new_palette:
+            write_multi(fout, c, length=2)
 
     for palette_index in [0x16, 0x2c, 0x2d, 0x29]:
         field_palette = 0x2dc480 + (256 * palette_index)
@@ -2982,7 +2989,8 @@ def manage_colorize_wor():
         raw_palette = [read_multi(fout, length=2) for i in range(0x80)]
         new_palette = transformer(raw_palette)
         fout.seek(field_palette)
-        [write_multi(fout, c, length=2) for c in new_palette]
+        for c in new_palette:
+            write_multi(fout, c, length=2)
 
 
 
@@ -3727,18 +3735,14 @@ def manage_clock():
     wrong_hours.remove(hour)
     random.shuffle(wrong_hours)
 
-    hour_texts = []
     for i in range(0, 5):
         text = get_dialogue(0x416 + i)
         text = re.sub(r'\d+(?=:00)', str(wrong_hours[i]), text)
         set_dialogue(0x416 + i, text)
 
-    f = open(outfile, 'r+b')
-    offset = 0
-
     # Change text that says "Hand's pointin' at the two."
-    clock_number_text = { 10: "two", 20: "four", 30: "six", 40: "eight", 50: "ten"}
-    
+    clock_number_text = {10: "two", 20: "four", 30: "six", 40: "eight", 50: "ten"}
+
     if minute != 10:
         text = get_dialogue(0x42A)
         text = re.sub(r'two', clock_number_text[minute], text)
@@ -3751,7 +3755,7 @@ def manage_clock():
 
     double_clue = sorted(wrong_seconds[:2])
     wrong_seconds = wrong_seconds[2:]
-    
+
     if double_clue == [10, 20]:
         text = "The seconds? They’re less than 30!"
     elif double_clue == [10, 30]:
@@ -3976,7 +3980,7 @@ def sprint_shoes_hint():
     spell_id = sprint_shoes.features['learnspell']
     spellname = get_spell(spell_id).name
     hint = f"Equip relics to gain a variety of abilities!<page>These teach me {spellname}!"
-    
+
     set_dialogue(0xb8, hint)
 
     # disable fade to black relics tutorial
@@ -3994,7 +3998,7 @@ def sabin_hint(commands):
 
     command = [c for c in commands.values() if c.id == command_id][0]
     hint = "My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {}.".format(command.name)
-    
+
     set_dialogue(0xb9, hint)
 
 
@@ -4011,7 +4015,7 @@ def code_hint():
 def house_hint():
     skill = get_collapsing_house_help_skill()
 
-    hint = f"There are monsters inside! They keep {skill}ing everyone who goes in to help. You using suitable Relics?".format(skill) 
+    hint = f"There are monsters inside! They keep {skill}ing everyone who goes in to help. You using suitable Relics?".format(skill)
     set_dialogue(0x8A4, hint)
 
 
@@ -4074,7 +4078,7 @@ def expand_rom():
 def diverge(fout):
     for line in open(DIVERGENT_TABLE):
         line = line.strip().split('#')[0]  # Ignore everything after '#'
-        if not len(line):
+        if not line:
             continue
         split_line = line.strip().split(' ')
         address = int(split_line[0], 16)
@@ -4108,7 +4112,6 @@ def randomize():
             if 'ROM' in config:
                 previous_rom_path = config['ROM']['Path']
         except IOError:
-            print("IOERROR")
             pass
 
         previous = f" (blank for previous: {previous_rom_path})" if previous_rom_path else ""
@@ -4697,7 +4700,7 @@ def randomize():
 
     has_music = options_.is_any_code_active(['johnnydmad', 'johnnyachaotic'])
     if has_music or options_.is_code_active('alasdraco'):
-        data = insert_instruments(fout, 0x310000)
+        insert_instruments(fout, 0x310000)
         opera = None
 
     if options_.is_code_active('alasdraco'):
@@ -4848,7 +4851,7 @@ if __name__ == "__main__":
     args = list(argv)
     if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
         randomize()
-        exit()
+        sys.exit()
     try:
         randomize()
         input("Press enter to close this program. ")

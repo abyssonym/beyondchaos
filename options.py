@@ -244,7 +244,8 @@ NORMAL_CODES = [
     Code('johnnyachaotic', "MUSIC MANGLING MODE"),
     #Code('sometimeszombies', "OLD CHARACTER PALETTE MODE"),
     Code('HAKCSBKC', 'ALTERNATE GOGO MODE', key1='application', key2='octetstream'),
-    Code('QGWURNGNSEIMKTMDFBIX', 'DIVERGENT PATHS MODE', key1='power', key2='panda')
+    Code('QGWURNGNSEIMKTMDFBIX', 'DIVERGENT PATHS MODE', key1='power', key2='panda'),
+    Code('fightclub', "MORE LIKE COLI-DON'T-SEE-'EM")
 ]
 
 MAKEOVER_MODIFIER_CODES = [

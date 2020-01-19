@@ -31,7 +31,7 @@ from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monster
                                get_collapsing_house_help_skill)
 from musicrandomizer import randomize_music, manage_opera, insert_instruments
 from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, MAKEOVER_MODIFIER_CODES, options_
-from patches import allergic_dog, banon_life3, vanish_doom, evade_mblock, death_abuse, no_kutan_skip
+from patches import allergic_dog, banon_life3, vanish_doom, evade_mblock, death_abuse, no_kutan_skip, show_coliseum_rewards
 from shoprandomizer import (get_shops, buy_owned_breakable_tools)
 from sillyclowns import randomize_passwords, randomize_poem
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
@@ -41,13 +41,13 @@ from towerrandomizer import randomize_tower
 from utils import (COMMAND_TABLE, LOCATION_TABLE, LOCATION_PALETTE_TABLE,
                    FINAL_BOSS_AI_TABLE, SKIP_EVENTS_TABLE, DANCE_NAMES_TABLE,
                    DIVERGENT_TABLE,
-                   get_dialogue_pointer, get_long_battle_text_pointer,
+                   get_long_battle_text_pointer,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
                    battlebg_palettes, set_randomness_multiplier,
                    mutate_index, utilrandom as random, open_mei_fallback,
-                   dialogue_to_bytes, bytes_to_dialogue, AutoLearnRageSub)
+                   AutoLearnRageSub)
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
@@ -1543,10 +1543,7 @@ def manage_skips():
     tintinabar_sub.bytestring = bytes([0xC1, 0x7F, 0x02, 0x88, 0x82, 0x74, 0x68, 0x02, 0x4B, 0xFF, 0x02, 0xB6, 0xE2, 0x67, 0x02, 0xB3, 0x5E, 0x00, 0xFE, 0x85, 0xC4, 0x09, 0xC0, 0xBE, 0x81, 0xFF, 0x69, 0x01, 0xD4, 0x88])
     tintinabar_sub.write(fout)
 
-    # This writes over some no-longer-used lines
-    tintinabar_sub.set_location(get_dialogue_pointer(fout, 0x2ff))
-    tintinabar_sub.bytestring = dialogue_to_bytes("For 2500 GP you can send 2 letters, a record, a Tonic, and a book.<line><choice> (Send them)  <choice> (Forget it)")
-    tintinabar_sub.write(fout)
+    set_dialogue(0x2ff, "For 2500 GP you can send 2 letters, a record, a Tonic, and a book.<line><choice> (Send them)  <choice> (Forget it)")
 
     # skip the flashbacks of Daryl
     daryl_cutscene_sub = Substitution()
@@ -4803,6 +4800,9 @@ def randomize():
     allergic_dog(fout)
     y_equip_relics(fout)
     fix_gogo_portrait(fout)
+
+    if not options_.is_code_active('fightclub'):
+        show_coliseum_rewards(fout)
 
     if options_.replace_commands or options_.shuffle_commands:
         sabin_hint(commands)

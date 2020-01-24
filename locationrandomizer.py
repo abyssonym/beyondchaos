@@ -735,7 +735,7 @@ class Location():
             monster = False if in_falling_ceiling_room or no_monsters else None
             c.mutate_contents(guideline=guideline, crazy_prices=crazy_prices, monster=monster, uncapped_monsters=uncapped_monsters)
             if guideline is None and hasattr(c, "value") and c.value:
-                guideline = value
+                guideline = c.value
 
     def unlock_chests(self, low, high, monster=False,
                       guarantee_miab_treasure=False, enemy_limit=None, crazy_prices=False, uncapped_monsters=False):

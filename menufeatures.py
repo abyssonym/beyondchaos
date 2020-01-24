@@ -81,7 +81,7 @@ def add_common_menu_stuff(fout):
         0x90, 0x31, # BCC Get_spell_attack_name
         0xC9, 0x51, # CMP #$51 If is an esper
         0x90, 0x18, # BCC Get_esper_attack_name
-#
+
         0xC9, 0x55, # CMP #$55 If skean
         0x90, 0x04, # BCC to_get_other_attack_name
         0xC9, 0x5D, # CMP #$5D If swdtech
@@ -90,7 +90,7 @@ def add_common_menu_stuff(fout):
         0x4C, 0x4E, 0x1C, # JMP #$1CXX
         # to get_swdtech_attack_name:
         0x4C, 0x66, 0x1C, # JMP #$1CXX
-#
+
         #0xE9, 0x51, # SBC #$51
         #0xC2, 0x20, # REP #$20
         #0x29, 0xFF, 0x00, # AND $00FF
@@ -160,7 +160,7 @@ def add_common_menu_stuff(fout):
         0x6B, # RTL
         # $F018A3 write_attack_text:
         0x4C, 0x00, 0x1C, # JMP $1C00
-        ] + [0xEA] * 22 + [ # NOP * 22
+    ] + [0xEA] * 22 + [ # NOP * 22
 
         # $F018BC:
         0xA6, 0x1F, # LDX $1F
@@ -184,7 +184,7 @@ def add_common_menu_stuff(fout):
         0xB7, 0x24, # LDA [$24], Y
         0xF0, 0x0F, # BEQ
         0x9F, 0x00, 0x00, 0x7E, # STA $7E0000,X
-        0xA5, 0x29, 
+        0xA5, 0x29,
         0x9F, 0x01, 0x00, 0x7E, # STA $7E0001,X
         0xE8, # INX
         0xE8, # INX
@@ -231,7 +231,7 @@ def add_common_menu_stuff(fout):
         0x6B # RTL
     ])
     common_sub.write(fout)
-    
+
     common_sub.set_location(0x301C00)
     common_sub.bytestring = bytes([
         #Print_attack_name:
@@ -262,7 +262,7 @@ def add_common_menu_stuff(fout):
         0xC6, 0x3F, # DEC $3F
         0xD0, 0xEE, #BNE
         0x6B, # RTL
-        
+
         # $F01C35 write_attack_name:
         0xA9, 0xE6, # LDA #$E6
         0x85, 0x3A, # STA $3A   38, 39, 3A = start of attack name - set 3A here so get_attack_name can override it for swdtechs
@@ -843,10 +843,10 @@ def improve_gogo_status_menu(fout):
         0xBF, 0x8A, 0x9D, 0x7E, # lda $7e9d8a,x
         0x29, 0xFF, 0x00, # and #$00FF
         0xC9, 0xFF, 0x00, # cmp #$00ff
-        0xF0, 0x16, # beq 
+        0xF0, 0x16, # beq
         0x85, 0x0D, # sta $0d
         0x0A, #ASL
-        0x0A, #ASL 
+        0x0A, #ASL
         0x0A, #ASL
         0x69, 0xA0, 0xCE, # ADC #$CEA0
         0x38, # SEC
@@ -1419,10 +1419,10 @@ def improve_rage_menu(fout):
         0xA0, 0x20, 0x00, # LDY #$0020
         0xA2, 0x4B, 0x80, # LDX #$804b
         0x9E, 0xC0, 0x01, # STZ #$01C0, X
-        0x9E, 0x00, 0x02, 
-        0x9E, 0x40, 0x02, 
-        0x9E, 0x80, 0x02, 
-        0x9E, 0xC0, 0x02, 
+        0x9E, 0x00, 0x02,
+        0x9E, 0x40, 0x02,
+        0x9E, 0x80, 0x02,
+        0x9E, 0xC0, 0x02,
         0x9E, 0x00, 0x03,
         0x9E, 0x40, 0x03,
         0x9E, 0x80, 0x03,

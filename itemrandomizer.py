@@ -123,6 +123,9 @@ class ItemBlock:
         self.itemtype = 0
 
         self.price = 0
+        self._rank = None
+        self.dataname = bytes()
+        self.heavy = False
 
     @property
     def is_tool(self):
@@ -230,7 +233,7 @@ class ItemBlock:
                 return intify(v[0])
             return list(map(intify, v))
 
-        name = bytes([])
+        name = bytes()
         for key, value in customdict.items():
             if key == "name_text":
                 name = name + name_to_bytes(value, 12)

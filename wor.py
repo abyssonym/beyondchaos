@@ -6,7 +6,7 @@ from dialoguemanager import get_dialogue, set_dialogue
 from locationrandomizer import get_location, get_locations, NPCBlock
 from monsterrandomizer import change_enemy_name
 from utils import (WOB_TREASURE_TABLE, WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
-                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer, dialogue_to_bytes, bytes_to_dialogue)
+                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer, bytes_to_dialogue)
 
 
 alt_zone_eater_recruit = None
@@ -155,8 +155,8 @@ def recruit_mog_insert(fout, recruit_info):
         0x5C, # Pause until fade is complete
         0x7F, 0x0A, 0x0A, # change mog's name to mog
         0x98, 0x0A, # name change screen for mog
-    ] + show_party + show_npcs + recruit_info.name_extra +
-        [0x45, # refresh objects
+    ] + show_party + show_npcs + recruit_info.name_extra + [
+        0x45, # refresh objects
         0x96, # unfade
         0x5C, # wait until unfade is complete
     ] + name_camera_reverse + [
@@ -1249,8 +1249,8 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
         0x40, 0x07, 0x07,  # give Strago properties
     ]) + bytes([
         0x40, 0x0A, 0x0A,  # give Mog properties
-        ] if dragon else []
-    ) + bytes([
+        ] if dragon else [
+    ]) + bytes([
         0x40, 0x06, 0x06,  # give Celes properties
         0xD5, 0xF7,  # flag Strago as unobtained
         0xD5, 0xE7,  # flag Strago as unobtained

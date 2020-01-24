@@ -23,8 +23,8 @@ EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x06, 0x09, 0x19, 0x1a, 0x1b, 0x1c, 0x22, 0x2
 # Adding to event enemies increases the probability of early hard miabs significantly
 # without level limits, so put it back like it used to be.
 OLD_EVENT_ENEMIES = [0x00, 0x01, 0x02, 0x09, 0x19, 0x1b, 0x22, 0x24, 0x33, 0x38,
-                 0x39, 0x3a, 0x42, 0x43, 0x50, 0x59, 0x5e, 0x64, 0x73, 0x7f,
-                 0xd1, 0xe3]
+                     0x39, 0x3a, 0x42, 0x43, 0x50, 0x59, 0x5e, 0x64, 0x73, 0x7f,
+                     0xd1, 0xe3]
 
 def add_orphaned_formation(formation):
     global orphaned_formations
@@ -590,8 +590,8 @@ class EventItem:
 
             # Change Lone Wolf text to say item placeholder instead of gold hairpin
             text = ("<line>Grrrr…<line>"
-                   "You’ll never get this<line>" +
-                   ("“<item>”!" if self.content_type == 0x40 else "“<GP>00 GP”!"))
+                    "You’ll never get this<line>" +
+                    ("“<item>”!" if self.content_type == 0x40 else "“<GP>00 GP”!"))
             set_dialogue(0x6e5, text)
 
             # Because it takes up more slightly space
@@ -716,20 +716,21 @@ def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monster
     fout.write(phoenix_events)
 
     # End some text boxes early so they don't show the item.
-    for index, text in [
+    early_end_texts = [
         (0x137, "I understand your unease.<line>"
                 "But even as we speak, innocent lives are being lost…<page>"
                 "Please. We need your abilities.<line>"
                 "This relic will keep you safe."),
         (0x13e, "BANON: A lucky charm. Take it!"),
         (0x30e, "I heard…<line>"
-                 "In my name you send Lola many things…<page>"
-                 "I wish to thank you.<line>"
-                 "Please accept this as a token of my appreciation."),
+                "In my name you send Lola many things…<page>"
+                "I wish to thank you.<line>"
+                "Please accept this as a token of my appreciation."),
         (0x6ce, "Took the treasure from Lone Wolf, the pickpocket!"),
         (0x752, "And this is from the Emperor himself…"),
         (0x754, "Your behavior at the banquet was impeccable. Please take this as well!")
-    ]:
+    ]
+    for index, text in early_end_texts:
         set_dialogue(index, text)
 
     for location in event_items_dict:

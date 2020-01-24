@@ -167,8 +167,8 @@ def manage_character_names(fout, change_to, male):
         f.close()
 
         random_moogle_names = random.sample(mooglenames, len(random_name_ids))
-        for index, id in enumerate(random_name_ids):
-            names[id] = random_moogle_names[index]
+        for index, moogle_id in enumerate(random_name_ids):
+            names[moogle_id] = random_moogle_names[index]
 
         # Human Mog gets a human name, maybe
         if random.choice([True, True, False]):
@@ -400,15 +400,15 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
         neutral_candidates = [c for c in replace_candidates if c.gender != "male" and c.gender != "female"]
 
     swap_to = {}
-    for id in random.sample(char_ids, len(char_ids)):
-        if not is_replaced[id]:
+    for char_id in random.sample(char_ids, len(char_ids)):
+        if not is_replaced[char_id]:
             continue
         if wild:
             candidates = replace_candidates
         else:
-            if id in female:
+            if char_id in female:
                 candidates = female_candidates
-            elif id in male:
+            elif char_id in male:
                 candidates = male_candidates
             else:
                 candidates = neutral_candidates
@@ -418,18 +418,18 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
             reverse_blacklist = [c for c in candidates if c.is_on(blacklist)]
             if reverse_blacklist:
                 weights = [c.weight for c in reverse_blacklist]
-                swap_to[id] = random.choices(reverse_blacklist, weights)[0]
-                blacklist.update(swap_to[id].uniqueids)
-                candidates.remove(swap_to[id])
+                swap_to[char_id] = random.choices(reverse_blacklist, weights)[0]
+                blacklist.update(swap_to[char_id].uniqueids)
+                candidates.remove(swap_to[char_id])
                 continue
         final_candidates = [c for c in candidates if not c.is_on(blacklist)]
         if final_candidates:
             weights = [c.weight for c in final_candidates]
-            swap_to[id] = random.choices(final_candidates, weights)[0]
-            blacklist.update(swap_to[id].uniqueids)
-            candidates.remove(swap_to[id])
+            swap_to[char_id] = random.choices(final_candidates, weights)[0]
+            blacklist.update(swap_to[char_id].uniqueids)
+            candidates.remove(swap_to[char_id])
         else:
-            print(f"custom sprite pool for {id} empty, using a vanilla sprite")
+            print(f"custom sprite pool for {char_id} empty, using a vanilla sprite")
 
     return swap_to
 
@@ -544,13 +544,13 @@ def manage_character_appearance(fout, preserve_graphics=False):
         pass
     else:
         for line in f.readlines():
-            id, filename = line.strip().split(',', 1)
+            char_id, filename = line.strip().split(',', 1)
             try:
                 g = open_mei_fallback(os.path.join("custom", "sprites", filename), "rb")
             except IOError:
                 continue
 
-            riding_sprites[int(id)] = g.read(0x140)
+            riding_sprites[int(char_id)] = g.read(0x140)
             g.close()
         f.close()
 

@@ -1763,9 +1763,9 @@ class MonsterBlock:
 def _randomweight(key: str):
     ranges = {'level': (50, 100),
               'hp': (30, 100)}
-    min, max = ranges.get(key, (2, 100))
-    delta = max - min
-    return min + random.randint(0, delta/2 + delta%2) + random.randint(0, delta/2)
+    min_weight, max_weight = ranges.get(key, (2, 100))
+    delta = max_weight - min_weight
+    return min_weight + random.randint(0, delta/2 + delta%2) + random.randint(0, delta/2)
 
 def monsters_from_table(tablefile):
     monsters = []
@@ -1883,6 +1883,14 @@ class MonsterGraphicBlock:
     def __init__(self, pointer, name=None):
         self.pointer = pointer
         self.name = name
+        self.graphics = None
+        self.palette = None
+        self.large = False
+        self.palette_index = None
+        self.palette_pointer = None
+        self.size_template = None
+        self.palette_data = []
+        self.palette_values = []
 
     def read_data(self, filename):
         global palette_pools
@@ -1898,8 +1906,6 @@ class MonsterGraphicBlock:
         self.size_template = ord(f.read(1))
 
         f.seek(self.palette_pointer)
-        self.palette_data = []
-        self.palette_values = []
         numcolors = 0x20
 
         for i in range(numcolors):
@@ -1977,6 +1983,7 @@ class MonsterGraphicBlock:
 class MetamorphBlock:
     def __init__(self, pointer):
         self.pointer = pointer
+        self.items = []
 
     def read_data(self, filename):
         f = open(filename, 'r+b')

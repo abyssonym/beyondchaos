@@ -17,6 +17,9 @@ class ShopBlock:
         #self.pointer = hex2int(pointer)
         self.pointer = pointer
         self.name = name
+        self.shopid = None
+        self.items = None
+        self.misc = None
 
     def set_id(self, shopid):
         self.shopid = shopid
@@ -83,9 +86,9 @@ class ShopBlock:
             armors = [i for i in items if i.is_armor]
             relics = [i for i in items if i.is_relic]
             consumables = [i for i in items if i.is_consumable]
-            
+
             types = [weapons_tools, armors, relics, consumables]
-            
+
             valid_items = items
         elif self.shoptype == 1:
             valid_items = [c for c in items if c.is_weapon or c.is_tool]
@@ -104,7 +107,7 @@ class ShopBlock:
         old_items = [get_item(i) for i in old_items]
         old_items = [i for i in old_items if i]
 
-        if len(old_items) == 0:
+        if not old_items:
             average_value = 0
         else:
             average_value = sum([i.rank() for i in old_items]) / len(old_items)

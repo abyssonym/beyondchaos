@@ -7,7 +7,8 @@
 
 # NOTE: FF3usME indexes are 1 lower than the actual ROM indexes used here
 
-import re, os
+import os
+import re
 from utils import dialoguetexttable, bytes_to_dialogue, utilrandom as random, open_mei_fallback as open, read_multi, write_multi
 
 try:
@@ -15,8 +16,8 @@ try:
     MEI = True
 except ImportError:
     MEI = False
-    
-textdialoguetable = {v:k for k,v in dialoguetexttable.items()}
+
+textdialoguetable = {v:k for k, v in dialoguetexttable.items()}
 for i in range(0xFF):
     if f"{i:2X}" not in textdialoguetable:
         textdialoguetable[f"{i:02X}"] = f"${i:02X}"
@@ -28,21 +29,21 @@ for k, v in dialoguetexttable.items():
 for i in range(0xFF):
     dialoguebytetable[f"${i:02X}"] = f"{i:02X}"
 dialoguebytetable["'"] = dialoguebytetable["’"]
-    
+
 dialogue_vars = {}
 dialogue_flags = set()
 dialogue_patches = {}
 dialogue_patches_battle = {}
 script_ptrs = {}
 script = {}
-script_bin = None
+script_bin = bytes()
 script_edited = False
 
 def safepath(vpath):
     if not MEI:
         return vpath
     return [vpath, os.path.join(_MEIPASS, vpath)]
-    
+
 #need to use a different table here, so redefined
 def dialogue_to_bytes(text, null_terminate=True):
     bs = []
@@ -50,56 +51,53 @@ def dialogue_to_bytes(text, null_terminate=True):
     while i < len(text):
         if text[i] == "<":
             j = text.find(">", i) + 1
-            hex = dialoguebytetable.get(text[i:j], "")
+            hexstr = dialoguebytetable.get(text[i:j], "")
             i = j
         elif text[i] == "$":
-            hex = text[i+1:i+3]
+            hexstr = text[i+1:i+3]
             i += 3
         elif i < len(text) - 1 and text[i:i+2] in dialoguebytetable:
-            hex = dialoguebytetable[text[i:i+2]]
+            hexstr = dialoguebytetable[text[i:i+2]]
             i += 2
         else:
-            hex = dialoguebytetable[text[i]]
+            hexstr = dialoguebytetable[text[i]]
             i += 1
 
-        if hex != "":
-            bs.extend(bytes.fromhex(hex))
+        if hexstr != "":
+            bs.extend(bytes.fromhex(hexstr))
 
     if null_terminate:
         bs.append(0x0)
-    try:
-        out = bytes(bs)
-    except:
-        print(text, bs)
+
     return bytes(bs)
-    
-    
+
+
 def set_dialogue_var(k, v):
     dialogue_vars[k.lower()] = v
-    
+
 def set_dialogue_flag(f, v=True):
     if v:
         dialogue_flags.add(f.lower())
     elif f in dialogue_flags:
         dialogue_flags.remove(f)
-        
+
 def set_pronoun(name, gender, force=True):
     gender = gender.lower()
     name = name.lower().capitalize()
-    
+
     if "random" in gender:
         force = True
         opts = ["male"]*9+["female"]*9+["neutral"]*2 if "truerandom" not in gender else ["male", "female", "neutral"]
         if gender == "orandom":
             opts += ["object"]*20
         gender = random.choice(opts)
-            
+
     if not force:
         if gender == "neutral":
-            gender = random.choice( ["male"]*9+["female"]*9+["neutral"]*2 )
+            gender = random.choice(["male"]*9 + ["female"]*9 + ["neutral"]*2)
         elif gender != "object":
-            gender = random.choice( [gender]*19+["neutral"] )
-            
+            gender = random.choice([gender]*19 + ["neutral"])
+
     if gender == "male":
         pset = ("he", "him", "his", "his", "he's")
         set_dialogue_flag(name + "Plu", False)
@@ -113,13 +111,13 @@ def set_pronoun(name, gender, force=True):
         pset = ("they", "them", "their", "theirs", "they're")
         set_dialogue_flag(name + "Plu")
         gender = "neutral"
-        
+
     pmap = ("Ey", "Em", "Eir", "Eirs", "EyIs")
     for i in range(5):
         set_dialogue_var(name + pmap[i], pset[i])
-        
+
     return gender
-    
+
 def patch_dialogue(id, from_text, to_text, index=None, battle=False):
     patches = dialogue_patches_battle if battle else dialogue_patches
     if id not in patches:
@@ -142,7 +140,7 @@ def load_patch_file(fn):
         print(f"failed to open data/script/{fn}.txt")
         return
     for i, line in enumerate(lines):
-        s = line.split(':',1)
+        s = line.split(':', 1)
         try:
             script_idx = int(s[0].strip())
         except ValueError:
@@ -150,10 +148,11 @@ def load_patch_file(fn):
             continue
         changes = s[1].rstrip('\n').split('|')
         for c in changes:
-            if '->' not in c: continue
-            chgfrom, chgto = c.split('->',1)
+            if '->' not in c:
+                continue
+            chgfrom, chgto = c.split('->', 1)
             if '@' in chgfrom:
-                chgfrom, match_idx = chgfrom.split('@',1)
+                chgfrom, match_idx = chgfrom.split('@', 1)
                 try:
                     match_idx = int(match_idx)
                 except ValueError:
@@ -161,7 +160,8 @@ def load_patch_file(fn):
                     match_idx = 0
             else:
                 match_idx = None
-            if chgto == "*": chgto = None
+            if chgto == "*":
+                chgto = None
             patch_dialogue(script_idx, chgfrom, chgto, index=match_idx)
 
 
@@ -169,14 +169,14 @@ def read_dialogue(fout):
     #load existing script & pointer table
     fout.seek(0xD0000)
     script_bin = fout.read(0x1F0FF)
-    
+
     #TODO battle script
-    
+
     fout.seek(0xCE600)
     bankidx = read_multi(fout, 2)
     for idx in range(0xC0C): #C0D through CFF pointers are repurposed
-        script_ptrs[idx] = read_multi(fout,2) + (0x10000 if idx >= bankidx else 0)
-        
+        script_ptrs[idx] = read_multi(fout, 2) + (0x10000 if idx >= bankidx else 0)
+
     for idx in range(0xC0C): #C0D through CFF pointers are repurposed
         start = script_ptrs[idx]
         end = script_ptrs.get(idx+1, 0)
@@ -184,19 +184,19 @@ def read_dialogue(fout):
 
 def manage_dialogue_patches(fout):
     global script_bin
-    
+
     #don't do anything unless we need to
     if not dialogue_patches and not dialogue_patches_battle and not script_edited:
         return
 
     #TODO battle pointers
-            
+
     #print(f"original script size is ${len(script_bin):X} bytes")
-    
+
     #apply changes to dialogue
     for idx, patches in dialogue_patches.items():
         line = split_line(script[idx])
-        
+
         #print(f"patching line {idx}")
         #print(f"  original: {script[idx]}")
         token_counter = {}
@@ -206,7 +206,7 @@ def manage_dialogue_patches(fout):
             else:
                 token_counter[token.lower()] += 1
             if (token.lower(), token_counter[token.lower()]) in patches:
-                line[i] = patch(patches[token.lower(), token_counter[token.lower()]])
+                line[i] = patch(patches[token.lower(), token_counter[token.lower()]], token)
             elif (token.lower(), None) in patches:
                 line[i] = patch(patches[token.lower(), None], token)
             #handle removing text along with following space
@@ -220,7 +220,7 @@ def manage_dialogue_patches(fout):
         new_text = "".join(line)
         #print(f"  new: {new_text}")
         script[idx] = new_text
-        
+
     new_script = b""
     new_ptrs = b""
     offset = 0
@@ -241,17 +241,17 @@ def manage_dialogue_patches(fout):
         new_script += dialogue_to_bytes(text)
         new_ptrs += bytes([offset & 0xFF, (offset >> 8) & 0xFF])
     #print(f"new script: ${len(new_script):X} bytes")
-    
+
     #write to file
     fout.seek(0xD0000)
     assert len(new_script) <= 0x1F0FF
     fout.write(new_script)
-    
+
     fout.seek(0xCE600)
     write_multi(fout, first_high_index)
     assert len(new_ptrs) <= 0x19FE
     fout.write(new_ptrs)
-    
+
 def read_script(idx, battle=False):
     loc = script_ptrs[idx]
     dialogue = []
@@ -261,12 +261,12 @@ def read_script(idx, battle=False):
         dialogue.append(textdialoguetable[f"{script_bin[loc]:02X}"])
         loc += 1
     return "".join(dialogue)
-    
+
 def split_line(line):
-    line = line.replace('’',"'")
+    line = line.replace('’', "'")
     split = re.split("(\$..|[A-Za-z']+|[^$A-Za-z']+)", line)
     return [s for s in split if len(s)]
-        
+
 def patch(text, token):
     if text is None:
         return None
@@ -277,9 +277,9 @@ def patch(text, token):
 
         # handle conditionals/flags
         if "?" in match[1]:
-            flag, opts = match[1].split('?',1)
+            flag, opts = match[1].split('?', 1)
             try:
-                textiftrue, textiffalse = opts.split(':',1)
+                textiftrue, textiffalse = opts.split(':', 1)
             except ValueError:
                 textiftrue = opts
                 textiffalse = ""
@@ -291,7 +291,7 @@ def patch(text, token):
                 var = match[1]
             else:
                 var = dialogue_vars[match[1].lower()]
-            
+
             if match[1].upper() == token:
                 var = var.upper()
             elif token[0] in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
@@ -299,8 +299,8 @@ def patch(text, token):
                     var = var[0].upper() + var[1:]
                 except IndexError:
                     var = var.capitalize()
-            
+
         text = text[0:match.start()] + var + text[match.end():]
-            
+
     #print(f" to {text}")
     return text

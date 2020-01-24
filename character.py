@@ -48,7 +48,7 @@ class CharacterBlock:
         self.beserk = False
         self.original_appearance = None
         self.new_appearance = None
-        self.natural_magic = None
+        self.natural_magic = []
         self.palette = None
         self.wor_location = None
         self.command_objs = []
@@ -81,7 +81,7 @@ class CharacterBlock:
             s += "\n"
         if self.wor_location is not None:
             s += "World of Ruin location: %s\n" % self.wor_location
-        if self.natural_magic is not None:
+        if self.natural_magic:
             s += "Has natural magic.\n"
             for level, spell in self.natural_magic:
                 s += "  LV %s - %s\n" % (level, spell.name)

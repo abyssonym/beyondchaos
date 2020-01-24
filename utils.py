@@ -173,17 +173,17 @@ def dialogue_to_bytes(text, null_terminate=True):
     while i < len(text):
         if text[i] == "<":
             j = text.find(">", i) + 1
-            hex = dialoguetexttable.get(text[i:j], "")
+            hexstr = dialoguetexttable.get(text[i:j], "")
             i = j
         elif i < len(text) - 1 and text[i:i+2] in dialoguetexttable:
-            hex = dialoguetexttable[text[i:i+2]]
+            hexstr = dialoguetexttable[text[i:i+2]]
             i += 2
         else:
-            hex = dialoguetexttable[text[i]]
+            hexstr = dialoguetexttable[text[i]]
             i += 1
 
-        if hex != "":
-            bs.extend(bytes.fromhex(hex))
+        if hexstr != "":
+            bs.extend(bytes.fromhex(hexstr))
 
     if null_terminate and bs[-1] != 0x0:
         bs.append(0x0)

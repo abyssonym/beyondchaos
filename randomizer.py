@@ -420,10 +420,11 @@ def randomize_colosseum(filename, fout, pointer):
 
     results = sorted(results, key=lambda a_b_c_d: a_b_c_d[0].name)
 
-    coliseum_run_sub = Substitution()
-    coliseum_run_sub.bytestring = [0xEA] * 2
-    coliseum_run_sub.set_location(0x25BEF)
-    coliseum_run_sub.write(fout)
+    if options_.is_code_active('fightclub'):
+        coliseum_run_sub = Substitution()
+        coliseum_run_sub.bytestring = [0xEA] * 2
+        coliseum_run_sub.set_location(0x25BEF)
+        coliseum_run_sub.write(fout)
 
     return results
 

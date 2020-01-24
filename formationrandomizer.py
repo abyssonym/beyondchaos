@@ -29,7 +29,7 @@ class Formation():
         self.misc2 = None
         self.eventscript = None
         self.misc3 = None
-        
+
         self.ap = 0
         self.enemies = []
         self.big_enemy_ids = []

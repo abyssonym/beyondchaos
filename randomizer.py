@@ -2203,14 +2203,17 @@ def manage_esper_boosts(freespaces):
     return freespaces
 
 
-def manage_espers(freespaces):
+def manage_espers(freespaces, replacements=None):
     espers = get_espers(sourcefile)
     random.shuffle(espers)
     for e in espers:
         e.generate_spells(tierless=options_.is_code_active('madworld'))
         e.generate_bonus()
 
-    bonus_espers = [e for e in espers if e.id in [15, 16]]
+    if replacements:
+        bonus_espers = [replacements[i] for i in [15, 16]]
+    else:
+        bonus_espers = [e for e in espers if e.id in [15, 16]]
     random.shuffle(bonus_espers)
     bonus_espers[0].bonus = 7
     bonus_espers[1].add_spell(0x2B, 1)
@@ -4498,11 +4501,11 @@ def randomize():
 
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
     if options_.random_espers:
-        randomize_magicite(fout, sourcefile)
+        replacements = randomize_magicite(fout, sourcefile)
         if options_.is_code_active('dancingmaduin'):
-            allocate_espers(options_.is_code_active('ancientcave'), get_espers(sourcefile), get_characters(), fout)
+            allocate_espers(options_.is_code_active('ancientcave'), get_espers(sourcefile), get_characters(), fout, replacements)
             nerf_paladin_shield()
-        manage_espers(esperrage_spaces)
+        manage_espers(esperrage_spaces, replacements)
     reseed()
 
     if flags:

@@ -65,16 +65,22 @@ def get_candidates(myrank, set_lower=True):
 
     return fresh
 
-def allocate_espers(ancient_cave, espers, characters, fout):
+def allocate_espers(ancient_cave, espers, characters, fout, replacements=None):
     char_ids = list(range(12)) + [13] # everyone but Gogo
 
     characters = [c for c in characters if c.id in char_ids]
 
     chars_for_esper = []
     max_rank = max(espers, key=lambda e: e.rank).rank
+    crusader_id = 15
+    ragnarok_id = 16
+    if replacements:
+        crusader_id = replacements[crusader_id].id
+        ragnarok_id = replacements[ragnarok_id].id
+
     for e in espers:
         num_users = 1
-        if e.id not in [15, 16] and random.randint(1, 25) >= 25 - max_rank + e.rank:
+        if e.id not in [crusader_id, ragnarok_id] and random.randint(1, 25) >= 25 - max_rank + e.rank:
             num_users += 1
             while num_users < 15 and random.choice([True] + [False] * (e.rank + 2)):
                 num_users += 1
@@ -82,7 +88,13 @@ def allocate_espers(ancient_cave, espers, characters, fout):
         chars_for_esper.append([c.id for c in users])
 
     if not ancient_cave:
-        chars_for_esper[12] = chars_for_esper[11]   # make Odin and Raiden equippable by the same person/people
+        odin_id = 11
+        raiden_id = 12
+        if replacements:
+            odin_id = replacements[odin_id].id
+            raiden_id = replacements[raiden_id].id
+
+        chars_for_esper[raiden_id] = chars_for_esper[odin_id]   # make Odin and Raiden equippable by the same person/people
 
     char_mask_for_esper = [
         reduce(lambda x, y: x | y,
@@ -132,7 +144,7 @@ def allocate_espers(ancient_cave, espers, characters, fout):
     esper_allocator_sub.write(fout)
 
 class EsperBlock:
-    def __init__(self, pointer, name, rank):
+    def __init__(self, pointer, name, rank, location):
         self.pointer = hex2int(pointer)
         self.name = name
         self.rank = int(rank)
@@ -140,6 +152,7 @@ class EsperBlock:
         self.learnrates = []
         self.bonus = None
         self.id = None
+        self.location = location
 
     def set_id(self, esperid):
         self.id = esperid
@@ -157,6 +170,7 @@ class EsperBlock:
         chars = getattr(self, 'chars', None)
         if chars:
             s += "\nEQUIPPED BY: " + chars
+        s += "\nLOCATION: " + self.location
         return s
 
     def read_data(self, filename):
@@ -267,6 +281,7 @@ class EsperBlock:
         spellrates = sorted(spellrates, key=lambda s_l1: s_l1[0].spellid)
         self.spells, self.learnrates = list(zip(*spellrates))
 
+
 @dataclass
 class Magicite:
     address: int
@@ -274,43 +289,89 @@ class Magicite:
     epser_index: int = field(init=False)
     dialogue: List[int] = field(default_factory=list)
 
+
+def select_magicite(candidates, esper_ids_to_replace):
+    results = {}
+    replacements = random.sample(candidates, len(esper_ids_to_replace))
+    for esper_id, replacement in zip(esper_ids_to_replace, replacements):
+        results[esper_id] = replacement
+    return results
+
+
 def randomize_magicite(fout, sourcefile):
     magicite = []
 
     # Some espers use 128x128 graphics, and those look like crap in the Ifrit/Shiva fight
-    # So make sure Ifrit and Shiva have espers with small graphics.
+    # So make sure Ifrit and Shiva have espers with small graphics. Tritoch also has
+    # Issues with large sprites in the cutscene with the MagiTek armor
     espers = get_espers(sourcefile)
-    shuffled_espers = {i: e for i, e in enumerate(espers)}
-    esper_graphics = [MonsterGraphicBlock(pointer=0x127780 + (5*i), name= "") for i in range(len(espers))]
+    shuffled_espers = {}
+    espers_by_name = {e.name: e for e in espers}
+    esper_graphics = [MonsterGraphicBlock(pointer=0x127780 + (5*i), name="") for i in range(len(espers))]
     for eg in esper_graphics:
         eg.read_data(sourcefile)
 
     # Ifrit's esper graphics are large. But he has separate enemy graphics that are fine.
     ifrit_graphics = copy.copy(get_monster(0x109).graphics)
-    ifrit_id = [e.id for e in espers if e.name == "Ifrit"][0]
+    ifrit_id = espers_by_name["Ifrit"].id
     esper_graphics[ifrit_id] = ifrit_graphics
 
-    # Shuffle all espers except Ifrit and Shiva
-    can_be_large_espers =  {i: e for i, e in shuffled_espers.items() if e.name not in ["Shiva", "Ifrit"]}
-    shuffle_key_values(can_be_large_espers)
-    shuffled_espers.update(can_be_large_espers)
-    print([e.name for e in can_be_large_espers.values()])
-    
-    # Now shuffle small espers so Ifrit and Shiva get random graphics out of the ones they can use
-    small_espers = {i: e for i, e in shuffled_espers.items() if not esper_graphics[i].large}
-    shuffle_key_values(small_espers)
-    shuffled_espers.update(small_espers)
-    print([e.name for e in small_espers.values()])
+    # Pick the replacements for Ragnarok/Crusader out of high-rank espers
+    high_rank_espers = [e for e in espers if e.rank >= 4]
+    replace_ids = [espers_by_name[name].id for name in ["Ragnarok", "Crusader"]]
+    special_espers = select_magicite(high_rank_espers, replace_ids)
+    shuffled_espers.update(special_espers)
 
-    tritoch_id = [e.id for e in espers if e.name == "Tritoch"][0]
-    if esper_graphics[tritoch_id].large:
-        tritoch_formations = [0x1BF, 0x1C0, 0x1E7, 0x1E8]
-        for g in tritoch_formations:
-            f = get_formation(g)
-            f.mouldbyte = 6 << 4
-            f.enemy_pos[0] = f.enemy_pos[0] & 0xF0 + 3
-            f.write_data(fout)
-            
+    # Pick replacements for Shiva, Ifrit, and Tritoch, which must not be large
+    small_espers = [e for e in espers
+                    if not esper_graphics[e.id].large and e not in shuffled_espers.values()]
+    replace_ids = [espers_by_name[name].id for name in ["Shiva", "Ifrit", "Tritoch"]]
+    enemy_espers = select_magicite(small_espers, replace_ids)
+    shuffled_espers.update(enemy_espers)
+
+    # TODO: maybe allow tritoch to be big if we skip cutscenes
+    #tritoch_id = [e.id for e in espers if e.name == "Tritoch"][0]
+    #if esper_graphics[tritoch_id].large:
+    #    tritoch_formations = [0x1BF, 0x1C0, 0x1E7, 0x1E8]
+    #    for g in tritoch_formations:
+    #        f = get_formation(g)
+    #        f.mouldbyte = 6 << 4
+    #        f.enemy_pos[0] = f.enemy_pos[0] & 0xF0 + 3
+    #        f.write_data(fout)
+
+    # Shuffle all remaining espers
+    remaining_keys = [e.id for e in espers if e.id not in shuffled_espers.keys()]
+    remaining_values = [e for e in espers if e not in shuffled_espers.values()]
+    random.shuffle(remaining_values)
+    shuffled_espers.update(zip(remaining_keys, remaining_values))
+    
+
+    # Make sure Odin's replacement levels up
+    odin_id = espers_by_name["Odin"].id
+    raiden_id = espers_by_name["Raiden"].id
+    if shuffled_espers[odin_id].rank > shuffled_espers[raiden_id].rank:
+        shuffled_espers[odin_id], shuffled_espers[raiden_id] = shuffled_espers[raiden_id], shuffled_espers[odin_id]
+    elif shuffled_espers[odin_id].rank == shuffled_espers[raiden_id].rank:
+        candidate_indeces = [i for i, e in enumerate(remaining_values)
+                             if e.rank == shuffled_espers[odin_id].rank + 1]
+        if candidate_indeces:
+            print('a')
+            replacement_index = random.choice(candidate_indeces)
+            shuffled_espers[raiden_id], shuffled_espers[remaining_keys[replacement_index]] = remaining_values[replacement_index], shuffled_espers[raiden_id]
+        else:
+            print('b')
+            candidate_indeces = [i for i, e in enumerate(remaining_values)
+                                 if e.rank == shuffled_espers[odin_id].rank - 1]
+            assert(candidate_indeces)
+            replacement_index = random.choice(candidate_indeces)
+            shuffled_espers[odin_id], shuffled_espers[remaining_keys[replacement_index]] = remaining_values[replacement_index], shuffled_espers[odin_id]
+
+    for i, e in shuffled_espers.items():
+        print(f"{espers[i].name} -> {e.name}")
+
+    locations = [e.location for e in espers]
+    for i, e in shuffled_espers.items():
+        e.location = locations[i]
 
     with open(sourcefile, 'br') as s:
         for line in open(MAGICITE_TABLE, 'r'):
@@ -343,18 +404,19 @@ def randomize_magicite(fout, sourcefile):
         set_dialogue_var(original_name + "Dotted", dotted_new_name)
         fout.seek(m.address + 1)
         fout.write(bytes([m.esper_index + 0x36]))
-        print(f"{original_name}->{new_name}")
 
     esper_monsters = [(0x108, "Shiva"), (0x109, "Ifrit"), (0x114, "Tritoch"), (0x115, "Tritoch"), (0x144, "Tritoch")]
 
-    for id, name in esper_monsters:
-        monster = get_monster(id)
+    for monster_id, name in esper_monsters:
+        monster = get_monster(monster_id)
         esper_id = [e.id for e in espers if e.name == name][0]
         replacement = shuffled_espers[esper_id]
-        change_enemy_name(fout, id, replacement.name)
+        change_enemy_name(fout, monster_id, replacement.name)
         mg = esper_graphics[replacement.id]
         monster.graphics.copy_data(mg)
         monster.graphics.write_data(fout)
+
+    return shuffled_espers
 
 all_espers = None
 

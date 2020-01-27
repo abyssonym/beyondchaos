@@ -14,7 +14,7 @@ from appearance import manage_character_appearance
 from character import get_characters, get_character, equip_offsets
 from chestrandomizer import mutate_event_items, get_event_items
 from decompress import Decompressor
-from dialoguemanager import manage_dialogue_patches, get_dialogue, set_dialogue, read_dialogue
+from dialoguemanager import manage_dialogue_patches, get_dialogue, set_dialogue, read_dialogue, read_location_names, write_location_names
 from esperrandomizer import (get_espers, allocate_espers, randomize_magicite)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS,
                                  get_formations, get_fsets, get_formation)
@@ -4392,6 +4392,7 @@ def randomize():
         diverge(fout)
 
     read_dialogue(fout)
+    read_location_names(fout)
 
     if options_.shuffle_commands or options_.replace_commands or options_.random_treasure:
         auto_recruit_gau()
@@ -4824,6 +4825,7 @@ def randomize():
         the_end_comes_beyond_crusader()
 
     manage_dialogue_patches(fout)
+    write_location_names(fout)
 
     rewrite_title(text="FF6 BCEX %s" % seed)
     fout.close()

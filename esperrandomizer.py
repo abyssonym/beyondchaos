@@ -4,7 +4,7 @@ from functools import reduce
 from itertools import chain, repeat
 from typing import List
 
-from dialoguemanager import patch_dialogue, set_dialogue_var
+from dialoguemanager import patch_dialogue, set_dialogue_var, set_location_name
 from formationrandomizer import get_formation
 from monsterrandomizer import change_enemy_name, get_monster, MonsterGraphicBlock
 from skillrandomizer import get_ranked_spells, get_spell
@@ -355,19 +355,14 @@ def randomize_magicite(fout, sourcefile):
         candidate_indeces = [i for i, e in enumerate(remaining_values)
                              if e.rank == shuffled_espers[odin_id].rank + 1]
         if candidate_indeces:
-            print('a')
             replacement_index = random.choice(candidate_indeces)
             shuffled_espers[raiden_id], shuffled_espers[remaining_keys[replacement_index]] = remaining_values[replacement_index], shuffled_espers[raiden_id]
         else:
-            print('b')
             candidate_indeces = [i for i, e in enumerate(remaining_values)
                                  if e.rank == shuffled_espers[odin_id].rank - 1]
             assert(candidate_indeces)
             replacement_index = random.choice(candidate_indeces)
             shuffled_espers[odin_id], shuffled_espers[remaining_keys[replacement_index]] = remaining_values[replacement_index], shuffled_espers[odin_id]
-
-    for i, e in shuffled_espers.items():
-        print(f"{espers[i].name} -> {e.name}")
 
     locations = [e.location for e in espers]
     for i, e in shuffled_espers.items():
@@ -405,6 +400,9 @@ def randomize_magicite(fout, sourcefile):
         fout.seek(m.address + 1)
         fout.write(bytes([m.esper_index + 0x36]))
 
+    phoenix_replacement = shuffled_espers[espers_by_name["Phoenix"].id]
+    set_location_name(71, f"{phoenix_replacement.name.upper()} CAVE")
+    
     esper_monsters = [(0x108, "Shiva"), (0x109, "Ifrit"), (0x114, "Tritoch"), (0x115, "Tritoch"), (0x144, "Tritoch")]
 
     for monster_id, name in esper_monsters:

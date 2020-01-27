@@ -39,6 +39,10 @@ script = {}
 script_bin = bytes()
 script_edited = False
 
+location_name_ptrs = {}
+location_names = {}
+location_name_bin = bytes()
+
 def safepath(vpath):
     if not MEI:
         return vpath
@@ -124,12 +128,16 @@ def patch_dialogue(id, from_text, to_text, index=None, battle=False):
         patches[id] = {}
     patches[id][(from_text.lower(), index)] = to_text
 
-def get_dialogue(id):
-    return script[id]
+def get_dialogue(idx):
+    return script[idx]
 
-def set_dialogue(id, text):
-    script[id] = text
+def set_dialogue(idx, text):
+    global script_edited
+    script[idx] = text
     script_edited = True
+
+def set_location_name(idx, text):
+    location_names[idx] = text
 
 def load_patch_file(fn):
     filepath = os.path.join('data', 'script', fn + ".txt")
@@ -304,3 +312,41 @@ def patch(text, token):
 
     #print(f" to {text}")
     return text
+
+def read_location_names(f):
+    #load existing script & pointer table
+    f.seek(0xEF100)
+    location_name_bin = f.read(0x4ff)
+
+    f.seek(0x268400)
+    for idx in range(0x49):
+        location_name_ptrs[idx] = read_multi(f, 2)
+
+    for idx in range(0x49):
+        start = location_name_ptrs[idx]
+        end = location_name_ptrs.get(idx+1, location_name_bin.find(b'\0', start) + 1)
+        location_names[idx] = bytes_to_dialogue(location_name_bin[start:end])
+
+def write_location_names(fout):
+    new_location_names = b""
+    new_ptrs = b""
+    offset = 0
+    for idx, text in location_names.items():
+        lastlength = len(new_location_names) - offset
+  
+        offset += lastlength
+        if offset > 0x1FFFF:
+            print(f"location name addressing overflow at index {idx}")
+            raise IndexError
+        new_location_names += dialogue_to_bytes(text)
+        new_ptrs += bytes([offset & 0xFF, (offset >> 8) & 0xFF])
+    #print(f"new script: ${len(new_script):X} bytes")
+
+    #write to file
+    fout.seek(0xEF100)
+    assert len(new_location_names) <= 0x4FF
+    fout.write(new_location_names)
+
+    fout.seek(0x268400)
+    assert len(new_ptrs) <= 0x375
+    fout.write(new_ptrs)

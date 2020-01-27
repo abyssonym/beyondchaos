@@ -587,7 +587,7 @@ class ItemBlock:
                 self.mutate_feature()
 
     def rank(self):
-        if hasattr(self, "_rank"):
+        if self._rank:
             return self._rank
 
         if self.price > 10:

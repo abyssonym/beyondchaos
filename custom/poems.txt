@@ -90,7 +90,7 @@ chickens
 
 Writing a poem
 In seventeen syllables
-Is very diffi—
+Is very diffi--
 
 ---
 # Title: "The Tyger"

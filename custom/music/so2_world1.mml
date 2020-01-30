@@ -3,11 +3,12 @@
 #COMPOSER Motoi Sakuraba
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT ~* enh
+#VARIANT /* nat
+#VARIANT ~_ tr
 
 #WAVE 0x20 ~0x43~/0x0D/
-#WAVE 0x21 ~0x7A~/0x08/
+#WAVE 0x21 *~0x7A~/0x08/* _0x08_
 #WAVE 0x22 ~0x7C~/0x0E/
 #WAVE 0x23 ~0x07~/0x1F/
 #WAVE 0x24 ~0x03~/0x07/
@@ -32,7 +33,7 @@
 #def cy= |C o6
 
 #def s= v48
-#def h= ~v96~/v48/
+#def h= *~v96~/v48/* _v48_
 #def b= v56
 #def f= ~v48~/v32/
 #def p= ~v24~/v32/

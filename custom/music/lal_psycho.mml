@@ -13,7 +13,7 @@
 #WAVE 0x26 -- 0x5D
 #WAVE 0x27 -- 0x9B
 #WAVE 0x28 -- 0x11
-#WAVE 0x29 -- 0x0F
+#WAVE 0x2F -- 0x0F
 #WAVE 0x2A -- 0x50
 
 #def y= |A v100 %y3%s3%r18
@@ -94,10 +94,10 @@ d8>>g<<d8>>g<<d4.>>g32r32g32r32<<d8
 
 l16
 {8}
-l16p44'y*v.72'o6c4|9v25c4c4c4  
-c4c4c8|8c8|9c8'y*v.64'c8   $13 [2'y*v.72'c8|8v25c8c8c8[6c8c8c8c8  ]'y*v.64'c4j2,12 c4] $12 c8.|9v25c'y*v.72'c8|8v25c8  
-c8c8c8c8c8c8c8c8  c8c8cv48c|9v25c|8v48c|9v25c4'y*v.64'c8|8v25c8  c8c8c8c8c8c8c8c8  
-c8c4c8c8'y*v.64'c8v72c8|8v25c8  c8c8[5c8c8c8c8]c8c8  c8c'y*v.64'g|9v25c|8v48c8|9v25c|8v48c8'y*v.64'c8v72c4.  
+l16p44'y*v.72'o6c4|Fv25c4c4c4  
+c4c4c8|8c8|Fc8'y*v.64'c8   $13 [2'y*v.72'c8|8v25c8c8c8[6c8c8c8c8  ]'y*v.64'c4j2,12 c4] $12 c8.|Fv25c'y*v.72'c8|8v25c8  
+c8c8c8c8c8c8c8c8  c8c8cv48c|Fv25c|8v48c|Fv25c4'y*v.64'c8|8v25c8  c8c8c8c8c8c8c8c8  
+c8c4c8c8'y*v.64'c8v72c8|8v25c8  c8c8[5c8c8c8c8]c8c8  c8c'y*v.64'g|Fv25c|8v48c8|Fv25c|8v48c8'y*v.64'c8v72c4.  
 ^c2^c4.  ^c4.^v64c8
 ;13
 

@@ -3,7 +3,10 @@
 #COMPOSER S.Fukami, M.Higashino, M.Izumi
 #ARRANGED emberling
 
-#WAVE 0x20 0x73
+#VARIANT ~
+#VARIANT / tr
+
+#WAVE 0x20 ~0x73~/0x7A/
 #WAVE 0x21 0x93
 #WAVE 0x22 0x47
 #WAVE 0x23 0x7C
@@ -38,7 +41,7 @@
 #def 0Cv= v32
 #def 0Fv= v127
 #def 12v= v72
-#def a1v= v112
+#def a1v= ~v112~/v88/
 #def a5v= v56
 
 #drum "c+"=5d+ |A v112 p64 %e1

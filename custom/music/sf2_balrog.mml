@@ -15,7 +15,7 @@
 #WAVE 0x29 ~0x7e~/0x14/
 #WAVE 0x2A ~0x68~/0x11/
 #WAVE 0x2B ~0x6d~/0x12/
-#WAVE 0x2C ~0x51~/0x3D/
+#WAVE 0x2F ~0x51~/0x3D/
 #WAVE 0x2D ~0x66~/0x17/
 
 #def global=t139 %v50 %b0,70 %x224
@@ -35,8 +35,8 @@
 #drum "o"=5g |A v64 p96 %r
 #drum "y"=5g+ |B v96 p16 %r17
 #drum "z"=5g+ |B v96 p112 %r17
-#drum "c"=~5g~/6b/ |C v64 p16
-#drum "d"=~5g~/6b/ |C v64 p112
+#drum "c"=~5g~/6b/ |F v64 p16
+#drum "d"=~5g~/6b/ |F v64 p112
 
 {1}
 'global' %e1

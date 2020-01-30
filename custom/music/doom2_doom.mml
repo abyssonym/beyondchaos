@@ -17,7 +17,7 @@
 #WAVE 0x29 0x56 Snare
 #WAVE 0x2A 0x5A Hihat
 #WAVE 0x2B 0x88 Ride
-#WAVE 0x2C 0x5F Maracas
+#WAVE 0x2F 0x5F Maracas
 #WAVE 0x2D 0x5E Claves
 
 #def init= t76 %x240 %f0,0 ? %v50 %b0,58 ? _ %v40 %b0,100 _
@@ -49,10 +49,10 @@
 #drum "b"= 6c+ |D p96 v48 %e0
 #drum "b-"= 6c+ |D p96 v24 %e0
 
-#drum "m"= 5g+ |C p96 v24 %e1
-#drum "m+"= 5g+ |C p96 v32 %e1
+#drum "m"= 5g+ |F p96 v24 %e1
+#drum "m+"= 5g+ |F p96 v32 %e1
 
-#drum "n"= 5a+ |C p32 v32 %e1
+#drum "n"= 5a+ |F p32 v32 %e1
 
 #drum "t"= 7d+ |7 v12 %y5%s0 %e1
 #drum "u"= 7d+ |7 v16 %y5%s2 %e1

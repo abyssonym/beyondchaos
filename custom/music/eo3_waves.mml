@@ -3,8 +3,9 @@
 #COMPOSER Yuzo Koshiro
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT ~* enh
+#VARIANT /* nat
+#VARIANT ~_ tr
 
 #WAVE 0x20 ~0x82~ /0x0E/ Brass Lead
 #WAVE 0x21 ~0x74~ /0x0B/ Rock Organ
@@ -18,7 +19,7 @@
 #WAVE 0x28  ~0x21~ /0x21/ Snare
 #WAVE 0x29  ~0x84~ /0x17/ Tom
 #WAVE 0x2A  0x00          Hi-Hat (temp?)
-#WAVE 0x2B  ~0x68~ /0x11/ Hi-Hat
+#WAVE 0x2B  *~0x68~ /0x11/* _0x8F_ Hi-Hat
 #WAVE 0x2C  ~0x8E~ /0x12/ Cymbal
 
 #def global= t188 %v36 %x232 %b0,85 %f0,0
@@ -47,7 +48,7 @@
 #def lowpluck= ~|6 v56 %a5%s4 o5~ /|2 v96 o5 %a >/ 
 #def secretharmony= ~|0 v64 o6~ /|0 v56 o6/
 #def cv=v127
-#def hv=v48
+#def hv=*v48*_v72_
 
 ##### ORGAN #####
 {1} 'global' %e1 'organ' l8

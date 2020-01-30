@@ -1,0 +1,124 @@
+#TITLE Operation: Pet Retrieval
+#ALBUM Romancing SaGa 3
+#COMPOSER Kenji Ito
+#ARRANGED emberling
+##created with sqspcmml alpha 0.8.7a
+
+#WAVE 0x20 0x9a
+#WAVE 0x21 0x34
+#WAVE 0x22 0x49
+#WAVE 0x23 0x1b
+#WAVE 0x24 0x75
+#WAVE 0x25 0x66
+#WAVE 0x26 0x4c
+
+#def 0i= |0
+#def 1i= |1
+#def 2i= |2
+#def 3i= |3
+#def 4i= |4
+#def 6i= |6
+
+#def 0o= o5
+#def 1o= o5
+#def 2o= o5
+#def 3o= o6
+#def 4o= o4
+#def 6o= o5
+
+#def 0v=   v100
+#def 0f= v1,150
+#def 1v=   v150
+#def 1f= v1,100
+#def 2v=   v100
+#def 2f= v1,100
+#def 3v=   v100
+#def 3f= v1,100
+#def 4v=   v100
+#def 4f= v1,100
+#def 5v=   v100
+#def 5f= v1,100
+#def 6v=   v100
+#def 6f= v1,100
+
+#drum "a"= 5g |5 p65
+#drum "c"= 5b |5 p65
+
+
+{5}
+%v24%b0,80%f0,0p55
+'0i' %e1'0v*v.60''0o+o1'
+$501t152r1r2r1f+16f+16f+16r8.f+16r16[r1r8f+16r4r16r8d+16r2r4r16f+16f+16
+f+16r8.f+16r16r1r8e16r4r16r8c+16r2r4r16e16e16e16r8.e16r16][r1r2]r2t96,150
+r2t96,148r2
+;501
+
+
+{6}
+
+'0i' %e1'0v*v.60''0o+o1'p73
+$601r1r2r1c16c16c16r8.c16r16[r1r8c16r4r16r8>a16r2r4r16<c16c16c16r8.c16
+r16r1r8>a+16r4r16r8g16r2r4r16a+16a+16a+16r8.a+16r16<][3r1r2]
+;601
+
+
+{1}
+%e1
+$101[r1r2]'1v*v.67''1o'
+'1i' p64m30,20,211a16g+16a2a16g+16a16r16b16r16<c8>b24<c24>b24a16r16g+16
+r16a16b16a4.^12f+12a12<c12>a12<c12d+2>g16f+16g2g16f+16g16r16a16r16a+8a24
+a+24a24g16r16f+16r16g8g+16a16a+8a16g+16g1a16g+16a2a16g+16a16r16b16r16<
+c8>b24<c24>b24a16r16g+16r16a16b16a4.^12f+12a12<c12>a12<c12d+2>g16f+16g2
+g16f+16g16r16a16r16a+8a16g16a16a+16<c+16f16e4^16f16e16d+16e1
+'2i' mp36'2v*v.85''2o'c4.>b16a+16a8r8<a8g+16g16f+16r16f16r16e16r16d+16
+r16d4.c+16c16>b8r8<b8a+16a16g+16r16g16r16f+16r16f16r16e1^2
+;101
+
+
+{7}
+
+'3i' %e1'3v*v.67'p38
+$701r1r2'3o-o2'a16<c16d+16f+16a16<c16d+16f+16>>a16<c16d+16f+16a16<c16d+16
+f+16a16f+16d+16c16>a16f+16d+16c16[r1r2>a16<c16d+16f+16a16<c16d+16f+16>
+>a16<c16d+16f+16a16<c16d+16f+16a16f+16d+16c16>a16f+16d+16c16r1r2>g16a+16
+<c+16e16g16a+16<c+16e16>>g16a+16<c+16e16g16a+16<c+16e16g16e16c+16>a+16
+g16e16c+16>a+16<]r1r2r1r2>a+16<c+16e16g16e16g16a+16<c+16>a+16<c+16e16g16
+e16g16a+16<c+16e16r16r8r4
+;701
+
+
+{4}
+
+'4i' '4o-o1'p70'4v*v.99'
+$401a4<d+4>a4<d+4>a4<d+4>a4<d+4>a4<d+4>a8<d+8>a16a16a8a4<d+4>a4<d+4>a4
+<d+4>a4<d+4>a4<d+4>a4<d+4>[g4<c+4>g4<c+4>g4<c+4>][a4<d+4>a4<d+4>a4<d+4
+>]g4<c+4>g4<c+4>g4<c+4>g4<c+4>g4<c+8c+16c+16>g16g16g16g16g16g16g16g16'4v*v1.02'
+a1r8<d+8>a8<d+8>g+1r8<d8>g+8<d8>g1^2
+;401
+
+
+{2}
+{P+}
+$201[9p50" !!!o c16"^16p78"a16a16a16"^16p50"c16"^16p78"a16a16a16"^16p50
+"c16"^16p78"a16a16"p50"c16"^16p78"a16a16"p50"c16"^16p78"a16a16"]p50"c16
+"^16p78"a16a16a16"^16p50"c16"^16p78"a16a16a16"^16p50"c16"^16p78"a16a16
+"p50"c16"p78"a16a16"p50"c16"p78"a16a16"p50"c16"p78"a16"^2^8p50"c16c16"p78
+"a4"^2^2^8p50"c16c16"p78"a4"^2r1r2
+;201
+
+
+{8}
+
+'6i' %e1'6v*v.93''6o-o1'%r8p55
+$801f2^2^2^1^2[f2^2^2^1^2d2^2^2^1^2]f1^2[^1^2]
+;801
+
+
+{3}
+
+'2i' '2o-o3'p64%e1
+$301[['2v*v1.22'a8<d+16^32r32d+16^32r32d+16^32r32>]a8f+8a8f+8][[[a8<d+16
+^32r32d+16^32r32d+16r16>]a8f+8a8f+8][[g8<c+16^32r32c+16^32r32c+16^32r32
+>]g8e8g8e8]]a1^2g+1^2'2v*v.97'g1^2
+;301
+

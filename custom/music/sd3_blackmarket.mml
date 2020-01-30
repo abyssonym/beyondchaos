@@ -1,0 +1,153 @@
+#TITLE Last Audience
+#ALBUM Trials of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+##created with sqspcmml beta 1.0.0
+
+#WAVE 0x28 0x03
+#def 8i=   |8 %y2%s5%r6 m48,18,199
+#def 8o=   o5
+#def 8v=   v80
+#def 8f= v1,80
+
+#WAVE 0x29 0x20
+#def 9i=   |9 %r16 m
+#def 9o=   o7
+#def 9v=   v75
+#def 9f= v1,75
+
+#WAVE 0x2A 0x3e
+#def Ai=   |A %r21 m
+#def Ao=   o5
+#def Av=   v100
+#def Af= v1,100
+
+#WAVE 0x2B 0x55
+#def Bi=   |B %r22 m
+#def Bo=   o5
+#def Bv=   v100
+#def Bf= v1,100
+
+#WAVE 0x2C 0x7b
+#def Ci=   |C %a10%y0%s1%r26 m0,18,215
+#def Co=   o4
+#def Cv=   v100
+#def Cf= v1,100
+
+#WAVE 0x2D 0x00
+#def Di=   |C %a12%y0%s1%r26 m24,18,223
+#def Do=   o4
+#def Dv=   v100
+#def Df= v1,100
+
+#WAVE 0x2E 0x46
+#def Ei=   |E %a10%s7%r6 m24,36,195
+#def Eo=   o6
+#def Ev=   v150
+#def Ef= v1,150
+
+#WAVE 0x20 0x96
+#def Fi=   |0 %r6 m
+#def Fo=   o5
+#def Fv=   v150
+#def Ff= v1,150
+
+#def Cia= 'Ci' %k4
+#def Cib= 'Ci' %k0
+#def Cic= 'Ci' %k7
+#def Dia= 'Di' %k0
+#def Dib= 'Di' %k3
+#def Dic= 'Di' %k7
+
+##cdef ( %l1
+##cdef ) %l0
+
+#def (= %l1 '8v*v2''8f*v8,.76'
+#def )= %l0
+
+{4}
+t133%x255%v72%b0,56%f0,0
+$%e1[[
+'Bi' 'Bo-o2''Bv*v.76'b4<f8f8>b2b4<f8r8>b4<f8r8][>'Bo-o2'b4<f8f8>b2b4<f8
+r8>b8b4<f8>b4<f8f8>b2b4<f4>b8b8<f8f8[>'Bo-o2'b4<f8f8>b2b4<f8r8>b4<f8r8
+]]>b4<f8f8>b2b4<f8r8>b8b4<f8>b4<f8f8>b2b4<f4>b8b8<f8f8][8r1][>'Bo-o2'b4
+<f8f8>b2b4<f8r8>b4<f8r8]>b4<f8f8>b2b4<f8r8>b8b4<f8>b4<f8f8>b2b4<f4>b8b8
+<f8f8;
+
+{6}
+$%e1[p64
+'Cia' 'Co''Cv*v.66'e1e1e1e1
+'Dia' 'Dv*v.76''Do'd1d1
+'Cia' 'Cv*v.66'[6'Co'e1]
+'Dia' 'Dv*v.76''Do'd1d1
+'Cia' 'Cv*v.66'['Co'e1e1f1f1]e1e1]p96
+%k0
+'9i' r8'9v*v.50''9o'd4<e4>b4f8^8d4<e4r4>f8^8d4<e4>b4f8^8d4<e4>b4d8^8d4
+<e4>b4f8^8d4<e4r4>f8^8d4<e4>b4<c8^8>a4f4r4.p96
+'Ai' 'Av*v.76''Ao-o1'e4b8<c8c4>b8a8b8<c8>b2.r4a8g8a8b8<c8>b8a8b8e4g8a8
+a8a+8e4b8<c8c4>b8a8b8<c8>b2.r4a8g8a8b8<c8>b8a8b8e4g8a8a8g8;
+
+{2}
+$%e1[p32
+'Ei' 'Eo-o2''Ev*v.76'e2e2e8r8d8r8f4.^16g32f32e2e2e8r8d8r8f4e8.f32e32d2
+d2c32d16^32r8d8r8d8e8f8d8['Eo-o2'e2e2e8r8d8r8f4.^16g32f32]e2e2e8r8d8r8
+f4e8.f32e32d2d2c32d16^32r8d8r8d8e8f8d8e2e2e8r8e8r8e2[<'Eo-o1'f4f8g+8f8
+r8e8r8f8g+8a4b8a24b24a24g+8f8['Eo-o1'e4e8f8e8r4.]]]p80
+'9i' '9v*v.50''9o'g+4e4<d4>a4g+4e4<d4>b4g+4e4<d4>a4g+4e4<d4>f4g+4e4<d4
+>a4g+4e4<d4>b4g+4e4<d4>a4b4g+4e2p32
+'Ai' 'Av*v.76''Ao-o1'a32'Av*v.67'a+32[3'Av*v.58''Ao-o1'a32a+32]<'Av*v.76'
+e8f8f4e8d8e8f8e2.r4d8c8d8e8f8e8d8e8>a32'Av*v.67'a+32[3'Av*v.58''Ao-o1'a32
+a+32]<'Av*v.76'c8d8d8e8>a32'Av*v.67'a+32[3'Av*v.58''Ao-o1'a32a+32]<'Av*v.76'
+e8f8f4e8d8e8f8e2.r4d8c8d8e8f8e8d8e8>a32'Av*v.67'a+32[3'Av*v.58''Ao-o1'a32
+a+32]<'Av*v.76'c8d8d8c8;
+
+{3}
+$%e1[[p48
+'Ei' 'Eo-o3''Ev*v.76'b2b2b4b4b2b2b2b4b4b2a2a2a8r8a8r8a2b2b2b4b4b2][[<'Eo-o2'f4
+f8f8f8r4.]e4e8e8e8r8d8r8e4e8e8e8r4.]]p48
+'9i' '9v*v.50''9o-o1'g+4e4<d4>a4g+4e4<d4>b4g+4e4<d4>a4g+4e4<d4>f4g+4e4
+<d4>a4g+4e4<d4>b4g+4e4<d4>a4b4g+4e2p64
+'Fi' 'Fv*v.76''Fo-o2'a4.<e8f4e4>a4<e4f4e4>a4.<e8f4e4g4e4f4d4>a4.<e8f4e4
+>a4<e4f4e4>a4.<e8f4e4g4e4f4c4;
+
+{1}
+$%e1[p96
+'8i' '8o-o1''8v*v.76'b8<c8d4d8e8g8f8e1^8.r16>b8<c8d8r8g8f8e8r8b4a8g8f8
+e8f8g8'('f24g24f24')'e8d2^2^8c8d8e8>b1^2.^8.r16<e8f8g+4g+8a8b8a8g+1^8.r16e8f8
+g+8r8b8a8g+8r8<d4c8>b8a8g+8a8b8'('a24b24a24')'g+8f2^2^8e8f8g+8e1^2.^8.r16p40
+
+'Ei' 'Ev*v.76'['Eo-o3'b4b8b8b8r4.]b4b8b8b8r8a8r8[3'Eo-o3'b4b8b8b8r4.]b4
+b8b8b8r8a8r8b4b8b8b8r4.]p64
+'8i' '8v*v.67''8o'e2.d8c8>b8<c8d8c8>b8<c8>b8a8g+8a8b2.^2.<e4b2.a8g+8f8
+g+8a8g+8f8g+8f8e8d8e8d8c8>b2^1[8r1];
+
+{5}
+$%e1[r1[7r1]p80
+'8i' '8o-o1''8v*v.76'b8<c8e4e8f8g+8f8e1^8.r16>b8<c8e8r8g+8f8e8r8b4a8g8
+f8e8f8g8'('f24g24f24')'e8d2^2^8c8d8e8>b1^2.^8.r16p96
+'9i' '9v*v.76'[<'9o'f4f8g+8f8r8e8r8f8g+8a4b8a24b24a24g+8f8['9o'e4e8f8e8
+r4.]]]p32r8>'9v*v.50'd4<e4>b4f8^8d4<e4r4>f8^8d4<e4>b4f8^8d4<e4>b4d8^8d4
+<e4>b4f8^8d4<e4r4>f8^8d4<e4>b4<c8^8>a4f4r4.[8r1];
+
+{7}
+r64 p64 %e1 $ [
+'Cib' 'Co''Cv*v.76' k8 [4 m48,-1 e8 m0,0 ^2.. ] k0
+'Dib' 'Dv*v.66''Do'd1d1
+'Cib' 'Cv*v.76'k8 [6 m48,-1 e8 m0,0 ^2.. ] k0
+'Dib' 'Dv*v.66''Do'd1d1
+'Cib' 'Cv*v.76'k8 [3[m48,-1 e8 m0,0 ^2..]j3,7[m48,-1 f8 m0,0 ^2..]] $7 k0
+]
+[16r1]
+;
+
+{8}
+r32 p64 %e1 $ [
+'Cic' 'Co''Cv*v.56' k8 [4 m48,-1 e8 m0,0 ^2.. ] k0
+'Dic' 'Dv*v.56''Do'd1d1
+'Cic' 'Cv*v.56' k8 [6 m48,-1 e8 m0,0 ^2.. ] k0
+'Dic' 'Dv*v.56''Do'd1d1
+'Cic' 'Cv*v.56' k8 [3[m48,-1 e8 m0,0 ^2..]j3,8[m48,-1 f8 m0,0 ^2..]] $8 k0
+]
+[16r1]
+;
+

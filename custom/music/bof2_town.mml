@@ -1,0 +1,156 @@
+#TITLE My Home Sweet Home
+#ALBUM Breath of Fire II
+#COMPOSER Yuko Takehara
+#ARRANGED emberling
+
+#WAVE 0x20 0x08
+#WAVE 0x21 0x0A
+#WAVE 0x22 0x1B
+#WAVE 0x23 0x8A
+#WAVE 0x24 0x8B
+#WAVE 0x25 0x00
+#WAVE 0x26 0x94
+
+#def tbn= |0 o5 't' m48,18,203 %r5
+#def obo= |1 o5 'o' m48,18,223 %r8
+#def hrp= |2 o5 'h' m
+#def pia= |3 o4 'p' m %r3
+#def pim= |4 o5 'p' m %r3
+#def str= |6 o6 's' m %r5
+
+#def l>= |3> %r3
+#def m>= >
+#def <h= < 
+#def <m= <|4 %r3
+
+#def t= v64
+#def o= v48
+#def h= v32
+#def p= v80
+#def s= v16
+
+#def init= t101 %x255 %v50 %b0,70 %f0,0
+
+#def r= %r17^16%r5
+
+{1}
+'init' %e1
+r1r1.. 'hrp'
+p54 c16 p64 f+16 p74 <d16 p82 a16
+$##5
+'obo' p71
+b1<c4>a4   b4<d4^1
+d4c+4d4g4d4>a4   b4<d4^1
+##13
+e2dc >a2b<c  d4e4f+4 f+4gr>b4<
+c1^4>b<c  >a1^4a+4
+;
+
+{2}
+%e1
+'pia' p84
+[g'<m'dgdgd'l>'
+ g'<m'eaeae'l>']
+$##5
+[4g'<m'dgdgd'l>' j4
+  g'<m'eaeae'l>']
+  g'<m'dgdgd
+##13
+cegege             cdf+df+d
+'l>'b'<m'df+df+d   'l>'e[3b'<m'j3g'l>']
+['l>'a'<m'eaeae]
+'l>'a'<m'df+df+d   'l>'a'<m'df+a'<h'c'm>'f+'l>'
+;
+
+{3}
+%e1
+'tbn' p89
+d2...'r'e8.'r'c8.'r'
+d2^8.'r'>a8.'r'b8.'r'<c8.'r'
+$##5
+d2^8.'r' c2^8.'r'  >b2^8.'r'< c2^8.'r'
+d2^8.'r' c2^8.'r'  >b2^8.'r'< d2^8.'r'
+##13
+c2^8.'r' [d2^8.'r'] e2^8.'r'
+c2^8.'r' c8.'r'd8.'r'e8.'r' f+2^8.'r' d2^8.'r'
+;
+
+{4}
+%e1
+'tbn-o1' p49
+b2...'r'<c8.'r'>a8.'r'
+b2^8.'r'f+8.'r'g8.'r'a8.'r'
+$##5
+b2^8.'r' a2^8.'r' g2^8.'r' a2^8.'r'
+b2^8.'r' a2^8.'r' g2^8.'r' b2^8.'r'
+##13
+g2^8.'r' a2^8.'r' b2^8.'r' g2^8.'r'
+a2^8.'r' a8.'r'b8.'r'<c8.'r' d2^8.'r'> f+2^8.'r'
+;
+
+{5}
+%e1
+'str' p89
+d2...'r'e8.'r'c8.'r'
+d2^8.'r'>a8.'r'b8.'r'
+'hrp' r32 p54 d16 p64 a16 p74 <f+16 p82 <c32
+##5
+^32 p87 &138d $
+'str' p89
+         c2^8.'r'  >b2^8.'r'< c2^8.'r'
+d2^8.'r' c2^8.'r'  >b2^8.'r'< d2^8.'r'
+##13
+c2^8.'r' [d2^8.'r'] e2^8.'r'
+c2^8.'r' c8.'r'd8.'r'e8.'r' f+2^8.'r'
+'hrp+o1' r32 p54 d4 p64 f+4 p82 a+4
+p87 &138b
+;
+
+{6}
+%e1
+'str-o1' p49
+b2...'r'<c8.'r'>a8.'r'
+b2^8.'r'f+8.'r'g8.'r'a8.'r'
+$##5
+b2^8.'r' a2^8.'r' g2^8.'r' a2^8.'r'
+b2^8.'r' a2^8.'r' g2^8.'r' b2^8.'r'
+##13
+g2^8.'r' a2^8.'r' b2^8.'r' g2^8.'r'
+a2^8.'r' a8.'r'b8.'r'<c8.'r' d2^8.'r'> f+2^8.'r'
+;
+
+{7}
+%e1
+'pia*v.77' p60 r16.
+[g'<m'dgdgd'l>'
+ g'<m'eaeaj2e'l>'] e32
+##5
+'hrp+o1' p87 b16. $
+'pia*v.77' p60
+[4g'<m'dgdgd'l>' j4
+  g'<m'eaeae'l>']
+  g'<m'dgdgd32
+##13
+^16.
+cegege             cdf+df+d
+'l>'b'<m'df+df+d   'l>'e[3b'<m'j3g'l>']
+['l>'a'<m'eaeae]
+'l>'a'<m'df+df+d32
+'hrp' p54 a16.
+'pia*v.77' p60 a'<m'd32
+'hrp+o1' p64 d16.
+'pim*v.77' p60 f+a32
+'hrp+o1' p82 f+16.
+'pim+o1*v.77' p60 c'm>'f+32
+'hrp+o1' p87 g16.
+ ;
+
+{8}
+%e1
+r1r1..
+'str' p89 c8.'r'
+$##5
+d2^8.'r' [7r2.]
+##13
+[7r2.] d2^8.'r'
+;

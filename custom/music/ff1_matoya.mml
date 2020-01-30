@@ -1,0 +1,386 @@
+#TITLE Matoya's Cave
+#ALBUM Final Fantasy
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#WAVE 0x20 0x03
+#WAVE 0x21 0x35
+#WAVE 0x22 0x36
+#WAVE 0x23 0x33
+#WAVE 0x24 0x47
+#WAVE 0x25 0x4D
+#WAVE 0x26 0x18
+#WAVE 0x27 0x69
+#WAVE 0x28 0x81
+#WAVE 0x29 0x9D
+#WAVE 0x2A 0x84
+#WAVE 0x2B 0x5B
+#WAVE 0x2C 0x1B
+
+#def init= t146 %x240 %v40 %b0,85 %f0,0
+
+#def pfl= |0 o6 'p' %y4%s0%r14
+#def rec= |1 o7 'r'
+#def wsl= |2 o6 'w' %r11
+#def bag= |3 o5 'b'
+#def vib= |4 o6 'v' %y3%s2
+#def ebs= |5 o6 'e'
+#def abs= |6 o5 'a'
+#def cbs= |7 o5 'c'
+
+#def hrp= |C o5 'h'
+
+#def tbl= |9 o5 't' %k-16
+
+#def p=v48
+#def r=v40
+#def w=v32
+#def b=v32
+#def v=v32
+#def e=v96
+#def a=v72
+#def c=v24
+#def h=v32
+
+#def t='vtimb'
+
+#def pan=p64
+
+#cdef ( %l1
+#cdef ) %l0
+
+#drum "y"=4f+ |9 'pan-24' 'vtimb'
+#drum "z"=4g  |9 'pan-24' 'vtimb'
+#drum "c"=4g+ |9 'pan-24' 'vtimb'
+#drum "i"=4a  |9 'pan-24' 'vtimb'
+#drum "d"=4a+ |9 'pan-24' 'vtimb'
+#drum "j"=4b  |9 'pan-24' 'vtimb'
+#drum "e"=5c  |9 'pan-24' 'vtimb'
+#drum "f"=5c+ |9 'pan-24' 'vtimb'
+#drum "k"=5d  |9 'pan-24' 'vtimb'
+#drum "g"=5d+ |9 'pan-24' 'vtimb'
+#drum "l"=5e  |9 'pan-24' 'vtimb'
+#drum "a"=5f  |9 'pan-24' 'vtimb'
+#drum "m"=5f+ |9 'pan-24' 'vtimb'
+#drum "b"=5g  |9 'pan-24' 'vtimb'
+#drum "h"=5g+ |9 'pan-24' 'vtimb'
+
+#drum "p"=4g |B 'pan-14' 'vkick'
+#drum "q"=5c |B 'pan-14' 'vkick'
+
+#drum "s"=5g+ |8 p63 'vsnare'
+#drum "t"=5g  |8 p63 'vsnare*v.9'
+
+#drum "u"=4b  |A 'pan-14' 'vtom'
+#drum "v"=5c  |A 'pan-14' 'vtom'
+#drum "w"=5d+ |A 'pan-14' 'vtom'
+#drum "x"=5f+ |A 'pan-14' 'vtom'
+
+#drum "y-"=4f+ |9 'pan-24' 'vtimb*v.8'
+#drum "z-"=4g  |9 'pan-24' 'vtimb*v.8'
+#drum "c-"=4g+ |9 'pan-24' 'vtimb*v.8'
+#drum "i-"=4a  |9 'pan-24' 'vtimb*v.8'
+#drum "d-"=4a+ |9 'pan-24' 'vtimb*v.8'
+#drum "j-"=4b  |9 'pan-24' 'vtimb*v.8'
+#drum "e-"=5c  |9 'pan-24' 'vtimb*v.8'
+#drum "f-"=5c+ |9 'pan-24' 'vtimb*v.8'
+#drum "k-"=5d  |9 'pan-24' 'vtimb*v.8'
+#drum "g-"=5d+ |9 'pan-24' 'vtimb*v.8'
+#drum "l-"=5e  |9 'pan-24' 'vtimb*v.8'
+#drum "a-"=5f  |9 'pan-24' 'vtimb*v.8'
+#drum "m-"=5f+ |9 'pan-24' 'vtimb*v.8'
+#drum "b-"=5g  |9 'pan-24' 'vtimb*v.8'
+#drum "h-"=5g+ |9 'pan-24' 'vtimb*v.8'
+        
+#drum "p-"=4g |B 'pan-14' 'vkick*v.8'
+#drum "q-"=5c |B 'pan-14' 'vkick*v.8'
+        
+#drum "s-"=5g+ |8 p63 'vsnare*v.8'
+#drum "t-"=5g  |8 p63 'vsnare*v.7'
+        
+#drum "u-"=4b  |A 'pan-14' 'vtom*v.8'
+#drum "v-"=5c  |A 'pan-14' 'vtom*v.8'
+#drum "w-"=5d+ |A 'pan-14' 'vtom*v.8'
+#drum "x-"=5f+ |A 'pan-14' 'vtom*v.8'
+
+#drum "y+"=4f+ |9 'pan-24' 'vtimb*v.5'
+#drum "z+"=4g  |9 'pan-24' 'vtimb*v.5'
+#drum "c+"=4g+ |9 'pan-24' 'vtimb*v.5'
+#drum "i+"=4a  |9 'pan-24' 'vtimb*v.5'
+#drum "d+"=4a+ |9 'pan-24' 'vtimb*v.5'
+#drum "j+"=4b  |9 'pan-24' 'vtimb*v.5'
+#drum "e+"=5c  |9 'pan-24' 'vtimb*v.5'
+#drum "f+"=5c+ |9 'pan-24' 'vtimb*v.5'
+#drum "k+"=5d  |9 'pan-24' 'vtimb*v.5'
+#drum "g+"=5d+ |9 'pan-24' 'vtimb*v.5'
+#drum "l+"=5e  |9 'pan-24' 'vtimb*v.5'
+#drum "a+"=5f  |9 'pan-24' 'vtimb*v.5'
+#drum "m+"=5f+ |9 'pan-24' 'vtimb*v.5'
+#drum "b+"=5g  |9 'pan-24' 'vtimb*v.5'
+#drum "h+"=5g+ |9 'pan-24' 'vtimb*v.5'
+        
+#drum "p+"=4g |B 'pan-14' 'vkick*v.5'
+#drum "q+"=5c |B 'pan-14' 'vkick*v.5'
+        
+#drum "s+"=5g+ |8 p63 'vsnare*.5'
+#drum "t+"=5g  |8 p63 'vsnare*v.4'
+        
+#drum "u+"=4b  |A 'pan-14' 'vtom*v.5'
+#drum "v+"=5c  |A 'pan-14' 'vtom*v.5'
+#drum "w+"=5d+ |A 'pan-14' 'vtom*v.5'
+#drum "x+"=5f+ |A 'pan-14' 'vtom*v.5'
+
+#def vsnare= v48 %y %e0
+#def vtom= v64 %y %e1
+#def vtimb= v36 %y %e1
+#def vkick= v64 %y3%s2 %e0
+
+#[d3 e3]
+#[g4 a+4]
+#c5 d5 f5 g+5 [a+5 b
+#all 6
+#c7]
+
+{1}
+'init' %e1 $
+'bag-o1' 'pan-22' m48,18,239
+b<d(f+>b<)g4f+e  (e32d..)ed(c+32d32c+4.r16)
+df+(ad16.f32)b4ag  f+4gf+16.(f+32e32f+32e4..)
+##6
+(f+32g32f+4..)>a4<c+4  >(b8.<c+16>b8.r16)<c+def+
+g2>b4<e4  (d12e12d12)c+8.r16def+g
+a2r8f+(ga)  <c+(c+24d24c+24>b4)ra(g16a16)f+16.r32
+e2c2 d2c+4>(a48b48a48^8.)<
+##14
+[4f+)>a16r16<d16r16(f+ g)>b16r16<d16r16(g
+  a)c+16r16e16r16(a j4 g)>b16r16<d16r16(g]
+a+)f+16r16c+16r16>a+16r16
+##22
+'b*v.4' 'pan-42' m48,18,207
+(b16a16b2..)(b16a16b4.)<c+16>a16<c+8>a4<)(d16c16d2..)(f+16e16f+4.)(e16d16e8)
+'vib-o1' 'pan-32' f+g
+##26
+'bag' 'pan-22' m48,18,239
+(f+32g32f+4..)>a4<c+4  >(b8.<c+16>b8.r16)<c+def+
+g2>b4<e4  (d12e12d12)c+8.r16def+g
+a4.r4f+(ga)  <c+(c+24d24c+24>b4)ra(g16a16)f+16.r32
+e2c2 (d6^24e24d8.e32d32)
+a16g16f+16(e48f+48e48)(f+48g+48f+48)e16d16c+16
+##34
+[4f+)>a16r16<d16r16(f+ g)>b16r16<d16r16(g
+  a)c+16r16e16r16(a j4 g)>b16r16<d16r16(g]
+a+)f+16r16c+16r16>a+16r16
+;
+
+{2}
+%e1 $
+'bag*v.4' 'pan-42' m48,18,207
+(b16a16b2..)(b16a16b4.)<c+16>a16<c+8>a4<)(d16c16d2..)(f+16e16f+4.)(e16d16e8)
+'wsl' 'pan-1' m48,18,239
+f+g16r16
+##6
+a2c+4e4   d12^48c+12d16>b4..r16<ga16r16
+b2d4g4   f+12^48g12f+16e4..r16ab16r16
+<c+2r>ab<c+   e16d16c+16d16>b4ragf+16r16
+e2^16r16cde d2c+4>a4<
+##14
+d1..(d16c+16>b16<c+16)
+d1..(f+16e16d16e16)
+f+1..(a16g16f+16g16)
+a1^4.r24(g+24a24)a+f+16r16c+16r16>a+16r16
+##22
+'hrp' 'p+16' m
+b<d f+24m43,1^64m1,0&13^ >m10,1b48m10,-1^48m1,0^48^16<
+g4'h*v.6'f+'h'e d4ed16.d32c+32d32c+4..
+df+ad<m4,-1c4>ag f+4gf+16.e32 f+32e8..
+'wsl' 'pan-1' m48,18,239
+f+g16r16
+##26
+a2c+4e4  d12^48c+12d16>b4..r16<ga16r16
+b2d4g4  f+12^48g12f+16e4..r16ab16r16
+<c+4.r4>ab<c+  e16d16c+16d16>b4^12r24(a24a+24a24)gf+16r16
+e2^16r16cde  (&45de64d6m4,2^48m5,-2^16)c+4>a4<
+##34
+d1..(d16c+16>b16<c+16)
+d1..(f+16e16d16e16)
+f+1..(a16g16f+16g16)
+a1^4.r24(g+24a24)a+f+16r16c+16r16>a+16r16
+;
+
+{3}
+$ %e0
+'ebs-o2' 'pan+26' m
+b2<e2 (g4..f+32g32)ag(f+e)
+d2>g2 (b4..a+32b32) a<e12r24c+12r24>a12r24
+##6
+rf+<c+f+r>f+16r16<c+>f+    rb<f+br>b16r16<f+>b
+rg<dgr>g16r16<d>g          ra<ea>a4g4
+rf+<c+f+r>f+16r16<c+>f+    rb<f+bbagf+
+[<c>crc]>a<ar>ara<a>a
+##14
+<d>r[7d4r4]da
+<d>r[6d4r4]d4<f+c+a+f+
+##22
+'rec-o2' 'pan-44' m48,18,207 %r5 %e1
+b2<e2 g4..(f+32g32)agf+e
+d2g2 b2ae16r16c+16r16>a16r16
+##26
+'ebs-o2' 'pan+26' m
+rf+<c+f+r>f+16r16<c+>f+    rb<f+br>b16r16<f+>b
+rg<dgr>g16r16<d>g          ra<ea>a4g4
+rf+<c+f+r>f+16r16<c+>f+    rb<f+bbagf+
+[<c>crc]>a<ar>ara<a>a
+##34
+<d>r[7d4r4]da
+<d>r[6d4r4]d4<f+c+a+f+
+;
+
+{4}
+$ %e1
+'bag*v.4-o1' 'pan-29' m
+b1 b2<c+4>a4 d1 d2c+4
+'vib-o1' 'pan-32' m
+f+g
+##6
+"!!!o"
+"p u-q u+          s-q4  q+"  "p k-4 q  s-t-s4  "
+"p v+qs+24s+24s+24 s q4  q+"  "p4.   q  s-t+s4  "
+"p v+qs+24s+24s+24 s q4  q+"  "p4.   q  s-t+s4  "
+"p v+q v+          s4  t+s-"  "p4  s q  s t-s t "
+##14
+[
+"t-t+s-t+" ["t+t+s-t+"] "t+t+s-t-"
+["t+t+s-t+"] "t-t+s-t+" "t+t+s-s+16s+16"
+[6"t+t+s-t+"] "t+t+ss24s+24s-24ss+s+s-" j2,434
+##22
+'bag*v.4-o1' 'pan-29' m %e1
+b1 b2<c+4>a4 d1 d2c+2
+##26
+"!!!o"
+"pu-qu+  s-q4q-"  "pk-4q  s-t+s4"
+"pv+qs+24s+24s-24  s4.f-"  "kk4.  s-4s4"
+"qv-s+24s+24s-24s  ^p4t"  "kksk4kj4"
+"p4q4  sqs+f-16f-16"  "kksk  stst-"
+##34
+]$434
+;
+
+{5}
+%e1 $
+'pfl-o1' 'pan-16' m48,18,223
+b<df+>b<g4f+e d4edc+4.r
+df+adb4ag f+4gf+e2
+##6
+c+2>e4a4   g12a12g12f+rgab<c+
+d2>g4b4   a12b12a12grab<c+d
+e2rc+de   ef+d4rdef+
+g2e2   a2a4g4
+##14
+[f+1.^rd16c+16>b16<c+16]
+f+1..f+16e16d16e16
+a1.a+>f+16r16c+16r16>a+16r16
+##22
+'abs*v1.8' 'p+16' m
+b<d f+24m43,1^64m1,0&13^ >m10,1b48m10,-1^48m1,0^48^16<
+(g4f+)e d4ed16.d32c+32d32c+4..
+df+ad<m4,-1c4>ag f+4gf+16.e32 f+32e8..
+'wsl' 'pan-1' m48,18,239
+de16r16
+##26
+f+2>a4<c+4>  b12^48a12b16f+4..r16<ef+16r16
+g2>b4<e4     d12^48e12d16c+4..r8.a16r16
+f+4.r4f+ga   <c+16>b16a16b16f+4^12r24(f+24g24f+24)ed16r16
+c2
+'bag-o1' 'pan-22'
+g2 (a6^24b24a8.b32e32)
+(a8.^48b48a48)(g48a48g48^8.)
+##34
+'cbs' 'pan+26' m
+[[ d>f+16r16g16r16<d  e>g16r16<c+16r16e
+   f+>a16r16<d16r16f+ j2 e>g16r16<c+16r16e ]
+   j2 e>g<gc+] ec+16r16a+16r16f+16r16
+;
+
+{6}
+$ %e0
+'abs' 'pan-54' m
+b2<e2 g2agf+e  d2g2 b2ae16r16c+16r16>a16r16
+##6
+'vib-o1' 'pan-32' m %e1
+a>f+b<eac+da  ^>b<ef+bef+>b    rg<df+g>b<eg  ^>a<eagf+eg
+>rf+b<c+f+>b<c+f+  r>b<f+bbagf+    rcdeg<cde  r>>ab<c+eab<c+>>
+##14
+[4 da<df+>  gb<dg>    a<c+eaj4>  gb<dg>]  a+f+16r16c+16r16>a+16r16
+##22
+'rec-o2' 'pan+26' m
+r2b2 b2<c+4>a4 r2b2 <d2c+8>a16r16e16r16c+16r16
+##26
+'vib-o1' 'pan-32'
+a>f+b<eac+da  ^>b<ef+bef+>b    rg<df+g>b<eg  ^>a<eagf+eg
+>rf+<c+f+>rb<c+f+  r>b<f+bbagf+    rcdeg<cde>  >rab<c+eab<c+>>
+##34
+[4 da<df+>  gb<dg>    a<c+eaj4>  gb<dg>]  a+f+16r16c+16r16>a+16r16
+;
+
+{7}
+%e1 $
+'rec-o2' 'pan-44' %r12 m
+b2<e2g4..(f+32g32)agf+e d2g2 'pan+26'd2 c+>a16r16e16r16c+16r16
+##6
+'wsl*v.9' 'pan-1' m48,18,239
+f+2>a4<c+4   >b12^48a12b16f+4..r16<ef+16r16
+g2>b4<e4   d12^48e12d16c+4..r16rg16r16
+a2rf+ga   <c+16>b16a16b16f+4rf+ed16r16
+c2 'pfl' m48,18,223
+c2>a2a4<c+4
+##14
+'abs' 'pan-54' m
+[8 r4a4]
+'wsl*v.9' 'pan-1' m48,18,239
+d1.^8.r16r4d1^4.rc+>a+16r16f+16r16c+16r16
+##22
+'rec-o2' 'pan+26' m
+r1r1r1 g2ar4.
+##26
+'pfl' 'pan-16' m48,18,223
+c+2>e4a4  g12a12g12f+rgab<c+
+d2>g4b4   a12b12a12grab<c+d
+e4.r4c+de ef+d4rdef+
+g2 e2 a2 a4g4
+##34
+'abs' 'pan-54' m
+[8 r4a4]
+'wsl*v.9' 'pan-1' m48,18,239
+d1.^8.r16r4d1^4.rc+>a+16r16f+16r16c+16r16
+;
+
+{8}
+$ %e1
+'rec-o2' 'pan+26' %r12 m
+r2b2b2<c+4>a4 r2b2&93g2
+'tbl+o1*v.8' 'pan-24'
+%g1 b64<'t'c>'t*v.8'&21ge64't'%g1gd
+%k0
+##6
+"!!!o"
+r2 "x-1^k-j-4"
+"^4.v+x-4.f+" "k-k2k-j+4"
+"^4.v+x-4.f+16f+16" "kk4k-ukj4"
+"^2x-4.f+16f+16" "kk4k-qkj4"
+##14
+["!!!o"
+"c4pc- e4pe-    ^epc- e+e-c4"
+"c4pc- e4pe+16e+16  e-epc- e+ec4"
+"c-4p-c+ e-4pe+16e+16  e-ep-c+ e+ec4"
+"le-p-e+ il+pl+24l+24l+24  l-ep-e-^2" j2
+##22
+r1r1r1r4.
+"b+24b+24b+24 c-g+e-d+"
+##26
+"^2x-2" "^2^kj4"
+"^4.v-xq4q-" "p4.q4k-j-4"
+"^4g+24g-24g-24g2f+16f-16"  "p4.qu4w4"
+"^v+4v+x4.q-"  "p4.qpkj4"
+##34
+]
+;

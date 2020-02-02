@@ -143,7 +143,7 @@ def add_common_menu_stuff(fout):
         0x85, 0x3A, # STA $3A   38, 39, 3A = start of attack name
         0xA6, 0x36, # LDX $36
         0x86, 0x3B, # STX $3B
-        0x22, 0xA3, 0x18, 0xF0, # JSR #$F018A3 write_attack_text
+        0x22, 0xA3, 0x18, 0xF0, # JSR #$F018A3 Gui__WriteTextLength
         0x6B, # RTL
         # $F0188A WriteText?
         0xA6, 0x23, # LDX $23
@@ -158,7 +158,7 @@ def add_common_menu_stuff(fout):
         0xC8, # INY
         0x80, 0xED, # BRA
         0x6B, # RTL
-        # $F018A3 write_attack_text:
+        # $F018A3 Gui__WriteTextLength:
         0x4C, 0x00, 0x1C, # JMP $1C00
     ] + [0xEA] * 22 + [ # NOP * 22
 
@@ -273,7 +273,7 @@ def add_common_menu_stuff(fout):
         0x85, 0x3D, # STA $3D   3D = length of name
         0xA6, 0x36, # LDX $36
         0x86, 0x3B, # STX $3B
-        0x22, 0xA3, 0x18, 0xF0, # JSR #$F018A3 write_attack_text
+        0x22, 0xA3, 0x18, 0xF0, # JSR #$F018A3 Gui__WriteTextLength
         0x6B, # RTL
 
         # $F01C4E Get other attack name
@@ -657,7 +657,7 @@ def improve_item_display(fout):
         0x85, 0x3A, # STA $3A
         0xA9, 0x07, # LDA #$07
         0x85, 0x3D, # STA $3D
-        0x22, 0xA3, 0x18, 0xF0, # JSL $F018A3
+        0x22, 0xA3, 0x18, 0xF0, # JSL $F018A3 Gui__WriteTextLength
         0xA5, 0x10, # LDA $10
         0xC9, 0x04, # CMP #$04
         0xB0, 0xB5, # BCS
@@ -749,41 +749,44 @@ def improve_gogo_status_menu(fout):
 
     status_sub = Substitution()
     status_sub.set_location(0x35EAD)
-    status_sub.bytestring = bytes([0x22, 0x60, 0x0A, 0xF0])
+    status_sub.bytestring = bytes([0x22, 0x60, 0x0A, 0xF0]) # StatusMenu__FixOverflow
     status_sub.write(fout)
 
     status_sub.set_location(0x35E91)
-    status_sub.bytestring = bytes([0x22, 0x6B, 0x0A, 0xF0])
+    status_sub.bytestring = bytes([0x22, 0x6B, 0x0A, 0xF0]) # StatusMenu__FixWindowSize
     status_sub.write(fout)
 
     status_sub.set_location(0x363BA)
-    status_sub.bytestring = bytes([0x22, 0x76, 0x0A, 0xF0])
+    status_sub.bytestring = bytes([0x22, 0x76, 0x0A, 0xF0]) # StatusMenu__FixSelection
     status_sub.write(fout)
 
     status_sub.set_location(0x322A3)
-    status_sub.bytestring = bytes([0x22, 0x88, 0x0A, 0xF0])
+    status_sub.bytestring = bytes([0x22, 0x88, 0x0A, 0xF0]) # StatusMenu__FixScrollReset
     status_sub.write(fout)
 
     status_sub.set_location(0x3640C)
-    status_sub.bytestring = bytes([0x22, 0x98, 0x0A, 0xF0, 0x60])
+    status_sub.bytestring = bytes([0x22, 0x98, 0x0A, 0xF0, 0x60]) # StatusMenu__Main
     status_sub.write(fout)
 
     status_sub.set_location(0x300A60)
     status_sub.bytestring = bytes([
-        # called on entering status menu 2
+        # StatusMenu__FixOverflow:
         0xAF, 0x89, 0x9D, 0x7E, # LDA $7E9D89
         0xC9, 0x0F, # CMP #$0F
-        0x90, 0x02, # BCC lte
+        0x90, 0x02, # BCC StatusMenu__FixOverflow_skip
         0xA9, 0x0F, # LDA #$0F
-        # lte:
+        # StatusMenu__FixOverflow_skip:
         0x6B, # RTL
-        # called on entering status menu
+
+        # StatusMenu__FixWindowSize
         0xC9, 0x17, # CMP #$17
-        0x90, 0x02, # BCC lte2
+        0x90, 0x02, # BCC StatusMenu__FixWindowSize_skip
         0xA9, 0x17, # LDA #$17
-        # lte2:
+        # StatusMenu__FixWindowSize_skip:
         0x8F, 0x90, 0xAA, 0x7E, # STA $7EAA90
         0x6B, # RTL
+
+        # StatusMenu__FixSelection
         0x48, # PHA
         0xAF, 0x89, 0x9D, 0x7E, # LDA $7E9D89
         0xAA, # TAX
@@ -791,94 +794,129 @@ def improve_gogo_status_menu(fout):
         0x18, # CLC
         0x7F, 0x8A, 0x9D, 0x7E, # ADC $7E9D8A,X
         0xAA, # TAX
+
+        # Original Code
         0xBF, 0x8A, 0x9D, 0x7E, # LDA $7E9D8A,X
         0x6B, # RTL
-        # called when beginning selection of skills
+        # StatusMenu__FixScrollReset
         0xAF, 0x89, 0x9D, 0x7E, # LDA $7E9D89
         0xAA, # TAX
         0xA9, 0x00, # LDA #$00
         0x9F, 0x8A, 0x9D, 0x7E, # STA $7E9D8A,X
+        
+        # Original code
         0xA9, 0x65, # LDA #$65
         0x85, 0x26, # STA $26
         0x6B, # RTL
-        # called in skill selection menu, every frame
+
+        # StatusMenu__Main
+        # Clear upper bits of A
         0x7B, # TDC
+        # Change DP
         0x0B, # PHD
         0xF4, 0x00, 0x15, # PEA #$1500
         0x2B, # PLD
-        0x22, 0xAB, 0x0A, 0xF0, # JSL $F00AAB
+
+        0x22, 0xAB, 0x0A, 0xF0, # JSL $StatusMenu__Scrolling 
+        # Original code and return
         0x2B, # PLD
         0x7B, # TDC
         0xA0, 0x17, 0x64, # ldy #$6417
-        0x5C, 0x37, 0x0C, 0xF0, # jml $f00c37
-        # F00AAB: called from above
+        0x5C, 0x37, 0x0C, 0xF0, # jml $f00c37 StatusMenu__CopyOfShowCursor
+
+        # StatusMenu__Scrolling:
+        # Get scroll value
         0xAF, 0x89, 0x9D, 0x7E, # lda $7e9d89
-        0xAA,# tax
+        0xAA, # tax
         0xBF, 0x8A, 0x9D, 0x7E, # lda $7e9d8a,x
-        0x85, 0x08, # sta $08
+        0x85, 0x08, # sta $08 .scroll
+        # Get cursor position on screen
         0xAD, 0x4E, 0x00, # lda $004e
         0x38, #sec
-        0xE5, 0x08, # sbc $08
-        0x30, 0x0A, # bmi $0ac8
+        0xE5, 0x08, # sbc $08 .scroll
+        # Is cursor out of range?
+        0x30, 0x0A, # bmi $StatusMenu__Scrolling_Up
         0xC9, 0x0F, # cmp #$0f
-        0xB0, 0x03, # bcs $0ac5
-        0x4C, 0x37, 0x0B, # jmp $0b37
-        # F00ac5:
+        0xB0, 0x03, # bcs $StatusMenu__Scrolling_Down
+        0x4C, 0x37, 0x0B, # jmp $_StatusMenu__Scrolling_return
+
+        # StatusMenu__Scrolling_Down:
         0x38, # SEC
         0xE9, 0x0E, # SBC #$0E
-        # F00ac8
+
+        # StatusMenu__Scrolling_Up
+        # Add to scrolling
         0x18, # CLC
         0x7F, 0x8A, 0x9D, 0x7E,  # ADC $7E9D8A,X
         0x9F, 0x8A, 0x9D, 0x7E,  # STA $7E9D8A,X
-        0x85, 0x08, # sta $08
-        0x85, 0x09, # sta $09
-        0x64, 0x0A, # stz $0A
+        0x85, 0x08, # sta $08 .scroll
+        0x85, 0x09, # sta $09 .cursor
+        0x64, 0x0A, # stz $0A .cursorH
+
+        # Loop through all 15 skills to show on screen
         0xA2, 0xC9, 0x80, # LDX #$80C9
-        0x86, 0x0B, # STX $0B
-        0xA0, 0x00, 0x00, # STA #$0000
+        0x86, 0x0B, # STX $0B .bg3addr
+        0xA0, 0x00, 0x00, # LDY #$0000
+
+        # StatusMenu__Scrolling_Loop:
         0x5A, #PHY
-        0xC2, 0x20, # SEP #$20
-        0xA6, 0x09, # LDX $09
-        0xE6, 0x09, # INC $09
+
+        # Prepare writing skill
+        0xC2, 0x20, # REP #$20
+        0xA6, 0x09, # LDX $09 .cursor
+        0xE6, 0x09, # INC $09 .cursor
         0xBF, 0x8A, 0x9D, 0x7E, # lda $7e9d8a,x
         0x29, 0xFF, 0x00, # and #$00FF
         0xC9, 0xFF, 0x00, # cmp #$00ff
-        0xF0, 0x16, # beq
-        0x85, 0x0D, # sta $0d
+        0xF0, 0x16, # beq StatusMenu__Scrolling_Loop_empty
+        0x85, 0x0D, # sta $0d .temp
         0x0A, #ASL
         0x0A, #ASL
         0x0A, #ASL
         0x69, 0xA0, 0xCE, # ADC #$CEA0
         0x38, # SEC
-        0xE5, 0x0D, # sbc $0D
-        0x85, 0x38, # sta $38
+        0xE5, 0x0D, # sbc $0D .temp
+        0x85, 0x38, # sta $38 .Param_source
         0xA9, 0xD8, 0x00, # lda #$00D8
-        0xE2, 0x20,  # REP #$20
-        0x85, 0x3A, # sta $3A
-        0x80, 0x0B,  # bra
-        0xE2, 0x20, # REP #$20
-        0xA2, 0x38, 0x0B, # LDX #$0B38
-        0x86, 0x38, # STX $38
-        0xA9, 0xF0, # LDA $F0
-        0x85, 0x3A, # sta $3A
-        0xA6, 0x0B, # LDX $0B
-        0x86, 0x3B, # STX $3B
+        0xE2, 0x20,  # SEP #$20
+        0x85, 0x3A, # sta $3A .Param_sourceBank
+        0x80, 0x0B,  # bra StatusMenu__Scrolling_Loop_skip
+        
+        # StatusMenu__Scrolling_Loop_empty:
+        0xE2, 0x20, # SEP #$20
+
+        0xA2, 0x38, 0x0B, # LDX #$0B38_StatusMenu__Scrolling_Empty
+        0x86, 0x38, # STX $38 .Param_source
+        0xA9, 0xF0, # LDA $F0 StatusMenu__Scrolling_Empty
+        0x85, 0x3A, # sta $3A .Param_sourceBank
+
+        # StatusMenu__Scrolling_Loop_skip:
+        # Dest
+        0xA6, 0x0B, # LDX $0B .bg3addr
+        0x86, 0x3B, # STX $3B .Param_dest
+        # Length
         0xA9, 0x07, # LDA $07
-        0x85, 0x3D, # sta $3D
-        0x22, 0xA3, 0x18, 0xF0, # JSL $F018A3
-        0xC2, 0x21, # SEP #$21
-        0xA5, 0x0B,  #lda $0B
+        0x85, 0x3D, # sta $3D .Param_length
+        
+        0x22, 0xA3, 0x18, 0xF0, # JSL $F018A3 Gui__WriteTextLength
+
+        # Next
+        0xC2, 0x21, # REP #$21
+        0xA5, 0x0B,  #lda $0B .bg3addr
         0x69, 0x80, 0x00, # ADC #$0080
-        0x85, 0x0B, # sta $0B
-        0xE2, 0x20, # REP #$20
+        0x85, 0x0B, # sta $0B .bg3addr
+        0xE2, 0x20, # SEP #$20
+
         0x7A, # PLY
         0xC8, # INY
         0xC0, 0x10, 0x00, # CPY #$0010
-        0x90, 0xAE, # BCC
+        0x90, 0xAE, # BCC StatusMenu__Scrolling_Loop
         0xA2, 0x00, 0x10, # LDX #$1000
         0x8E, 0x12, 0x00, # STX #$0012
+        
+        # StatusMenu__Scrolling_return:
         0x6B, # RTL
-        # ???
+        # StatusMenu__Scrolling_Empty:
         0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
         0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
         0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
@@ -901,26 +939,37 @@ def improve_gogo_status_menu(fout):
         0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
         0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
         0x07, 0x07, 0x07, 0x07, 0x07, 0x07, 0x07,
-        # f00c37: called from above
+
+        # StatusMenu__CopyOfShowCursor
+        # Keep cursor position
         0xA5, 0x4E, #lda $4e
         0x48, # PHA
+
+        # Subtrack scrolling
         0xAF, 0x89, 0x9D, 0x7E, # lda $7e9d89
         0xAA, # TAX
         0xA5, 0x4E, # lda $4e
         0x38, # sec
         0xFF, 0x8A, 0x9D, 0x7E, # sbc $7e9d8a,x
         0x85, 0x4E, # sta $4e
+        
+        # First call
         0x84, 0xE7, # sty $e7
         0xA9, 0xC3, # lda #$c3
         0x85, 0xE9, # sta $e9
+        
+        # Second call
         0x8B, # phb
         0xA9, 0x00,# lda #$00
         0x48, # pha
         0xAB, # plb
+
         # f00c53:
+        # a_c30677_c3067c:
         0xAF, 0x12, 0x42, 0x00, # lda $004212
         0x29, 0x40, # and #$40
-        0xF0, 0xF8, # beq f00c53
+        0xF0, 0xF8, # beq a_c30677_c3067c
+
         0xA5, 0x53, # lda $53
         0x8D, 0x1B, 0x21, # sta $211b
         0x9C, 0x1B, 0x21, # stz $211b ???
@@ -931,38 +980,44 @@ def improve_gogo_status_menu(fout):
         0x18, # clc
         0x65, 0x4D, # adc $4d
         0x85, 0x4B, # sta $4b
+        
+        # a_c36409_c306c5:
         0xA5, 0x53, # lda $53
         0x3A, # dec
         0xC5, 0x4D, # cmp $4d
-        0xB0, 0x0C, # bcs $0c86
+        0xB0, 0x0C, # bcs $a_c36409_c306dd
         0xA5, 0x53, # lda $53
         0x3A, # dec
         0x38, # sec
         0xE5, 0x51, # sbc $51
         0x85, 0xE0, # sta $e0
         0x85, 0xE2, # sta $e2
-        0x80, 0x08, # bra
-        # f00c86:
+        0x80, 0x08, # bra a_c36409_c306e5
+
+        # a_c36409_c306dd:
         0xA5, 0x53, # lda $53
         0x85, 0xE0, # sta $e0
         0xA5, 0x4D, # lda $4d
         0x85, 0xE2, # sta $e2
+
+        # a_c36409_c306e5:
         0xA5, 0x54, # lda $54
         0x3A, # dec
         0xC5, 0x4E, # cmp $4e
-        0xB0, 0x0A, # bcs $0c9f
+        0xB0, 0x0A, # bcs $a_c36409_c306f6
         0xA5, 0x54, # lda $54
         0x3A, #dec
         0x38, #sec
         0xE5, 0x52, # sbc $52
         0x85, 0xE1, # sta $e1
-        0x80, 0x04, # bra
+        0x80, 0x04, # bra a_c36409_c306fa
+        # a_c36409_c306f6:
         0xA5, 0x4E, # lda $4e
         0x85, 0xE1, # sta $e1
-        # f00ca3:
+        # a_c36409_c306fa:
         0xAF, 0x12, 0x42, 0x00, # lda $004212
         0x29, 0x40, # and #$40
-        0xF0, 0xF8, # beq $0ca3
+        0xF0, 0xF8, # beq $a_c36409_c306fa
         0xA5, 0xE0, # lda $e0
         0x8D, 0x1B, 0x21, # sta $211b
         0x9C, 0x1B, 0x21, # stz $211b
@@ -970,6 +1025,7 @@ def improve_gogo_status_menu(fout):
         0x8D, 0x1C, 0x21, # sta $211c
         0x8D, 0x1C, 0x21, # sta $211c
         0xAD, 0x34, 0x21, # lda $2134
+        
         0x18, #clc
         0x65, 0xE2, # adc $e2
         0x0A, # ASL

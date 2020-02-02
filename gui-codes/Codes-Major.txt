@@ -1,0 +1,16 @@
+suplexwrecks		All characters use the Sabin sprite, as well as having a name similar to Sabin. All characters have the Blitz and Suplex commands, and every enemy can be hit by Suplex.
+dearestmolulu		No random encounters occur. All encounters yield 3x EXP. Wearing a Moogle Charm or a piece of equipment with the Moogle Charm effect will cause a battle to occur on every step when encounters can be occur.
+canttouchthis		All characters have 255 Defense and 255 Magic Defense, as well as 128 Evasion and Magic Evasion.
+easymodo			All enemies have 1 HP.
+endless9			All R-[skills] are automatically changed to 9x[skills]. W-[skills] will become 8x[skills].
+collateraldamage	All pieces of equipment break for spells. Characters only have the Fight and Item commands, and enemies will use items drastically more often than usual.
+llg					Stands for Low Level Game. No encounters will yield any Experience Points.
+naturalmagic		No Espers or equipment will teach spells. The only way to learn spells is through Natural Magic.
+playsitself			All characters will act automatically, in a manner similar to when Coliseum fights are fought.
+worringtriad		The player will start in the World of Ruin, with all of the World of Balance treasure chests, along with a guaranteed set of items, and more Lores.
+metronome			All characters have Fight, R-Chaos, Magic, and Item as their skillset, except for the Mime, who has Mimic instead of Fight. Berserker also only has R-Chaos.
+randomboost			Prompts you for a randomness multiplier, which changes the range of items that can be in chests, etc. Choosing a randomness multiplier of 0(or leaving it blank) will allow any item to appear in any treasure chest.
+masseffect			Increases the number of rogue effects on equipment by a large amount.
+dancingmaduin		Restricts Esper usage such that most Espers can only be equipped by one character. Also usually changes what spell the Paladin Shld teaches.
+madworld			Creates a "true tierless" seed, with enemies having a higher degree of randomization and shops being very randomized as well.
+darkworld			Drastically increases the difficulty of the seed, akin to a hard mode. Mostly meant to be used in conjunction with the madworld code.

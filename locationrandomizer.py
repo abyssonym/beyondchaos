@@ -20,6 +20,7 @@ maplocations = {}
 maplocations_reverse = {}
 maplocations_override = {}
 
+
 def init():
     for line in open(MAP_NAMES_TABLE):
         key, value = tuple(line.strip().split(':'))
@@ -1113,6 +1114,55 @@ def get_npcs():
     for l in get_locations():
         npcs.extend(l.npcs)
     return npcs
+
+
+def map_entrance_to_exit(entrance, exit):
+    x = exit.x
+    if exit.y < 10:
+        y = exit.y + 1
+        exit.facing = 2
+    else:
+        y = exit.y - 1
+        exit.facing = 0
+        
+    entrance.dest = exit.location.locid
+    entrance.destx = x
+    entrance.desty = y
+
+
+def randomize_forest():
+    start = get_location(0x84)
+    end = get_location(0x87)
+    mids = [get_location(x) for x in (0x85, 0x86)]
+
+    location86 = get_location(0x86)
+    go_to_train_event = location86.events[0]
+    location86.events.remove(go_to_train_event)
+    world_location_exit = Entrance()
+    world_location_exit.copy(location86.entrances[1])
+    
+    location = random.choice(mids)
+    exit = random.choice(location.entrances)
+    map_entrance_to_exit(start.entrances[0], exit)
+    location2 = [m for m in mids if m.locid != location.locid][0]
+    entrances = [e for e in location.entrances if e != exit]
+    entrance = random.choice(entrances)
+    exit2 = random.choice(location2.entrances)
+    map_entrance_to_exit(entrance, exit2)
+    entrances = [e for e in location2.entrances if e != exit]
+    entrance2 = random.choice(entrances)
+    entrance2.dest = world_location_exit.dest
+    entrance2.destx = world_location_exit.destx
+    entrance2.desty = world_location_exit.desty
+    go_to_train_event.x = entrance2.x
+    go_to_train_event.y = entrance2.y
+    location2.events.append(go_to_train_event)
+
+    wrong_entrances = [e for m in mids for e in m.entrances if e not in (entrance, entrance2)]
+    wrong_exits = [e for m in (mids + [start]) for e in m.entrances]
+    for e in wrong_entrances:
+        exit = random.choice(wrong_exits)
+        map_entrance_to_exit(e, exit)
 
 
 if __name__ == "__main__":

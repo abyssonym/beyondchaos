@@ -69,6 +69,7 @@ class Options:
     random_dances: bool = field(init=False, default=False)
     random_clock: bool = field(init=False, default=False)
     shuffle_wor: bool = field(init=False, default=False)
+    randomize_forest: bool = field(init=False, default=False)
 
     def is_code_active(self, code_name: str):
         for code in self.active_codes:
@@ -198,6 +199,7 @@ ALL_FLAGS = [
     Flag('g', 'random_dances', 'Randomize dances'),
     Flag('k', 'random_clock', 'Randomize the clock in Zozo'),
     Flag('r', 'shuffle_wor', 'Randomize character locations in the world of ruin.'),
+    Flag('j', 'randomize_forest', 'Randomize the phantom forest.'),
 ]
 
 

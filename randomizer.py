@@ -21,7 +21,7 @@ from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NORE
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield, unhardcode_tintinabar)
-from locationrandomizer import (get_locations, get_location, get_zones, get_npcs)
+from locationrandomizer import (get_locations, get_location, get_zones, get_npcs, randomize_forest)
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu,
                           show_original_names, improve_dance_menu, y_equip_relics, fix_gogo_portrait)
 from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monsters,
@@ -4575,6 +4575,10 @@ def randomize():
         manage_dragons()
     reseed()
 
+    if options_.random_final_dungeon and not options_.is_code_active('ancientcave') and not options_.is_code_active('strangejourney'):
+        randomize_forest()
+    reseed()
+    
     if options_.random_final_dungeon and not options_.is_code_active('ancientcave'):
         # do this before treasure
         manage_tower()

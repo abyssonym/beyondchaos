@@ -1425,7 +1425,7 @@ def manage_skips():
 
     def handleGau(split_line): # Replace events that should be replaced if we are auto-recruiting Gau
         # at least for now, divergent paths doesn't skip the cutscene with Gau
-        if options_.is_code_active("QGWURNGNSEIMKTMDFBIX"):
+        if options_.is_code_active("thescenarionottaken"):
             return
         if options_.shuffle_commands or options_.replace_commands or options_.random_treasure:
             writeToAddress(split_line[0], split_line[1:])
@@ -1439,12 +1439,12 @@ def manage_skips():
                 palette_correct_sub.write(fout)
 
     def handleConvergentPalette(split_line):
-        if options_.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+        if options_.is_code_active('thescenarionottaken'):
             return
         handlePalette(split_line)
 
     def handleDivergentPalette(split_line):
-        if not options_.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+        if not options_.is_code_active('thescenarionottaken'):
             return
         handlePalette(split_line)
 
@@ -1465,12 +1465,12 @@ def manage_skips():
             )
 
     def handleConvergent(split_line): # Replace events that should be modified if the scenarios are changed
-        if options_.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+        if options_.is_code_active('thescenarionottaken'):
             return
         handleNormal(split_line)
 
     def handleDivergent(split_line): # Replace events that should be modified if the scenarios are changed
-        if not options_.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+        if not options_.is_code_active('thescenarionottaken'):
             return
         handleNormal(split_line)
 
@@ -4385,7 +4385,7 @@ def randomize():
     for f in flags:
         options_.activate_flag(f)
 
-    if options_.is_code_active("QGWURNGNSEIMKTMDFBIX"):
+    if options_.is_code_active("thescenarionottaken"):
         diverge(fout)
 
     read_dialogue(fout)
@@ -4676,7 +4676,7 @@ def randomize():
     reseed()
 
     wor_free_char = 0xB  # gau
-    alternate_gogo = options_.is_code_active('HAKCSBKC')
+    alternate_gogo = options_.is_code_active('mimetime')
     if (options_.shuffle_wor or alternate_gogo) and not options_.is_code_active('ancientcave'):
         include_gau = options_.shuffle_commands or options_.replace_commands or options_.random_treasure
         wor_free_char = manage_wor_recruitment(fout,
@@ -4687,7 +4687,7 @@ def randomize():
     reseed()
 
     if options_.is_code_active('worringtriad') and not options_.is_code_active('ancientcave'):
-        manage_wor_skip(fout, wor_free_char, options_.is_code_active('airship'), options_.mode.name == 'dragonhunt', options_.is_code_active('HAKCSBKC'))
+        manage_wor_skip(fout, wor_free_char, options_.is_code_active('airship'), options_.mode.name == 'dragonhunt', options_.is_code_active('mimetime'))
     reseed()
 
     if options_.random_clock and not options_.is_code_active('ancientcave'):
@@ -4730,7 +4730,7 @@ def randomize():
     reseed()
 
     # ----- NO MORE RANDOMNESS PAST THIS LINE -----
-    if options_.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+    if options_.is_code_active('thescenarionottaken'):
         no_kutan_skip(fout)
 
     write_all_locations_misc()

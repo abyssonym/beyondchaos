@@ -835,9 +835,9 @@ def manage_palettes(fout, change_to, char_ids):
             continue
         line = line.split(' ')
         if len(line) > 1:
-            if line[1] == 'c' and options_.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+            if line[1] == 'c' and options_.is_code_active('thescenarionottaken'):
                 return
-            if line[1] == 'd' and not options_.is_code_active('QGWURNGNSEIMKTMDFBIX'):
+            if line[1] == 'd' and not options_.is_code_active('thescenarionottaken'):
                 return
         pointer = hex2int(line[0].strip())
         fout.seek(pointer)

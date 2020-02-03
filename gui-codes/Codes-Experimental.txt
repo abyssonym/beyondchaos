@@ -1,3 +1,0 @@
-strangejourney		A prototype entrance randomizer, similar to the ancientcave mode. Includes all maps and event tiles, and is usually extremely hard to beat by itself.
-norng				Calls to the RNG are not made. Attacks are always critical hits, everything targets the lead character when applicable, and all attacks hit if they are able to except Instant Death. Many more additional effects occur. Cannot currently be completed without cheat codes.
-repairpalette		Allegedly repairs palettes. Effects unknown. Cannot proceed past Banon's scenario.

@@ -8,6 +8,8 @@ from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel
     QHBoxLayout, QLineEdit, QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, \
     QTabWidget, QInputDialog, QScrollArea, QMessageBox
 
+import options
+
 print("Loading Complete! Any errors shown here should be reported to Green Knight")
 
 if version_info[0] < 3:
@@ -318,47 +320,27 @@ class Window(QWidget):
     #   puts data into separate dictionaries
     def initCodes(self):
         codeLists = ["Codes-Aesthetic.txt", "Codes-Experimental.txt", "Codes-Gamebreaking.txt",
-                     "Codes-Major.txt", "Codes-Minor.txt", "Codes-Simple.txt"]
+                     "Codes-Major.txt", "Codes-Minor.txt"]
 
-        for fileList in codeLists:
-            with open("gui-codes/" + fileList, 'r') as fl:
-                content = fl.readlines()
+        for code in options.NORMAL_CODES + options.MAKEOVER_MODIFIER_CODES:
+            if code.category == "aesthetic":
+                d = self.aesthetic
+            elif code.category == "experimental":
+                d = self.experimental
+            elif code.category == "gamebreaking":
+                d = self.gamebreaking
+            elif code.category == "major":
+                d = self.major
+            elif code.category == "minor":
+                d = self.minor
+            else:
+                print(f"Code {code.name} does not have a valid category.")
+                continue
 
-                if fileList == "Codes-Aesthetic.txt":
-                    for l in content:
-                        temp = split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.aesthetic[temp[0]] = {'explanation': temp[1], 'checked': False}
+            d[code.name] = {'explanation': code.long_description, 'checked': False}
 
-                elif fileList == "Codes-Experimental.txt":
-                    for l in content:
-                        temp = split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.experimental[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-                elif fileList == "Codes-Gamebreaking.txt":
-                    for l in content:
-                        temp = split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.gamebreaking[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-                elif fileList == "Codes-Major.txt":
-                    for l in content:
-                        temp = split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.major[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-                elif fileList == "Codes-Minor.txt":
-                    for l in content:
-                        temp = split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.minor[temp[0]] = {'explanation': temp[1], 'checked': False}
-
-                elif fileList == "Codes-Simple.txt":
-                    for l in content:
-                        temp = split('\t|\n', l)
-                        temp = list(filter(None, temp))
-                        self.simple[temp[0]] = {'explanation': temp[1], 'checked': False}
+        for flag in sorted(options.ALL_FLAGS):
+            self.simple[flag.name] = {'explanation': flag.description, 'checked': False}
 
 
     # opens input dialog to get a name to assign a desired seed flagset, then saves all dictionaries,

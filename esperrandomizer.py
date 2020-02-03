@@ -5,10 +5,9 @@ from itertools import chain, repeat
 from typing import List
 
 from dialoguemanager import patch_dialogue, set_dialogue_var, set_location_name
-from formationrandomizer import get_formation
 from monsterrandomizer import change_enemy_name, get_monster, MonsterGraphicBlock
 from skillrandomizer import get_ranked_spells, get_spell
-from utils import ESPER_TABLE, MAGICITE_TABLE, hex2int, int2bytes, Substitution, utilrandom as random, shuffle_key_values
+from utils import ESPER_TABLE, MAGICITE_TABLE, hex2int, int2bytes, Substitution, utilrandom as random
 
 items = None
 
@@ -344,7 +343,6 @@ def randomize_magicite(fout, sourcefile):
     remaining_values = [e for e in espers if e not in shuffled_espers.values()]
     random.shuffle(remaining_values)
     shuffled_espers.update(zip(remaining_keys, remaining_values))
-    
 
     # Make sure Odin's replacement levels up
     odin_id = espers_by_name["Odin"].id
@@ -352,16 +350,16 @@ def randomize_magicite(fout, sourcefile):
     if shuffled_espers[odin_id].rank > shuffled_espers[raiden_id].rank:
         shuffled_espers[odin_id], shuffled_espers[raiden_id] = shuffled_espers[raiden_id], shuffled_espers[odin_id]
     elif shuffled_espers[odin_id].rank == shuffled_espers[raiden_id].rank:
-        candidate_indeces = [i for i, e in enumerate(remaining_values)
+        candidate_indices = [i for i, e in enumerate(remaining_values)
                              if e.rank == shuffled_espers[odin_id].rank + 1]
-        if candidate_indeces:
-            replacement_index = random.choice(candidate_indeces)
+        if candidate_indices:
+            replacement_index = random.choice(candidate_indices)
             shuffled_espers[raiden_id], shuffled_espers[remaining_keys[replacement_index]] = remaining_values[replacement_index], shuffled_espers[raiden_id]
         else:
-            candidate_indeces = [i for i, e in enumerate(remaining_values)
+            candidate_indices = [i for i, e in enumerate(remaining_values)
                                  if e.rank == shuffled_espers[odin_id].rank - 1]
-            assert(candidate_indeces)
-            replacement_index = random.choice(candidate_indeces)
+            assert candidate_indices
+            replacement_index = random.choice(candidate_indices)
             shuffled_espers[odin_id], shuffled_espers[remaining_keys[replacement_index]] = remaining_values[replacement_index], shuffled_espers[odin_id]
 
     locations = [e.location for e in espers]
@@ -402,7 +400,7 @@ def randomize_magicite(fout, sourcefile):
 
     phoenix_replacement = shuffled_espers[espers_by_name["Phoenix"].id]
     set_location_name(71, f"{phoenix_replacement.name.upper()} CAVE")
-    
+
     esper_monsters = [(0x108, "Shiva"), (0x109, "Ifrit"), (0x114, "Tritoch"), (0x115, "Tritoch"), (0x144, "Tritoch")]
 
     for monster_id, name in esper_monsters:

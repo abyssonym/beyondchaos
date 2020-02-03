@@ -130,14 +130,15 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
         write_multi(fout, newexp, length=2)
 
     startsub = Substitution()
-    startsub.bytestring = bytearray([0xD7, 0xF3,  # remove Daryl
-                           0xD5, 0xF0,  # remove Terra from party
-                           0xD5, 0xE0,  # remove Terra from party
-                           0xDC, 0x7E,  # fix ending? $1F4F bit 6
-                           0xB8, 0x43,  # show magic points after battle
-                           0x3F, 0x0E, 0x00,
-                           0x3F, 0x0F, 0x00,
-                           ])
+    startsub.bytestring = bytearray([
+        0xD7, 0xF3,  # remove Daryl
+        0xD5, 0xF0,  # remove Terra from party
+        0xD5, 0xE0,  # remove Terra from party
+        0xDC, 0x7E,  # fix ending? $1F4F bit 6
+        0xB8, 0x43,  # show magic points after battle
+        0x3F, 0x0E, 0x00,
+        0x3F, 0x0F, 0x00,
+    ])
     if options_.is_code_active('racecave'):
         num_starting = 9 + random.randint(0, 2) + random.randint(0, 1)
     elif options_.is_code_active('speedcave'):
@@ -337,8 +338,9 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
 
     pilot = random.choice([s for s in starting if s < 12])
     pilot_sub = Substitution()
-    pilot_sub.bytestring = bytearray([0x3D, pilot, 0x45,
-                            0x3F, pilot, 0x01])
+    pilot_sub.bytestring = bytearray(
+        [0x3D, pilot, 0x45,
+        0x3F, pilot, 0x01])
     for i in range(14):
         if i == pilot:
             continue
@@ -652,13 +654,15 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
     num_in_party_sub.bytestring = [0xB2, c0, b0, a0]
     num_in_party_sub.write(fout)
     num_in_party_sub.set_location(pointer)
-    num_in_party_sub.bytestring = bytes([0xC0, 0xAE, 0x01, c1, b1, a1,
-                                   0xB2, 0x80, 0xC6, 0x00,
-                                   0xC0, 0xAF, 0x01, c2, b2, a2,
-                                   0xB2, 0x80, 0xC6, 0x00,
-                                   0xD3, 0xA3,
-                                   0xD3, 0xA2,
-                                   0xFE])
+    num_in_party_sub.bytestring = bytes([
+        0xC0, 0xAE, 0x01, c1, b1, a1,
+        0xB2, 0x80, 0xC6, 0x00,
+        0xC0, 0xAF, 0x01, c2, b2, a2,
+        0xB2, 0x80, 0xC6, 0x00,
+        0xD3, 0xA3,
+        0xD3, 0xA2,
+        0xFE
+    ])
     num_in_party_sub.write(fout)
     pointer += len(num_in_party_sub.bytestring)
     ally_addrs = {}

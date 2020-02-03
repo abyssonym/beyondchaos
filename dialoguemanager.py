@@ -281,7 +281,8 @@ def patch(text, token):
     #print(f"patching {text}", end="")
     while True:
         match = re.search("\{(.+)\}", text)
-        if not match: break
+        if not match:
+            break
 
         # handle conditionals/flags
         if "?" in match[1]:

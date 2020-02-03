@@ -334,7 +334,7 @@ def write_location_names(fout):
     offset = 0
     for idx, text in location_names.items():
         lastlength = len(new_location_names) - offset
-  
+
         offset += lastlength
         if offset > 0x1FFFF:
             print(f"location name addressing overflow at index {idx}")

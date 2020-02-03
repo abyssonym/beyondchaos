@@ -45,7 +45,6 @@ def randomize_poem(fout):
     wait = min(wait * 26 + 2, 255)
 
     # Adjust wait to be long enough for the poem
-    # TODO: change wait based on selected poem
     wait_sub = Substitution()
     wait_sub.set_location(0xC401D)
     wait_sub.bytestring = bytes([0xB5, wait])

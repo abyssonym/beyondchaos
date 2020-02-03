@@ -34,25 +34,25 @@ Or does it explode?
 # Author: Percy Bysshe Shelley
 
 And on the pedestal these words appear:
-'My name is Ozymandias, King of Kings.
-Look on my Works, ye Mighty and despair!'
+“My name is Ozymandias, King of Kings.
+Look on my Works, ye Mighty and despair!”
 
 Nothing beside remains. Round the decay
 of that colossal Wreck, boundless and bare,
-The lone and level sands stretch far away."
+The lone and level sands stretch far away.
 
 ---
 # Title: excerpt from "The New Colossus"
 # Author: Emma Lazerus
 
-"Keep, ancient lands, your storied pomp!" cries she
-with silent lips. "Give me your tired, your poor,
+“Keep, ancient lands, your storied pomp!” cries she
+with silent lips. “Give me your tired, your poor,
 
 your huddled masses yearning to breathe free,
 the wretched refuse of your teeming shore.
 
 Send these, the homeless, tempest-tost to me,
-I lift my lamp beside the golden door!"
+I lift my lamp beside the golden door!”
 
 ---
 # Title: "This is Just to Say"

@@ -60,14 +60,14 @@ DANCE_NAMES_TABLE = path.join(custom_path, "dancenames.txt")
 PASSWORDS_TABLE = path.join(custom_path, "passwords.txt")
 POEMS_TABLE = path.join(custom_path, "poems.txt")
 
-def open_mei_fallback(filename, mode='r'):
+def open_mei_fallback(filename, mode='r', encoding=None):
     if not MEI:
-        return open(filename, mode)
+        return open(filename, mode, encoding=encoding)
 
     try:
-        f = open(filename, mode)
+        f = open(filename, mode, encoding=encoding)
     except IOError:
-        f = open(path.join(_MEIPASS, filename), mode)
+        f = open(path.join(_MEIPASS, filename), mode, encoding=encoding)
     return f
 
 

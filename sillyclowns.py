@@ -8,7 +8,7 @@ POEM_PAGE_BREAK = "<wait 390 frames><wait 1 frame><page>"
 def randomize_poem(fout):
     poems = []
 
-    with open_mei_fallback(POEMS_TABLE) as poems_file:
+    with open_mei_fallback(POEMS_TABLE, encoding='utf8') as poems_file:
         current_poem = []
         page_break = False
         wait = 0

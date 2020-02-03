@@ -122,9 +122,6 @@ class Options:
             candidates = NORMAL_CODES + MAKEOVER_MODIFIER_CODES
 
         selected = random.choice(candidates)
-        if selected.is_cyphered:
-            f = FourSquare(selected.key1, selected.key2)
-            return f.decypher(selected.name)
         return selected.name
 
 ANCIENT_CAVE_PROHIBITED_CODES = [
@@ -219,7 +216,7 @@ NORMAL_CODES = [
     Code('llg', "LOW LEVEL GAME MODE", "Stands for Low Level Game. No encounters will yield any Experience Points.", "major"),
     Code('naturalmagic', "NATURAL MAGIC MODE", "No Espers or equipment will teach spells. The only way to learn spells is through Natural Magic.", "major"),
     Code('naturalstats', "NATURAL STATS MODE", "No Espers will grant stat bonuses upon leveling up.", "minor"),
-    Code('playsitself', "AUTOBATTLE MODE","All characters will act automatically, in a manner similar to when Coliseum fights are fought.", "major"),
+    Code('playsitself', "AUTOBATTLE MODE", "All characters will act automatically, in a manner similar to when Coliseum fights are fought.", "major"),
     Code('bingoboingo', "BINGO BONUS", "Generates a Bingo table with spells, items, equipment, and enemy squares to check off. Players can set victory requirements like achieving a line, or acquiring a certain number of points. The ROM does not interact with the bingo card.", "aesthetic"),
     Code('worringtriad', "START IN WOR", "The player will start in the World of Ruin, with all of the World of Balance treasure chests, along with a guaranteed set of items, and more Lores.", "major"),
     Code('metronome', "R-CHAOS MODE", "All characters have Fight, R-Chaos, Magic, and Item as their skillset, except for the Mime, who has Mimic instead of Fight. Berserker also only has R-Chaos.", "major"),

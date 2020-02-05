@@ -319,9 +319,6 @@ class Window(QWidget):
     # (At startup) Opens text files containing code flags/descriptions and
     #   puts data into separate dictionaries
     def initCodes(self):
-        codeLists = ["Codes-Aesthetic.txt", "Codes-Experimental.txt", "Codes-Gamebreaking.txt",
-                     "Codes-Major.txt", "Codes-Minor.txt"]
-
         for code in options.NORMAL_CODES + options.MAKEOVER_MODIFIER_CODES:
             if code.category == "aesthetic":
                 d = self.aesthetic

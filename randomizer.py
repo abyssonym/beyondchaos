@@ -1903,7 +1903,8 @@ def manage_colorize_animations():
         palette = transformer(palette)
         pointer = 0x126000 + (i*16)
         fout.seek(pointer)
-        [write_multi(fout, c, length=2) for c in palette]
+        for c in palette:
+            write_multi(fout, c, length=2)
 
 
 def manage_items(items, changed_commands=None):
@@ -4003,16 +4004,6 @@ def sabin_hint(commands):
     set_dialogue(0xb9, hint)
 
 
-def code_hint():
-    if options_.is_any_code_active(["easymodo", "canttouchthis"]):
-        return
-
-    codename = options_.random_unused_code()
-
-    hint = "MADUIN: But if you use the code “{}”… <wait 240 frames><wait 1 frame><page><line>You will probably be able to remain in this world as a human being… <wait 240 frames><wait 1 frame>".format(codename)
-    set_dialogue(0xBFD, hint)
-
-
 def house_hint():
     skill = get_collapsing_house_help_skill()
 
@@ -4357,7 +4348,7 @@ def randomize():
             multiplier = float(x)
             if multiplier <= 0:
                 multiplier = None
-        except:
+        except (ValueError, OverflowError):
             multiplier = None
         set_randomness_multiplier(multiplier)
     elif options_.is_code_active('madworld'):
@@ -4585,7 +4576,7 @@ def randomize():
     if options_.random_final_dungeon and not options_.is_code_active('ancientcave') and not options_.is_code_active('strangejourney'):
         randomize_forest()
     reseed()
-    
+
     if options_.random_final_dungeon and not options_.is_code_active('ancientcave'):
         # do this before treasure
         manage_tower()
@@ -4728,8 +4719,6 @@ def randomize():
     if options_.random_enemy_stats or options_.random_formations:
         house_hint()
     reseed()
-
-    code_hint()
     reseed()
 
     randomize_poem(fout)

@@ -43,7 +43,10 @@ def manage_map_names(fout):
         write_multi(fout, pointer, length=2)
 
 
-def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
+def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
+    if not form_music_overrides:
+        form_music_overrides = {}
+
     change_battle_commands = [41, 42, 43]
     if not options_.shuffle_commands:
         alrs = AutoLearnRageSub(require_gau=True)

@@ -4500,13 +4500,16 @@ def randomize():
         manage_equipment(items)
     reseed()
 
+    if options_.randomize_magicite:
+        esper_replacements = randomize_magicite(fout, sourcefile)
+    reseed()
+
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
     if options_.random_espers:
-        replacements = randomize_magicite(fout, sourcefile)
         if options_.is_code_active('dancingmaduin'):
             allocate_espers(options_.is_code_active('ancientcave'), get_espers(sourcefile), get_characters(), fout, replacements)
             nerf_paladin_shield()
-        manage_espers(esperrage_spaces, replacements)
+        manage_espers(esperrage_spaces, esper_replacements)
     reseed()
 
     if flags:

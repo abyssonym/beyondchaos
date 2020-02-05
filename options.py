@@ -1,6 +1,5 @@
 from dataclasses import dataclass, field
 from typing import List, Set
-import string
 
 from utils import utilrandom as random
 
@@ -65,6 +64,7 @@ class Options:
     random_clock: bool = field(init=False, default=False)
     shuffle_wor: bool = field(init=False, default=False)
     randomize_forest: bool = field(init=False, default=False)
+    randomize_magicite: bool = field(init=False, default=False)
 
     def is_code_active(self, code_name: str):
         for code in self.active_codes:
@@ -194,6 +194,7 @@ ALL_FLAGS = [
     Flag('k', 'random_clock', 'Randomize the clock in Zozo'),
     Flag('r', 'shuffle_wor', 'Randomize character locations in the world of ruin.'),
     Flag('j', 'randomize_forest', 'Randomize the phantom forest.'),
+    Flag('y', 'randomize_magicite', 'Shuffle magicite locations.'),
 ]
 
 

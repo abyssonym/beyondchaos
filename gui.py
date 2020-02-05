@@ -1,4 +1,4 @@
-from sys import version_info, exit, argv
+import sys
 from pickle import load, dump
 from re import match, split
 from os import path, mkdir, listdir, remove
@@ -12,7 +12,7 @@ import options
 
 print("Loading Complete! Any errors shown here should be reported to Green Knight")
 
-if version_info[0] < 3:
+if sys.version_info[0] < 3:
     raise Exception("Python 3 or a more recent version is required. Report this to Green Knight")
 
 # Extended QButton widget to hold flag value - NOT USED PRESENTLY
@@ -58,7 +58,7 @@ class Window(QWidget):
         self.minor = {}
         self.simple = {}
         self.dictionaries = [self.simple, self.aesthetic, self.major,
-                        self.minor, self.experimental, self.gamebreaking]
+                             self.minor, self.experimental, self.gamebreaking]
 
         # dictionary? of saved presets
         self.savedPresets = {}
@@ -157,7 +157,7 @@ class Window(QWidget):
         radioButton.setToolTip("Play through the normal story")
         radioButton.setChecked(True)
         radioButton.mode = "normal"
-        radioButton.clicked.connect(lambda : self.updateRadioSelection("normal"))
+        radioButton.clicked.connect(lambda: self.updateRadioSelection("normal"))
         midLeftVBox.addWidget(radioButton)
 
         radioButton = QRadioButton("Ancient Cave")
@@ -234,7 +234,7 @@ class Window(QWidget):
                 tablayout.addWidget(cbox)
                 #cbox.setCheckable(True)
                 #cbox.setToolTip(flagdesc['explanation'])
-                cbox.clicked.connect(lambda checked : self.flagButtonClicked())
+                cbox.clicked.connect(lambda checked: self.flagButtonClicked())
             t.setLayout(tablayout)
             #tablayout.addStretch(1)
             tabObj.setWidgetResizable(True)
@@ -242,7 +242,7 @@ class Window(QWidget):
 
         tabVBoxLayout.addWidget(tabs)
         #----------- tabs done ----------------------------
-        
+
         # this is the line in the layout that displays the string of selected flags
         #   and the button to save those flags
         widgetV = QWidget()
@@ -256,7 +256,7 @@ class Window(QWidget):
         widgetVBoxLayout.addWidget(self.flagString)
 
         saveButton = QPushButton("Save flags selection")
-        saveButton.clicked.connect(lambda : self.saveSeed())
+        saveButton.clicked.connect(lambda: self.saveSeed())
         widgetVBoxLayout.addWidget(saveButton)
 
         # This part makes a group box and adds the selected-flags display
@@ -391,7 +391,7 @@ class Window(QWidget):
     # if the only saved preset is deleted, or user selects initial value of
     #   'Select a preset' then the UI is reset (mainly to avoid runtime errors)
     def updatePresetDropdown(self):
-        if (self.comboBox.currentIndex() != 0): # text = "Select a preset"
+        if self.comboBox.currentIndex() != 0: # text = "Select a preset"
             selectedPreset = self.comboBox.currentText()
             self.loadPreset(selectedPreset)
         else:
@@ -408,7 +408,7 @@ class Window(QWidget):
         self.flagString.setText(self.flags)
 
         for i in self.middleLeftGroupBox.findChildren((QRadioButton)):
-            if (i.mode == 'normal'):
+            if i.mode == 'normal':
                 i.setProperty('checked', True)
                 break
 
@@ -425,7 +425,7 @@ class Window(QWidget):
         for t, d in zip(self.tablist, self.dictionaries):
             children = t.findChildren(FlagCheckBox)
             for c in children:
-                if (c.isChecked()):
+                if c.isChecked():
                     d[c.value]['checked'] = True
                 else:
                     d[c.value]['checked'] = False
@@ -493,10 +493,10 @@ class Window(QWidget):
 
             # This makes the flag string more readable in the confirm dialog
             message = ((f"Rom: {self.romText}\n"
-                            f"Seed: {displaySeed}\n"
-                            f"Mode: {self.mode}\n"
-                            f"Flags: \n----{flags}\n"
-                            f"(Hyphens are not actually used in seed generation)"))
+                        f"Seed: {displaySeed}\n"
+                        f"Mode: {self.mode}\n"
+                        f"Flags: \n----{flags}\n"
+                        f"(Hyphens are not actually used in seed generation)"))
             messBox = QMessageBox.question(self, "Confirm Seed Generation?", message, QMessageBox.Yes| QMessageBox.Cancel)
             if messBox == 16384:  # User selects confirm/accept/yes option
                 finalFlags = self.flags.replace(" ", "")
@@ -533,7 +533,7 @@ class Window(QWidget):
                 value = c.value
                 #print(value + str(d[value]['checked']))
                 if d[value]['checked']:
-                    c.setProperty('checked',True)
+                    c.setProperty('checked', True)
                 else:
                     c.setProperty('checked', False)
 
@@ -544,7 +544,7 @@ class Window(QWidget):
     # enumerate radio button objects and set them to the currently set mode variable
     def updateModeSelection(self):
         for i in self.middleLeftGroupBox.findChildren((QRadioButton)):
-            if (i.mode == self.mode):
+            if i.mode == self.mode:
                 i.setProperty('checked', True)
                 break
 
@@ -556,6 +556,6 @@ class Window(QWidget):
 
 
 if __name__ == "__main__":
-    App = QApplication(argv)
+    App = QApplication(sys.argv)
     window = Window()
-    exit(App.exec())
+    sys.exit(App.exec())

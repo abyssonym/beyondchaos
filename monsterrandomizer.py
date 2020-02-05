@@ -2040,8 +2040,8 @@ def get_collapsing_house_help_skill():
                     status_specials.append(m.special & 0x3F)
                 skills = m.get_skillset(ids_only=False)
                 all_skills.extend([z for z in skills
-                                   if (z.target_enemy_default or (z.target_everyone and not
-                 z.target_one_side_only)) and
+                                   if (z.target_enemy_default or
+                                       (z.target_everyone and not z.target_one_side_only)) and
                                    z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]])
 
     if status_specials:

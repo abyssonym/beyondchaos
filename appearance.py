@@ -456,7 +456,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
             try:
                 with open_mei_fallback(filename, "rb") as f:
                     sprite = f.read()
-            except:
+            except OSError:
                 continue
             if len(sprite) >= rc[2]:
                 sprite = sprite[:rc[2]]

@@ -101,28 +101,6 @@ class Options:
                 setattr(self, flag.attr, True)
                 return
 
-    def random_unused_code(self):
-        candidates = [c for c in NORMAL_CODES
-                      if c not in self.active_codes and c.name != "repairpalette"]
-
-        i = random.randint(1, 7)
-        if i <= 2:
-            secret_codes = [c for c in NORMAL_CODES if c.name in ("thescenarionottaken", "mimetime") and not self.is_code_active(c)]
-            if secret_codes:
-                candidates = secret_codes
-
-        elif i <= 4:
-            new_codes = MAKEOVER_MODIFIER_CODES + [c for c in NORMAL_CODES if c.name in ["alasdraco"]]
-            new_codes = [c for c in new_codes
-                         if not self.is_code_active(c)]
-            if new_codes:
-                candidates = new_codes
-
-        if not candidates:
-            candidates = NORMAL_CODES + MAKEOVER_MODIFIER_CODES
-
-        selected = random.choice(candidates)
-        return selected.name
 
 ANCIENT_CAVE_PROHIBITED_CODES = [
     "airship",

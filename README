@@ -199,6 +199,9 @@ A: This feature was removed because it didn't work properly with one of the new 
 Q: My berserker who uses Rage did a slam attack and it did a whole bunch of damage/somehow killed someone on my team.
 A: That's a bug. For some reason when he has the Rage status, the slam attack gets the properties of the Fire spell but with a super high Magic Power. If the enemy has Reflect, it'll hit your team. Hopefully you have equipment that absorbs or nullifies fire.
 
+Q: I can't find a Striker to recruit Shadow?
+A: You can always get a Striker in the coliseum by buying an item from a shop, betting it, and then betting what you win.
+
 Q: Can you add X to the mini-guide that gets generated?
 A: Let me know. I'm not sure what kinds of things people want in the mini-FAQ.
 

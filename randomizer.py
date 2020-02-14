@@ -2828,7 +2828,6 @@ def manage_shops():
     buyables = set([])
     descriptions = []
     crazy_shops = options_.is_code_active("madworld")
-    buy_owned_breakable_tools(fout)
 
     for s in get_shops(sourcefile):
         s.mutate_items(fout, crazy_shops)
@@ -4472,6 +4471,7 @@ def randomize():
     items = get_ranked_items()
     if options_.random_items:
         manage_items(items, changed_commands=changed_commands)
+        buy_owned_breakable_tools(fout)
         improve_item_display(fout)
     reseed()
 

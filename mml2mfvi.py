@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 
-import sys, os, re, traceback, copy
+import sys, os, re, traceback, copy, math
 from mmltbl import *
 
 mml_log = "\n" if __name__ == "__main__" else None
 
 def byte_insert(data, position, newdata, maxlength=0, end=0):
     while position > len(data):
-        data = data + "\x00"
+        data = data + b"\x00"
     if end:
         maxlength = end - position + 1
     if maxlength and len(data) > maxlength:
@@ -19,10 +19,10 @@ def int_insert(data, position, newdata, length, reversed=True):
     n = int(newdata)
     l = []
     while len(l) < length:
-        l.append(chr(n & 0xFF))
+        l.append(n & 0xFF)
         n = n >> 8
     if not reversed: l.reverse()
-    return byte_insert(data, position, "".join(l), length)
+    return byte_insert(data, position, bytes(l), length)
 
 def warn(fileid, cmd, msg):
     global mml_log
@@ -65,6 +65,172 @@ class Drum:
             self.delim, self.key, self.octave, self.note, self.params = None, None, None, None, None
         mlog("DRUM: [{}] {} -- o{} {} {}".format(self.delim, self.key, self.octave, self.note, self.params))
         
+def get_variant_list(mml, sfxmode=False):
+    all_delims = set()
+    for line in mml:
+        if line.startswith("#SFXV") and len(line) > 5:
+            tokens = line[5:].split()
+            if len(tokens) < 1: continue
+            if len(tokens) >= 2 and sfxmode:
+                all_delims.update(tokens[1])
+            elif not sfxmode:
+                all_delims.update(tokens[0])
+    variants = {}
+    for line in mml:
+        if line.startswith("#VARIANT") and len(line) > 8:
+            makedefault = True if not variants else False
+            tokens = line[8:].split()
+            if len(tokens) < 1: continue
+            if len(tokens) == 1:
+                tokens.append('_default_')
+            all_delims.update(tokens[0])
+            variants[tokens[1]] = tokens[0]
+            if makedefault: variants["_default_"] = tokens[0]
+    for k, v in list(variants.items()):
+        variants[k] = "".join([c for c in all_delims if c not in variants[k]])
+    if not variants:
+        variants['_default_'] = ''.join([c for c in all_delims])
+    return variants
+        
+def get_brr_imports(mml, variant=None):
+    variants = get_variant_list(mml)
+    if variant not in variants:
+        print(f"BRRIMPORT: requested variant '{variant}' not present in mml, reverting to default")
+    if not variant:
+        variant = "_default_"
+
+    brr_import_info = {}
+    vtokens = variants[variant]
+    for line in mml:
+        if line.upper().startswith("#BRR") and len(line) > 4:
+            line = line[4:]
+            for c in vtokens:
+                if c in line:
+                    line = re.sub(re.escape(c)+'.*?'+re.escape(c), '', line)
+            if ';' in line:
+                prog, _, meta = line.partition(';')
+            
+                prog = prog.strip().lower().split()
+                if prog == "":
+                    continue
+                base = 16 if 'x' in prog[0] else 10
+                prog_ = prog[0].replace('x', '')
+                try:
+                    prog = int(prog_, base)
+                except ValueError:
+                    print(f"BRRIMPORT: couldn't parse program value '{prog}'")
+                    continue
+                if prog < 0x20 or prog >= 0x30:
+                    continue
+                    
+                meta = meta.strip().split(',')
+                if len(meta) < 2:
+                    print(f"BRRIMPORT: no loop specified for program 0x{prog:02X}, defaulting to 0")
+                    meta.append('0000')
+                if len(meta) < 3:
+                    print(f"BRRIMPORT: no tuning specified for program 0x{prog:02X}, defaulting to 0")
+                    meta.append('0000')
+                if len(meta) < 4:
+                    print(f"BRRIMPORT: no ADSR specified for program 0x{prog:02X}, defaulting to a15d7s7r0")
+                    meta.append('FFE0')
+                brr_import_info[prog] = meta
+    return brr_import_info
+    
+def parse_brr_loop(looptext):
+    looptext = looptext.strip().lower()
+    if looptext == "brr" or looptext == "inline" or looptext is None:
+        return None
+    try:
+        if looptext.startswith("@"):
+            looptext = looptext[1:]
+            loopmult = 1
+            if looptext.endswith("bl"):
+                loopmult = 9
+                looptext = looptext[:-2]
+            elif looptext.endswith("smp"):
+                loopmult = 9/16
+                looptext = looptext[:-3]
+            if looptext.startswith("0x"):
+                loop = int(round(int(looptext[2:], 16) * loopmult))
+            else:
+                loop = int(round(int(looptext) * loopmult))
+            byteloop = loop.to_bytes(2, "little")
+        else:
+            byteloop = int(looptext, 16).to_bytes(2, "big")
+    except ValueError:
+        byteloop = b"\x00\x00"
+        print(f"PARSEBRRINFO: bad loop data formatting ({looptext}), defaulting to 0000")
+    return byteloop
+       
+def parse_brr_tuning(pitchtext):
+    pitchtext = pitchtext.strip().lower()
+    keytable = {"a": 0, "b": 10, "c": 9, "d": 7, "e": 5, "f": 4, "g": 2}
+    semitones = None
+    try:
+        match = re.fullmatch("(\\^?)([a-g])([+-]?)\\s?([+-]\\d+)", pitchtext)
+        if match:
+            high, key, mod, cents = match.group(1, 2, 3, 4)
+            cents = int(cents)
+        if not match:
+            match = re.fullmatch("(\\^?)([a-g])([+-]?)", pitchtext)
+            if match:
+                high, key, mod = match.group(1, 2, 3)
+                cents = 0
+        if match:
+            semitones = -12 if high else 0
+            semitones += keytable[key]
+            if mod == "+":
+                semitones -= 1
+            elif mod == "-":
+                semitones += 1
+            semitones -= (cents/100)
+            print(f"DEBUG: tuning '{pitchtext}' -> {semitones} st")
+        if semitones is None and len(pitchtext):
+            if pitchtext[0] in ["+", "-"]:
+                semitones = float(pitchtext)
+        if semitones is not None:
+            pitchscale = 10 ** ((semitones / 12) * math.log(2, 10))
+            print(f"DEBUG: pitch scale {pitchscale}")
+            max_pitchscale = 1.5 - (1 / 65536)
+            while pitchscale < 0.5:
+                pitchscale *= 2
+                print(f"DEBUG: pitch scale too low, raising octave")
+            while pitchscale > max_pitchscale:
+                pitchscale /= 2
+                print(f"DEBUG: pitch scale too high, lowering octave")
+            pitchval = int((pitchscale * 65536) - 65536)
+            bytepitch = pitchval.to_bytes(2, "big", signed=True)
+        else:
+            bytepitch = int(pitchtext, 16).to_bytes(2, "big")
+    except ValueError:
+        bytepitch = b"\x00\x00"
+        print(f"PARSEBRRINFO: bad tuning data formatting ({pitchtext}), defaulting to 0000")
+    return bytepitch
+        
+def parse_brr_env(envtext):
+    envtext = envtext.strip().lower()
+    byteenv = None
+    try:
+        envsplit = envtext.split()
+        match = re.fullmatch("a(\\d\\d?)\\s?[dy](\\d)\\s?s(\\d)\\s?r(\\d\\d?)", envtext)
+        if match:
+            attack, decay, sustain, release = match.group(1, 2, 3, 4)
+        elif len(envsplit) >= 4:
+            attack, decay, sustain, release = [int(i, 16) for i in envsplit[0:4]]
+        else:
+            byteenv = int(envtext, 16).to_bytes(2, "big")
+        if byteenv is None:
+            attack, decay, sustain, release = [int(i) for i in (attack, decay, sustain, release)]
+            if attack > 15 or decay > 7 or sustain > 7 or release > 31:
+                raise ValueError(f"Envelope component too large -- a{attack} d{decay} s{sustain} r{release}")
+            firstbyte = 0b10000000 + (decay << 4) + attack
+            secondbyte = (sustain << 5) + release
+            byteenv = bytes([firstbyte, secondbyte])
+    except ValueError:
+        byteenv = b"\xFF\xE0"
+        print(f"PARSEBRRINFO: bad adsr data formatting ({envtext}), defaulting to a15d7s7r0")
+    return byteenv
+    
 def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
     #preprocessor
     #returns dict of (data, inst) tuples (4096, 32 bytes max)
@@ -91,47 +257,30 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
             newmml.append(line.translate(trans))
         mml = newmml
     
-    #sfxvariant
-    all_delims = set()
-    for line in mml:
-        if line.startswith("#SFXV") and len(line) > 5:
-            tokens = line[5:].split()
-            if len(tokens) < 1: continue
-            if len(tokens) >= 2 and sfxmode:
-                all_delims.update(tokens[1])
-            elif not sfxmode:
-                all_delims.update(tokens[0])
-    #variants
-    variants = {}
-    for line in mml:
-        if line.startswith("#VARIANT") and len(line) > 8:
-            makedefault = True if not variants else False
-            tokens = line[8:].split()
-            if len(tokens) < 1: continue
-            if len(tokens) == 1:
-                tokens.append('_default_')
-            all_delims.update(tokens[0])
-            variants[tokens[1]] = tokens[0]
-            if makedefault: variants["_default_"] = tokens[0]
-    for k, v in list(variants.items()):
-        variants[k] = "".join([c for c in all_delims if c not in variants[k]])
-    if not variants:
-        variants['_default_'] = ''.join([c for c in all_delims])
+    variants = get_variant_list(mml)
     if variant:
         if variant not in variants:
             print("mml error: requested unknown variant '{}'\n".format(variant))
-        variants = {variant: variants[variant]}
+            variants = {'_default_': variants['_default_']}
+        else:
+            variants = {variant: variants[variant]}
         
     #generate instruments
     isets = {}
     for k, v in variants.items():
         iset = {}
         for line in mml:
-            skip = False
-            if line.startswith("#WAVE") and len(line) > 5:
+            uline = line.upper()
+            if uline.startswith("#WAVE") or uline.startswith("#BRR"):
                 for c in v:
                     if c in line:
                         line = re.sub(re.escape(c)+'.*?'+re.escape(c), '', line)
+            uline = line.upper()
+            if uline.startswith("#BRR") and len(line) > 4:
+                line = line[4:].partition(';')[0]
+                line = "#WAVE " + line
+                uline = line.upper()
+            if uline.startswith("#WAVE") and len(line) > 5:
                 line = re.sub('[^x\da-fA-F]', ' ', line[5:])
                 tokens = line.split()
                 if len(tokens) < 2: continue
@@ -152,9 +301,9 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
                     warn(fileid, "#WAVE {}, {}".format(hex(numbers[0]), hex(numbers[1])), "Sample ID out of range (expected 0x00 - 0xFF / 0 - 255)")
                     continue
                 iset[numbers[0]] = numbers[1]
-        raw_iset = "\x00" * 0x20
+        raw_iset = b"\x00" * 0x20
         for slot, inst in iset.items():
-            raw_iset = byte_insert(raw_iset, (slot - 0x20)*2, chr(inst))
+            raw_iset = byte_insert(raw_iset, (slot - 0x20)*2, bytes([inst]))
         isets[k] = raw_iset
                 
             
@@ -162,12 +311,15 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
     datas = {}
     for k, v in variants.items():
         datas[k] = mml_to_akao_main(mml, v, fileid)
-        
-    output = {}
-    for k, v in variants.items():
-        output[k] = (datas[k], isets[k])
     
-    return output
+    if variant in variants:
+        return (datas[variant], isets[variant])
+    else:
+        output = {}
+        for k, v in variants.items():
+            output[k] = (datas[k], isets[k])
+        
+        return output
         
         
 def mml_to_akao_main(mml, ignore='', fileid='mml'):
@@ -316,7 +468,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             
     m = list(" ".join(mml))
     targets, channels, pendingjumps = {}, {}, {}
-    data = "\x00" * 0x26
+    data = b"\x00" * 0x26
     defaultlength = 8
     thissegment = 1
     next_jumpid = 1
@@ -373,12 +525,14 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     co = dms.pop(0)
                     while dms[0] == ">":
                         co += dms.pop(0)
-                    state["o0"] += len(co)
+                    if "o0" in state:
+                        state["o0"] += len(co)
                 elif dms[0] == "<":
                     co = dms.pop(0)
                     while dms[0] == "<":
                         co += dms.pop(0)
-                    state["o0"] -= len(co)
+                    if "o0" in state:
+                        state["o0"] -= len(co)
             while len(dms):
                 dcom = dms.pop(0)
                 if len(dms):
@@ -508,11 +662,11 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             else:
                 length = params[0]
             if dots and str(length)+"." in length_tbl:
-                akao = chr(pitch * 14 + length_tbl[str(length)+"."][0])
+                akao = bytes([pitch * 14 + length_tbl[str(length)+"."][0]])
                 dots -= 1
                 length *= 2
             elif length in length_tbl:
-                akao = chr(pitch * 14 + length_tbl[length][0])
+                akao = bytes([pitch * 14 + length_tbl[length][0]])
             else:
                 warn(fileid, command, "Unrecognized note length {}".format(length))
                 continue
@@ -523,11 +677,11 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 dots -= 1
                 length *= 2
                 if dots and str(length)+"." in length_tbl:
-                    akao += chr(note_tbl["^"]*14 + length_tbl[str(length)+"."][0])
+                    akao += bytes([note_tbl["^"]*14 + length_tbl[str(length)+"."][0]])
                     dots -= 1
                     length *= 2
                 else:
-                    akao += chr(note_tbl["^"]*14 + length_tbl[length][0])
+                    akao += bytes([note_tbl["^"]*14 + length_tbl[length][0]])
             data += akao
         #case: simple commands
         elif (prefix, len(params)) in command_tbl:
@@ -544,7 +698,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 targets["jo%d"%next_jumpid] = len(data) + 1
                 next_jumpid += 1    
             #general case
-            akao = chr(command_tbl[prefix, len(params)])
+            akao = bytes([command_tbl[prefix, len(params)]])
             #special case: pansweep
             if prefix == "p" and len(params) == 3:
                 params = params[1:]
@@ -553,7 +707,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 if params[0] >= 256:
                     warn(fileid, command, "Parameter {} out of range, substituting 0".format(params[0]))
                     params[0] = 0
-                akao += chr(params.pop(0))
+                akao += bytes([params.pop(0)])
             data += akao
         #case: default length
         elif prefix == "l" and len(params) == 1:
@@ -581,10 +735,10 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                 if "seg%d"%thissegment in targets:
                     target = targets["seg%d"%thissegment]
                 else:
-                    data += "\xEB"
+                    data += b"\xEB"
                     thissegment += 1
                     continue
-            data += "\xF6" + int_insert("  ",0,target,2)
+            data += b"\xF6" + int_insert(b"\x00\x00",0,target,2)
             thissegment += 1
         #case: jump out of loop
         elif prefix == "j":
@@ -601,7 +755,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             if params[0] >= 256:
                 warn(fileid, command, "Parameter {} out of range, substituting 1".format(params[0]))
                 params[0] = 1
-            data += "\xF5" + chr(params[0]) + int_insert("  ",0,target,2)
+            data += b"\xF5" + bytes([params[0]]) + int_insert(b"\x00\x00",0,target,2)
         #case: hard jump without ending segment
         elif prefix == "%j":
             if len(params)==1:
@@ -611,7 +765,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
                     target = len(data)
                     pendingjumps[len(data)+1] = params[0]
             else: continue
-            data += "\xF6" + int_insert("  ",0,target,2)
+            data += b"\xF6" + int_insert(b"\x00\x00",0,target,2)
         #case: conditional jump
         elif prefix == ":" and len(params) == 1:
             if params[0] in targets:
@@ -619,7 +773,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
             else:
                 target = len(data)
                 pendingjumps[len(data)+1] = params[0]
-            data += "\xFC" + int_insert("  ",0,target,2)
+            data += b"\xFC" + int_insert(b"\x00\x00",0,target,2)
     
     #insert pending jumps
     for k, v in pendingjumps.items():
@@ -628,7 +782,7 @@ def mml_to_akao_main(mml, ignore='', fileid='mml'):
         else:
             warn(fileid, command, "Jump destination {} not found in file".format(v))
     #set up header
-    header = int_insert("\x00"*0x26, 0, len(data)-2, 2)
+    header = int_insert(b"\x00"*0x26, 0, len(data)-2, 2)
     header = int_insert(header, 2, 0x26, 2)
     header = int_insert(header, 4, len(data), 2)
     for i in range(0,8):
@@ -679,7 +833,7 @@ if __name__ == "__main__":
         thisfn = fn + "_data" + vfn
         try:
             with open(thisfn, 'wb') as f:
-                f.write(bytes(v[0], encoding='latin-1'))
+                f.write(bytes(v[0]))
         except IOError:
             print("Error writing file {}".format(thisfn))
             clean_end()
@@ -688,7 +842,7 @@ if __name__ == "__main__":
         thisfn = fn + "_inst" + vfn
         try:
             with open(thisfn, 'wb') as f:
-                f.write(bytes(v[1], encoding='latin-1'))
+                f.write(bytes(v[1]))
         except IOError:
             print("Error writing file {}".format(thisfn))
             clean_end()

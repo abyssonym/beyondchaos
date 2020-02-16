@@ -746,7 +746,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                 print("couldn't open {}".format(sfx))
                 
         akaov = mml_to_akao(mml, name, is_sfxv)
-        if id == 0x5D and len(bytes(akaov["_default_"][0], encoding="latin-1")) > 0x1002:
+        if id == 0x5D and len(akaov["_default_"][0]) > 0x1002:
             akaov = mml_to_akao(orig_mml, name, False)
         return akaov
     
@@ -814,8 +814,8 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             mml = "#VARIANT / \n#VARIANT ? ignore \n" + tierfiles[0] + tierfiles[1] + tierfiles[2]
             
             akao = mml_to_akao(mml, str(tiernames), variant='_default_')
-            inst = bytes(akao['_default_'][1], encoding='latin-1')
-            akao = bytes(akao['_default_'][0], encoding='latin-1')
+            inst = akao[1]
+            akao = akao[0]
 
             ## uncomment to debug tierboss MML
             #with open("lbdebug.mml", "w") as f:
@@ -952,19 +952,19 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                     keeptrying = True
                     break
                 if variant and variant in akao:
-                    s.data = bytes(akao[variant][0], encoding='latin-1')
-                    s.inst = bytes(akao[variant][1], encoding='latin-1')
+                    s.data = akao[variant][0]
+                    s.inst = akao[variant][1]
                 else:
-                    s.data = bytes(akao['_default_'][0], encoding='latin-1')
-                    s.inst = bytes(akao['_default_'][1], encoding='latin-1')
+                    s.data = akao['_default_'][0]
+                    s.inst = akao['_default_'][1]
                 s.is_pointer = False
                 if max(list(s.inst)) > instcount:
                     if 'nopatch' in akao:
-                        s.inst = bytes(akao['nopatch'][1], encoding='latin-1')
-                        s.data = bytes(akao['nopatch'][0], encoding='latin-1')
+                        s.inst = akao['nopatch'][1]
+                        s.data = akao['nopatch'][0]
                     elif 'nat' in akao:
-                        s.inst = bytes(akao['nat'][1], encoding='latin-1')
-                        s.data = bytes(akao['nat'][0], encoding='latin-1')
+                        s.inst = akao['nat'][1]
+                        s.data = akao['nat'][0]
                     else:
                         print("WARNING: instrument out of range in {}".format(s.changeto + ".mml"))
             # case: get song from source ROM
@@ -1043,14 +1043,14 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         # force opera music if opera is randomized
         if opera:
             songtable['aria'].is_pointer = False
-            songtable['aria'].data = bytes(opera['aria'][0], encoding='latin-1')
-            songtable['aria'].inst = bytes(opera['aria'][1], encoding='latin-1')
+            songtable['aria'].data = opera['aria'][0]
+            songtable['aria'].inst = opera['aria'][1]
             songtable['opera_draco'].is_pointer = False
-            songtable['opera_draco'].data = bytes(opera['overture'][0], encoding='latin-1')
-            songtable['opera_draco'].inst = bytes(opera['overture'][1], encoding='latin-1')
+            songtable['opera_draco'].data = opera['overture'][0]
+            songtable['opera_draco'].inst = opera['overture'][1]
             songtable['wed_duel'].is_pointer = False
-            songtable['wed_duel'].data = bytes(opera['duel'][0], encoding='latin-1')
-            songtable['wed_duel'].inst = bytes(opera['duel'][1], encoding='latin-1')
+            songtable['wed_duel'].data = opera['duel'][0]
+            songtable['wed_duel'].inst = opera['duel'][1]
             
         # try to fit it all in!
         if f_preserve:

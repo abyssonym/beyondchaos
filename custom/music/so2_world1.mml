@@ -63,26 +63,25 @@
 
 {1}$ 'init' %e1
 'sb''b'p80'v+m,,8' %r11 l4
-[ [j2,109%j139$109
+[ [j1,139]
 ##8
 'b*v1.5'p90]#^^
 ##17
 'fl+o2''f'p40 %r12 l16
-$117 e4.dc>b8.a8.<c8> b2f+8.g8.a8  gf+g4.<c2 c+4.d4.e4> j1,0
+[j1,117] ##$117 e4.dc>b8.a8.<c8> b2f+8.g8.a8  gf+g4.<c2 c+4.d4.e4> j1,0
 ##21
-$121 [d8.c8.>a8<d4f4 g2g8.f8.e8  fef4.a8.g8.f8 e2j2c+2]c+8.d8.e8
+[j1,121] ##$121 [d8.c8.>a8<d4f4 g2g8.f8.e8  fef4.a8.g8.f8 e2j2c+2]c+8.d8.e8 +++
 ##29
-d2..cd e4.f4.g4 
+#^^ ##d2..cd e4.f4.g4 
 ##31
-'st+o1'p64'v-m,,8' %r8 l1
-egf+f egf+f j1,0
+#^^ ##'st+o1'p64'v-m,,8' %r8 l1 egf+f egf+f
 ##39
-'sb''b*v1.5'p80'v+m,,8' %r11 l4 $139
-e.>b.<g f+.d.f+  e.>b.^^1<    e.>b.<g f+16g16a.<d8.c8.>b8<  c.>g.^ f+1 j1,0
+'sb''b*v1.5'p80'v+m,,8' %r11 l4
+[j1,139] ##$139 e.>b.<g f+.d.f+  e.>b.^^1<    e.>b.<g f+16g16a.<d8.c8.>b8<  c.>g.^ f+1 j1,0
 ##47
-'fl+o2''f'p40 %r12 l16 [j2,150%j117$150
+'fl+o2''f'p40 %r12 l16 [j1,117]
 ##51
-[j2,158%j121$158
+[j1,121]
 ##59
 #^^
 ##61
@@ -92,45 +91,56 @@ l1 egf+f f+gg+a
 m##77
 'hp+o1''g'p0 l8 r64&21
 [[^c4.>a4.d<]j2,183[^c+4.>b4.f+<]]$183[^d+4.d4.>g<]
-$185 'fl+o1''f'p40'v+m,,16' %r12 l16
-[e2..dc d2d8.c8.>b8  <f+4.>b8<c+2 c+2c+8.>b8.a8
-<e2>a2 ^8.b8.<c8d8.c8.>b8  g4.<c4.d+4 g2g+2] j1,0
+[j1,185] ##$185 'fl+o1''f'p40'v+m,,16' %r12 l16
+         ##[e2..dc d2d8.c8.>b8  <f+4.>b8<c+2 c+2c+8.>b8.a8
+         ##<e2>a2 ^8.b8.<c8d8.c8.>b8  g4.<c4.d+4 g2g+2] j1,0
 ##93
 #^^
 ##101
 l4 [e.a.<d> b1  <e.a.^ g2>a2    e.a.<d> b1  <d.d.^ e1>]
 ##117
-[j2,1132%j185$1132
+[j1,185]
 ;
+
+$117 l16 e4.dc>b8.a8.<c8> b2f+8.g8.a8  gf+g4.<c2 c+4.d4.e4> ]
+$121 l16 [d8.c8.>a8<d4f4 g2g8.f8.e8  fef4.a8.g8.f8 e2j2c+2]c+8.d8.e8
+     ##29
+     d2..cd e4.f4.g4 
+     ##31
+     'st+o1'p64'v-m,,8' %r8 l1 egf+f egf+f ]
+$139 l4 e.>b.<g f+.d.f+  e.>b.^^1<    e.>b.<g f+16g16a.<d8.c8.>b8<  c.>g.^ f+1 ]
+$185 'fl+o1''f'p40'v+m,,16' %r12 l16
+     [e2..dc d2d8.c8.>b8  <f+4.>b8<c+2 c+2c+8.>b8.a8
+     <e2>a2 ^8.b8.<c8d8.c8.>b8  g4.<c4.d+4 g2g+2] ]
 
 {2}$ %e1
 'hn-o1''h'p80'v+m,,8' %r9 l16
-[ [j2,209%j239$209 ]
+[ [j1,239] ]
 ##8
 #^^
 ##17
 b1<d1c1c+1
 ##21
-p100 $221 l16 [f8.e8.d8a4<d4 e2e8.d8.c8  dcd4.f8.e8.d8 j2c+2>a2$0] j1,0
+p100 [j1,221] l16 ##$221 l16 [f8.e8.d8a4<d4 e2e8.d8.c8  dcd4.f8.e8.d8 j2c+2>a2$0] j1,0
 c+2p80>>a8.b8.<c+8>
 ##29
 a+8.<c8.d8f2 e1
 ##31
-$231 'st-o1'p64'v-m,,8' %r8 l1
-b<dc+c> b<dc+
-'hn''h'p80 %r9'v+m,,8' a+ j1,0 >
+[j1,231] ##$231 'st-o1'p64'v-m,,8' %r8 l1
+         ##b<dc+c> b<dc+
+>        ##'hn''h'p80 %r9'v+m,,8' a+ j1,0 >
 ##39
-$239 l16 b4.e4.b4 <d4.>a4.<d4>  b4.<ef+g8.f+8.e8 d+2f+2
-g2.f+8e8 f+4.d4.>a4< c2c8.d8.e8 d+2>b2 j1,0
+[j1,239] ##$239 l16 b4.e4.b4 <d4.>a4.<d4>  b4.<ef+g8.f+8.e8 d+2f+2
+l16      ##g2.f+8e8 f+4.d4.>a4< c2c8.d8.e8 d+2>b2 j1,0
 ##47
 b1<d1c1c+1
 ##51
-p100 [j2,258%j221$258
+p100 [j1,221]
 c+2p80>>a8.b8.<c+8>
 ##59
 a+8.<c8.d8f2 e1
 ##61
-[j2,268%j231$268
+[j1,231]
 ##69
 l1 agb<c> c+def
 m##77
@@ -139,38 +149,46 @@ m##77
 l8 [[^<c>bgaegd]j2,291[^<c+>babg+af+]]$291[^<d+dcd>a+<c>g]
 ##93
 'pi+o2''p*v.6'p0 %r15
-$293 [[>a<<c>bgaegd]j2,297[>f+<<c+>babg+af+]]$297[c<d+dcd>a+<c>g] j1,0
+[j1,293] ##$293 [[>a<<c>bgaegd]j2,297[>f+<<c+>babg+af+]]$297[c<d+dcd>a+<c>g] j1,0
 ##101
 'hp+o1''g'p0 l8
 [64e>e<]
 ##117
 'pi+o2''p*v.6'p0 %r15
-[ [j2,2132%j293$2132 ]
+[ [j1,293] ]
 ;
+
+$221 l16 [f8.e8.d8a4<d4 e2e8.d8.c8  dcd4.f8.e8.d8 j2c+2>a2$0] ]
+$231 'st-o1'p64'v-m,,8' %r8 l1
+     b<dc+c> b<dc+
+     'hn''h'p80 %r9'v+m,,8' a+ ]
+$239 l16 b4.e4.b4 <d4.>a4.<d4>  b4.<ef+g8.f+8.e8 d+2f+2
+     g2.f+8e8 f+4.d4.>a4< c2c8.d8.e8 d+2>b2 ]
+$293 l8 [[>a<<c>bgaegd]j2,297[>f+<<c+>babg+af+]]$297[c<d+dcd>a+<c>g] ]
 
 {3}$ %e1
 'st''s'p64'v-m,,8' %r8 l8
-[ [j2,309%j339$309 ]
+[ [j1,339] ]
 ##8
 #^^
 ##17
-$317 b2^.a.g f+2d2  e2^.f+.g a4.<c+4.e4 j1,0
+[j1,317] ##$317 b2^.a.g f+2d2  e2^.f+.g a4.<c+4.e4 j1,0
 ##21
-$321 d2.ef g4.c4.e4  d.>a.f<f.e.d c+4.a4.^4
-a2.gf g2e2  d2>a+2 a2<c+4a4
+[j1,321] ##$321 d2.ef g4.c4.e4  d.>a.f<f.e.d c+4.a4.^4
+         ##a2.gf g2e2  d2>a+2 a2<c+4a4
 ##29
-g2d2 c2<c2 j1,0
+         ##g2d2 c2<c2 j1,0
 ##31
 'bl''l'p0 l1
 e^^^ e^^
 'hn''h'p80 %r9 d
 ##39
 'st''s'p64 %r8 l8
-$339 e2.f+g a2<d2  e1 d+4.>b4.f+4    e2.de f+2a2  g2f+.g.a b1 j1,0
+[j1,339] ##$339 e2.f+g a2<d2  e1 d+4.>b4.f+4    e2.de f+2a2  g2f+.g.a b1 j1,0
 ##47
-[j2,350%j317$350
+[j1,317]
 ##51
-[j2,358%j321$358
+[j1,321]
 ##59
 #^^
 ##61
@@ -185,7 +203,7 @@ m##77
 'hp-o1''g'p0 l8 a4&24<
 [[^4.g4.g4]j2,383[r4.a4.a4]]$383<[r4.c4.c4]
 'ob-o1''o*v.75'p50'v+m,,8' l8
-[ [j2,399%j3117$399 ]
+[ [j1,3117] ]
 ##93
 #^^
 ##101
@@ -194,10 +212,19 @@ m##77
 'sb''b*v.8'p90 %a10%r11 ]
 ##117
 'ob-o1''o*v.75'p50'v+m,,8' l8
-$3117 a.b.<ce2 ^2d.c.>b  a.b.<c+>f+2 ^2g+2    a.b.<ce2 ^2g.f+.d  c.d.d+g2 ^2f2> j1,0
+[j1,3117] ##$3117 a.b.<ce2 ^2d.c.>b  a.b.<c+>f+2 ^2g+2
+          ##a.b.<ce2 ^2g.f+.d  c.d.d+g2 ^2f2> j1,0
 'sb''b*v.8'p80 %a10%r11
-[j2,3132%j3117$3132
+[j1,3117]
 ;
+
+$317 l8 b2^.a.g f+2d2  e2^.f+.g a4.<c+4.e4 ]
+$321 l8 d2.ef g4.c4.e4  d.>a.f<f.e.d c+4.a4.^4
+     a2.gf g2e2  d2>a+2 a2<c+4a4
+     ##29
+     g2d2 c2<c2 ]
+$339 l8 e2.f+g a2<d2  e1 d+4.>b4.f+4    e2.de f+2a2  g2f+.g.a b1 ]
+$3117 l8 a.b.<ce2 ^2d.c.>b  a.b.<c+>f+2 ^2g+2    a.b.<ce2 ^2g.f+.d  c.d.d+g2 ^2f2> ]
 
 {4}$ %e1
 'kd-o2''k'p64 l8
@@ -254,14 +281,14 @@ l8 a2^eae a2a2  f+2^c+f+c+ f+2f+2    a2^eae a2a2  <c2^>g<c>g <c2c2>
 edca
 ##21
 l8
-$521 d1 <c1 d2>d2 a2<a.e.>a  d1 c1 a+1 a2<a.e.>a
+[j1,521] ##$521 d1 <c1 d2>d2 a2<a.e.>a  d1 c1 a+1 a2<a.e.>a
 ##29
-'hp-o1''g'p0
-l16 a+<fa+<d fa+<df a+fd>a+ fd>a+f
-l32 ceg<ceg<c>g ecceg<ceg <c>gec>gece g<cegceg<c
+         ##'hp-o1''g'p0
+         ##l16 a+<fa+<d fa+<df a+fd>a+ fd>a+f
+         ##l32 ceg<ceg<c>g ecceg<ceg <c>gec>gece g<cegceg<c
 ##31
-"!!!o" l16 p30
-[4"sqrqs4 s8s4.  srr8s2."] j1,0
+l16      ##"!!!o" l16 p30
+":s"     ##[4"sqrqs4 s8s4.  srr8s2."] j1,0
 ##39
 'hp-o1''g'p0 l16
 [[eb<egb<egb <e>bge>bge>b j2 ea<df+a<df+a <d>af+d>af+d>a]
@@ -270,7 +297,7 @@ l32 ceg<ceg<c>g ecceg<ceg <c>gec>gece g<cegceg<c
 "!!!o" l16 p30 r64&93
 ["^2sqrqs4 ^2s8s4oo"]
 ##51
-[j2,560%j621$560
+[j1,621]
 ##59
 #^^
 ##61
@@ -281,14 +308,25 @@ m##77
 'st''s*v.5'p64 %r5 l1
 [(cc)(c+c+)(cccc)]
 ##93
-$593 'hn''h*v.5'p100'v+m,,8' %r9 l2
-c1 >ba  a<c+ f+1  c1 >ba  <c.d+4 g1 j1,0 >
+[j1,593] ##$593 'hn''h*v.5'p100'v+m,,8' %r9 l2
+>        ##c1 >ba  a<c+ f+1  c1 >ba  <c.d+4 g1 j1,0 >
 ##101
 p80 l4 'h'
 [e.a.<d> b1  <e.a.^ g2>a2    e.a.<d> b1  <d.d.^ e1>]
 ##117
-[ [j2,5132%j593$5132 ]
+[ [j1,593] ]
 ;
+
+$521 l8 d1 <c1 d2>d2 a2<a.e.>a  d1 c1 a+1 a2<a.e.>a
+     ##29
+     'hp-o1''g'p0
+     l16 a+<fa+<d fa+<df a+fd>a+ fd>a+f
+     l32 ceg<ceg<c>g ecceg<ceg <c>gec>gece g<cegceg<c
+     ##31
+     "!!!o" l16 p30
+     [4"sqrqs4 s8s4.  srr8s2."] ]
+$593 'hn''h*v.5'p100'v+m,,8' %r9 l2
+     c1 >ba  a<c+ f+1  c1 >ba  <c.d+4 g1 ]
 
 {6}$ %e1
 'hn''h'p100'v+m,,8' %r9 l4
@@ -299,19 +337,19 @@ p80 l4 'h'
 'hn-o1''h'p80 %r9
 e1f+1g1e1
 ##21
-$621 'sb-o1''b*v.7'p90 %r11
-[j2,628%j221$628 c+1 'b'p80
+[j1,621] ##$621 'sb-o1''b*v.7'p90 %r11
+         ##[j1,221] c+1 'b'p80
 ##29
-l16 d8.e8.f8a+4.aa+  <c4.ccc4c4
+         ##l16 d8.e8.f8a+4.aa+  <c4.ccc4c4
 ##31
-'st-o2''s*v1.5'mp100 %r3 l1
-[([4e1])] j1,0
+         ##'st-o2''s*v1.5'mp100 %r3 l1
+l1       ##[([4e1])] j1,0
 ##39
 (ee)eb edcb
 ##47
 edca
 ##51
-[j2,660%j521$660
+[j1,521]
 ##59
 #^^
 ##61
@@ -323,7 +361,7 @@ m##77
 [b(aaa) ba(gg)]
 ##93
 'hp''g'p0
-[j2,699%j293$699
+[j1,293]
 ##101
 [64b4]
 ##117
@@ -333,6 +371,14 @@ a^f+^a^c^
 [8 ["sopo"][3"sn"]"po"]
 ;
 
+$621 'sb-o1''b*v.7'p90 %r11
+     [j1,221] c+1 'b'p80
+     ##29
+     l16 d8.e8.f8a+4.aa+  <c4.ccc4c4
+     ##31
+     'st-o2''s*v1.5'mp100 %r3 l1
+     [([4e1])] ]
+
 {7}$ %e1
 'cy-o1''c'p32 %r17 l4
 a+1 eded  ^1 eded    a+1 eded  eded 'c*v.5''cf'%r5a+1
@@ -341,23 +387,23 @@ a+1 eded  ^1 eded    a+1 eded  eded 'c*v.5''cf'%r5a+1
 ##17
 'st+o2''s*v.2'p0 %r7 e1f+1g1a1
 ##21
-$721 'pi+o2''p*v.6''v+m,,8' %r10 l16
-[f8.e8.d8a4d4 e2e8.d8.c8  dcd4.f8.e8.d8 c+2>a2<]
+[j1,721] ##$721 'pi+o2''p*v.6''v+m,,8' %r10 l16
+         ##[f8.e8.d8a4d4 e2e8.d8.c8  dcd4.f8.e8.d8 c+2>a2<]
 ##29
-d1
-'sb''b'p80 %r11 
-g4.ggg4g4 
+         ##d1
+         ##'sb''b'p80 %r11 
+         ##g4.ggg4g4 
 ##31
-'st-o1''s*v.7''v-m,,8' %r8 l1
-egf+f egf+<c j1,0
+         ##'st-o1''s*v.7''v-m,,8' %r8 l1
+         ##egf+f egf+<c j1,0
 ##39
 'pi+o2''p*v.8'p0 %r10 l8
 e4.>b4.<g4 >f+4.<d4.f+4  e4.>b4.^4 ^1<
 e4.>b4.<g4 f+a4.<d.c.>b  <c4.>g4.^4 f+1
 ##47
-'ob+o1''o*v.6'p50 %r12 l16 [j2,750%j117$750
+'ob+o1''o*v.6'p50 %r12 l16 [j1,117]
 ##51
-[j2,760%j721$760
+[j1,721]
 ##59
 #^^
 ##61
@@ -387,6 +433,16 @@ a1 ge  f+a <c+1    e1 dc  d+.g4 c1
 'bl''b'p0 c.
 'hn''h'p80 %r9 g4 c1
 ;
+
+$721 'pi+o2''p*v.6''v+m,,8' %r10 l16
+     [f8.e8.d8a4d4 e2e8.d8.c8  dcd4.f8.e8.d8 c+2>a2<]
+     ##29
+     d1
+     'sb''b'p80 %r11 
+     g4.ggg4g4 
+     ##31
+     'st-o1''s*v.7''v-m,,8' %r8 l1
+     egf+f egf+<c ]
 
 {8}$ %e1
 [7r1] 'pi+o2''p'p0 r4. ([10f+32g32])

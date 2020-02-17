@@ -224,12 +224,12 @@ l8'pet''8'<r1r1r1 e4ee4ee4e4e4 e4ee4ee4f+4f+4
 ##'sv3' 'sh'c+'sm'c+'sl'c+'sh'c+'sl'c+'sm'c+ 'sv4''sh'c+'sm'c+'sl'c+'sm'c+'sh'c+'sm'c+
 ##'sv5' 'sl'c+'sh'c+'sm'c+'sl'c+'sh'c+'sl'c+ 'sv6''sm'c+'sh'c+'sh'c+'sm'c+'sl'c+'sh'c+
 ##'sv7'>'sl'b'sh'b'sh'b'sm'b'sl'b'sh'b 'sv8''sm'b'sl'b'sh'b'sm'b'sl'b'sh'b
-'saw''sa1''sv1' %k1 [j2,54j1,53 $54'sv3'[j2,55j1,53
-$55'sv5'[j2,56j1,53 $56'sv7'%k11>[j2,57j1,53 $57<
+'saw''sa1''sv1' %k1 [j1,53]'sv3'[j1,53]
+'sv5'[j1,53]'sv7'%k11>[j1,53]<
 ###at 19: saw1
 $
-%k1 [j2,58j1,51 $58>%k11[j2,59j1,51 $59<
-%k1 [j2,510j1,51 $510 [j2,511j1,52 $511 %k3[j2,512j1,52 $512%k0
+%k1 [j1,51]>%k11[j1,51]<
+%k1 [j1,51] [j1,52] %k3[j1,52]%k0
 ##l8'saw''sa1'
 ##[
 ##'sh'c+'sm'c+'sl'c+'sh'c+'sl'c+'sh'c+c+'sm'c+ 'sl'c+'sh'c+'sm'c+'sl'c+'sh'c+'sm'c+'sl'c+'sh'c+
@@ -304,16 +304,16 @@ r.<C+>g+ e <D+>g+ e <E> g+ e <D+>g+ e <C+>e  b  e
 
 ##at 51: choir / saw1
 p 'fakechoir' l4 c+.c+.c+^1
-'saw''sa1' l8 %k1[j2,513j1,51 $513%k0
+'saw''sa1' l8 %k1[j1,51]%k0
 'fakechoir' l4 >b.b.b^1
-'saw''sa1' l8 >%k11[j2,514j1,51 $514%k0
+'saw''sa1' l8 >%k11[j1,51]%k0
 ##at 63: organ 3 / saw1
 'org' l1 a^b^ v
 'othersaw''8' l8
 [4[<c+>g+f+]c+>g+ c+f+g+f+g+<c+f+g+]
 ##at 75:
-'saw''sa1' l8 %k1[j2,515j1,53 $515 [j2,516j1,53 $516 
-[j2,517j1,53 $517 >%k11 [j2,518j1,53 $518 <%k0
+'saw''sa1' l8 %k1[j1,53] [j1,53] 
+[j1,53] >%k11 [j1,53] <%k0
 ;*
 
 ## function for saw approximation (53 for 12 notes, 52 for 16, 51 for 32)
@@ -372,17 +372,17 @@ l4 [4"k.k.k2."]
 
 {7}
 l8
-"y4."'hat'[j2,800j1,881$800 [j2,801j1,880$801 [j2,802j1,880$802 "ahhahhahig!!z2"
+"y4."'hat'[j1,881] [j1,880] [j1,880] "ahhahhahig!!z2"
 ##at 7:
-^'hat'[j2,803j1,883$803 [j2,804j1,884$804 [j2,805j1,882$805 [j2,806j1,884$806
+^'hat'[j1,883] [j1,884] [j1,882] [j1,884]
 ##at 13:
-v32 l8 v255,36 [j2,807j1,880$807 v255,40 [j2,808j1,880$808
-v255,44 [j2,809j1,880$809 v255,48 [j2,810j1,880$810 %r
+v32 l8 v255,36 [j1,880] v255,40 [j1,880]
+v255,44 [j1,880] v255,48 [j1,880] %r
 ##at 19:
 $
 ["!!y4."'hat'["ihg"]"ihihia4" [7[3"ihg"]"ihihia4"]]
 ##at 51:
-[j2,811j1,886$811"!!c4" [j2,812j1,886$812"!!y4"
+[j1,886]"!!c4" [j1,886]"!!y4"
 ##at 63:
 l8 'hat'["ai4i4iii"["ai4i"]]
 "!!z1"'othersaw' <e c+>g+e c+>g+e c+ %e0
@@ -390,7 +390,7 @@ l8 'hat'["ai4i4iii"["ai4i"]]
 "!!z1"'othersaw' <f+c+>a f+c+>a f+c+ %e0
 "!!z1"'othersaw' <f+d >a f+d >a f+d  %e0
 ##at 75:
-"!!y4."'hat'[j2,813j1,881$813 [j2,814j1,880$814 [j2,815j1,880$815 [j2,816j1,880$816
+"!!y4."'hat'[j1,881] [j1,880] [j1,880] [j1,880]
 ;
 
 ## pattern: AhhA hhAh ighg -- 880 full, 881 trims first ^4.

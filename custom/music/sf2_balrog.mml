@@ -59,13 +59,17 @@ $'bass' p64
 {2}
 %e1
 $
-'pad' p110 l4 $201
-r1  rd+g+b8. j1,0
-$'pad' p110 $203
-<c+1r16 f+ed+>b8.
-<c+1r16 f+ef+g+8.r16 j1,0
-'lead' p63 l16 $207
-c+c+d+e rc+d+e g+8.f+8.e8  f+8.e8.d+8 c+8.d+32c+32>b4<
+'pad' p110 l4
+[j1,201] ##$201 r1  rd+g+b8. j1,0
+$'pad' p110
+[j1,203] ##$203 <c+1r16 f+ed+>b8. <c+1r16 f+ef+g+8.r16 j1,0
+'lead' p63 l16
+[j1,207]
+;
+
+$201 l4 r1  rd+g+b8. ]
+$203 l4 <c+1r16 f+ed+>b8. <c+1r16 f+ef+g+8.r16 ]
+$207 l16 c+c+d+e rc+d+e g+8.f+8.e8  f+8.e8.d+8 c+8.d+32c+32>b4<
 d+4e4f+4br a4g+8f+8g+4 f+ref+32e32d+8
 c+rd+e rc+d+e g+8.f+8.e8  f+8.e8.d+8 c+8.d+32c+32>b4<
 b4a4g+4f+r a4g+8f+8g+4 f+ref+32e32d+8
@@ -76,7 +80,7 @@ e4d+4e8.f+r8 f+8e4d+4c+8.d+r8 %r12d+8%r1d+2^8c+8d+8e8 f+8g+ra8g+4f+8ef+32e32d+8
 [g+g+f+rerc+r e8.f+j2r8.>g+<]r4  e4d+re4d+8c+8%r12d+8%r1  d+4.g+4f+ref+32e32d+8
 [g+g+f+rerc+r e8.f+j2r8.>g+<]r4  f+4g+4a8.g+r8g+8  g+g+f+rg+rf+re8.f+8.e8
 d+ed+r c+1^2^8.
-j1,0;
+]
 
 {3}
 %e1
@@ -161,9 +165,9 @@ l16"!!!oy4."[5"h"]^"o8hh" ["h8c8dd8c8dd8.c8c" j2,706 "h8hho8"[5"h"]^"o8hh"]$706
 %e1
 r16
 'pad' p100 %a7
-[j2,801%j201$801
+[j1,201]
 $'pad' p100 %a7
-[j2,803%j203$803
+[j1,203]
 'lead' p100 %a8
-[j2,807%j207$807
+[j1,207]
 ;

@@ -35,13 +35,13 @@ $## 4 - track 1
 l8 av48aaa [v64av48aaa j2 v64g+v48aaa$0]
 %k-1[v64f%k0v48fff]   v64av48aaa <v64cv48ccc>
 ## 10 - track 1
-$110 [%k-1[v64a%k0v48aaa]] %k-1[v64e%k0v48eee] %k-3[v64bv48bbb%k0] j1,0
+[j1,110] ##$110 [%k-1[v64a%k0v48aaa]] %k-1[v64e%k0v48eee] %k-3[v64bv48bbb%k0] j1,0
 ## 14 - track 1
 p78 l8 v64 [6ggrgm-1]%k0 eerg+ aara
 ## 18 - track 1
 v67 l2 <c+c> ba+ ag+ g+4e4c+4 v53 l8 <<a>a>
 ## 22 - track 1
-$122 p50 l8 [29v52av43a] <cv46c v49dv52d v55d+v59d+ j1,0
+[j1,122]  ##$122 p50 l8 [29v52av43a] <cv46c v49dv52d v55d+v59d+ j1,0
 ## 30 - track 1 / 33 - track 1 / 37 - track 1
 p78 l4 v60<e>v69g>e2< v60<d+>v69g>d+2< v60<d>v69g>d2
 l8 [v69c+'s1'v60g'p1'][v69g's1'v60g'p1']
@@ -50,6 +50,9 @@ l4 f+2g2 a2a+<c+> d1
 ##38 - track 1
 %a4%r13 v60 e1 c+1 >a+2v64%a9bg+ e2v68%a15<e4^16 'bright'<v59 c+8d+16
 ;
+
+$110 l8 [%k-1[v64a%k0v48aaa]] %k-1[v64e%k0v48eee] %k-3[v64bv48bbb%k0] ]
+$122 p50 l8 [29v52av43a] <cv46c v49dv52d v55d+v59d+ ]
 
 {2}
 %e1## 1 -- track 2
@@ -94,11 +97,11 @@ l8 p64 d+ccc c>aaa afg+a<cd+ 'string'p50%r13 l16 (<ev50dv53c>b)
 p39 l4 v43g+2(v48av51<c8.>)(a16 v43<d+2)(v48ea)
 l16 d8>%r17b*b*b* b8g+*g+*g+* %r2l8 g+eeddcc>b
 ## 14 - track 3
-'bright' $314 p50 l16 [<v51c+8>v60a<c+e>a<c+v51g  g8f+8d8>j2a8%k-2]%k0a+8
-a8v60fa<c>fa<v51d+d+8d8f8>a+8<  e4v47d24e24v51d24^8c+4>a<c+ea j1,0
+'bright' ##$314 p50 l16 [<v51c+8>v60a<c+e>a<c+v51g  g8f+8d8>j2a8%k-2]%k0a+8
+[j1,314] ##a8v60fa<c>fa<v51d+d+8d8f8>a+8<  e4v47d24e24v51d24^8c+4>a<c+ea j1,0
 ## 18 - track 5
-'organ' p64 v36 l16 $318 [g(ec+e gc+e)a (g24a24g24f+g e)f+d>a<%k-2]%k0
-f(ad+f afa)<c> (a+fdf d>a+<)df g+(ag+a g+ag+24f+24g+24) a4 j1,0
+'organ' p64 v36 l16 ##$318 [g(ec+e gc+e)a (g24a24g24f+g e)f+d>a<%k-2]%k0
+[j1,318]            ##f(ad+f afa)<c> (a+fdf d>a+<)df g+(ag+a g+ag+24f+24g+24) a4 j1,0
 'bright' v53 l8 <a>a
 ## 22 - track 3
 p64 v113 >a1^4
@@ -106,12 +109,18 @@ p64 v113 >a1^4
 v32eeeaaag+g+g+bbb aaav43cccd+d+d+v32eee fffaaagggfff aaa<v38cccv40dddv43d+d+d+>
 ## 30 - track 3 / 33 - track 3 / 37 - track 3
 p50 %a9%r2 l16 v46e4v51(a+gecv46g4)a+4 d+4v51(a+gd+>a+<v46g4)a+4 d4v51(a+gd>a+<v46g4)a+4
-l8 $333 c+4g4a+4<c+4 d4.>a<c+>g<c+>g< d4.>a<c+>a+<cc+
-l12 d6r j1,0 v41d+6r v36d6r v31c+6r   v36 ccc>aaaf+f+f+d+d+d+>
+l12 [j1,333] ##$333 c+4g4a+4<c+4 d4.>a<c+>g<c+>g< d4.>a<c+>a+<cc+ l12 d6r j1,0
+ v41d+6r v36d6r v31c+6r   v36 ccc>aaaf+f+f+d+d+d+>
 ##38 - track 3
 l8 p64%a4%r13 v49 c+1 e1 g2 %r9v43(&26g+v38dv43fg+) v54&94b <%a15e4
 'bright'v59 c8d8
 ;
+
+$314 p50 l16 [<v51c+8>v60a<c+e>a<c+v51g  g8f+8d8>j2a8%k-2]%k0a+8
+a8v60fa<c>fa<v51d+d+8d8f8>a+8<  e4v47d24e24v51d24^8c+4>a<c+ea ]
+$318 l16 [g(ec+e gc+e)a (g24a24g24f+g e)f+d>a<%k-2]%k0
+f(ad+f afa)<c> (a+fdf d>a+<)df g+(ag+a g+ag+24f+24g+24) a4 ]
+$333 l8 c+4g4a+4<c+4 d4.>a<c+>g<c+>g< d4.>a<c+>a+<cc+ l12 d6r ]
 
 {4}
 %e1## 1 - track 3
@@ -134,8 +143,9 @@ v59 [3 [e12r24e12r24r8e12r24j2m-2] ]
 f12r24f12r24 d12r24d12r24 d+12r24d+12r24 %k0
 'bright' v53 l8 r16<e8>e16
 ## 22 - track 4
-v54 l4 $422 a2g+<c> bd+ea g+>b<cd+ ef.e8d+
-l16 e2c4.ef+ a2^8.g+gf+fe d+2c4.j1,0v48d+f a4.g+gv54f+8v48fev56d+8v54ef
+v54 l4   ##$422 a2g+<c> bd+ea g+>b<cd+ ef.e8d+
+[j1,422] ##l16 e2c4.ef+ a2^8.g+gf+fe d+2c4.j1,0
+l16 v48d+f a4.g+gv54f+8v48fev56d+8v54ef
 ## 30 - track 4 / 33 - track 4 / 37 - track 4
 'string'%a9%r2 l12 v46e4<g6>v51egv46a+<c+v41ega+ r4v46g6>v51d+gv46a+<c+v41d+g+a+
 r4v46g6>v51dgv46aa+<v41dga+> v46 l8 c+4g4a+<c+>a+g a2a+2 <c2c+4>a+4 <c4r2.>
@@ -145,6 +155,9 @@ l8 %a4%r13 v51a+4. %a9(v46ev39a+<v46c+v41dv44d+>)
 %a4v46a4. %a9(<c+v39&26d+v41efv44f+) %a4v46&70c+ %a9(&26ev39fv41dv44fv41g+)
 v51&94g+ %a15g+4 'cembalo'<v59p64 l16 cc+dd+
 ;
+
+$422 l4 a2g+<c> bd+ea g+>b<cd+ ef.e8d+
+l16 e2c4.ef+ a2^8.g+gf+fe d+2c4. ]
 
 {5}
 %e1## 1 - track 5L
@@ -159,15 +172,16 @@ p50v60 l16 g+2a8.r<c8>ra <d+2e4f4
 l8 p64 d+ccc c>aaa afg+a<cd+
 'string'%r13 l16 (<v37c>v31bv33ag+)
 ## 10 - mirror 1
-'cembalo'> l8 [j2,514%j110$514
+'cembalo'> l8 [j1,110] ##[j2,514%j110$514
 ## 14 - mirror 3
-<[j2,517%j314$517
+<[j1,314]##[j2,517%j314$517
 ## 18 - track 3
 'string'%r13 p50 l16 [6grgr8.grm-1]%k0 ererdrdrc+rc+r8
 'bright' v53 <e8>e16
 ## 22 - mirror 4
-'cembalo' p78v54 l4 $422 a2g+<c> bd+ea g+>b<cd+ ef.e8d+
-l16 e2c4.ef+ a2^8.g+gf+fe d+2c4.j1,0v48d+f a4.g+gv54f+8v48fev56d+8v54ef
+'cembalo' p78v54 l4 ##$422 a2g+<c> bd+ea g+>b<cd+ ef.e8d+
+[j1,422] l16        ##l16 e2c4.ef+ a2^8.g+gf+fe d+2c4.j1,0
+v48d+f a4.g+gv54f+8v48fev56d+8v54ef
 ## 30 - mirror 1 / 33 - mirror 1 / 37 - track 5e
 p78 l4 v60<e>v69g>e2< v60<d+>v69g>d+2< v60<d>v69g>d2
 l4 c+c+aa v60 f+2g2 a2a+<c+> d1
@@ -177,6 +191,9 @@ l8 p50%a4%r13> v36g4.r32 %a9(ev30a+<v36c+v32dv34d+>)
 %a4v36g4. %a9(<&26c+v30d+v32ev34fv32f+16^32>)
 l2 %a4v36&94e %a9f fv38<c
 ;
+
+$422 l4 a2g+<c> bd+ea g+>b<cd+ ef.e8d+
+l16 e2c4.ef+ a2^8.g+gf+fe d+2c4. ]
 
 {6}
 %e1## 1 - track 4L
@@ -223,9 +240,11 @@ l16 g+8%r17e*e*e* e8>b*b*b* l8%r2 bg+g+ffeed16
 'bright'p39 l16 r24 [<v32c+8>v37a<c+e>a<c+v32g  g8f+8d8>j2a8%k-2]%k0a+8
 a8v37fa<c>fa<v32d+d+8d8f8>a+8<  e4v37d24e24v32d24^8c+4>a<c+ea48
 ## 18 - track 6/echo
-'organ' p50 v33 r24 [j2,721%j318$721 r12r8
+'organ' p50 v33 r24 [j1,318] ##[j2,721%j318$721
+r12r8
 ## 22 - track 5/echo
-'bright'p39 v30 l16 r24 [j2,728%j422$728 v27d+f a4.g+gv30f+8v27fev32d+8v30e r48
+'bright'p39 v30 l16 r24 [j1,422] ##[j2,728%j422$728
+v27d+f a4.g+gv30f+8v27fev32d+8v30e r48
 ## 30 - track 6e / 33 - track 6e / 37 - nothing
 'string'p78 r24 l16 v32e4\v36\(a+gec>\v32\l12g)a+<c+\v29\ega+
 l16\v32\d+4\v36\(a+gd+>a+\v32\l12g)a+<c+\v29\d+ga+
@@ -254,7 +273,7 @@ l16 >g+2a8.r<c8>ra <d+2e4f4   v28 l8 <d+ccc c>aaa afg+a<cd+12
 ## 18 - nothing
 [4r1]
 ## 22 - mirror 1
-'cembalo'> [j2,829%j122$829
+'cembalo'> [j1,122] ##[j2,829%j122$829
 ## 30 - nothing
 &156[12r1] 'bright'<v59p78 c+8d+16
 ;

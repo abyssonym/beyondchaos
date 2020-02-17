@@ -53,10 +53,10 @@
 ##### ORGAN #####
 {1} 'global' %e1 'organ' l8
 p0,60,127
-[4f>a<dg>a<da>a< de>a<df>a<d>a< $99]
-$[2
+[4f>a<dg>a<da>a< de>a<df>a<d>a< $0]
+[3 j1,0 $ j1,18
 p0,60,127
-[8f>a<dg>a<da>a< de>a<df>a<d>a<]
+[8f>a<dg>a<da>a< de>a<df>a<d>a< $99]
 p
 
 $18 l8>
@@ -74,19 +74,18 @@ v192,64
 [2ge-g<c4.>b-4] [4gfg<c4.>b-4]
 v192,40gfg<c4.>b-4 v192,16gfg<c4.>b-4
 
-j2,19 'organ2' j1,99
-'organ';
+'organ' j1,11 'organ2' $11 ]
 
 $19
 'secretharmony' p48 l4
 [8a.b-.f1r]
-'organ2';18
+'organ2' [3 ;
 
 ##### LEAD #####
 {2} l16 %e1
 'celesta_solo'
 d1^2 ^4. o5p80 a<cd1^1 ^1 ^2.^8<fd c>a16^8^2.v192,0^1v
-$[2
+[3 j1,0 $ j1,28
 'lead1' l8
 r2^ag<c> a4.g4.a4 f4.e4.f4. e4.d4c4
 c4.d4.> 'l1v0' a4 ^1 'l1v1'^1 'l1v2'^1 'l1v'<
@@ -107,20 +106,19 @@ d4.>g4.rg16r16 <dc>b-<c.r16c16r16fg a4.b-4.g4 ^2...c16
 d2.r>g16r16 <dc>b-a4b-<c16r16 c4.>b-4<c4f.r16 f4.d4c>b-a
 [2g4.<d1^4r>f4] v255,72 g4.<d^2^1^1 r1
 
-j2,29 j1,99
-;
+]
 
 $29
 'lead4' l8
 [[a4.f4.g4. d4.rdfg a4.f4.<j2c4. d2..>] c4 rfe-dc>b-<cd>]
-m
-;28
+m [3
+;
 
 ##### ATMOSPHERE MID #####
 {3} l1 %e1
 'deepness' p112
 d^^^ >b-^^^
-$[2
+[3 j1,0 $ j1,38
 'deepness' p112
 d^^^ >b-^
 'celesta_duo'
@@ -146,19 +144,18 @@ b- ^ a b-
 'celesta_duo' L4
 [3 v64 r2.f g.<d.>v40f] g.<d.>r4 r1 v
 
-j2,39 j1,99
-;
+]
 
 $39
 v p112 'pad2' L1 >
 [8 d1 ^1]
-;38
+[3 ;
 
 ##### ATMOSPHERE LOW #####
 {7} l1 %e1
 'deepness2' p16 
 d^^^ >b-^^^
-$[2
+[3 j1,0 $ j1,48
 'deepness2'~d^^^>b-^~ /[6r1]/
 'celesta_duo'>
 a4.a4.a4^1
@@ -185,20 +182,19 @@ f4.g8^2 ^ f f
 'lead2' p16 l4 %l1
 [3 v24 r2.f g.<d.>v16f] g.<d.>r4 r1 %l0
 
-j2,49 j1,99
-;
+]
 
 $49
 'secretharmony' p80 l4
 [8f.f.d1r]
-;48
+[3 ;
 
 ##### ATMOSPHERE HIGH #####
 {8} l8 %e1
 'atmosynth'
 p0,83,104
 [4 [5dfe]d ] 
-$[2
+[3 j1,0 $ j1,58
 p0,83,104
    [5dfe]d   [4dfe]cfec
 [3 [5dfe]d ] [4dfe]cfec
@@ -218,21 +214,20 @@ d ^ c       d
 /v127</ ~'deepness3'~
 f4.g8^1. a4.g8^1. g1^1^1 g1 
 
-'atmosynth2' j2,59 j1,99
-'atmosynth';
+'atmosynth' j1,51 'atmosynth2' $51 ]
 
 $59
 > l8
 [[3 [4gfb-]gf<c>b- ]
     [3gfb-]<fe-dc>b-<cd> ]
-;58
+[3 ;
 
 ##### BASS #####
 {5} l16
 'bass' %e1
 d8r8drd8.rdrd8.r drd8.rdrd8r8drcr d8r8drd8.rdrd8.r drd8.rdrd8r8drcr>
 b-8r8b-rb-8.rb-rb-8.r b-rb-8.rb-rb-8r8b-rar b-8r8b-rb-8.rb-rb-8.r b-rb-8.rb-rb-8r8b-rb-r
-$[2
+[3 j1,0 $ j1,68
 %a o5 l8
 <d>dd<d>dd<d>d d<d>dd<d>d<d>d <d>dd<d>dd<d>d d<d>dd<d>d<d>d
 [b->b-b-<b->b-b-<b->b- b-<b->b-b-<b->b-<b->b-<] 
@@ -252,13 +247,12 @@ o6 l8
 <e->e-e-<e->e-e-<e->e- e-<e->e-e-<e->e-<e->e- <f>ff<f>ff<f>f f<f>ff<f>f<f>f
 [3[2gg16r16g16r16]gg16r16] r1
 
-j2,69 j1,99
-;
+]
 
 $69 l8
 [[3[4<g>gg][2<g>g]]
    [3<g>gg] fe-<dc>b-<cd>]
-;68
+[3 ;
 
 ##### DRUMS #####
 {4} l8
@@ -266,7 +260,7 @@ v127p72 o5 ~%k2~
 [4r1]
 |8g|7gg|8g|7gg|8g|7g g|8g|7gg|8g|7g|8g|7g
 |8g|7gg|8g|7gg|8g|7g gg16|8d16d|9f>aaa<|7g
-$[2
+[3 j1,0 $ j1,78
 v127p72 o5
 [30|7gg|8g4]
 g|7gg|8g16d.g16d16|9ec
@@ -281,13 +275,12 @@ g4.g|8g|7g4|8b |9bbbfffc|8f f|7ff|8f32f16.|7ff|8f32f16.|7f |8f1
 |7g4.g|8g4|7gg4 |8b|7g.|8g16b|9bf16f16|7gg1 ^1 ^1
 |8b|7gg|8b16g.b16g16|9fc
 
-j2,79 j1,99
-;
+]
 
 $79 l8
 [[6|7gg|8g4] [2|7gg16g16|8g4]
  [6|7gg|8g4] |7gg|8gg16e16gggg]
-;78
+[3;
 
 ##### CYMBALS #####
 {6} l8
@@ -295,7 +288,7 @@ v96p56 o5
 [4r1]
 #'cv'|Cg4.'hv'|Bg|Agg|Bg|Ag g|Bg|Agg|Bg|Ag|Bg|Ag |Bg|Agg|Bg|Agg|Bg|Ag g1
 'cv'|Cg4.'hv*v1.33'|B%s0%y0g%y6gg%y0g%y6g g%y0g%y6gg%y0g%y6g%y0g%y6g %y0g%y6gg%y0g%y6gg%y0g%y6g g1
-$[2
+[3 j1,0 $ j1,88
 p56 o5 l4
 'cv'|Cg 'hv'|B[15g] 'cv'|Cg 'hv'|B[12g]'cv'|Cg'hv'|Bg'cv'|Ca
 g 'hv'|B[15g] 'cv'|Cg 'hv'|B[11g] 'cv'|Cg'hv'|Bgg2
@@ -307,10 +300,9 @@ $88
 |Cg 'hv'|B[12g] 'cv'|Cg'hv'|Bg'cv'|Cbg 'hv'|B[12g] 'cv'|Cg'hv'|Bg'cv'|Cbg 'hv'|B[11g] 'cv'|Cb'hv'|Bggr
 'cv'|Cg 'hv'|B[12g] 'cv'|Cg2^8|9c8 ^1 ^1 ^1 |Cb'hv'|Bgg2
 
-j2,89 j1,99
-;
+]
 
 $89 l4
 ['cv'|Cg 'hv'|B[12g] 'cv'|Cg'hv'|Bg'cv'|Cbg 'hv'|B[11g]
 'cv'|Cg 'hv'|Bb8 'cv'|9b8f8f8c8c8]
-;88
+[3;

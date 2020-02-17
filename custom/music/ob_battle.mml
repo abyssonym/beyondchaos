@@ -127,14 +127,18 @@ l4 [d1.ed+ $0]
 ##repeat
 [d1.ed+] f1.gf+ f1.f+g
 ##24.039
-r1r1r1 'br1' p20 $425 %a2 >f+1< %a
-[f+1 f+1 f+2g+2 a2<c2>]
+r1r1r1 'br1' p20 ##$425 %a2 >f+1< %a
+[j1,425] ##[f+1 f+1 f+2g+2 a2<c2>]
 ##12.020 13.166 15.111
-l4 b1 ^b<c+d  c+1 c+c+d+e j1,0
+l4 ##b1 ^b<c+d  c+1 c+c+d+e j1,0
 'str'< p50 l16 [3g+8ffff]g8eeeeg+8g+8g+8a8  [3a+8gggg]a8f+f+f+f+a+8a+8a+8b8
 'br1' p20 f+1d1
 'str'<< p32 l16 v24[6d]v32[6d+]v40[6f+]v48[6g]v56 bbggeebb
 ;
+
+$425 %a2 >f+1< %a
+[f+1 f+1 f+2g+2 a2<c2>]
+l4 b1 ^b<c+d  c+1 c+c+d+e ]
 
 {5}
 %e1
@@ -145,7 +149,7 @@ l4 d+1..>b d+1..e
 f+1..f j2f+1..g
 ] f+1.gg+
 ##24.039 12.020
-%r7 a+1^1 ^1 'br2' p30 [j2,512%j425$512
+%r7 a+1^1 ^1 'br2' p30 [j1,425]
 ##13.166 15.111
 'bel'p64 l4 <c.>g+.f.e.cf8f+8  <d.>a+.g.f+.dg8g+8
 'br2' p30 f+1d1

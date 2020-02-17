@@ -60,20 +60,32 @@
 {1}
 'global' 'syn' >>~v50~/v36/a1&136^ l24 ~v56,90~/v56,64/ b<df+a<c+eg+
 $
-'syn' l16 $103 m6,1b8.b8.a4..b<cd  e8.>a4..b8<c8d8
-c>b12r24g12r24g12r24g8.b8<c8d8  c>b12r24a^4(m12,4c4^m12,-4^e)r
-m6,1b8.b8.a4..b<cd  e4^d8c>b8.a^4
-a8b<crdre8.drcr>br  <c>br(a4.m48,-5a4m24,5e8.)
+'syn' l16 [j1,103] ##$103 m6,1b8.b8.a4..b<cd  e8.>a4..b8<c8d8
+          ##c>b12r24g12r24g12r24g8.b8<c8d8  c>b12r24a^4(m12,4c4^m12,-4^e)r
+          ##m6,1b8.b8.a4..b<cd  e4^d8c>b8.a^4
+          ##a8b<crdre8.drcr>br  <c>br(a4.m48,-5a4m24,5e8.)
 ## 11
-<(m32,2d4^d8)c>b4b12<c12d12  c4>b4a4g4<
-(m32,2d4^d8)cc8>b8<f8e8  d4^c8>b32<c32>b4a8g8
-[a4ab<cd8dc8>b8a8]      a4ab<cg8gf8e8d8  >b4^<cde8dc>b8abr
+          ##<(m32,2d4^d8)c>b4b12<c12d12  c4>b4a4g4<
+          ##(m32,2d4^d8)cc8>b8<f8e8  d4^c8>b32<c32>b4a8g8
+          ##[a4ab<cd8dc8>b8a8]      a4ab<cg8gf8e8d8  >b4^<cde8dc>b8abr
 ## 19
-b8.a^2ab<cd e8.>a^2ab<ce  dcr>br<cr>brarggegb a2^egeaebe
-b8.a^2ab<cd e8.>a^2ab<ce  dcr>br<cr>brarggegb a2^edcdc>bg j1,0
+          ##b8.a^2ab<cd e8.>a^2ab<ce  dcr>br<cr>brarggegb a2^egeaebe
+          ##b8.a^2ab<cd e8.>a^2ab<ce  dcr>br<cr>brarggegb a2^edcdc>bg j1,0
 ## 27
 <[[cc>b<cr>br<drc>br<c8r8] ddcdrcrerdcrd8r8 cc>b<cr>br<drc>br<c8r8 $0]
 ;
+
+$103 l16 m6,1b8.b8.a4..b<cd  e8.>a4..b8<c8d8
+     c>b12r24g12r24g12r24g8.b8<c8d8  c>b12r24a^4(m12,4c4^m12,-4^e)r
+     m6,1b8.b8.a4..b<cd  e4^d8c>b8.a^4
+     a8b<crdre8.drcr>br  <c>br(a4.m48,-5a4m24,5e8.)
+     ## 11
+     <(m32,2d4^d8)c>b4b12<c12d12  c4>b4a4g4<
+     (m32,2d4^d8)cc8>b8<f8e8  d4^c8>b32<c32>b4a8g8
+     [a4ab<cd8dc8>b8a8]      a4ab<cg8gf8e8d8  >b4^<cde8dc>b8abr
+     ## 19
+     b8.a^2ab<cd e8.>a^2ab<ce  dcr>br<cr>brarggegb a2^egeaebe
+     b8.a^2ab<cd e8.>a^2ab<ce  dcr>br<cr>brarggegb a2^edcdc>bg ]
 
 {2}
 ['clv'> l16 a['cl70'e8'cl80'g8]'cl70'e'cl80'<c>'cl60'e'cl80'b'cl60'e'cl80'a'cl60'e]
@@ -171,7 +183,7 @@ l16 ["!!!o y8ha" [15"baha"]]
 {8}
 r1&160r 'sye'> l24 ~v17~/v12/~v56,30~/v56,21/ r48 c+eg+ l48 b<c+def+g+a
 $
-'sye' [j2,827%j103$827
+'sye' [j1,103]
 &162 r1r1r1r1 'hch' l16 'h70'<e>
 [8'h90'b'h70'e] [8'h90'b'h70'f] [8'h90'<c>'h70'g] [7'h90'b'h70'e]'h105'a'h115'<er.
 ;

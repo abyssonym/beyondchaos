@@ -117,12 +117,12 @@ d+8.dd+rgr f+4d4  j2 c+8.cc+rfr e4crdr]
 f4b4<c16.%r0'bf*v78,1.5'^4.^32 m
 ## 38
 'harp*v.6''13' l32
-[ [j2,141%j138$141 $0] %k2
-[ [j2,145%j138$145 ] %k4
+[ [j1,138] $0] %k2
+[ [j1,138] ] %k4
 $138 >gb<d+g> b<d+gb d+gb<d+> gb<d+g>
 b<d+gb d+gb<d+ g+ec>g+< ec>g+e<
 c>g+ec g+ec>g+< ec>g+e< c>g+ec j1,0
-%k6 [j2,149%j138$149 %k0
+%k6 [j1,138] %k0
 df+a+<d>f+a+<df+
 ## 51
 'tpet*v1.1-o1''10' m48,18,223 %r11
@@ -145,6 +145,10 @@ gb<dfgb<df>>
 'rf*v144,.4' cg<cdd+g<cdd+dd+g 'rf*v240,.64' <cdd+g
 <c>gd+dc>gd+dc>gd+dc>gd+d
 ;
+
+$138 l32 >gb<d+g> b<d+gb d+gb<d+> gb<d+g>
+b<d+gb d+gb<d+ g+ec>g+< ec>g+e<
+c>g+ec g+ec>g+< ec>g+e< c>g+ec ]
 
 {2} $
 %e1

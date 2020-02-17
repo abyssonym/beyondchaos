@@ -96,3 +96,4 @@
 9D: r340_timbale,   0000, 0000, F 7 7  0
 9E: sm61_steel,     F207, A8A6, F 7 6 13
 9F: sm14_bassoon,   A404, FC68, F 7 7  0
+A0: eb_synthlead,   5202, A869, F 7 7  0

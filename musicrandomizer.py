@@ -603,7 +603,6 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         # 5. battle2 and battle3 chosen from I<boss2, G>battle1
         def intensity_subset(imin=0, gmin=0, imax=99, gmax=99):
             subset = {k: v for k, v in intensitytable.items() if v[0] >= imin and v[0] <= imax and v[1] >= gmin and v[1] <= gmax and usage_id(k) not in used_songs}
-            print(f" SUBSET i{imin}-i{imax} g{gmin}-g{gmax}\n   {subset}")
             return subset
             
         battlecount = len(battleids) + len(bossids)
@@ -646,16 +645,12 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             battle1_g_cap = 80 if not f_mchaos else random.randint(80,95)
             while True:
                 try:
-                    print("event")
                     event, (ei, eg) = random.choice(list(intensity_subset(imin=event_i_min, gmax=event_g_max).items()))
                     bt = min(ei,boss2_i_min) 
 
-                    print("super")
                     super, (si, sg) = random.choice(list(intensity_subset(imin=bt, gmin=boss2_g_min).items()))
-                    print("boss")
                     boss, (bi, bg) = random.choice(list(intensity_subset(imin=bt, gmin=max(boss1_g_min,eg), gmax=sg).items()))
                     wt = min(battle1_g_cap,max(bg, battle1_g_max))
-                    print("balance")
                     balance = random.sample(list(intensity_subset(imax=bt, gmax=wt).items()), 2)
                     if balance[0][1][0] + balance[0][1][1] > balance[1][1][0] + balance[1][1][1]:
                         boutside, (boi, bog) = balance[1]
@@ -663,7 +658,6 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                     else:
                         boutside, (boi, bog) = balance[0]
                         binside, (bii, big) = balance[1]
-                        print("ruin")
                     ruin = random.sample(list(intensity_subset(imax=min(bi, si), gmin=max(bog,big)).items()), 2)
                     if ruin[0][1][0] + ruin[0][1][1] > ruin[1][1][0] + ruin[1][1][1]:
                         routside, (roi, rog) = ruin[1]
@@ -880,16 +874,12 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                 target = variant_id(s.changeto, s.id)
                 potential_files = {}
                 found = False
-                print(f"choosing song for {s.id:0X} {ident}")
                 while True:
-                    print(f" targeting: {target}")
                     file_to_check = target
                     variant_to_check = ""
                     while True:
-                        print(f'  checking - file "{file_to_check}", variant "{variant_to_check}"')
                         mml, akao = "", {}
                         if file_to_check in potential_files:
-                            print(f"   file was cached")
                             mml, akao = potential_files[file_to_check]
                         else:
                             try:
@@ -897,36 +887,28 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                                     mml = mmlf.read()
                                 akao = process_mml(s.id, mml, file_to_check + ".mml")
                                 potential_files[file_to_check] = (mml, akao)
-                                print(f"   file read from disk")
                             except IOError:
-                                print(f"   file was not found")
                                 potential_files[file_to_check] = ("", {})
                         if akao and (variant_to_check in akao or variant_to_check == ""):
                             #we found it
-                            print(f"   variant was found")
                             variant = variant_to_check
                             found = True
                             break
                         elif file_to_check.count("_") >= 2:
                             #move a _foo_ from file to variant. if last one abort
-                            print(f"   variant was not found, continuing")
                             file_to_check, _, variant_append = file_to_check.rpartition('_')
                             variant_to_check += variant_append + '_'
                             if variant_to_check.endswith('_'):
                                 variant_to_check = variant_to_check[:-1]
                         else:
-                            print(f"   variant was not found, trying something new")
                             break
                     #stop if we found something
                     if found:
-                        print(f"  we're done here")
                         break
                     #we didn't find anything, so delete the last bit from target
                     elif target.count("_") >= 2:
-                        print(f"  retargeting")
                         target, _, _ = target.rpartition('_')
                     else:
-                        print(f"  fail case fallback")
                         #i don't think we need an actual fail case here
                         #that falls back to usage_id? should have already
                         #gotten a positive on that if available

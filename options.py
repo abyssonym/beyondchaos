@@ -1,8 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Set
 
-from utils import utilrandom as random
-
 @dataclass(frozen=True)
 class Mode:
     name: str
@@ -120,10 +118,10 @@ class Options:
         flags -= self.mode.prohibited_flags
         if not flags:
             flags = ALL_FLAGS
-        
+
         for flag in flags:
             self.activate_flag(flag)
-        
+
         return s
 
 
@@ -136,7 +134,6 @@ def read_options_from_string(flag_string):
         if found:
             codes.add(code)
 
-    
     if '-' in flag_string:
         print("NOTE: Using all flags EXCEPT the specified flags.")
         flags = {f for f in ALL_FLAGS if f.name not in flag_string}

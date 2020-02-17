@@ -315,9 +315,9 @@ def recruit_gogo_insert(fout, recruit_info):
 class WoRRecruitInfo:
     def __init__(self, label, event_pointers, recruited_bit_pointers, location_npcs,
                  dialogue_pointers, name_pointer, num_name_bytes, old_char_id,
-                 shop_menu_bit_pointers=[], palette_pointers=[],
+                 shop_menu_bit_pointers=None, palette_pointers=None,
                  caseword_pointers=None, prerequisite=None, special=None,
-                 name_npcs=[], name_extra=[], name_camera=(0, 0),
+                 name_npcs=None, name_extra=None, name_camera=(0, 0),
                  name_show_full_party=False):
         self.label = label
         self.event_pointers = event_pointers
@@ -329,12 +329,12 @@ class WoRRecruitInfo:
         self.name_pointer = name_pointer
         self.num_name_bytes = num_name_bytes
         self.caseword_pointers = caseword_pointers
-        self.shop_menu_bit_pointers = shop_menu_bit_pointers
-        self.palette_pointers = palette_pointers
+        self.shop_menu_bit_pointers = shop_menu_bit_pointers or []
+        self.palette_pointers = palette_pointers or []
         self.prerequisite = prerequisite
         self.special = special
-        self.name_npcs = name_npcs
-        self.name_extra = name_extra
+        self.name_npcs = name_npcs or []
+        self.name_extra = name_extra or []
         self.name_camera = name_camera
         self.name_show_full_party = name_show_full_party
 
@@ -474,7 +474,7 @@ def zone_eater_recruit(fout, char_id):
     zone_eater_recruit_sub.bytestring = bytes(prefix + [0x3D, char_id, 0xC0, 0x27, 0x01, 0x00, 0x82, 0x01])
     zone_eater_recruit_sub.write(fout)
 
-def collapsing_house_recruit(fout, char_id):
+def collapsing_house_recruit(unused_fout, unused_char_id):
     pass
 
 def manage_wor_recruitment(fout, shuffle_wor, random_treasure, include_gau, alternate_gogo):

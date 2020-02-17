@@ -803,7 +803,7 @@ def improve_gogo_status_menu(fout):
         0xAA, # TAX
         0xA9, 0x00, # LDA #$00
         0x9F, 0x8A, 0x9D, 0x7E, # STA $7E9D8A,X
-        
+
         # Original code
         0xA9, 0x65, # LDA #$65
         0x85, 0x26, # STA $26
@@ -817,7 +817,7 @@ def improve_gogo_status_menu(fout):
         0xF4, 0x00, 0x15, # PEA #$1500
         0x2B, # PLD
 
-        0x22, 0xAB, 0x0A, 0xF0, # JSL $StatusMenu__Scrolling 
+        0x22, 0xAB, 0x0A, 0xF0, # JSL $StatusMenu__Scrolling
         # Original code and return
         0x2B, # PLD
         0x7B, # TDC
@@ -881,7 +881,7 @@ def improve_gogo_status_menu(fout):
         0xE2, 0x20,  # SEP #$20
         0x85, 0x3A, # sta $3A .Param_sourceBank
         0x80, 0x0B,  # bra StatusMenu__Scrolling_Loop_skip
-        
+
         # StatusMenu__Scrolling_Loop_empty:
         0xE2, 0x20, # SEP #$20
 
@@ -897,7 +897,7 @@ def improve_gogo_status_menu(fout):
         # Length
         0xA9, 0x07, # LDA $07
         0x85, 0x3D, # sta $3D .Param_length
-        
+
         0x22, 0xA3, 0x18, 0xF0, # JSL $F018A3 Gui__WriteTextLength
 
         # Next
@@ -913,7 +913,7 @@ def improve_gogo_status_menu(fout):
         0x90, 0xAE, # BCC StatusMenu__Scrolling_Loop
         0xA2, 0x00, 0x10, # LDX #$1000
         0x8E, 0x12, 0x00, # STX #$0012
-        
+
         # StatusMenu__Scrolling_return:
         0x6B, # RTL
         # StatusMenu__Scrolling_Empty:
@@ -952,12 +952,12 @@ def improve_gogo_status_menu(fout):
         0x38, # sec
         0xFF, 0x8A, 0x9D, 0x7E, # sbc $7e9d8a,x
         0x85, 0x4E, # sta $4e
-        
+
         # First call
         0x84, 0xE7, # sty $e7
         0xA9, 0xC3, # lda #$c3
         0x85, 0xE9, # sta $e9
-        
+
         # Second call
         0x8B, # phb
         0xA9, 0x00,# lda #$00
@@ -980,7 +980,7 @@ def improve_gogo_status_menu(fout):
         0x18, # clc
         0x65, 0x4D, # adc $4d
         0x85, 0x4B, # sta $4b
-        
+
         # a_c36409_c306c5:
         0xA5, 0x53, # lda $53
         0x3A, # dec
@@ -1025,7 +1025,7 @@ def improve_gogo_status_menu(fout):
         0x8D, 0x1C, 0x21, # sta $211c
         0x8D, 0x1C, 0x21, # sta $211c
         0xAD, 0x34, 0x21, # lda $2134
-        
+
         0x18, #clc
         0x65, 0xE2, # adc $e2
         0x0A, # ASL

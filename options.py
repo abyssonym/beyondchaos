@@ -92,12 +92,9 @@ class Options:
                     self.activate_code("frenchvanilla")
                 return
 
-    def activate_flag(self, flag_name: str):
-        for flag in ALL_FLAGS:
-            if flag.name == flag_name:
-                self.active_flags.add(flag)
-                setattr(self, flag.attr, True)
-                return
+    def activate_flag(self, flag: Flag):
+        self.active_flags.add(flag)
+        setattr(self, flag.attr, True)
 
     def activate_from_string(self, flag_string):
         for code in self.mode.forced_codes:

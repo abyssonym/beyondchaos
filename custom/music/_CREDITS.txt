@@ -8,10 +8,10 @@ Song conversions:
                  cc_world2
                  crys_fields, crys_mountain, crys_tower
                  ct_600ad, ct_battle, ct_battle2, ct_bike, ct_bobonga,
-                 ct_boss2, ct_fair, ct_final, ct_frog, ct_forest, ct_keeper,
-                 ct_mountain, ct_night, ct_omen, ct_revolution, ct_rhythm,
-                 ct_robo, ct_schala, ct_silent, ct_sewer, ct_theme, ct_truth,
-                 ct_tylair, ct_tyran,  ct_zeal
+                 ct_boss2, ct_factory, ct_fair, ct_final, ct_frog, ct_forest,
+                 ct_keeper, ct_mountain, ct_night, ct_omen, ct_revolution,
+                 ct_rhythm, ct_robo, ct_schala, ct_silent, ct_sewer, ct_theme,
+                 ct_truth, ct_tylair, ct_tyran, ct_zeal
                  cv4_beginning, cv4_chandeliers
                  doom2_doom
                  ds4_dungeon, ds4_lyll, ds4_world
@@ -25,13 +25,13 @@ Song conversions:
                  ff5_hurry, ff5_lenna, ff5_library, ff5_mountain, ff5_seal,
                  ff5_ship, ff5_theme, ff5_void, ff5_what, ff5_wings,
                  ff5_world1, ff5_world3
-                 ff7_battle, ff7_corel, ff7_costa, ff7_desert, ff7_gun,
-                 ff7_hurry, ff7_rebirth, ff7_reunion, ff7_sadbar, ff7_snow,
-                 ff7_weapon
+                 ff7_battle, ff7_boss, ff7_corel, ff7_costa, ff7_desert,
+                 ff7_gun, ff7_hurry, ff7_rebirth, ff7_reunion, ff7_sadbar,
+                 ff7_snow, ff7_weapon
                  ff8_battle, ff8_boss, ff8_horizon, ff8_landing, ff8_lion,
                  ff8_mlaw, ff8_triad, ff8_witches, ff8_world
-                 ff9_battle, ff9_gargan, ff9_hills, ff9_hunt, ff9_rose,
-                 ff9_siege
+                 ff9_battle, ff9_gargan, ff9_hunt, ff9_rose, ff9_siege,
+                 ff9_treno, ff9_world
                  ffx_battle, ffx_calm, ffx_gagazet, ffx_luca, ffx_via,
                  ffx_zanarkand
                  ff12_barheim, ff12_crystal, ff12_estersand, ff12_ozmone,
@@ -47,8 +47,10 @@ Song conversions:
                  iog_larai, iog_whispers
                  lal_boss, lal_labyrinth, lal_pogo, lal_psycho, lal_theme
                  lo_battle
+                 lotr_hobbits
                  lu1_battle, lu1_final, lu1_world
                  lu2_battle, lu2_priphea
+                 met3_crateria
                  met3_surface
                  mi_scummbar
                  mmx_prologue
@@ -59,6 +61,7 @@ Song conversions:
                  rs1_battle
                  rs2_heroes
                  rs3_getpet, rs3_gwain, rs3_julian
+                 sd1s_courage
                  sd2_8bells, sd2_always, sd2_angel, sd2_boss, sd2_city,
                  sd2_desert, sd2_eternal, sd2_flammie, sd2_forest, sd2_forget,
                  sd2_ghost, sd2_hope, sd2_intruder, sd2_jema, sd2_legend,
@@ -73,12 +76,14 @@ Song conversions:
                  smb2_select
                  smrpg_battle
                  smrpg_road
+                 smw_castle
                  so2_kurik, so2_rescue, so2_victory, so2_world1
                  spo_fight
                  st_dungeon
                  top_cold, top_freeze, top_harmony, top_mint, top_resur, 
                  top_spirit, top_treant, top_victory, top_world1, top_world3
-                 totr_arrow, totr_battle, totr_ship, totr_sion, totr_worlds
+                 totr_arrow, totr_battle, totr_ship, totr_sion,
+                 totr_underworld, totr_worlds
                  tyr_theme
                  wc2_orc1
                  xc1_valakn
@@ -113,7 +118,7 @@ Song conversions:
                  met3_brain
                  rs3_underwater
                  rsms_battle
-                 sd1s_boss, sd1s_courage, sd1s_decision, sd1s_fate, sd1s_field,
+                 sd1s_boss, sd1s_decision, sd1s_fate, sd1s_field,
                  sd1s_risingsun
                  sd2_fortress, sd2_pureland, sd2_thick
                  sd3_faith, sd3_paths

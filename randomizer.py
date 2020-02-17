@@ -1677,7 +1677,7 @@ def manage_balance(newslots=True):
 
     get_monsters(sourcefile)
     sealed_kefka = get_monster(0x174)
-    
+
     if not options_.is_code_active('sketch'):
         sketch_fix_sub = Substitution()
         sketch_fix_sub.set_location(0x2F5C6)
@@ -1928,10 +1928,68 @@ def manage_items(items, changed_commands=None):
     unhardcode_tintinabar(fout)
     extend_item_breaks(fout)
 
+    auto_equip_relics = []
+
     for i in items:
         i.mutate(always_break=always_break, crazy_prices=crazy_prices, extra_effects=extra_effects, wild_breaks=wild_breaks)
         i.unrestrict()
         i.write_stats(fout)
+        if i.features['special2'] & 0x38 and i.is_relic:
+            auto_equip_relics.append(i.itemid)
+            print(i.name)
+
+    assert(auto_equip_relics)
+
+    auto_equip_sub = Substitution()
+    auto_equip_sub.set_location(0x39EF9)
+    auto_equip_sub.bytestring = bytes([0x91, 0xF0,])
+    auto_equip_sub.write(fout)
+
+    auto_equip_sub.set_location(0x3F091)
+    auto_equip_sub.bytestring = bytes([
+        0xDA,
+        0x5A,
+        0x20, 0xF2, 0x93,
+        0xB9, 0x23, 0x00,
+        0xC5, 0xB0,
+        0xD0, 0x09,
+        0xB9, 0x24, 0x00,
+        0xC5, 0xB1,
+        0xD0, 0x02,
+        0x80, 0x2A,
+        0xA5, 0xB0,
+        0x85, 0xE0,
+        0xA5, 0xB1,
+        0x85, 0xE1,
+        0xB9, 0x23, 0x00,
+        0x85, 0xE2,
+        0xB9, 0x24, 0x00,
+        0x85, 0xE3,
+        0xA2,
+    ] + [len(auto_equip_relics) - 1] + [
+        0x00,
+        0xA0, 0x03, 0x00,
+        0xB9, 0xE0, 0x00,
+        0xDF, 0xDC, 0xF0, 0xC3,
+        0xF0, 0x0E,
+        0xCA,
+        0x10, 0xF7,
+        0xA2,
+    ] + [len(auto_equip_relics) - 1] + [
+        0x00,
+        0x88,
+        0x10, 0xEE,
+        0x64, 0x99,
+        0x7A,
+        0xFA,
+        0x60,
+        0xA9, 0x01,
+        0x85, 0x99,
+        0x7A,
+        0xFA,
+        0x60
+    ] + auto_equip_relics)
+    auto_equip_sub.write(fout)
 
     return items
 

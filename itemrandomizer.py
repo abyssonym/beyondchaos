@@ -342,8 +342,18 @@ class ItemBlock:
 
         if feature is None:
             feature = random.choice(list(STATPROTECT.keys()))
+
+        nochange = STATPROTECT[feature]
+        if feature == 'special2':
+              # Allow rare merit award bit on relics
+            if self.is_relic:
+                if random.randint(1, 10) == 10:
+                    nochange &= ~0x20
+            # Reduce chance of Genji Glove bit on non-relics
+            elif random.randint(1, 4) != 4:
+                nochange |= 0x10
         self.features[feature] = bit_mutate(self.features[feature], op="on",
-                                            nochange=STATPROTECT[feature])
+                                            nochange=nochange)
 
     def mutate_break_effect(self, always_break=False, wild_breaks=False):
         global effects_used

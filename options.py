@@ -9,7 +9,7 @@ class Mode:
     description: str
     forced_codes: List[str] = field(default_factory=list)
     prohibited_codes: List[str] = field(default_factory=list)
-    prohibited_flags: List[str] = field(default_factory=list)
+    prohibited_flags: Set[str] = field(default_factory=set)
 
 
 @dataclass(order=True, frozen=True)
@@ -101,6 +101,49 @@ class Options:
                 setattr(self, flag.attr, True)
                 return
 
+    def activate_from_string(self, flag_string):
+        for code in self.mode.forced_codes:
+            self.activate_code(code)
+
+        s = ""
+        flags, codes = read_options_from_string(flag_string)
+        for code in codes:
+            if code.name in self.mode.prohibited_codes:
+                s += f"SECRET CODE: '{code.description}' is not compatible with {self.mode.name} mode."
+                continue
+            s += f"SECRET CODE: {code.description} ACTIVATED\n"
+            self.activate_code(code.name)
+
+        if self.is_code_active('strangejourney'):
+            self.activate_code('notawaiter')
+
+        flags -= self.mode.prohibited_flags
+        if not flags:
+            flags = ALL_FLAGS
+        
+        for flag in flags:
+            self.activate_flag(flag)
+        
+        return s
+
+
+def read_options_from_string(flag_string):
+    flags = set()
+    codes = set()
+
+    for code in NORMAL_CODES + MAKEOVER_MODIFIER_CODES:
+        found, flag_string = code.remove_from_string(flag_string)
+        if found:
+            codes.add(code)
+
+    
+    if '-' in flag_string:
+        print("NOTE: Using all flags EXCEPT the specified flags.")
+        flags = {f for f in ALL_FLAGS if f.name not in flag_string}
+    else:
+        flags = {f for f in ALL_FLAGS if f.name in flag_string}
+
+    return flags, codes
 
 ANCIENT_CAVE_PROHIBITED_CODES = [
     "airship",
@@ -113,12 +156,12 @@ ANCIENT_CAVE_PROHIBITED_CODES = [
 ]
 
 
-ANCIENT_CAVE_PROHIBITED_FLAGS = [
+ANCIENT_CAVE_PROHIBITED_FLAGS = {
     "d",
     "k",
     "r",
     "j",
-]
+}
 
 ALL_MODES = [
     Mode(name="normal", description="Play through the normal story."),
@@ -141,12 +184,12 @@ ALL_MODES = [
          description="Play the normal story up to Kefka at Narshe, with extra wackiness. Intended for racing.",
          forced_codes=["madworld"],
          prohibited_codes=["airship", "alasdraco", "worringtriad", "mimetime"],
-         prohibited_flags=["d", "k", "r"]),
+         prohibited_flags={"d", "k", "r"}),
     Mode(name="dragonhunt",
          description="Kill all 8 dragons in the World of Ruin. Intended for racing.",
          forced_codes=["worringtriad"],
          prohibited_codes=["airship", "alasdraco", "thescenarionottaken"],
-         prohibited_flags=["j"]),
+         prohibited_flags={"j"}),
 ]
 
 ALL_FLAGS = [
@@ -254,9 +297,6 @@ SPECIAL_CODES = [
 ]
 
 
-TOP_SECRET_CODES = [
-]
-
-ALL_CODES = NORMAL_CODES + MAKEOVER_MODIFIER_CODES + CAVE_CODES + SPECIAL_CODES + TOP_SECRET_CODES
+ALL_CODES = NORMAL_CODES + MAKEOVER_MODIFIER_CODES + CAVE_CODES + SPECIAL_CODES
 
 options_ = Options(ALL_MODES[0])

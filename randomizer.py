@@ -30,7 +30,7 @@ from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monster
                                change_enemy_name, randomize_enemy_name,
                                get_collapsing_house_help_skill)
 from musicrandomizer import randomize_music, manage_opera, insert_instruments
-from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, TOP_SECRET_CODES, MAKEOVER_MODIFIER_CODES, options_
+from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, MAKEOVER_MODIFIER_CODES, options_
 from patches import allergic_dog, banon_life3, vanish_doom, evade_mblock, death_abuse, no_kutan_skip, show_coliseum_rewards
 from shoprandomizer import (get_shops, buy_owned_breakable_tools)
 from sillyclowns import randomize_passwords, randomize_poem
@@ -4324,31 +4324,17 @@ def randomize():
 
     characters = get_characters()
 
-    s = ""
-    for code in options_.mode.forced_codes:
-        options_.activate_code(code)
-
-    for code in NORMAL_CODES + MAKEOVER_MODIFIER_CODES + TOP_SECRET_CODES:
-        found, flags = code.remove_from_string(flags)
-        if found:
-            if code.name in options_.mode.prohibited_codes:
-                s += "SECRET CODE: '%s' is not compatible with %s mode." %(code.description, options_.mode.name)
-                continue
-            s += "SECRET CODE: %s ACTIVATED\n" % code.description
-            options_.activate_code(code.name)
-
-    if options_.is_code_active('strangejourney'):
-        options_.activate_code('notawaiter')
+    activation_string = options_.activate_from_string(flags)
 
     tm = gmtime(seed)
     if tm.tm_mon == 12 and (tm.tm_mday == 24 or tm.tm_mday == 25):
         options_.activate_code('christmas')
-        s += "CHRISTMAS MODE ACTIVATED\n"
+        activation_string += "CHRISTMAS MODE ACTIVATED\n"
     elif tm.tm_mon == 10 and tm.tm_mday == 31:
         options_.activate_code('halloween')
-        s += "ALL HALLOWS' EVE MODE ACTIVATED\n"
+        activation_string += "ALL HALLOWS' EVE MODE ACTIVATED\n"
 
-    print(s.strip())
+    print(activation_string)
 
     if options_.is_code_active('randomboost'):
         x = input("Please enter a randomness "
@@ -4370,23 +4356,6 @@ def randomize():
         "\nNow beginning randomization.\n"
         "The randomization is very thorough, so it may take some time.\n"
         'Please be patient and wait for "randomization successful" to appear.')
-
-    all_flags = str.join("", sorted([f.name for f in allowed_flags]))
-    if '-' in flags:
-        print("NOTE: Using all flags EXCEPT the specified flags.")
-        newFlags = all_flags
-        for f in flags.strip():
-            newFlags = newFlags.replace(f, "")
-        flags = newFlags
-
-    for f in options_.mode.prohibited_flags:
-        flags = flags.replace(f, "")
-
-    if not flags.strip():
-        flags = all_flags
-
-    for f in flags:
-        options_.activate_flag(f)
 
     if options_.is_code_active("thescenarionottaken"):
         diverge(fout)

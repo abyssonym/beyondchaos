@@ -1651,9 +1651,11 @@ class MonsterBlock:
             self.mutate_statuses()
         if madworld or random.randint(1, 10) > 5:
             self.mutate_affinities(odds=5 if madworld else 10)
-        if madworld or random.randint(1, 10) > 5:
+        if options_.mode.name == 'katn':
+            self.mutate_special(darkworld=darkworld, narshesafe=True)
+        elif madworld or random.randint(1, 10) > 5:
             # do this before mutate_control
-            narshesafe = options_.mode.name == 'katn' or self.stats['level'] <= 7
+            narshesafe = self.stats['level'] <= 7
             self.mutate_special(darkworld=darkworld, narshesafe=narshesafe)
         if manual_change and change_skillset:
             value = 10

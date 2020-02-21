@@ -281,7 +281,6 @@ sd2_flammie:    setzer, blackjack*2, moogles
 sd2_forest:     moogles, prelude, relm, forest*2, mountain
 sd2_forget:     celes*2, daryl, coin*2
 sd2_fortress:   I15, G99, atma, cyan, setzer, blackjack*2, falcon*2, mountain, mount2*2, serpent, floatingcont*2, ancient, phoenix
-sd2_ghost:      celes, coin*2, rachel, ruin, tomb
 sd2_hope:       catastrophe, setzer, espers, gate
 sd2_intruder:   shadow, owzer*2, martiallaw, ruin, tomb, ancient*2
 sd2_jema:       fanfare, cyan*2, locke, figaro*2, returners*2
@@ -291,10 +290,12 @@ sd2_mana:       daryl, owzer, ruin, cave, tomb, gate
 sd2_matango:    what*2, veldt*2
 sd2_memories:   daryl*2, coin*2, gau*2
 sd2_meridian:   I99, G95, atma*2, dmad5, grandfinale
+sd2_morning:    metamorphosis*2, catastrophe*2, floatingcont
 sd2_popoi:      fanfare, prelude, moogles*2, johnny, spinachrag, village
 sd2_prayer:     prelude, owzer, ruin, forest, tomb, espers
 sd2_prophecy:   catastrophe, grandfinale, fanatics, serpent
 sd2_pureland:   omen3, ruin*2, forest, cave, dream, espers
+sd2_rose:       celes, coin*2, rachel, ruin, tomb
 sd2_scorpion:   grandfinale, shadow, setzer, johnny*2, spinachrag, moogles, gogo*2, zozo*2, martiallaw
 sd2_sea:        zozo, serpent*2, floatingcont, mountain, mount2, ancient*2
 sd2_spirit:     celes, coin*2, ruin
@@ -304,7 +305,6 @@ sd2_tasnica:    figaro*2, returners*2
 sd2_thanatos:   kefka, owzer, train*2, fanatics, dream*2
 sd2_thick:      balance, mountain*2, forest*2, cave, serpent*2
 sd2_thunder:    moogles, gogo*2, umaro, zozo, mountain*2, mount2, cave
-sd2_tomorrow:   metamorphosis*2, catastrophe*2, floatingcont
 sd2_town:       relm, moogles*2, town, village*2
 sd2_wish:       W4, ruin*2, tomb, W:prelude, W:omen3, W:coin, W:zozo, W:owzer, W:narshe, W:town_ruin, W:forest*2, W:espers, W:cave, W:dream
 smrpg_battle:   I30, G0, fanfare, battle, grandfinale*4, chocobo*2, blackjack*2, johnny*2, spinachrag, moogles, mount2

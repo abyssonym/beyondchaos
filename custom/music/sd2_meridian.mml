@@ -9,7 +9,7 @@
 #VARIANT _ tr
 
 #WAVE 0x20 -- ~0x65~ /0x22/
-#WAVE 0x21 -- ~0x5C~ /0x21/
+#WAVE 0x21 -- ~0x56~ /0x21/
 #WAVE 0x23 -- ~0x50~ /0x12/
 #WAVE 0x24 -- ~0x4A~ /0x18/
 #WAVE 0x25 -- ~0x6B~ /0x02/
@@ -24,24 +24,24 @@
 
 {1}
 l16t165%v80%x232%b0,25 $1 p64o5[2v80@32gggr8.grgggr4r  gggr8.ggggggr4  
-][3gggr<v127@33g8>v80@32gggggr]gr8.  gr8.<v127@33g8>v80@32g24g24g24gggrr2  
-<v127@33g4[3o5v80@32gg8.<v127@33g4>v80@32g8g8  <v127@33g4]o5v80@32gg8.<v127@33g4>v80@32g8g8  
-<v127@33g8>v80@32g24g24g24[3v80@32o5gg8.<v127@33g4>v80@32g8g8  <v127@33g4]>v80@32gg8.<v127@33g4>v80@32g8<v127@33g8  
->v80@32g<v127@33g8g[3o5v80@32gg8.<v127@33g4>v80@32g8g8  <v127@33g4]>v80@32gg8.<v127@33g4>v80@32g8g8  
-<v127@33g8>v80@32g24g24g24[3o5v80@32gg8.<v127@33g4>v80@32g8g8  <v127@33g4]o5v80@32gg<v127@33g8>v80@32gg<v127@33g8>v80@32g<v127@33gg8  
-g8>v80@32g24g24g24<v127@33g4.>v80@32g4gg  <v127@33g4g8>v80@32g4g4g24g24g24  
-<v127@33g4g4.>v80@32g4gg  <v127@33g4g8>v80@32g4g4g24g24g24  <v127@33g8>v80@32g8g4.g8<v127@33g4  
->v80@32g4g8g4gg<v127@33g4  >v80@32g8r8gr8.gr8.gr8.  gr8.gr8.gr8.gr8g  
-<v127@33g8.>v80@32ggr8.gr8.gr8.  gr8.gr8.gr8.gg<v127@33g8  >v80@32gggrgr8.gr8.gr8.  
-gr8.gr8.gr8.gr8g  <v127@33g8.>v80@32ggr8.gr8.gr8.  gr8.gr8.gr8.gg<v127@33g8  
->v80@32gggg<v127@33g4[2o5v80@32g8r8<v127@33g8>v80@32g8  r8g8<v127@33g8>v80@32g8g8r8<v127@33g8>v80@32g8  
-r8g8<v127@33g8r8>v80@32g8r8<v127@33g8>v80@32g8  r8g8<v127@33g8>v80@32g8g8r8<v127@33g8>v80@32g8  
-r8g8<v127@33g8r8>v80@32g8r8<v127@33g8>v80@32g8  r8g8<v127@33g8r8>v80@32g8r8<v127@33g8>v80@32g8  
-r8g8<v127@33g8>v80@32g8g8r8<v127@33g8>v80@32g8  r8g8<v127@33g8r8>v80@32g8g8<v127@33g8>v80@32g8  
-r8g8<v127@33g8>v80@32g8][2g4g8g4  g8<v127@33g4>v80@32g8g4g4  g8<v127@33g4>v80@32g4g8g4  
-g8<v127@33g4>v80@32g8g4g4  gg<v127@33g8>v80@32g8]<v127@33g4.r4  
->v80@32g8r4r8g8r8g8<v127@33g12>v80@32g12  g12g4<v127@33g4.r4>v80@32g8  
-r4r8g8r8g8<v127@33g12>v80@32g12g12  g4g2^6g6  g6g2^4g4  g1  
+][3gggr<v127@33c8>v80@32gggggr]gr8.  gr8.<v127@33c8>v80@32g24g24g24gggrr2  
+<v127@33c4[3o5v80@32gg8.<v127@33c4>v80@32g8g8  <v127@33c4]o5v80@32gg8.<v127@33c4>v80@32g8g8  
+<v127@33c8>v80@32g24g24g24[3v80@32o5gg8.<v127@33c4>v80@32g8g8  <v127@33c4]>v80@32gg8.<v127@33c4>v80@32g8<v127@33c8  
+>v80@32g<v127@33c8c[3o5v80@32gg8.<v127@33c4>v80@32g8g8  <v127@33c4]>v80@32gg8.<v127@33c4>v80@32g8g8  
+<v127@33c8>v80@32g24g24g24[3o5v80@32gg8.<v127@33c4>v80@32g8g8  <v127@33c4]o5v80@32gg<v127@33c8>v80@32gg<v127@33c8>v80@32g<v127@33cc8  
+c8>v80@32g24g24g24<v127@33c4.>v80@32g4gg  <v127@33c4c8>v80@32g4g4g24g24g24  
+<v127@33c4c4.>v80@32g4gg  <v127@33c4c8>v80@32g4g4g24g24g24  <v127@33c8>v80@32g8g4.g8<v127@33c4  
+>v80@32g4g8g4gg<v127@33c4  >v80@32g8r8gr8.gr8.gr8.  gr8.gr8.gr8.gr8g  
+<v127@33c8.>v80@32ggr8.gr8.gr8.  gr8.gr8.gr8.gg<v127@33c8  >v80@32gggrgr8.gr8.gr8.  
+gr8.gr8.gr8.gr8g  <v127@33c8.>v80@32ggr8.gr8.gr8.  gr8.gr8.gr8.gg<v127@33c8  
+>v80@32gggg<v127@33c4[2o5v80@32g8r8<v127@33c8>v80@32g8  r8g8<v127@33c8>v80@32g8g8r8<v127@33c8>v80@32g8  
+r8g8<v127@33c8r8>v80@32g8r8<v127@33c8>v80@32g8  r8g8<v127@33c8>v80@32g8g8r8<v127@33c8>v80@32g8  
+r8g8<v127@33c8r8>v80@32g8r8<v127@33c8>v80@32g8  r8g8<v127@33c8r8>v80@32g8r8<v127@33c8>v80@32g8  
+r8g8<v127@33c8>v80@32g8g8r8<v127@33c8>v80@32g8  r8g8<v127@33c8r8>v80@32g8g8<v127@33c8>v80@32g8  
+r8g8<v127@33c8>v80@32g8][2g4g8g4  g8<v127@33c4>v80@32g8g4g4  g8<v127@33c4>v80@32g4g8g4  
+g8<v127@33c4>v80@32g8g4g4  gg<v127@33c8>v80@32g8]<v127@33c4.r4  
+>v80@32g8r4r8g8r8g8<v127@33c12>v80@32g12  g12g4<v127@33c4.r4>v80@32g8  
+r4r8g8r8g8<v127@33c12>v80@32g12g12  g4g2^6g6  g6g2^4g4  g1  
 g1  r1  r2r4r4  
 ;1
 
@@ -49,14 +49,14 @@ l16
 {7}
 l16 $2 p64v60@47r1  
 r1  r1  r1  r2r4r2  
-r4r2r4  r1  r2o6g8g24g24g24[4grgg  grgggrgggrgggrgg  
-grgggrgggggggrgg  grgggrgggrgggrgg  grgggrggg24g24g24gg]p80v75@40%r8%e1o6g4  
+r4r2r4  r1  r2o6c8c24c24c24[4crcc  crcccrcccrcccrcc  
+crcccrcccccccrcc  crcccrcccrcccrcc  crcccrccc24c24c24cc]p80v75@40%r8%e1o6g4  
 f8e8f4d4c4  d4d+4c4c+4  >a+8<c8c+4f4f+4  d+4a+4f+4f1  
-a4.a+8<c2  p64v60@47%e0[4o6gggggggr8ggggr8g  rgggggggrggggggr  ]p1p44,192%e1v105c32c32c32c32c32c32c32c32p64%e0v60[2[7o6grgggrgggrgg  
-grgg]grgggrgggrgg  gggg][3v60g8v25g8v42g8v60g8v25g8v42g8  v60g8v25g8v60g8g8v25g8v60g8v25g8v42g8  
-v60g8v25g8]v60g8v25g8v42g8v60g8v25g8v42g8  v60g8v25g8v60g8g8v25g8v60g8v25g8v50gg  
-gv80gggv80@32g8r8v60@47g8r8g8r8  g8r8g8r8g8r8g12g12g12  g8r8v80@32g8r8v60@47g8r8g8r8  
-g8r8g8r8g8r8g12g12g12  g8r8p96v87@40%r8%e1d+4.c+cc+2  c+4.>ba+b4g+4  
+a4.a+8<c2  p64v60@47%e0[4o6gggggggr8ggggr8g  rgggggggrggggggr  ]p1p44,192%e1v105>f32f32f32f32f32f32f32f32p64%e0v60[2[7o6crcccrcccrcc  
+crcc]crcccrcccrcc  cccc][3v60c8v25c8v42c8v60c8v25c8v42c8  v60c8v25c8v60c8c8v25c8v60c8v25c8v42c8  
+v60c8v25c8]v60c8v25c8v42c8v60c8v25c8v42c8  v60c8v25c8v60c8c8v25c8v60c8v25c8v50cc  
+cv80cccv80@32g8r8v60@47c8r8c8r8  c8r8c8r8c8r8c12c12c12  c8r8v80@32g8r8v60@47c8r8c8r8  
+c8r8c8r8c8r8c12c12c12  c8r8p96v87@40%r8%e1d+4.c+cc+2  c+4.>ba+b4g+4  
 a+4b4f+4e4  >b2<c+2  d+1  ^1  
 %e0
 ;2

@@ -9,9 +9,9 @@
 #WAVE 0x20 ~0x0D~/0x0D/
 #WAVE 0x21 ~0x06~/0x06/
 #WAVE 0x22 ~0x1B~/0x1B/
-#WAVE 0x23 ~0x0A~/0x0A/
+#WAVE 0x23 ~0x40~/0x0A/
 #WAVE 0x24 ~0x9F~/0x05/
-#WAVE 0x25 ~0x40~/0x08/
+#WAVE 0x25 ~0x0A~/0x08/
 #WAVE 0x26 ~0x02~/0x02/
 #WAVE 0x2A ~0x59~/0x22/
 #WAVE 0x2B ~0x2A~/0x2A/
@@ -27,11 +27,11 @@
 #def string= |0 %a6%r10 p84 o5 v40 %e1 m48,18,207 ## tone 49
 #def string2= |0 %a13%r10 p84 o5 v80 %e1 m
 #def soon= |4 %r10 p64 ~o6~/o5/ v48 %e1 m48,18,231 ## tone 42
-#def clari= |5 %a8%r10 p80 ~o4~/o5/ v80 %e1 m48,18,231 ## tone 63
+#def clari= |5 %a8%r10 p80 ~o5~/o5/ v64 %e1 m48,18,231 ## tone 63
 
 #def ocho= |3 %a7%r10 p30 ~o6~/o6/ ~v16~/v16/ %e1 m48,18,231
 #def echa= |2 %r12 p50 o5 v30 %e1 m
-#def eclair= |5 %a8%r10 p20 ~o4~/o5/ v30 %e1 m48,18,231 ## tone 63
+#def eclair= |5 %a8%r10 p20 ~o5~/o5/ v24 %e1 m48,18,231 ## tone 63
 
 #drum "k"=~5c~/5f/ |A p64 v96 %e0 ## tone 25
 #drum "a"=5g |C %r28 p90 v64 %e1 ## tone 28

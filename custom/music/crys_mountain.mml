@@ -13,7 +13,7 @@
 #WAVE 0x24 ~0x4A~/0x1C/
 #WAVE 0x25 ~0x69~/0x33/
 #WAVE 0x28 ~0x22~/0x22/
-#WAVE 0x29 ~0x5C~/0x21/
+#WAVE 0x29 ~0x56~/0x21/
 #WAVE 0x2E ~0x5A~/0x11/
 #WAVE 0x2F ~0x0F~/0x0F/
 
@@ -27,8 +27,8 @@
 #def fid= |5 o5 v64 m24,18,239
 
 #drum "k"=5f |8 v64 p64 m %e0
-#drum "s"=6c |9 v64 p64 m %e1 /%y4%s1/
-#drum "t"=6e |9 v64 p74 m %e1 /%y4%s5/
+#drum "s"=5f |9 v64 p64 m %e1 /%y4%s1/
+#drum "t"=5a |9 v64 p74 m %e1 /%y4%s5/
 #drum "h"=5a |F v48 p74 m %e1
 #drum "i"=5g |E v48 p74 m %e0
 #drum "o"=5e |E v48 p94 m %e0

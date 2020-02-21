@@ -16,7 +16,7 @@
 #WAVE 0x26 ~0x81~ /0x14/
 #WAVE 0x27 ~0x6D~ /0x12/
 #WAVE 0x28 ~0x55~ /0x2F/
-#WAVE 0x29 ~0x7c~ /0x00/
+#WAVE 0x29 ~0x5C~ /0x00/
 
 #drum "g"=5g |7 p20
 #drum "d"=5g |8 p100
@@ -150,7 +150,7 @@ d8e4d4e8e4"  ]%e1]
 l16
 {5}
 l16%e1r8|1v60p64~o2~/o3/%a6c1  
-[15^1  ]p0,192,127~|9v90~/@6v50/~o3~/%a12o2/ $8 [2[8a<dea>a<deg>a<dea>a<deg  >][3f<cfc>f<cfc>f<cfc>f<cfc  
+[15^1  ]p0,192,127~|9v50~/@6v50/~o3~/%a12o2/ $8 [2[8a<dea>a<deg>a<dea>a<deg  >][3f<cfc>f<cfc>f<cfc>f<cfc  
 >g<dgd>g<dgd>g<dgd>g<dgd  >]]p[4p0a<e>ar4rp127a+<f>a+r4r  p0a<e>a<p127ecgcgr2  
 >]p64p0,192,127a<dea>a<deg>a<dea>g+<c+d+g+  >g+<d+g+d+>g+<d+g+d+>g+<d+g+d+>g+<d+g+d+  
 [2[3>g+<d+g+d+>g+<d+g+d+>g+<d+g+d+>g+<d+g+d+  ]>g+<d+>g+<d+>g+<d+>g+<d+>g<d>g<d>f+<c+>f+<c+  

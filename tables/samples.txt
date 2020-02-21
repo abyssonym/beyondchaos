@@ -1,6 +1,6 @@
 [Samples]
 # id: filename, loop point, pitch multiplier data, attack decay sustain release
-40: ts40_horn,      1107, 5200, F 7 7  0
+40: f50f_oboe,      5202, E090, F 7 7  1
 41: fm23_halo,      7704, FFF0, F 7 7  0
 42: ts42_celesta,   4605, E100, F 7 7  C
 43: ts43_synstr,    C804, 1E00, F 7 7  0
@@ -28,7 +28,7 @@
 59: ts59_tkick,     0900, 0000, F 7 7  0
 5A: ts5a_pedalhat,  0000, 0000, F 7 7  0
 5B: ct0c_conga,     0000, 0000, F 7 7  0
-5C: ts5c_snare,     0000, 0000, F 7 7  0
+5C: ct_prg10,       0900, E100, F 7 7  0
 5D: gh1b_odguitar,  7E09, CC00, F 7 7  0
 5E: ts5e_agogo,     0000, 0000, F 7 7 10
 5F: ts5f_maraca,    0000, 0000, F 7 7  0

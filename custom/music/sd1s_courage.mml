@@ -40,8 +40,8 @@
 #drum "o"=5a |B v40  k0 p96 %e0  %y0%s0
 #drum "p"=5e |B v56  k0 p64 %e1 %y0%s0
 
-#drum "y"=5f |C v112 k0 p80 %e1 %y19
-#drum "z"=5a |C v88  k0 p32 %e1 %y23
+#drum "y"=5f |C v112 k0 p80 %e1 %r17
+#drum "z"=5a |C v88  k0 p32 %e1 %r19
 
 #drum "k-"=6c |8 v96 k0 p60 %e0
 #drum "k"=5a |8 v96 k0 p60 %e0

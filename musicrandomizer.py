@@ -9,7 +9,7 @@ from copy import copy
 from locationrandomizer import get_locations, get_location
 from dialoguemanager import set_dialogue_var, set_pronoun, patch_dialogue, load_patch_file
 from utils import (utilrandom as random, open_mei_fallback as open)
-from mml2mfvi import mml_to_akao
+from mml2mfvi import mml_to_akao, get_variant_list
 
 
 try:
@@ -703,7 +703,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             return False
         return True
         
-    def process_mml(id, orig_mml, name):
+    def process_mml(id, orig_mml, name, variant="_default_"):
         def wind_increment(m):
             val = int(m.group(1))
             if val in [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14]:
@@ -739,9 +739,9 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             except IOError:
                 print("couldn't open {}".format(sfx))
                 
-        akaov = mml_to_akao(mml, name, is_sfxv)
-        if id == 0x5D and len(akaov["_default_"][0]) > 0x1002:
-            akaov = mml_to_akao(orig_mml, name, False)
+        akaov = mml_to_akao(mml, name, is_sfxv, variant=variant)
+        if id == 0x5D and len(akaov[0]) > 0x1002:
+            akaov = mml_to_akao(orig_mml, name, False, variant=variant)
         return akaov
     
     def process_tierboss(opts, used_songs=[]):
@@ -878,18 +878,18 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                     file_to_check = target
                     variant_to_check = ""
                     while True:
-                        mml, akao = "", {}
+                        mml, varlist = "", {}
                         if file_to_check in potential_files:
-                            mml, akao = potential_files[file_to_check]
+                            mml, varlist = potential_files[file_to_check]
                         else:
                             try:
                                 with open(os.path.join(MUSIC_PATH, file_to_check + ".mml"), 'r') as mmlf:
                                     mml = mmlf.read()
-                                akao = process_mml(s.id, mml, file_to_check + ".mml")
-                                potential_files[file_to_check] = (mml, akao)
+                                varlist = get_variant_list(mml, sfxmode = True if s.id == 0x29 or s.id == 0x4F or (s.id == 0x5D and windy_intro) else False)
+                                potential_files[file_to_check] = (mml, varlist)
                             except IOError:
                                 potential_files[file_to_check] = ("", {})
-                        if akao and (variant_to_check in akao or variant_to_check == ""):
+                        if varlist and (variant_to_check in varlist or variant_to_check == ""):
                             #we found it
                             variant = variant_to_check
                             found = True
@@ -912,14 +912,12 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                         #i don't think we need an actual fail case here
                         #that falls back to usage_id? should have already
                         #gotten a positive on that if available
-                        mml, akao, variant = "", {}, ""
+                        mml, varlist, variant = "", {}, ""
                         break
                 
-                #record variant - will this break stuff?
+                #record variant
                 if variant and s.changeto != target:
-                    print(f"changeto != target ({s.changeto} || {target})")
                     s.changeto = f"{file_to_check} (variant: {variant})"
-                    print(f"changeto changed to {s.changeto}")
                 title = re.search("(?<=#TITLE )([^;\n]*)", mml, re.IGNORECASE)
                 album = re.search("(?<=#ALBUM )([^;\n]*)", mml, re.IGNORECASE)
                 composer = re.search("(?<=#COMPOSER )([^;\n]*)", mml, re.IGNORECASE)
@@ -929,26 +927,18 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                 composer = composer.group(0) if composer else "??"
                 arranged = arranged.group(0) if arranged else "??"
                 metadata[s.changeto] = TrackMetadata(title, album, composer, arranged)
-                if not akao:
+                if not varlist:
                     print("couldn't find valid mml for {}".format(s.changeto))
                     keeptrying = True
                     break
-                if variant and variant in akao:
-                    s.data = akao[variant][0]
-                    s.inst = akao[variant][1]
+                if variant and variant in varlist:
+                    variant_request = variant
                 else:
-                    s.data = akao['_default_'][0]
-                    s.inst = akao['_default_'][1]
+                    variant_request = '_default_'
+                s.data, s.inst = process_mml(s.id, mml, file_to_check + ".mml", variant=variant_request)
                 s.is_pointer = False
                 if max(list(s.inst)) > instcount:
-                    if 'nopatch' in akao:
-                        s.inst = akao['nopatch'][1]
-                        s.data = akao['nopatch'][0]
-                    elif 'nat' in akao:
-                        s.inst = akao['nat'][1]
-                        s.data = akao['nat'][0]
-                    else:
-                        print("WARNING: instrument out of range in {}".format(s.changeto + ".mml"))
+                    print("WARNING: instrument out of range in {}".format(s.changeto + ".mml"))
             # case: get song from source ROM
             elif not isfile(os.path.join(MUSIC_PATH, s.changeto + "_data.bin")):
                 target = s.changeto[len(native_prefix):]

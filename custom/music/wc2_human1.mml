@@ -68,8 +68,8 @@
 #def 11= p64
 #def 12= p64
 #def 13= p94
-#def left= p24
-#def right= p104
+#def left= ~p24~
+#def right= ~p104~
 #def 15= p44
 #def 16= p64
 

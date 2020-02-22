@@ -225,9 +225,9 @@ l12 v22 ccc>aaaf+f+f+d+d+r24
 {7}
 %e1## 1 - track 6
 'string'<p50 l16 r24
-(v23 <c>afc  v37 afc>a<  v44 c>afa  v48 fc>af<)
-(v23 <bg+e>b<  v37 g+e>bg+  v44 bg+eg+  v48 e>bg+e<)
-(v23 <ad+c>a<  v37 f+c>af+<  v44 d+>af+<c>)  v48 (f+d+c) r48
+(v23 <c>afc  v37 afc>a<  \v44\ c>afa  v48 fc>af<)
+(v23 <bg+e>b<  v37 g+e>bg+  \v44\ bg+eg+  v48 e>bg+e<)
+(v23 <ad+c>a<  v37 f+c>af+<  \v44\ d+>af+<c>)  v48 (f+d+c) r48
 $## 4 - track 3/4 (echo) +2
 'bright'< v58 l16 eeee
 p78v29 l16 r[10e8]>e4< p39v28 e8c8>

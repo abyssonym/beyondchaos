@@ -55,7 +55,7 @@ def process_mml(id, orig_mml, name):
             print("WARNING: failed to add wind sounds ({})".format(name))
     elif id == 0x20:
         sfx = "sfx_train.mmlappend"
-        mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", "$888\g<1>", mml)
+        mml = re.sub("\{[^}']*?([0-9]+)[^}]*?\}", "$888\g<1>", mml)
         for i in range(1,9):
             if "$888{}".format(i) not in mml:
                 mml = mml + "\n$888{} r;".format(i)
@@ -65,10 +65,11 @@ def process_mml(id, orig_mml, name):
                 mml += f.read()
         except IOError:
             print("couldn't open {}".format(sfx))
-            
+    
     akaov = mml_to_akao(mml, name, is_sfxv)
-    if id == 0x5D and len(bytes(akaov["_default_"][0], encoding="latin-1")) > 0x1002:
+    if id == 0x5D and len(akaov["_default_"][0]) > 0x1002:
         akaov = mml_to_akao(orig_mml, name, False)
+
     return akaov
 #end copypasta
 
@@ -94,10 +95,6 @@ try:
         for ignored_variant in ["enh", "nat", "nopatch"]:
             if ignored_variant in akao:
                 del akao[ignored_variant]
-        
-        for vari, data in akao.items():
-            akao[vari] = ( bytes(akao[vari][0], encoding="latin-1"),
-                           bytes(akao[vari][1], encoding="latin-1") )
                            
         sfx = {}
         if ".mmlappend" not in fn and "_dm.mml" not in fn:

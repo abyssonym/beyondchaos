@@ -257,7 +257,7 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
             newmml.append(line.translate(trans))
         mml = newmml
     
-    variants = get_variant_list(mml)
+    variants = get_variant_list(mml, sfxmode)
     if variant:
         if variant not in variants:
             print("mml error: requested unknown variant '{}'\n".format(variant))

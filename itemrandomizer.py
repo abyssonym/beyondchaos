@@ -876,6 +876,12 @@ def reset_special_relics(items, characters, fout):
             if random.randint(1, 5) != 5:
                 unused = unused - doneafter
 
+            # Umaro can't get magic/x-magic.
+            for t in tempchars:
+                if t.char_id == UMARO_ID:
+                    unused = unused - {0x02, 0x17}
+                    break
+
             if not unused:
                 continue
 

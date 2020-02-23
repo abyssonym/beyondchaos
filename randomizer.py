@@ -51,9 +51,9 @@ from utils import (COMMAND_TABLE, LOCATION_TABLE, LOCATION_PALETTE_TABLE,
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
-VERSION = "3"
+VERSION = "4"
 BETA = False
-VERSION_ROMAN = "III"
+VERSION_ROMAN = "IV"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False
@@ -1936,7 +1936,6 @@ def manage_items(items, changed_commands=None):
         i.write_stats(fout)
         if i.features['special2'] & 0x38 and i.is_relic:
             auto_equip_relics.append(i.itemid)
-            print(i.name)
 
     assert(auto_equip_relics)
 
@@ -4317,9 +4316,13 @@ def randomize():
     if saveflags:
         try:
             config = configparser.ConfigParser()
-            config['ROM'] = {}
+            config.read('bcex.cfg')
+            if 'ROM' not in config:
+                config['ROM'] = {}
+            if 'speeddial' not in config:
+                config['speeddial'] = {}
             config['ROM']['Path'] = sourcefile
-            config['speeddial'] = {k:v for k, v in speeddial_opts.items() if k != '!'}
+            config['speeddial'].update({k:v for k, v in speeddial_opts.items() if k != '!'})
             with open('bcex.cfg', 'w') as cfg_file:
                 config.write(cfg_file)
         except:

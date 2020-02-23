@@ -1,5 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Set
+from typing import List, Set, Union
 
 @dataclass(frozen=True)
 class Mode:
@@ -101,10 +101,10 @@ class Options:
             self.activate_code(code)
 
         s = ""
-        flags, codes = read_options_from_string(flag_string)
+        flags, codes = read_options_from_string(flag_string, self.mode)
         for code in codes:
             if code.name in self.mode.prohibited_codes:
-                s += f"SECRET CODE: '{code.description}' is not compatible with {self.mode.name} mode."
+                s += f"SECRET CODE: '{code.description}' is not compatible with {self.mode.name} mode.\n"
                 continue
             s += f"SECRET CODE: {code.description} ACTIVATED\n"
             self.activate_code(code.name)
@@ -114,7 +114,7 @@ class Options:
 
         flags -= self.mode.prohibited_flags
         if not flags:
-            flags = ALL_FLAGS
+            flags = {f for f in ALL_FLAGS if f not in self.mode.prohibited_flags}
 
         for flag in flags:
             self.activate_flag(flag)
@@ -122,9 +122,12 @@ class Options:
         return s
 
 
-def read_options_from_string(flag_string):
+def read_options_from_string(flag_string: str, mode: Union[Mode, str]):
     flags = set()
     codes = set()
+
+    if isinstance(mode, str):
+        mode = [m for m in ALL_MODES if m.name == mode][0]
 
     for code in NORMAL_CODES + MAKEOVER_MODIFIER_CODES:
         found, flag_string = code.remove_from_string(flag_string)
@@ -136,6 +139,10 @@ def read_options_from_string(flag_string):
         flags = {f for f in ALL_FLAGS if f.name not in flag_string}
     else:
         flags = {f for f in ALL_FLAGS if f.name in flag_string}
+
+    flags -= mode.prohibited_flags
+    if not flags:
+        flags = {f for f in ALL_FLAGS if f not in mode.prohibited_flags}
 
     return flags, codes
 

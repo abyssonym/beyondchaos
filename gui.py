@@ -1,7 +1,5 @@
+import configparser
 import sys
-from pickle import load, dump
-from re import match, split
-from os import path, mkdir, listdir, remove
 from subprocess import call
 from PyQt5 import QtGui, Qt
 from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, \
@@ -44,7 +42,7 @@ class Window(QWidget):
 
         # values to be sent to randomizer
         self.romText = ""
-        self.version = ""
+        self.version = "4"
         self.mode = "normal" # default
         self.seed = ""
         self.flags = ""
@@ -77,16 +75,17 @@ class Window(QWidget):
 
         # ----------- Begin buiding program/window ------------------------------
 
-        # checking for saved data directory
-        if not path.exists('saved_flagsets'):
-            mkdir('saved_flagsets')
-
         # pull data from files
         self.initCodes()
         self.compilePresets()
 
         # create window using geometry data
         self.InitWindow()
+
+        self.romInput.setText(self.romText)
+        self.updateDictionaries()
+        self.updateFlagString()
+        self.updateFlagCheckboxes()
 
     def InitWindow(self):
         self.setWindowTitle(self.title)
@@ -102,7 +101,7 @@ class Window(QWidget):
         # Primary Vertical Box Layout
         vbox = QVBoxLayout()
 
-        titleLabel = QLabel("Beyond Chaos Randomizer (v3)")
+        titleLabel = QLabel("Beyond Chaos EX Randomizer (v4)")
         font = QtGui.QFont("Arial", 24, QtGui.QFont.Black)
         titleLabel.setFont(font)
         titleLabel.setAlignment(Qt.Qt.AlignCenter)
@@ -315,8 +314,7 @@ class Window(QWidget):
     # -------------- NO MORE LAYOUT DESIGN PAST THIS POINT ---------------------------
     # --------------------------------------------------------------------------------
 
-    # (MAKE THIS CLEANER IN THE FUTURE)
-    # (At startup) Opens text files containing code flags/descriptions and
+    # (At startup) Opens reads code flags/descriptions and
     #   puts data into separate dictionaries
     def initCodes(self):
         for code in options.NORMAL_CODES + options.MAKEOVER_MODIFIER_CODES:
@@ -337,35 +335,22 @@ class Window(QWidget):
             d[code.name] = {'explanation': code.long_description, 'checked': False}
 
         for flag in sorted(options.ALL_FLAGS):
-            self.simple[flag.name] = {'explanation': flag.description, 'checked': False}
+            self.simple[flag.name] = {'explanation': flag.description, 'checked': True}
 
 
-    # opens input dialog to get a name to assign a desired seed flagset, then saves all dictionaries,
-    #   selected mode, and rom file path to a text file under that flagset name. Checks that file
-    #   doesn't already exist.
-    # files saved in .pickle format. overwrite not implemented currently. future updates will allow this.
+    # opens input dialog to get a name to assign a desired seed flagset, then saves flags and selected mode to the cfg file
     def saveSeed(self):
-        self.romText = self.romInput.text()
-
         text, okPressed = QInputDialog.getText(self, "Save Seed", "Enter a name for this flagset", QLineEdit.Normal, "")
         if okPressed and text != '':
-            if path.exists(f"saved_flagsets/flagset_{text}.pickle"):
-                QMessageBox.about(self, "Error", "That presets already exists!")
-            else:
-                with open(f"saved_flagsets/flagset_{text}.pickle", "wb") as handle:
-                    dump(self.simple, handle, protocol=None)
-                    dump(self.aesthetic, handle, protocol=None)
-                    dump(self.major, handle, protocol=None)
-                    dump(self.minor, handle, protocol=None)
-                    dump(self.experimental, handle, protocol=None)
-                    dump(self.gamebreaking, handle, protocol=None)
-                    dump(self.mode, handle, protocol=None)
-                    dump(self.romText, handle, protocol=None)
-
-                self.savedPresets[text] = f"flagset_{text}.pickle"
-                self.comboBox.addItem(text) # update drop-down list with new preset
-                index = self.comboBox.findText(text)
-                self.comboBox.setCurrentIndex(index)
+            self.savedPresets[text] = f"{self.version}.{self.mode}.{self.flags}."
+            config = configparser.ConfigParser()
+            config.read('bcex.cfg')
+            config['presets'] = self.savedPresets
+            with open('bcex.cfg', 'w') as cfg_file:
+                config.write(cfg_file)
+            self.comboBox.addItem(text) # update drop-down list with new preset
+            index = self.comboBox.findText(text)
+            self.comboBox.setCurrentIndex(index)
 
 
     # delete preset. Dialog box confirms users choice to delete. check is done to ensure file
@@ -377,10 +362,8 @@ class Window(QWidget):
             response = QMessageBox.question(self, 'Delete confimation', f"Do you want to delete \'{seed}\'?",
                                             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if response == QMessageBox.Yes:
-                if path.exists(f"saved_flagsets/flagset_{seed}.pickle"):
-                    remove(f"saved_flagsets/flagset_{seed}.pickle")
-                    del self.savedPresets[seed]
-                    self.comboBox.removeItem(self.comboBox.findText(seed))
+                del self.savedPresets[seed]
+                self.comboBox.removeItem(self.comboBox.findText(seed))
 
 
     # when preset is selected from dropdown list, load the data into dictionaries
@@ -439,34 +422,64 @@ class Window(QWidget):
         self.romInput.setText(str(file_path[0]))
 
 
-    # files are in the format of .pickle
-    # reads all .pickle files from save directory and puts them in a list
     def compilePresets(self):
-        for file in listdir('./saved_flagsets'):
-            if match(r'flagset_(.*).pickle$', file):
-                temp = list(split('[_.]', file))
-                self.savedPresets[temp[1]] = file
+        config = configparser.ConfigParser()
+        config.read('bcex.cfg')
 
+        self.romText = config.get('ROM', 'path', fallback='')
+
+        if 'presets' in config:
+            self.savedPresets = config['presets']
+        if 'speeddial' in config:
+            for k, v in config['speeddial'].items():
+                if 'speeddial_{k}' not in self.savedPresets:
+                    self.savedPresets[f'speeddial_{k}'] = f"4.normal.{v}."
+        self.savedPresets['recommended new player preset'] = "4.normal.-dfklu partyparty makeover johnnydmad."
 
     # Reads dictionary data from text file and populates class dictionaries
     def loadPreset(self, flagdict):
-        with open(f"saved_flagsets/flagset_{flagdict}.pickle", "rb") as handle:
+        parts = self.savedPresets[flagdict].split('.')
+        try:
+            unused_version = parts[0]
+            mode = parts[1]
+            flagstring = parts[2]
+        except KeyError:
+            QMessageBox.about(self, "Error", "Invalid preset!")
+            self.savedPresets.remove(flagdict)
+            return
 
-            # load line by line from .pickle file into each dictionary
-            self.simple = load(handle)
-            self.aesthetic = load(handle)
-            self.major = load(handle)
-            self.minor = load(handle)
-            self.experimental = load(handle)
-            self.gamebreaking = load(handle)
-            self.mode = load(handle)
-            self.romText = load(handle)
+        flags, codes = options.read_options_from_string(flagstring, mode)
+
+        for d in self.dictionaries:
+            for flagdesc in d.values():
+                flagdesc['checked'] = False
+
+        for flag in flags:
+            self.simple[flag.name]['checked'] = True
+
+        for code in codes:
+            if code.category == "aesthetic":
+                d = self.aesthetic
+            elif code.category == "experimental":
+                d = self.experimental
+            elif code.category == "gamebreaking":
+                d = self.gamebreaking
+            elif code.category == "major":
+                d = self.major
+            elif code.category == "minor":
+                d = self.minor
+            else:
+                print(f"Code {code.name} does not have a valid category.")
+                continue
+
+            d[code.name]['checked'] = True
+
+        self.mode = mode
 
         # update 'dictionaries' list with updated/populated data dictionaries
         self.updateDictionaries()
 
         # call functions to update UI based upon preset data loaded from file
-        self.romInput.setText(self.romText)
         self.updateFlagString()
         self.updateFlagCheckboxes()
         self.updateModeSelection()

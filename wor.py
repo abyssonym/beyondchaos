@@ -6,7 +6,7 @@ from dialoguemanager import get_dialogue, set_dialogue
 from locationrandomizer import get_location, get_locations, NPCBlock
 from monsterrandomizer import change_enemy_name
 from utils import (WOB_TREASURE_TABLE, WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
-                   read_multi, Substitution, utilrandom as random, write_multi, get_dialogue_pointer, bytes_to_dialogue)
+                   read_multi, Substitution, utilrandom as random, write_multi, bytes_to_dialogue)
 
 
 alt_zone_eater_recruit = None
@@ -1247,9 +1247,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
         0x40, 0x07, 0x07,  # give Strago properties
         0x40, 0x0A, 0x0A,  # give Mog properties
         0x40, 0x07, 0x07,  # give Strago properties
-    ]) + bytes([
-        0x40, 0x0A, 0x0A,  # give Mog properties
-        ] if dragon else [
+    ]) + bytes([0x40, 0x0A, 0x0A,] if dragon else [
     ]) + bytes([
         0x40, 0x06, 0x06,  # give Celes properties
         0xD5, 0xF7,  # flag Strago as unobtained

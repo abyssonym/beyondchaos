@@ -859,7 +859,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
             for key, value in attributes.items():
                 setattr(ally, key, value)
             l.npcs.append(ally)
-            if (len(optional_chars) == 12 or (not optional_chars and
+            if (len(optional_chars) == 12 or (optional_chars and
                                               options_.is_code_active('speedcave'))):
                 temp = optional_chars.pop()
                 if chosen.id != temp.id:

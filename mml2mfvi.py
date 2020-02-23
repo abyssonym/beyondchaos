@@ -310,6 +310,8 @@ def mml_to_akao(mml, fileid='mml', sfxmode=False, variant=None):
     #generate data
     datas = {}
     for k, v in variants.items():
+        if variant in variants and k != variant:
+            continue
         datas[k] = mml_to_akao_main(mml, v, fileid)
     
     if variant in variants:

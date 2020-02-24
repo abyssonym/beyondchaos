@@ -14,12 +14,14 @@
 #custom songs
 bl_fahrenheit:  fanfare, grandfinale, setzer, locke, figaro, returners, savethem
 bl_fahrenheit_nointro: prelude, chocobo, blackjack*2, falcon, mount2, serpent
+bl_rebels:      fanfare, locke, figaro, returners, savethem
 blord_2tower:   setzer, locke, chocobo, blackjack, johnny, falcon*2, mount2
 blord_ruins:    train, gate, ancient*2, magitek*2, engine, phoenix
 bof1_dawn:      prelude, omen3*2, falcon, serpent*2
 bof2_battle:    I65, G05, unforgiven, grandfinale, battle
 bof2_dragnier:  espers, strago, town_ruin, serpent*2, tomb, ancient, gate*2, dream
 bof2_town:      prelude, relm, awakening, village*2, town
+bof2_wander:    espers, awakening, mountain, cave, serpent, forest*2, tomb, dream
 cc_arni:        town*2, village
 cc_dragonia:    H2, omen3, zozo, kefkastower, owzer, dream*2, ancient, train
 cc_flame:       I75, G95, grandfinale, metamorphosis, catastrophe*2, fanatics*2, assault
@@ -261,6 +263,7 @@ rs2_heroes:     I50, G75, boss, catastrophe, grandfinale
 rs3_getpet:     metamorphosis, umaro, veldt
 rs3_gwain:      catastrophe, assault, umaro, phoenix, dream, fanatics*2, phoenix, kefkastower
 rs3_julian:     prelude, chocobo, johnny, village, forest
+rs3_sarah:      prelude, celes, daryl, coin, gau, town_ruin*2
 rs3_underwater: omen3, shadow, owzer, narshe*2, town_ruin*2, ruin, cave*2, tomb*2, gate, phoenix, ancient
 rsms_battle:    I50, G65, battle*2, unforgiven
 sd1s_boss:      I50, G40, boss*2, unforgiven, floatingcont
@@ -315,7 +318,9 @@ sd3_blackmarket: shadow*2, moogles, umaro, gogo, zozo, owzer, martiallaw, train,
 sd3_charlotte:  prelude, relm, spinachrag, what*2, moogles, strago
 sd3_counterpoint: umaro*2, veldt*2
 sd3_faith:      I55, G70, boss, atma, grandfinale, umaro
+sd3_final3:     I65, G99, atma, grandfinale, dmad5*2, falcon, floatingcont
 sd3_flight:     setzer, chocobo, blackjack*2, mountain
+sd3_intolerance: gestahl*2, train, ruin
 sd3_mana:       I80, G45, boss*2, atma, metamorphosis*2, catastrophe, grandfinale, unforgiven, ancient, magitek, dream, floatingcont*2, phoenix, kefkastower
 sd3_paths:      gogo, mountain*2, serpent, mount2, cave, forest
 sd3_sea:        daryl*2, coin, gau*2, tomb, dream, ruin
@@ -354,6 +359,7 @@ totr_ship:      setzer, figaro, returners*2
 totr_sion:      prelude, awakening, forest, train, dream*2, cyan, gau
 totr_spirit:    I99, G75, atma*2, grandfinale, dmad5
 totr_underworld: zozo, train, gate, ancient, magitek, engine, floatingcont*2, phoenix, kefkastower
+totr_wind:      prelude, relm, awakening, strago, village, mountain, moogles
 totr_worlds:    omen3, celes, rachel*2, awakening, ruin, serpent, tomb, dream, phoenix, balance
 tyr_theme:      omen3, assault, magitek, floatingcont, dream, kefkastower
 wc2_human1:     gestahl, troops, assault*2, savethem, umaro

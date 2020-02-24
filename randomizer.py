@@ -30,7 +30,7 @@ from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monster
                                change_enemy_name, randomize_enemy_name,
                                get_collapsing_house_help_skill)
 from musicrandomizer import randomize_music, manage_opera, insert_instruments
-from options import ALL_MODES, ALL_FLAGS, NORMAL_CODES, MAKEOVER_MODIFIER_CODES, options_
+from options import ALL_MODES, ALL_FLAGS, options_
 from patches import allergic_dog, banon_life3, vanish_doom, evade_mblock, death_abuse, no_kutan_skip, show_coliseum_rewards
 from shoprandomizer import (get_shops, buy_owned_breakable_tools)
 from sillyclowns import randomize_passwords, randomize_poem
@@ -4540,7 +4540,7 @@ def randomize():
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
     if options_.random_espers:
         if options_.is_code_active('dancingmaduin'):
-            allocate_espers(options_.is_code_active('ancientcave'), get_espers(sourcefile), get_characters(), fout, replacements)
+            allocate_espers(options_.is_code_active('ancientcave'), get_espers(sourcefile), get_characters(), fout, esper_replacements)
             nerf_paladin_shield()
         manage_espers(esperrage_spaces, esper_replacements)
     reseed()

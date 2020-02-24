@@ -66,6 +66,9 @@ class Drum:
         mlog("DRUM: [{}] {} -- o{} {} {}".format(self.delim, self.key, self.octave, self.note, self.params))
         
 def get_variant_list(mml, sfxmode=False):
+    if isinstance(mml, str):
+        mml = mml.splitlines()
+        
     all_delims = set()
     for line in mml:
         if line.startswith("#SFXV") and len(line) > 5:

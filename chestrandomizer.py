@@ -384,7 +384,7 @@ class ChestBlock:
             formation = get_fset(self.contents | 0x100).formations[0]
             items = []
             for monster in formation.present_enemies:
-                mitems = [i for i in monster.drops if i is not None]
+                mitems = [i for i in monster.original_drops if i is not None]
                 if mitems:
                     items.append(min(mitems, key=lambda i: i.rank()))
             if items:

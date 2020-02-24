@@ -178,6 +178,7 @@ class MonsterBlock:
         self.special = 0
         self.oldlevel = 0
         self.items = []
+        self.original_drops = []
 
     def determine_location(self):
         from formationrandomizer import get_formations, get_fsets
@@ -675,6 +676,7 @@ class MonsterBlock:
 
         f.seek(self.itemptr)
         self.items = list(f.read(4))
+        self.original_drops = self.drops
 
         f.seek(self.controlptr)
         self.controls = list(f.read(4))

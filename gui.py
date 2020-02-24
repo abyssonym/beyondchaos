@@ -101,7 +101,7 @@ class Window(QWidget):
         # Primary Vertical Box Layout
         vbox = QVBoxLayout()
 
-        titleLabel = QLabel("Beyond Chaos EX Randomizer (v4)")
+        titleLabel = QLabel("Beyond Chaos EX Randomizer (v4 BETA)")
         font = QtGui.QFont("Arial", 24, QtGui.QFont.Black)
         titleLabel.setFont(font)
         titleLabel.setAlignment(Qt.Qt.AlignCenter)

@@ -52,7 +52,7 @@ from wor import manage_wor_recruitment, manage_wor_skip
 
 
 VERSION = "4"
-BETA = False
+BETA = True
 VERSION_ROMAN = "IV"
 if BETA:
     VERSION_ROMAN += " BETA"

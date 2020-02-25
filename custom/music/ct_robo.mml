@@ -5,7 +5,7 @@
 ##created with sqspcmml beta 1.1.1
 
 #WAVE 0x20 0x4F
-#WAVE 0x21 0x0C
+#WAVE 0x21 0x20
 #WAVE 0x22 0x1D
 #WAVE 0x23 0x80
 #WAVE 0x24 0x56
@@ -19,7 +19,7 @@
 #def 0f= v1,100
 
 #def 1i=   |1
-#def 1o=   o5 %r13
+#def 1o=   o5 %y2%s5%r13
 #def 1v=   v100
 #def 1f= v1,100
 

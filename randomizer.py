@@ -1941,10 +1941,10 @@ def manage_items(items, changed_commands=None):
 
     auto_equip_sub = Substitution()
     auto_equip_sub.set_location(0x39EF9)
-    auto_equip_sub.bytestring = bytes([0x91, 0xF0,])
+    auto_equip_sub.bytestring = bytes([0xA0, 0xF1,])
     auto_equip_sub.write(fout)
 
-    auto_equip_sub.set_location(0x3F091)
+    auto_equip_sub.set_location(0x3F1A0)
     auto_equip_sub.bytestring = bytes([
         0xDA,
         0x5A,

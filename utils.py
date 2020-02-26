@@ -7,7 +7,13 @@ try:
     MEI = True
     tblpath = path.join(_MEIPASS, "tables")
 except ImportError:
-    tblpath = "tables"
+    # This is new
+    # this prepends the absolute file path of the parent/calling script
+    #   to the 'tables' directory - GreenKnight5
+    bundle_dir = path.dirname(path.abspath(__file__))
+    tblpath = path.join(bundle_dir, "tables")
+
+    # tblpath = "tables"
     MEI = False
 
 ENEMY_TABLE = path.join(tblpath, "enemycodes.txt")

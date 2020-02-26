@@ -1,0 +1,114 @@
+#TITLE Crateria ~ Space Pirates Appear
+#ALBUM Super Metroid
+#COMPOSER Kenji Yamamoto
+#ARRANGED emberling
+
+#WAVE 0x20 0x45
+#WAVE 0x21 0x93
+#WAVE 0x22 0x3A
+#WAVE 0x23 0x38
+#WAVE 0x28 0x16
+
+#def p24= |8 o5 p64 't'
+#def p25= @3 o5 p64 'e' %r15
+#def p27= |0 o5 p64 's' %a8
+#def p28= |1 o5 p64 'c' %r18
+#def f28= |2 o5 p127 'f' %r18
+#def m28= |3 o7 p0 'm' %r18
+#def p29= |1 o5 p64 'c'
+#def f29= |2 o5 p127 'f'
+#def m29= |3 o7 p0 'm'
+
+#def t= v96
+#def e= v72
+#def s= v76
+#def c= v64
+#def f= v32
+#def m= v16
+
+#def cf=v96,64
+#def ff=v96,32
+#def mf=v96,16
+
+#def init= t66 %x255 %v40 %b0,100 %f0,0
+
+{1} 'init' %e1 $
+'p27-o2' [c32d32e32f32 f+1^1 r2r4.]
+[c+32d+32f32f+32 g1^1 r2j2r4.]
+## 14
+'p29-o1'
+[8r1 'c*v.15''cf*v,1.15' c2 %r18 c2 %r]
+%r18 > r2raa
+;
+
+{2} %e1 r$
+'p24-o2' [11c4>g+4<] [12c+4>a4<]
+## 14
+l4 [
+[c+>a<c+>a< c>g+<c+>g+<]
+[c+>a<c+>a< c+>g+<c+>g+<]
+] c+>a<c+8c+8c+4
+;
+
+{3} %e1 r$
+'p25-o1*v1.05-p8'
+[44c]
+'e*v1.15'
+[48c+]
+## 14
+'e*v.95'
+[8[8c+][8c]][7c+]r
+;
+
+{4} %e1 r$
+'p25-o2*v1.05+p8' r16
+[11a+a+a+g+][12bbbj12a]a16
+## 14
+^16 'e*v.95'
+[8[bbb>a<][a+a+a+g+]]
+bbb>a<bb r.
+;
+
+{5} %e1 r$
+'p28'
+[rc4c4r4.] rf+2r4.
+[rc4c4r4.] rf+2r4.
+[rc+4c+4r4.] rg2r4.
+[rc+4c+4r4.] rg4.
+## 14
+r1r1r1 r2r [4c4c4 r1.]
+[5c4c4 r2] c4>c8
+;
+
+{6} %e1 r$
+'f28'
+[rc4c4r4.] rf+2r4.
+[rc4c4r4.] rf+2r4.
+[rc+4c+4r4.] rg2r4.
+[rc+4c+4r4.] rg4.
+## 14
+%r>
+r1 'f*v.15''ff*v,1.15' c2 %r18 c2 %r
+r1 [4'f*v.15''ff*v,1.15' c2 %r18 c<c4c4> %r r2..]
+[3'f*v.15''ff*v,1.15' c2 %r18 c<c4c4 r2 c4j3c8> %r] >c8
+
+;
+
+{7} %e1 r$
+'m28'
+[rc4c4r4.] rf+2r4.
+[rc4c4r4.] rf+2r4.
+[rc+4c+4r4.] rg2r4.
+[rc+4c+4r4.] rg4.
+## 14
+r1r1r1 r2r [4c4c4 r1.]
+[5c4c4 r2] c4>c8
+;
+
+{8} %e1 r$
+[23r2]
+## 14
+'m29-o1'
+[8r1 'm*v.15''mf*v,1.15' c2 %r18 c2 %r]
+%r18 > r2raar
+;

@@ -1,0 +1,141 @@
+#TITLE Theme of Love
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#WAVE 0x20 0x0D
+#WAVE 0x21 0x07
+#WAVE 0x22 0x1B
+
+#def init= t76 %x240 %v50 %b0,85 %f0,0
+
+#def str= |0 o5 's' m48,18,199
+#def flt= |1 o4 'f' m48,18,239 %r10
+#def hrp= |2 o5 'h' m
+
+#def s= v32
+#def f= v56
+#def h= v40
+
+#def slow= %a6%r3
+#def fast= %a12%r7
+#def attack= %a15%r19'h*v.9'
+#def decay= %a6%r15'h*v.8'
+#def hold= %a15%r15'h'
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'init' %e1
+'flt' l8 p64
+b4a4e4
+f<ee2..  r(de)(dc)>(ba    g)e<d2.. r(cd)c>(ba)d
+e<cc2..  r>b<c(dc)>ba    (ge)b2. a2b.a.e
+$##10
+'flt' l8 p64
+f<ee2.. r(de)d(c>ba)  (ge)<d2.. rc(dc)>(ba)d
+e<cc2.. r(>b<c)(dc)>bg   a1.a.b.<c
+##18
+e4.>(ga4)<e4 d2^c>(b<c)   d4.>(f+g4)<d4 c2^>bab<
+c2^>b(ab)< c4.c>b4a4 b1.b6a6e6
+;
+
+{2}
+%e1 'hrp-o1' 'attack' l8 p48
+r2.
+da<dfa2>  >g<g<dgb2>    eb<egb2>  >a<a<ea<c2>>
+da<dfa2>  >g<g<dgb2>    c<cegb2>  >a<a<c+e'hold'a2>
+$##10
+'hrp-o1' l8 p48
+'attack'da<df'hold'a2> 'attack'>g<g<dg'hold'b2>
+'attack'eb<eg'hold'b2> 'attack'>a<a<ea'hold'<c2>>
+'attack'da<d'hold'f>'attack'd+a<c'hold'f+>  'attack'eb<egbge>'hold'b
+'attack'>a<a<ea<c>ae'hold'c>  'attack'>a<a<e'hold'a>>a<ea16.<a16.<f+16
+##18
+'attack' l16 >>>
+f<cfa<cfa<c fc>afc>afc>    f<dgb<dgb<d gd>bgd>bgd>
+eb<egb<egb <e>bge>bge>b    a<ea<cea<ce aec>aec>ae>
+f<cfa<cfa<c fc>afc>afc>    f+<cd+a<cd+f+a <c>af+d+c>af+d+>
+eb<eg+b<eg+b <e>bg+e>bg+e>b    g<dgb<dgb<d gd>bgd>bgd
+;
+
+{3}
+%e1 'hrp-o1' 'decay' l1 p48
+r2.
+d>g<e>a< d>g<c>a2 'str''slow' p12 g2
+$##10
+'str''slow'p12
+f1^1 g1^1 f2f+2g1 a1.a8.b8.<c8
+##18
+'str+o2*v.67''fast'p78 l8
+e4.>ga4<e4  d2^c>b<c    d4.>f+g4<d4 c2^>bab<
+c2^>bab< c4.c>b4a4    b1..%r19^4
+;
+
+{4}
+%e1 'hrp-o1' 'decay' l8 p48
+r2.
+ra2.. rg2.. rb2.. ra2..    ra2.. rg2.. <rc2..> r2 'str-o2*v1.5''slow' p110 a2
+$##10
+'str-o1*v1.5''slow' p110
+d1 >g1< e1 >a1<   d2d+2 e1 >a1 ^2a4g4
+##18
+f1 f1 e1 a2g2    f1 d+1 e1 g1
+;
+
+{5}
+%e1 'hrp' 'decay' l4 p48
+r2.
+rd2. rd2. re2. re2.    rd2. rd2. re2. r2 'str''slow' p41 c+2
+$##10
+'str''slow' p41
+c1>b1 ^1<c1 ^1>b1< c1^1
+##18
+>a1 (b1b1) <(c1c1c1)> (b1b1)
+;
+
+{6}
+%e1 'hrp' 'decay' l4 p48
+r2.
+r.f.^ r.g.^ r.g.^ r.a.^    r.f.^ r.g.^ r.g.^ r8>a2..
+$##10
+'hrp-o1''decay' l4 p48
+d.<f.^> >g.<<g.^> e.<g.^> >a.<<a.^>
+d2d+2 e2<b2> >a2<<<c2>> >a2 'str+o1*v.67''fast' p78 a8.b8.<c8
+##18
+'str+o1''slow'p12 l8
+e4.>ga4<e4  d2^c>b<c    d4.>f+g4<d4 c2^>bab<
+c2^>bab< c4.c>b4a4    b1..%r24^4
+;
+
+{7}
+%e1 'hrp' 'decay' l2 p48
+r2.
+ra rb rb <rc>    ra rb rb r4c+.
+$##10
+'hrp-o1''decay' l8 p48
+ra2.. rg2.. rb2.. ra2..
+ra4.ra4. rb2<g4.> ra2<a4.> ra4.^24'hold'e8a12^32<c16.<c16.a32
+##18
+'hrp-o2''decay' l8
+f<f<ca <f>ac>f>    f<g<db <g>bd>g>
+e<eb<g <e>g>be>    a<a<e<c ac>e>a>
+f<f<ca <f>ac>f>    f+<d+<cf+ <c>f+c>f+>
+e<eb<g+ <e>g+>be>  g<g<db <g>bd>g
+;
+
+{8}
+%e1 'hrp' 'decay' p48
+r2.
+[7r1] r4. e4.^4
+$##10
+'hrp''decay' l4 p48
+rd2. rd2. re2. re2.
+rdrc re2e re2e re^12'hold'>a8<c24^16e16.<e16.
+##18
+'hrp-o1''decay' l8
+r16ca<f<cc>f>ac16     r16db<g<dd>g>bd16
+r16>b<g<ebbe>g>b16<   r16e<ca<ee>ac>e16
+r16ca<f<cc>f>ac16     r16ca<d+aad+>ad+16
+r16>b<g+<ebbe>g+>b16< r16db<g<dd>g>bd16
+;

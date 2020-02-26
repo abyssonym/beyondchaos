@@ -1,0 +1,166 @@
+#TITLE The Conflict
+#ALBUM Romancing SaGa
+#COMPOSER Kenji Ito
+#ARRANGED emberling
+
+#WAVE 0x20 0x46 strings
+#WAVE 0x21 0x4A bass
+#WAVE 0x22 0x6D crash
+#WAVE 0x23 0x5A hihat
+#WAVE 0x24 0x6E tom
+#WAVE 0x25 0x22 kick
+#WAVE 0x26 0x7E snare
+
+#WAVE 0x27 0x9A trumpet
+
+#def 6@i= |7
+#def 0i= |0 %a10
+#def 1i= |1
+#def 2i= |2
+#def 3i= |3 %r22
+#def 4i= |4 %r20
+#def 5i= |5
+#def 6i= |6
+
+#def 6@o= o5
+#def 0o= o6
+#def 1o= o5
+#def 2o= o5
+#def 3o= o5
+#def 4o= o5
+#def 5o= o5
+#def 6o= o5
+
+#def 6@v= v112
+#def 6@f= v1,112
+#def 0v= v133
+#def 0f= v1,133
+#def 1v= v125
+#def 1f= v1,125
+#def 2v= v100
+#def 2f= v1,100
+#def 3v= v64
+#def 3f= v1,64
+#def 4v= v100
+#def 4f= v1,100
+#def 5v= v125
+#def 5f= v1,125
+#def 6v= v100
+#def 6f= v1,100
+
+
+{1}
+t157%v50%b0,70%f0,0%x255
+'0i' '0v*v.40'p48{VolEnvMode '2'}%e1$101'0o-o1'%l1b16
+f+16b16<d16f+16d16f+16b16%l0a+8f+16r8.f+16a+16a8f+16r8.g+16a16g+8e16r4
+r16f+2^8e8d8f+8c+4e4c+4>a4<d2^8c+8d8e8%l1c+16>f+16a+16<c+16f+16>a+16<c+16
+f+16a+16c+16f+16a+16<c+16%l0>f+16a+16<c+16>>f+1g2.f+8e8f+2.e4a2.^8r8<d2
+^8>b8<c+8d8e2c+4e4d8c+8>b8<c+8>b4<d4>b4<d4c+4>b4b4.g4.b4a4.f+4.e4g2a2b2.
+a4g1^1a1b2a2g1^1a1b2.a4b8a8g8a8b2<c+8>b8a8b8<c+2d8c+8>b8<c+8d4.e16f+16
+f2^8d+8c+8>b8<c+2d2%l1c+16>a+16f+16a+16<d16>a+16f+16a+16<e16>a+16f+16a+16
+<f+16>a+16f+16a+16;101
+
+{6}
+
+'0i' '0v*v.35'p56{VolEnvMode '2'}%e1$201'0o-o1'd2c+2c+2>b2<b1a2e2g1f+4a+4
+<c+4f+4%l1>>b16<c+16d16c+16>b16<c+16d16c+16>b16<c+16d16c+16>b16<c+16d16
+c+16>b16<c+16d16c+16>b16<c+16d16>b16a+16b16<c+16>b16a+16b16<c+16>a+16b16
+<c+16d16c+16>b16<c+16d16c+16>b16<c+16d16c+16>b16<c+16d16c+16%l0d4c+4c4.
+r8g1a2e4a4f+1e1d4.>b4.<d4c+4.>a4.f+4b2<c+2d2.c+4%l1>b16a16g16a16b16a16
+g16a16b16a16g16a16b16a16g16a16b16a16g16a16b16a16g16a16b16a16g16a16b16a16
+g16b16<c+16>b16a16b16<c+16>b16a16b16<c+16>b16a16b16<c+16>b16a16<c+16d16
+c+16>b16<c+16d16c+16>b16<d16c+16>b16a16b16<c+16>b16a16<c+16>b16a16g16a16
+b16a16g16a16b16a16g16a16b16a16g16a16b16a16g16a16b16a16g16a16b16a16g16a16
+b16a16g16b16<c+16>b16a16b16<c+16>b16a16b16<c+16>b16a16b16<c+16>b16a16<
+c+16%l0e2d+4c+4d1e2.^8.f+16g1g+1f+2e4d4c+2.^8r8;201
+
+{5}
+
+'0i' '0v*v.40'p80{VolEnvMode '2'}%e1$301'0o-o2'b2a+2a2g+2<d1c+1>b1a+4<c+4
+f+4a+4>f+1e2c+2f+2.e4f+2.^8r8b1<c+1>b2.a4g+1g4.d4.g4f+4.c+2^8d2e2f+2.e4
+d1^1f+1f+2e2d1^1f+1f+2.e4g1a1b2.^8<c+16d16c+2^8>b8a+8g+8a+2b2a+2.^8r8;301
+
+
+{3}
+
+'1i' '1v*v.95'p64{VolEnvMode 0}$401'1o'b2a+16^32r32a+16^32r4r32a16^32
+r32a16^32r4r32g+16^32r32g+16^32r4r32g8<g16r16>g8<g16r16>g8<g16r16>g8<g16
+r16>f+8<f+16r16>f+8<f+16r16>f+8<f+16r16>f+8<f+16r16>e8<e16r16>e8<e16r16
+>e8<e16r16>e8<e16r16>f+2r8<f+8c+8>f+8b16r16b16r16b16r16b16r16b16r16b16
+r16a16r16a16r16g16r16g16r16g16r16g16r16f+16r16f+16r16f+16r16f+16r16b16
+r16b16r16b16r16b16r16b16r16b16r16a16r16a16r16<d2r8c8<c16r16>c16r16>g8<
+g16r16>g8<g16r16>g8<g16r16>g8<g16r16>f+8<f+16r16>f+8<f+16r16>f+8<f+16r16
+>f+8<f+16r16>b8<b16r16>b8<b16r16>b8<b16r16>b8<b16r16>e8<e16r16>e8<e16r16
+>e8<e16r16>e8<e16r16>g8<g16r16>g8<g16r16>g8<g16r16>g8<g16r16>f+8<f+16r16
+>f+8<f+16r16>f+8<f+16r16>f+8<f+16r16>g8<g16r16>g8<g16r16>a8<a16r16>a8<
+a16r16>b8<b16r16>b8<b16r16>b4a4g16r16g16r16g16r16g16r16g16r16g16r16g16
+r16g16r16g16r16g16r16g16r16g16r16g16r16g16r16g16r16g16r16f+16r16f+16r16
+f+16r16f+16r16f+16r16f+16r16f+16r16f+16r16b16r16b16r16b16r16b16r16a16r16
+a16r16a16r16a16r16g16r16g16r16g16r16g16r16g16r16g16r16g16r16g16r16g16r16
+g16r16g16r16g16r16g16r16g16r16g16r16g16r16f+16r16f+16r16f+16r16f+16r16
+f+16r16f+16r16f+16r16f+16r16b8.<b8.f+8>b4a4g8<g16r16>g8<g16r16>g8<g16r16
+>g8<g16r16>f+8<f+16r16>f+8<f+16r16>f+8<f+16r16>f+8<f+16r16>e8<e16r16>e8
+<e16r16>e8<e16r16>e8<e16r16>c+8<c+16r16>c+8<c+16r16>c+8<c+16r16>c+8<c+16
+r16>f+8f+8f+8f+8g8g8g8g8f+4<f+4c+4>f+4;401
+
+{2}
+
+'6@i' '6@v*v.40'p57{VolEnvMode 0}%e1$501r1r1r1r1r1r1m24,24,210'6@o'b4.
+f+8<d4.c+16d16e8d8c+8d8c+8>b8a+4b4.f+8<d4.e8f+6a6g6f+4.r8b2^8g8a8b8<c+4
+>a4f+4<c+4>b4.f+4.a4g+2.r8e16f+16g4.d4.f+4e4.c+4.>a4b1^2.r8b16<c+16d8.
+c+8.>b8b4.<c+16d16e8.d8.c+8c+4.d16e16f+4.c+4.e4d2.r8>b16<c+16d8.c+8.>b8
+b4.<c+16d16e8.d8.c+8c+4.d16e16f+4.a4.g4f+2r8d+8e8f+8g8f+8e8f+8g4r8f+16
+g16a8g8f+8g8a4r8g16a16b8a8g8a8b4r8<c+16d16c+4>g+8<c+4>b8a+8g+8a+2b2<c+2.
+^8r8;501
+
+{8}
+
+'2i' '2v*v.65'p40{VolEnvMode 0}%e1'2o'$601r1r1a1r1r1p88a1p40a1r1r1r1p88
+a1r1r1r1r1r1r1r1p40a1r1p88a1r1p40a1r1p88a1r1p40a1r1r1r1p88a2p40a2p88a4
+p40a4p88a4^4;601
+
+{7}
+$701'??v*v.55'{VolEnvMode 0}
+'3i''3v*v.55' '3o'p18r1r1a8a8a8a8a8a8a8a8
+a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8r1r1r1r1r1a8a8a8a8a8a8a8a8a8a8a8a8a8a8
+a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8
+a8a8a8a8a8a8a8a8a8a8a8a8a8a8r8r1r1r1r1r1r1r1a16a16a16a16a16a16a16a16
+'4i''4o''4v*v.55' 
+'4v*v.85'p24e16p96>g+16g+16p50<c16p96>g+16g+16p24<e16p96>g+16<
+'3i''3o''3v*v.85' 
+'3v*v.65'p18a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8a8
+a8a8a8r1
+'4i''4o''4v*v.65' '4v*v.85'p24r2r8e16e16p50c16c16p96>g+16g+16
+;701
+
+{4}
+
+'5i' '5v*v.55'p64{VolEnvMode 0}'5o-o1'$801a4r4a8a8r4a8a8r4a8a8r8
+'6i''6o-o1''6v*v.55' 
+<a16a16
+'5i''5o''5v*v.55' >[3a4
+'6i''6o-o1''6v*v.55' <a4
+'5i''5o''5v*v.55' 
+>a4
+'6i''6o-o1''6v*v.55' <a8
+'5i''5o''5v*v.55' >a16a16]a4r4.a8a8a8a4a4a4
+a4a4a4a4a4a4a4a4a4a4a4a8
+'6i''6o-o1''6v*v.55' <a16a16a16a16a16a16>[7
+'5i''5o-o1''5v*v.55' 
+a4
+'6i''6o-o1''6v*v.55' <a4
+'5i''5o''5v*v.55' >a4
+'6i''6o-o1''6v*v.55' <
+a8
+'5i''5o''5v*v.55' >a16a16]a4
+'6i''6o-o1''6v*v.55' <a4
+'5i''5o''5v*v.55' 
+>a4
+'6i''6o-o1''6v*v.55' <a8a16a16>[7
+'5i''5o-o1''5v*v.55' a4a4a4a4]a4a4
+a4r4[4a4
+'6i''6o-o1''6v*v.55' <a4
+'5i''5o''5v*v.55' >a4
+'6i''6o-o1''6v*v.55' 
+<a8
+'5i''5o''5v*v.55' >a16a16]a4a4a4a4a4r2.;801

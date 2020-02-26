@@ -1,5 +1,6 @@
 *.pyc
 *.smc
+ff6*.txt
 build/*
 dist/*
 beyondchaos_ex.spec
@@ -12,3 +13,4 @@ custom.zip
 beyondchaos_windows.zip
 .vscode/*
 .vs/*
+devtools/songlen.txt

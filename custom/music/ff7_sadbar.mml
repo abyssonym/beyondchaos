@@ -1,0 +1,116 @@
+#TITLE Mark of a Traitor
+#ALBUM Final Fantasy VII
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#WAVE 0x20 0x0D
+#WAVE 0x21 0x18
+#WAVE 0x22 0x90
+#WAVE 0x23 0x9F
+#WAVE 0x24 0x74
+#WAVE 0x25 0x0A
+#WAVE 0x26 0x07
+#WAVE 0x27 0x20
+
+#def init= t57 %x240 %v30 %b0,70 %f0,0
+
+#def st= |0 's' o5
+#def bs= |1 'b' o7 p64 m
+#def pz= |2 'p' o4 p64 m %r17 %y2%s5
+#def bn= |3 'n' o7 p84 m48,18,215 %r5
+#def cl= |4 'c' o5 p44 m48,18,231 %r8
+#def ob= |5 'o' o5 p74 m48,18,223 %r6 %a7
+#def fl= |6 'f' o4 p54 m48,18,239 %r7
+#def ep= |7 'e' o5 m12,18,199
+
+#def s1= 'st' p25 m48,18,207
+#def s2= 'st' p50 m
+#def s3= 'st' p75 m
+#def s4= 'st' p100 m
+#def e1= 'ep' p114
+#def e2= 'ep' p10
+
+#def s= v56
+#def b= v96
+#def p= v96
+#def n= v32
+#def c= v48
+#def o= v64
+#def f= v56
+#def e= v64
+
+#def sf= v32v72,56
+
+{1} %e1 $ 'init'
+'pz+o1' l16
+r8d+dd+4.>g+a+<c8d+d  d+8>a+<cd8c>a+g+<c>g<c>f4<
+[3 %r23^8 'pz+o1' l16
+d+dd+4.>g+a+<c8d+d  d+8>a+<cd8c>a+g+<c>g<c>f4< j3
+'bn' l8
+rc>a+<c>g+gfd+  dfd+c>a+g+gf]
+##13
+'bn-o1' l16
+r8d+g+a+8g+8 g8fg+g8d+8  d8cdd+2.
+%r23^8 'cl'
+g+<c+d+8c+8 c8>a+<c+c8>g+8  g8fgg+2.
+%r23^8 'fl+o1'  c+f+g+8f+8f2
+%r23^8 'ob'  a<de8d8c+2
+%r23^1^1
+'bn-o1' c+d+fgg+a+<cc+c2
+'cl+o1*v.75' c+d+fgg+a+<cc+ %r5 c1.
+;
+
+{2} %e1 $
+'bs-o1' l16
+f8>f2.. f2.<fgfd+
+f8>f2.. f2.<d+dcd    f8>f2.. f1<
+f8>f2.. f2.<fgfd+    f8>f2.. f1<
+f8>f2.. f2.<fgfd+
+##13
+[5f8>f2^8.a+<d+c f1] f1
+;
+
+{3} %e1 $
+'e2-o1' k1 [44f2] ^1
+;
+
+{4} %e1 $
+'e1'
+[44r8c4.] ^1
+;
+
+{5}
+'s1' %a7 %e1 $ [20
+%r25 ^8 %r0 'sf' a+4.
+%r25 ^8 %r0 'sf' <c4.> ]
+[%r25 ^8 %r0 'sf' g+4.
+ %r25 ^8 %r0 'sf' a+4. ] %r10 ^1
+;
+
+{6}
+'s3' %a7 %e1 $ [20
+%r25 ^8 %r0 'sf' d+4.
+%r25 ^8 %r0 'sf' f4. ]
+[%r25 ^8 %r0 'sf' c+4.
+ %r25 ^8 %r0 'sf' d+4. ] %r10 ^1
+;
+
+{7}
+'s2' %a7 %e1 $ [20
+%r25 ^8 %r0 'sf' f4.
+%r25 ^8 %r0 'sf' g4. ]
+[%r25 ^8 %r0 'sf' d+4.
+ %r25 ^8 %r0 'sf' f4. ] %r10 ^1
+;
+
+{8}
+'s4-o1' %a7 %e1 $ [20
+%r25 ^8 %r0 'sf' a+4.
+%r25 ^8 %r0 'sf' <c4.> ]
+[%r25 ^8 %r0 'sf' g+4.
+ %r25 ^8 %r0 'sf' a+4. ] %r10 ^1
+;
+
+#todo
+#fade out the strings
+#check dynamics on leads (oboe should have more attack time?)

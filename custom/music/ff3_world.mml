@@ -1,0 +1,189 @@
+#TITLE Eternal Wind
+#ALBUM Final Fantasy III
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+#loosely imitating Soken's arrangement on FFXIV Before the Fall '
+
+#WAVE 0x20 0x0D
+##WAVE 0x21 0x2C
+#WAVE 0x22 0x07
+#WAVE 0x23 0x63
+#WAVE 0x24 0x7A
+#WAVE 0x25 0x97
+#WAVE 0x26 0x80
+#WAVE 0x28 0x75
+
+#def strings= |0 o5 's' p32 vm48,18,207 %r9
+#def trems= |0 o5 't' p96 mv0,12,240 %a5'rtrems'
+#def stabs= |0 o5 'c' p40 mv %y0%s6%r20
+#def flute= |2 o4 'f' p80 vm48,18,239 %r10
+#def whistle= |3 o3 'w' p104 vm48,18,199 %r8
+#def horn= |4 o5 'n' p72 vm48,18,223 %r7
+#def harp= |5 o6 'h' p40 mv %r16
+#def bass= |6 o7 'b' p64 mv %y3%s5%r10
+#def timpani= |8 o5 'd' p64 mv
+
+#def s=v40
+#def t=v24
+#def c=v64
+#def f=v56
+#def w=v28
+#def n=v52
+#def h=v40
+#def b=v96
+#def d=v56
+#def df=v16v96,56
+#def rtrems=%r3
+
+#def global= t120 %x240 %v40 %b0,85 %f0,0
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'global' %e1
+'harp' l16
+[dgdec>a8< a<c>ebega8 a]
+$
+[6dgdec>a8< a<c>ebega8 a]
+[dgde>bg8< abeaegb8 b]
+##11
+[6dgdec>a8< a<c>ebega8 a]
+egef+d>b8< abeaega8a    egef+d>b8< abeaeg+b8b
+##19
+eab<c>ba8e <c8.>b8.a8    eab<c>ba8e a8.a8.<c8>
+egabag8e b8.a8.g8    egabag8e g8.g8.b8
+efa<c>ba8f <c8.>b8.a8    efa<c>ba8f a8.a8.<c8>
+ef+g+bag+8e b8.a8.g+8    deg+bag+8e g+8.g+8.b8
+##27
+eab<c>ba8e <c8.>b8.a8    eab<c>ba8e a8.a8.<c8>
+egabag8e b8.a8.g8    egabag8e g8.g8.b8
+[dgdec>a8<a <d>f<c>fa+<c8c>]
+df+ef+d>b8<b <d>f+<c+>f+ab8b    eg+f+g+d>b8<g+ beaeg+b8b
+;
+
+{2}
+%e1 'harp*v.5+p40' l16
+r32.[dgdec>a8< a<c>ebega8 j2a]r64
+$
+'flute+o1' l4
+d2.g e2.c de1..
+d2.e c2.d >b1^1<
+##11
+d2.g e2.c de1..
+d2.e c2.d >b1.r8 l16 (b<cd)(ef+)g+
+##19
+l8
+a2^eeg a4<c4>b4g4  a2^e4d e2e4g4
+g4.d4dde f4f4e4d4  e1 g+1
+##27
+a2^eeg a4<c4>b4g4  a2^e4d e1
+a2^agf e4d4c4d4  e1^1
+;
+
+{3}
+r1r1
+$
+%e0 'bass-o2' l16
+[ccr4ccr8>g8<er>g8< ccr4ccr2
+>aar4aar8a8<er>g8 aar4aar2<
+ffr4ffr8cr>a4< ffr4ffr2
+eer4eer8>b8<f+r>b8< eer4eej2r2]
+##11
+#^^
+%e1 'timpani-o2''df' [8e16]
+##19
+%e0 'bass-o2' l16
+ffr4ffr4c4 ffr4ffr8c8<c8>c8    eer4eer4>b4< eer4eer8>b8<b8>b8<
+ddr4ddr8a4f8 ddr4ddr8d8f4    c+c+r4c+c+r8c+4d8 eer4eer2
+##27
+ffr4ffr4c4 ffr4ffr8c8<c8>c8    eer4eer4>b4< eer4eer8>b8<b8>b8
+[a+a+r4a+a+r2]    bbr4bbr2 <eer4eer2
+;
+
+{4}
+r1r1
+$
+%e1 'trems+o1' l4
+e1..>g< c1^1 >a1^1 g1%r13^1
+##11
+'rtrems' e1^1 a1.%r18^'rtrems'e  d2.ef2.d e1d2g+2
+##19
+'horn' l8
+e2^dcd e4g4e4c4  >b1< e2c4>b4
+l16 a4.ab<c4.>b<c d4.cd>b4<d4  c2>b2a2g+2
+##27
+l8 <'h*v1.2'
+e2^dcd e4g4e4c4  e1 e2c4>b4<
+e1 e2a2 g+1^1
+;
+
+{5}
+r1r1
+$
+%e1 'whistle' l4
+g2.<e> g1  <c1^1>    a2.<e>a1 b16g1....
+##11
+<b2.g e2.c  b16<c8>e16a1..  >a1<a2.b  e1g+fed
+##19
+'horn' l8
+a2^eeg a4<c4>b4g4  a1 g1
+'whistle+o1'
+c4.>a4.ea <c2>a4<f4  e2b4a4 <c2>b2
+##27
+>
+c2^ded c4g4e4c4  <c2d4cd> b2.<c>b
+a2<c4df a4a4e4a4  b4.e16b16e2 c2>b2
+;
+
+{6}
+r1r1
+$
+%e1 'strings' l4
+g2.<c>g1 c1^1  'trems'g1^'strings-o1'a<cd d1 'stabs'l16 dd^4d^^2
+##11
+'strings' l4
+e2.<c>g2.e ga1..  a1g8a2.. g1g+1
+##19
+'timpani-o2' 
+f.f.<c> f.f.^  e.e16e^16b e.e16e16^2
+d.daa8 d.d16d16^2  c+.c+.^ e.e.^
+##27
+f.f.<c> f.f.<c8c8>  e.e16e16^b e.e16e8.ee8
+a+.a+f8f16a+8f16 a+.a+8f8a+.  b.b.v48,24[4b16] 'd'<e.e.^
+;
+
+{7}
+r1r1
+$
+%e1 'stabs-o1' l16
+aa^4aa^2 gg^4gg^2  aa^4aa^2 aa^4gg^2
+[aa^4aa^2]  [bb^4bb^2]
+##11
+[4gg^4gg^2]    [aa^4aa^2] bb^4bb^2 aa^4g+g+
+'timpani-o2''df' r32[7e16]e32
+##19
+'trems+o1-p16' l4
+([8e])([8d])([8c])([8e])
+##27
+'horn-o1' l8
+a2^eeg a4<c4>b4a4 a2^e4d e1
+a2^agf e4d4c4d4 >b1< e1
+;
+
+{8}
+r1r1
+$
+%e1 'stabs-o1' l16
+[4ee^4ee^2]
+[ff^4ff^2]  [gg^4gg^2]
+##11
+[dd^4ee^2] ee^4cc^2 ee^4ee^2
+ff^4ff^2 ee^4ff^2  [ee^4ee^2]
+##19
+'trems+o1-p48' l4
+([8c])(>[4a])([4b])([8a])([4a])([4b])
+##27
+p64
+<c1..d e2dc>b1<  c2e2c2>a2 g+1^1
+;

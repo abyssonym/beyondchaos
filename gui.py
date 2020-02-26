@@ -2,11 +2,13 @@ import configparser
 import sys
 from subprocess import call
 from PyQt5 import QtGui, Qt
+from PyQt5.QtCore import pyqtRemoveInputHook
 from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, \
     QHBoxLayout, QLineEdit, QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, \
     QTabWidget, QInputDialog, QScrollArea, QMessageBox
 
 import options
+import randomizer
 
 print("Loading Complete! Any errors shown here should be reported to Green Knight")
 
@@ -511,7 +513,24 @@ class Window(QWidget):
             if messBox == 16384:  # User selects confirm/accept/yes option
                 finalFlags = self.flags.replace(" ", "")
                 bundle = f"{self.version}.{self.mode}.{finalFlags}.{self.seed}"
-                call(["py", "randomizer.py", self.romText, bundle, "test"])
+                # remove spam if the randomizer asks for input
+                # TODO: guify that stuff
+                # Hash check can be moved out to when you pick the file.
+                # If you delete the file between picking it and running, just spit out an error, no need to prompt.
+                # Randomboost could send a signal ask for a number or whatever, but maybe it's better to just remove it or pick a fixed number?
+                pyqtRemoveInputHook()
+                #TODO: put this in a new thread
+                try:
+                    result_file = randomizer.randomize(args=['gui.py', self.romText, bundle, "test"])
+                #call(["py", "randomizer.py", self.romText, bundle, "test"])
+                # Running the randomizer twice in one session doesn't work because of global state.
+                # Exit so people don't try it.
+                # TODO: fix global state then remove this
+                except Exception as e:
+                    QMessageBox.critical(self, "Error creating ROM", str(e), QMessageBox.Ok)
+                else:
+                    QMessageBox.information(self, "Successfully created ROM", f"Result file: {result_file}", QMessageBox.Ok)
+                sys.exit()
 
     # read each dictionary and update text field showing flag codes based upon
     #    flags denoted as 'True'

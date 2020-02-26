@@ -4885,6 +4885,8 @@ def randomize(args):
     if options_.is_code_active('bingoboingo'):
         manage_bingo()
 
+    return outfile
+
 
 if __name__ == "__main__":
     args = list(argv)

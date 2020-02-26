@@ -1,9 +1,9 @@
 FF6 Beyond Chaos EX Randomizer
 a fork of Abyssonym's FF6 Beyond Chaos Randomizer
-Version:    3.1.8
-Date:       2019-10-08
+Version:    4.0.0
+Date:       2020-02-??
 URL:        https://github.com/subtractionsoup/beyondchaos/releases/latest
-Discord:    https://discord.gg/S3G3UXy
+Beyond Chaos Discord:    https://discord.gg/S3G3UXy
 
 --- QUICKSTART ---
 Requirements:
@@ -11,51 +11,46 @@ Requirements:
     If not running Windows, install Python 3.7+.
 
 Running the randomizer:
-    Windows users: run beyondchaos_ex.exe (found in beyondchaos_windows.zip attached to the release).
+    Windows users: Download beyondchaos_windows.zip from the release in the URL above. Extract the files, and run beyondchaos_ex.exe.
+
 	If you're using a version prior to Windows 10 and get an error message, try this: https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows
 
-    Other users: run "randomizer.py" using Python version 3.7+ (It DOES NOT work with python 2.)
+    Other users: run "gui.py" using Python version 3.7+ (It DOES NOT work with python 2.)
 
 Source ROM file:
-    The randomizer will ask for a ROM file. Beyond Chaos EX does not provide this ROM. The simplest thing is to put the ROM in the same directory as Beyond Chaos EX and simply input the file name.
-    e.g., "ff3.smc"
-    
-    If you prefer to keep the ROM in a different folder, enter the full path. e.g., "C:\Users\Kefka\Documents\snes\ff3.smc"
+    You must provide a FF3 US 1.0 ROM. Both unheadered and headered roms will work. Click the browse button and find the ROM on your system.
 
-	The randomizer will remember the last ROM location you used, so on subsequent runs, you can just press Enter to use the same ROM as last time.
-
-    The ROM used should be the FF3 US 1.0 ROM. Both unheadered and headered roms will work. If you use an incorrect or modified rom, the randomizer will warn you before continuing. To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
+	If you use an incorrect or modified rom, the randomizer will warn you after you click "Generate Seed". To be sure, you can check that your rom is correct by comparing the unheadered checksum/hash:
 
     MD5 - e986575b98300f721ce27c180264d890
     CRC32 - a27f1c7a
 
 Seed value:
-    Next, the randomizer will ask for a seed value. The seed value is an integer number that can be used to share the same randomization with other people. If you don't know which seed you want, just leave this blank.
+    The seed value is an integer number that can be used to share the same randomization with other people. If you don't know which seed you want, just leave this blank.
 
 Mode:
-    Next, it asks you to specify a game mode.
-    In normal mode, you play through the story as usual.
+    On the left, you can select a mode.
+    In normal mode (default), you play through the story as usual.
     In ancient cave, speed cave, and race cave modes you going through a randomized three-party dungeon to defeat Kefka; they differ in the length of the dungeon.
     In K at N mode, you play through the beginning of the normal story, ending at the fight with Kefka at Narshe. The randomness is adjusted to give you a lot more variety in that section than you would see in normal mode.
     In dragon hunt mode, you start in the World of Ruin with the airship, and it ends immediately when you kill the 8th dragon.
-    
-    Type the name or number of the mode you want.
 
 Flags:
-    Finally, the randomizer will ask for a list of flags. These allow you to customize what it randomizes.
+	There are a LOT of options that affect what gets randomized and add additional changes to the game.
     
-    * If this is your first seed, I recommend simply typing an exclamation mark ('!').
-	
-	! is the new player flags preset, and is equivalent to:
-	-dfklu partyparty makeover johnnydmad
+    * If this is your first seed, I recommend going down to bottom where it says "Saved flag selection", and picking "Recommend new player flags" from the dropdown menu.
     
-    This will give you a good taste of Beyond Chaos EX while leaving out a few things that can sometimes be frustrating for new players. ("partyparty" and "makeover" are "secret" codes that randomize the sprites even more. "johnnydmad" randomizes the music. You can leave them out if you want.)
+    This will give you a good taste of Beyond Chaos EX while leaving out a few things that can sometimes be frustrating for new players.
     
-    * If you find that too hard, try:
-    -dfklmu partyparty makeover johnnydmad
+    * If you find that too hard, try also unchecking the 'm' flag.
     
     * The "typical" flags used by veterans are:
-    -lk partyparty makeover capslockoff johnnydmad
+    (all simple flags except l and k) partyparty makeover capslockoff johnnydmad
+	
+	But the important thing is to pick flags that are fun for you. If you're having fun, you aren't doing it wrong! When you find options you like, click the "Save flag selection" button to save it as a preset so you can quickly select the same flags again.
+
+Generate Seed:
+	When done selecting flags, click the "Generate Seed" button. It will take some time to generate the seed, and then a dialog box will pop up telling you it's finished.
 
 Output rom file:
     The randomizer generates two files, a patched rom file, and a mini-FAQ. Both files will have the seed value in their name. To play the game, load the patched rom file in your emulator. The mini-FAQ is a text file that mainly includes information about where to get items; colosseum rewards, monster steals and drops, shop info, and monster rages are all included.
@@ -111,64 +106,6 @@ A: It's not a bug. Ragnarok (esper) is at a different location. Location: Gur ob
 Q: I heard that there's a secret item. How do I get it?
 A: Va gur svany qhatrba, gurer'f n fznyy vagrevbe ebbz jvgu n qbbe cnfg n pbairlbe oryg gung vf vanpprffvoyr. Gb ernpu gur qbbe, lbh zhfg hfr na rkcybvg gung vf abeznyyl hfrq gb fxvc Cbygetrvfg va inavyyn SS6. Ybbx hc gur Cbygetrvfg fxvc gb svaq bhg ubj gb qb gur gevpx.
 
-Q: I heard that there are secret codes. What are they?
-A: Secret codes can be entered when the randomizer asks you for flags. They can do everything from make silly cosmetic changes to major gameplay changes. Mostly they're secret because it's recommended you play through the randomizer at least once without them before using them.
-Here are a few that ARE okay to use on your first time:
-
-    * capslockoff - Character names will not be in all-caps by default
-    * partyparty - a super version of the s flag. This also randomizes the sprites for Kefka, the soldiers, merchants, Esper Terra, Imp, Banon, and Leo.
-    * makeover - replaces (most) sprites with ones not in the original game, such as Samus or Rydia.
-    * johnnydmad - replaces the music tracks with tracks not in the original game. For example, you might hear music from Secret of Mana or Tales of Phantasia.
-    * notawaiter - skips some of the cutscenes. It skips all of the ones through Kefka @ Narshe, and a few of the longer ones after that.
-	* alasdraco - randomizes the sprites, voices, and a few other things in the opera
-
-If you want to customize the sprites chosen by the makeover code, there are a few options:
-    * novanilla - no characters will have sprites chosen from the vanilla game.
-	* frenchvanilla - sprites from the vanilla game can be chosen, but with equal probability to new sprites. (Makeover normally forces a few vanilla sprites to be included.)
-	* cloneparty - Allows, and even encourages, multiple versions of the same character to be selected. For example, one character might look like kid Rydia and another like adult Rydia. Or three characters could be three different versions of Garnet: in her normal outfit, in a gown, or dressed as a white mage.
-	
-    The following codes use tags. Sprites are tagged with certain categories, and these codes alter the chance of selecting sprites in those categories. Replace "<tag>" with one of the valid tags. Valid tags are: boys, girls, kids, pets, and potato (i.e., inanimate objects or otherwise very silly sprites). If you exclude too many sprites from the pool, sprites from the vanilla game will fill in the rest.
-	* no<tag> - e.g., noboys, excludes sprites with the given tag from being selected.
-	* hate<tag> - e.g., hatepotato, makes sprites with the given tag less likely to appear.
-	* like<tag> - e.g., likepets, makes sprites with the given tag more likely to appear.
-	* love<tag> - e.g. lovekids, allows ONLY sprites with the given tag to be selected. If you use more than one "love" code, sprites with AT LEAST ONE of those tags will be allowed.
-	
-After your first time, if you want an extra challenge (believe it or not, some people do):
-	* dancingmaduin -  this makes it so each esper can only be equipped certain randomly selected characters.
-
-The rest are here, in ROT13, but—again—it's recommended that you play through the randomizer without codes at least once before you use them:
-    nvefuvc
-    oenirahqrjbeyq
-    fhcyrkjerpxf
-    fgenatrwbhearl
-    qrnerfgzbyhyh
-    pnaggbhpuguvf
-    rnflzbqb
-    abeat
-    raqyrff9
-    rdhvcnalguvat
-    pbyyngrenyqnzntr
-    yyt
-    anghenyzntvp
-    anghenyfgngf
-    cynlfvgfrys
-    jbeevatgevnq
-    zrgebabzr
-    dhvxqenj
-    xhcbxhcb
-    ercynprrirelguvat
-    nyypbzobf
-    enaqbzobbfg
-    znffrssrpg
-    fhcreangheny
-    znqjbeyq
-    ryrpgevpobbtnybb
-    abgnjnvgre
-    qnexjbeyq
-    enaqbzobffrf
-    wbuaalnpunbgvp
-	gurfpranevbabggnxra
-
 Q: What level should I be for the final dungeon?
 A: It really depends on your gear and what builds you have access to. I usually end up going there around level 35-40, but it doesn't hurt to have a few absurdly high level characters to tank hits.
 
@@ -209,7 +146,7 @@ Q: Can you add X feature?
 A: Maybe. I'm open to suggestions, but things that require a lot of effort probably won't get made.
 
 Q: Can I add X feature?
-A: Possibly! Even if I don't think it's a good idea for the standard settings, it could be a secret code. Send me a pull request to the project's Github.
+A: Possibly! Even if I don't think it's a good idea for the standard settings, it could be a flag. Send me a pull request to the project's Github.
 
 Q: Does Beyond Chaos EX work with X mod?
 A: Probably not, especially if the mod makes large changes. But try Beyond Chaos Gaiden, which does work with Brave New World.
@@ -231,6 +168,15 @@ A: The best way to report it is on the Beyond Chaos Discord in the #bugs channel
     myself086 - new menu features and natural magic expansion
 	GreenKnight5 - GUI
 
+--- EXTERNAL PATCHES USED ---
+	Synchysi - esper restriction
+	Lenophis - unhardcoded tintinabar
+    Novalia Spirit - "Allergic Dog" bug fix, Selective Reequip
+    Leet Sketcher - Y Equip Relics
+    Assassin - That Damn Yellow Streak fix, sketch fix
+	Power Panda - Divergent Paths: The 3 Scenarios
+	HatZen08 - Coliseum Rewards Display
+
 --- SPECIAL THANKS ---
     cecil188 - OG beyond chaos fan
     fathlo23 - RPG speedrunner and BC challenge runner
@@ -239,12 +185,6 @@ A: The best way to report it is on the Beyond Chaos Discord in the #bugs channel
     kupofasa - original permadeath runner
     quikdraw7777 - permadeath community leader and pioneer
     tenkarider - romhacker who gave me lots of early feedback, and creator of the Ultimate Czar Dragon hack, FF6 Curse of the Gods, and many other challenges
-    Synchysi - esper restriction patch
-	Lenophis - unhardcoded tintinabar patch
-    Novalia Spirit - "Allergic Dog" bug fix patch
-    Leet Sketcher - Y Equip Relics patch
-    Assassin - That Damn Yellow Streak fix patch, sketch fix patch
-	Power Panda - Divergent Paths: The 3 Scenarios
     ff6hacking.com community - additional sprites, see custom/sprites/credits.txt for details
     AND YOU
 

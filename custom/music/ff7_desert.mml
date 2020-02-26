@@ -1,0 +1,164 @@
+#TITLE Desert Wasteland
+#ALBUM Final Fantasy VII
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#WAVE 0x20 0x1F
+#WAVE 0x21 0x20
+#WAVE 0x22 0x32
+#WAVE 0x23 0x0D
+#WAVE 0x24 0x80
+#WAVE 0x28 0x17
+#WAVE 0x2A 0x5F
+
+#def global= t80 %x240 %v80 %b0,50 %f0,0
+
+#def oca= |0 o5 'o' p60 m48,18,239 %r11 %e1
+#def ep= |1 o5 'e' p32 m48,18,192 %y0%s5 %e1
+#def guitar= |2 o5 'g' p120 m %e1
+#def str= |3 o5 's' p100 m %r7 %e1
+#def bass= |4 o7 'b' p64 m %r15 %e0
+
+#def o=v56
+#def e=v56
+#def g=v48
+#def s=v36
+#def b=v48
+
+#drum "t"=2c |8 v100 p64 %e1 k0
+#drum "p"=4e |8 %e1 k7
+#drum "s"=5g+ |A %e1 k0
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+'global' $
+'ep-o1' l2
+[g. f. g. g+.] ^.
+[##10
+'oca+o2' l8
+(d>a+)g2 (<c>a)f4.(d+24f24d+24)    d2. r2^>(a+16<c16)
+d>a+g2 <c>a<f4.d+    d2. r2.
+(<d>a+)g2 <c>af4.(d+24f24d+24)    d2. r2.
+(d>a+)g4.<g f4c4.>(a+16a16)    g2. r2.
+##26
+'guitar-o1' g4.<g4.> d4.<d+4^1.
+j2 'oca+o1' (a+16<c16)
+]^8
+##50
+['str+o1' l4
+a+2. g+2. g2. f2.
+d+fg d2. cdd+ >j2g+2.] f1^1^1
+;
+
+{2}
+$
+'ep' l4
+rd2 rc2 rd2 rc2
+rd2 rc2 rd2 rd+^1
+[##10
+[6rd2 rc2] >ra+2 ra2< rd2 rc2
+##26
+rd2 rd+1^1
+]
+##50
+['oca+o1' l4
+r.a+. r.g+. r.g. r.f.
+d+fg d2. cdd+ >j2g+2.]
+f1^1^1
+;
+
+{3}
+$
+'ep-o1' l8
+[4r2^d2..] ^2.
+[##10
+l2
+[6g.f.] d+.d. g.g+.
+##26
+g. g+1^1^4
+]
+##50
+[8g. f.] [3f.]
+;
+
+{4}
+$
+["t2."
+p0 p144,75 v3 v144,63 [24"!!!o s32"]
+l6 p144,101 v100 "p" v85 "p" v70 "p" v55 "p" v40 "p12"
+p144,127 ^12 v25 "p" v10 "p" v3 "p" v1 "p"]
+'oca+o1'k0 l16 r2r8 (a+<c)
+[##10
+[3 'bass-o2' g2^8 'ep-o1' d2.. r2^8 d2..]
+'bass-o2' d+2^8 'ep-o1' c2.. r2^8 d2..
+##26
+'bass-o2' g2^8 'ep-o1' d4.^1^1
+]
+##50
+< l4
+[8rd2 rc2] [3rc2]
+;
+
+{5}
+$
+[9r2.]
+[##10
+'guitar-o1' l8
+[6 ra+4<g4.> ra4<f4.>]
+rg4<d+4.> ra4<f4.>
+ra+4<g4.> rg+4<f4.>
+##26
+<r4d2 r4c1^1
+]
+##50
+'ep-o1' [7r2r8d2..]
+'str*v.8' l4 cdd+ >f1^1^1
+;
+
+{6}
+$
+[9r2.]
+[##10
+'guitar-o1' l4
+[6 g<d2> d<c2>]
+ca+2 d<c2>
+g<d2> d<c2>
+##26
+r8a+8^2 r8g+8^1^1
+]
+##50
+['str*v.8' l4
+a+2. g+2. g2. f2.
+d+fg d2. j2 cdd+ >g+2.]
+'ep-o1' r2r8d2.. r1r1r4
+;
+
+{7}
+$
+[9r2.]
+[##10
+[4"t2."
+p0 p144,75 v3 v144,63 [24"!!!o s32"]
+l6 p144,101 v100 "p" v85 "p" v70 "p" v55 "p" v40 "p12"
+p144,127 ^12 v25 "p" v10 "p" v3 "p" v1 "p"]
+##26
+r1.r1.
+]
+##50
+[19r2.]
+;
+
+{8}
+$
+[9r2.]
+[##10
+[16r2]
+##26
+r1.r1.
+]
+##50
+[19r2.]
+;
+

@@ -1,0 +1,97 @@
+#TITLE Whistle Down the Wind
+#ALBUM Treasure of the Rudras
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
+##created with sqspcmml beta 1.1.0
+
+#WAVE 0x20 0x0D
+#def 0i=   |0
+#def 0o=   o6
+#def 0v=   v133
+#def 0f= v1,133
+
+#WAVE 0x21 0x40
+#def 1i=   |1
+#def 1o=   o6
+#def 1v=   v200
+#def 1f= v1,200
+
+#WAVE 0x22 0x80
+#def 2i=   |2
+#def 2o=   o8
+#def 2v=   v150
+#def 2f= v1,150
+
+#WAVE 0x23 0x17
+#def 3i=   |3
+#def 3o=   o6
+#def 3v=   v133
+#def 3f= v1,133
+
+#WAVE 0x24 0x81
+#def 4i=   |4
+#def 4o=   o6
+#def 4v=   v100
+#def 4f= v1,100
+
+#WAVE 0x25 0x65
+#def 5i=   |5
+#def 5o=   o6
+#def 5v=   v100
+#def 5f= v1,100
+
+## auto percussion  0x23
+#drum "h"= 4g+
+## auto percussion  0x24
+#drum "i"= 5e
+
+#drum "j"=4a
+
+{3}
+%x255{'27 131'}t125%b0,70%f0,0%v50{'05'}'0v*v1.27'%e1r4$
+'0i' '0v*v.40'p64%a9%y4%s3%r13m48,8,199p4'0o'[%k3>g8g4g8d4c8c4c8d4c8c4
+c8d4<j2,101>e8e4e8d4
+<]$101%k-7>a8a4a8a4f8f4f8g4f8f4f8g4f8f4f8e4d8d4d8d4c8c4c8d4d8d4d8e4f8f4
+f8g4e8e4e8e1<;
+
+{4}
+{'05'}'0v*v1.27'%e1r4$
+'0i' '0v*v.40'p64%a9%y4%s3%r13m48,8,199p127'0o'[%k7>g8g4g8d4c8c4c8d4c8
+c4c8d4<j2,201>d+8d+4d+8d4
+<]$201%k-3>a+8a+4a+8a+4f+8f+4f+8g+4f+8f+4f+8g+4f8f4f8d+4d+8d+4d+8c+4c8
+c4c8c+4d+8d+4d+8f4f+8f+4f+8g+4f8f4f8f1<;
+
+{2}
+{'05'}'2v*v1.27'r4$
+'2i' '2v*v.80'p64{'AltTuning 24'}%a15%y7%s7%r14m48,8,199'2o'[%k-34>f2<c4
+c+2>d+4c+2d+4f2d+4<]>c+4f4d+4f4g+4g4f4.g+8<c4>a+4.f8g8g+8g4<c4>f4a+4.f8
+<c4>c+4f4g+8d+8<c4>g4e4<c16c+16c16>g16e4c4<;
+
+{1}
+{'05'}'1v*v1.27'%e1$%k0
+'1i' '1v*v.32'p64%a15%y3%s7%r15m24,4,199'1o'>g16a16a+16<c16d16r16g16r16
+d4>a+16<r16>a16<r16>g16<r16d16r16>g4f16g16a16<r16>a+16<r16>a16<r16>g4a16
+<r16>f16<r16>g16<r16d16r16d4>g16a16a+16<c16d16r16g16r16d4>a16<r16>f16<r16
+>d+16<r16>a+16<r16>a+4<c16r16>a16<r16>a+16<r16>a16<r16>g4f16<r16>a16<r16
+>g2^4<d+8d16r16c8>a+16<r16>a8f16<r16>d+16d16d+4.f16g16a16<r16>a+16<c16
+d16r16c8>a+8a8f8c2g16a16a+16<c16>a4d4g16a16a+16<r16c4>g4a16a+16<c16d16
+d+4f4c4d1^4;
+
+{5}
+'3v*v.94'r4$[16
+'3i' '3v*v.50'{'AltTuning 251'}%e0%a13%y7%s7%r0p64" !!!o h8"
+'4i' '4v*v.40'p24{'AltTuning 0'}%e1%a11%y7%s7%r20" !!!o i4i8"
+'3i' '3v*v.50'{'AltTuning 251'}%e0%a13%y7%s7%r0p104" !!!o h4"]r2p64"h4
+";
+
+{6}
+'0v*v1.27'%e1r4$
+'0i' '0v*v.40'p64%a9%y4%s3%r13m48,8,199p64'0o'[8%k-10r2^4]>f8f4f8g4f8f4
+f8g4f8f4f8d+4d8d4d8c+4c8c4c8c4d8d4d8d+4f8f4f8g4e8e4e8e1<;
+
+{7}
+'5v*v.94'r4$[16
+'5i' '3v*v.50'{'AltTuning 251'}%e0%a13%y7%s7%r0p64" !!!o j8"
+r4r8
+{'AltTuning 251'}%e0%a13%y7%s7%r0p104" !!!o j4"]r2p64"j4
+";

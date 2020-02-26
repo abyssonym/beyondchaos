@@ -1,0 +1,168 @@
+#TITLE Resurrection
+#ALBUM Tales of Phantasia
+#COMPOSER Motoi Sakuraba, Shinji Tamura
+#ARRANGED emberling
+
+#WAVE 0x20 0x0D
+#WAVE 0x21 0x8A
+#WAVE 0x22 0x60
+#WAVE 0x28 0x56
+#WAVE 0x29 0x16
+
+#def init= t120 %x255 %v30 %b0,112 %f0,0
+
+#def str= |0 o5 's' p64 m48,18,199
+#def arps= |1 o5 p64 m
+#def deeps= |2 o6 'd' p78 m
+#def timp= |9 o5 't' p58 m
+
+#def s=v32
+#def p=v68
+#def x=v44
+#def d=v96
+#def t=v80
+
+#drum "s"=5c |8 p64 v72 %e1 m #%y4%s2%r15
+
+{1}
+'init' %e1 $
+'arps' l8 
+'p'eg'p*.83'f+'p*.87'e'p'f+'p*v.87'ga'p'e
+'p*v.87'b'p*v.76'e'p*v.87'a'p*v.7'e'p*v.95'g'p*v.73'f+'p*v.79'e'p*v.83'f+
+'p*v.76'g'p*v.83'e'p*v.91'ae'p*v.99'g'p*v.87'ef+'p*v.73'g
+'p*v.83'a'p*v.76'e'p*v.95'b'p*v.76'e'p*v.95'a'p'g'p*v.87'e'p'f+
+##5
+'p*v1.07'g'p*v.87'f+e'p*v.91'a'p*v.95'e'p*v1.05'g'p*v.95'f+'p*v.87'e
+'p*v1.07'b'p*v.95'e'p'ae'p*v1.07'g'p*v.91'a'p'e'p*v1.07'b
+'p*v.91'e'p*v1.11'a'p*v1.07'e'p'g'p*v.91'f+e'p'f+'p*v.91'g
+'p'ad'p*v.87'ef+'p*v1.07'g'p'ab'p*v.87'g
+##9
+b'p'f+'p*v.91'ga'p'ef+'p*.87'g'p*.91'e
+'p'a'p*v.87'e'p*v.95'f+'p*v1.07'ge'p*v1.11'<e>'p*v.79'e'p*v.91'f+
+'p'g'p*v.97'e'p'b'p*v.87'e'p'ae'p*v.87'g'p'a
+'p*v.87'e'p*v.95'f+'p*v.83'g'p*v.87'e'p*v.62'b'p*v.91'e'p'ga
+##13
+#107 a 87 g+ 87 f+ 91 b      95 f+ 103 a 95 g+ 87 f+
+#107 <c+> 95 f+ 103 b 99 f+  107 a 91 b 103 f+ 107 <c+>
+#91 f+ 111 b 107 f+ 99 a     91 g+ 91 f+ 99 g+ 91 a
+#99 b 103 e 87 f+ 87 g+      107 a 99 b 99 <c+> 87 a
+'p*v1.07'a'p*v.87'g+f+'p*v.91'b 'p*v.95'f+'p'a'p*v.95'g+'p*v.87'f+
+'p*v1.07'<c+>'p*v.95'f+'p'bf+ 'p*v1.07'a'p*v.91'b'p'f+'p*v1.07'<c+>
+'p*v.91'f+'p*v1.11'b'p*v1.07'f+'p'a  'p*v.91'g+f+'p'g+'p*v.91'a
+'p'be'p*v.87'f+g+   'p*v1.07'a'p'b<c+>'p*v.87'a
+##17
+#87 <c+> 99 g+ 91 a 91 b    99 f+ 95 g+ 87 a 91 f+
+#103 b 87 f+ 95 g+ 107 a    107 f+ 111 <f+> 79 f+ 91 g+
+#99 a 87 f+ 103 <c+> 87 f+    99 b 99 f+ 87 a 99 b
+#87 f+ 95 g+ 83 a 87 f+    62 <c+> 91 f+ 103 a 103 b
+<c+>'p'g+'p*v.91'ab  'p'f+'p*v.95'g+'p*v.87'a'p*v.91'f+
+'p'b'p*v.87'f+'p*v.95'g+'p*v1.07'a  f+'p*v1.11'<f+>'p*v.79'f+'p*v.91'g+
+'p'a'p*v.87'f+'p'<c+>'p*v.87'f+  'p'bf+'p*v.87'a'p'b
+'p*v.87'f+'p*v.95'g+'p*v.83'a'p*v.87'f+  'p*v.62'<c+>'p*v.91'f+'p'ab
+##21
+#107 a+ 87 a 87 g 91 <c>      95 g 103 a+ 95 a 87 g
+#107 <d> 95 g 103 <c> 99 g    107 a+ 91 <c> 103 g 107 <d>
+#91 g 111 <c> 107 g 99 a+     91 a 91 g 99 a 91 a+
+#99 <c> 103 f 87 g 87 a       107 a+ 99 <c> 99 <d> 87 a+
+'p*v1.07'a+'p*v.87'ag'p*v.91'<c>  'p*v.95'g'p'a+'p*v.95'a'p*v.87'g
+'p*v1.07'<d>'p*v.95'g'p'<c>g      'p*v1.07'a+'p*v.91'g'p'a'p*v.91'a+
+g'p*v1.11'<c>'p*v1.07'g'p'a+      'p*v.91'ag'p'a'p*v.91'a+
+'p'<c>f'p*v.87'ga                 'p*v1.07'a+'p'<cd>'p*v.87'a+
+##25
+#87 <d> 99 a 91 a+ 91 <c>     99 g 95 a 87 a+ 91 g
+#103 <c> 87 g 95 a 107 a+     107 g 111 <g> 79 g 91 a
+#99 a+ 87 g 103 <d> 87 g      99 <c> 99 g 87 a+ 99 <c>
+#87 g 95 a 83 a+ 87 g         62 <d> 91 g 103 a+ 103 <c>
+<d>'p'a'p*v.91'a+<c>                  'p'g'p*v.95'a'p*v.87'a+'p*v.91'g
+'p'<c>'p*v.87'g'p*v.95'a'p*v1.07'a+   g'p*v1.11'<g>'p*v.79'g'p*v.91'a
+'p'a+'p*v.87'g'p'<d>'p*v.87'g         'p'<c>g'p*v.87'a+'p'<c>
+'p*v.87'g'p*v.95'a'p*v.83'a+'p*v.87'g 'p*v.62'<d>'p*v.91'g'p'a+<c>
+;
+
+{2}
+%e1 $
+'deeps-o3' l1
+[5e^] e..f4
+[4f+^] [4g^]
+;
+
+{3}
+%e1 $
+'str-o2*v1.5' l1 e^^^
+l2 << 's'b1 <c>a b1 <dc>
+b1 af+ g1 a1
+a1^1^1^1 ^b1<c+d.>b4<c+1>
+a+1<c>a a+1a+a  a+1<c>a a+1a1
+;
+
+{4}
+%e1 $
+'timp-o2' l8
+[ee2.. ee4e^2  ^ee2. e4ee4e4.]
+ee2.. ee4e^2  ^ee2. e4ee4.f4
+[f+f+2.. f+f+4f+^2  ^f+f+2. f+4f+f+4f+4.]
+[gg2.. gg4g^2  ^gg2. g4gg4g4.]
+;
+
+{5}
+%e1 $
+'str' l2
+[4r1] g1 af+ g1 ag
+g1 f+d e1 f+1
+c+1 d1 d+1 e1  f+g+1a b.g+4a1
+d1d+c d1gf d1af d1c1
+;
+
+{6}
+%e1 $
+'deeps-o4' l1
+[5e^] e..f4
+[4f+^] [4g^]
+;
+
+{7}
+%e1 &22r $
+'arps' l8 
+'x'eg'x*.83'f+'x*.87'e'x'f+'x*v.87'ga'x'e
+'x*v.87'b'x*v.76'e'x*v.87'a'x*v.7'e'x*v.95'g'x*v.73'f+'x*v.79'e'x*v.83'f+
+'x*v.76'g'x*v.83'e'x*v.91'ae'x*v.99'g'x*v.87'ef+'x*v.73'g
+'x*v.83'a'x*v.76'e'x*v.95'b'x*v.76'e'x*v.95'a'x'g'x*v.87'e'x'f+
+##5
+'x*v1.07'g'x*v.87'f+e'x*v.91'a'x*v.95'e'x*v1.05'g'x*v.95'f+'x*v.87'e
+'x*v1.07'b'x*v.95'e'x'ae'x*v1.07'g'x*v.91'a'x'e'x*v1.07'b
+'x*v.91'e'x*v1.11'a'x*v1.07'e'x'g'x*v.91'f+e'x'f+'x*v.91'g
+'x'ad'x*v.87'ef+'x*v1.07'g'x'ab'x*v.87'g
+##9
+b'x'f+'x*v.91'ga'x'ef+'x*.87'g'x*.91'e
+'x'a'x*v.87'e'x*v.95'f+'x*v1.07'ge'x*v1.11'<e>'x*v.79'e'x*v.91'f+
+'x'g'x*v.97'e'x'b'x*v.87'e'x'ae'x*v.87'g'x'a
+'x*v.87'e'x*v.95'f+'x*v.83'g'x*v.87'e'x*v.62'b'x*v.91'e'x'ga
+##13
+'x*v1.07'a'x*v.87'g+f+'x*v.91'b 'x*v.95'f+'x'a'x*v.95'g+'x*v.87'f+
+'x*v1.07'<c+>'x*v.95'f+'x'bf+ 'x*v1.07'a'x*v.91'b'x'f+'x*v1.07'<c+>
+'x*v.91'f+'x*v1.11'b'x*v1.07'f+'x'a  'x*v.91'g+f+'x'g+'x*v.91'a
+'x'be'x*v.87'f+g+   'x*v1.07'a'x'b<c+>'x*v.87'a
+##17
+<c+>'x'g+'x*v.91'ab  'x'f+'x*v.95'g+'x*v.87'a'x*v.91'f+
+'x'b'x*v.87'f+'x*v.95'g+'x*v1.07'a  f+'x*v1.11'<f+>'x*v.79'f+'x*v.91'g+
+'x'a'x*v.87'f+'x'<c+>'x*v.87'f+  'x'bf+'x*v.87'a'x'b
+'x*v.87'f+'x*v.95'g+'x*v.83'a'x*v.87'f+  'x*v.62'<c+>'x*v.91'f+'x'ab
+##21
+'x*v1.07'a+'x*v.87'ag'x*v.91'<c>  'x*v.95'g'x'a+'x*v.95'a'x*v.87'g
+'x*v1.07'<d>'x*v.95'g'x'<c>g      'x*v1.07'a+'x*v.91'g'x'a'x*v.91'a+
+g'x*v1.11'<c>'x*v1.07'g'x'a+      'x*v.91'ag'x'a'x*v.91'a+
+'x'<c>f'x*v.87'ga                 'x*v1.07'a+'x'<cd>'x*v.87'a+
+##25
+<d>'x'a'x*v.91'a+<c>                  'x'g'x*v.95'a'x*v.87'a+'x*v.91'g
+'x'<c>'x*v.87'g'x*v.95'a'x*v1.07'a+   g'x*v1.11'<g>'x*v.79'g'x*v.91'a
+'x'a+'x*v.87'g'x'<d>'x*v.87'g         'x'<c>g'x*v.87'a+'x'<c>
+'x*v.87'g'x*v.95'a'x*v.83'a+'x*v.87'g 'x*v.62'<d>'x*v.91'g'x'a+<c>
+;
+
+{8}
+$
+[15r2] "s2"
+[6 [7r2] "s2"]
+[15r2] "s2"
+[5 [7r2] "s2"]
+;

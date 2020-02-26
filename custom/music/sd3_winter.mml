@@ -84,30 +84,36 @@ j2r1r1r1r1]
 
 {5}
 $ %e1 p64
-'pluck' l4 $501 > [[[eef+f+ggf+e8d8] ccdd>bb<cc8d8 eef+f+ddj2ee]ge8d8
+'pluck' [j1,501]
+;
+
+$501 l4 > [[[eef+f+ggf+e8d8] ccdd>bb<cc8d8 eef+f+ddj2ee]ge8d8
 j2,521[eef+f+ggf+e8d8]]$521 
 ##37
 l8 [ c.f.a <c4>fc d.g.b <d4>gd >
 [a4a4a4ag]<]
-j1,0;
+]
 
 {6}
 $ %e1 p64
-'pluck' l8 $601 >>[[[7a4]ag] [7f4]fg [8a4$0]
-##9
-[[7a4]ag] [7f4]fg [7a4]ag
-j2,621[[7a4]ag]]$621 j1,0
+'pluck' l8 [j1,601]
 ##37
 l4 ['bass' f1g1 'pizza'> [8e]]
 ;
 
+$601 l8 >>[[[7a4]ag] [7f4]fg [8a4$0]
+##9
+[[7a4]ag] [7f4]fg [7a4]ag
+j2,621[[7a4]ag]]$621
+]
+
 {7}
-$ %e1 p64 'pizza' [j2,701%j501$701
+$ %e1 p64 'pizza' [j1,501]
 ##37
 ;
 
 {8}
-$ %e1 p64 'pizza' [j2,801%j601$801
+$ %e1 p64 'pizza' [j1,601]
 ##37
 l4 'pluck'>[ r1r1 e[7r]]
 ;

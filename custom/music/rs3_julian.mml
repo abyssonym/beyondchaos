@@ -2,82 +2,166 @@
 #ALBUM Romancing SaGa 3
 #COMPOSER Kenji Ito
 #ARRANGED emberling
-# Converted from binary by mfvitools
+##created with sqspcmml beta 1.1.2
 
 #WAVE 0x20 0x07
 #WAVE 0x21 0x50
 #WAVE 0x22 0x54
 #WAVE 0x23 0x02
 #WAVE 0x24 0x57
-#WAVE 0x25 0x3C
+#WAVE 0x25 0x9D
 #WAVE 0x26 0x5F
 #WAVE 0x27 0x22
 
-#def timbale= |5%y4%s2%r17p88
+#def 0i=   |0
+#def 0o=   o5
+#def 0v=   v100
+#def 0f= v1,100
+
+#def 1i=   |1
+#def 1o=   o5
+#def 1v=   v100
+#def 1f= v1,100
+
+#def 2i=   |2
+#def 2o=   o4
+#def 2v=   v100
+#def 2f= v1,100
+
+#def 3i=   |3
+#def 3o=   o5
+#def 3v=   v100
+#def 3f= v1,100
+
+#def 4i=   |4
+#def 4o=   o5
+#def 4v=   v100
+#def 4f= v1,100
+
+#def 5i=   |5
+#def 5o=   o5
+#def 5v=   v100
+#def 5f= v1,100
+
+#def 6i=   |6
+#def 6o=   o5
+#def 6v=   v100
+#def 6f= v1,100
+
+#def 7i=   |7
+#def 7o=   o5
+#def 7v=   v100
+#def 7f= v1,100
+
+#drum "c"= 5b |2 p61
+#drum "c+"= 5b |2 p56
+#drum "d"= 6f |3 p28
+#drum "f"= 6f |3 p63
+
+## auto percussion  0x21
+#drum "h"= 6g
+## auto percussion  0x24
+#drum "i"= 5d
+#drum "j"= 5g+
+## auto percussion  0x25
+#drum "k"= 5d
+#drum "l"= 5a
+## auto percussion  0x26
+#drum "m"= 6e
+## auto percussion  0x27
+#drum "n"= 5g
+
 
 {1}
-l16t110%v20%b0,65%f0,0 $1 r1  r1  m48,18,207[2v53o5|0p60%e1c+4^>a+<c+d+4f8f+g+a+  
-r<c+rc+c+>a+<c+d+r>a+8.rg+a+f+  rf+g+frff+d+rd+fc+4^  r>b<c+d+fd+ff+ra+rg+rf+8g+  
-f8d+f4^v96,44^2  r2r8.d+8v53ff+a+  <c+8.d+r8>f+rb8.a+r8g+r  r8f+rff+ra+4.^r8  
-r8d+ff+fd+g+8d+g+a+8.r8  <c+8.d+r8>f+rb8.a+r8g+r  r8f+ff+g+a+b4<d+8.>b8  
-a+r8a+r8a+ra+r4.r  ]
-;1
+t110%v20%b0,65%f0,0%a12
+$101r1r1m48,18,207['0v*v.53''0o'
+'0i' p60%e1c+4^16>a+16<c+16d+4f8f+16g+16a+16r16<c+16r16c+16c+16>a+16<c+16
+d+16r16>a+8.r16g+16a+16f+16r16f+16g+16f16r16f16f+16d+16r16d+16f16c+4^16
+r16>b16<c+16d+16f16d+16f16f+16r16a+16r16g+16r16f+8g+16f8d+16f4^16'0f*v96,.44'
+^2r2r8.d+8'0v*v.53'f16f+16a+16<c+8.d+16r8>f+16r16b8.a+16r8g+16r16r8f+16
+r16f16f+16r16a+4.^16r8r8d+16f16f+16f16d+16g+8d+16g+16a+8.r8<c+8.d+16r8
+>f+16r16b8.a+16r8g+16r16r8f+16f16f+16g+16a+16b4<d+8.>b8a+16r8a+16r8a+16
+r16a+16r4.r16]
+;101
 
-l16
+
 {8}
-l16 $2 r1  r1  v40o6|1p58%e1%r18%a14[2[6r1  
-]g1  ^1  r1  g1  
-^1  g^8g^8g^g8^4.  ]
-;2
 
-l16
+$801r1r1'1v*v.40''1o+o1'
+'1i' p58%e1%r18%a14[[6r1]" !!!o h1"^1r1"h1"^1"h16"^8"h16"^8"h16"^16"h8
+"^4.]
+;801
+
+
 {2}
-l16o5|2p50%e1%r16 $3 v56c+rc+8rc+rc4>a+8.<c8  
-c+rc+8rc+rd+4c+8.c8  [2v56c+^64r64r32c+8rc+rc4>a+8.<c8  c+^64r64r32c+8rc+rd+4c+8.d+8  
-d+^64r64r32d+8rd+rd+8c+d+f8.c+8  d+^64r64r32d+8rd+rf4f+8.g+8  r8c+^64r64r32rc+rc8>a+<cc+8.c8  
-r8c+^64r64r32rc+rd+2r  d+8.>b8.<d+8f8.c+8.f8  r8>a+^64r64r32ra+r<c4c+8.c8  
-r8d+^64r64r32rd+rd+8c+d+f8.r8  d+8.>b8.<d+8f8.c+8.f8  r8c+^64r64r32rc+rd+8ef+g+8f+e8  
-d+r8d+r8d+r>a+r<v66c+d+8c+c8  ]
-;3
+'2o+o1'
+'2i' p50%e1%r16
+$201'2v*v.56'c+16r16c+8r16c+16r16c4>a+8.<c8c+16r16c+8r16c+16r16d+4c+8.
+c8['2v*v.56'c+16^64r64r32c+8r16c+16r16c4>a+8.<c8c+16^64r64r32c+8r16c+16
+r16d+4c+8.d+8d+16^64r64r32d+8r16d+16r16d+8c+16d+16f8.c+8d+16^64r64r32d+8
+r16d+16r16f4f+8.g+8r8c+16^64r64r32r16c+16r16c8>a+16<c16c+8.c8r8c+16^64
+r64r32r16c+16r16d+2r16d+8.>b8.<d+8f8.c+8.f8r8>a+16^64r64r32r16a+16r16<
+c4c+8.c8r8d+16^64r64r32r16d+16r16d+8c+16d+16f8.r8d+8.>b8.<d+8f8.c+8.f8
+r8c+16^64r64r32r16c+16r16d+8e16f+16g+8f+16e8d+16r8d+16r8d+16r16>a+16r16
+<'2v*v.66'c+16d+8c+16c8]
+;201
 
-l16
+
 {3}
-l16o4|2p50%e1%r16 $4 v56a+ra+8ra+rg+2^  
-a+ra+8ra+rg+2^  [2[3v56a+^64r64r32a+8ra+rg+2^  ]f+^64r64r32f+8rf+rg+2^  
-r8a+^64r64r32ra+rg+2^  r8a+^64r64r32ra+rg+2r  f+2g+2  r8f+^64r64r32rf+rg+2^  
-r8a+^64r64r32ra+rg+4.^r8  f+2g+2  r8a+^64r64r32ra+rg+2^  g+r8g+r8g+rf+rv66f+g+8f+f8  
+'2o'
+'2i' p50%e1%r16
+$301'2v*v.56'a+16r16a+8r16a+16r16g+2^16a+16r16a+8r16a+16r16g+2^16[[3'2v*v.56'
+a+16^64r64r32a+8r16a+16r16g+2^16]f+16^64r64r32f+8r16f+16r16g+2^16r8a+16
+^64r64r32r16a+16r16g+2^16r8a+16^64r64r32r16a+16r16g+2r16f+2g+2r8f+16^64
+r64r32r16f+16r16g+2^16r8a+16^64r64r32r16a+16r16g+4.^16r8f+2g+2r8a+16^64
+r64r32r16a+16r16g+2^16g+16r8g+16r8g+16r16f+16r16'2v*v.66'f+16g+8f+16f8
 ]
-;4
+;301
 
-l16
+
 {4}
-l16v103|3p64%a11%r14 $5 o6d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  
-<d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  [2<d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  
-<d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  b8a+b8f+ba+8g+a+<f8.>a+8  g+8f+g+8<d+>g+<c+8>b<c+>g+8.<c+8  
-d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  <d+8c+d+8>a+<d+>g+2r  b8a+b8f+b<c+8>b<c+>g+8.<c+8  
-d+8c+d+8>a+<d+>g+8f+g+a+8.g+8  b8a+b8f+b<c+8>b<c+>a+8.r8  b8a+b8f+b<c+8>b<c+>g+8.<c+8  
->f+8g+f+8<f+c+e8d+e>b8.<e8  d+r8d+r8d+rd+r4r>g+8  ]
-;5
+'3v*v1.03'
+'3i' p64%a11%r14
+$401'3o+o1'd+8c+16d+8>a+16<d+16>g+8f+16g+16a+8.g+8<d+8c+16d+8>a+16<d+16
+>g+8f+16g+16a+8.g+8[<d+8c+16d+8>a+16<d+16>g+8f+16g+16a+8.g+8<d+8c+16d+8
+>a+16<d+16>g+8f+16g+16a+8.g+8b8a+16b8f+16b16a+8g+16a+16<f8.>a+8g+8f+16
+g+8<d+16>g+16<c+8>b16<c+16>g+8.<c+8d+8c+16d+8>a+16<d+16>g+8f+16g+16a+8.
+g+8<d+8c+16d+8>a+16<d+16>g+2r16b8a+16b8f+16b16<c+8>b16<c+16>g+8.<c+8d+8
+c+16d+8>a+16<d+16>g+8f+16g+16a+8.g+8b8a+16b8f+16b16<c+8>b16<c+16>a+8.r8
+b8a+16b8f+16b16<c+8>b16<c+16>g+8.<c+8>f+8g+16f+8<f+16c+16e8d+16e16>b8.
+<e8d+16r8d+16r8d+16r16d+16r4r16>g+8]
+;401
 
-l16
+
 {5}
-l16 $6 o5|4v64p40g+8d8g+8dg+rg+rdg+8d8  
-g+8d8g+8dg+rg+rdg+8d8  [2|4p40v64[5g+8d8g+8dg+rg+rdg+8d8  ]g+8d8g+8dg+r'timbale'v58a8daad8  
-|4%yp40v64g+8d8g+8dg+rg+rdg+8d8  g+8d8g+8dg+rg+rdg+8d8  g+8d8g+8dg+r4.'timbale'v60a8  
-|4%yp40v64g+8d8g+8dg+rg+rdg+8d8  g+8d8g+8dg+rg+rdg+8d8  'timbale'v71a^8a^8a8a8^4.  
-]
-;6
 
-l16
+$501'4o'
+'4i' '4v*v.64'p40" !!!o j8i8j8i16j16"r16"j16"r16"i16j8i8j8i8j8i16j16"r16
+"j16"r16"i16j8i8"[
+'4i' p40'4v*v.64'[5" !!!o j8i8j8i16j16"r16"j16"r16"i16j8i8"]"j8i8j8i16
+j16"r16
+'5i' %r17p88'5v*v.58'" !!!o l8k16l16l16k8"
+'4i' %yp40'4v*v.64'" !!!o j8i8j8i16j16"r16"j16"r16"i16j8i8j8i8j8i16j16
+"r16"j16"r16"i16j8i8j8i8j8i16j16"r4.
+'5i' %r17p88'5v*v.60'" !!!o l8"
+'4i' %yp40'4v*v.64'" !!!o j8i8j8i16j16"r16"j16"r16"i16j8i8j8i8j8i16j16
+"r16"j16"r16"i16j8i8"
+'5i' %r17p88'5v*v.71'" !!!o l16"^8"l16"^8"l8l8"^4.]
+;501
+
+
 {6}
-l16v38o6|6 $7 [4r8p28e4p100e8][2[17r8p28e4p100e8  
-]r2[4r8p28e4p100e8  ]p28er8p100er8p28e8p100e8r4p64e8  ]
-;7
+'6v*v.38''6o+o1'
+'6i' 
+$601[4r8p28" !!!o m4"p100"m8"][[17r8p28"m4"p100"m8"]r2[4r8p28"m4"p100"m8
+"]p28"m16"r8p100"m16"r8p28"m8"p100"m8"r4p64"m8"]
+;601
 
-l16
+
 {7}
-l16v68o5|7p64 $8 [8g4][2[33g4]g8.g2  
-r[8g4]g^8g^8g8g8^4  g8]
-;8
+'7v*v.68''7o'
+'7i' p64
+$701[8" !!!o n4"][[33"n4"]"n8.n2"r16[8"n4"]"n16"^8"n16"^8"n8n8"^4"n8"]
 
-l16
+;701
+

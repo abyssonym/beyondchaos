@@ -3,8 +3,10 @@
 #COMPOSER Glenn Stafford
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT _*~ enh
+#VARIANT _*/ nat
+#VARIANT \`~ sfx
+#VARIANT _`~ tr
 
 #WAVE 0x20 ~0x94~/0x0D/ strings
 #WAVE 0x21 ~0x93~/0x06/ choir
@@ -109,11 +111,13 @@ l16 ('8vb'f+8'8vc'>ag+) (ag+f+e) (f+edc+) (dc+>ba)
 '08'<%r10b4.%r17<c+4. 'ob'p104< ([4<c+>b]<c+>)a16r16r4 ([3ag+])e16r8.
 ##44
 '08' a4.r4
-'04''4va'> l8 $145 >bbbb<c+rc+defr  g+4.rar<drc+2>c+2 j1,0
+'04''4va'> l8 [j1,145] ##$145 >bbbb<c+rc+defr  g+4.rar<drc+2>c+2 j1,0
 ##48
 'pi''wva'%r6< l12 f+2.^6a<c+6>a  b2.^6fd6f  l8 g+2..dbg+  l12 a2.^6f+c+6f+
 l8 c2..d+af+ g+2..d>b<d  l12 f2.^6>b<g+6f f+1^4
 ;
+
+$145 l8 >bbbb<c+rc+defr  g+4.rar<drc+2>c+2 ]
 
 {2}
 $ %e1
@@ -181,15 +185,16 @@ f+1^1 '02''2va'>f+1^1
 '09''9va' l24 >([4ba]b)<c+16r8. '03''3v3' l8 >aaaab4b<c+de4
 ##44
 '09''9va' l24 ([4c+>b<]c+d16r8.
-'02''2va' l8 %r17< [j2,347%j145$347
+'02''2va' l8 %r17< [j1,145]
 ##48
 '03' l8 [[4'3v2'f+4f+f+4f+'3v3'<c+4>j4c+4]c+8f+16'3v1'g+16]
 ;
 
 {4}
 $
-l16 $401 [ ["k8ss8."]"^8s4s8" j2,404 ["k8ss8."]"^8ss8.s8" ] $404 ["k8ss8."]"^8ss8.ss"
-j1,0 [4"k8ss8. s+s8.ss8.ss8.ss"]
+l16 [j1,401] ##$401 [ ["k8ss8."]"^8s4s8" j2,404 ["k8ss8."]"^8ss8.s8" ] $404
+":s:"        ## ["k8ss8."]"^8ss8.ss" j1,0
+[4"k8ss8. s+s8.ss8.ss8.ss"]
 ##9
 l16 [4"s8s-ss8s8s8s-s-s8s8"]
 ##12
@@ -206,8 +211,11 @@ l24 [6["!!!o s+ss-" v48,92 [6"\s"] "s+4s-8"] v80v24,56"\sss"v24,96"\sss" "s+4"]
 ##44
 v24,48"\sss" v48,96[6"\s"] v24,56[6"\s"] [27 v66"\s"v56"\ss"]
 ##48
-[[j2,456%j401$456]
+[[j1,401]]
 ;
+
+"!!!o" l16
+$401 [ ["k8ss8."]"^8s4s8" j2,404 ["k8ss8."]"^8ss8.s8" ] $404 ["k8ss8."]"^8ss8.ss" ]
 
 {5}
 $ %e1
@@ -269,6 +277,7 @@ l4 '14h''14hl''vi' <f+> '14''14h' d>bg+fc+>a '14hl'f ^1^1
 [5a]) ([5f+]) ([5g+]) ([5f+]) m
 ;
 
+_
 {7}
 $ %e1
 '05''tr''vi' v16 l8 v240,20 ([5ef]) v240,24 ([5ef]) v240,28 ([5ef]) v240,32 ([5ef])
@@ -293,10 +302,12 @@ l4 ([8f+]) ([8g+]) ([4a+]<[4c+])> ([4b]<dd)(ff)
 ##48
 '05''5vb''tr' l8 (f+4[39ff+]) m
 ;
+_
 
+*
 {8}
 $
-l16 $801 [[4"c8ccc8 r8rrr8"j4"mmm8 ttt8"]":r:mmmm tttt"] j1,0
+l16 [j1,801] ":t:" ##$801 [[4"c8ccc8 r8rrr8"j4"mmm8 ttt8"]":r:mmmm tttt"] j1,0
 ##9
 l2 ["!!!o y1" %e1'04''4va'> f+f]
 ##12
@@ -316,7 +327,19 @@ l2 ["!!!o y1" %e1'04''4va'> f+f]
 '08''8va' d4.%r19d4  'l8''2va'%r17 >bbbb<c+rc+defr
 '08''8va' d4.%r19c+4 'l8''2va'%r17 >aaaabrb<c+der
 ##44
-'02''2va' r2r8 [j2,847%j145$847 m
+'02''2va' r2r8 [j1,145] m
 ##48
-[j2,855%j801$855
+[j1,801]
 ;
+*
+
+$801 l16 [[4"c8ccc8 r8rrr8"j4"mmm8 ttt8"]":r:mmmm tttt"] ]
+
+\
+{7}r;
+\
+
+`
+{8}r;
+`
+

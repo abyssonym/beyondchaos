@@ -1,0 +1,313 @@
+#TITLE The Sacrifice, Part Three
+#ALBUM Trials of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+
+#WAVE 0x20 0x46
+#WAVE 0x21 0x82
+#WAVE 0x22 0x8C
+#WAVE 0x23 0x6B
+#WAVE 0x24 0x55
+#WAVE 0x25 0x65
+#WAVE 0x26 0x21
+
+#def init= t147 %x240 %v60 %b0,56 %f0,0
+
+#def strings= |0 's' o6 %s7%r10
+#def brass= |1 't' o6 %r8
+#def piano= |2 'p' 'po'
+#def bass= |3 'b' o5
+
+#def po= o6
+
+#def s= v100
+#def t= v90
+#def p= v112
+#def b= v127
+
+#def d= v127
+#def c= v80
+
+#drum "g"=5a |5 p64 'd*v.78'
+#drum "h"=5a |5 p64 'd*v.78'
+#drum "i"=5a |5 p64 'd*v.84'
+#drum "j"=5a |5 p64 'd*v.91'
+#drum "k"=5a |5 p64 'd*v.98'
+#drum "p"=5b |6 p64 'd*v.78'
+#drum "q"=5b |6 p64 'd*v.84'
+#drum "r"=5b |6 p64 'd*v.91'
+#drum "s"=5b |6 p64 'd*v.98'
+#drum "t"=5a |4 p64 'c*v.98'
+#drum "u"=5a |4 p64 'c*v.78'
+
+{1} 'init' $ %e1
+## 1-4 -- strings 1/3 (ch6)
+'strings*v.98' p64 l16
+[7f+c+>g+f+c+f+g+<c+] f+c+>bg+a+fc+>a+
+## 5-12 -- brass (ch6)
+'brass*v.98-o1' p32 l8 m48,18,223
+[a+2^a+g+f+ f2^ff+j2g+]f
+d+2^d+f+a+ b4a+<c+4>a+f+a+
+g+2..g+16g+16 <c+1>
+## 13-20 -- brass (ch6)
+f+4ff+4g+f+2f+4g+4b4   a+4g+a+4<c+>a+2a+4<c+4f4
+l16 [[d+d+d+r8.]j2d+d+d+8]r4  >[[g+g+g+r8.]j2g+g+g+8]r8fg+
+## 21-28 -- big loop start -- piano (ch3)
+[m
+'piano*v.98' p64 l16
+[4d+f+a+<d+f+d+>a+f+  fg+<cfg+fc>g+  f+a+<c+f+a+f+c+>a+  fg+<cfg+fc>g+]
+## 29-36 -- piano (ch3)
+[ [d+f+a+<d+f+d+>a+f+] [fg+<c+fg+fc+>g+] cd+g+<cd+>g+<cd+ g+d+c>g+<d+c>g+d+
+  f+a+<c+f+a+c+f+a+ f24g+24f24c+>g+j2<fc+>g+c+] fg+<c+f>
+## 37-44 -- piano (ch3)
+>[[[g+a+b<d+][g+d+>ba+]] [[g+a<c+e][g+ec+>a]]]<
+## 45-52 -- piano (ch3)
+[ c+d+ea<c+>ea<c+ec+>ae<c+>aec+  d+ef+b<d+>f+b<d+f+d+>bf+<d+>bf+c+
+  [ef+a+<c+e>a+<c+ej2g+ec+>a+<ec+>a+f+] a+g+f+d+c+32d+32c+32>b32a+f+]
+## 53-60 -- brass 1/2 (ch3)
+'brass-o1*v.87' p48 m48,18,223 l8
+[%k-9[j1,6053]a+ %k-5[j1,6053]j2f+]e
+## 61-68 -- brass 1/2 (ch3)
+%k-7[j1,6053]a+ %k-9[[j1,6053]g+ %k-7]
+%k0 l16 d+4.d+d+d+4.d+d+ d+4d+4d+8.mj2d+c+d+f+g+
+]
+d+8.d+8
+## 117-124 -- piano (ch6)
+p64 [['piano-o1*v.87' l16
+[3g+a+b<d+]>g+a+b<d+] j2,6123 ['po-o1'[3f+g+a<c+]>f+g+a<c+]]
+$6123 ['po-o1'[3f+g+a<c+]>j2f+g+a<c+]ag+ec+>
+## 125-140 -- piano (ch6) pt.1
+'p*v.98' [j1,6125]
+;
+
+{2} $ %e1
+## 1-4 -- piano (ch3)
+'piano*v.98' p64 l16
+[[3f+b<ec+f+c+>b<e>]j2 f+b<ec+ l24 f+c+>beb<e>] l16 f+b<eg+f>a+fc+
+## 5-12 -- piano (ch3)
+[j1,3005]
+## 13-20 -- strings 1/2 (ch5)
+'strings*v.98' p96 l8
+d+4c+d+4fd+2d+4f4g+4  f+4ff+4g+f+2f+4g+4<c+4>
+l16 [[a+a+a+r8.]j2a+a+a+8]r4  [[g+g+g+r8.]j2g+g+g+8]r8>a+<c+
+## 21-28 -- big loop start -- strings (ch5)
+[ p96 's*v.98'
+d+1^4d+4f4f+4 f8.d+8.c+8d+1^4.>a+<c+
+d+1^4d+4f4f+4 f8.g+8.f8d+1^4.>a+<c+
+## 29-36 -- strings (ch5)
+l8 [d+2^d+c+>b< c+4>g+f4f+g+<c+>  l16 g+4.f+fj2f+4f4 f+4.g+f+f4c+8a+<c+]
+f+4.>a+<c+ d+r8d+8.d+d+fr8f8.ff
+## 37-44 -- strings 1/2 (ch6)
+p32 %r%s7%r10
+[g+2..c+b g+4.ef+g+8f+8e8c+8  f+8e24f+24e24c+4.c+8>b8<e8 c+>b<c+2.j2c+b]>f+g+<
+## 45-52 -- strings 1/2 (ch6)
+[c+2e4.d+e f+2g+4.f+g+  l12 a+ba+g+a+g+f+g+f+ l16 ef+ec+ >a+2j2b4g+8f+g+<] ^2<
+## 53-60 -- strings 1/3 (ch6)
+'s*v.94' l8 %a11%r6
+[ [j1,6053]f+ j2,259 %k-5[j1,6053]%k0f+] $259 l16 d+4.d+d+d+4.d+d+d+4d+4d+8.e8.d+8
+## 61-68 -- strings 1/3 (ch6)
+l8 %k-7[[j1,6053]a+ %k-9] %k-5[j1,6053]a+
+l16 %k0 f+4.f+f+f+4.f+f+ g+4g+4g+8. j2 g+f+g+a+<c+
+]
+g+8.g+8
+## 117-124 -- strings 1/4 (ch3)
+l16 [d+2..d+d+ f+2d+4f+4  ed+c+2.c+c+ e2c+4e4]
+## 125-140 -- strings 1/4 (ch3)
+d+2..ed+ d+2d+8.e8.d+8  c+2..c+>b< c+4d+4f+4a+4
+b2..<c+>b b2g+8.a+8.b8  <c+2c+8.f+8.c+>a+ f+2f+8g+8a+8f+8
+g+2..f+e d+4>b4<c+4e4  d+2..ef+ d+2d+8.e8.d+8
+c+2..d+>b< c+2c+8e8g+8b8 <c+2..c+c+ c+2>b2
+;
+
+{5} $ %e1
+## 1-4 -- strings 2/3 (ch5)
+'strings*v.98' p96 l16
+[7c+>g+f+c+>b<c+f+g+<] c+>g+f+f+ fc+>a+g+<
+## 5-12 -- strings (ch5)
+[j1,3005]
+## 13-20 -- strings 2/2 (ch3)
+p80 l8 b4a+b4<c+>b2b4<c+4f4  d+4c+d+4fd+2d+4f4g+4
+l16 [[f+f+f+r8.]j2f+f+f+8]r4  [[c+c+c+r8.]j2c+c+c+8]r4
+## 21-28 -- big loop start -- brass (ch6)
+[
+'brass*v.98-o1' p32 m48,18,223
+a+1^4a+4<c4c+4 c8.>a+8.g+8a+1^4.fg+
+a+1^4a+4<c4c+4c8.d+8.c8>a+1^4.fg+
+## 29-36 -- brass (ch6)
+l8 [a+2^a+g+f+ g+4fc+4d+ff+  l16 f4.d+c+d+4.j2^1fg+]d+f f+r8f+8.f+f+ g+r8g+8.g+g+
+m
+## 37-44 -- strings 2/2 (ch5)
+'strings*v.98-o1' p96 j1,537 %a11%r6 $537
+[e2..>g+<g+ e4.c+d+e8d+8c+8>g+8<  d8c+24d24c+24>a4.a8g+8<c+8> ag+a2.j2g+<g+] c+f+
+## 45-52 -- strings 2/2 (ch5)
+[a2<c+4.>b<c+ d+4c+4>b4g+4  f+2..f+g+ <c+2j2^4.>c+e] ^2
+## 53-60 -- strings 2/3 (ch5)
+'s*v.94' l8 %a11%r6
+[ %k-5[j1,6053]f+ j2,559 %k-10[j1,6053]b] $559 l16 d+4.d+d+d+4.d+d+d+4d+4d+8.e8.c+8
+## 61-68 -- strings 2/3 (ch5)
+l8 %k-12[[j1,6053]j2a]a+ %k-9[j1,6053]g+ l16 a+4.a+a+a+4.a+a+ a4a4a8.j2ag%k0cc+f
+]
+a8.a8%k0
+## 117-124 -- strings 3/4 (ch2)
+p80 l16 > %r10
+[g+2..g+a+ b8.<c+8.>b8g+4b4  a2..ab <c+8.>a8.g+8a8g+8f+8a8]
+## 125-140 -- strings 3/4 (ch2)
+g+2..g+g+ g+2g+8.g+8.g+8  f+2..f+f+ f+4a+4<c+4d+4
+e2..f+e e2c+8.e8.e8  f+2f+8.a+8.f+d+ c+2c+8d+8d+8c+8
+c+2..c+>b b4f+4a4b4  g+2..g+g+ g+2g+8.g+8.g+8
+a2..bf+ a2a8b8<c+8e8  f+2..f+f+ f+2f+2
+;
+
+{6} $ %e1
+## 1-4 -- strings 3/3 (ch2)
+'strings*v.98-o1' p32 l16
+[7g+f+c+>bg+b<c+f+] g+f+ec+ d+>a+g+f
+## 5-12 -- tambourine (ch2)
+[6[j1,2005]]
+## 13-20 -- tambourine (ch2)
+#^
+":u" [[3"tuu8"j3"t8"] "tuu8" ["t8uu"] "t24t24t24uu"]
+## 21-28 -- big loop start -- tambourine (ch2)
+[
+[7[j1,2005]]
+## 29-36 -- tambourine (ch2)
+#^
+":u" [7"t8uu"] "tuu24u24u24"
+## 37-44 -- tambourine (ch2)
+[8[j1,2005]]
+## 45-52 -- tambourine (ch2)
+#^^
+## 53-60 -- strings 3/3 (ch2)
+'strings-o1*v.94' l8 %a11
+[ %k-7[j1,6053]f+  %k-12j2,659[j1,6053]a+] $659 l16 g+4.g+g+g+4.g+g+g+4g+4g+8.f+8.e8
+## 61-68 -- strings 3/3 (ch2)
+l8 %k-16[[j1,6053]j2a+]g+ %k-14[[j1,6053]g+ %k-12]%k0
+]
+## 117-124 -- strings 2/4 (ch5)
+p64 l16 %r6
+[>b2..bb< d+2>b4<d+4  c+>ba2.aa <c+2>a4<c+4]
+## 125-140 -- strings 2/4 (ch5)
+>b2..<c+>b b2b8.<c+8.>b8  a+2..a+g+ a+4<c+4d+4f+4
+g+2..a+g+ g+2e8.g+8.g+8  a+2a+8.<c+8.>a+f+ d+2d+8f8f+8d+8
+e2..d+c+ c+4>g+4b4<c+4  >a+2..b<c+ >a+2a+8.b8.a+8
+b2..<c+>a b2b8<c+8e8g+8  a2..aa a2g+2
+;
+
+{3} $ 
+## 1-4 -- bass (ch4)
+'bass*v.84' p64 l16 %e0
+[7f+f+<f+f+>j7ee<ee>]e<e>c+<c+> f+b<eg+>a+<d+fa+
+## 5-12 -- bass (ch4)
+[ %k0 [ [4d+d+<d+d+>]%k-2] ]
+[[8c+c+<c+c+>]%k0]
+## 13-20 -- bass (ch4)
+>b8bb b8<d+d+ d+8f+f+ f+8a+a+  b8bb a+8f+f+ f+8d+d+ >b8<c+c+
+d+8d+d+ d+8ff f8f+f+ f+8a+a+ <c+8c+c+> a+8f+f+ f+8ff d+8>a+a+
+[[[bbbr8.]j2bbb8]r4%k-1]%k0<
+## 21-28 -- big loop start -- bass (ch4)
+[
+[4[[d+8<d+d+>]%k2]%k0[f+8<f+f+>]f8<ff>j4f8<ff>]c+8<c+c+>
+## 29-36 -- bass (ch4)
+[[4>b8<bb][4c+8<c+c+>][4>g+8<g+g+] j2,336 [>b8<bb]c+8<c+c+>c+c+<c+c+>]
+$336 >b8<b>b8b<bb c+8<c+>c+8c+dd+
+## 37-44 -- bass (ch4)
+[[[3eree]eeee]%k-2]%k0
+[[[3eree]eej2ee]j2ee%k-2]%k0>bb
+## 45-52 -- bass (ch4)
+[[3araa]arb<c+> [3brbb]b<c+d+f  [3f+rf+f+]f+ec+>b [3f+rf+f+]j2f+g+ab]<f+>f+f+f+
+## 53-60 -- brass 2/2 (ch4)
+'brass*v.87-o2' p80 l8 m48,18,223 %e1
+[ %k-4[j1,6053]a+ %k0[j1,6053]j2f+ ]g+
+## 61-68 -- brass 2/2 (ch4)
+%k1[j1,6053]a+ l16 %k0[3g+4.g+g+g+4.g+g+g+4g+4g+8.j3g+8.g+8]g+
+m j2 'bass*v.84+o1' p64 %e0 c+rc+c+
+]
+^8g+8
+## 117-124 -- strings 4/4 (ch4)
+'strings-o2*v1.08' p48 l16 %a11
+[[d+8c+d+8d+c+r d+8c+rj2d+8c+r]d+ef+d+  [e8d+e8ed+r e8d+rj2e8d+r]ec+>a<e]
+## 125-140 -- strings 4/4 (ch4)
+'s*v.94'
+e2..ee e2e8.e8.e8  d+2..d+d+ d+4f+4a+4<c+4
+c+2..c+c+ c+2>b8.<c+8.c+8  d+2d+8.f+8.d+c+ >a+2a+8a+8<c+8>a+8
+a2..aa a4e4f+4a4  f+2..f+f+ f+2f+8.f+8.d+8
+e2..ee e2e8g+8a8<c+8  d2..dd d2e2
+;
+
+{4} $
+## 1-4 -- kick/snare (ch1)
+l16 %e0 [15"khhh"]"k24j24i24sr"
+## 5-12 -- 
+[["k4s8.hk4s4" "k4s8.hk"j2"^8.s8ih"]j2
+":k:^h8s8k24i24h24"]":k:"r"s"r"srki"
+## 13-20 -- 
+[j1,1013]
+[["kih8s8kih8"j2"s8k24i24h24jh"]j2":h:^8s8hh"]"k24i24h24s8k24i24h24"
+## 21-28 -- big loop start -- 
+[ %e0
+[j1,1013][j1,1013][j1,1013]
+## 29-36 -- 
+#^
+":h" [3"k4s4k4s8"j1,433j3"ih"]":s:j24i24h24"   "k8hs8hkh k8hs8hk24i24h24"
+## 37-44 -- 
+[4[ "k4s4k4s8.h" "k4s4k"j2"^h8s8ih"] "jj8s8j24i24h24"]
+## 45-52 -- 
+#^^
+## 53-60 -- switch to kick/tambourine
+%e1 [31 ":u:k8uu t8uu"]
+## 61-68 -- switch to kick/tambourine
+#^
+j2 "k24k24k24s"r"shss"
+]
+":u:kuuu tgkh" %e0
+## 117-124 -- 
+[4"k4.ih kih4." "k8.h8.ih kih4."]
+## 125-140 -- 
+%e1 'bass'
+%k11 [[j1,1125] %k3]
+%k11 [[j1,1125] %k8]
+%k9 [[j1,1125] %k13]
+%k11 [j1,1125] %k0
+< ['b*v.71'd'b*v.84'd8.'b*v.71'd'b*v.78'd'b*v.84'd8j2r2] >r8'b*v.98'd'b*v.84'd'b*v.98'a4
+;
+
+{7}
+r16 $
+%e1 'piano*v.78' p64
+[124r1]
+[j1,6125]
+;
+
+{8}
+r8 $
+%e1 'piano*v.57' p64
+[124r1]
+[j1,6125]
+;
+
+## loop tail 1 of 3 for drums in meas. 29-36
+$433 ":s" "^16h16" ]
+
+## 2005: Measure 005 to 006 - recurring tambourine pattern
+$2005 l16 "!!!o" [7"t8uu"]"t24t24t24uu" ]
+## 3005: Measure 005 to 012 - piano + strings (ch3 / ch5) layering
+$3005 l16 [[c+d+g+a+ <c+>g+a+<c+   d+>a+g+f+ ff+j2g+<c+>]fd+]
+          [>b<d+f+a+ bf+a+b  <d+>ba+f+ d+j2f+a+b]a+f+f
+          [c+d+fg+ <c+>fg+<c+  fc+>g+j2f+ ff+g+<c+>]f <c+>g+fc+
+          ]
+## 1013: Measure 13 to 16 - drum pattern with 1, 2, 1, 3 kicks at last 8th
+$1013 l16 ":p" [["k4s4k8"j2"^8s8.h"]j2":k:^8s8ih"]":k:k8s8j24i24h24" ]
+## 6053: Measure 53 to 7/8 of 54 - fanfare pattern
+$6053 l16 g+4.g+g+ g+4.g+g+ g+4g+4 g+8.g+8. ]
+## 1125: Measure 125 to 126 etc. bass pattern
+$1125 l16 ['b*v.71'c'b*v.84'c8.'b*v.71'c'b*v.78'c'b*v.84'c8r2] ]
+## 6125: Measure 125 to 140 echoing piano
+$6125 l16 [br8<a+r8f+r8c+r8a+rj2f+r>]>br
+          [a+r8<g+r8fr8c+r8g+rj2fr>]>a+r
+          [br8<g+r8f+r8c+r8g+rj2f+r>]>br
+          <[c+r8a+r8g+r8d+r8a+rj2g+r]c+r
+          [d+r8g+r8f+r8c+r8g+rf+r]
+          [fr8f+r8d+r8fr8f+rj2c+r]fr
+          [er8f+r8c+r8er8f+rj2>br<]c+r
+          dr8er8>ar8<dr8er>br< dr8er8ar8g+r8erc+r
+          ]

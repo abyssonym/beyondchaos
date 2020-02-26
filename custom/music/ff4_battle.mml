@@ -1,0 +1,219 @@
+#TITLE Battle 1
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#WAVE 0x20 0x9A trumpet
+#WAVE 0x21 0x0D strings
+#WAVE 0x22 0x97 bass
+#WAVE 0x28 0x22 kick
+#WAVE 0x29 0x81 snare
+#WAVE 0x2A 0x5A hihat
+#WAVE 0x2B 0x50 crash
+
+#def init= t168 %x240 %v40 %b0,85 %f0,0
+
+#def pet= |0 o5 %e1 't' m48,18,231
+#def str= |1 o6 %e1 's' %r3 m48,18,207
+#def bas= |2 o4 %e0 'b' %r0 m
+
+#def t= v76
+#def s= v80
+#def b= v96
+
+#def st1= 'str' p53
+#def st2= 'str' p41
+#def tp1= 'pet' p78
+#def tp2= 'pet' p90
+
+#def s^= %r25^%r3
+#def t^= %r23^%r0
+
+#cdef ( %l1
+#cdef ) %l0
+
+#drum "k"=5a  |8 v112 p59 %e0
+#drum "s"=5f  |9 v112 p59 %e0
+#drum "y"=5a- |B v120 p35 %e1
+#drum "z"=5a- |B v120 p95 %e1
+#drum "h"=5f  |A v64 p72 %e1 %y5%s0
+
+{1}
+'init'
+'st2-o2' l24 
+(fg+b<dfg+ b<dfg+b<d)
+$##2
+'st2-o1' l16
+r1r2 b(ag)(f e)(dc)>b
+##4
+'tp1' l16
+a2<c2 f4e4d4c4 >b<c>bab2<c4 d2>b4g4
+##8
+'st2-o2' l8
+a<ced+gf+'s^'d+ e4>b<c4>g+ae
+##10
+'tp1' l16
+a2<c2 f4e4d4c4 >b<c>bab2<c4 d2e4f4
+l4 g2df e1  't^'def gfed
+##18
+e2>b<d c1  't^'>b<cdedef
+##22
+g2df e1  't^'def gfed
+e2>b<d c1  't^'>b<cdedc>b
+##30
+a2b2 <cdef  g2a2 b<cde
+l16
+fd>b<d >bg+fd  bg+fg+ fd>bg+
+<fd>b<d >bg+fd  bg+fd g+fd>b
+;
+
+{2}
+'st1-o3' l24
+(fg+b<dfg+ b<dfg+b<d)
+$##2
+'st1' l16
+r1r2 (dc)>(ba) (gf)(ed)
+##4
+c1^1 d1^1
+##8
+l8 a<ced+gf+'s^'d+ e4>b<c4>g+ae
+##10
+l4 c1^1 d2.ef2ed
+e2g2<cdeg <c1^1>>
+##18
+e2g+2 ab<ce a1^1>
+##22
+e2g2 <cdeg  <c1^1>>
+e2g+2 ab<ce a1^1>
+##30
+a2g2 f1  e2f2 e1
+d1^1
+;
+
+{3}
+r2
+$##2
+'bas' p72 l8
+[[6a]gg]
+##4
+l16
+[f8<fr>][e8<er>]  d8<dr>e8<er>f8<fr>f+8<f+r>  [8g8<gr>]
+##8
+l8 [[6a]gg]
+##10
+l16  [f8<fr>][e8<er>] d8<dr>e8<er>f8<fr>f+8<f+r>   [3g+8<g+r>]a8<ar> [4e8<er>]
+l8   c4.cg4.g c4<c>g4gbg   c4.cg4.g ccgc4c<c>b
+##18
+a4.ae4.e a4.a4ae4  a4.ae4.e aae<c4>b<ed>
+##22
+c4.cg4.g c4<c>g4gbg  c4.cg4.g ccgc4c<c>b
+a4.ae4.e a4.a4ae4  a4.ae4.e aae<c4>bag
+##30
+[32f] %r8 b1^1
+;
+
+{4}
+r2
+$##2
+[6"k4"]["s8k8"]
+##4
+["k4s4kks4 k4sk4ksk"]
+##8
+[4"k4"] l16 "k8sss8k8sss8s8k8"
+##10
+l8 ["k4s4kks4 k4sk4ksk"]
+[4"!!!o k4skk4sk" "k4sk4ksk"
+"k4skk4sk" j4 "k4sk4kss16s16"]
+##18
+#^^
+##22
+#^
+":k: k4s4ksss"
+##30
+["k4s4kks4 k4sk4ksk"]
+'tp2+o2' l16
+d>bg+b g+fd>b<  g+fdf d>bg+f
+<d>bg+b g+fd>b< g+fd>b< fd>bg+
+;
+
+{5}
+r2
+$##2
+[8"h4"]
+##4
+'st2-o2' a1^1 b1^1
+##8
+"!!!o"
+"h4h4h4h4 y4.z4."r4
+##10
+'st2-o2' l4
+a1^1 b2.<cd2c>b  <c2d2eg<cd e1^1>
+##18
+c2d2 cdea  <c1^1>
+##22
+c2d2 eg<cd e1^1>
+c2d2 cdea <c1^1>
+##30
+f2e2 d1 >b2a2 g1
+g+1^1
+;
+
+{6}
+r2
+$##2
+r1r1
+##4
+'tp2' l16
+f2g2 a4g4f4e4 dedcd2e4 f2f4f4
+##8
+r1r1
+##10
+f2g2 a4g4f4e4 g+ag+f+g+2a4 b2<c4d4
+l4 e2>b<d c1 't^'>b<cd edc>b
+##18
+<c2>g+b a1  't^'g+ab <c>b<cd
+##22
+e2>b<d c1  't^'>b<cdedc>b
+<c2>g+b a1  't^'g+ab<c>bag
+##30
+f2g2 ab<cd  e2f2 gab<c
+"!!!o y1^1"
+;
+
+{7}
+r2
+$##2
+r1r1
+##4
+[32"h8"]
+##8
+r1r1
+##10
+[192"h8"]
+##18
+#^^
+##22
+#^^
+##30
+#^
+"s1^1"
+;
+
+{8}
+r2
+$##2
+r1r2."y4"
+##4
+[4^1]
+##8
+r1r2."y4"
+##10
+^1^1^1^1
+["z1^1^1^1"
+##18
+"y1^1^1^1"]
+##22
+#^^
+##30
+[6r1]
+;

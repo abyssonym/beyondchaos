@@ -1,0 +1,132 @@
+#TITLE Wanderer
+#ALBUM Breath of Fire 2
+#COMPOSER Yuko Takehara
+#ARRANGED emberling
+
+#WAVE 0x20 0x43
+#WAVE 0x21 0x07
+#WAVE 0x22 0x8B
+#WAVE 0x28 0x2B
+#WAVE 0x2C 0x12
+#WAVE 0x2F 0x0F
+
+#def init= t121 %x255 %v96 %b0,48 %f0,0
+
+#def str= |0 o4 's' m 
+#def flt= |1 o4 'f' m48,18,239
+#def pia= |2 o5 'p' m
+
+#def s= v56
+#def f= v52
+#def p= v80
+
+#drum "y-"= 4a |C v56 %a15%y1%s4%r16
+#drum "y"= 4a |C v72 %a15%y1%s4%r16
+#drum "z"= 4a |C v64 %a2%s7%r15
+
+#drum "h"= 5f+ |F v32 p89
+#drum "s"= 5a |8 v127 p64
+
+#def r= %r20^8%r0
+#def re= %r20^8%r5
+
+#cdef ( %l1
+#cdef ) %l0
+
+{2} 'init' %e1
+'pia-o1' p64
+a<egf+ag t110 b4< t99 d4c4 t121
+$## 3
+'pia-o1' p64
+[4 a<egf+ae> a<egf+ag>]
+## 11
+[4 f<cfegd>] [a<egf+ae> a<egf+ag>]
+## 19
+[f<cfcfc>] [g<dgdgd>] [a<egf+ae> a<egf+ag>]
+;
+
+{1} %e1
+p64 "z2.y2."
+$## 3
+'flt+o1' p64
+(b32<c32>b4..^1^8'r') a4b4<c4d4e4>
+(b32<c32>b4..^1^2..'r') a4g4
+## 11
+(a32b32a4..^1...'r') g4a4
+(b32<c32>b4..^1) e1^4.'r'
+## 19
+l4 ede fga b<cd c>bg
+a1^1...'r'
+;
+
+{3} %e1
+'str' p79 e2.f+4's*v.92'^8's*v.84'^8's*v.76'^8's*v.68'^8
+$## 3
+'str' p79
+e2. f+2. g2. f+2.
+e1 c4e4 f+1^4 d4
+## 11
+c1^4d4 f1^4g4 e2.f+2. g2.f+2.
+## 19
+c1. d1. e2.f+2. g2.f+2.
+;
+
+{4} %e1
+'str' p49 c2.d4's*v.92'^8's*v.84'^8's*v.76'^8's*v.68'^8
+$## 3
+'str' p49
+c2. d2. e2. d2.
+c1 >a4<c4 d1^4 >a4
+## 11
+a1^4b4 <c1^4d4 c2.d2. e2.d2.>
+## 19
+a1. b1. <c2.d2. e2.d2.>
+;
+
+{5} %e1
+'pia-o1*v.75' p114
+r24a<egf+ag b4<d4c8^12
+$## 3
+"hh4hsh"
+;
+
+{6} %e1
+'pia-o1*v.67' p14
+r12a<egf+ag b4<d4c8^24
+$## 3
+'flt+o1*v.5' p114 r12 %r5
+(b32<c32>b4..^1^8're') a4b4<c4d4e4>
+(b32<c32>b4..^1^2..'re') a4g4
+## 11
+(a32b32a4..^1...'re') g4a4
+(b32<c32>b4..^1) e1^4. &8're-%r2'
+## 19
+'f*v.8' p94 l4
+c>b<c def def edf (e32f32e4..^1^1^4.'r')
+;
+
+{7} %e1
+r1.
+$## 3
+[18^4]
+p89 "z2.y2."
+## 11
+[7r2.] p39 "z2" v64,8 ^4
+## 19
+^12 'flt+o1*v.5' p114 %r5
+l4 ede fga b<cd c>bg
+a1^1...&8'r'
+##
+m p94 "!!!o y-8" &24
+;
+
+{8} %e1
+r1. r12
+$## 3
+'pia-o1*v.67' p14 l8
+[4 a<egf+ae> a<egf+ag>]
+## 11
+[4 f<cfegd>] [a<egf+ae> a<egf+ag>]
+## 19
+[f<cfcfc>] [g<dgdgd>] [a<egf+ae> a<egf+ag>]
+;

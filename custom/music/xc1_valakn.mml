@@ -14,7 +14,7 @@
 #WAVE 0x24 ~0x79~/0x1B/
 #WAVE 0x28 ~0x47~/0x20/
 #WAVE 0x29 ~0x22~/0x22/
-#WAVE 0x2A ~0x5c~/0x14/
+#WAVE 0x2A ~0x56~/0x14/
 #WAVE 0x2B ~0x5A~/0x0F/
 #WAVE 0x2C ~0x88~/0x11/
 
@@ -29,44 +29,44 @@
 #def 7= ~o6 |4~/o7 |4 %r14/
 
 #def w= %a8
-#def p= v64 p64 l1
-#def u= %r5v64v255,0
+#def p= v96 p64 l1
+#def u= %r5v96v255,0
 #def v= v192,127^
-#def x= ~%a2~/%a1/%r1~v240,127~/v240,96/
-#def y= v64%y
+#def x= ~%a2~/%a1/%r0~v240,127~/v240,96/
+#def y= v96%y
 #def cho= %y3%s4~%r5~/%r7/
 
 #def ride= |C p96
-#drum "r"=5g v30 'ride'
-#drum "s"=5g v20 'ride'
-#drum "t"=5g v10 'ride'
+#drum "r"=5g v45 'ride'
+#drum "s"=5g v30 'ride'
+#drum "t"=5g v15 'ride'
 
-#drum "a-"=5g v24 |B p52 %r30
-#drum "a"=5g v50 |B p52 %r30
-#drum "b+"=5g+ ~v35~/v50/ |B p104 ~%a9~/%a12/
-#drum "b"=5g+ ~v25~/v35/ |B p104 ~%a9~/%a12/
-#drum "b-"=5g+ ~v15~/v20/ |B p104 ~%a9~/%a12/
-#drum "c+"=5f+ ~v20~/v30/ |B p24 ~%a9~/%a12/
-#drum "c"=5f+ ~v12~/v20/ |B p24 ~%a9~/%a12/
-#drum "c-"=5f+ ~v5~/v10/ |B p24 ~%a9~/%a12/
+#drum "a-"=5g v36 |B p52 %r30
+#drum "a"=5g v75 |B p52 %r30
+#drum "b+"=5g+ ~v53~/v50/ |B p104 ~%a9~/%a12/
+#drum "b"=5g+ ~v38~/v35/ |B p104 ~%a9~/%a12/
+#drum "b-"=5g+ ~v23~/v20/ |B p104 ~%a9~/%a12/
+#drum "c+"=5f+ ~v30~/v30/ |B p24 ~%a9~/%a12/
+#drum "c"=5f+ ~v18~/v20/ |B p24 ~%a9~/%a12/
+#drum "c-"=5f+ ~v8~/v10/ |B p24 ~%a9~/%a12/
 
-#drum "d"=6a v16 |8 p48 %y6%s0%r26 k12
-#drum "e"=6a v25 |8 p48 %y6%s0%r26 k10
-#drum "f"=6a v25 |8 p48 %y4%s1%r18 k10
+#drum "d"=6a v24 |8 p48 %y6%s0%r26 k12
+#drum "e"=6a v38 |8 p48 %y6%s0%r26 k10
+#drum "f"=6a v38 |8 p48 %y4%s1%r18 k10
 
-#drum "l"=5g v25 |B p68
-#drum "m"=5a v40 |B p76
-#drum "n"=5f v20 |B p76
-#drum "o"=5g v30 |B p76
-#drum "p"=5g v40 |B p52 %y
-#drum "q"=5a+ v25 |C p60 %y6%s3%r21
-#drum "j"=5a v20 |9 p60
-#drum "k"=5a v64 |9 p60
-#drum "x"=5b v64 |A p60
+#drum "l"=5g v38 |B p68
+#drum "m"=5a v60 |B p76
+#drum "n"=5f v30 |B p76
+#drum "o"=5g v45 |B p76
+#drum "p"=5g v60 |B p52 %y
+#drum "q"=5a+ v38 |C p60 %y6%s3%r21
+#drum "j"=5a v30 |9 p60
+#drum "k"=5a v96 |9 p60
+#drum "x"=5e v96 |A p60
 
-{1}
+{6}
 'global' %e1
-v64 l1 p64
+v96 l1 p64
 '5'g^^^ g2.b-4^^&180^&204
 a-&174^&210 f&184^ '4a'c'3'b-a-&200^
 rrr&180r
@@ -86,8 +86,8 @@ e-2..'4b'g16a16 b-2..'4a'e-16f16 j2 ^2c^4.]'4b'g2
 '5'c^4'3'a-2. '4a'f2.'5'e-^8'4a'f^8 &180^
 ;
 
-{2}
-%e1 v64 p64 l1 
+{4}
+%e1 v96 p64 l1 
 '5' r4e-2.^^^ r4d2'6'r64&45d^^&183^&201
 c&183^&201 c&186^ '4a'e-dc&198^
 rrr&184r
@@ -108,7 +108,7 @@ r4'5'e-^4'4a'e-2 r4'4b'a-'3'f2.^&184^
 ;
 
 {3}
-%e1 v64 p64 l1
+%e1 v96 p64 l1
 '5' r2d2^^^ r2e-2^^&186^&198
 '6'e-&186e-&198 e-&188e- '4b'g'4a'fe-&190^
 '5'c'4b'b-a-&194^
@@ -128,8 +128,8 @@ r2e-2'6'&185e- &103c2'5'f2f2f2 '4b'r2b-b-2 g^
 r2'5'a-^4'4b'a-4 r2'5'c^16'4a'c^4.. &188^
 ;
 
-{4}
-%e1 v64 p64 l1
+{2}
+%e1 v96 p64 l1
 '5' r2.b-4^^^ r2.'6'r32&42e-^^&189^&195
 a-&189^&195 a-&190^ '5'b-b-g&191^
 ggg&195^
@@ -142,15 +142,15 @@ b-^8'6'f2f4. r2e-2^8f2&69f4
 'cho'[&147e-2e-4&189^ g-^]%r r64
 ## m.53 / 01:47
 [r2d2d2d2 r2e-2e-2e-2]
-v24['w'[8c8]'5''w'[8b-8]'6''w'[4c8]j2,465[12c8]]$465'5'v64c2
+v36['w'[8c8]'5''w'[8b-8]'6''w'[4c8]j2,465[12c8]]$465'5'v96c2
 ## m.68 / 02:18
 '6'c2c2c2
 r2.g4&188^ &196e-e- r2'5'e-d2 '4'a-^
 r2.'6'g4^ r2.g4^^^
 ;
 
-{5}
-%e1 v64 p64 l1
+{1}
+%e1 v96 p64 l1
 rrrr r2.'6'r32.&39g4^^^
 r2.g4^ r2.g4^ e-dc^
 e-dc^
@@ -163,19 +163,19 @@ r2c2b-2b-2 g2a-2b-2b-2
 'cho'[4b-^]%r
 ## m.53 / 01:47
 [4r2b-2b-2b-2]
-v16'w'[52e-8]'5'v64a2
+v24'w'[52e-8]'5'v96a2
 ## m.68 / 02:18
 '6'e-2e-2e-2
 a-^ a-2.g4^ e-d c^
 r64&189a-e- r64&189a-a-^^
 ;
 
-{6}
+{7}
 %e1
-l8 |C p96 o5 r1                       v2gv1gg4    v4gv2gg4
-          v6gv4ggv2g    v8gv5ggv3g    v10gv7gg4   v12gv8gg4
-          v14gv9ggv5g   v16gv11ggv5g  v18gv12gg4  v20gv13gg4
-          v24gv16ggv8g  v26gv17ggv9g  v28gv19gg4  v30gv20gg4
+l8 |C p96 o5 r1                       v3gv2gg4    v6gv3gg4
+          v9gv6ggv3g    v12gv8ggv5g    v15gv11gg4   v18gv12gg4
+          v21gv14ggv8g   v24gv17ggv8g  v27gv18gg4  v30gv20gg4
+          v36gv24ggv12g  v39gv26ggv14g  v42gv29gg4  v45gv30gg4
 [6["!!!o rsst"]["rss4"]]
 ##m.21 / 00:41
 [["rsst"]["rss4"]]
@@ -201,7 +201,7 @@ $["k2x4.j8 k4p4x2 k2x4.j8"j2"k2x4.q8"]":j:k4.q8x4.q8"
 "k2x4.j8 k4p4x2 k2x4.j8 k2x4.q8"
 ;
 
-{7}
+{5}
 %e1 
 ^1^1^1^4. "a-2a-8" [3 ^1^1^1^4."a2a8"]
 ## m.17 / 00:33

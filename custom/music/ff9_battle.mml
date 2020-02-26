@@ -143,18 +143,18 @@ m;
 {3}
 '23-o1*v.95' l24 dfg+b<df g+b<dfg+b
 '27-o2' l8 
-$302 [[3'basv*v.75'a'basv*v.70'a]'basv*v.75'g'basv*v.70'g$0] j1,0
+[j1,302] ##$302 [[3'basv*v.75'a'basv*v.70'a]'basv*v.75'g'basv*v.70'g$0] j1,0
 $
 '27-o2' l8
-[ [j2,308%j302$308 ]
+[ [j1,302] ]
 ##8
 l8  [4fr4]fr[4gr4]grgr 
 ##12
 '27-o2' l8
-[ [j2,316%j302$316 ]
+[ [j1,302] ]
 ##16
-l8 ['basv*v.75'ar4area+g+ ar4aregg+  [j2,320%j302$320
-'basv*v.75' fr4fr4<cr>gr4gr<d>bg+  [j2,324%j302$324 ]
+l8 ['basv*v.75'ar4area+g+ ar4aregg+  [j1,302]
+'basv*v.75' fr4fr4<cr>gr4gr<d>bg+  [j1,302] ]
 ##24
 #^^
 ##32
@@ -167,6 +167,8 @@ a4.a4.e4 d4.d4.ef g4.g4.d4 c4.c4.c>b
 a4.<a4.g4 f+4.f+4.f+4 g4.d4fa4 g4.<c4dc>f+ g4.g4.d4
 "!!!o c4.aho4."
 ;
+
+$302 l8 [[3'basv*v.75'a'basv*v.70'a]'basv*v.75'g'basv*v.70'g$0] ]
 
 {4}
 '24-o2*v.95' l24 fg+b<dfg+ b<dfg+b<d

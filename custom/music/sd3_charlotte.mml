@@ -1,0 +1,112 @@
+#TITLE Oh, I'm a Flamelet
+#ALBUM Trials of Mana
+#COMPOSER Hiroki Kikuta
+#ARRANGED emberling
+##created with sqspcmml beta 1.0.0
+
+#WAVE 0x28 0x83
+#def 8i=   |8 %r6
+#def 8o=   o4
+#def 8v=   v100
+#def 8f= v1,100
+
+#WAVE 0x29 0x54
+#def 9i=   |9
+#def 9o=   o5
+#def 9v=   v110
+#def 9f= v1,110
+
+#WAVE 0x2A 0x8C
+#def Ai=   |A
+#def Ao=   o6
+#def Av=   v100
+#def Af= v1,100
+
+#WAVE 0x2B 0x20
+#def Bi=   |B %r16
+#def Bo=   o7
+#def Bv=   v75
+#def Bf= v1,75
+
+#WAVE 0x2C 0x3E
+#def Ci=   |C %r21
+#def Co=   o5
+#def Cv=   v100
+#def Cf= v1,100
+
+#WAVE 0x2D 0x96
+#def Di=   |D
+#def Do=   o5
+#def Dv=   v120
+#def Df= v1,120
+
+#WAVE 0x2E 0x55
+#def Ei=   |E %r22
+#def Eo=   o5
+#def Ev=   v100
+#def Ef= v1,100
+
+
+{5}
+t140%x255%v72%b0,56%f0,0
+%e1$[[p32
+'Ai' 'Ao+o1''Av*v.52'd4c8d8d2>g8r8g8r8g8r4.]a8g8a8g8f2a8g8a8b8<c4e8c8[
+'Ao+o1'd4c8d8d2>g8r8g8r8g8r4.]['Ao'a8g8a8g8f2][8r1'Ao']a8g8a8b8a8b8<c8
+>b8<c8d8c8d8f8e8c8e8][p64
+'Bi' 'Bo-o1''Bv*v.52'd4g4a4g8f+8g2<e2>d4g4a4r4a4g8f4e8d8c8];
+
+{3}
+%e1$[[[p48
+'Ai' 'Ao''Av*v.52'g4g8g8a32b16^32a8g8e8r4c8r8c8r4.]['Ao'f8e8f8e8c2]]p32
+
+'8i' '8v*v.45''8o-o1'b8<d8b8r8b4.b8<c8>b8a8g8f8r8c4>b8<d8b8r8b4.b8<c4>
+b8a8g8r8c4>b8<d8b8r8b4.b8<c8>b8a8g8f8r8c4>b8<d8b8r8b4.b8<c4>b8a8g4r4p48
+
+'Ai' 'Av*v.52''Ao'f8e8f8g8f8g8a8g8a8b8a8b8<c8>b8g8a8]p64
+'Bi' r1r8'Bv*v.52''Bo-o1'b8<d8>b8r2r2r8b8<c8>b8r2.<c4r1r8>b8<d8>b8r2r2
+r8b8<c8>b8r1;
+
+{6}
+%e1$[[[p80
+'Ci' 'Co-o1''Cv*v.52'b4'Cv*v.19'b8<'Cv*v.52'd4'Cv*v.19'd8>'Cv*v.52'b4^8
+r8<c8r8c8r4.]r1r1]p48
+'8i' '8v*v.45''8o-o1'g8b8<g8r8g4.g8a8g8f8e8c8r8>a4g8b8<g8r8g4.g8a4g8f8
+e8r8>a4g8b8<g8r8g4.g8a8g8f8e8c8r8>a4g8b8<g8r8g4.g8a4g8f8e4r4p96
+'9i' '9v*v.52''9o-o1'a4.b4.<c4^8d8r8>b8<c8d8>g4]p64
+'Bi' r8'Bv*v.52''Bo-o1'b8<d8>b8<c8d8g8d8>b8<d8g8d8c8>b8a4g8b8<d8>b8<c8
+d8g8d8c4>b8a4g8f8a8g8b8<d8>b8<c8d8g8d8>b8<d8g8d8c8>b8a4g8b8<d8>b8<c8d8
+g8d8c4>b8a4g8f8a8;
+
+{4}
+%e1$[[p96
+'Ci' 'Co-o1''Cv*v.52'g4'Cv*v.19'g8'Cv*v.52'b4'Cv*v.19'b8'Cv*v.52'g4^8r8
+g8r8g8r8p64
+'Ei' 'Ev*v.52''Eo'a8'Ev*v.29'a8p96
+'Ci' 'Cv*v.52''Co-o1'g4'Cv*v.19'g8'Cv*v.52'b4'Cv*v.19'b8'Cv*v.52'g4^8r8
+g8r8g8r8p64
+'Ei' 'Ev*v.52''Eo'a8r8r1r1]p96
+'9i' '9v*v.52''9o'f8g8r8g8a32b16^32a8g4f8g8g8a8g8r8c4f8g8r8g8a32b16^32
+a8g4f8g8g32f16^32e8c4d4f8g8r8g8a32b16^32a8g4f8g8g8a8g8r8c4f8g8r8g8a32b16^32
+a8g4f8g8g32f16^32e8c2f8e8f8e8c8f8a8b8<c8>b8<c8>b8a4<e8c8]p64
+'Bi' 'Bv*v.52''Bo'g2a2b2<c8>b8a4g2a2b8g8d4f8e8f4g2a2b2<c8>b8a4g2a2b8g8
+d4f8e8c4;
+
+{2}
+%e1$[[[
+'Di' 'Do-o2''Dv*v.52'g4<'Dv*v.29'd8'Dv*v.52'b8r8'Dv*v.29'a8'Dv*v.52'g4
+^8r8c8r8c8r4.][>'Do-o2'a4<'Dv*v.29'c8r8'Dv*v.52'f2]][4>'Do-o2'g4<'Dv*v.29'
+d8'Dv*v.52'b8r8'Dv*v.29'a8'Dv*v.52'g4^8r8c8r8c8r4.]>a4.b4.<c4^8d4'Dv*v.34'
+d8'Dv*v.52'e4f4]>g8<d8g4>a8<d8g4>b8<d8g4>a8<d8g4>g8<d8g4>a8<d8g4>f8<c8
+f8a4f8c4>g8<d8g4>a8<d8g4>b8<d8g4>a8<d8g4>g8<d8g4>a8<d8g4>f8<c8f8a4f8c8
+>a8;
+
+{1}
+%e1$[[p64
+'Bi' 'Bo+o1''Bv*v.52'd4c8d8>a32b16^32a8g8e8g8r8c8r8c8r4.]f8e8f8e8c2f8e8
+f8g8a4<c8>a8[<'Bo+o1'd4c8d8>a32b16^32a8g8e8g8r8c8r8c8r4.]['Bo'f8e8f8e8
+c2]p96
+'9i' '9v*v.52''9o'c8d8r8d8g8e8d4c8d8d8e8d8r8>g4<c8d8r8d8g8e8d4c8d8c8>a8
+g4a4<c8d8r8d8g8e8d4c8d8d8e8d8r8>g4<c8d8r8d8g8e8d4c8d8c8>a8g2<d4c8d4d8f4
+^8g8r8f8e8f8e24f24e24c8]p64
+'Bi' 'Bv*v.52''Bo'b2<c2d2e8d8c4>b2<c2d4c8>b8a4r4b2<c2d2e8d8c4>b2<c2d4c8
+>b8a4f4;

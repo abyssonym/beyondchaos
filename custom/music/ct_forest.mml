@@ -1,0 +1,124 @@
+#TITLE Secret of the Forest
+#ALBUM Chrono Trigger
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+# Converted from binary by mfvitools
+
+#WAVE 0x20 0x07
+#WAVE 0x21 0x45
+#WAVE 0x22 0x92
+#WAVE 0x23 0x6b
+#WAVE 0x24 0x1B
+#WAVE 0x25 0x8C
+#WAVE 0x28 0x57
+#WAVE 0x29 0x5B
+#WAVE 0x2A 0x37
+
+#def 0=o5
+#def 1=o5
+#def 2=o5
+#def 3=o6
+#def 4=o6
+#def 5=o7
+#def s=o5
+
+#drum "g"=4a+ |8 p64
+#drum "g+"=5g+ |9 p28
+#drum "a"=5a |A p100
+#drum "b"=5d+ |8 p92
+
+{1}
+l16t76%v40%b0,100%f0,0{FD}120%e1 $1 |4v40p64'4-o1'%a13[2a+4a+4a+4a+4  
+a+4a+4a+4a+4  <c4c4c4c4  c4c4c4c4  >]|0v60p64'0'm24,24,206%r7m16,+2a+2a+4<d+8.%l1d32c+32  
+c2%l0>a+4g+4  m16,+2f2f4a+8.%l1a32g+32  g2%l0^4fgg+a+  m16,+2a+2a+4<d+8.%l1d32c+32  
+c2%l0f8.g8.g+a+  m16,+2a+4.^%l1a+32g+32g4.^%l0f  g2%r12^2  %y|5'5'm[2v127f8.v70f8.v40f4.v100d+12v127g+12c+12  
+v100c24v127c+24v100c2^6>a+12v127<d+12>g+12  v100g24v127g+24v80g2^4.^24  
+<r1  ]|0v64'0+o1'm24,24,206%r7f2d+4g+8.%l1g32f+32  f2%l0d+4c+4  c2>a+4<d+8.%l1d32c+32  
+c2%l0^8>a+8.<cc+d+  f2d+4g+8.%l1g32f+32  f2%l0d+4g+4  f1  
+%r9c1  %y|5v10'5'm[2c8v40c8v70c+8v90c+8d+8v70d+8v40c8v10c8  >a8v40a8v70a+8v90a+8<c8v70c8v40>a8v10a8  
+f8v40f8v70f+8v90f+8g+8v70g+8v40f8v10f8  g8v40g8v70g+8v90g+8a+8v70a+8v40g8v10g8  
+<]v70>g4.g+8f4d+4  f2f2  %g0%v15%b0,110
+;1
+
+l16
+{2}
+l16{FD}115%e1 $4 |4v40p64'4'%a14rd+4d+4d+4d+8.  
+[7^d+4d+4d+4d+8.  ]v45%g1%y[4[2>a+<d+fa+>a+<d+fa+>a+<d+fa+>a+<d+fa+  
+]j4,2 [2cd+gg+cd+gg+cd+gg+cd+gg+  ]] $2 cd+gg+cd+gg+cd+gg+cd+gg+  
+>>f32g32g+32<c32d+32f32g32g+32f32g32g+32<c32d+32f32g32g+32f32g32g+32<c32d+32f32g32g+32g32d+32c32>g+32g32f32c32>g+32  
+v65<[2ff+a+<c+fc+>a+f+ff+a+<c+fc+>a+f+  ff+a<c+fc+>af+ff+a<c+fc+>af+  
+j2,3 [2fg+<cd+fd+c>g+fg+<cd+fd+c>g+  ]] $3 fa+<cd+fd+c>a+fa+<cd+fd+c>a+  
+v192,25fa<cd+fd+c>afa<cd+fd+c>a  |5v10p64'5-o1'%g1[2g+8v40g+8v70g+8v90g+8g+8v70g+8v40g+8v10g+8  
+f8v40f8v70f8v90f8f8v70f8v40f8v10f8  c+8v40c+8v70c+8v90c+8c+8v70c+8v40c+8v10c+8  
+d+8v40d+8v70d+8v90d+8d+8v70d+8v40d+8v10d+8  ]v70d+2c+4c4  c2c2  
+%g0
+;4
+
+l16
+{4}
+l16{FD}115%e1 $5 |4v40p64'4'[2^8f4f4f4f8  ^8f4f4f4f8  
+^8g4g4g4g8  ^8g4g4g4g8  ]|1v45p64'1'%a6%r3[4f1  ^1  
+g1  ^1  ]v55'1+o1'%a9f2d+4g+8.%l1g32f+32  f2%l0d+4c+4  
+c2>a+4<d+8.%l1d32c+32  c2%l0^8>a+8.<cc+d+  f2d+4g+8.%l1g32f+32  
+f2%l0d+4g+4  f1  %r9c1  %y|5v10p64'5-o1'%g1[2c+8v40c+8v70f8v90f8f8v70f8v40f8v10f8  
+>a+8v40a+8v70<d8v90d8d8v70d8v40d8v10d8  >f+8v40f+8v70a+8v90a+8a+8v70a+8v40a+8v10a+8  
+g+8v40g+8v70<c8v90c8c8v70c8v40c8v10c8  ]v70>a+2g+4a+4  a+2a2  %g0
+;5
+
+l16
+{5}
+l16{FD}115%e1 $6 |4v40p64'4'[2^8.a+4a+4a+4a+  
+^8.a+4a+4a+4a+  ^8.g+4g+4g+4g+  ^8.g+4g+4g+4g+  ]
+##
+|1v25p44'1-o1'%a6%r3
+[a+1  ^1  g+1  ^1  ]
+a+1  ^1  |2v60p0p192,64'2'%a7  &22r8g8f8a+8g4.d+8  p192,127%r10&194c1
+|1v25p44'1-o1'%a6%r3
+a+1  &190 ^1  |2v60p127p192,64'2'%a7 p192,64r4g4g+4a+4  p192,0%r10<&194c1  
+##
+|1v25p44'1-o1'%r3 v55%a8  a+1  
+<c+2d+2  f1  ^4d+4f4c+4  >a+1  
+<c+2d+2  f2d+4f4  %r9c1  [10r1  
+]%y
+;6
+
+l16
+{6}
+l16{FD}115%e1 $7 @4{FD}0p192o7%a13%y6%s6%r31[2r1  
+v0v144,0p144,0eeeeeeeeeeeer4  r1  v0v144,0p144,127eeeeeeeeeeeer4  
+]|1{FD}115v20p84'1-o1'%a6%r3[4c+1  ^1  d+1  ^1  
+]v55%a8f+1  ^1  g+1  ^1  
+f+1  ^1  a+1  %r9f1  
+[10r1  ]%y
+;7
+
+l16
+{3}
+l16{FD}93%e1 $9 |3v80p64'3-o1'[3f+2^4.^<c+  >f+2^4<%l1f+4  
+%l0f2^4.^c  >f2^4^f24rr48f+  ^2^4.<c+8  >f+8.f+24r8r48f+4.<%l1f+4  
+%l0f2^4^c8f  >f^64r^32^64f24r8.r48f4.^<%l1c32m18,-2^32^  %l0>]v80[2<d+2a+4rd+c+8  
+>b2<f+4>b4  j2,8 a+2<f4a+8m24,-3^8  >a+2<f4>a+4  ] $8 <c2g4<c4  
+>f2c2  [2v60>a+8.<fr8a+4^<c>a+f>a+8  g8.<dr8a8.g8.d8>g8  <d+8.a+r8<f8.d+8.>a+8d+8  
+f8.<c8.>f4rfg+fc8  ]c+8.g+8.<d+8c+4c4  >f8.c8.f8>f2  
+;9
+
+l16
+{8}
+l16{FD}115%e1 $10 [16r1  
+]##
+|1v25p44'1-o1'%a6%r3
+[r1r1 g+1^1]
+##
+|1v45p64'1-o1'%a8%r3d+1  >b1  
+a+1  ^1  <d+1  >b1  
+<c1  >%r9f1  [10r1  ]%y
+;10
+
+l16
+{7}
+l16{FD}92%e1 $11 [8r1  
+][16v90"g+8g+8"v70"bg8g"@3v60p80p48,0's-o1'%a8m50,+6f+12^48m60,-20%r21^8^48v72"a4"  
+]^1  [17r1  ]
+;11
+
+l16

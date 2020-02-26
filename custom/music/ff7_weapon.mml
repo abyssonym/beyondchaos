@@ -3,11 +3,12 @@
 #COMPOSER Nobuo Uematsu
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT ~* enh
+#VARIANT /* nat
+#VARIANT ~_ tr
 
 #WAVE 0x20 ~0x46~/0x0D/
-#WAVE 0x21 ~0x73~/0x08/
+#WAVE 0x21 *~0x73~/0x08/* _0x7A_
 #WAVE 0x22 ~0x7F~/0x0E/
 #WAVE 0x23 ~0x6A~/0x1A/
 #WAVE 0x24 ~0x07~/0x07/
@@ -40,7 +41,7 @@
 
 #def f= v48
 #def c= v64
-#def h= ~v127~/v80/
+#def h= *~v127~/v80/* _v104_
 #def t= ~v40~/v56/
 #def b= ~v127~/v64/
 #def s= v80

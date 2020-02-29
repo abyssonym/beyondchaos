@@ -1,0 +1,3 @@
+; List of .asm files to build.
+enable_xmagic_menu
+natmag_learn

@@ -66,6 +66,10 @@ DANCE_NAMES_TABLE = path.join(CUSTOM_PATH, "dancenames.txt")
 PASSWORDS_TABLE = path.join(CUSTOM_PATH, "passwords.txt")
 POEMS_TABLE = path.join(CUSTOM_PATH, "poems.txt")
 
+HIROM = 0xC00000
+NEW_ROM_SIZE = 0x400000
+
+
 def open_mei_fallback(filename, mode='r', encoding=None):
     if not MEI:
         return open(filename, mode, encoding=encoding)

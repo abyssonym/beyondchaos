@@ -11,6 +11,7 @@ from hashlib import md5
 
 from ancient import manage_ancient
 from appearance import manage_character_appearance
+import assemblymanager
 from character import get_characters, get_character, equip_offsets
 from chestrandomizer import mutate_event_items, get_event_items
 from decompress import Decompressor
@@ -41,6 +42,7 @@ from towerrandomizer import randomize_tower
 from utils import (COMMAND_TABLE, LOCATION_TABLE, LOCATION_PALETTE_TABLE,
                    FINAL_BOSS_AI_TABLE, SKIP_EVENTS_TABLE, DANCE_NAMES_TABLE,
                    DIVERGENT_TABLE,
+                   HIROM, NEW_ROM_SIZE,
                    get_long_battle_text_pointer,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
@@ -57,12 +59,13 @@ VERSION_ROMAN = "IV"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False
-TEST_SEED = "44.abcefghijklmnopqrstuvwxyz-partyparty.42069"
+TEST_SEED = "4.normal.abcefghijklmnopqrstuvwxyz-partyparty-johnnyachaotic.42069"
 TEST_FILE = "program.rom"
 seed, flags = None, None
 seedcounter = 1
 sourcefile, outfile = None, None
 fout = None
+assembly_patches = None
 
 
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
@@ -4122,10 +4125,10 @@ def the_end_comes_beyond_crusader():
 
 def expand_rom():
     fout.seek(0, 2)
-    if fout.tell() < 0x400000:
+    if fout.tell() < NEW_ROM_SIZE:
         expand_sub = Substitution()
         expand_sub.set_location(fout.tell())
-        expand_sub.bytestring = bytes([0x00] * (0x400000 - fout.tell()))
+        expand_sub.bytestring = bytes([0x00] * (NEW_ROM_SIZE - fout.tell()))
         expand_sub.write(fout)
 
 
@@ -4143,21 +4146,54 @@ def diverge(fout):
 
 
 def randomize(args):
-    global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE, NEVER_REPLACE
+    global outfile, sourcefile, flags, seed, fout, assembly_patches, ALWAYS_REPLACE, NEVER_REPLACE, TEST_ON
 
+    # Parse the command line for special options not directly related to seed choice.
+    normal_args = []
+    do_sleep = True
+    use_new_asm = False
+    build_asm_all = False
+    build_asm_only = None
+    for arg in args[1:]:
+        if arg[:2] == "--":
+            if arg == "--test":
+                TEST_ON = True
+            elif arg == "--no-sleep":
+                do_sleep = False
+            elif arg == "--new-asm":
+                use_new_asm = True
+            elif arg == "--build-asm":
+                build_asm_all = True
+            elif arg[:12] == "--build-asm=":
+                build_asm_only = arg[12:]
+            else:
+                raise NameError("Unknown command-line option " + arg)
+        else:
+            normal_args.append(arg)
+
+    # Fake arguments for test mode.
     if TEST_ON:
-        while len(args) < 3:
-            args.append(None)
-        args[1] = TEST_FILE
-        args[2] = TEST_SEED
-    sleep(0.5)
+        normal_args = [ TEST_FILE, TEST_SEED ]
+
+    if do_sleep:
+        sleep(0.5)
+
     print('You are using Beyond Chaos EX randomizer version "%s".' % VERSION)
     if BETA:
         print("WARNING: This version is a beta! Things may not work correctly.")
 
+    # Load assembly patches, building if requested.
+    if build_asm_all:
+        assemblymanager.build_all_patches()
+    elif build_asm_only != None:
+        assemblymanager.build_patch_set([ build_asm_only ])
+    if use_new_asm:
+        assembly_patches = assemblymanager.load_all_patches()
+
+    # Ask the user where to find the ROM.
     previous_rom_path = ''
-    if len(args) > 2:
-        sourcefile = args[1].strip()
+    if len(normal_args) >= 2:
+        sourcefile = normal_args[0].strip()
     else:
         try:
             config = configparser.ConfigParser()
@@ -4219,8 +4255,8 @@ def randomize(args):
 
     speeddial_opts = {}
 
-    if len(args) > 2:
-        fullseed = args[2].strip()
+    if len(normal_args) >= 2:
+        fullseed = normal_args[1].strip()
     else:
         fullseed = input("Please input a seed value (blank for a random "
                          "seed):\n> ").strip()
@@ -4890,12 +4926,12 @@ def randomize(args):
 
 if __name__ == "__main__":
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == "test" or TEST_ON:
-        randomize(args=args)
-        sys.exit()
     try:
         randomize(args=args)
-        input("Press enter to close this program. ")
+        if TEST_ON:
+            sys.exit()
+        else:
+            input("Press enter to close this program. ")
     except Exception as e:
         print("ERROR: %s" % e)
         import traceback

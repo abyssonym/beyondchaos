@@ -8,7 +8,7 @@ from copy import copy
 
 from locationrandomizer import get_locations, get_location
 from dialoguemanager import set_dialogue_var, set_pronoun, patch_dialogue, load_patch_file
-from utils import (utilrandom as random, open_mei_fallback as open)
+from utils import (utilrandom as random, open_mei_fallback as open, HIROM)
 from mml2mfvi import mml_to_akao, get_variant_list
 
 
@@ -18,7 +18,6 @@ try:
 except ImportError:
     MEI = False
     
-HIROM = 0xC00000
 MUSIC_PATH = os.path.join('custom','music')
 INST_METADATA_OFFSET = 0x310000    #0x600 bytes
 CONFIG = configparser.RawConfigParser({
@@ -1812,7 +1811,7 @@ def manage_opera(fout, affect_music):
     
 def find_sample_size(data, sidx):
     table = 0x53C5F
-    offset = bytes_to_int(data[table+sidx*3:table+sidx*3+3]) - 0xC00000
+    offset = bytes_to_int(data[table+sidx*3:table+sidx*3+3]) - HIROM
     loc = 0
     
     #scan BRR block headers until one has END bit set

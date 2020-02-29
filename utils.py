@@ -57,14 +57,14 @@ SKIP_EVENTS_TABLE = path.join(tblpath, "skipevents.txt")
 DIVERGENT_TABLE = path.join(tblpath, "divergentedits.txt")
 MAGICITE_TABLE = path.join(tblpath, "magicite.txt")
 
-custom_path = "custom"
-MALE_NAMES_TABLE = path.join(custom_path, "malenames.txt")
-FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
-SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
-MOOGLE_NAMES_TABLE = path.join(custom_path, "mooglenames.txt")
-DANCE_NAMES_TABLE = path.join(custom_path, "dancenames.txt")
-PASSWORDS_TABLE = path.join(custom_path, "passwords.txt")
-POEMS_TABLE = path.join(custom_path, "poems.txt")
+CUSTOM_PATH = "custom"
+MALE_NAMES_TABLE = path.join(CUSTOM_PATH, "malenames.txt")
+FEMALE_NAMES_TABLE = path.join(CUSTOM_PATH, "femalenames.txt")
+SPRITE_REPLACEMENT_TABLE = path.join(CUSTOM_PATH, "spritereplacements.txt")
+MOOGLE_NAMES_TABLE = path.join(CUSTOM_PATH, "mooglenames.txt")
+DANCE_NAMES_TABLE = path.join(CUSTOM_PATH, "dancenames.txt")
+PASSWORDS_TABLE = path.join(CUSTOM_PATH, "passwords.txt")
+POEMS_TABLE = path.join(CUSTOM_PATH, "poems.txt")
 
 def open_mei_fallback(filename, mode='r', encoding=None):
     if not MEI:

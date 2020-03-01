@@ -5,9 +5,10 @@ from itertools import chain, repeat
 from typing import List
 
 from dialoguemanager import patch_dialogue, set_dialogue_var, set_location_name
+from itemrandomizer import get_item
 from monsterrandomizer import change_enemy_name, get_monster, MonsterGraphicBlock
 from skillrandomizer import get_ranked_spells, get_spell
-from utils import ESPER_TABLE, MAGICITE_TABLE, hex2int, int2bytes, Substitution, utilrandom as random
+from utils import ESPER_TABLE, MAGICITE_TABLE, hex2int, int2bytes, name_to_bytes, Substitution, utilrandom as random
 
 items = None
 
@@ -322,11 +323,19 @@ def randomize_magicite(fout, sourcefile):
     shuffled_espers.update(special_espers)
 
     # Pick replacements for Shiva, Ifrit, and Tritoch, which must not be large
+    # Shiva and Ifrit must be picked from rank < 3, Tritoch can be any
     small_espers = [e for e in espers
                     if not esper_graphics[e.id].large and e not in shuffled_espers.values()]
-    replace_ids = [espers_by_name[name].id for name in ["Shiva", "Ifrit", "Tritoch"]]
-    enemy_espers = select_magicite(small_espers, replace_ids)
+    low_ranked_small_espers = [e for e in small_espers if e.rank < 3]
+    replace_ids = [espers_by_name[name].id for name in ["Shiva", "Ifrit"]]
+    enemy_espers = select_magicite(low_ranked_small_espers, replace_ids)
     shuffled_espers.update(enemy_espers)
+
+    remaining_small_espers = [e for e in small_espers if e not in enemy_espers.values()]
+    replace_ids = [espers_by_name["Tritoch"].id]
+    enemy_espers = select_magicite(remaining_small_espers, replace_ids)
+    shuffled_espers.update(enemy_espers)
+
 
     # TODO: maybe allow tritoch to be big if we skip cutscenes
     #tritoch_id = [e.id for e in espers if e.name == "Tritoch"][0]
@@ -338,30 +347,29 @@ def randomize_magicite(fout, sourcefile):
     #        f.enemy_pos[0] = f.enemy_pos[0] & 0xF0 + 3
     #        f.write_data(fout)
 
-    # Shuffle all remaining espers
-    remaining_keys = [e.id for e in espers if e.id not in shuffled_espers.keys()]
-    remaining_values = [e for e in espers if e not in shuffled_espers.values()]
-    random.shuffle(remaining_values)
-    shuffled_espers.update(zip(remaining_keys, remaining_values))
-
     # Make sure Odin's replacement levels up
     odin_id = espers_by_name["Odin"].id
     raiden_id = espers_by_name["Raiden"].id
-    if shuffled_espers[odin_id].rank > shuffled_espers[raiden_id].rank:
-        shuffled_espers[odin_id], shuffled_espers[raiden_id] = shuffled_espers[raiden_id], shuffled_espers[odin_id]
-    elif shuffled_espers[odin_id].rank == shuffled_espers[raiden_id].rank:
-        candidate_indices = [i for i, e in enumerate(remaining_values)
-                             if e.rank == shuffled_espers[odin_id].rank + 1]
-        if candidate_indices:
-            replacement_index = random.choice(candidate_indices)
-            shuffled_espers[raiden_id], shuffled_espers[remaining_keys[replacement_index]] = remaining_values[replacement_index], shuffled_espers[raiden_id]
-        else:
-            candidate_indices = [i for i, e in enumerate(remaining_values)
-                                 if e.rank == shuffled_espers[odin_id].rank - 1]
-            assert candidate_indices
-            replacement_index = random.choice(candidate_indices)
-            shuffled_espers[odin_id], shuffled_espers[remaining_keys[replacement_index]] = remaining_values[replacement_index], shuffled_espers[odin_id]
+    
+    while True:
+        odin_candidates = [e for e in espers if e.id not in shuffled_espers.keys() and e.rank <= 3]
+        odin_replacement = select_magicite(odin_candidates, [odin_id])
+        odin_replacement_rank = odin_replacement[odin_id].rank
+        raiden_candidates = [e for e in espers if e.id not in shuffled_espers.keys() and e.rank > odin_replacement_rank]
+        if not raiden_candidates:
+            continue
+        raiden_replacement = select_magicite(raiden_candidates, [raiden_id])
+        shuffled_espers.update(odin_replacement)
+        shuffled_espers.update(raiden_replacement)
+        break
 
+    # Shuffle all remaining espers
+    for rank in range(0, 5):
+        remaining_keys = [e.id for e in espers if e.id not in shuffled_espers.keys() and e.rank <= rank]
+        remaining_values = [e for e in espers if e not in shuffled_espers.values() and e.rank <= max(rank + 1, 2)]
+        random.shuffle(remaining_values)
+        shuffled_espers.update(zip(remaining_keys, remaining_values))
+    
     locations = [e.location for e in espers]
     for i, e in shuffled_espers.items():
         e.location = locations[i]
@@ -411,6 +419,10 @@ def randomize_magicite(fout, sourcefile):
         mg = esper_graphics[replacement.id]
         monster.graphics.copy_data(mg)
         monster.graphics.write_data(fout)
+
+    ragnarok = get_item(27)
+    ragnarok.dataname = bytes([0xd9]) + name_to_bytes(shuffled_espers[espers_by_name["Ragnarok"].id].name, 12)
+    ragnarok.write_stats(fout)
 
     return shuffled_espers
 

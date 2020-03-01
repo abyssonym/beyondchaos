@@ -21,7 +21,7 @@ ASSEMBLER_DIR = os.path.join("assembly", "assemblers")
 SOURCE_DIR = os.path.join("assembly", "source")
 PATCH_DIR = os.path.join("assembly", "patches")
 
-ASSEMBLER_BASS = "bass-v10"
+ASSEMBLER_BASS = "bass-v15"
 
 PATCH_LIST_FILE = os.path.join(SOURCE_DIR, "_filelist.txt")
 PATCH_EXTENSION = ".patch.bin"
@@ -261,12 +261,12 @@ def build_65816_patch(name, bass_path):
     targets = [
         {
             "output" : os.path.join(TEMP_DIR, "patch-" + name + "-fill00.bin"),
-            "options" : [ "-Dfiller=0" ],
+            "options" : [ "-d", "filler=0" ],
             "data" : None,
         },
         {
             "output" : os.path.join(TEMP_DIR, "patch-" + name + "-fillFF.bin"),
-            "options" : [ "-Dfiller=255" ],
+            "options" : [ "-d", "filler=255" ],
             "data" : None,
         },
     ]
@@ -274,7 +274,7 @@ def build_65816_patch(name, bass_path):
     # Run the assembler and collect its output.
     for target in targets:
         try:
-            subprocess.run([ bass_path ] + target["options"] + [ "-overwrite", "-o", target["output"], source ], check=True)
+            subprocess.run([ bass_path ] + target["options"] + [ "-strict", "-o", target["output"], source ], check=True)
         except subprocess.CalledProcessError as e:
             print()  # makes error from the assembler easier to read
             raise AssemblerError(e)
@@ -383,6 +383,9 @@ class AssemblyPatchDB:
         self.patches = {}
     def __str__(self):
         return str(self.patches)
+    # Shortcut function for most use cases.
+    def apply_patch(self, fout, patch_name):
+        self.patches[patch_name].write(fout)
 
 
 # Loads all patches.

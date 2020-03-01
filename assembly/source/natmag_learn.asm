@@ -1,35 +1,35 @@
 // Any character can learn natural magic, rather than just Tina and Celes.
 
-arch snes.cpu
-incsrc "_defs.asm"
+architecture wdc65816
+include "_defs.asm"
 
 
-{reorg $C0A182}
-	jsl hook1
-	nop
-	nop
-	nop
-	nop
-{exactpc $C0A18A}
-{reorg $C261B6}
+reorg($C0A182)
 	jsl hook2
 	nop
 	nop
 	nop
 	nop
+exactpc($C0A18A)
+reorg($C261B6)
+	jsl hook1
 	nop
 	nop
 	nop
 	nop
 	nop
 	nop
-{exactpc $C261C4}
+	nop
+	nop
+	nop
+	nop
+exactpc($C261C4)
 
 
-{reorg {natmag_learn_start}}
-hook1:
+reorg(natmag_learn_start)
+function hook1 {
 	cmp.b #12
-	bcs .return
+	bcs return
 	pha
 	phx
 	phy
@@ -53,10 +53,11 @@ hook1:
 	ply
 	plx
 	pla
-.return:
+return:
 	rtl
+}
 
-hook2:
+function hook2 {
 	cmp.b #12
 	bcs hook1.return
 	pha
@@ -69,7 +70,7 @@ hook2:
 	sta.w $4202
 	lda.b #$36
 	sta.w $4203
-	lda $1608, y
+	lda $1608,y
 	sta.b $0B
 	
 	rep #$20
@@ -88,9 +89,10 @@ hook2:
 	plx
 	pla
 	rtl
+}
 
-main_function:
-	ldy.b #$10
+function main_function {
+	ldy.w #$0010
 	lda.b $08
 	rep #$20
 	and.w #$00FF
@@ -102,38 +104,39 @@ main_function:
 	lda.w #0
 	sep #$20
 
-.loop:
-	lda.l magic_table + 1, x
+loop:
+	lda.l magic_table + 1,x
 	cmp.b $0B
-	beq .zero
-	bcs .next
+	beq zero
+	bcs next
 
-.zero:
+zero:
 	phy
-	lda.l magic_table + 0, x
+	lda.l magic_table + 0,x
 	tay
-	lda ($09), y
+	lda ($09),y
 	cmp.b #$FF
-	beq .nothing
+	beq nothing
 	lda.b $0C
-	sta ($09), y
-.nothing:
+	sta ($09),y
+nothing:
 	ply
 	
-.next:
+next:
 	inx
 	inx
 	dey
-	bne .loop
+	bne loop
 	rtl
+}
 
 // Overwritten by randomizer
 magic_table:
 	fill 2 * 16 * 12, $FF
 
-{warnpc {natmag_learn_start} + {natmag_learn_size}}
+warnpc(natmag_learn_start + natmag_learn_size)
 
 
 // Tell the randomizer where the magic table is located.
-{start_exports}
-{export "magic_table", magic_table}
+start_exports()
+export("magic_table", magic_table)

@@ -1,59 +1,96 @@
 // HiROM org macro
-macro reorg n
-	org {n} & $3FFFFF
+macro reorg(n) {
+	origin {n} & $3FFFFF
 	base {n}
-endmacro
+}
 
 // Warn if the current address is greater than the specified value.
-macro warnpc n
+macro warnpc(n) {
 	{#}:
-	if {#} > ({n})
+	if {#} > ({n}) {
 		warning "warnpc assertion failure"
-	endif
-endmacro
+	}
+}
 
 // Warn if the current address is not the specified value.
-macro exactpc n
+macro exactpc(n) {
 	{#}:
-	if {#} != ({n})
+	if {#} != ({n}) {
 		warning "exactpc assertion failure"
-	endif
-endmacro
+	}
+}
 
 // Allows saving the current location and seeking somewhere else.
-define savepc push origin, base
-define loadpc pull base, origin
+macro savepc() {
+	push origin, base
+}
+macro loadpc() {
+	pull base, origin
+}
 
 // Warn if the expression is false.
-macro static_assert n
-	if ({n}) == 0
-		warning "static assertion failure"
-	endif
-endmacro
+macro static_assert(n) {
+	if ({n}) == 0 {
+		error "static assertion failure"
+	}
+}
+
+// Switch to FF6 menu font character mapping.
+macro map_ff6_menu() {
+	map 'A', $80, 26
+	map 'a', $9A, 26
+	map '0', $B4, 10
+	map '!', $BE
+	map '?', $BF
+	map '/', $C0
+	map ':', $C1
+	map '-', $C4
+	map '.', $C5
+	map ',', $C6
+	map $3B, $C8  // ;
+	map '#', $C9
+	map '+', $CA
+	map '(', $CB
+	map ')', $CC
+	map '%', $CD
+	map '~', $CE
+}
+
+// Revert to UTF-8 (pass-through) mapping.
+macro map_utf8() {
+	map 0, 0, 256
+}
 
 
 // Start with the requested blank file.
-{reorg $C00000}
+reorg($C00000)
 fill $400000, {filler}
 
 // Where to write export table.
-macro start_exports
-	org $400000
+macro start_exports() {
+	origin $400000
 	base 0
-endmacro
+	map_utf8()
+}
 
 // Write an export.
-macro export name, value
+macro export(name, value) {
 	db {name}
 	db 0
 	dd {value}
-endmacro
+}
 
 
 // --- MEMORY MAP - BANK FF ---
-eval bank_FF_start                                          $FF0000
+constant bank_FF_start                                      = $FF0000
 
-eval enable_xmagic_menu_start                               {bank_FF_start}
-eval enable_xmagic_menu_size                                $0020
-eval natmag_learn_start                                     {enable_xmagic_menu_start} + {enable_xmagic_menu_size}
-eval natmag_learn_size                                      $00A0 + (2 * 16 * 12)
+constant enable_xmagic_menu_start                           = $C3F09B
+constant enable_xmagic_menu_size                            = $0020
+constant natmag_learn_start                                 = $F0084B
+constant natmag_learn_size                                  = $00A0 + (2 * 16 * 12)
+
+// For future use
+//constant enable_xmagic_menu_start                           = bank_FF_start
+//constant enable_xmagic_menu_size                            = $0020
+//constant natmag_learn_start                                 = enable_xmagic_menu_start + enable_xmagic_menu_size
+//constant natmag_learn_size                                  = $00A0 + (2 * 16 * 12)

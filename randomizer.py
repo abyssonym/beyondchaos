@@ -3615,19 +3615,9 @@ def manage_auction_house():
         auction_sub.bytestring = bytes([0xB2, addr_lo, addr_mid, addr_hi])
         auction_sub.write(fout)
 
-        table = {"0": 0x54, "1": 0x55, "2": 0x56, "3": 0x57, "4": 0x58, "5": 0x59, "6": 0x5A, "7": 0x5B, "8": 0x5C, "9": 0x5D}
-        fout.seek(0xCE600)
-        next_bank_index = read_multi(fout)
         opening_bid = str(auction_item[4])
-        fout.seek(0xCE602 + 2 * auction_item[3])
-        dialog_ptr = read_multi(fout)
-        auction_sub.set_location(0xD0000 if auction_item[3] < next_bank_index else 0xE0000 + dialog_ptr)
-        auction_sub.bytestring = bytes([
-            0x01, 0x14, 0x08, 0x73, 0x1A, 0x62, 0x5E, 0x13, # "<LF>        \"<I>\"!<P>"
-            0x01, 0x23, 0x48, 0xB8, 0x91, 0xA8, 0x93  # "<LF>Do I hear "
-        ] + [table[x] for x in opening_bid] + [  # auction_item[4]
-            0x7F, 0x26, 0x2F, 0x5F, 0x5E, 0x00]) #  " GP?!"
-        auction_sub.write(fout)
+        
+        set_dialogue(auction_item[3], f'<line>        “<item>”!<page><line>Do I hear {opening_bid} GP?!')
 
 
 def manage_bingo():

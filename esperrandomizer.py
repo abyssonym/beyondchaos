@@ -350,7 +350,7 @@ def randomize_magicite(fout, sourcefile):
     # Make sure Odin's replacement levels up
     odin_id = espers_by_name["Odin"].id
     raiden_id = espers_by_name["Raiden"].id
-    
+
     while True:
         odin_candidates = [e for e in espers if e.id not in shuffled_espers.keys() and e.rank <= 3]
         odin_replacement = select_magicite(odin_candidates, [odin_id])
@@ -369,7 +369,7 @@ def randomize_magicite(fout, sourcefile):
         remaining_values = [e for e in espers if e not in shuffled_espers.values() and e.rank <= max(rank + 1, 2)]
         random.shuffle(remaining_values)
         shuffled_espers.update(zip(remaining_keys, remaining_values))
-    
+
     locations = [e.location for e in espers]
     for i, e in shuffled_espers.items():
         e.location = locations[i]

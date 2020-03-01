@@ -2284,6 +2284,8 @@ def manage_espers(freespaces, replacements=None):
     for e in sorted(espers, key=lambda e: e.name):
         e.write_data(fout)
 
+    ragnarok_id = replacements[16].id if replacements else 16
+    ragnarok_id += 0x36 # offset by spell ids
     ragnarok_sub = Substitution()
     ragnarok_sub.set_location(0xC0B37)
     ragnarok_sub.bytestring = bytes([0xB2, 0x58, 0x0B, 0x02, 0xFE])
@@ -2308,7 +2310,7 @@ def manage_espers(freespaces, replacements=None):
         0x4B, 0x6A, 0x85,
         0xB2, 0xD5, 0x9A, 0x02,  # GFX
         0xF4, 0x8D,  # SFX
-        0x86, 0x46,  # receive esper
+        0x86, ragnarok_id,  # receive esper
         0xFE,])
     ragnarok_sub.write(fout)
 
@@ -4528,6 +4530,7 @@ def randomize(args):
         manage_equipment(items)
     reseed()
 
+    esper_replacements = {}
     if options_.randomize_magicite:
         esper_replacements = randomize_magicite(fout, sourcefile)
     reseed()
@@ -4722,7 +4725,10 @@ def randomize(args):
     reseed()
 
     if options_.is_code_active('worringtriad') and not options_.is_code_active('ancientcave'):
-        manage_wor_skip(fout, wor_free_char, options_.is_code_active('airship'), options_.mode.name == 'dragonhunt', options_.is_code_active('mimetime'))
+        manage_wor_skip(fout, wor_free_char, airship=options_.is_code_active('airship'),
+                        dragon=options_.mode.name == 'dragonhunt',
+                        alternate_gogo=options_.is_code_active('mimetime'),
+                        esper_replacements=esper_replacements)
     reseed()
 
     if options_.random_clock and not options_.is_code_active('ancientcave'):

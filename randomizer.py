@@ -2293,6 +2293,8 @@ def manage_espers(freespaces, replacements=None):
     for e in sorted(espers, key=lambda e: e.name):
         e.write_data(fout)
 
+    ragnarok_id = replacements[16].id if replacements else 16
+    ragnarok_id += 0x36 # offset by spell ids
     ragnarok_sub = Substitution()
     ragnarok_sub.set_location(0xC0B37)
     ragnarok_sub.bytestring = bytes([0xB2, 0x58, 0x0B, 0x02, 0xFE])
@@ -2317,7 +2319,7 @@ def manage_espers(freespaces, replacements=None):
         0x4B, 0x6A, 0x85,
         0xB2, 0xD5, 0x9A, 0x02,  # GFX
         0xF4, 0x8D,  # SFX
-        0x86, 0x46,  # receive esper
+        0x86, ragnarok_id,  # receive esper
         0xFE,])
     ragnarok_sub.write(fout)
 
@@ -3622,19 +3624,9 @@ def manage_auction_house():
         auction_sub.bytestring = bytes([0xB2, addr_lo, addr_mid, addr_hi])
         auction_sub.write(fout)
 
-        table = {"0": 0x54, "1": 0x55, "2": 0x56, "3": 0x57, "4": 0x58, "5": 0x59, "6": 0x5A, "7": 0x5B, "8": 0x5C, "9": 0x5D}
-        fout.seek(0xCE600)
-        next_bank_index = read_multi(fout)
         opening_bid = str(auction_item[4])
-        fout.seek(0xCE602 + 2 * auction_item[3])
-        dialog_ptr = read_multi(fout)
-        auction_sub.set_location(0xD0000 if auction_item[3] < next_bank_index else 0xE0000 + dialog_ptr)
-        auction_sub.bytestring = bytes([
-            0x01, 0x14, 0x08, 0x73, 0x1A, 0x62, 0x5E, 0x13, # "<LF>        \"<I>\"!<P>"
-            0x01, 0x23, 0x48, 0xB8, 0x91, 0xA8, 0x93  # "<LF>Do I hear "
-        ] + [table[x] for x in opening_bid] + [  # auction_item[4]
-            0x7F, 0x26, 0x2F, 0x5F, 0x5E, 0x00]) #  " GP?!"
-        auction_sub.write(fout)
+        
+        set_dialogue(auction_item[3], f'<line>        “<item>”!<page><line>Do I hear {opening_bid} GP?!')
 
 
 def manage_bingo():
@@ -4570,6 +4562,7 @@ def randomize(args):
         manage_equipment(items)
     reseed()
 
+    esper_replacements = {}
     if options_.randomize_magicite:
         esper_replacements = randomize_magicite(fout, sourcefile)
     reseed()
@@ -4764,7 +4757,10 @@ def randomize(args):
     reseed()
 
     if options_.is_code_active('worringtriad') and not options_.is_code_active('ancientcave'):
-        manage_wor_skip(fout, wor_free_char, options_.is_code_active('airship'), options_.mode.name == 'dragonhunt', options_.is_code_active('mimetime'))
+        manage_wor_skip(fout, wor_free_char, airship=options_.is_code_active('airship'),
+                        dragon=options_.mode.name == 'dragonhunt',
+                        alternate_gogo=options_.is_code_active('mimetime'),
+                        esper_replacements=esper_replacements)
     reseed()
 
     if options_.random_clock and not options_.is_code_active('ancientcave'):

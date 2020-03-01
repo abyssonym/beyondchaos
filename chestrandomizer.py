@@ -7,7 +7,7 @@ from utils import read_multi, write_multi, mutate_index, utilrandom as random, S
 
 
 valid_ids = list(range(1, 0x200))
-banned_formids = [0]
+banned_formids = [0, 0x1d7]
 extra_miabs = []
 orphaned_formations = None
 used_formations = []

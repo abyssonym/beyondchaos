@@ -1200,8 +1200,13 @@ def _setup_alternate_zone_eater(fout, include_gau):
     gau_event_shim.write(fout)
 
 
-def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, alternate_gogo=False):
+def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, alternate_gogo=False, esper_replacements=None):
     characters = get_characters()
+
+    espers = [0x0, 0x1, 0x2, 0x3, 0x5, 0x6, 0x7, 0x8, 0x11, 0x13, 0x14, 0x17]
+    if esper_replacements:
+        espers = [esper_replacements[i].id for i in espers]
+    espers = [i + 0x36 for i in espers]
 
     # jump to FC end cutscene for more space
     startsub0 = Substitution()
@@ -1302,20 +1307,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
         0x7F, 0x0B, 0x0B,  # give Gau name
 
         0x84, 0x50, 0xC3,  # give party 50K Gil
-
-        0x86, 0x36,  # give Ramuh
-        0x86, 0x37,  # give Ifrit
-        0x86, 0x38,  # give Shiva
-        0x86, 0x39,  # give Siren
-        0x86, 0x3B,  # give Shoat
-        0x86, 0x3C,  # give Maduin
-        0x86, 0x3D,  # give Bismark
-        0x86, 0x3E,  # give Stray
-        0x86, 0x47,  # give Kirin
-        0x86, 0x49,  # give Carbunkl
-        0x86, 0x4A,  # give Phantom
-        0x86, 0x4D,  # give Unicorn
-
+    ] + [i for e in espers for i in (0x86, e)] + [
         0xB8, 0x42,  # allow Morph
         0xB8, 0x43,  # display AP
         0xB8, 0x49,  # Gau handed Meat

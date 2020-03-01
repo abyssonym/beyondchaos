@@ -1,7 +1,7 @@
 import configparser
 import sys
 from subprocess import call
-from PyQt5 import QtGui, Qt
+from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import pyqtRemoveInputHook
 from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, \
     QHBoxLayout, QLineEdit, QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, \
@@ -106,7 +106,7 @@ class Window(QWidget):
         titleLabel = QLabel("Beyond Chaos EX Randomizer (v4 BETA)")
         font = QtGui.QFont("Arial", 24, QtGui.QFont.Black)
         titleLabel.setFont(font)
-        titleLabel.setAlignment(Qt.Qt.AlignCenter)
+        titleLabel.setAlignment(QtCore.Qt.AlignCenter)
         titleLabel.setMargin(25)
         vbox.addWidget(titleLabel)
 
@@ -518,7 +518,7 @@ class Window(QWidget):
                 # Hash check can be moved out to when you pick the file.
                 # If you delete the file between picking it and running, just spit out an error, no need to prompt.
                 # Randomboost could send a signal ask for a number or whatever, but maybe it's better to just remove it or pick a fixed number?
-                pyqtRemoveInputHook()
+                QtCore.pyqtRemoveInputHook()
                 #TODO: put this in a new thread
                 try:
                     result_file = randomizer.randomize(args=['gui.py', self.romText, bundle, "test"])

@@ -10,7 +10,7 @@
 #WAVE 0x21 ~0x92~/0x06/
 #WAVE 0x22 ~0x7A~/0x0E/
 #WAVE 0x23 ~0x07~/0x07/
-#WAVE 0x24 ~0x0A~/0x0A/
+#WAVE 0x24 ~0x40~/0x0A/
 #WAVE 0x25 ~0x1B~/0x1B/
 #WAVE 0x26 ~0x3E~/0x3E/
 #WAVE 0x27 ~0x96~/0x00/
@@ -26,7 +26,7 @@
 #def vox= |1 o5
 #def brs= |2 ~o5~/o6/
 #def flt= |3 o4
-#def obo= |4 ~o5~/o5/
+#def obo= |4 ~o4~/o5/
 #def mba= |6 o5
 #def piz= ~|7 o5~/|5 o5 %y5%s2/
 #def hrp= |5 o5
@@ -35,7 +35,7 @@
 #def vv= v36
 #def vb= ~v96~/v48/
 #def vf= v36
-#def vo= ~v40~/v40/
+#def vo= ~v64~/v40/
 #def vm= v64
 #def vp= ~v64~/v96/
 #def vh= v32

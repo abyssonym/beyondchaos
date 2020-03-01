@@ -17,7 +17,7 @@
 #WAVE 0x27 ~0x8E~ /0x12/
 #WAVE 0x29 0x16
 #WAVE 0x2A ~0x81~ /0x14/
-#WAVE 0x2F ~0x55~ /0x00/
+#WAVE 0x2B ~0x55~ /0x00/
 
 
 #def global= t133 %v50%x224%b0,70%f0,0
@@ -40,7 +40,7 @@
 #def psw= p64p0,96,96
 #def sentence= l32"!!!or8t8rtvwxy"l16"zv t s8  v8  v8"
 #def snare= ~5b~/5g/ |A p64 
-#def tamb= ~5f |F~ /3f @7 %a15 %r24/ p45 
+#def tamb= ~5f |B~ /3f @7 %a15 %r24/ p45 
 
 #drum "c"=5f |7 p64 v127  %r15 %e0
 #drum "c+"=5g |7 p64 v127  %r14 %e0

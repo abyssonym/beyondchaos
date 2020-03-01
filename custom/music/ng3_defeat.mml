@@ -11,7 +11,7 @@
 #WAVE 0x22 ~0x45~/0x0D/
 #WAVE 0x23 ~0x1C~/0x1C/
 #WAVE 0x28 ~0x22~/0x22/
-#WAVE 0x29 ~0x56~/0x14/
+#WAVE 0x29 ~0x5C~/0x14/
 #WAVE 0x2A ~0x84~/0x17/
 #WAVE 0x2B ~0x5A~/0x11/
 
@@ -28,9 +28,9 @@
 #def b= v56
 
 #drum "k"=5g |8 v80 p64 %e0
-#drum "q"=5d |9 v30 p64 %e1
-#drum "r"=5d |9 v55 p64 %e1
-#drum "s"=5d |9 v80 p64 %e1
+#drum "q"=5a |9 v30 p64 %e1
+#drum "r"=5a |9 v55 p64 %e1
+#drum "s"=5a |9 v80 p64 %e1
 #drum "p"=5g |B v72 p80 %e1 %y2%s0
 #drum "h"=5g |B v56 p80 %e0 %y4%s0
 #drum "t"=5f |A v80 p80 %e1

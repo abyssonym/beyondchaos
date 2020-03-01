@@ -16,7 +16,7 @@
 #WAVE 0x2B 0x16
 #WAVE 0x2C 0x8E
 
-#def init= t120 %x240 %v40 %b0,85 %f0,0
+#def init= t120 %x240 %v40 %b0,100 %f0,0
 
 #def st= |0 p64 o4 's' m48,18,207
 #def vx= |1 p40 o5 'v' m48,18,199

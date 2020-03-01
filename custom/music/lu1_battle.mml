@@ -6,12 +6,12 @@
 #VARIANT ~ enh
 #VARIANT / nat
 
-#WAVE 0x20 ~0xA0~/0x33/
+#WAVE 0x20 ~0x52~/0x33/
 #WAVE 0x21 ~0x7c~/0x09/
 #WAVE 0x22 ~0x0B~/0x0B/
 #WAVE 0x23 ~0x4A~/0x1C/
 #WAVE 0x28 ~0x22~/0x22/
-#WAVE 0x29 ~0x56~/0x21/
+#WAVE 0x29 ~0x5C~/0x21/
 #WAVE 0x2A ~0x6E~/0x17/
 #WAVE 0x2E ~0x12~/0x12/
 #WAVE 0x2F ~0x0F~/0x0F/
@@ -20,14 +20,14 @@
 
 #def whine= %k0 @5 o4 v48 %e1 m48,18,201
 #def whine2= %k0 @5 o5 v48 %e1 m48,18,193
-#def lg1= %k2 |0 ~o4~/o4/ v72 p50 %e1 m48,18,63 %r9
+#def lg1= %k2 |0 ~o5~/o4/ v72 p50 %e1 m48,18,63 %r9
 #def lg2= %k2 |1 ~o4~/o5/ v48 p70 %e1 m48,18,127
 #def org= %k0 |2 o5 v40 %e1 m48,18,201 %s4%y0%r2
 #def bas= %k0 |3 ~o6~/o5/ v90 p64 %e0 m /%y4%s3/
 
 #drum "k"=5f |8 v88 p64 %e0 %k0
-#drum "s"=5e |9 v88 p64 %e0 %k0 /%y4%s3/
-#drum "s-"=5e |9 v32 p64 %e0 %k0 /%y4%s3/
+#drum "s"=5b |9 v88 p64 %e0 %k0 /%y4%s3/
+#drum "s-"=5b |9 v32 p64 %e0 %k0 /%y4%s3/
 
 #drum "h"=5a |F v56 p50 %e0 %k0
 #drum "i"=5a |F v40 p50 %e0 %k0

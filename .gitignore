@@ -1,6 +1,5 @@
 *.pyc
 *.smc
-ff6*.txt
 build/*
 dist/*
 beyondchaos_ex.spec
@@ -11,4 +10,3 @@ bcex.cfg
 beyondchaos_ex.exe
 custom.zip
 beyondchaos_windows.zip
-devtools/songlen.txt

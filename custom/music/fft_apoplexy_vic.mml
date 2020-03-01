@@ -14,9 +14,9 @@
 
 #def init= t160 %x240 %v40 %b0,85 %f0,0
 
-#def sl= |1 o4 's' p80
+#def sl= |0 o4 's' p80
 #def se= |1 o4 'e' p64
-#def cb= |1 o4 'c' p48
+#def cb= |0 o4 'c' p48
 #def tp= |5 o6 't' p72
 #def hn= |4 o5 'h' p56
 #def tb= |5 o6 'b' p68

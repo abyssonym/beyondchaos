@@ -74,14 +74,14 @@ r4
 'hit'p44 l8 [8['hh'd'hl'd'hm'd]['hh'd'hl'd]$0]
 $1##10
 [
- ['hit''c10' > %k9[j1,99] j2
+ ['hit''c10' > %k9[j2,113;99$113 j2
  %k0 'pet''c4'l16 'hh'er'hm'erer'hh'gr'hm'grgr'hh'f+r'hm'f+r'hh'f8.r]
  j2,121 c4 %k0 'tub''c5' l4 <dc>ba
 ##14 c5
  g1. g8defg8 l8 arr1 ar4ar4arar
 ]
 ##22 c7 c7 c5 c5
-$121 [j1,99] %k0
+$121 [j2,122;99$122 %k0
 'str''c7' l4 b.a.g1..
 'tub''c5' l8 r1r4 ar4ar4arar
 ##26 c2/c4 merge, crash at 32
@@ -100,33 +100,31 @@ a1^1^ 'timp''c17' <c f1^1.
 {2}
 r4
 ##
-l8 'hit''c9'> [ %k9[j1,99] <%k0 [j1,99] >
-%k11 [j1,99] %k10 [j1,99] ] %k0
+l8 'hit''c9'> [ %k9[j2,203;99$203 <%k0 [j2,204;99$204 >
+%k11 [j2,205;99$205 %k10 [j2,206;99$206 ] %k0
 $2##10
 [
  'str''c8' l4 e.e.ee e1^ f.b.<cd f1^ j2,222
 ##14 c9
  'hit''c9'> l8 [4'hh'g4'hm'g]'str'>gd4e4f4g
- 'hit'> %k9[ [j1,99] ]%k0
+ 'hit'> %k9[ [j2,217;99$217 ]%k0
 ]
 $222 ##22 c9 c5 c9 c9
-'hit''c9'> %k7[j1,99]%k0
+'hit''c9'> %k7[j2,223;99$223%k0
 'tub''c5' g1^4
-'hit''c9'> %k9[[j1,99]]%k0
+'hit''c9'> %k9[[j2,225;99$225]%k0
 ##26 c7
 'str''c7' l4 [e1^g1^a1^<c1j2^>]>l16 ab<cd
 ##34 c4
 'hrn''c4' l4 >a1^<c1^d1^1.
 ##38 c4 merged with c9
-l8 p89 [j1,238] ##$238 [|1'hm'%r19a4 ~>>|0~'hl'%r20a~<<~]|1'hm'%r19a4a4 j1,0
-%k3[j1,238] %k2[j1,238] %k1[j1,238] %k0
+l8 p89 $238 [|1'hm'%r19a4 ~>>|0~'hl'%r20a~<<~]|1'hm'%r19a4a4 j1,0
+%k3[j2,240;238$240 %k2[j2,241;238$241 %k1[j2,242;238$242 %k0
 ##42 c9
-'hit''c9'>%k4[j1,99] %k7[j1,99] %k6[j1,99] %k5[j1,99] %k0
+'hit''c9'>%k4[j2,243;99$243 %k7[j2,244;99$244 %k6[j2,245;99$245 %k5[j2,246;99$246 %k0
 ##44 c3
 'pet''c3' l4 <c1^d1^e1^f1^
 ;2
-
-$238 l8 [|1'hm'%r19a4 ~>>|0~'hl'%r20a~<<~]|1'hm'%r19a4a4 ]
 
 {7}
 r4
@@ -165,8 +163,8 @@ $4##10
 $422 ##22 c8
 'str''c8' l4 g.d.>b2..<c.d 'hit''c8' v96 l16 gaa+b l4 <[c.d.ef+v64]
 ##26 c9, c3
-'hit''c9'> %k4[j1,99] %k7[j1,99] %k6[j1,99]
-%k5[j1,99] %k4[j1,99] l8%k0 ['hh'g4'hl'g]
+'hit''c9'> %k4[j2,426;99$426 %k7[j2,427;99$427 %k6[j2,428;99$428
+%k5[j2,429;99$429 %k4[j2,430;99$430 l8%k0 ['hh'g4'hl'g]
 'pet''c3'l4 aga1^1^r
 ##34 c3
 a2.<ed e1g f+1^ d2.fg
@@ -182,14 +180,14 @@ l8 [4agafc fagaf]
 l16 'c16'"aceg" "!!g1" [4r1]
 'tub' l4 'c5' v40 d1^f1^g1^g+1^
 $5##10
-['bass''c18' [4%k9[j1,99]]%k0 j2,522
+['bass''c18' [4%k9[j2,514;99$514]%k0 j2,522
 ##14 c3 c3 c10 c2
 'pet''c3'l8 b4<c>b4ag4ag4df4e4d4>b4
-'hit''c10'>> %k9[j1,99]%k0
+'hit''c10'>> %k9[j2,517;99$517%k0
 'pets''c2'%r18 l8 cr4dr4erf+r ]
 $522 ##22 c3 c3 c10 c2
 'pet''c3' l8 ba+b<c>b<cdgaf+ gf+gagab<cd>b
-'hit''c10'>> %k9[j1,99]%k0
+'hit''c10'>> %k9[j2,525;99$525%k0
 'pets''c2'%r18 l8 cr4dr4erf+r
 ##26 c18
 'bass''c18'l8 [8['hh'a'hl'aa]['hh'a'hl'a]]
@@ -218,7 +216,7 @@ l4 a.aa8a<e>
 g1<d> g1 l16 gggg
 l4 [a.a.aa]
 ##26 c17, c10 in interim
-a1^4 'hit''c10'>> %k9[4[j1,99]]%k0l8['hh'a4'hl'a]
+a1^4 'hit''c10'>> %k9[4[j2,628;99$628]%k0l8['hh'a4'hl'a]
 'timp''c17' a4g4 a1^1^4 l16aaaa
 ##34 c17
 [4 l4 a.a.aa]
@@ -227,7 +225,7 @@ a1^4 'hit''c10'>> %k9[4[j1,99]]%k0l8['hh'a4'hl'a]
 ##42 c17
 l4 >a1^1^ l16 aaaa l4 a1^1^a
 ##44 c17 into c9
-<f1^ 'hit''c9'> %k2[j1,99] %k4[j1,99] %k5[j1,99] %k0
+<f1^ 'hit''c9'> %k2[j2,648;99$648 %k4[j2,649;99$649 %k5[j2,650;99$650 %k0
 ;6
 
 {3}
@@ -236,7 +234,7 @@ l16 'c14'[8["w8xxx8"]["w8xx"]]
 $7##10
 [
 'hit''c9'>l8 [['hh'e4'hl'e8]'hh'e4j2e4 ] 'pet''c2'a8.r16
-'c16'"!!!og4" 'hit''c9'l8 ['hl'f8'hh'f4]f4 %k5[j1,99]%k0 j2,722
+'c16'"!!!og4" 'hit''c9'l8 ['hl'f8'hh'f4]f4 %k5[j2,714;99$714%k0 j2,722
 ##14 c16
 'c16'l8[4"!!!of4c"]"ff4f4f"l16"cdef"    l4["f.f.ff"] ]
 $722 ##22 c16
@@ -272,7 +270,7 @@ $821 ##22 c15 c4 c15 c3
 ##38 c2 merged with c10
 l8 [4 ['pet''c2'%r19 d4 'hit''c10''hl'> a] 'pet''c2'%r19 d4d4]
 ##42 crash, c10
-"!!!oy1^4" 'hit''c10'>> %k9[3[j1,99]]%k0
+"!!!oy1^4" 'hit''c10'>> %k9[3[j2,844;99$844]%k0
 ##44 crash, bell
 "!!!oy2." 'bell''c12'l4 c1^d1^e1^f2
 ;8

@@ -9,7 +9,7 @@
 #WAVE 0x20 ~0x0B~/0x0B/
 #WAVE 0x21 ~0x43~/0x0D/
 #WAVE 0x22 ~0x1f~/0x1f/
-#WAVE 0x23 ~0xA0~/0x1B/
+#WAVE 0x23 ~0x58~/0x1B/
 #WAVE 0x24 ~0x5D~/0x1E/
 #WAVE 0x25 ~0x1C~/0x1C/
 #WAVE 0x28 ~0x22~/0x22/
@@ -81,7 +81,7 @@ c>bag fd+c+c< d+c+>ba+g+a+b<c+
 'dis-o2''vib' l16
 [ b2^m60,-2^^4m90,2^8^1 b4[14br] %k3]%k0
 ##37
-'chf' [j1,237]
+'chf' [j2,140%j237$140
 ##41
 %a15%y1%s3 b4.g+4.d+4.>b4.g+2<  a4.f+4.c+4.>a4.f+4.>
 'dis-o1''vih' %r4 g+16g+16
@@ -89,10 +89,10 @@ c>bag fd+c+c< d+c+>ba+g+a+b<c+
 g+1^1^1^1
 ##49
 'org''vim' l8
-[j1,149] ##$149 [g+1 f+2g+2 a+4.b<c+1d+4c+4>    b2g+1j2b2 a+2f+1.]
+$149 [g+1 f+2g+2 a+4.b<c+1d+4c+4>    b2g+1j2b2 a+2f+1.]
 ##57
-###^^ to 62.5
-##f+2g+1^1   j1,0
+#^^ to 62.5
+f+2g+1^1   j1,0
 ##65
 b1^1 b2a2g+2a2  a2g2f+2g2 <c+1^1
 ##73
@@ -102,8 +102,6 @@ b1^1 b2a2g+2a2  a2g2f+2g2 <c+1^1
 ##79
 a1^1^1^1
 ;
-
-$149 l8 [g+1 f+2g+2 a+4.b<c+1d+4c+4>    b2g+1j2b2 a+2f+1.] f+2g+1^1   ]
 
 {2}$
 %e1 'org''vim' l8
@@ -122,18 +120,18 @@ d+>g+d+< c+>g+d+  bg+d+ a+g+d+    g+eg+ a+ea+ bgb <c+>g<c+
 l16
 [ f+r8.f+rgr8.grer8. ergr8.grf+r8.er8.    [5f+r8.f+r]r8 %k3]%k0
 ##37
->> l8 [j1,237] 
-   ##$237 g+a+ba+ b<c+d+c+  d+ef+e f+g+ba+    ag+ab ab<c+>b  <c+d+c+d+ ef+g+a+ j1,0
+>> l8
+$237 g+a+ba+ b<c+d+c+  d+ef+e f+g+ba+    ag+ab ab<c+>b  <c+d+c+d+ ef+g+a+ j1,0
 ##41
 ['str+o1*v0'm l4
 (b.'vstr'^.g+.d+.>b2)%k-2]%k0
 ##45
-r1r1 [j1,247] ##$247 'sin-o1' l16
-  ##(g+f+g+b g+b<c+d+  f+d+f+g+ f+g+b<c+    d+c+d+f+ d+f+g+b  <c+>b<c+d+ c+d+f+g+) j1,0
+r1r1 $247 'sin-o1' l16
+(g+f+g+b g+b<c+d+  f+d+f+g+ f+g+b<c+    d+c+d+f+ d+f+g+b  <c+>b<c+d+ c+d+f+g+) j1,0
 ##49
 'org-o1''vim' l8
 b1 a+2b2 <c+4.d+e1f+4e4   d+2>b1<d+2
-[j1,247]
+[j2,257%j247$257
 ##57
 'org-o1'
 b1 a+2b2 <c+4.d+e1f+4e4   e2c+1c+2c1.
@@ -146,10 +144,6 @@ b1 a2b2 <c+4.d8e1f+4e4  d2>b1<d2 c+2>a2f+2a2
 d4c>ba1gabg a1^1  <d4c>ba1gabg 
 ##79
 ;
-
-$237 l8 g+a+ba+ b<c+d+c+  d+ef+e f+g+ba+    ag+ab ab<c+>b  <c+d+c+d+ ef+g+a+ ]
-$247 'sin-o1' l16
-(g+f+g+b g+b<c+d+  f+d+f+g+ f+g+b<c+    d+c+d+f+ d+f+g+b  <c+>b<c+d+ c+d+f+g+) ]
 
 {3}
 %e1 'bas' l8
@@ -317,10 +311,10 @@ g+2^d+g+<c+> r2rg+4.  a4.b4.<c+4.d+4.e4f+4>
 ##41
 'org*v.5'([8g+4])([8f+4])
 ##45
-r1r1 %k-5 [j1,247] %k0
+r1r1 %k-5 [j2,748%j247$748 %k0
 ##49
 'str+o1*v1.33''vil'
-[j1,149]
+[j2,764%j149$764
 ##57
 #^^
 ##65

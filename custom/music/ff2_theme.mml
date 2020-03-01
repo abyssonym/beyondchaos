@@ -6,16 +6,16 @@
 #VARIANT ~ enh
 #VARIANT / nat
 
-#WAVE 0x20 ~0x0A~/0x08/
-#WAVE 0x21 ~0x40~/0x0A/
+#WAVE 0x20 ~0x40~/0x08/
+#WAVE 0x21 ~0x0A~/0x0A/
 #WAVE 0x22 ~0x0D~/0x0D/
 #WAVE 0x23 ~0x97~/0x01/
 #WAVE 0x24 ~0x6B~/0x02/
-#WAVE 0x25 ~0x9f~/0x1A/
+#WAVE 0x25 ~0x78~/0x1A/
 
-#def oboe= |0 ~o5~/o5/ ~v79~/v79/ p64 m48,18,223
-#def cora= |1 o5 v44 p64 m48,18,223
-#def bssn= |5 o6 ~v21~/v36/ p64 m48,18,223
+#def oboe= |0 ~o4~/o5/ ~v127~/v79/ p64 m48,18,223
+#def cora= |1 o5 v28 p64 m48,18,223
+#def bssn= |5 o6 ~v64~/v36/ p64 m48,18,223
 #def fstr= |2 o5 p64 m48,18,207 %r7
 #def sstr= |2 o5 p34 m48,18,143 %a3%r9
 #def guit= |3 o5 p84 m24,18,223

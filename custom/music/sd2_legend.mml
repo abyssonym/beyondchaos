@@ -2,286 +2,126 @@
 #ALBUM Secret of Mana
 #COMPOSER Hiroki Kikuta
 #ARRANGED emberling
-##created with sqspcmml beta 1.1.2
+# Converted from binary by mfvitools
 
-#WAVE 0x20 0x65
-#WAVE 0x21 0x21
-#WAVE 0x22 0x6B
-#WAVE 0x23 0x4A
-#WAVE 0x24 0x07
-#WAVE 0x25 0x43
-#WAVE 0x26 0x86
-#WAVE 0x27 0x79
-#WAVE 0x28 0x42
+#VARIANT ~
+#VARIANT / nopatch
 
-#def 0i=   |0
-#def 0o=   o5
-#def 0v=   v100
-#def 0f= v1,100
-
-#def 1i=   |1
-#def 1o=   o5
-#def 1v=   v100
-#def 1f= v1,100
-
-#def 2i=   |2
-#def 2o=   o6
-#def 2v=   v100
-#def 2f= v1,100
-
-#def 3i=   |3
-#def 3o=   o5
-#def 3v=   v100
-#def 3f= v1,100
-
-#def 4i=   |4
-#def 4o=   o5
-#def 4v=   v100
-#def 4f= v1,100
-
-#def 5i=   |5
-#def 5o=   o4
-#def 5v=   v100
-#def 5f= v1,100
-
-#def 6i=   |6 %r20
-#def 6o=   o3
-#def 6v=   v125
-#def 6f= v1,125
-
-#def 7i=   |7
-#def 7o=   o5
-#def 7v=   v100
-#def 7f= v1,100
-
-#def 8i=   |8
-#def 8o=   o5
-#def 8v=   v100
-#def 8f= v1,100
-
-## auto percussion  0x20
-#drum "h"= 5g
-## auto percussion  0x21
-#drum "i"= 5b
-
+#WAVE 0x20 -- ~0x65~ /0x22/
+#WAVE 0x21 -- ~0x5C~ /0x21/
+#WAVE 0x22 -- ~0x4D~ /0x18/
+#WAVE 0x23 -- ~0x4A~ /0x1C/
+#WAVE 0x24 -- 0x07
+#WAVE 0x25 -- 0x0D
+#WAVE 0x26 -- ~0x86~ /0x31/
+#WAVE 0x27 -- ~0x53~ /0x1B/
+#WAVE 0x28 -- ~0x62~ /0x3E/
 
 {1}
-t86%x255%v64%b0,20%f0,0
-{'IgnoreMVol prg=33'}
-p64%e1r1r1r1r1r1r1r1r2.'1o+o1''1v*v1.27'
-'1i' " !!!o i16"r8.
-$101'0o''0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8'1v*v1.27'
-'1i' " !!!o i16"r8'0v*v.80'
-'0i' " !!!o h16"r16"h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16i16"r8'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8'1v*v1.27'
-'1i' " !!!o i16"r8'0v*v.80'
-'0i' " !!!o h16"r16"h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16i16"r16"i16"'0v*v.80'
-'0i' " !!!o h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16h16"r16'1v*v1.27'
-'1i' " !!!o i16"r16'0v*v.80'
-'0i' " !!!o h16h16"r16"h16h16"r8'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16h16"r16'1v*v1.27'
-'1i' " !!!o i16"r8'0v*v.80'
-'0i' " !!!o h16"r16"h16"r8.'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16h16"r16'1v*v1.27'
-'1i' " !!!o i16"r16'0v*v.80'
-'0i' " !!!o h16h16"r16"h16h16"r8'1v*v1.27'
-'1i' " !!!o i16"r8.'0v*v.80'
-'0i' " !!!o h16h16"r16'1v*v1.27'
-'1i' " !!!o i16"r16'0v*v.80'
-'0i' " !!!o h16h16"r16"h16"r8."h16"r8."h16"r8."h16"r8."h16"r8."h16"r8.
-"h16"r8."h16"r8."h16"r8."h16"r8."h16"r8."h16"r8."h16"r8."h16"r8."h16h16
-h16"r16'1v*v1.27'
-'1i' " !!!o i16"'0v*v.80'
-'0i' " !!!o h16h16"'1v*v1.27'
-'1i' " !!!o i16
-";101
+l16p64r1  r1  r1  r1  
+r1  r1  r1  r2r4o5v127@33gr8.  
+ $1 o4v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8<v127@33gr8>v80@32gr  
+gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33ggr8  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8<v127@33gr8>v80@32gr  
+gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  
+>v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33gr8.  >v80@32gr8.<v127@33gr8.>v80@32gr8.<v127@33ggrg  
+>v80@32gr8.<v127@33gr8.>v80@32ggr<v127@33gr>v80@32ggr  ggr8<v127@33gr8.>v80@32ggr<v127@33gr8>v80@32gr  
+gr8.<v127@33gr8.>v80@32ggr<v127@33gr>v80@32ggr  ggr8<v127@33gr8.>v80@32ggr<v127@33gr>v80@32ggr  
+gr8.gr8.gr8.gr8.  gr8.gr8.gr8.gr8.  gr8.gr8.gr8.gr8.  gr8.gr8.gggr<v127@33g>v80@32gg<v127@33g  
 
+;1
 
+l16
 {2}
-%e1p72'2v*v.65'
-'2i' '2o'a16a16a8a16a8a16a8a16a8a16a16a16a8a16a8a16a8a16a8a16a8a8a16a16
-a8a16a8a16a8a16a8a16a16a16a8a16a8a16a8a16a8a16a8a8a+16a+16a+8a+16a+8a+16
-a+8a+16a+8a+16a+16a+16a+8a+16a+8a+16a+8a+16a+8a+16a+8a+8a16a16a8a16a8a16
-a8a16a8a16a16a16a8a16a8a16a8a16a8a16a8a8
-$201
-'3i' '3o''3v*v.55'[a16a16a16r16a16a16r16a16a16r16a16a16r16a16a16a16a16
-r16a16a16r16a16a16r16a16a16r16a16a16r16a16r16a16a16a16r16a16a16r16a16a16
-r16a16a16r16a16a16a16a16r16a16a16r16a16a16r16a16a16r16a16a16r16a16r16a+16
-a+16a+16r16a+16a+16r16a+16a+16r16a+16a+16r16a+16a+16a+16a+16r16a+16a+16
-r16a+16a+16r16a+16a+16r16a+16a+16r16a+16r16a16a16a16r16a16a16r16a16a16
-r16a16a16r16a16a16a16a16r16a16a16r16a16a16r16a16a16r16a16a16r16a16r16<
-]
-'2i' '2v*v.65''2o'a+16r8.a+16a+16r8a+16a+16r16a+16r8a+16r16a+16r8.a+16
-a+16r8a+16a+16r16a+16r8a+16r16a16r8.a16a16r8a16a16r16a16r8a16r16a16r8.
-a16a16r8a16a16r16a16r8a16r16%r7p64>a+2^8.f16a+16r16<c16r16c+2.<c+16>g+16
-d+16>a+16<c2.^16r16g16r16<c2.c16c16r16c16
-;201
+t88%v50%x140%b0,64
+l16%e1p72v65@34o5aaa8aa8aa8aa8aaa  a8aa8aa8aa8aa8a8  
+aaa8aa8aa8aa8aaa  a8aa8aa8aa8aa8a8  a+a+a+8a+a+8a+a+8a+a+8a+a+a+  
+a+8a+a+8a+a+8a+a+8a+a+8a+8  aaa8aa8aa8aa8aaa  a8aa8aa8aa8aa8a8  
+ $2 @35o5v55[2aaaraaraaraaraaa  araaraaraaraarar  aaaraaraaraaraaa  
+araaraaraaraarar  a+a+a+ra+a+ra+a+ra+a+ra+a+a+  a+ra+a+ra+a+ra+a+ra+a+ra+r  
+aaaraaraaraaraaa  araaraaraaraarar  <]@34v65>>a+r8.a+a+r8a+a+ra+r8a+r  
+a+r8.a+a+r8a+a+ra+r8a+r  ar8.aar8aarar8ar  ar8.aar8aarar8ar  %r7p64>a+2^8.fa+r<cr  
+c+2^4<c+>g+d+>a+  <c2^4^rgr  <c2^4ccrc  
+;2
 
-
+l16
 {3}
-%e1p40'4v*v.35'
-'4i' m20,18,195%r4'4o+o1'f16e16c16>g16<c16e16f16e16c16>g16<c16d16f16e16
-c16>g16<f16e16c16>g16<c16e16f16e16c16>g16<c16d16f16e16c16>g16<f16e16c16
->g16<c16e16f16e16c16>g16<c16d16f16e16c16>g16<f16e16c16>g16<c16e16f16e16
-c16>g16<c16d16f16e16c16>g16<d16c16>a16f16a16<c16d16c16>a16f16a16<c16d16
-c16>a16f16<d16c16>a16f16a16<c16d16c16>a16f16a16<c16d16c16>a16f16<f16e16
-c16>g16<c16e16f16e16c16>g16<c16d16f16e16c16>g16<f16e16c16>g16<c16e16f16
-e16c16>g16<c16d16f16e16c16>g16
-$301'4v*v.40'
-'4i' '4o'd4.g2^8^4<c4>g4c4d4.g2^8^4<c4>g4<c4d1^2.c4>a4.e2^8^1d4.g2^8^4
-<c4>g4c4d4.g2^8^4^16a16<c16d16f16e16c16d16e16f16g16a16a+2.^8a16g16d2.c4
->a4.e2^8^1<d16e16f16r16f16g16f16r16e16f16r16e16d16r16c16r16f16g16f2^8c4
-d16e16f16r16f16g16f16r16e16f16r16e16d16r16c16r16f16<c16>a2^8>a4a+16<c16
-d16r16d16e16f16g16f2c+16d+16f16r16f16g16g+16a+16g+4g+8a+8<c2.>g4<c2.>g16
-e16c16>g16
-;301
+l16%e1p40v35@36m20,18,195%r4o6fec>g<cefec>g<cdfec>g  
+<fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  
+<dc>afa<cdc>afa<cdc>af  <dc>afa<cdc>afa<cdc>af  <fec>g<cefec>g<cdfec>g  
+<fec>g<cefec>g<cdfec>g   $3 v40@36o5d4.g2^8  ^4<c4>g4c4  d4.g2^8  
+^4<c4>g4<c4  d1  ^2^4c4  >a4.e2^8  
+^1  d4.g2^8  ^4<c4>g4c4  d4.g2^8  
+^4^a<cdfecdefga  a+2^4^8ag  d2^4c4  >a4.e2^8  
+^1  <defrfgfrefredrcr  fgf2^8c4  defrfgfrefredrcr  
+f<c>a2^8>a4  a+<cdrdefgf2  c+d+frfgg+a+g+4g+8a+8  <c2^4>g4  
+<c2^4>gec>g  
+;3
 
-
+l16
 {4}
-%e1p88'5v*v.57'
-'5i' %r5'5o'd4.g2^8^4<c4>g4c4d4.g2^8^4<c4>g4<c4d1^2.c4>a4.e2^8^1
-$401'5v*v.57'
-'5i' '5o'p88%r5d4.g2^8^4<c4>g4c4d4.g2^8^4<c4>g4<c4d1^2.c4>a4.e2^8^1g4.
-<c2^8^4f4c4>f4g4.<c2^8^4f4c4f4g1^2.f4d4.c2^8^1>a+8.r16a+8.r16a+8.<c8.>
-a8<d16g16a16a+16<c8>a+16a16g8.a8.f8e2.c4>a2.<c4p80>a+2.a+8<c8c+2.c+8d+8
-f2.f8e16d16e2.c4
-;401
+l16%e1p88v57@37%r5o5d4.g2^8  ^4<c4>g4c4  
+d4.g2^8  ^4<c4>g4<c4  d1  ^2^4c4  
+>a4.e2^8  ^1   $4 v57@37o5p88%r5d4.g2^8  ^4<c4>g4c4  
+d4.g2^8  ^4<c4>g4<c4  d1  ^2^4c4  
+>a4.e2^8  ^1  g4.<c2^8  ^4f4c4>f4  
+g4.<c2^8  ^4f4c4f4  g1  ^2^4f4  
+d4.c2^8  ^1  >a+8.ra+8.ra+8.<c8.>a8  <dgaa+<c8>a+ag8.a8.f8  
+e2^4c4  >a2^4<c4  p80>a+2^4a+8<c8  c+2^4c+8d+8  
+f2^4f8ed  e2^4c4  
+;4
 
-
-{7}
-%e1p85'5v*v.57'
-'5i' %r5'5o-o1'g4.<c2^8^4f4c4>f4g4.<c2^8^4f4c4f4a+1^2.g4d4.c2^8^1
-$501p85'5o-o1'g4.<c2^8^4f4c4>f4g4.<c2^8^4f4c4f4a+1^2.g4d4.c2^8^1d4.g2^8
-^4<c4>g4c4d4.g2^8^4<c4>g4<c4d1^2.c4>a4.e2^8^1g8.r16g8.r16g8.a8.f8a+4.g16
-a16a+8.<c8.d8>a2.^16a16g16e16f4g4e4a4p64f2.f8g8g+2.g+8a+8<c1c2.>g4
-;501
-
-
+l16
 {5}
-%e1p64r1r1r1r1r1r1r1r1
-$601[p104'6v*v.50'
-'6i' '6o+o1'f16e16c16>g16<c16e16f16e16c16>g16<c16d16f16e16c16>g16<f16e16
-c16>g16<c16e16f16e16c16>g16<c16d16f16e16c16>g16<f16e16c16>g16<c16e16f16
-e16c16>g16<c16d16f16e16c16>g16<f16e16c16>g16<c16e16f16e16c16>g16<c16d16
-f16e16c16>g16<d16c16>a16f16a16<c16d16c16>a16f16a16<c16d16c16>a16f16<d16
-c16>a16f16a16<c16d16c16>a16f16a16<c16d16c16>a16f16<f16e16c16>g16<c16e16
-f16e16c16>g16<c16d16f16e16c16>g16<f16e16c16>g16<c16e16f16e16c16>g16<c16
-d16f16e16c16>g16]p64'6v*v.55'g16a16a+16g16a+16<c16>a+16a16g16a16a+16<c16
->a16f16a+16a16g16a16a+16g16<c16d16>a+16a16g16a16a+16<c16>a16f16a+16a16
-e16f16g16a16e16<c16>a16f16e16f16g16<c16>g16e16f16d16e16f16g16a16e16<c16
->a16f16e16f16g16<c16>g16e16f16d16'5v*v.57'
-'5i' p48%r5'5o'd2.d8e8f2.f8g8g1g2.e4
-;601
+l16%e1p85v57@37%r5o4g4.<c2^8  ^4f4c4>f4  
+g4.<c2^8  ^4f4c4f4  a+1  ^2^4g4  
+d4.c2^8  ^1   $5 p85o4g4.<c2^8  ^4f4c4>f4  
+g4.<c2^8  ^4f4c4f4  a+1  ^2^4g4  
+d4.c2^8  ^1  d4.g2^8  ^4<c4>g4c4  
+d4.g2^8  ^4<c4>g4<c4  d1  ^2^4c4  
+>a4.e2^8  ^1  g8.rg8.rg8.a8.f8  a+4.gaa+8.<c8.d8  
+>a2^4^age  f4g4e4a4  p64f2^4f8g8  g+2^4g+8a+8  
+<c1  c2^4>g4  
+;5
 
-
+l16
 {6}
-%e1p56'2v*v.60'
-'2i' '2o'd16d16d8d16d8d16d8d16d8d16d16d16d8d16d8d16d8d16d8d16d8d8d16d16
-d8d16d8d16d8d16d8d16d16d16d8d16d8d16d8d16d8d16d8d8d+16d+16d+8d+16d+8d+16
-d+8d+16d+8d+16d+16d+16d+8d+16d+8d+16d+8d+16d+8d+16d+8d+8d16d16d8d16d8d16
-d8d16d8d16d16d16d8d16d8d16d8d16d8d16d8d8
-$701
-'3i' '3v*v.55'p56['3o+o1'd16d16d16r16d16d16r16d16d16r16d16d16r16d16d16
-d16d16r16d16d16r16d16d16r16d16d16r16d16d16r16d16r16d16d16d16r16d16d16r16
-d16d16r16d16d16r16d16d16d16d16r16d16d16r16d16d16r16d16d16r16d16d16r16d16
-r16d+16d+16d+16r16d+16d+16r16d+16d+16r16d+16d+16r16d+16d+16d+16d+16r16
-d+16d+16r16d+16d+16r16d+16d+16r16d+16d+16r16d+16r16d16d16d16r16d16d16r16
-d16d16r16d16d16r16d16d16d16d16r16d16d16r16d16d16r16d16d16r16d16d16r16d16
-r16]
-'2i' '2v*v.60''2o'd+16r8.d+16d+16r8d+16d+16r16d+16r8d+16r16d+16r8.d+16
-d+16r8d+16d+16r16d+16r8d+16r16d16r8.d16d16r8d16d16r16d16r8d16r16d16r8.
-d16d16r8d16d16r16d16r8d16c16'8v*v.26'
-'8i' p80'8o+o1'd16e16f16g16d16e16f16g16d16e16f16g16d16e16f16g16f16g16g+16
-a+16f16g16g+16a+16f16g16g+16a+16f16g16g+16a+16<c4>g4<c4f8e16d16e4c4>g4
-c4
-;701
+l16%e1p64r1  r1  
+r1  r1  r1  r1  
+r1  r1   $6 [2p104v50@38o6fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  
+<fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  <dc>afa<cdc>afa<cdc>af  
+<dc>afa<cdc>afa<cdc>af  <fec>g<cefec>g<cdfec>g  <fec>g<cefec>g<cdfec>g  
+]p64v55gaa+ga+<c>a+agaa+<c>afa+a  gaa+g<cd>a+agaa+<c>afa+a  efgae<c>afefg<c>gefd  
+efgae<c>afefg<c>gefd  v57@37p48%r5d2^4d8e8  f2^4f8g8  g1  
+g2^4e4  
+;6
 
+l16
+{7}
+l16%e1p56v60@34o5ddd8dd8dd8dd8ddd  d8dd8dd8dd8dd8d8  
+ddd8dd8dd8dd8ddd  d8dd8dd8dd8dd8d8  d+d+d+8d+d+8d+d+8d+d+8d+d+d+  
+d+8d+d+8d+d+8d+d+8d+d+8d+8  ddd8dd8dd8dd8ddd  d8dd8dd8dd8dd8d8  
+ $7 @35v55p56[2o6dddrddrddrddrddd  drddrddrddrddrdr  dddrddrddrddrddd  
+drddrddrddrddrdr  d+d+d+rd+d+rd+d+rd+d+rd+d+d+  d+rd+d+rd+d+rd+d+rd+d+rd+r  
+dddrddrddrddrddd  drddrddrddrddrdr  ]@34v60>d+r8.d+d+r8d+d+rd+r8d+r  
+d+r8.d+d+r8d+d+rd+r8d+r  dr8.ddr8ddrdr8dr  dr8.ddr8ddrdr8dc  v26@40p80<defgdefgdefgdefg  
+fgg+a+fgg+a+fgg+a+fgg+a+  <c4>g4<c4f8ed  e4c4>g4c4  
+;7
 
+l16
 {8}
-%e1p43'4v*v.35'
-'4i' '4o+o1'd16c16>g16d16g16<c16d16c16>g16d16g16b16<d16c16>g16d16<d16c16
->g16d16g16<c16d16c16>g16d16g16b16<d16c16>g16d16<d16c16>g16d16g16<c16d16
-c16>g16d16g16b16<d16c16>g16d16<d16c16>g16d16g16<c16d16c16>g16d16g16b16
-<d16c16>g16d16a+16a16f16d16f16a16a+16a16f16d16f16a16a+16a16f16d16a+16a16
-f16d16f16a16a+16a16f16d16f16a16a+16a16f16d16<d16c16>g16d16g16<c16d16c16
->g16d16g16b16<d16c16>g16d16<d16c16>g16d16g16<c16d16c16>g16d16g16b16<d16
-c16>g16d16
-$801'6v*v.50'
-'6i' p24['6o+o1'd16c16>g16d16g16<c16d16c16>g16d16g16b16<d16c16>g16d16<
-d16c16>g16d16g16<c16d16c16>g16d16g16b16<d16c16>g16d16<d16c16>g16d16g16
-<c16d16c16>g16d16g16b16<d16c16>g16d16<d16c16>g16d16g16<c16d16c16>g16d16
-g16b16<d16c16>g16d16a+16a16f16d16f16a16a+16a16f16d16f16a16a+16a16f16d16
-a+16a16f16d16f16a16a+16a16f16d16f16a16a+16a16f16d16<d16c16>g16d16g16<c16
-d16c16>g16d16g16b16<d16c16>g16d16<d16c16>g16d16g16<c16d16c16>g16d16g16
-b16<d16c16>g16d16]'7v*v.60'
-'7i' p43'7o+o1'f16g16a16r16a16a+16a16r16g16a16r16g16f16r16e16r16'4v*v.30'
+l16%e1p43v35@36o6dc>gdg<cdc>gdgb<dc>gd  
+<dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  
+a+afdfaa+afdfaa+afd  a+afdfaa+afdfaa+afd  <dc>gdg<cdc>gdgb<dc>gd  
+<dc>gdg<cdc>gdgb<dc>gd   $8 v50@38p24[2o6dc>gdg<cdc>gdgb<dc>gd  
+<dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  <dc>gdg<cdc>gdgb<dc>gd  
+a+afdfaa+afdfaa+afd  a+afdfaa+afdfaa+afd  <dc>gdg<cdc>gdgb<dc>gd  
+<dc>gdg<cdc>gdgb<dc>gd  ]v60@39p43<fgaraa+argargfrer  v30@36ded^2^v60@39gec>a  
+<fgaraa+argargfrer  v30@36daf^2^r4  r1  r1  
+r1  r1  
+;8
 
-'4i' '4o+o1'd16e16d16^2^16'7v*v.60'
-'7i' '7o+o1'g16e16c16>a16<f16g16a16r16a16a+16a16r16g16a16r16g16f16r16e16
-r16'4v*v.30'
-'4i' '4o+o1'd16a16f16^2^16r4r1r1r1r1
-;801
-
+l16

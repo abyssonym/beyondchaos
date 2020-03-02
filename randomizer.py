@@ -3616,7 +3616,7 @@ def manage_auction_house():
         auction_sub.write(fout)
 
         opening_bid = str(auction_item[4])
-        
+
         set_dialogue(auction_item[3], f'<line>        “<item>”!<page><line>Do I hear {opening_bid} GP?!')
 
 

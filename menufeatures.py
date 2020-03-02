@@ -89,7 +89,7 @@ def add_common_menu_stuff(fout):
         # to get_other_attack_name:
         0x4C, 0x4E, 0x1C, # JMP #$1CXX
         # to get_swdtech_attack_name:
-        0x4C, 0x66, 0x1C, # JMP #$1CXX
+        0x4C, 0x67, 0x1C, # JMP #$1C67
 
         #0xE9, 0x51, # SBC #$51
         #0xC2, 0x20, # REP #$20
@@ -277,6 +277,7 @@ def add_common_menu_stuff(fout):
         0x6B, # RTL
 
         # $F01C4E Get other attack name
+        0x38,       # SEC
         0xE9, 0x51, # SBC #$51
         0xC2, 0x20, # REP #$20
         0x29, 0xFF, 0x00, # AND $00FF
@@ -291,7 +292,7 @@ def add_common_menu_stuff(fout):
         0xE2, 0x20, # SEP #$20
         0x6B, # RTL
 
-        # $F01C66 Get_swdtech_name
+        # $F01C67 Get_swdtech_name
         0xA9, 0xCF, # LDA #$CF
         0x85, 0x3A, # STA $3A   # Set high byte of attack name start to #$CF
         0xA5, 0x35, # LDA $35

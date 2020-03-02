@@ -383,6 +383,9 @@ class AssemblyPatchDB:
         self.patches = {}
     def __str__(self):
         return str(self.patches)
+    # Allows [] syntax to get patches.
+    def __getitem__(self, name):
+        return self.patches[name]
     # Shortcut function for most use cases.
     def apply_patch(self, fout, patch_name):
         self.patches[patch_name].write(fout)

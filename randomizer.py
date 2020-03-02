@@ -1188,7 +1188,7 @@ def manage_natural_magic():
         return
 
     if assembly_patches != None:
-        natmag_learn = assembly_patches.patches["natmag_learn"]
+        natmag_learn = assembly_patches["natmag_learn"]
         natmag_learn.write(fout)
         natmag_learn_table = natmag_learn.exports["magic_table"] - HIROM
     else:

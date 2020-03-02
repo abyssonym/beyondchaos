@@ -1,3 +1,4 @@
 ; List of .asm files to build.
 enable_xmagic_menu
 natmag_learn
+randomize_final_party_order

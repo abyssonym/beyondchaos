@@ -3349,42 +3349,45 @@ def create_dimensional_vortex():
 
 
 def randomize_final_party_order():
-    code = bytes([
-        0x20, 0x99, 0xAA,       # JSR $AA99
-        0xA9, 0x00,             # LDA #00
-        0xA8,                   # TAY
-        0xAD, 0x1E, 0x02,       # LDA $021E (frame counter)
-        0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
-        0x8D, 0x6D, 0x1F,       # STA $1F6D
-        # 21 bytes
-        0xEE, 0x6D, 0x1F,       # INC $1F6D
-        0xAD, 0x6D, 0x1F,       # LDA $1F6D
-        0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
-        0xAA,                   # TAX
-        0xBF, 0x00, 0xFD, 0xC0, # LDA $C0FD00,X
-        0x29, 0x0F,             # AND $0F, Get bottom 4 bits
-        0xC9, 0x0B,             # CMP $0B
-        0xB0, 0xEC,             # BCS 20 bytes back
-        0xAA,                   # TAX
+    if assembly_patches != None:
+        assembly_patches.apply_patch(fout, "randomize_final_party_order")
+    else:
+        code = bytes([
+            0x20, 0x99, 0xAA,       # JSR $AA99
+            0xA9, 0x00,             # LDA #00
+            0xA8,                   # TAY
+            0xAD, 0x1E, 0x02,       # LDA $021E (frame counter)
+            0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
+            0x8D, 0x6D, 0x1F,       # STA $1F6D
+            # 21 bytes
+            0xEE, 0x6D, 0x1F,       # INC $1F6D
+            0xAD, 0x6D, 0x1F,       # LDA $1F6D
+            0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
+            0xAA,                   # TAX
+            0xBF, 0x00, 0xFD, 0xC0, # LDA $C0FD00,X
+            0x29, 0x0F,             # AND $0F, Get bottom 4 bits
+            0xC9, 0x0B,             # CMP $0B
+            0xB0, 0xEC,             # BCS 20 bytes back
+            0xAA,                   # TAX
 
-        # 14 bytes
-        0xB9, 0x05, 0x02,       # LDA $0205,Y
-        0x48,                   # PHA
-        0xBD, 0x05, 0x02,       # LDA $0205,X
-        0x99, 0x05, 0x02,       # STA $0205,Y
-        0x68,                   # PLA
-        0x9D, 0x05, 0x02,       # STA $0205,X
+            # 14 bytes
+            0xB9, 0x05, 0x02,       # LDA $0205,Y
+            0x48,                   # PHA
+            0xBD, 0x05, 0x02,       # LDA $0205,X
+            0x99, 0x05, 0x02,       # STA $0205,Y
+            0x68,                   # PLA
+            0x9D, 0x05, 0x02,       # STA $0205,X
 
-        # 6 bytes
-        0xC8,                   # INY
-        0x98,                   # TYA
-        0xC9, 0x0C,             # CMP $0C
-        0x90, 0xD7,             # BCC 41 bytes back
+            # 6 bytes
+            0xC8,                   # INY
+            0x98,                   # TYA
+            0xC9, 0x0C,             # CMP $0C
+            0x90, 0xD7,             # BCC 41 bytes back
 
-        0x60,                   # RTS
-    ])
-    fout.seek(0x3AA25)
-    fout.write(code)
+            0x60,                   # RTS
+        ])
+        fout.seek(0x3AA25)
+        fout.write(code)
 
 
 def dummy_item(item):

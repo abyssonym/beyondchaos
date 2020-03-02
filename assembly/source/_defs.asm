@@ -81,9 +81,20 @@ macro export(name, value) {
 }
 
 
+// --- USEFUL RAM ADDRESSES ---
+constant frame_counter                                      = $7E021E
+constant rngseed_encounter                                  = $7E1FA3
+constant rngseed_event                                      = $7E1F6D
+
+// --- USEFUL ROM ADDRESSES ---
+constant rng_table                                          = $C0FD00
+
+
 // --- MEMORY MAP - BANK FF ---
 constant bank_FF_start                                      = $FF0000
 
+// Allocations of free space to various hacks.
+// Hacks that only modify existing code don't need entries here.
 constant enable_xmagic_menu_start                           = $C3F09B
 constant enable_xmagic_menu_size                            = $0020
 constant natmag_learn_start                                 = $F0084B

@@ -500,69 +500,80 @@ def auto_learn_rage():
 def manage_commands(commands):
     characters = get_characters()
 
-    learn_lore_sub = Substitution()
-    learn_lore_sub.bytestring = bytes([0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00, 0x00])
-    learn_lore_sub.set_location(0x236E4)
-    learn_lore_sub.write(fout)
+    # Lores can be learned by anyone.
+    # Dances can be learned by anyone.
+    # Bushido and Blitz can be learned by anyone reaching those levels.
+    # Handle multiple of these happening together in one battle.
+    if assembly_patches != None:
+        assembly_patches.apply_patch(fout, "learn_hacks")
+    else:
+        learn_lore_sub = Substitution()
+        learn_lore_sub.bytestring = bytes([0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00, 0x00])
+        learn_lore_sub.set_location(0x236E4)
+        learn_lore_sub.write(fout)
 
-    learn_dance_sub = Substitution()
-    learn_dance_sub.bytestring = bytes([0xEA] * 2)
-    learn_dance_sub.set_location(0x25EE8)
-    learn_dance_sub.write(fout)
+        learn_dance_sub = Substitution()
+        learn_dance_sub.bytestring = bytes([0xEA] * 2)
+        learn_dance_sub.set_location(0x25EE8)
+        learn_dance_sub.write(fout)
 
-    learn_swdtech_sub = Substitution()
-    learn_swdtech_sub.bytestring = bytes([0xEB,       # XBA
-                                          0x48,       # PHA
-                                          0xEB,       # XBA
-                                          0xEA])
-    learn_swdtech_sub.set_location(0x261C7)
-    learn_swdtech_sub.write(fout)
-    learn_swdtech_sub.bytestring = bytes([0x4C, 0xDA, 0xA1, 0x60])
-    learn_swdtech_sub.set_location(0xA18A)
-    learn_swdtech_sub.write(fout)
+        learn_swdtech_sub = Substitution()
+        learn_swdtech_sub.bytestring = bytes([0xEB,       # XBA
+                                              0x48,       # PHA
+                                              0xEB,       # XBA
+                                              0xEA])
+        learn_swdtech_sub.set_location(0x261C7)
+        learn_swdtech_sub.write(fout)
+        learn_swdtech_sub.bytestring = bytes([0x4C, 0xDA, 0xA1, 0x60])
+        learn_swdtech_sub.set_location(0xA18A)
+        learn_swdtech_sub.write(fout)
 
-    learn_blitz_sub = Substitution()
-    learn_blitz_sub.bytestring = bytes([0xF0, 0x09])
-    learn_blitz_sub.set_location(0x261CE)
-    learn_blitz_sub.write(fout)
-    learn_blitz_sub.bytestring = bytes([0xD0, 0x04])
-    learn_blitz_sub.set_location(0x261D3)
-    learn_blitz_sub.write(fout)
-    learn_blitz_sub.bytestring = bytes([0x68,       # PLA
-                                        0xEB,       # XBA
-                                        0xEA, 0xEA, 0xEA, 0xEA, 0xEA])
-    learn_blitz_sub.set_location(0x261D9)
-    learn_blitz_sub.write(fout)
-    learn_blitz_sub.bytestring = bytes([0xEA] * 4)
-    learn_blitz_sub.set_location(0x261E3)
-    learn_blitz_sub.write(fout)
-    learn_blitz_sub.bytestring = bytes([0xEA])
-    learn_blitz_sub.set_location(0xA200)
-    learn_blitz_sub.write(fout)
+        learn_blitz_sub = Substitution()
+        learn_blitz_sub.bytestring = bytes([0xF0, 0x09])
+        learn_blitz_sub.set_location(0x261CE)
+        learn_blitz_sub.write(fout)
+        learn_blitz_sub.bytestring = bytes([0xD0, 0x04])
+        learn_blitz_sub.set_location(0x261D3)
+        learn_blitz_sub.write(fout)
+        learn_blitz_sub.bytestring = bytes([0x68,       # PLA
+                                            0xEB,       # XBA
+                                            0xEA, 0xEA, 0xEA, 0xEA, 0xEA])
+        learn_blitz_sub.set_location(0x261D9)
+        learn_blitz_sub.write(fout)
+        learn_blitz_sub.bytestring = bytes([0xEA] * 4)
+        learn_blitz_sub.set_location(0x261E3)
+        learn_blitz_sub.write(fout)
+        learn_blitz_sub.bytestring = bytes([0xEA])
+        learn_blitz_sub.set_location(0xA200)
+        learn_blitz_sub.write(fout)
 
-    learn_multiple_sub = Substitution()
-    learn_multiple_sub.set_location(0xA1B4)
-    reljump = 0xFE - (learn_multiple_sub.location - 0xA186)
-    learn_multiple_sub.bytestring = bytes([0xF0, reljump])
-    learn_multiple_sub.write(fout)
+        learn_multiple_sub = Substitution()
+        learn_multiple_sub.set_location(0xA1B4)
+        reljump = 0xFE - (learn_multiple_sub.location - 0xA186)
+        learn_multiple_sub.bytestring = bytes([0xF0, reljump])
+        learn_multiple_sub.write(fout)
 
-    learn_multiple_sub.set_location(0xA1D6)
-    reljump = 0xFE - (learn_multiple_sub.location - 0xA18A)
-    learn_multiple_sub.bytestring = bytes([0xF0, reljump])
-    learn_multiple_sub.write(fout)
+        learn_multiple_sub.set_location(0xA1D6)
+        reljump = 0xFE - (learn_multiple_sub.location - 0xA18A)
+        learn_multiple_sub.bytestring = bytes([0xF0, reljump])
+        learn_multiple_sub.write(fout)
 
-    learn_multiple_sub.set_location(0x261DD)
-    learn_multiple_sub.bytestring = bytes([0xEA] * 3)
-    learn_multiple_sub.write(fout)
+        learn_multiple_sub.set_location(0x261DD)
+        learn_multiple_sub.bytestring = bytes([0xEA] * 3)
+        learn_multiple_sub.write(fout)
 
+    # Start with only one Rage.
     rage_blank_sub = Substitution()
     rage_blank_sub.bytestring = bytes([0x01] + ([0x00] * 31))
     rage_blank_sub.set_location(0x47AA0)
     rage_blank_sub.write(fout)
 
-    eems = EnableEsperMagicSub()
-    eems.set_location(0x3F091)
-    eems.write(fout)
+    if assembly_patches != None:
+        assembly_patches.apply_patch(fout, "enable_esper_magic")
+    else:
+        eems = EnableEsperMagicSub()
+        eems.set_location(0x3F091)
+        eems.write(fout)
 
     # Let x-magic user use magic menu.
     if assembly_patches != None:

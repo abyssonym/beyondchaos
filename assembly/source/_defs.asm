@@ -95,6 +95,8 @@ constant bank_FF_start                                      = $FF0000
 
 // Allocations of free space to various hacks.
 // Hacks that only modify existing code don't need entries here.
+constant enable_esper_magic_start                           = $C3F091
+constant enable_esper_magic_size                            = $000A
 constant enable_xmagic_menu_start                           = $C3F09B
 constant enable_xmagic_menu_size                            = $0020
 constant natmag_learn_start                                 = $F0084B

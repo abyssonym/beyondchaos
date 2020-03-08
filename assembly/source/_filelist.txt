@@ -1,4 +1,6 @@
 ; List of .asm files to build.
+enable_esper_magic
 enable_xmagic_menu
+learn_hacks
 natmag_learn
 randomize_final_party_order

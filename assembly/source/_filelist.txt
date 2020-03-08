@@ -1,7 +1,10 @@
 ; List of .asm files to build.
 enable_esper_magic
+enable_morph
+enable_mpoint
 enable_xmagic_menu
 fanatics_fix
 learn_hacks
 natmag_learn
 randomize_final_party_order
+ungray_statscreen

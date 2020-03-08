@@ -575,7 +575,7 @@ def manage_commands(commands):
         eems.set_location(0x3F091)
         eems.write(fout)
 
-    # Let x-magic user use magic menu.
+    # Let X-Magic users use out-of-battle Magic menu.
     if assembly_patches != None:
         assembly_patches.apply_patch(fout, "enable_xmagic_menu")
     else:
@@ -602,20 +602,25 @@ def manage_commands(commands):
     protect_battle_commands_sub.set_location(0x252E9)
     protect_battle_commands_sub.write(fout)
 
-    enable_morph_sub = Substitution()
-    enable_morph_sub.bytestring = bytes([0xEA] * 2)
-    enable_morph_sub.set_location(0x25410)
-    enable_morph_sub.write(fout)
+    if assembly_patches != None:
+        assembly_patches.apply_patch(fout, "enable_morph")
+        assembly_patches.apply_patch(fout, "enable_mpoint")
+        assembly_patches.apply_patch(fout, "ungray_statscreen")
+    else:
+        enable_morph_sub = Substitution()
+        enable_morph_sub.bytestring = bytes([0xEA] * 2)
+        enable_morph_sub.set_location(0x25410)
+        enable_morph_sub.write(fout)
 
-    enable_mpoint_sub = Substitution()
-    enable_mpoint_sub.bytestring = bytes([0xEA] * 2)
-    enable_mpoint_sub.set_location(0x25E38)
-    enable_mpoint_sub.write(fout)
+        enable_mpoint_sub = Substitution()
+        enable_mpoint_sub.bytestring = bytes([0xEA] * 2)
+        enable_mpoint_sub.set_location(0x25E38)
+        enable_mpoint_sub.write(fout)
 
-    ungray_statscreen_sub = Substitution()
-    ungray_statscreen_sub.bytestring = bytes([0x20, 0x6F, 0x61, 0x30, 0x26, 0xEA, 0xEA, 0xEA])
-    ungray_statscreen_sub.set_location(0x35EE1)
-    ungray_statscreen_sub.write(fout)
+        ungray_statscreen_sub = Substitution()
+        ungray_statscreen_sub.bytestring = bytes([0x20, 0x6F, 0x61, 0x30, 0x26, 0xEA, 0xEA, 0xEA])
+        ungray_statscreen_sub.set_location(0x35EE1)
+        ungray_statscreen_sub.write(fout)
 
     if assembly_patches != None:
         fanatics_fix = assembly_patches["fanatics_fix"]

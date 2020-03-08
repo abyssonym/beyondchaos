@@ -1,4 +1,5 @@
 ; List of .asm files to build.
+auto_equip
 enable_esper_magic
 enable_morph
 enable_mpoint

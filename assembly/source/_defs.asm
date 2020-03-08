@@ -81,6 +81,11 @@ macro export(name, value) {
 }
 
 
+// --- HARDWARE REGISTERS ---
+constant reg_mpyl                                           = $002134
+constant reg_mpym                                           = $002135
+constant reg_mpyh                                           = $002136
+
 // --- USEFUL RAM ADDRESSES ---
 constant frame_counter                                      = $7E021E
 constant rngseed_encounter                                  = $7E1FA3
@@ -88,6 +93,7 @@ constant rngseed_event                                      = $7E1F6D
 
 // --- USEFUL ROM ADDRESSES ---
 constant rng_table                                          = $C0FD00
+constant rom_item_data                                      = $D85000
 
 
 // --- MEMORY MAP - BANK FF ---
@@ -99,6 +105,8 @@ constant enable_esper_magic_start                           = $C3F091
 constant enable_esper_magic_size                            = $000A
 constant enable_xmagic_menu_start                           = $C3F09B
 constant enable_xmagic_menu_size                            = $0020
+constant auto_equip_start                                   = $C3F1A0
+constant auto_equip_size                                    = $1000
 constant natmag_learn_start                                 = $F0084B
 constant natmag_learn_size                                  = $00A0 + (2 * 16 * 12)
 

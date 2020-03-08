@@ -7,4 +7,5 @@ fanatics_fix
 learn_hacks
 natmag_learn
 randomize_final_party_order
+sketch_fix
 ungray_statscreen

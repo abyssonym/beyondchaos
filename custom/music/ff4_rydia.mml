@@ -1,0 +1,85 @@
+#TITLE Rydia
+#ALBUM Final Fantasy IV
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+##created with sqspcmml beta 1.1.2
+
+#WAVE 0x20 0x07
+#WAVE 0x21 0x1B
+
+#def 0i=   |0
+#def 0o=   o5
+#def 0v=   v100
+#def 0f= v1,100
+
+#def 1i=   |1 %y3%s4
+#def 1o=   o6
+#def 1v=   v100
+#def 1f= v1,100
+
+
+{1}
+t75%v35%b0,70%f0,0'0v*v1.00'p64
+'0i' {'VolEnvMode 11'}%r5{'Duration 95%'}%e1m48,18,207
+$101'0o'd8e8c2^8>g8<d8e8c2^8e8e8f8d2>a4<c4>b2g4<d8e8c2^8>g8<d8e8c2^8e8
+e8f8d2>a4<e4d2.g8a8>b4.b8<e8d8d4c2.a8b8c4.c8f8e8e4d2.d8e8c2^8>g8<d8e8g2
+^8>a8<g4f8e8d4c4d8d+8c2^8>g8<d8d+8c2^8>g8<d8e8c2.^2.r4
+;101
+
+
+{2}
+'1v*v.60'p30
+'1i' {'VolEnvMode 11'}%r15{'Duration 95%'}%e1
+$201'1o-o2'c1>a1f1g1<c1>a1f1g1e1a1f1g1<c1>a1<d2>g2g+2.g+8g8f1<c1r1
+;201
+
+
+{3}
+'1v*v.60'p45
+'1i' {'VolEnvMode 11'}%r15{'Duration 95%'}%e1
+$301p60r64'1o-o2'g2.^8.^32^64r64g2.^8.^32^64r64a2.^8.^32^64p105<g1p60r64
+>g2.^8.^32^64r64g2.^8.^32^64r64a2.^8.^32^64p105<g1p45r64>>b2.^8.^32^64
+p105<<<e4.p90>g2^8p45r64>c2.^8.^32^64p105<<g4.p90d2^8p60r64>>g2.^8.^32
+^64r64g2.^8.^32^64p45r64a4.^16^32^64r64g4.^16^32^64r8d+2^8<<p110c4p45r8
+>>c2^8<p110g+4p105<d4p90>f8g+8p75g4p60e4c1
+;301
+
+
+{4}
+'1v*v.60'p60
+'1i' {'VolEnvMode 11'}%r15{'Duration 95%'}%e1
+$401p90r32'1o-o1'e2.^8.^32r32e2.^8.^32r32e2.^8.^32c8d2.^8r32e2.^8.^32r32
+e2.^8.^32r32e2.^8.^32c8d2.^8p60r32>g4.^16^32e2p90<b8<c4>p75d8e2p60r32>
+a4.^16^32f2p90<<c8d4>p75a8b2p90r32e2.^8.^32r32e2.^8.^32p60r32d4.^16^32
+r32d4.^16^32r4>g+2^8<<p115d+8p60r4>>f2^8<<p115c8p90>b8<c8p75>d4p60e8d8
+p45c8>b8g1
+;401
+
+
+{5}
+'1v*v.60'p45
+'1i' {'VolEnvMode 11'}%r15{'Duration 95%'}%e1
+$501p45r4'1o-o2'b2.r4b2.r4b2.p75r4a8b2^8p45r4b2.r4b2.r4b2.p75r4a8b2^8r32
+r64b4.^16^64r8<e4.r4a8r4p60c4.p75r32r64c4.^16^64r8f4.r4b8r4p60g4.p45r4
+>b2.r4b2.p75r32r64<f4.^16^64r32r64f4.^16^64r4.c2^8r4.>g+2^8p75<e4p60c4
+p45>g4p30e4e1
+;501
+
+
+{6}
+'1v*v.60'p75
+'1i' {'VolEnvMode 11'}%r15{'Duration 95%'}%e1
+$601p75r4.'1o-o1'c2^8r4.c2^8r4.c2^8p60r2>g2p75r4.<c2^8r4.c2^8r4.c2^8p60
+r2>g2p90r16<e4.^16r4g4p45r2.>a4p90r16<f4.^16r4a4p45r2.f4p75r4.c2^8r4.c2
+^8p90r16a4.^16r16a4.^16r2d+2r2c2r1r1
+;601
+
+
+{7}
+'1v*v.60'p105
+'1i' {'VolEnvMode 11'}%r15{'Duration 95%'}%e1
+$701p105r2'1o-o1'g2r2g2r2g2p45r2.r8>d8p105r2<g2r2g2r2g2p45r2.r8>d8p105
+r16r64<g4.^32^64r4.b8p30r2.r8>g8p105r16r64<a4.^32^64r4.<c8p30r2.r8>d8p105
+r2g2r2g2r16r64<d4.^32^64r16r64c4.^32^64r2r8>g+4.p120<f2^8>p105f4.r1r1
+;701
+

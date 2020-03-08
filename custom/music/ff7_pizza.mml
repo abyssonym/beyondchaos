@@ -1,0 +1,202 @@
+#TITLE Under the Rotting Pizza
+#ALBUM Final Fantasy VII
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#WAVE 0x20 0x1C
+#WAVE 0x21 0x4D
+#WAVE 0x22 0x44
+#WAVE 0x23 0x45
+#WAVE 0x28 0x22
+#WAVE 0x29 0x56
+#WAVE 0x2A 0x5A
+#WAVE 0x2B 0x55
+#WAVE 0x2C 0x68
+#WAVE 0x2F 0x0F
+
+#def init= t78 %x255 %v60 %b0,50 %f0,0
+
+#def bass1= |0 o7 'b' m
+#def bass2= |1 o7 'y' %y3%s0 m
+#def guitar= |2 o6 'g' %y4%s4%r13 m24,18,199
+#def strings= |3 o4 %a6%r5 m48,18,207 v0,18,223
+
+#def b= v40
+#def y= v127
+#def g= v48
+#def s= v32
+#def sfade= v1,32
+
+#def sf='s' 'sfade*v192,1.67'
+#def sfo= 'sfade*v192,.33'
+#def sf2= 's*v.8' 'sfade*v255,1.78'
+
+#def boofs=|C p100 m %r19 o4
+#def booof= v64 m96,-5c16
+#def boof= v40 m96,-5c16
+
+#def h= v32
+#def t= v48
+
+#drum "h"=5a |F 'h*v1' p80
+#drum "i"=5a |F 'h*v.75' p80
+#drum "j"=5a |F 'h*v.5' p80
+#drum "o"=5f+ |A v64 p80
+
+#drum "s"=5g |9 v96 p64
+#drum "k"=5a |8 v96 p64
+
+#drum "t+"=5c |B 't*v1.33' p20
+#drum "t"=5c |B 't*v1' p20
+#drum "u"=5c |B 't*v.5' p20
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1} 'init' %e1
+'bass1-o3' p64 l16
+r1..r(b<d>b)
+$
+['bass1-o2' p64
+e8>ee r2.
+'guitar-o1' p50 e2^ 'bass1-o3' p64 (b<d>b) <(fe)(df)
+e8>ee r2.
+'guitar-o1' p50 d2.^ 'bass1-o3' p64 j2 (b<d>b)] ^8.<
+## 11
+[8dr8.r8ddj8r4..d] r4rdre
+## 19
+r1 ['guitar-o1' p50 e2^ 'bass1-o3' p64 (b<d>b) <(fe)(df)
+e8>ee r2.
+'guitar-o1' p50 d2.^ 'bass1-o3' p64 j2 (b<d>b)
+<e8>ee r2.] ^8.
+## 27
+'strings' p127 'sf2'a1^1^1^1 p25 'sf2'%r0 <e1^1^1^2. v
+'bass1-o3' p64 r(b<d>b)
+;
+
+{8} %e1
+'bass2-o3' p64 l16
+r1..rb<d>b
+$
+['bass2-o2' p64
+e8>ee r2.
+r2 rb<d>b <fedf
+e8>ee r2.
+r2.j2rb<d>b]r4<
+## 11
+[8dr8.r8ddj8r4..d] r4rdre
+## 19
+>r1 [ r2 rb<d>b <fedf
+e8>ee r2.
+r2. j2 rb<d>b
+<e8>ee r2.] r4
+## 27
+[6"!!!o" "h4 hio8 ^8hi ^8.i"]
+"k4.kk2k" "k4.kk^2"
+;
+
+{3} %e1
+r1r1
+$
+'guitar' p80 l8
+r1r.e.^^2
+r1r.f.^^2
+r1r.g.^^2
+r1r.f.^^2
+## 11
+'strings' p45 l4
+'sf'd2'sf'e'sf'f <'sf'e2'sf'd2 'sf'c+1'sfo'^1>
+'sf'f2'sf'g'sf'g+ <'sf'g2'sf'c+2 'sf'a+1'sfo'^1 v
+## 19
+'guitar' p80 l8
+r1r.e.^^2
+r1r.f.^^2
+r1r.g.^^2
+r1r.f.^^2
+## 27
+'strings' r1 p125 'sf2'g+1^1^1^1 p85 %r0'sf2' b1^1^2.r4 v
+;
+
+{4} %e1
+r1r1
+$
+'guitar' p70 l8
+r1rd2..
+>r1rb2..
+r1rb2..<
+r1rc2..
+## 11
+"!!!o" l16
+[8"hhhhhho8hhhh"j8"o8hh"][":o:ho"]
+## 19
+'guitar' p70 l8
+r1rd2..
+>r1rb2..
+r1rb2..<
+r1rc2..
+## 27
+'strings+o1' r1r1 p65 %r0'sf2' c1^1^1^1^1..r4 v
+;
+
+{5} %e1
+r1r1
+$
+'guitar-o1' p60 l16
+r1rg2...
+r1ra2...
+r1ra2...
+r1rg2...
+## 11
+'boofs' [8 'booof' ^^4 'boof' 'booof' ^4j8^8. 'boof'] [^'booof']
+## 19
+^1 'guitar-o1' p60 l16
+  rg2...
+r1ra2...
+r1ra2...
+r1rg2...
+## 27
+'strings+o1' r1r1r1 p45 'sf2'%r0 d1^1^1^1..r4 v
+;
+
+{2} %e1
+l16 [4"hjij ijij"]
+$
+"!!!o" l16
+[8"kihi s8kk his8 o8hk"]
+## 11
+[8"k4s8kk8.s8."j8"^8k"]":s:k8s"
+## 19
+"hihi s8kk his8 o8hk"
+[7"kihi s8kk his8 o8hk"]
+## 27
+[6"kihi s8kk his8 o8hk"]
+'strings+o1' p5 'sf2'g1..r4 v
+;
+
+{6} %e1
+l16 r1r1
+$
+[8"h8uu hio8 t8hi t8ui"]
+## 11
+[31r4]"^t+8t+"
+## 19
+"^8uu hio8 t8hi t8ui"
+[7"h8uu hio8 t8hi t8ui"]
+## 27
+'bass1-o3*v1.1' p64
+[8arr4aar4j8^8.a]
+'bass2-o3' rb<d>b
+;
+
+{7} %e1
+l16 r1r1
+$
+[8"t4 t8uu ^8uu ^8.u"]
+## 11
+[8r1]
+## 19
+"^4 t8uu ^8uu ^8.u"
+[7"t4 t8uu ^8uu ^8.u"]
+## 27
+'boofs' [8 'booof' ^^4 'boof' 'booof' ^4^8. j8'boof']r
+;

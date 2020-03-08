@@ -617,13 +617,26 @@ def manage_commands(commands):
     ungray_statscreen_sub.set_location(0x35EE1)
     ungray_statscreen_sub.write(fout)
 
-    fanatics_fix_sub = Substitution()
-    if options_.is_code_active('metronome'):
-        fanatics_fix_sub.bytestring = bytes([0xA9, 0x1D])
+    if assembly_patches != None:
+        fanatics_fix = assembly_patches["fanatics_fix"]
+        fanatics_fix.write(fout)
+        fanatics_fix_command_offset = fanatics_fix.exports["replacement_command"] - HIROM
     else:
-        fanatics_fix_sub.bytestring = bytes([0xA9, 0x15])
-    fanatics_fix_sub.set_location(0x2537E)
-    fanatics_fix_sub.write(fout)
+        fanatics_fix_sub = Substitution()
+        fanatics_fix_sub.bytestring = bytes([0xA9])
+        fanatics_fix_sub.set_location(0x2537E)
+        fanatics_fix_sub.write(fout)
+        fanatics_fix_command_offset = 0x2537E + 1
+
+    fanatics_fix_command_sub = Substitution()
+    magitekcmd = [c for c in commands.values() if c.name == "magitek"][0]
+    defcmd = [c for c in commands.values() if c.name == "def"][0]
+    if options_.is_code_active('metronome'):
+        fanatics_fix_command_sub.bytestring = bytes([magitekcmd.id])
+    else:
+        fanatics_fix_command_sub.bytestring = bytes([defcmd.id])
+    fanatics_fix_command_sub.set_location(fanatics_fix_command_offset)
+    fanatics_fix_command_sub.write(fout)
 
     invalid_commands = ["fight", "item", "magic", "xmagic",
                         "def", "row", "summon", "revert"]

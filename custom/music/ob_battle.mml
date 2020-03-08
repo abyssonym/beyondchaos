@@ -16,7 +16,7 @@
 #WAVE 0x2F ~0x0F~/0x0F/
 #WAVE 0x2C ~0x4C~/0x12/
 
-#def global= t140 %v50 %b0,70 %x224
+#def global= t140 %v50 %b0,70 %x224 %f0,0
 
 #def str= |0 v64 o4 m48,18,215 %k0
 #def pet= |1 v32 ~o4~/o5/ m48,18,231 %k4

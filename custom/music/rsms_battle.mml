@@ -22,7 +22,7 @@
 #WAVE 0x2A ~0x7D~ /0x00/
 
 {1}
-l16%v32%x200%b0,70%e1
+l16%v32%x200%b0,70%e1%f0,0
  $1 t150v80p60|8o6r4^8/>/c32>bg32a8r1  <c32>bg32v113p60~|A~/@5/o5f+edef+2^8  
 e8d8f+8c+8^de4c+4  >a4<d2^8c+8  d8e8c+>f+a+<c+f+>a+<c+f+a+c+f+a+  
 <c+>f+a+<c+r4^8o4b<c+d8f+8  a8g+4e4f+2  r8e8^f+8^e8d8c+8d8  >b4<c+4d2  

@@ -1817,7 +1817,7 @@ def manage_opera(fout, affect_music):
     
 def find_sample_size(data, sidx):
     table = 0x53C5F
-    offset = bytes_to_int(data[table+sidx*3:table+sidx*3+3]) - 0xC00000
+    offset = bytes_to_int(data[table+sidx*3:table+sidx*3+3]) - 0xC00000 + 2
     loc = 0
     
     #scan BRR block headers until one has END bit set

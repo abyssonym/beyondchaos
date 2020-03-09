@@ -1,6 +1,7 @@
 from os import path
 from collections import defaultdict
 import random
+import re
 
 try:
     from sys import _MEIPASS
@@ -183,7 +184,16 @@ def dialogue_to_bytes(text, null_terminate=True):
     bs = []
     i = 0
     while i < len(text):
-        if text[i] == "<":
+        if text[i] == " ":
+            spaces = re.match(" +", text[i:]).group(0)
+            count = len(spaces)
+            j = i + count
+            hexstr = dialoguebytetable.get(text[i:j], "")
+            if not hexstr:
+                hexstr = dialoguebytetable.get(text[i])
+                j = i + 1
+            i = j
+        elif text[i] == "<":
             j = text.find(">", i) + 1
             hexstr = dialoguetexttable.get(text[i:j], "")
             i = j

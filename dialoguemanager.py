@@ -19,7 +19,7 @@ except ImportError:
 
 textdialoguetable = {v:k for k, v in dialoguetexttable.items()}
 for i in range(0xFF):
-    if f"{i:2X}" not in textdialoguetable:
+    if f"{i:02X}" not in textdialoguetable:
         textdialoguetable[f"{i:02X}"] = f"${i:02X}"
 textdialoguetable["63"] = "'"
 
@@ -58,16 +58,25 @@ def dialogue_to_bytes(text, null_terminate=True):
     bs = []
     i = 0
     while i < len(text):
-        if text[i] == "<":
+        if text[i] == " ":
+            spaces = re.match(" +", text[i:]).group(0)
+            count = len(spaces)
+            j = i + count
+            hexstr = dialoguebytetable.get(text[i:j], "")
+            if not hexstr:
+                hexstr = dialoguebytetable.get(text[i])
+                j = i + 1
+            i = j
+        elif text[i] == "<":
             j = text.find(">", i) + 1
             hexstr = dialoguebytetable.get(text[i:j], "")
             i = j
-        elif text[i] == "$":
-            hexstr = text[i+1:i+3]
-            i += 3
         elif i < len(text) - 1 and text[i:i+2] in dialoguebytetable:
             hexstr = dialoguebytetable[text[i:i+2]]
             i += 2
+        elif text[i] == "$":
+            hexstr = text[i+1:i+3]
+            i += 3
         else:
             hexstr = dialoguebytetable[text[i]]
             i += 1
@@ -75,7 +84,10 @@ def dialogue_to_bytes(text, null_terminate=True):
         if hexstr != "":
             bs.extend(bytes.fromhex(hexstr))
 
-    if null_terminate:
+    if not bs:
+        return bytes([0x0])
+
+    if null_terminate and bs[-1] != 0x0:
         bs.append(0x0)
 
     return bytes(bs)
@@ -199,6 +211,8 @@ def read_dialogue(fout):
     for idx in range(0xC0C): #C0D through CFF pointers are repurposed
         start = script_ptrs[idx]
         end = script_ptrs.get(idx+1, 0)
+        if end == 0:
+            end = script_bin.find(b'\x00', start)
         script[idx] = bytes_to_dialogue(script_bin[start:end])
 
 def manage_dialogue_patches(fout):

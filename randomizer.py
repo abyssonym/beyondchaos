@@ -214,16 +214,18 @@ class AutoRecruitGauSub(Substitution):
     def bytestring(self):
         return bytes([0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE])
 
-    def write(self, fout):
+    def write(self, fout, stays_in_wor):
         sub_addr = self.location - 0xa0000
         call_recruit_sub = Substitution()
         call_recruit_sub.bytestring = bytes([0xB2]) + int2bytes(sub_addr, length=3)
         call_recruit_sub.set_location(0xBC19C)
         call_recruit_sub.write(fout)
-        gau_stays_wor_sub = Substitution()
-        gau_stays_wor_sub.bytestring = bytes([0xD4, 0xFB])
-        gau_stays_wor_sub.set_location(0xA5324)
-        gau_stays_wor_sub.write(fout)
+
+        if stays_in_wor:
+            gau_stays_wor_sub = Substitution()
+            gau_stays_wor_sub.bytestring = bytes([0xD4, 0xFB])
+            gau_stays_wor_sub.set_location(0xA5324)
+            gau_stays_wor_sub.write(fout)
 
         REPLACE_ENEMIES.append(0x172)
         super(AutoRecruitGauSub, self).write(fout)
@@ -477,10 +479,10 @@ def randomize_slots(filename, fout, pointer):
             fout.write(bytes([spell.spellid]))
 
 
-def auto_recruit_gau():
+def auto_recruit_gau(stays_in_wor):
     args = AutoRecruitGauSub()
     args.set_location(0xcfe1a)
-    args.write(fout)
+    args.write(fout, stays_in_wor)
 
     recruit_gau_sub = Substitution()
     recruit_gau_sub.bytestring = bytes([0x89, 0xFF])
@@ -4413,7 +4415,7 @@ def randomize(args):
     read_location_names(fout)
 
     if options_.shuffle_commands or options_.replace_commands or options_.random_treasure:
-        auto_recruit_gau()
+        auto_recruit_gau(stays_in_wor=not options_.shuffle_wor and not options_.is_code_active('mimetime'))
         if options_.shuffle_commands or options_.replace_commands:
             auto_learn_rage()
 

@@ -4534,27 +4534,26 @@ def randomize(args):
         manage_espers(esperrage_spaces, esper_replacements)
     reseed()
 
-    if flags:
-        esperrage_spaces = manage_reorder_rages(esperrage_spaces)
+    esperrage_spaces = manage_reorder_rages(esperrage_spaces)
 
-        titlesub = Substitution()
-        titlesub.bytestring = [0xFD] * 4
-        titlesub.set_location(0xA5E8E)
-        titlesub.write(fout)
+    titlesub = Substitution()
+    titlesub.bytestring = [0xFD] * 4
+    titlesub.set_location(0xA5E8E)
+    titlesub.write(fout)
 
-        manage_opening()
-        manage_ending()
-        manage_auction_house()
+    manage_opening()
+    manage_ending()
+    manage_auction_house()
 
-        savetutorial_sub = Substitution()
-        savetutorial_sub.set_location(0xC9AF1)
-        savetutorial_sub.bytestring = [0xD2, 0x33, 0xEA, 0xEA, 0xEA, 0xEA]
-        savetutorial_sub.write(fout)
+    savetutorial_sub = Substitution()
+    savetutorial_sub.set_location(0xC9AF1)
+    savetutorial_sub.bytestring = [0xD2, 0x33, 0xEA, 0xEA, 0xEA, 0xEA]
+    savetutorial_sub.write(fout)
 
-        savecheck_sub = Substitution()
-        savecheck_sub.bytestring = [0xEA, 0xEA]
-        savecheck_sub.set_location(0x319f2)
-        savecheck_sub.write(fout)
+    savecheck_sub = Substitution()
+    savecheck_sub.bytestring = [0xEA, 0xEA]
+    savecheck_sub.set_location(0x319f2)
+    savecheck_sub.write(fout)
     reseed()
 
     if options_.shuffle_commands and not options_.is_code_active('suplexwrecks'):

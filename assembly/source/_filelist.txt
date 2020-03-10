@@ -5,6 +5,7 @@ enable_morph
 enable_mpoint
 enable_xmagic_menu
 fanatics_fix
+improved_party_gear_screen
 learn_hacks
 natmag_learn
 randomize_final_party_order

@@ -506,6 +506,7 @@ def manage_commands(commands):
     # Handle multiple of these happening together in one battle.
     if assembly_patches != None:
         assembly_patches.apply_patch(fout, "learn_hacks")
+        #assembly_patches.apply_patch(fout, "improved_party_gear_screen")
     else:
         learn_lore_sub = Substitution()
         learn_lore_sub.bytestring = bytes([0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00, 0x00])

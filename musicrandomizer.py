@@ -443,13 +443,13 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         elif name.endswith("_tr"):
             name = name[:-3]
         if idx == 0x29 or idx == 0x4F or (idx == 0x5D and windy_intro):
-            return usage_id(name) + "_sfx"
+            return name, "_sfx"
         elif idx == 0x20:
-            return usage_id(name) + "_tr"
+            return name, "_tr"
         elif idx == 0x2F:
-            return usage_id(name) + "_vic"
+            return name, "_vic"
         else:
-            return name
+            return name, ""
         
     class SongSlot:
         def __init__(self, id, chance=0, is_pointer=True, data=b"\x00\x00\x00"):
@@ -864,17 +864,18 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         
         #get data now, so we can keeptrying if there's not enough space
         for ident, s in songtable.items():
+            vbase, vid = variant_id(s.changeto, s.id)
             if s.changeto == '!!tierboss':
                 s.data, s.inst = process_tierboss(tierboss[ident], used_songs=used_songs)
                 s.is_pointer = False
             # case: get song from MML
-            elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")) or isfile(os.path.join(MUSIC_PATH, usage_id(s.changeto) + ".mml")) or isfile(os.path.join(MUSIC_PATH, variant_id(s.changeto, s.id) + ".mml")):
+            elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")) or isfile(os.path.join(MUSIC_PATH, usage_id(s.changeto) + ".mml")) or isfile(os.path.join(MUSIC_PATH, vbase + vid + ".mml")):
 
-                target = variant_id(s.changeto, s.id)
+                target = vbase
                 potential_files = {}
                 found = False
                 while True:
-                    file_to_check = target
+                    file_to_check = target + vid
                     variant_to_check = ""
                     while True:
                         mml, varlist = "", {}
@@ -896,7 +897,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                         elif file_to_check.count("_") >= 2:
                             #move a _foo_ from file to variant. if last one abort
                             file_to_check, _, variant_append = file_to_check.rpartition('_')
-                            variant_to_check += variant_append + '_'
+                            variant_to_check = variant_append + '_' + variant_to_check
                             if variant_to_check.endswith('_'):
                                 variant_to_check = variant_to_check[:-1]
                         else:
@@ -907,6 +908,10 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                     #we didn't find anything, so delete the last bit from target
                     elif target.count("_") >= 2:
                         target, _, _ = target.rpartition('_')
+                    #no results with id-specific variant, so try without
+                    elif vid:
+                        vid = ""
+                        target = vbase
                     else:
                         #i don't think we need an actual fail case here
                         #that falls back to usage_id? should have already

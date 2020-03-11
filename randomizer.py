@@ -5,6 +5,7 @@ from time import time, sleep, gmtime
 import re
 from sys import argv, exit
 from shutil import copyfile
+import itertools
 import os
 from hashlib import md5
 
@@ -2053,7 +2054,7 @@ def manage_character_names(change_to, male):
             if random.choice([True, True, False]):
                 random_name_ids.append(moogle_id)
         # Other party members get either the name of their counterpart from snes or gba, or moogle name from another ff game
-        for moogle_id in range(2, 10) + range(11, 13):
+        for moogle_id in itertools.chain(range(2, 10), range(11, 13)):
             chance = random.randint(1, 4)
             if chance == 2:
                 names[moogle_id] = gba_moogle_names[moogle_id - 2]

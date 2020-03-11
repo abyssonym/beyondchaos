@@ -1,0 +1,99 @@
+#TITLE The Extraction
+#ALBUM Final Fantasy IX
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+
+#WAVE 0x20 0x48
+#WAVE 0x21 0x7B
+#WAVE 0x22 0x17
+
+#def sitar= |0 's' o6 %r8
+#def santur= |1 'd' o5 %r13
+#def tom= |2 't' o5 %k5
+
+#def init= t100 %x224 %v40 %b0,100 %f0,0
+
+#def s= v100
+#def d= v100
+#def t= v100
+
+#drum "f+"=3g  |2 p32 't*v1.25'
+#drum "f"= 3g  |2 p32 't'
+#drum "f-"=3g  |2 p32 't*v.75'
+#drum "g+"=3a+ |2 p48 't*v1.25'
+#drum "g"= 3a+ |2 p48 't'
+#drum "g-"=3a+ |2 p48 't*v.75'
+#drum "a+"=4c+ |2 p64 't*v1.25'
+#drum "a"= 4c+ |2 p64 't'
+#drum "a-"=4c+ |2 p64 't*v.75'
+#drum "b+"=4e  |2 p80 't*v1.25'
+#drum "b"= 4e  |2 p80 't'
+#drum "b-"=4e  |2 p80 't*v.75'
+#drum "c+"=4g  |2 p96 't*v1.25'
+#drum "c"= 4g  |2 p96 't'
+#drum "c-"=4g  |2 p96 't*v.75'
+
+{1}
+'init' %e1
+$
+'santur-o1' p64 m16,9,199
+r1 r1 r1 r1
+[g<dd+g+g<dd+g+ g1>>
+f<cc+f+f<cc+f+ f1>>]
+;
+
+{8}
+%e1 'santur-o1*v.67' p64 m16,9,199
+r.
+$
+r1 r1 r1 r1
+[g<dd+g+g<dd+g+ g1>>
+f<cc+f+f<cc+f+ f1>>]
+;
+
+{2}
+%e1 'sitar-o1' p64 m42,36,215 v48,72,223
+r32
+$
+d1^1 d1^1
+g1g1
+f1f1
+g1g1
+f1f1
+;
+
+{3}
+%e1 'sitar-o2' p64 m45,36,215 v48,72,223
+r64
+$
+a1^1 a1^1
+<d1 d1
+c1 c1
+d1 d1
+c1 c1>
+;
+
+{4}
+%e1 'sitar-o2' p64 m48,36,215 v48,72,223
+$
+d1^1 d1^1
+g1 g1
+f1 f1
+g1 g1
+f1 f1
+;
+
+{5}
+%e1 $
+"f+f-" [3"ff-"]
+;
+
+{6}
+%e1 &2r $
+[3"b-4cb-4b-c4"] "cb-^2."
+;
+
+{7}
+%e1 &1r $
+[3"g-4ag-4g-a4"] "ag-^2."
+;

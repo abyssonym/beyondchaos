@@ -14,7 +14,7 @@
 #WAVE 0x26 ~0x53~/0x1B/
 #WAVE 0x28 ~0x88~/0x11/
 
-#def global= t50 %v50 %b0,112 %x224
+#def global= t50 %v50 %b0,112 %x224 %f0,0
 
 #def glock= |3 ~o5~/o6/ p40 ~v56~/v56/ m48,18,223v %y5%s3
 #def lead= |4 ~o5~/o6/ p88 ~v48~/v72/ m48,18,223v %y3%s5

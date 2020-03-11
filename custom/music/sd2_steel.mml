@@ -57,7 +57,7 @@ r@34gg@35g@34gggg@35g@34gggg32g32g32g32g32g32g32g32  @35g@34gggg32g32ggg@35g@34g
 
 l16
 {1}
-l16%x105%v64 $1 t110%b0,16
+l16%x175%v64 $1 t110%b0,16%f0,0
 l16 $7 p64v105@36%e1[2~o5~/o6/ffr8.dd+effr8.  
 dd+effrfrd+ffrfrd+f  a+<cd+f>a+r<c>fr4dd+ef  fr8.dd+effrfrd+ffr  
 frd+fa+<cd+f>a+<cd+c+r4  >a+b<cc+c+r8.>a+b<cc+c+rc+r  >b<c+c+rc+r>b<c+f+g+b<c+>f+g+>b<c+  

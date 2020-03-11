@@ -23,7 +23,7 @@
 #WAVE 0x2D ~0x68~/0x00/
 #WAVE 0x2E ~0x66~/0x84/
 
-#def global= t124 %v50 %b0,70 %x224
+#def global= t124 %v50 %b0,70 %f0,0
 
 #def str= |0 v80 ~o4~/o5/ %e1 m48,18,239
 #def sstr= |0 v56 ~o4~/o5/ %e1 m48,18,223 %a5

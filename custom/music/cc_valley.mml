@@ -18,7 +18,7 @@
 #def oboe= |0 o4 'o' %r9
 #def bass= |1 o6 'b'
 #def guitar= |2 o6 'g'
-#def marimba= |3 o4 'm' %y3%s2
+#def marimba= |3 o5 'm' %y3%s2
 #def harp= |4 o5 'h'
 #def viola= |5 o5 'v' %r8
 #def strings= |6 o4 's'

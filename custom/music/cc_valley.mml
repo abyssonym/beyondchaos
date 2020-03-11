@@ -1,0 +1,179 @@
+#TITLE Fossil Valley
+#ALBUM Chrono Cross
+#COMPOSER Yasunori Mitsuda
+#ARRANGED emberling
+
+#WAVE 0x20 0x40
+#WAVE 0x21 0x18
+#WAVE 0x22 0x97
+#WAVE 0x23 0x3E
+#WAVE 0x24 0x1B
+#WAVE 0x25 0x4E
+#WAVE 0x26 0x43
+#WAVE 0x27 0x36
+#WAVE 0x28 0x57
+
+#def init= t106 %x255 %v40 %b0,70 %f0,0
+
+#def oboe= |0 o4 'o' %r9
+#def bass= |1 o6 'b'
+#def guitar= |2 o6 'g'
+#def marimba= |3 o5 'm' %y3%s2
+#def harp= |4 o5 'h'
+#def viola= |5 o5 'v' %r8
+#def strings= |6 o4 's'
+#def flute= |7 o6 'f' %r13
+
+#def o= v48
+#def b= v96
+#def g= v48
+#def m= v40
+#def mf= v1,40
+#def h= v48
+#def v= v56
+#def s= v40
+#def sf= v1,40
+#def f= v28
+
+#cdef ( %l1
+#cdef ) %l0
+
+#drum "c"=4d |8 p64 v64
+
+{1}
+'init' %e1
+'marimba*v0+o1' p64 l8
+'mf*v240,.60' [a.a.gg]
+'mf*v240,1' [6a.a.gg]
+## 9
+'flute+o1' p64 m24,18,223 l16 $
+[[f4g24r12 e8d24r12 c8.r(c32d32c)>b8<c24r12
+d8.rd24r12 j2 c8>b24r12 a8.ra24r12 <d8e24r12]
+e8c24r12 j2 d4drd8e24r12] d2^r
+## 25
+'oboe+o2' p64 m48,18,223 l8
+f+2fd+ d2c>a+ g+2f+e d+2dd+
+f+2ff+ g+4.<d+4.> a+2aa+ <c4.c+4.
+## 33
+%r7 d1^4 c1^4 > %r5 a1^1 %r16 ^4 'flute+o1' p64 m24,18,223 l16 d8e24r12
+;
+
+{2} %e1
+'marimba*v0+o1' p64 l16
+'mf*v240,.60' [e8de8dd8d8]
+'mf*v240,1' [6e8de8dd8d8]
+$## 9
+'marimba+o1*v.8' p90
+[8'm*v.85'd8.'m*v.75'd8d j8 r4]
+'flute+o1' p30 m24,18,223 l16
+[f8g24r12
+a4<d24r12 c8>b24r12 a8^12r24(ab)<c24r12>a24r12
+b8g24r12a24r12<c8.>b j2 a4^r] a2^r
+## 25
+'strings+o1*v.8' p25 l8 m48,18,207
+f+2ff+ g2. g+2f+e d+2.
+f+2ff+ g+4.<d+4.> a+2aa+ <c4.c+4.
+## 33
+d1^4 c2^ g2^ e1^4 d1^r m
+;
+
+{3} %e1
+'marimba' p90 l8
+r4'm*v.28'e'm*v.34'>a4<
+'m*v.48'e4'm*v.54'd.'m*v.48'>a.<
+'m*v.71'd.r16'm*v.62'e'm*v.71'>a4<
+'m*v.82'e4'm*v.83'd.'m*v.75'>a.<
+['m*v1'd.r16'm*v.8'e'm*v.88'>a4<
+'m*v.94'e4'm*v.9'd.'m*v.78'>a.<]
+$## 9
+'guitar-o1' p44 l8
+[16d.<c.>g4]
+## 25
+'harp-o1' p0 l8
+d+.<d+.f+4a+> c.<c.g4g> c+.<c+.g+4e> c.<c.d+4a+>
+>b.<<c+.f+4d+> e.<e.g+4<e>> g.<g.a+4<f>> a.<a.<c+4g
+## 33
+f4 'marimba' p90 l16
+[4 j1,433 'm*v1'd8.r $433 'm*v.8'e 'm*v.87'd 'm*v.88'>a4<
+'m*v.94'e8'm*v.87'>a8<'m*v.9'd'm*v.84'e8'm*v.78'>a<'m*v.99'c8]
+;
+
+{4} %e1
+'marimba' p90 l8
+rr.'m*v.3'd.r4'm*v.48'>a.<'m*v.51'e.'m*v.67'c
+^r.'m*v.69'd.r4'm*v.76'>a.<'m*v.78'e.'m*v.97'c
+[^r.'m*v.87'd.r4>a.<'m*v.84'e.'m*v.99'c]
+$## 9
+'guitar-o1' p44 l8
+[16ra.<d.>a]
+## 25
+'harp-o1' p0 l8
+ra+<f4<c+4>> rg<d4a+4> rg+<e4f+4> rg<d4g4>
+rb<d+4>b4 rb<f+4b4 rda4<d4> re<c4e4
+## 33
+'bass-o1' p64 l16
+[4 dr8dr'b*v.5'd'b'drdr dr8drdaga8 ]
+;
+
+{5} %e1
+[32r8]
+'strings*v0' p64 'sf*v144,.5' ([6a8])
+'flute+o1' p64 l24
+d8er12
+$## 9
+'marimba+o2*v.7' p64 l8
+[4[3ddcdc] ddcde]
+## 25
+'viola-o2*v.67' p120 m48,18,199
+a+2. g2. g+2. g2. f+2. b2. <d2. e2.
+## 33
+%r3'v' ([7 d2^8 m0,18,199] d2)r8 m
+;
+
+{6} %e1
+[32r8]
+'strings-o1*v0' p64 'sf*v120,.5' ([5d8] 'sf*v72,1' ddd)
+$## 9
+'bass-o1' p64 l8
+[d2>a< d4.ga]
+d2>a< d4.ga d2>a< d4ga<d>
+d2>a< d4.ga d2>a< defg<d>
+d2>a< d4.ga d2>a< d4ga<d>
+## 25
+d+4>a+4<a+d+ c4g4<c>g c+4g+<d+c+>g+ <c4>gc4g
+>b4<f+4bf+ e4>beb<e >g4<d4gd >a4<e4ae
+## 33
+'oboe*v.8+o1' p64
+%r7 ([5f4 m0,18,223]) m
+    ([5e4 m0,18,223]) m
+%r5 ([8d4 m0,18,223] %r15 ^4.r8) m
+;
+
+{7} %e1
+[32r8]
+'strings*v0' p64 'sf*v120,.5' ([5g8] 'sf*v72,1' gaa)
+$## 9
+'marimba+o1*v.7' p64 l16
+[4[3 a8a'm*v.5'a'm*v.7'aaa8g8] a8a'm*v.5'a'm*v.7'a'm*v.6'aaa'm*v.7'a8]
+## 25
+'viola-o1' p25 m48,18,199
+f+2. g2. e2. d+2. f+2. e2. f2. g4.e4. m
+## 33
+'marimba+o1' l8 p64
+[4 a.a "!!!o c16" 'marimba+o1' gg a.a.gg]
+;
+
+{8} %e1
+[32r8]
+'strings-o1*v0' p64 'sf*v120,.5' ([5a8] 'sf*v72,1' g<gg)
+$## 9
+[40r8]
+'marimba+o1*v.8' p90 l16
+[8'm*v.85'd8.'m*v.75'd8d r4]
+## 25
+'strings-o1*v.67' p120
+a+2. g2. g+2. g2. f+2. b2. <d2. e2.
+## 33
+'marimba+o1' p64 l16
+[8e8de8dd8d8]
+;

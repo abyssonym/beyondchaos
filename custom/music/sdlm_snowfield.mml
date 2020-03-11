@@ -18,7 +18,7 @@
 #WAVE 0x2D ~0x4C~/0x12/
 #WAVE 0x2F ~0x55~/0x0F/
 
-#def global= t136 %v50 %b0,70 %x224
+#def global= t136 %v50 %b0,70 %x224 %f0,0
 
 #def string= |0 o5 %e1 m48,18,207
 #def bright= ~|1~/|5/ o5 v54 %e1 %r15 m

@@ -17,7 +17,7 @@
 #WAVE 0x27 -- 0x3F
 
 {1}
-l16t56%v50%x150%b0,70r64p72%e1v19@33o5a<v20dv21ev22a>v23a<v24dv25ev26a>v27a<v28dv29ev30a>v31av32<dv33ev34a  
+l16t56%v50%x150%b0,70%f0,0r64p72%e1v19@33o5a<v20dv21ev22a>v23a<v24dv25ev26a>v27a<v28dv29ev30a>v31av32<dv33ev34a  
 v35>a<dea>a<dea>a<dea>a<dea  v32>a<dea>a<dea>a<dea>a<dea  v31>a<dea>a<dea>a<dea>a<dea  
 v40>a<dea>a<dea>a<dea>a<dea  >a<df+a>a<df+a>a<df+a>a<df+a  >a<dea>a<dea>a<dea>a<dea  
 >a<df+a>a<df+a>a<df+a>a<df+a  v42>b<cfa>b<cfa>b<cfa>b<cfa  v38>ga<ea>ga<ea>ga<ea>ga<ea  

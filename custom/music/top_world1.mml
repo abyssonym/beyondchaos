@@ -16,7 +16,7 @@
 #WAVE 0x2B ~0x68~/0x11/
 #WAVE 0x2C ~0x50~/0x12/
 
-#def global= t114 %v50 %b0,100 %x224
+#def global= t114 %v50 %b0,100 %x224 %f0,0
 
 #def hst= |0 o5 p60 %r14 v40 m16,18,207
 #def lst= |0 o2 p70 v48 m96,18,223

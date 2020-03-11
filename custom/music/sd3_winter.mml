@@ -15,7 +15,7 @@
 #WAVE 0x26 0x19
 #WAVE 0x27 ~0x6B~/0x02/
 
-#def global= t78 %v50 %x224 %b0,70
+#def global= t78 %v50 %x224 %b0,70 %f0,0
 
 #def bell= |0 v72 o7 %y3%s1%r10 vm48,18,223
 #def xyl= |1 'x1' o5 mv

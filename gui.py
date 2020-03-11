@@ -383,7 +383,7 @@ class Window(QWidget):
     # clear/reset UI and clear window object variables. Then reset data dictionaries
     #   to the default state of unset/unchecked flags and mode
     def clearUI(self):
-        self.mode = ""
+        self.mode = "normal"
         self.seed = ""
         self.flags = ""
         self.seedInput.setText(self.seed)
@@ -519,7 +519,7 @@ class Window(QWidget):
                 # If you delete the file between picking it and running, just spit out an error, no need to prompt.
                 # Randomboost could send a signal ask for a number or whatever, but maybe it's better to just remove it or pick a fixed number?
                 QtCore.pyqtRemoveInputHook()
-                #TODO: put this in a new thread
+                # TODO: put this in a new thread
                 try:
                     result_file = randomizer.randomize(args=['gui.py', self.romText, bundle, "test"])
                 #call(["py", "randomizer.py", self.romText, bundle, "test"])

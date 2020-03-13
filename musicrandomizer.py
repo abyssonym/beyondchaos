@@ -768,7 +768,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                     retry = True
             if retry: continue
             
-            mml = re.sub('[~*]', '', tierfiles[0])
+            mml = re.sub('[~`]', '', tierfiles[0])
             mml = re.sub('[?_]', '?', mml)
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,555\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>555\g<2>', mml)
@@ -780,7 +780,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             mml = re.sub("'(.*?)'", "'555\g<1>'", mml)
             tierfiles[0] = mml
             
-            mml = re.sub('[?*]', '', tierfiles[1])
+            mml = re.sub('[?`]', '', tierfiles[1])
             mml = re.sub('[~_]', '?', mml)
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,666\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>666\g<2>', mml)
@@ -794,7 +794,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             tierfiles[1] = mml
             
             mml = re.sub('[?_]', '', tierfiles[2])
-            mml = re.sub('[~*]', '?', mml)
+            mml = re.sub('[~`]', '?', mml)
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,777\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>777\g<2>', mml)
             mml = re.sub('\$777444([0-9])', '$333\g<1>', mml)

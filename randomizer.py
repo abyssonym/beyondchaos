@@ -217,16 +217,18 @@ class AutoRecruitGauSub(Substitution):
     def bytestring(self):
         return bytes([0x50, 0xBC, 0x59, 0x10, 0x3F, 0x0B, 0x01, 0xD4, 0xFB, 0xFE])
 
-    def write(self, fout):
+    def write(self, fout, stays_in_wor):
         sub_addr = self.location - 0xa0000
         call_recruit_sub = Substitution()
         call_recruit_sub.bytestring = bytes([0xB2]) + int2bytes(sub_addr, length=3)
         call_recruit_sub.set_location(0xBC19C)
         call_recruit_sub.write(fout)
-        gau_stays_wor_sub = Substitution()
-        gau_stays_wor_sub.bytestring = bytes([0xD4, 0xFB])
-        gau_stays_wor_sub.set_location(0xA5324)
-        gau_stays_wor_sub.write(fout)
+
+        if stays_in_wor:
+            gau_stays_wor_sub = Substitution()
+            gau_stays_wor_sub.bytestring = bytes([0xD4, 0xFB])
+            gau_stays_wor_sub.set_location(0xA5324)
+            gau_stays_wor_sub.write(fout)
 
         REPLACE_ENEMIES.append(0x172)
         super(AutoRecruitGauSub, self).write(fout)
@@ -480,10 +482,10 @@ def randomize_slots(filename, fout, pointer):
             fout.write(bytes([spell.spellid]))
 
 
-def auto_recruit_gau():
+def auto_recruit_gau(stays_in_wor):
     args = AutoRecruitGauSub()
     args.set_location(0xcfe1a)
-    args.write(fout)
+    args.write(fout, stays_in_wor)
 
     recruit_gau_sub = Substitution()
     recruit_gau_sub.bytestring = bytes([0x89, 0xFF])
@@ -1732,7 +1734,7 @@ def manage_balance(newslots=True):
                 0xA0, 0x00, 0x28, 0x22, 0x09, 0xB1, 0xC1, 0xA9, 0x01, 0x1C, 0x8D, 0x89, 0xA0, 0x03, 0x00,
                 0xB1, 0x76, 0x0A, 0xAA, 0xC2, 0x20, 0xBD, 0x01, 0x20, 0x90, 0x02,
                 0x7B, 0x3A, 0xAA, 0x7B, 0xE2, 0x20, 0x22, 0xD1, 0x24, 0xC1, 0x80, 0xD7,
-                ])
+            ])
             sketch_fix_sub.write(fout)
 
 
@@ -3669,7 +3671,7 @@ def manage_auction_house():
         auction_sub.write(fout)
 
         opening_bid = str(auction_item[4])
-        
+
         set_dialogue(auction_item[3], f'<line>        “<item>”!<page><line>Do I hear {opening_bid} GP?!')
 
 
@@ -4498,7 +4500,7 @@ def randomize(args):
     read_location_names(fout)
 
     if options_.shuffle_commands or options_.replace_commands or options_.random_treasure:
-        auto_recruit_gau()
+        auto_recruit_gau(stays_in_wor=not options_.shuffle_wor and not options_.is_code_active('mimetime'))
         if options_.shuffle_commands or options_.replace_commands:
             auto_learn_rage()
 
@@ -4619,27 +4621,26 @@ def randomize(args):
         manage_espers(esperrage_spaces, esper_replacements)
     reseed()
 
-    if flags:
-        esperrage_spaces = manage_reorder_rages(esperrage_spaces)
+    esperrage_spaces = manage_reorder_rages(esperrage_spaces)
 
-        titlesub = Substitution()
-        titlesub.bytestring = [0xFD] * 4
-        titlesub.set_location(0xA5E8E)
-        titlesub.write(fout)
+    titlesub = Substitution()
+    titlesub.bytestring = [0xFD] * 4
+    titlesub.set_location(0xA5E8E)
+    titlesub.write(fout)
 
-        manage_opening()
-        manage_ending()
-        manage_auction_house()
+    manage_opening()
+    manage_ending()
+    manage_auction_house()
 
-        savetutorial_sub = Substitution()
-        savetutorial_sub.set_location(0xC9AF1)
-        savetutorial_sub.bytestring = [0xD2, 0x33, 0xEA, 0xEA, 0xEA, 0xEA]
-        savetutorial_sub.write(fout)
+    savetutorial_sub = Substitution()
+    savetutorial_sub.set_location(0xC9AF1)
+    savetutorial_sub.bytestring = [0xD2, 0x33, 0xEA, 0xEA, 0xEA, 0xEA]
+    savetutorial_sub.write(fout)
 
-        savecheck_sub = Substitution()
-        savecheck_sub.bytestring = [0xEA, 0xEA]
-        savecheck_sub.set_location(0x319f2)
-        savecheck_sub.write(fout)
+    savecheck_sub = Substitution()
+    savecheck_sub.bytestring = [0xEA, 0xEA]
+    savecheck_sub.set_location(0x319f2)
+    savecheck_sub.write(fout)
     reseed()
 
     if options_.shuffle_commands and not options_.is_code_active('suplexwrecks'):

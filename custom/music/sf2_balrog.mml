@@ -18,7 +18,7 @@
 #WAVE 0x2F ~0x51~/0x3D/
 #WAVE 0x2D ~0x66~/0x17/
 
-#def global=t139 %v50 %b0,70 %x224
+#def global=t139 %v50 %b0,70 %x224 %f0,0
 
 #def lead=|0 ~o5~/o6/ ~v127~/v48/ m0,48,239 %r1
 #def pad=|1 ~o5~/o6/ v44 m0,48,207

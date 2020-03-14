@@ -23,7 +23,7 @@
 #def 5v= *~v60~/v100/*
 
 {1}
-l16t165%v80%x232%b0,25 $1 p64o5[2v80@32gggr8.grgggr4r  gggr8.ggggggr4  
+l16t165%v80%x232%f0,0%b0,25 $1 p64o5[2v80@32gggr8.grgggr4r  gggr8.ggggggr4  
 ][3gggr<v127@33c8>v80@32gggggr]gr8.  gr8.<v127@33c8>v80@32g24g24g24gggrr2  
 <v127@33c4[3o5v80@32gg8.<v127@33c4>v80@32g8g8  <v127@33c4]o5v80@32gg8.<v127@33c4>v80@32g8g8  
 <v127@33c8>v80@32g24g24g24[3v80@32o5gg8.<v127@33c4>v80@32g8g8  <v127@33c4]>v80@32gg8.<v127@33c4>v80@32g8<v127@33c8  

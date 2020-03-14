@@ -15,7 +15,7 @@
 #WAVE 0x26  0x07         Also Flute
 #WAVE 0x28 ~0x81~ /0x14/ Snare
 
-#def global= t144 %v50 %x224 %b0,70
+#def global= t144 %v50 %x224 %b0,70 %f0,0
 
 #def piano= |0 v96 o5 %r6 m
 #def flute= |1 v64 o5 %a10 %r10 m48,18,192

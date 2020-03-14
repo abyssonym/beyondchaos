@@ -18,7 +18,7 @@
 #WAVE 0x2C ~0x50~/0x12/
 #WAVE 0x2F 0x0F
 
-#def global= t124 %x224 %b0,70 %v50
+#def global= t124 %x224 %b0,70 %v50 %f0,0
 
 #def org= ~|0~/@5/ ~o5~/o4/ ~v127~/v72/ p68 m24,18,239   %e1 %y4%s6%r5
 #def or2= ~|6~/|0/ o6       v44         p84 m            %e1

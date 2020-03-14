@@ -103,6 +103,16 @@ try:
                 with_effects = process_mml(sfxid, mml, fn)
                 sfx[effect] = len(with_effects[variant][0])
                 print(".", end="", flush=True)
+            
+            has_feedback = re.search("%b\d+,\d+", mml)
+            has_filter = re.search("%f\d+,0", mml)
+            if not has_feedback or not has_filter:
+                echo_warning = " <-- "
+                if not has_feedback:
+                    echo_warning += "%b not found    "
+                if not has_filter:
+                    echo_warning += "%f not found"
+                print(echo_warning, end="", flush=True)
         print()
         
         most = 0

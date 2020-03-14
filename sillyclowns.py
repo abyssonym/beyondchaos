@@ -33,8 +33,8 @@ def randomize_poem(fout):
                 current_poem.append(POEM_PAGE_BREAK)
                 wait += 1
                 page_break = False
-            if not line.endswith("<line>"):
-                line = line + "<line>"
+            elif current_poem:
+                current_poem.append("<line>")
             current_poem.append(line)
 
     if not poems:

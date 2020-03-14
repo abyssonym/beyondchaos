@@ -178,6 +178,13 @@ def hex2int(hexstr):
     return int(hexstr, 16)
 
 
+def pointer16_to_bytes(pointer):
+    return bytes([pointer & 0xFF, (pointer >> 8) & 0xFF])
+
+def pointer24_to_bytes(pointer):
+    return bytes([pointer & 0xFF, (pointer >> 8) & 0xFF, (pointer >> 16) & 0xFF])
+
+
 def shuffle_key_values(d):
     keys = list(d.keys())
     random.shuffle(keys)

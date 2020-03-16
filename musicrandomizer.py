@@ -921,7 +921,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                         break
                 
                 #record variant
-                if variant and s.changeto != target:
+                if variant:
                     s.changeto = f"{file_to_check} (variant: {variant})"
                 title = re.search("(?<=#TITLE )([^;\n]*)", mml, re.IGNORECASE)
                 album = re.search("(?<=#ALBUM )([^;\n]*)", mml, re.IGNORECASE)

@@ -1414,6 +1414,8 @@ def randomize_music(fout, options_, opera=None, form_music_overrides={}):
         data = process_map_music(data)
     data = process_formation_music_by_table(data, form_music_overrides=form_music_overrides)
     
+    data = apply_sound_engine_hack(data)
+    
     fout.seek(0)
     fout.write(data)
     
@@ -1423,6 +1425,40 @@ def randomize_music(fout, options_, opera=None, form_music_overrides={}):
 ## End of core music randomizer code ##
 #######################################
 
+def apply_sound_engine_hack(data):
+    # Apply a hack to the SPC engine that prevents some crashing and other misbehavior
+    
+    #New001:  CMP   $C5, #$FF     ; $C5 == FF (test whether we are in alternate shadow mode)
+    #         BEQ   L0607         ; If so skip to E5 test
+    #         CMP   A,#$E2        ; == #$E2 Loop Start
+    #         BNE   L05F5         ; If not skip to E3 test
+    #         MOV   $C5, #$FF     ; $C5 = FF (set alternate shadow mode)
+    #L05F5:   CMP   A,#$E3        ; == #$E3 Loop End
+    #         BNE   L05FE         ; If not skip 2 instructions
+    #         CALL  $1725         ; Switch $E3: Loop End
+    #         BRA   L05DE         ; Loop
+    #L05FE:   CMP   A,#$F5        ; == #$F5 Jump to yyyy when loop count reaches xx
+    #         BNE   L0607         ; If not skip 2 instructions
+    #         CALL  $1695         ; Switch $F5: Jump to yyyy when loop count reaches xx
+    #         BRA   L05DE         ; Loop
+    #L0607:   CMP   A,#$E5        ; == #$E5 Disable Slur
+    #         BNE   L0610         ; If not skip 2 instructions
+    #         CALL  $15CF         ; Track Command $E5: Disable Slur
+    #         BRA   L05DE         ; Loop
+    #L0610:   CMP   A,#$E7        ; == #$E7 Disable Drum Roll
+    #         BNE   L062B         ; If not skip 2 instructions
+    #         CALL  $15F3         ; Track Command $E7: Disable Drum Roll
+    #         BRA   L05DE         ; Loop
+         
+    # Caveat: this hack removes shadow parsing / lookahead trace into
+    # Play SFX commands. This is not expected to cause any ill effects,
+    # but some sound effects could conceivably be altered.
+    
+    hackblob = b"\x78\xFF\xC5\xF0\x19\x68\xE2\xD0\x03\x8F\xFF\xC5\x68\xE3\xD0\x05\x3F\x25\x17\x2F\xD4\x68\xF5\xD0\x05\x3F\x95\x16\x2F\xCB\x68\xE5\xD0\x05\x3F\xCF\x15\x2F\xC2\x68\xE7\xD0\x0B\x3F\xF3\x15\x2F\xB9\x00\x00\x00\x00\x00\x00"
+    offset = 0x50B05
+    data = byte_insert(data, offset, hackblob)
+    return data
+    
 def manage_opera(fout, affect_music):
     fout.seek(0)
     data = fout.read()

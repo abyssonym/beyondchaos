@@ -468,7 +468,7 @@ ff6_dmad5:      dmad5*2, grandfinale, floatingcont, kefkastower
 ff6_prelude:    espers
 
 [TierBoss]
-#dmad123: cc_flame, ct_lavos, ff3_eureka, ff6_tier1, ff6_tier2, ff6_tier3, ff8_witches, ffmq_lava, xg_weltall
+dmad123: cc_flame, ct_lavos, ff3_eureka, ff6_tier1, ff6_tier2, ff6_tier3, ff8_witches, ffmq_lava, xg_weltall
 
 [SongSlots]
 #song id: identifier, % chance to allow change

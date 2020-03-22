@@ -772,7 +772,9 @@ def manage_palettes(fout, change_to, char_ids):
         make_palette_repair(fout, main_palette_changes)
 
     if new_palette_mode:
-        char_hues = shuffle_char_hues([0, 15, 30, 45, 60, 75, 90, 120, 150, 165, 180, 210, 240, 270, 300, 315, 330, 360])
+        char_hues = [0, 10, 20, 30, 45, 60, 75, 90, 120, 150, 180, 200, 220, 240, 270, 300, 330]
+        char_hues.append(random.choice([0, 0, 345, random.randint(105,135)]))
+        char_hues = shuffle_char_hues(char_hues)
         skintones = [((31, 24, 17), (25, 13, 7)),
                      ((31, 23, 15), (25, 15, 8)),
                      ((31, 24, 17), (25, 13, 7)),
@@ -785,7 +787,7 @@ def manage_palettes(fout, change_to, char_ids):
                      ((28, 23, 15), (22, 16, 7)),
                      ((27, 23, 15), (20, 14, 9))]
         snowmanvampire = ((29, 29, 30), (25, 25, 27))
-        if christmas_mode or random.randint(1, 100) > 50:
+        if christmas_mode or random.randint(1, 100) > 66:
             skintones.append(snowmanvampire)
         random.shuffle(skintones)
         # no vampire townsfolk

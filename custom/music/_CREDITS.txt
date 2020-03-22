@@ -1,5 +1,7 @@
 Song conversions:
-    Cecil188 -- dc_garden, ot_stillsnow
+    Cecil188 -- dc_garden
+                fe15_whatlies
+                ot_stillsnow
     emberling -- bl_fahrenheit, bl_rebels
                  blord_2tower, blord_ruins
                  bof1_dawn
@@ -38,7 +40,7 @@ Song conversions:
                  ff12_barheim, ff12_crystal, ff12_estersand, ff12_ozmone,
                  ff12_paramina, ff12_prison
                  ff14_azyslla, ff14_battlem
-                 ffmq_battle, ffmq_boss, ffmq_final, ffmq_forest,
+                 ffmq_battle, ffmq_boss, ffmq_doom, ffmq_final, ffmq_forest,
                  ffmq_fossil, ffmq_gale, ffmq_lava, ffmq_light, ffmq_rock,
                  ffmq_tower, ffmq_tristam, ffmq_victory
                  fft_apoplexy
@@ -113,6 +115,7 @@ Song conversions:
                  ff9_home, ff9_memoria
                  ffx_decision
                  ffmq_gale
+                 gs_venus (ripped & submitted by A Tiny Spook)
                  iog_boss, iog_womb
                  jts_stage1
                  lagoon_spirits
@@ -127,12 +130,16 @@ Song conversions:
                  sd3_faith, sd3_paths
                  sdlm_nostalgic
                  tn_evergreen
+                 wa_zed (ripped & submitted by A Tiny Spook)
                  xg_chuchu, xg_mermaid
                  ys1_wars
                  ys3_wings
                  zaol_overworld
                  zoot_storms
+    HoxNorf -- ct_boss, ct_epoch, ct_lavos, ct_magus, ct_town, ct_trial,
+               ct_undersea
     Jackimus -- ffx_seymour
+                xc1_names (ripped & submitted by A Tiny Spook)
     MetroidQuest -- ff4_boss, ff4_cave
     Royaken -- ff4_bomb, ff4_mysidia, ff4_whale
                ff7_hurry2, ff7_judgment, ff7_materia, ff7_planet
@@ -143,9 +150,11 @@ Song conversions:
                ff4_baron, ff4_illusion
     emberling & Gi Nattak -- lu1_boss
                              totr_spirit
+    Gi Nattak & Jackimus -- dq1_world_ff4 (ripped & submitted by A Tiny Spook)
 Tierboss segments:
     emberling -- ffmq_lava_dm, ff8_witches
     Gi Nattak -- cc_flame_dm
     emberling, Gi Nattak, tsushiy -- ff3_eureka_dm
+    HoxNorf, emberling -- ct_lavos_dm
     Nobuo Uematsu -- ff6_tier1_dm, ff6_tier2_dm, ff6_tier3_dm
 Samples provided by madsiur and tsushiy

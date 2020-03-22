@@ -1843,7 +1843,7 @@ def manage_monsters():
     monsters = get_monsters(sourcefile)
     safe_solo_terra = not options_.is_code_active("ancientcave")
     darkworld = options_.is_code_active("darkworld")
-    change_skillset = True if darkworld else None
+    change_skillset = None
     final_bosses = (list(range(0x157, 0x160)) + list(range(0x127, 0x12b)) +
                     [0x112, 0x11a, 0x17d])
     for m in monsters:

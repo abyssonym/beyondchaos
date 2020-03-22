@@ -1,0 +1,130 @@
+#TITLE Peaceful Days
+#ALBUM Chrono Trigger
+#COMPOSER Yasunori Mitsuda
+#ARRANGED HoxNorf
+##created with sqspcmml beta 1.1.3
+
+#WAVE 0x20 0x45
+#WAVE 0x21 0x1B
+#WAVE 0x22 0x07
+#WAVE 0x23 0x7A
+
+#def 0i= |0
+#def 1i= |1 %r13
+#def 2i= |2
+#def 3i= |3
+
+#def 0o= o5
+#def 1o= o6
+#def 2o= o5
+#def 3o= o5
+
+#def 0v=   v100
+#def 0f= v1,100
+#def 1v=   v100
+#def 1f= v1,100
+#def 2v=   v100
+#def 2f= v1,100
+#def 3v=   v100
+#def 3f= v1,100
+
+
+{1}
+t87%v40%b0,65%f0,0%e1%k2
+'1i' '1v*v.78'p64'1o'e8d8c+8>b8<d8c+8>b8a8a16b16<c+16>b2^8.f+8f+2g+2
+'2i' '2v*v.78'p64'2o'm12,24,201%r8
+$101e4<c+4d8c+8>b8a8<e4.>b8b2e4<c+4d8c+8>b8a8<e2^4f+8g+8a4g+8f+8e4c+4f+4
+e8d8c+4>b4a8g+8a8<c+8>b4f+8a8a2b4.<e8f+4e8f+8e4>b8<d8d4c+8>b8a+4b8<c+8
+d4c+8>b8a4b4a1r1r8<e4d16c+16d8c+8>b8a8b8<c+8>e2^4^2f+4.g+8a2<c+4.c+8d8
+c+8>b8a8b8<c+8>e4a2^4d+4f+2e2a2b2<d4c+8d8c+2d4c+8>b8a4b4a2^4.<c+8d4c+8
+>b8a4b4a1
+;101
+
+
+{2}
+%e1%k2
+'1i' '1v*v.47'p64'1o'a2f+2a1r2e2
+$201
+'0i' '0v*v.58'p64'0o-o1'%a8%r8e1a2g+4a4e1^4<e2c+4>a2g+2a4b4<c+4d4c+2>b2
+a2b2a2b2<d4c+8d8e2d2f+4g+4a1'0v*v.78'e4<c+4d8c+8>b8a8<e4.>b8b2e4<c+4d8
+c+8>b8a8<e2^4f+8g+8a4g+8f+8e4c+4f+4e8d8c+4>b4a8g+8a8<c+8>b4f+8a8a2b4.<
+e8f+4e8f+8e4>b8<d8d4c+8>b8a+4b8<c+8d4c+8>b8a4b4a2^4.<c+8d4c+8>b8a4b4a1
+
+;201
+
+
+{3}
+%e1%k2
+'1i' '1v*v.47'p64'1o'e2d2f+1d2>b2
+$301
+'0i' '0v*v.39'p104'0o-o1'%a8%r8c+1d1c+1^2>g+2a2b2a2<c+4>b4a2b2<d1>a2b2
+<d2c+2d2>b2<c+1c+1d1c+1^2>g+2a2b2a2<c+4>b4a2b2<d1>a2b2<d2c+2d2>b2<c+1d2
+>b2<c+1
+;301
+
+
+{4}
+%e1%k2
+'1i' '1v*v.47'p64'1o'c+2>a2<d1>a2g+2
+$401
+'0i' '0v*v.39'p24'0o-o2'%a8%r8e1^1^1^1^1f+2e2e2d+2f+2e2f+2g+2e2f+2a1e1
+e1^1^1^1^1f+2e2e2d+2f+2e2f+2g+2e2f+2a1e1a1e1
+;401
+
+
+{5}
+%e1%k2
+'1i' '1v*v.47'p64'1o-o1'a2d2g1e1
+$501
+'0i' '0v*v.51'p64'0o-o3'%a8%r8a2f+2b2e2a2f+2<c+2>g+2f+2<c+2d2>a4g+4f+2
+b2e1d2e2a4g4f+2b2e2a1a2f+2b2e2a2f+2<c+2>g+2f+2<c+2d2>a4g+4f+2b2e1d2e2a4
+g4f+2b2e2a1b2e2a1
+;501
+
+
+{6}
+%e1%k2r1r1r1
+$601
+'1i' '1v*v.62'p64'1o-o1'a8<c+8e8a8>f+8a8<c+8e8>b8<d8f+8b8>e8g+8b8<e8>a8
+<c+8e8a8>f+8a8<c+8e8>g+8<c+8e8g+8<c+8>g+8e8c+8>f+8a8<c+8e8>g+8<c+8e8g+8
+d8f+8a8<d8>>a8<c+8e8g+8>f+8a8<c+8e8>b8<d+8f+8a8>a8<d8f+8a8b8a8g+8e8d8f+8
+a8<d8>>g+8b8<e8g+8>b8<d8a8b8<c+8>b8a+8f+8>b8<d8f+8a8>a8<d8f+8a8>a8<c+8
+e8a8<c+8>a8e8c+8>a8<c+8e8a8>f+8a8<c+8e8>b8<d8f+8b8>e8g+8b8<e8>a8<c+8e8
+a8>f+8a8<c+8e8>g+8<c+8e8g+8<c+8>g+8e8c+8>f+8a8<c+8e8>g+8<c+8e8g+8d8f+8
+a8<d8>>a8<c+8e8g+8>f+8a8<c+8e8>b8<d+8f+8a8>a8<d8f+8a8b8a8g+8e8d8f+8a8<
+d8>>g+8b8<e8g+8>b8<d8a8b8<c+8>b8a+8f+8>b8<d8f+8a8>a8<d8f+8a8>a8<c+8e8a8
+<c+8>a8e8c+8>b8<d8f+8a8>a8<d8f+8a8>a8<c+8e8a8<c+8>a8e8c+8
+;601
+
+
+{7}
+%e1%k2r1r1r1
+$701[12r1]
+'3i' '3v*v1.00'p78'3o+o1'r8e24r12e24r12e24r8.r48e24r12e24r12e24r12r8a24
+r12a24r12a24r8.r48g+24r12f+24r12e24r12r8e24r12e24r12e24r8.r48e24r12e24
+r12e24r12r8g+24r12g+24r12g+24r12a24r12a24r12b24r12b24r12r8a24r12a24r12
+a24r12c+24r12g+24r12g+24r12g+24r12r8f+24r12f+24r12f+24r8.r48e24r8.r48d24
+r12r8e24r12e24r12e24r8.r48f+24r12f+24r12f+24r12r8d24r12f+24r12a24r12b24
+r12a24r12g+24r12e24r12r8f+24r12f+24r12f+24r8.r48g+24r12g+24r12g+24r12r8
+d24r8.r48e24r8.r48c+24r12c+24r12c+24r12r8f+24r12f+24r12f+24r8.r48d24r12
+d24r12d24r12r8c+16r16e16r16d16r16%r16c+4%r19^4%yr8f+24r12f+24r12f+24r8.
+r48d24r12d24r12d24r12r8c+16r16e16r16d16r16%r16c+4%r19^4%y
+;701
+
+
+{8}
+%e1%k2r1r1r1
+$801[12r1]
+'3i' '3v*v1.00'p50'3o'a24r12<c+24r12c+24r12c+24r12>f+24r12<c+24r12c+24
+r12c+24r12>b24r12<f+24r12f+24r12f+24r12>e24r12<e24r12d24r12c+24r12>a24
+r12<c+24r12c+24r12c+24r12>f+24r12<c+24r12c+24r12c+24r12c+24r12e24r12e24
+r12e24r12f+24r12f+24r12g+24r12g+24r12'3v*v.43'>f+24r12<f+24r12f+24r12f+24
+r8.r48e24r12e24r12e24r12'3v*v.39'>a24r12<d24r12d24r12d24r12>a24r12<c+24
+r12>g+24r12b24r12f+24r12<c+24r12c+24r12c+24r12>b24r12<d+24r12d+24r12d+24
+r12>f+24r12a24r12<d24r12f+24r12g+24r12f+24r12e24r12>b24r12a24r12<d24r12
+d24r12d24r12>b24r12<e24r12e24r12e24r12>a24r12a24r12a24r12<c+24r12>f+24
+r12a+24r12a+24r12a+24r12b24r12<d24r12d24r12d24r12>e24r12b24r12b24r12b24
+r12r8a16r16<c+16r16>b16r16%r16a4%r19^4%yb24r12<d24r12d24r12d24r12>e24r12
+b24r12b24r12b24r12r8a16r16<c+16r16>b16r16%r16a4%r19^4%y
+;801
+

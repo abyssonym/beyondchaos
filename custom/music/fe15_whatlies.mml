@@ -1,0 +1,237 @@
+#TITLE What Lies at the End
+#ALBUM Fire Emblem Echoes: Shadows of Valentia
+#COMPOSER Takeru Kanazaki
+#ARRANGED Cecil188
+##with reference to sheet music arranged by hinaflower
+
+#WAVE 0x20 0x46
+#WAVE 0x21 0x08
+#WAVE 0x22 0x8B
+#WAVE 0x23 0x40
+#WAVE 0x24 0x7F
+#WAVE 0x25 0x1B
+#WAVE 0x26 0x81
+#WAVE 0x27 0x66
+#WAVE 0x28 0x8E
+#WAVE 0x29 0x2C
+#WAVE 0x2A 0x58
+#WAVE 0x2B 0x00
+
+#drum "r"=5b- |6 v48 p64 %e1
+#drum "s"=5b- |6 v32 p64 %e1
+#drum "k"=4b- |7 v127 p64 %e1
+#drum "l"=4b- |7 v64 p64 %e1
+#drum "h"=5b- |8 v48 p64 %e1
+
+#drum "t"=5b- |6 p64 v6
+#drum "u"=5b- |6 p64 v9
+#drum "v"=5b- |6 p64 v13
+#drum "w"=5b- |6 p64 v16
+#drum "x"=5b- |6 p64 v20
+#drum "y"=5b- |6 p64 v23
+#drum "z"=5b- |6 p64 v27
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1}
+t137 %x224 %v50 %b0,85 %f0,0
+$ |0 v48 p64 %e1 o5
+#1
+l12 [5 [3 e-fa-<cd-e-a-e-d-c>a-f] g-g-a-<cd-e-a-e-d-cd-e->]
+#21
+|3 %r9 v64 p64 %e1 o5 m48,18,215 l6 b-2g-b-<f c2>a-2 b-2b-<cd- c2>a-2 b-2g-b-<f c2>a-2 b-1 |0 v96 p64 %e1 o6 m12,36,207 f2g4>a4
+#29 Key Change
+l4 <a2^6g6f6 efg<c >g2a6g6f6 e2fd a2^6g6f6 efg<c d6e12c2>a <v96v192,127d1 l12 v48 >>>b-<dfa<d>fcega<cf >ceg<cec>e<ec>ega dfag<c>g>a<ed->a<gb- >a<edeg<c>fg<ed4 >>b-<dfa<d>fcega<cf >ceg<cecgec>g<c>e dfaf<d>feageg>a a<ceea<c>a<cef4
+#45
+l4 v24 p24 a2g2 gf<c2 c>b-<f2 e-2>a-2 v48 p64 a-g-d-e- g-ee-e >baa-g- a-1 ^1
+#54 Key Change
+|3 %r9 v64 p64 %e1 o4 m48,18,215 l2 b-<f fe-4d-4 d-4.>b8b4.<g-8 g-4.f8f l8 >b-2^b-<d-f l4 a-2g-f fe-e-d- d-4.c8c2 |0 m12,36,207 v48 p64 %e1 o5 l2 b-<f fe-4d-4 d-4.c8c4.g-8 g-4.f8f l8 >(b-2b-)b-<d-f l4 a-2g-f f1 d-4.c8c2 r1 r2.>b-
+#72
+#l4 v48 <[[4 b-] [8 a-] j2,1 <[4 e-]>] $1 b-1
+l12 v48 %y1%s6 <[[4(%r25b->%r10b-<f)] [4(%r25a->%r10a-<e-)] [4(%r25a->%r10b-<e-)] j2,1 %r25<[4e-r6]>] $1 %r a+1
+#80
+>> l1 v32 g- a- f b-2a-2 g- g-2.f4 e-2f2 |5 m v48 p64 %e1 o6 l12 [4 rcd-a-4e-d-(ff4) j4 r6>b-fd-c>a-2<<] c>a-fe-a-d-ce-a-<ce-a-
+;
+
+{2}
+$ |1 v127 p64 %e1 o5 m48,18,223 %r5
+#1
+l12 [4 r1] [c2>fa-<ce-c>a- <d-4>fa-<d-c4>fa-<c> b-1 ^1<] c2>fa-<ce-c>a- <d-4>fa-<ce-4>f<ce- f2.^g-f e-1 e-4^fe-d-2 c4^d-c>b-2 <f4^g-fe-2 d-4^e-d-c2
+#21
+l6 [4 r1] b-2g-b-<f c2>a-2 %r8b-1 %r r1
+#29 Key Change
+|2 v64 p64 %e1 o5 m
+l4 >b-b-12b-12b-12<cc >ggff ff12f12f12ee ggfe12f12d12 a<d>ef g<c>fa l2 ag gf l4 [3 r1] |1 %r5 v127 p64 %e1 o5 m48,18,223 r2.d v96 a2^6g6f6 efg<c d6e12c2>a <d1
+#45
+|2 v64 p64 %e1 o3 m
+e-b-<c>b- a2<fc >g-2.<d- >f1 a1 a-2d-2 g-1 v64 a-2.<<a-12<d-12e-12 c1
+#54 Key Change
+@3 o5 v56 %a10%y2%s2%r8 m12,36,255v1,32,255 l2 b-<f fe-4d-4 d-4.>b8b4.<g-8 g-4.f8f l8 >b-2^b-<d-f l4 a-2g-f fe-e-d- d-4.c8c2
+|1 %r5 v127 p64 %e1 o5 vm48,18,223 l2 b-<f fe-4d-4 d-4.c8c4.g-8 g-4.f8f l8 >(b-2b-)b-<d-f l4 a-2g-f f1 d-4.c8c2 [r1]
+#72
+[r1] l12 >c2>fa-<ce-c>a- <d-4>fa-<d-c4>fa-<c >b-1
+r1 v40 f1 a+1
+#80
+|2 v96 p64 %e1 m o6 l6 [f2fe-d- c4d-4e-4a-4 j2 e-2fe-d- c2d-4>b-4<] b-<c12>a-2f4 b-1 >> v32 l2 b-a- g-1 r1 v96 |1 %r5 v127 p64 %e1 o5 m48,18,223 rcd-f (f2.f12)g-12f12 e-1
+;
+
+{3}
+$ |2 v96 p64 %e1 o5
+#1
+l12 [5 c4ccc>b-4b-4 <c4c4>b-4b-b-b- <c4ccc>b-4b-4 <d-4d-4c4ccc]
+#21
+l2 [fe- e-e-] fb- e-a- l12 r4b-<dfb-fdfd>b- l2 <fe
+#29 Key Change
+l4 >dd12d12d12ee cccc dd12d12d12d-d- ddde12f12d12 l2 dc cd fe ef l4 <(a2a6)g6f6 efg<c >g2a6g6f6 e2fd (a2a6)g6f6 efg<c d6e12c2>a <d1
+#45
+>a2g2 gf<c2 c>b-<f2 e-2>a-2 a-g-d-e- g-ee-e >baa-g- (a-1 a-1)
+#54 Key Change
+>> v36 l2 [b-4<ff>b-4f4d-4 j2 b4g-g-b4b-4d-4] b4g-g-4 r1 l12 v96 <<r4(ff)ff4fb-<d- fg-c>e-ac>a2<< [d-c>b-fd-c>b-2<<] r1 r1 r2.d-fb- <d->b-f>b-4<<c>af>a4 r4<<[3 fg->a] f4 v127 <%d3%y3f2.%y
+#72
+|4 %r11 v80 p64 %e1 o6 m48,18,239 l4 [f2f6e-6d-6 cd-e-a- j2 e-1 r2.>b-<] b-6<c12>a-2f b-1
+#80
+|2 v64 p64 %e1 o5 m l2 b-a- <fe- [d-c] d->a- <e-a- fe- l1 e- d- c d- e- d- c c
+;
+
+{4}
+$ |2 v96 p64 %e1 o4
+#1
+l12 [5 f4ffff4f4 f4f4f4fff g-4g-g-g-g-4g-4 a-4a-4a-4a-a-a-]
+#21
+l2 b-b- <cc d-r cc >b-r <cr dd dd-
+#29 Key Change
+l4 >b-b-12b-12b-12b-b- aa12a12a12aa b-b-12b-12b-12aa aaa2 l2 <ag ga <dc cd l4 >[ff12f12f12ee gg12g12g12ff ff12f12f12ee j2 ggf2] eef2
+#45
+v24 e-2c2 c2f2 g-2b-2 a-2f2 e1 e-1 >g-1 e-1 ^1
+#54 Key Change
+l2 v96 <b-<f fe-4d-4 d-4.>b8b4.<g-8 g-4.f8f l8 >(b-2b-)b-<d-f l4 a-2g-f fe-e-d- d-4.c8c2
+l4 v40 |3 m24,18,199 %r11 o4
+b-<fde- f2e-d- e-.c8d->b-< c>a(b-8g.) <cd-e-d- e-1 c1 d-.c8c2
+ r1 |2 m o6 v127 r%d3%y3e-2.%y
+#72
+l12 v64 [r2.b-<cd- e-a-d-c>a-e-d-c>a-<cd-e- r2.a-<cd- e-f j2 ce->b-fe-d-c>b-4<] d->a-b-fd-c>a-f4
+#80
+l2 fr b-[5 a-] b-a- <cc d-c l1 v32 >e- d- c d- e- d- c c
+;
+
+{7}
+$ |2 v96 p64 %e1 o4
+#1
+l12 [5 b-4b-b-b-b-4b-4 b-4b-4b-4b-b-b- g-4g-g-g-g-4g-4 a-4a-4a-4a-a-a-]
+#21
+l2 g-g- a-a- b-r a-a- g-r a-r b-b- b-a 
+#29 Key Change
+l4 >b-b-12b-12b-12<cc dd12d12d12>aa b-b-12b-12b-12aa <ddd2 l2 >b-<c >a<d >ga <d1 l4 >[b-b-12b-12b-12<cc dd12d12d12>aa j2 b-b-12b-12b-12aa <ddd2>] gg12g12g12gg <ddd2
+#45
+v24 <b-2b-2 a2<c2 d-2g-2 f2d-2 d-1 >b1 e1 (d-1 d-1)>
+#54 Key Change
+>l2 [[b-<d->] b<d-> j2,3 b<d->] $3 dc v96 l2 <b-<f fe-4d-4 d-4.c8c4.g-8 g-4.f8f l8 >b-2^b-<d-f l4 a-2g-f f1 >g-2f2< r1 v127 r%d3%y3c2.%y
+#72
+|9 %r5 v127 p64 o5 l12 %a10%y2%s3%r12
+[g-4g-g-g-g-6g-6g-6 a-4a-a-a-a-6a-6a-6 j2,2 [b-4b-b-b-b-6b-6b-6]] $2 f4ffff6f6f6 %s5%r9 b-1
+#80
+|2 v96 p64 %e1 o5 l2 r1 fr [3 e-]d- fr e-<c> g-e-
+|9 v96 p64 o5 l12 %a12%y2%s3%r12
+l4 [[6 b-] a-a- [8 g-]]
+;
+
+{5}
+$
+##1
+|9 v96 p64 %e1 %a10%y2%s3%r12 o5 l4
+[5[8b-][4g-][4a-]]
+##21
+"!!!o h1^1^1^1"
+|9 v56 %a10%y2%s3%r12 o5 d+<d+d+d+> f<fff> g<ggg> v96 <cc>aa
+##29
+|0 v64 %y2%s3%r12 o5 l4  aa12a12a12<cc> gggg g2ee eef2
+a2ef g<c>ge %y a2g2e2f2
+## (37)
+|9 v96 %a10%y2%s3%r12 [o5 l4
+a+a+<cc dd>aa j2 a+a+aa <ddd2] gggg <ddd2
+##45
+"!!!o" "h1^1^1^1"
+@3 o6 v56 %a10%y2%s2%r8 m12,36,255 l4
+a-g-d-e- g-ee-e >baa-g- a-1 ^1
+##54
+v0,32,255 l2 k1
+b-<f fe-4d-4 d-4.>b8b4.<g-8 g-4.f8f l8 >b-2^b-<d-f l4 a-2g-f fe-e-d- d-4.c8c2
+mv k0
+## (62)
+|A v96 o3 %y0%s3%r11 l4 
+e-2.e- f2a2 b-1 g1  g-1 b1 <c1> g-2f2
+v127 >f8%r25 ^8^1 %r11 v64 <f2.
+##72
+[|1 o4 %r9 l1 m48,18,223 v40v72,64 b- v40v72,64 a- j2 v40v72,64 a-
+|0 %y0%s2 v40 m12,18,207 <f2f4f4>]
+|0 v40 m12,18,207 <
+%y1%s6%r25 <[4e-12r6] %s7%r0 e-2d-2 m
+##80
+v0,24,168 v24 o6 f1.e-2 e-1.d-2 f1.e-2 d-2 e-2
+## (87)
+v0,12,255 o6 v12v192,24 c1 %r15 d-1
+%r0 v12 v192,24 c1 %r15 > b-1 <
+vr2 |1 m48,18,223 v48 o4 l2 %r9 fb-a-g-1
+|0 m %s7 v12 v96,40 o6 a-2 v96,96 ^2
+;
+
+{6}
+$
+##1
+[5 l12
+"kxx" [3"sxx"]
+["rxx" ["sxx"] l32 "tuvwxyzs" j2,74
+l12 "rxx" [3"sxx"] ] $74
+]
+##21
+[4 "s6s3" "s4ssss4ssss6" l24 "tuvwxyzs" l12 ]
+##29
+[l12 [7":w:sw"j7"w"] l24 "tuvwxyzs"]
+["s6s3" l24 "s6tu" [3"vwxyzs" j3 ^4]]
+## (37)
+l12 [8 "s6s3" "s4sss"j8"s4ssss6" l24 "tuvwxyzs" l12 ] ##same as 21, except last
+##45
+#continues from 37
+[4"s4sss"]
+##54
+[4"s6s3" l24 "s6tu" [3"vwxyzs" j3 ^4]] ##same pattern from 33
+## (62)
+[l12 "l6s3" [5":w:sww"] l24 "vwxyzs"
+ l12 "s6s3" [5":w:sww"] l24 "vwxyzs"]
+"k4!o" l24 [6"u"][6"v"][6"w"][6"x"][6"y"][6"z"][6"s"]
+##72
+l12 ["lww" [15"rww"]]
+##80
+[3"s6s3" l24 "s6tu" [3"vwxyzs" j3 ^4]] ##same pattern from 33
+"s6s3" l24 "s6tu" "vwxyzs"
+## (87)
+[ l12 [3":w:sww"] l24 "vwxyzs" l12 "s6s3"[5":w:sww"] l24 "vwxyzs" l12 "s6s3swwsww"]
+;
+
+{8}
+$
+##1
+"h2." [3"!ol4k2"j3^4] |5 o4 v48 %y5%s5 l24 [cd+g+<cd+g+]
+["!!!o h2." [3"!ol4k2."] ^4
+"!!!o h2." [3"!ol4k2"j3^4] |5 o4 v48 %y5%s3 l24 [cd+g+<cd+g+]]
+##21
+|5 o2 v24 l4  [d+<d+>d+<<d+>> f<f>f<<f>> j2 f+<f+>f+<<f+>> f<c+>f<<f>>]
+g<g>g<<g r2 "!!!o h2"
+##29
+[4"h1^1^1^1"]
+##45
+[9^1]
+##54
+["h1^1^1^1"]
+## (62)
+["!!!o h2. l4l2l4l4 l2. l4l2l4l4"]
+r1r1
+##72
+["!oh2"[7"!ol2"]]
+##80
+"h1^1^1^1"
+"h1^1^1"
+"h1^1^1^1"
+"h1^1^1^1"
+;

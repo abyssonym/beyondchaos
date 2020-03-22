@@ -418,7 +418,7 @@ def randomize_magicite(fout, sourcefile):
         change_enemy_name(fout, monster_id, replacement.name)
         mg = esper_graphics[replacement.id]
         monster.graphics.copy_data(mg)
-        monster.graphics.write_data(fout)
+        monster.graphics.write_data(fout, palette_pointer=mg.palette_pointer)
 
     ragnarok = get_item(27)
     ragnarok.dataname = bytes([0xd9]) + name_to_bytes(shuffled_espers[espers_by_name["Ragnarok"].id].name, 12)

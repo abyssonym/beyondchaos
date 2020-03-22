@@ -173,7 +173,7 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
                 formations = formations[:random.randint(2, 6)]
             if not (clock or old_version):
                 orphaned_formations = [f for f in orphaned_formations
-                                       if f.rank() < normal_rank_limit(rank) and f.get_guaranteed_drop_value() >= value * 10 - 1000]
+                                       if f.rank() < normal_rank_limit(rank) and f.get_guaranteed_drop_value() >= value * 20 - 1000]
                 max_extra_miab_rank = special_rank_limit(rank)
                 extra_miabs = [f for f in extra_miabs if f.rank() <= max_extra_miab_rank]
         candidates = (orphaned_formations + extra_miabs)
@@ -192,7 +192,7 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
         candidates = [f for f in candidates if f.rank() <= enemy_limit]
 
     rank_multiplier = 1.5
-    value_divisor = 2
+    value_divisor = 8
     while not candidates:
         max_rank = max(rank, rank_multiplier * normal_rank_limit(rank))
         min_value = value * 100/value_divisor - 1500

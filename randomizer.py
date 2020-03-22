@@ -509,6 +509,7 @@ def manage_commands(commands):
     if assembly_patches != None:
         assembly_patches.apply_patch(fout, "learn_hacks")
         #assembly_patches.apply_patch(fout, "improved_party_gear_screen")
+        #assembly_patches.apply_patch(fout, "music_volume")
     else:
         learn_lore_sub = Substitution()
         learn_lore_sub.bytestring = bytes([0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00, 0x00])

@@ -1,4 +1,5 @@
-// Myria's version of wdc65816.arch, which fixes the broken "per" instruction.
+// Myria's version of wdc65816.arch, which fixes the broken "per" instruction
+// and adds "jsr.w" and "jmp.w" for convenience.
 
 endian lsb
 
@@ -446,10 +447,12 @@ jmp (*16,x)    ;$7c =a
 jmp (*16)      ;$6c =a
 jmp [*16]      ;$dc =a
 jmp *16        ;$4c =a
+jmp.w *16      ;$4c ~a
 jml *24        ;$5c =a
 
 jsr (*16,x)    ;$fc =a
 jsr *16        ;$20 =a
+jsr.w *16      ;$20 ~a
 jsl *24        ;$22 =a
 
 brl #*16       ;$82 =a

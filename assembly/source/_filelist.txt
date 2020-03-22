@@ -7,6 +7,7 @@ enable_xmagic_menu
 fanatics_fix
 improved_party_gear_screen
 learn_hacks
+music_volume
 natmag_learn
 randomize_final_party_order
 sketch_fix

@@ -137,6 +137,9 @@ constant config_interface2                                  = $7E1D54
 constant rngseed_encounter                                  = $7E1FA3
 constant rngseed_event                                      = $7E1F6D
 
+// --- SPC700 RAM ADDRESSES ---
+constant akao_engine_base                                   = $0200    // SPC700 base address of akao_engine
+
 // --- DIRECT PAGE OFFSETS ---
 constant dp_soundvar_newcmd                                 = soundvar_newcmd - direct_soundvar
 constant dp_soundvar_currentcmd                             = soundvar_currentcmd - direct_soundvar
@@ -146,6 +149,7 @@ constant dp_soundvar_unused                                 = soundvar_unused - 
 // --- USEFUL ROM ADDRESSES ---
 constant rng_table                                          = $C0FD00
 constant do_spc_command                                     = $C50004
+constant akao_engine                                        = $C50710
 constant rom_item_data                                      = $D85000
 
 // --- MEMORY MAP - BANK C3 (unused space from original) ---

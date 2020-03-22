@@ -4,8 +4,8 @@
 #ARRANGED emberling
 
 #VARIANT ~_
-#VARIANT ~* tier1
-#VARIANT ?* tier2
+#VARIANT ~` tier1
+#VARIANT ?` tier2
 #VARIANT ?_ tier3
 
 #WAVE 0x20 0x25 C.Organ
@@ -129,7 +129,7 @@ l4 [[['02b''v122t''stab''s16'<d+ '12''v87s''stab''s16'<d+d+ m3]m-6
 ##
 t130t192,118
 '11''v84s''vi''long'<<d+1t192,106d1> 'v85s't192,94a+1t192,80g2.'fade'
-*:4441*;
+`:4441`;
 
 {2} $4442
 l32 v8v96,90 [16"s"] %e1
@@ -149,7 +149,7 @@ l4 [[['08b''v118h''stab''s24'f+ '13b''v87s''stab''s16'f+f+ m2]m-4
 '08b''v118h''stab''s24'f+ '13b''v87s''stab''s16'f+ m-1]%k0]
 ##
 'hrp' l2> v50c <v56d v61g v56g v50g v43g v35g1
-*:4442*;
+`:4442`;
 
 {3} $4443
 %e1
@@ -166,9 +166,9 @@ $330 >[3'v123d'a4.a2'v107d'<e>]'v123d'a4.a4a<e>a
 < l4
 [[d+2.d+2.>a+<d+ %k-1]%k0]
 ##
-c4. 'hrp'l2> v54a+ <v60a+ v54a+ v47a+ v40a+ v31a+1 *:93*
+c4. 'hrp'l2> v54a+ <v60a+ v54a+ v47a+ v40a+ v31a+1 `:93`
 '18''v107d'c8
-; $93 *^8 ;4443*
+; $93 `^8 ;4443`
 
 {4} $4444
 %e1r2
@@ -182,7 +182,7 @@ l16 [4"!!!o a8.eb8a4e8b8eb a8e8e8a8e8"j4"e8a8eb"]":e:a8fedb"
 [4"aeeee8a4e8a8ee eea4eeeea8"j4"a8ee"]"fedb"
 ##
 "a8" 'hrp'l2> v51d+ <v57d+ v56d+ v51d+ v44d+ v37d+ v26d+2..
-*:4444*;
+`:4444`;
 
 {5} $4445
 %e1
@@ -202,7 +202,7 @@ l4 '15''stab''s16'>>
 [[[3'v113b'd+'v102b'd+j3d+]%k-1]%k0]
 ##
 r4 'hrp'l2> v52g <v58g v55d v49d v42d v34d v23d2.
-*:4445*;
+`:4445`;
 
 {6} $4446
 %e1
@@ -223,7 +223,7 @@ l4 '14'>'stab''s16'
 [[['v113s'a+'v87s'a+a+m3]m-6'v113s'a+'v87s'a+ m-1]%k0]
 ##
 '13''vil''longer''v85s' %l1[12d+4]%l0%l1v16'vfs'a+4a+4a+4'fade'%l0m
-*:4446*;
+`:4446`;
 
 {7} $4447
 %e1
@@ -241,7 +241,7 @@ l8 [['s16''v115b'd4.c+4>a+4<d4d
 '03b''s24''v122t' [[a+2.<c+2.>a+2 %k-1]%k0]
 ##
 '14''vil''longest''v85s'> %l1[12g4]'vfs'g4g4g4'fade'%l0m
-*:4447*;
+`:4447`;
 
 {8} $4448
 %e1
@@ -256,4 +256,4 @@ $
 [3"y2.y2.y2"]"y2.y2.z2"
 ##
 '15b'c1^1^1 r1
-*:4448*;
+`:4448`;

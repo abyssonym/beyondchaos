@@ -1,0 +1,201 @@
+#TITLE Lavos' Theme (Dancing Mad ver.)
+#ALBUM Chrono Trigger
+#COMPOSER Yasunori Mitsuda
+#ARRANGED HoxNorf, emberling
+##created with sqspcmml alpha 0.8.7a
+
+#VARIANT ~_
+#VARIANT ~` tier1
+#VARIANT ?` tier2
+#VARIANT ?_ tier3
+
+#WAVE 0x20 0x45
+#WAVE 0x21 0x60
+#WAVE 0x22 0x1B
+#WAVE 0x23 0x06
+#WAVE 0x24 0x4C
+#WAVE 0x25 0x16
+#WAVE 0x26 0x25
+
+#WAVE 0x20 0x25 C.Organ
+#WAVE 0x21 0x3b P.Organ
+#WAVE 0x22 0x3a Maria
+#WAVE 0x23 0x39 Draco
+#WAVE 0x24 0x14 Snare
+#WAVE 0x25 0x16 Timpani
+#WAVE 0x26 0x12 Cymbal
+#WAVE 0x27 0x24 Bells
+#WAVE 0x28 0x1C Bass
+#WAVE 0x2A 0x1B Harp
+#WAVE 0x2B 0x36 Flute
+
+#def 0i= |0 {Strings -> Organ}
+#def 1i= |7 {Piano -> Bell}
+#def 2i= |A %r13 {Harp}
+#def 3i= |2 {Choir -> Maria}
+#def 4i= |6 {Cymbal}
+#def 5i= |5 {Timpani}
+#def 6i= |1 {Organ}
+#def 3ib= |3 {Choir -> Draco}
+#def 3ic= @3 %a8 {Choir -> Sine}
+
+#def 0o= o6
+#def 1o= o6
+#def 2o= o6
+#def 3o= o4
+#def 4o= o5
+#def 5o= o6
+#def 6o= o6
+#def 3ob= o7
+#def 3oc= o5
+
+#def 0v=   v90
+#def 0f= v1,90
+#def 1v=   v100
+#def 1f= v1,100
+#def 2v=   v100
+#def 2f= v1,100
+#def 3v=   v100
+#def 3f= v1,100
+#def 4v=   v100
+#def 4f= v1,100
+#def 5v=   v100
+#def 5f= v1,100
+#def 6v=   v70
+#def 6f= v1,70
+#def 3vb= v100
+#def 3fb= v1,100
+#def 3vc= v100
+#def 3fc= v1,100
+
+{1}
+$4441
+t119%v40%b0,100%f0,0'6v*v1.00'%e1r2
+$[
+'6i' '6v*v1.27'p64'6o+o2'r2d+4d4^1^4r4c+4c4^1^4r4d+4d4^1^4r4c+4c4^1
+'0i' '0v*v.50''0o+o1'%a7%r3d+1^1d1f+1f1>a+1<c+1d+1c1^1^1^1]
+
+'2i' '2v*v.70'p64'2o+o1'd+2>a+2<c+1d+2d+4f4>a+2^4a+4<c+2^4>a+4<c2>g+4.
+d+8f1^1<d+2>a+2<c+1d+2d+4f4>a+2^4a+4<c+2^4d+8c+8c2>g+2a+1^1
+'0i' '0v*v.50'p64'0o'%a6%r3d+1^1'0v*v.58'c+1^1'0v*v.65'd+1^1^1^1'0v*v1.00'
+%a10<[3f1^4.r8d+4.r8]f1^1
+`:4441`
+;
+
+
+{2}
+$4442
+'6v*v1.00'%e1r2
+$[
+'6i' '6v*v.90'p44'6o+o1'r2a+4a4^1^4r4g+4g4^1^4r4a+4a4^1^4r4g+4g4^1
+'0i' '0v*v.40'p28'0o'%a7%r3a+1^1a1<c+1c1>f1g+1a+1f1^1^1^1]
+
+'2i' '2v*v.60'p64'2o'r2r4f4g+1r2r4f4f+2f4d+4r1r2r4c4r2r4c4c+1r2r4f4g+1
+r2r4f4f+2f4d+4r1r2r4c4r2r4c4>a+1
+'0i' '0v*v.40'p98'0o-o1'%a6%r3a+1^1'0v*v.48'g+1^1'0v*v.55'a+1^1^1'0v*v.80'
+<<d+1'0v*v.85'%a10[3c1^4.r8>a+4.r8<]c1^1
+`:4442`
+;
+
+
+{3}
+$4443
+'6v*v1.00'%e1r2
+$[
+'6i' '6v*v.90'p84'6o+o1'r2g+4g4^1^4r4f+4f4^1^4r4g+4g4^1^4r4f+4f4^1
+'0i' '0v*v.40'p100'0o'%a7%r3g+1^1g1b1a+1d+1f+1g+1d+1^1^1^1]
+
+'2i' '2v*v.60'p64'2o'r2d+2^1r2d+2^1r2f+2r1r2>a+2^1r2<d+2^1r2d+2^1r2f+2
+r1r2>a+2^1
+'0i' '0v*v.35'p30'0o-o1'%a6%r3f+1^1'0v*v.40'f1^1'0v*v.50'g+1^1'0v*v.70'
+<a+1^1'0v*v.90'%a10[3a+1^4.r8g+4.r8]a+1^1
+`:4443`
+;
+
+
+{4}
+$4444
+'0v*v1.00'%e1r2
+$[
+'3ib' '3vb*v1.06'p64'3ob-o2'%a8%r3[4f1^1]
+'0i''0o-o2''0v*v.25'%a7%r3f1g+1a1<c+1d1c+1>b1^1
+a+1^1^1^1]
+
+'2i' '2v*v.60'p64'2o-o1'r4a+2^4^1r4a+2^4^1r4<c+4r2r4d+2r4r4>f2^4^1r4a+2
+^4^1r4a+2^4^1r4<c+4r2r4d+2r4r4>f2^4^1
+'0i' '0v*v.30'p64'0o-o3'%a6%r3b1^1'0v*v.45'a+1^1'0v*v.60'g+1^1^1^2^4'3ib''3vb*v1.00''3ob-o2'%a13%r3
+g+12r24r8[3f1^2r4f12r24r8]'3vb*v1.13'f1%r11^1
+`:4444`
+;
+
+
+{5}
+$4445
+'0v*v1.00'%e1r2
+$[
+'0i' '0v*v1.06'p64'0o-o3'%a8%r3[4f1^1]'0v*v.45'%a7f1g+1a1<c+1d1c+1>b1^1
+a+1^1^1^1]
+
+'2i' '2v*v.60'p64'2o-o1'd+1^1d+1^1f+1g+1>a+1^1<d+1^1d+1^1f+1g+1>a+1^1
+'0i' '0v*v.30'p64'0o-o4'%a6%r3b1^1'0v*v.45'a+1^1'0v*v.60'g+1^1^1^2^4'0v*v1.00'
+%a12g+12r24r8[3f1^2r4f12r24r8]'0v*v1.13'f1^1
+`:4445`
+;
+
+
+{6}
+$4446
+'5v*v1.27'%e1
+'5i' '5v*v.00''5f*v96,1.27'p64'5o-o3'r48f24f24f24f24f24f24f24f24f24f24
+f24f48
+$[[4
+'1i' p20'1v*v1.27''1o-o1'f1^2^48
+'5i' '5v*v.00''5f*v96,1.20'p64'5o-o3'f24f24f24f24f24f24f24f24f24f24f24
+f48]^1[10r1]r2r48'5v*v.00''5f*v96,1.20'f24f24f24f24f24f24f24f24f24f24f24
+f48]
+
+r1[7r1]
+'3i' '3v*v.55'p64'3o'%r4a+1[<c+1>a+1]<c2c+2>a+1^1[5r1]
+'0i' '0v*v.65'p64'0o'%a6%r3g+1^1^1
+'1i' p20'1v*v1.27''1o-o1'[3f1^1]f1^2r48
+'5i' p64'5o-o3''5v*v.01''5f*v96,1.27'f24f24f24f24f24f24f24f24f24f24f24
+f48
+`:4446`
+;
+
+
+{7}
+$4447
+'4v*v1.27'%e1
+'4i' p64'4o''4v*v1.00'%a3%r14r12a4.^24
+$[[4^1^2^12a4.^24]%r16^1[10^1]r2r12a4.^24]
+
+^1^1[6r1]
+'3ic' '3vc*v.35'p98'3oc'%r4[r2f+2f1]r2f+2g+1f1^1[5r1]
+'5i' p64'5o-o3'r2r4r48'5v*v.45'g+24'5v*v.55'g+24'5v*v.65'g+24^16^24r1r1
+
+'4i' '4v*v1.10'p64'4o'a1[3^1a1]^2^8%a3%r14a4.
+`:4447`
+;
+
+
+{8}
+$4448
+'5v*v1.27'%e1
+'5i' '5v*v.00''5f*v96,1.20'p64'5o-o3'[f24f24f24f24f24f24]
+'5i' p64'5o-o3'
+$[[4'5v*v1.27'f1^2'5v*v.00''5f*v96,1.20'[f24f24f24f24f24f24]]'5v*v.60'
+f1^1[6r1]'5v*v.70'r2a+4f4a+2^4f4a+2a+4f4a+2'5v*v.00''5f*v96,1.20'[f24f24
+f24f24f24f24]]
+
+^4r4r2[9r1]
+'3ic' '3vc*v.30'p30'3oc'%r4r2c+2^1>f+1g+1<c+1^1r1r1r1r1
+'5i' p64'5o-o3''5v*v.40'g+2'5v*v.50'g+2'5v*v.60'g+2'5v*v.70'g+4'5v*v.40'
+g+24'5v*v.50'g+24'5v*v.60'g+24'5v*v.70'g+8g+2'5v*v.80'g+2'5v*v1.00'g+2
+'5v*v1.10'g+4'5v*v1.20'g+8'5v*v.60'g+8[3f4.'5v*v.90'f16'5v*v1.27'f16f4.
+'5v*v.90'f16'5v*v1.27'f16f4.'5v*v.90'f16'5v*v1.27'f16<c4c4>]f4.'5v*v.90'
+f16'5v*v1.27'f16f4.'5v*v.90'f16'5v*v1.27'f16f2'5v*v.00''5f*v96,1.27'[f24
+f24f24f24f24f24]
+`:4448`
+;
+

@@ -264,6 +264,9 @@ NORMAL_CODES = [
     Code('suplexwrecks', "SUPLEX MODE", "All characters use the Sabin sprite, as well as having a name similar to Sabin. All characters have the Blitz and Suplex commands, and every enemy can be hit by Suplex.", "major"),
     Code('thescenarionottaken', 'DIVERGENT PATHS MODE', "Changes the way the 3 scenarios are split up.", "major"),
     Code('worringtriad', "START IN WOR", "The player will start in the World of Ruin, with all of the World of Balance treasure chests, along with a guaranteed set of items, and more Lores.", "major"),
+    
+    Code('johnnybquiet', "MUSIC DISABLE OPTION", "Music can be turned on/off in the Config menu.  Compatible with other music codes.", "aesthetic"),
+    Code('myriaequip', "ENABLE MYRIA'S PARTY EQUIP", "Enables Myria's new party equip screen. (REQUIRES partyparty OR makeover OR WILL CRASH)", "aesthetic"),
 ]
 
 MAKEOVER_MODIFIER_CODES = [

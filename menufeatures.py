@@ -1,4 +1,5 @@
-from utils import Substitution, pointer16_to_bytes, pointer24_to_bytes
+from utils import (Substitution, pointer16_to_bytes, pointer24_to_bytes,
+    get_asm_patch, apply_asm_patch)
 
 common_added = False
 
@@ -2087,3 +2088,13 @@ def fix_gogo_portrait(fout):
     """Hides the portion of Gogo's portrait that shows incorrectly on his status menu."""
     fout.seek(0x35f51)
     fout.write(bytes([0x0a, 0x62]))
+
+
+def add_music_disable_option(fout):
+    """Adds a Music option to the Config screen to let you turn off the music."""
+    apply_asm_patch(fout, "music_disable_option")
+
+
+def improved_party_gear_screen(fout):
+    """Improves the party equip screen by adding character slot names and espers."""
+    apply_asm_patch(fout, "improved_party_gear_screen")

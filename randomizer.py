@@ -24,7 +24,8 @@ from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_cursed_shield, unhardcode_tintinabar)
 from locationrandomizer import (get_locations, get_location, get_zones, get_npcs, randomize_forest)
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu,
-                          show_original_names, improve_dance_menu, y_equip_relics, fix_gogo_portrait)
+                          show_original_names, improve_dance_menu, y_equip_relics, fix_gogo_portrait,
+                          add_music_disable_option, improved_party_gear_screen)
 from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monsters,
                                get_metamorphs, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table,
@@ -44,6 +45,8 @@ from utils import (COMMAND_TABLE, LOCATION_TABLE, LOCATION_PALETTE_TABLE,
                    DIVERGENT_TABLE,
                    HIROM, NEW_ROM_SIZE,
                    get_long_battle_text_pointer,
+                   load_asm_patches, get_asm_patch, apply_asm_patch,
+                   pointer16_to_bytes, pointer24_to_bytes,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -65,7 +68,7 @@ seed, flags = None, None
 seedcounter = 1
 sourcefile, outfile = None, None
 fout = None
-assembly_patches = None
+use_new_asm = True
 
 
 NEVER_REPLACE = ["fight", "item", "magic", "row", "def", "magitek", "lore",
@@ -506,10 +509,8 @@ def manage_commands(commands):
     # Dances can be learned by anyone.
     # Bushido and Blitz can be learned by anyone reaching those levels.
     # Handle multiple of these happening together in one battle.
-    if assembly_patches != None:
-        assembly_patches.apply_patch(fout, "learn_hacks")
-        #assembly_patches.apply_patch(fout, "improved_party_gear_screen")
-        #assembly_patches.apply_patch(fout, "music_volume")
+    if use_new_asm:
+        apply_asm_patch(fout, "learn_hacks")
     else:
         learn_lore_sub = Substitution()
         learn_lore_sub.bytestring = bytes([0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00, 0x00])
@@ -572,16 +573,16 @@ def manage_commands(commands):
     rage_blank_sub.set_location(0x47AA0)
     rage_blank_sub.write(fout)
 
-    if assembly_patches != None:
-        assembly_patches.apply_patch(fout, "enable_esper_magic")
+    if use_new_asm:
+        apply_asm_patch(fout, "enable_esper_magic")
     else:
         eems = EnableEsperMagicSub()
         eems.set_location(0x3F091)
         eems.write(fout)
 
     # Let X-Magic users use out-of-battle Magic menu.
-    if assembly_patches != None:
-        assembly_patches.apply_patch(fout, "enable_xmagic_menu")
+    if use_new_asm:
+        apply_asm_patch(fout, "enable_xmagic_menu")
     else:
         enable_xmagic_menu_sub = Substitution()
         enable_xmagic_menu_sub.bytestring = bytes([
@@ -606,10 +607,10 @@ def manage_commands(commands):
     protect_battle_commands_sub.set_location(0x252E9)
     protect_battle_commands_sub.write(fout)
 
-    if assembly_patches != None:
-        assembly_patches.apply_patch(fout, "enable_morph")
-        assembly_patches.apply_patch(fout, "enable_mpoint")
-        assembly_patches.apply_patch(fout, "ungray_statscreen")
+    if use_new_asm:
+        apply_asm_patch(fout, "enable_morph")
+        apply_asm_patch(fout, "enable_mpoint")
+        apply_asm_patch(fout, "ungray_statscreen")
     else:
         enable_morph_sub = Substitution()
         enable_morph_sub.bytestring = bytes([0xEA] * 2)
@@ -626,8 +627,8 @@ def manage_commands(commands):
         ungray_statscreen_sub.set_location(0x35EE1)
         ungray_statscreen_sub.write(fout)
 
-    if assembly_patches != None:
-        fanatics_fix = assembly_patches["fanatics_fix"]
+    if use_new_asm:
+        fanatics_fix = get_asm_patch("fanatics_fix")
         fanatics_fix.write(fout)
         fanatics_fix_command_offset = fanatics_fix.exports["replacement_command"] - HIROM
     else:
@@ -1220,8 +1221,8 @@ def manage_natural_magic():
     except ValueError:
         return
 
-    if assembly_patches != None:
-        natmag_learn = assembly_patches["natmag_learn"]
+    if use_new_asm:
+        natmag_learn = get_asm_patch("natmag_learn")
         natmag_learn.write(fout)
         natmag_learn_table = natmag_learn.exports["magic_table"] - HIROM
     else:
@@ -1725,8 +1726,8 @@ def manage_balance(newslots=True):
     sealed_kefka = get_monster(0x174)
 
     if not options_.is_code_active('sketch'):
-        if assembly_patches != None:
-            assembly_patches.apply_patch(fout, "sketch_fix")
+        if use_new_asm:
+            apply_asm_patch(fout, "sketch_fix")
         else:
             sketch_fix_sub = Substitution()
             sketch_fix_sub.set_location(0x2F5C6)
@@ -1989,8 +1990,8 @@ def manage_items(items, changed_commands=None):
 
     assert(auto_equip_relics)
 
-    if assembly_patches != None:
-        assembly_patches.apply_patch(fout, "auto_equip")
+    if use_new_asm:
+        apply_asm_patch(fout, "auto_equip")
     else:
         auto_equip_sub = Substitution()
         auto_equip_sub.set_location(0x39EF9)
@@ -3393,8 +3394,8 @@ def create_dimensional_vortex():
 
 
 def randomize_final_party_order():
-    if assembly_patches != None:
-        assembly_patches.apply_patch(fout, "randomize_final_party_order")
+    if use_new_asm:
+        apply_asm_patch(fout, "randomize_final_party_order")
     else:
         code = bytes([
             0x20, 0x99, 0xAA,       # JSR $AA99
@@ -4191,12 +4192,12 @@ def diverge(fout):
 
 
 def randomize(args):
-    global outfile, sourcefile, flags, seed, fout, assembly_patches, ALWAYS_REPLACE, NEVER_REPLACE, TEST_ON
+    global outfile, sourcefile, flags, seed, fout, use_new_asm, ALWAYS_REPLACE, NEVER_REPLACE, TEST_ON
 
     # Parse the command line for special options not directly related to seed choice.
     normal_args = []
     do_sleep = True
-    use_new_asm = False
+    use_new_asm = True
     build_asm_all = False
     build_asm_only = None
     for arg in args[1:]:
@@ -4207,6 +4208,8 @@ def randomize(args):
                 do_sleep = False
             elif arg == "--new-asm":
                 use_new_asm = True
+            elif arg == "--old-asm":
+                use_new_asm = False
             elif arg == "--build-asm":
                 build_asm_all = True
             elif arg[:12] == "--build-asm=":
@@ -4229,11 +4232,10 @@ def randomize(args):
 
     # Load assembly patches, building if requested.
     if build_asm_all:
-        assemblymanager.build_all_patches()
+        assemblymanager.build_all_patches(NEW_ROM_SIZE)
     elif build_asm_only != None:
-        assemblymanager.build_patch_set([ build_asm_only ])
-    if use_new_asm:
-        assembly_patches = assemblymanager.load_all_patches()
+        assemblymanager.build_patch_set([ build_asm_only ], NEW_ROM_SIZE)
+    load_asm_patches()
 
     # Ask the user where to find the ROM.
     previous_rom_path = ''
@@ -4777,6 +4779,14 @@ def randomize(args):
         manage_colorize_animations()
     reseed()
 
+    if options_.is_code_active('johnnybquiet'):
+        add_music_disable_option(fout)
+    reseed()
+    
+    if options_.is_code_active('myriaequip'):
+        improved_party_gear_screen(fout)
+    reseed()
+    
     if options_.is_code_active('suplexwrecks'):
         manage_suplex(commands, monsters)
     reseed()

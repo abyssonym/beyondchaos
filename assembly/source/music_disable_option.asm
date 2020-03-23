@@ -434,7 +434,7 @@ warnpc($C3FB00)
 // SPC700 patch: Fix volume being maximized when unpausing a song.
 // The way the AKAO engine is coded, when resuming a song, the music
 // volume will be set to max, ignoring the parameter from the 65816.
-// The patch is to NOP an instruction from TransferPausedDataBack:
+// The patch is to modify these instructions:
 //
 //         MOV   $8B,#$81      ; Interrupt command $81
 //         MOV   $8C,#$10      ; Parameter Volume: #$10
@@ -442,7 +442,11 @@ warnpc($C3FB00)
 // HERE -> MOV   $A6,#$20      ; Master Volume high = #$20
 //         JMP   L0C6A         ; $81: Set master volume to yy, w/ envelope xx
 //
-// The comments' labeling of "volume" and "envelope" are backward.
+// However, we need 8 bytes, and only have 6.  I optimized the first
+// part of TransferPausedSongBack to free up 3 more bytes for the
+// patch to the A6 writes.
+//
+// The comments' above labeling of "volume" and "envelope" are backward.
 // 8D already contains the desired volume from the "play music" command.
 // The NewSong routine copied 8D to A6 already.
 reorg(akao_engine + $1095 - akao_engine_base)

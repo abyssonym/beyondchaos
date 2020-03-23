@@ -3,6 +3,8 @@ from collections import defaultdict
 import random
 import re
 
+import assemblymanager
+
 try:
     from sys import _MEIPASS
     MEI = True
@@ -69,6 +71,8 @@ POEMS_TABLE = path.join(CUSTOM_PATH, "poems.txt")
 
 HIROM = 0xC00000
 NEW_ROM_SIZE = 0x400000
+
+assembly_patches = None
 
 
 def open_mei_fallback(filename, mode='r', encoding=None):
@@ -897,6 +901,19 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         new_palette = list(map(components_to_color, new_palette))
 
     return new_palette
+
+
+def load_asm_patches():
+    global assembly_patches
+    assembly_patches = assemblymanager.load_all_patches()
+
+
+def get_asm_patch(name):
+    return assembly_patches[name]
+
+
+def apply_asm_patch(fout, name):
+    assembly_patches[name].write(fout)
 
 
 def decompress(bytestring, simple=False, complicated=False, debug=False):

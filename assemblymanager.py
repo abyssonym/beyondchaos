@@ -13,8 +13,6 @@ import struct
 import subprocess
 import sys
 
-from utils import (HIROM, NEW_ROM_SIZE)
-
 
 TEMP_DIR = "build"
 ASSEMBLER_DIR = os.path.join("assembly", "assemblers")
@@ -243,7 +241,7 @@ def get_assembler_path(base):
 
 
 # Build a single 65816 patch.
-def build_65816_patch(name, bass_path):
+def build_65816_patch(name, bass_path, new_rom_size):
     # The algorithm we do here is to build the assembly patches twice,
     # once with untouched bytes filled with 00 and once filled with FF.
     # This tells us which bytes the patch is overwriting.
@@ -299,7 +297,7 @@ def build_65816_patch(name, bass_path):
     patched_ranges = []
     run_start = None
     
-    for i in range(NEW_ROM_SIZE):
+    for i in range(new_rom_size):
         if data00[i] == dataFF[i]:
             if run_start == None:
                 run_start = i
@@ -315,7 +313,7 @@ def build_65816_patch(name, bass_path):
     
     # Verify the format of the export table.
     try:
-        decode_export_table(DecodeBuffer(data00, NEW_ROM_SIZE, len(data00) - NEW_ROM_SIZE))
+        decode_export_table(DecodeBuffer(data00, new_rom_size, len(data00) - new_rom_size))
     except PatchFormatError as e:
         raise AssemblerError(e)
     
@@ -330,7 +328,7 @@ def build_65816_patch(name, bass_path):
         patch_data += patch_entry_encoder.pack(patch[0], patch[1])
         patch_data += data00[patch[0] : patch[0] + patch[1]]
     # Export table.
-    patch_data += data00[NEW_ROM_SIZE : ]
+    patch_data += data00[new_rom_size : ]
     
     # Verify that decoding works.
     patch_object = decode_patch(DecodeBuffer(patch_data, 0, len(patch_data)))
@@ -357,7 +355,7 @@ def load_patch_list_file():
 
 
 # Builds a set of patches.
-def build_patch_set(patch_list):
+def build_patch_set(patch_list, new_rom_size):
     print()
     
     # Find the bass to use.
@@ -366,15 +364,15 @@ def build_patch_set(patch_list):
     # Iterate over the list of patches.
     for name in patch_list:
         print("Building %s..." % name)
-        build_65816_patch(name, bass)
+        build_65816_patch(name, bass, new_rom_size)
     
     print("Done building patches.")
     print()
 
 
 # Build all patches.
-def build_all_patches():
-    build_patch_set(load_patch_list_file())
+def build_all_patches(new_rom_size):
+    build_patch_set(load_patch_list_file(), new_rom_size)
 
 
 # Patch manager object.

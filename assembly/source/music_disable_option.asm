@@ -486,7 +486,7 @@ loop2:
 loop3:
 	db $F7, $92                // MOV   A,($92)+Y     ; From Saved dp 1
 	db $D6, $FF, $00           // MOV   $00FF+Y,A     ; To dp 1
-	db $FE, $F9                // DBNZ  Y,loop2       ; Decrease Y, loop unless zero
+	db $FE, $F9                // DBNZ  Y,loop3       ; Decrease Y, loop unless zero
 	
 	// Now the actual part of the hack that matters.
 	// $A6 is set by the caller function to the desired volume level.

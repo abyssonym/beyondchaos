@@ -66,6 +66,12 @@ exactpc($C3236F)
 }
 
 
+// Hook when the player reorders party members.
+reorg($C32533)
+	jmp party_reorder_hook
+warnpc($C32536)
+
+
 // Redo navigation data for config page 1.
 reorg($C33858)
 function navigation_hacks {
@@ -426,6 +432,26 @@ function reset_hook {
 	// Resume boot sequence.
 	jmp.w $C30006
 }
+
+
+// When the player reorders characters in the menu, the routine at $C324F8
+// swaps the corresponding bits of config_multiplayer so that controls remain
+// the same per character.  This routine doesn't know that we've added a new
+// bit to this byte and blows it away.
+function party_reorder_hook {
+	// We are JMPed to with A = new intended value of config_multiplayer.
+	// Use a stack byte as temporary memory for this calculation.
+	pha
+	lda.w config_multiplayer
+	and.b #$F0
+	ora 1,s
+	sta.w config_multiplayer
+	// Remove value from stack (we don't need to restore A).
+	pla
+	// Returns from the function that JMPed to us.
+	rts
+}
+
 
 warnpc($C3FB00)
 

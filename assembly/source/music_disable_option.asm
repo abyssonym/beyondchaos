@@ -456,7 +456,6 @@ function party_reorder_hook {
 warnpc($C3FB00)
 
 
-
 // SPC700 patch: Fix volume being maximized when unpausing a song.
 // The way the AKAO engine is coded, when resuming a song, the music
 // volume will be set to max, ignoring the parameter from the 65816.
@@ -476,43 +475,45 @@ warnpc($C3FB00)
 // 8D already contains the desired volume from the "play music" command.
 // The NewSong routine copied 8D to A6 already.
 reorg(akao_engine + $1095 - akao_engine_base)
+architecture spc700   // We're writing SPC700 code
+base $1095
 function akao_patch {
 	// Save 3 bytes here by optimizing.
 	// * A was reloaded with zero before writing to $92, so moving the write
 	//   to $92 allows saving an extra loading of A with zero.  2 bytes.
 	// * Y gets loaded with zero.  By loading from A instead of an immediate,
 	//   we save 1 byte.
-	db $8F, $FF, $C6           // MOV   $C6,#$FF      ; Paused Song = #$FF
-	db $E8, $00                // MOV   A,#$00        ; Zero A
-	db $C4, $90                // MOV   $90,A         ; #$00
-	db $C4, $92                // MOV   $92,A         ; #$00
-	db $FD                     // MOV   Y,A           ; Zero Y
-	db $E8, $F6                // MOV   A,#$F6        ; #$F6
-	db $C4, $91                // MOV   $91,A         ; Point to $F600, Current Voice Data
-	db $E8, $FA                // MOV   A,#$FA        ; #$FA
-	db $C4, $93                // MOV   $93,A         ; Point to $FA00, Paused Voice Data
+	str $C6=#$FF               // MOV   $C6,#$FF      ; Paused Song = #$FF
+	lda #$00                   // MOV   A,#$00        ; Zero A
+	sta.b $90                  // MOV   $90,A         ; #$00
+	sta.b $92                  // MOV   $92,A         ; #$00
+	tay                        // MOV   Y,A           ; Zero Y
+	lda #$F6                   // MOV   A,#$F6        ; #$F6
+	sta.b $91                  // MOV   $91,A         ; Point to $F600, Current Voice Data
+	lda #$FA                   // MOV   A,#$FA        ; #$FA
+	sta.b $93                  // MOV   $93,A         ; Point to $FA00, Paused Voice Data
 	// The rest of the code until the end is the same.
 loop1:
-	db $F7, $92                // MOV   A,($92)+Y     ; From $FA00+Y, Paused
-	db $D7, $90                // MOV   ($90)+Y,A     ; To F600+Y, Current
-	db $FC                     // INC   Y             ; Increment Y
-	db $D0, $F9                // BNE   loop1         ; Loop for $100 bytes
-	db $AB, $91                // INC   $91           ; Point to next $100
-	db $AB, $93                // INC   $93           ; Point to next $100
-	db $78, $FA, $91           // CMP   $91,#$FA      ; Have we reached $FA00
-	db $D0, $F0                // BNE   loop1         ; Loop for $400 bytes
-	db $1A, $92                // DECW  $92           ; Point to $FDFF
-	db $8D, $80                // MOV   Y,#$80        ; Y = #$80, dp0 size
+	lda ($92),y                // MOV   A,($92)+Y     ; From $FA00+Y, Paused
+	sta ($90),y                // MOV   ($90)+Y,A     ; To F600+Y, Current
+	iny                        // INC   Y             ; Increment Y
+	bne loop1                  // BNE   loop1         ; Loop for $100 bytes
+	inc.b $91                  // INC   $91           ; Point to next $100
+	inc.b $93                  // INC   $93           ; Point to next $100
+	cmp $91=#$FA               // CMP   $91,#$FA      ; Have we reached $FA00
+	bne loop1                  // BNE   loop1         ; Loop for $400 bytes
+	dew $92                    // DECW  $92           ; Point to $FDFF
+	ldy #$80                   // MOV   Y,#$80        ; Y = #$80, dp0 size
 loop2:
-	db $F7, $92                // MOV   A,($92)+Y     ; From Saved dp 0
-	db $D6, $FF, $FF           // MOV   $FFFF+Y,A     ; To dp 0
-	db $FE, $F9                // DBNZ  Y,loop2       ; Decrease Y, loop unless zero
-	db $AB, $93                // INC   $93           ; Point to $FEFF
-	db $8D, $A0                // MOV   Y,#$A0        ; Y = #$A0, dp1 size
+	lda ($92),y                // MOV   A,($92)+Y     ; From Saved dp 0
+	sta $FFFF,y                // MOV   $FFFF+Y,A     ; To dp 0
+	bne --y=loop2              // DBNZ  Y,loop2       ; Decrease Y, loop unless zero
+	inc.b $93                  // INC   $93           ; Point to $FEFF
+	ldy #$A0                   // MOV   Y,#$A0        ; Y = #$A0, dp1 size
 loop3:
-	db $F7, $92                // MOV   A,($92)+Y     ; From Saved dp 1
-	db $D6, $FF, $00           // MOV   $00FF+Y,A     ; To dp 1
-	db $FE, $F9                // DBNZ  Y,loop3       ; Decrease Y, loop unless zero
+	lda ($92),y                // MOV   A,($92)+Y     ; From Saved dp 1
+	sta $00FF,y                // MOV   $00FF+Y,A     ; To dp 1
+	bne --y=loop3              // DBNZ  Y,loop3       ; Decrease Y, loop unless zero
 	
 	// Now the actual part of the hack that matters.
 	// $A6 is set by the caller function to the desired volume level.
@@ -526,13 +527,14 @@ loop3:
 	// Instead, if the desired volume is less than $20, set $A6 to the
 	// desired volume.  If not, allow the ramp-up as before.  $8D is
 	// already the desired volume, so we save 3 bytes there.
-	db $8F, $81, $8B           // MOV   $8B,#$81      ; Interrupt command $81
-	db $8F, $10, $8C           // MOV   $8C,#$10      ; Parameter Volume: #$10
+	str $8B=#$81               // MOV   $8B,#$81      ; Interrupt command $81
+	str $8C=#$10               // MOV   $8C,#$10      ; Parameter Volume: #$10
 	// Custom code
-	db $78, $20, $A6           // CMP   $A6,#$20      ; Is the desired volume < #$20?
-	db $90, $03                // BCC   skip_A6_write ; If so, skip this.
-	db $8F, $20, $A6           // MOV   $A6,#$20      ; Master Volume high = #$20
+	cmp $A6=#$20               // CMP   $A6,#$20      ; Is the desired volume < #$20?
+	bcc skip_A6_write          // BCC   skip_A6_write ; If so, skip this.
+	str $A6=#$20               // MOV   $A6,#$20      ; Master Volume high = #$20
 skip_A6_write:
-	db $5F, $6A, $0C           // JMP   L0C6A         ; $81: Set master volume to yy, w/ envelope xx
+	jmp $0C6A                  // JMP   L0C6A         ; $81: Set master volume to yy, w/ envelope xx
 }
+architecture wdc65816
 warnpc(akao_engine + $10DF - akao_engine_base)

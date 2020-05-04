@@ -336,7 +336,6 @@ def randomize_magicite(fout, sourcefile):
     enemy_espers = select_magicite(remaining_small_espers, replace_ids)
     shuffled_espers.update(enemy_espers)
 
-
     # TODO: maybe allow tritoch to be big if we skip cutscenes
     #tritoch_id = [e.id for e in espers if e.name == "Tritoch"][0]
     #if esper_graphics[tritoch_id].large:
@@ -352,10 +351,10 @@ def randomize_magicite(fout, sourcefile):
     raiden_id = espers_by_name["Raiden"].id
 
     while True:
-        odin_candidates = [e for e in espers if e.id not in shuffled_espers.keys() and e.rank <= 3]
+        odin_candidates = [e for e in espers if e not in shuffled_espers.values() and e.rank <= 3]
         odin_replacement = select_magicite(odin_candidates, [odin_id])
         odin_replacement_rank = odin_replacement[odin_id].rank
-        raiden_candidates = [e for e in espers if e.id not in shuffled_espers.keys() and e.rank > odin_replacement_rank]
+        raiden_candidates = [e for e in espers if e not in shuffled_espers.values() and e.rank > odin_replacement_rank]
         if not raiden_candidates:
             continue
         raiden_replacement = select_magicite(raiden_candidates, [raiden_id])
@@ -369,6 +368,9 @@ def randomize_magicite(fout, sourcefile):
         remaining_values = [e for e in espers if e not in shuffled_espers.values() and e.rank <= max(rank + 1, 2)]
         random.shuffle(remaining_values)
         shuffled_espers.update(zip(remaining_keys, remaining_values))
+
+    assert(sorted([e.id for e in espers], key=id) == sorted(shuffled_espers.keys()))
+    assert(sorted(espers, key=id) == sorted(shuffled_espers.values(), key=id))
 
     locations = [e.location for e in espers]
     for i, e in shuffled_espers.items():

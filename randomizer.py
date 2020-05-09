@@ -4506,6 +4506,12 @@ def randomize(args):
             m.screw_tutorial_bosses(old_vargas_fight=options_.is_code_active('rushforpower'))
             m.write_stats(fout)
 
+    # This needs to be before manage_monster_appearance or some of the monster palettes will be messed up.
+    esper_replacements = {}
+    if options_.randomize_magicite:
+        esper_replacements = randomize_magicite(fout, sourcefile)
+    reseed()
+
     if options_.random_palettes_and_names and options_.random_enemy_stats:
         mgs = manage_monster_appearance(monsters,
                                         preserve_graphics=preserve_graphics)
@@ -4521,11 +4527,6 @@ def randomize(args):
     if options_.random_character_stats:
         # do this after items
         manage_equipment(items)
-    reseed()
-
-    esper_replacements = {}
-    if options_.randomize_magicite:
-        esper_replacements = randomize_magicite(fout, sourcefile)
     reseed()
 
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]

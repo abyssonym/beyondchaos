@@ -1,7 +1,7 @@
 FF6 Beyond Chaos EX Randomizer
 a fork of Abyssonym's FF6 Beyond Chaos Randomizer
-Version:    4.0-beta.5
-Date:       2020-03-22
+Version:    4.0
+Date:       2020-05-10
 URL:        https://github.com/subtractionsoup/beyondchaos/releases/latest
 Beyond Chaos Discord:    https://discord.gg/S3G3UXy
 
@@ -17,7 +17,7 @@ Setup:
 	Linux/Mac:
 		Download the source files and extract them to a folder of your choice.
 		Install Python 3.7 or higher. (It DOES NOT work with python 2.)
-		Open a command prompt, navigate to the folder you chose, and type "pip install -r requirements.txt"
+		Open a command prompt, navigate to the folder you chose, and type "pip3 install -r requirements.txt"
 
 Running the randomizer:
     Windows:
@@ -83,6 +83,18 @@ A: Use the code "johnnydmad" in the flags.
 
 Q: I lost my seed number but I still have the rom. Can I find my seed number again?
 A: The seed is displayed in the auto-generated guide, in the rom's SNES header, and in the opening sequence with the magitek armor.
+
+Q: It says I learned a new Blitz but nobody in my party has Blitz.
+A: Whenever ANY character reaches the level required to learn a Blitz, any characters with Blitz learn it.
+
+Q: It says I learned a new Dance but nobody in my party has Dance.
+A: Whenever you win a fight in a new environment, you learn that Dance, regardless of whether anyone with Dance is in your party.
+
+Q: It says I learned a new Lore but nobody in my party has Lore.
+A: Whenever you win a fight in which a Lore is used, you learn the Lore, regardless of whether anyone with Lore is in your party.
+
+Q: How do I learn new Rages if I don't have Leap?
+A: You learn new Rages by winning any battle with the monster, regardless of whether you're not on the Veldt or anyone with Rage is in your party.
 
 Q: I'm at Vargas but I don't have Blitz. How do I beat him?
 A: You can defeat him normally without Blitz. His HP was lowered to make him beatable without much (if any) grinding.

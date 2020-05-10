@@ -1,8 +1,9 @@
 #! /usr/bin/env python3
 
-from utils import read_multi, write_multi, utilrandom as random
 from math import log
-from monsterrandomizer import monsterdict
+
+from monsterrandomizer import monsterdict, get_monsters
+from utils import read_multi, write_multi, utilrandom as random
 
 # Guardian x4, Broken Dirt Drgn, Kefka + Ice Dragon
 REPLACE_FORMATIONS = [0x20e, 0x1ca, 0x1e9, 0x1fa]
@@ -18,6 +19,20 @@ class Formation():
         self.formid = formid
         self.pointer = 0xf6200 + (formid*15)
         self.auxpointer = 0xf5900 + (formid*4)
+        self.mouldbyte = None
+        self.enemies_present = None
+        self.enemy_ids = []
+        self.enemy_pos = []
+        self.bosses = None
+
+        self.misc1 = None
+        self.misc2 = None
+        self.eventscript = None
+        self.misc3 = None
+
+        self.ap = 0
+        self.enemies = []
+        self.big_enemy_ids = []
 
     def __repr__(self):
         return self.description()
@@ -56,7 +71,7 @@ class Formation():
         return False
 
     def get_guaranteed_drop_value(self, value=0):
-        if len(self.present_enemies) == 0:
+        if not self.present_enemies:
             return False
 
         values = []
@@ -208,7 +223,7 @@ class Formation():
         # 13 blink in
         # 14 stay below screen
         # 15 slowly fall, play Dancing Mad
-        if type(value) in [list, tuple, set]:
+        if isinstance(value, (list, tuple, set)):
             value = random.choice(sorted(value))
         self.misc1 &= 0xF0
         self.misc1 |= value
@@ -270,7 +285,7 @@ class Formation():
         pointer = read_multi(f, length=2) | 0x20000
         for i in range(6):
             f.seek(pointer + (i*4))
-            a, b = tuple(f.read(2))
+            _, _ = tuple(f.read(2))
             width = ord(f.read(1))
             height = ord(f.read(1))
             enemy = self.enemies[i]
@@ -289,7 +304,7 @@ class Formation():
 
     def levelrank(self):
         ranks = [e.stats['level'] for e in self.present_enemies if e]
-        if len(ranks) == 0:
+        if not ranks:
             return 0
         balance = sum(ranks) / (log(len(ranks))+1)
         average = sum(ranks) / len(ranks)
@@ -298,7 +313,7 @@ class Formation():
 
     def rank(self):
         ranks = [e.rank() for e in self.present_enemies if e]
-        if len(ranks) == 0:
+        if not ranks:
             return 0
         balance = sum(ranks) / (log(len(ranks))+1)
         average = sum(ranks) / len(ranks)
@@ -337,6 +352,8 @@ class FormationSet():
             self.pointer = baseptr + (setid * 8)
         else:
             self.pointer = baseptr + (0x100 * 8) + ((setid - 0x100) * 4)
+        self.formids = []
+        self.sixteen_pack = False
 
     def __repr__(self):
         s = ""
@@ -344,7 +361,7 @@ class FormationSet():
         for f in self.formations:
             s += "%s " % f.formid
             for i in range(8):
-                    s += '* ' if f.misc1 & (1 << i) else '  '
+                s += '* ' if f.misc1 & (1 << i) else '  '
             s += str([e.name for e in f.present_enemies]) + "\n"
         return s.strip()
 
@@ -374,7 +391,7 @@ class FormationSet():
             num_encounters = 4
         else:
             num_encounters = 2
-        for i in range(num_encounters):
+        for _ in range(num_encounters):
             self.formids.append(read_multi(f, length=2))
         if any([f & 0x8000 for f in self.formids]):
             assert all([f & 0x8000 for f in self.formids])
@@ -432,10 +449,10 @@ class FormationSet():
                 return False
             return True
 
-        if check_only:
-            return result
-        elif result is False:
+        if not check_only and result is False:
             raise Exception("Can't use this formation.")
+
+        return result
 
     @property
     def swappable(self):
@@ -496,13 +513,13 @@ def get_fsets(filename=None):
     if filename is None or fsetdict:
         fsets = [fs for (_, fs) in sorted(fsetdict.items())]
         return fsets
-    else:
-        fsetdict = {}
-        for i in range(512):
-            fs = FormationSet(setid=i)
-            fs.read_data(filename)
-            fsetdict[i] = fs
-        return get_fsets()
+
+    fsetdict = {}
+    for i in range(512):
+        fs = FormationSet(setid=i)
+        fs.read_data(filename)
+        fsetdict[i] = fs
+    return get_fsets()
 
 
 def get_fset(setid):
@@ -511,7 +528,6 @@ def get_fset(setid):
 
 if __name__ == "__main__":
     from sys import argv
-    from monsterrandomizer import get_monsters
     filename = argv[1]
     monsters = get_monsters(filename)
     for m in monsters:

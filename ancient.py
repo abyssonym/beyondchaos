@@ -43,7 +43,10 @@ def manage_map_names(fout):
         write_multi(fout, pointer, length=2)
 
 
-def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
+def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
+    if not form_music_overrides:
+        form_music_overrides = {}
+
     change_battle_commands = [41, 42, 43]
     if not options_.shuffle_commands:
         alrs = AutoLearnRageSub(require_gau=True)
@@ -130,14 +133,15 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
         write_multi(fout, newexp, length=2)
 
     startsub = Substitution()
-    startsub.bytestring = bytearray([0xD7, 0xF3,  # remove Daryl
-                           0xD5, 0xF0,  # remove Terra from party
-                           0xD5, 0xE0,  # remove Terra from party
-                           0xDC, 0x7E,  # fix ending? $1F4F bit 6
-                           0xB8, 0x43,  # show magic points after battle
-                           0x3F, 0x0E, 0x00,
-                           0x3F, 0x0F, 0x00,
-                           ])
+    startsub.bytestring = bytearray([
+        0xD7, 0xF3,  # remove Daryl
+        0xD5, 0xF0,  # remove Terra from party
+        0xD5, 0xE0,  # remove Terra from party
+        0xDC, 0x7E,  # fix ending? $1F4F bit 6
+        0xB8, 0x43,  # show magic points after battle
+        0x3F, 0x0E, 0x00,
+        0x3F, 0x0F, 0x00,
+    ])
     if options_.is_code_active('racecave'):
         num_starting = 9 + random.randint(0, 2) + random.randint(0, 1)
     elif options_.is_code_active('speedcave'):
@@ -207,7 +211,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
     while len(shadow_leaving_sub.bytestring) < 23:
         shadow_leaving_sub.bytestring.append(0xEA)
     shadow_leaving_sub.bytestring += bytearray([0xA9, 0xFE,
-                                      0x20, 0x92, 0x07])
+                                                0x20, 0x92, 0x07])
     shadow_leaving_sub.write(fout)
     shadow_leaving_sub.set_location(0x24861)
     shadow_leaving_sub.bytestring = bytearray([
@@ -279,7 +283,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
         mem_addr = ((0x1b+byte) << 3) | bit
         startsub.bytestring += bytearray([0xD6, mem_addr])
     startsub.bytestring += bytearray([0xB2, 0x09, 0x21, 0x02,  # start on airship
-                            ])
+                                     ])
     startsub.bytestring.append(0xFE)
     startsub.set_location(0xADD1E)
     startsub.write(fout)
@@ -291,7 +295,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
 
     set_airship_sub = Substitution()
     set_airship_sub.bytestring = bytearray([0xB2, 0xD6, 0x02, 0x00,
-                                  0xFE])
+                                            0xFE])
     set_airship_sub.set_location(0xAF53A)  # need first branch for button press
     set_airship_sub.write(fout)
 
@@ -337,8 +341,9 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
 
     pilot = random.choice([s for s in starting if s < 12])
     pilot_sub = Substitution()
-    pilot_sub.bytestring = bytearray([0x3D, pilot, 0x45,
-                            0x3F, pilot, 0x01])
+    pilot_sub.bytestring = bytearray([
+        0x3D, pilot, 0x45,
+        0x3F, pilot, 0x01])
     for i in range(14):
         if i == pilot:
             continue
@@ -379,7 +384,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
         return True
 
     def challenge_battle_validator(formation):
-        if len(formation.present_enemies) == 0:
+        if not formation.present_enemies:
             return False
         if set(formation.present_enemies) & set(unused_enemies):
             return False
@@ -464,9 +469,9 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
             leader_sub.bytestring += bytearray([0x3F, c, 0x00])
             leader_sub.bytestring += bytearray([0x3E, c])
         leader_sub.bytestring += bytearray([0x47,
-                                  0xE1,
-                                  0xB2, 0x0B, 0xC9, 0x00,
-                                  0x45])
+                                            0xE1,
+                                            0xB2, 0x0B, 0xC9, 0x00,
+                                            0x45])
         for i, c in enumerate(leaders):
             leader_sub.bytestring += bytearray([0x3F, c, 0])
             leader_sub.bytestring += bytearray([0x3F, c, i+1])
@@ -652,13 +657,15 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
     num_in_party_sub.bytestring = [0xB2, c0, b0, a0]
     num_in_party_sub.write(fout)
     num_in_party_sub.set_location(pointer)
-    num_in_party_sub.bytestring = bytes([0xC0, 0xAE, 0x01, c1, b1, a1,
-                                   0xB2, 0x80, 0xC6, 0x00,
-                                   0xC0, 0xAF, 0x01, c2, b2, a2,
-                                   0xB2, 0x80, 0xC6, 0x00,
-                                   0xD3, 0xA3,
-                                   0xD3, 0xA2,
-                                   0xFE])
+    num_in_party_sub.bytestring = bytes([
+        0xC0, 0xAE, 0x01, c1, b1, a1,
+        0xB2, 0x80, 0xC6, 0x00,
+        0xC0, 0xAF, 0x01, c2, b2, a2,
+        0xB2, 0x80, 0xC6, 0x00,
+        0xD3, 0xA3,
+        0xD3, 0xA2,
+        0xFE
+    ])
     num_in_party_sub.write(fout)
     pointer += len(num_in_party_sub.bytestring)
     ally_addrs = {}
@@ -852,7 +859,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
             for key, value in attributes.items():
                 setattr(ally, key, value)
             l.npcs.append(ally)
-            if (len(optional_chars) == 12 or (len(optional_chars) > 0 and
+            if (len(optional_chars) == 12 or (optional_chars and
                                               options_.is_code_active('speedcave'))):
                 temp = optional_chars.pop()
                 if chosen.id != temp.id:
@@ -868,7 +875,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
                         "x": 53, "y": 18, "show_on_vehicle": False, "speed":  0,
                         "event_addr": event_addr,
                         "facing": 2, "no_turn_when_speaking": False, "layer_priority": 0,
-                        "special_anim": 0,"memaddr": byte, "membit": bit,
+                        "special_anim": 0, "memaddr": byte, "membit": bit,
                         "bg2_scroll": 0, "move_type": 0, "sprite_priority": 0, "vehicle": 0}
                     ally = NPCBlock(pointer=None, locid=l.locid)
                     for key, value in attributes.items():
@@ -882,7 +889,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
         elif l.restrank == 4:
             num_espers = 1
         for i in range(num_espers):
-            if len(espers) == 0:
+            if not espers:
                 break
             if options_.is_code_active('speedcave'):
                 candidates = espers
@@ -949,7 +956,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
                 setattr(partyswitch, key, value)
             l.npcs.append(partyswitch)
 
-    assert len(optional_chars) == 0
+    assert not optional_chars
 
     if pointer >= 0xb6965:
         raise Exception("Cave events out of bounds. %x" % pointer)
@@ -1100,12 +1107,12 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
     final_cut = Substitution()
     final_cut.set_location(0xA057D)
     final_cut.bytestring = bytearray([0x3F, 0x0E, 0x00,
-                            0x3F, 0x0F, 0x00,
-                            ])
+                                      0x3F, 0x0F, 0x00,
+                                     ])
     if not options_.is_code_active("racecave"):
         final_cut.bytestring += bytearray([0x9D,
-                                 0x4D, 0x65, 0x33,
-                                 0xB2, 0xA9, 0x5E, 0x00])
+                                           0x4D, 0x65, 0x33,
+                                           0xB2, 0xA9, 0x5E, 0x00])
     else:
         for i in range(16):
             final_cut.bytestring += bytearray([0x3F, i, 0x00])
@@ -1175,11 +1182,12 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides={}):
                     fout.write(bytes([fset.setid & 0xFF]))
                 else:
                     bg = bgs.pop()
-                    final_cut.bytestring += bytearray([0x46, i+1,
-                                             0x4D, fset.setid & 0xFF, bg,
-                                             0xB2, 0xA9, 0x5E, 0x00])
+                    final_cut.bytestring += bytearray([
+                        0x46, i+1,
+                        0x4D, fset.setid & 0xFF, bg,
+                        0xB2, 0xA9, 0x5E, 0x00])
 
-        assert len(chosens) == 0
+        assert not chosens
 
     final_cut.bytestring += bytearray([0xB2, 0x64, 0x13, 0x00])
     final_cut.write(fout)

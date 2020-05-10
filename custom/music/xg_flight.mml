@@ -15,7 +15,7 @@
 #WAVE 0x29 ~0x81~/0x14/ snare
 #WAVE 0x2A ~0x12~/0x12/ crash
 
-#def global= t147%v50%x224%b0,70
+#def global= t147%v50%x224%b0,70%f0,0
 
 { mixer }
 #def h= %r22

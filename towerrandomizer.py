@@ -1,15 +1,17 @@
 #!/usr/bin/env python3
 
+from itertools import zip_longest
+
+from chestrandomizer import ChestBlock
+from formationrandomizer import get_fsets, get_formations
+from locationrandomizer import (get_locations, get_location, Location,
+                                get_unused_locations, Entrance,
+                                add_location_map, update_locations)
 from utils import (ANCIENT_CHECKPOINTS_TABLE, TOWER_CHECKPOINTS_TABLE,
                    TOWER_LOCATIONS_TABLE, TREASURE_ROOMS_TABLE,
                    ENTRANCE_REACHABILITY_TABLE,
                    utilrandom as random)
-from locationrandomizer import (get_locations, get_location, Location,
-                                get_unused_locations, Entrance,
-                                add_location_map, update_locations)
-from formationrandomizer import get_fsets, get_formations
-from chestrandomizer import ChestBlock
-from itertools import zip_longest
+
 
 SIMPLE, OPTIONAL, DIRECTIONAL = 's', 'o', 'd'
 MAX_NEW_EXITS = 1000
@@ -64,8 +66,8 @@ def get_new_formations(areaname, supplement=True):
                         not f.has_boss and lowest < f.rank() <= highest and
                         not f.battle_event]
         supplemental = sorted(supplemental, key=lambda f: f.rank())
-        formations |= set([f for f in supplemental if
-                           f.ambusher or f.inescapable])
+        formations |= {f for f in supplemental
+                       if f.ambusher or f.inescapable}
         supplemental = supplemental[len(supplemental)//2:]
         formations |= set(supplemental)
 
@@ -479,7 +481,7 @@ def get_cluster(locid, entid):
     for c in get_clusters():
         if c.locid == locid and entid in c.entids:
             return c
-
+    return None
 
 class Segment:
     def __init__(self, checkpoints):
@@ -529,7 +531,8 @@ class Segment:
                     ranked.append(c)
 
         if set(self.consolidated_clusters) != set(ranked):
-            import pdb; pdb.set_trace()
+            import pdb
+            pdb.set_trace()
         return ranked
 
     @property
@@ -640,7 +643,8 @@ class Segment:
                 links.append((aent, excands[0]))
                 a.exiting = True
             else:
-                import pdb; pdb.set_trace()
+                import pdb
+                pdb.set_trace()
                 assert False
 
         for i, a in enumerate(self.clusters):
@@ -904,7 +908,7 @@ class InterSegment(Segment):
         random.shuffle(unlinked)
 
         locids = [e.location.locid for e in unlinked]
-        maxlocid = max(locids, key=lambda l: locids.count(l))
+        maxlocid = max(locids, key=locids.count)
         mosts = [e for e in unlinked if e.location.locid == maxlocid]
         lesses = [e for e in unlinked if e not in mosts]
         for m in mosts:
@@ -1084,10 +1088,10 @@ def parse_checkpoints():
             raise Exception("Unknown oneway rule")
 
     for route in routes:
-        for i in range(len(route)):
+        for i, _ in enumerate(route):
             route[i] = Segment(route[i])
 
-    for index in range(len(routes)):
+    for index, _ in enumerate(routes):
         routes[index] = Route(routes[index])
 
     FIXED_ENTRANCES.extend(fixed)
@@ -1117,7 +1121,7 @@ def assign_maps(routes, nummaps=None):
         loc = get_location(c.locid)
         layer1 = loc.layer1ptr
         palette = loc.palette_index
-        entxys = set([(e.x, e.y) for e in c.entrances])
+        entxys = {(e.x, e.y) for e in c.entrances}
         for l, p, xys in similars:
             if layer1 == l and palette == p:
                 if xys & entxys:
@@ -1133,7 +1137,7 @@ def assign_maps(routes, nummaps=None):
         done_maps, done_clusters = set([]), set([])
         for cluster in best_clusters:
             location = get_location(cluster.locid)
-            if (cluster.locid not in towerlocids and len(location.chests) == 0
+            if (cluster.locid not in towerlocids and not location.chests
                     and random.choice([True, False])):
                 continue
             if cluster.locid in done_maps:
@@ -1194,7 +1198,7 @@ def assign_maps(routes, nummaps=None):
                                     rank = min(rank, temp)
         location = get_location(cluster.locid)
         if (cluster.locid not in towerlocids and CAPACITY_RATIO > 0.2
-                and len(cluster.entrances) <= 2 and len(location.chests) == 0
+                and len(cluster.entrances) <= 2 and not location.chests
                 and random.choice([True, False])):
             continue
         if len(cluster.entrances) == 1:
@@ -1215,7 +1219,7 @@ def assign_maps(routes, nummaps=None):
                 done_clusters.add(cluster.clusterid)
         elif len(cluster.entrances) >= 2:
             if cluster.locid not in towerlocids:
-                if (CAPACITY_RATIO > 0.5 and len(location.chests) == 0
+                if (CAPACITY_RATIO > 0.5 and not location.chests
                         and random.randint(1, 3) == 3):
                     continue
                 if is_too_similar(cluster):

@@ -19,7 +19,7 @@
 #WAVE 0x2C ~0x6D~/0x12/
 #WAVE 0x2F 0x0F
 
-#def global=t162 %v70 %x224 %b0,70
+#def global=t162 %v70 %x224 %b0,70 %f0,0
 
 #def v=m48,18,239
 #def v-=m48,18,207

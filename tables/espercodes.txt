@@ -1,27 +1,27 @@
-186e00,Ramuh,0
-186e0b,Ifrit,1
-186e16,Shiva,1
-186e21,Siren,0
-186e2c,Terrato,2
-186e37,Shoat,1
-186e42,Maduin,1
-186e4d,Bismark,1
-186e58,Stray,0
-186e63,Palidor,2
-186e6e,Tritoch,3
-186e79,Odin,3
-186e84,Raiden,4
-186e8f,Bahamut,4
-186e9a,Alexandr,3
-186ea5,Crusader,4
-186eb0,Ragnarok,4
-186ebb,Kirin,0
-186ec6,ZoneSeek,2
-186ed1,Carbunkl,1
-186edc,Phantom,1
-186ee7,Sraphim,2
-186ef2,Golem,2
-186efd,Unicorn,1
-186f08,Fenrir,2
-186f13,Starlet,3
-186f1e,Phoenix,4
+186e00,Ramuh,0,Zozo
+186e0b,Ifrit,1,Magitek Factory (battle)
+186e16,Shiva,1,Magitek Factory (battle)
+186e21,Siren,0,Zozo
+186e2c,Terrato,2,Sasquatch Cave
+186e37,Shoat,1,Magitek Factory (tubes)
+186e42,Maduin,1,Magitek Factory (tubes)
+186e4d,Bismark,1,Magitek Factory (tubes)
+186e58,Stray,0,Zozo
+186e63,Palidor,2,Cid's Beach
+186e6e,Tritoch,3,Narshe
+186e79,Odin,3,Ancient Castle
+186e84,Raiden,4,Ancient Castle (level up)
+186e8f,Bahamut,4,Doomgaze
+186e9a,Alexandr,3,Doma Castle
+186ea5,Crusader,4,8 Dragons
+186eb0,Ragnarok,4,Fanatics' Tower
+186ebb,Kirin,0,Zozo
+186ec6,ZoneSeek,2,Auction House(10k)
+186ed1,Carbunkl,1,Magitek Factory (tubes)
+186edc,Phantom,1,Magitek Factory (tubes)
+186ee7,Sraphim,2,Tzen
+186ef2,Golem,2,Auction House(20k)
+186efd,Unicorn,1,Magitek Factory (tubes)
+186f08,Fenrir,2,Phunbaba
+186f13,Starlet,3,Owzer's House
+186f1e,Phoenix,4,Phoenix Cave

@@ -1,0 +1,107 @@
+#TITLE What?
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+##created with sqspcmml alpha 0.8.7a
+
+#WAVE 0x20 0x17
+#WAVE 0x21 0x2e
+#WAVE 0x22 0x2f
+#WAVE 0x23 0x6b
+#WAVE 0x24 0x76
+#WAVE 0x25 0x99
+
+#def 0i= |0
+#def 1i= |1
+#def 2i= |2
+#def 3i= |3
+#def 4i= |4
+#def 5i= |5
+
+#def 0o= o5
+#def 1o= o5
+#def 2o= o5
+#def 3o= o5
+#def 4o= o5
+#def 5o= o5
+
+#def 0v=   v100
+#def 0f= v1,100
+#def 1v=   v100
+#def 1f= v1,100
+#def 2v=   v100
+#def 2f= v1,100
+#def 3v=   v100
+#def 3f= v1,100
+#def 4v=   v100
+#def 4f= v1,100
+#def 5v=   v100
+#def 5f= v1,100
+
+## auto percussion  0x20
+#drum "h"= 4f+
+#drum "i"= 4b
+#drum "j"= 5e
+#drum "k"= 5a
+## auto percussion  0x21
+#drum "l"= 5e
+#drum "m"= 5b
+## auto percussion  0x22
+#drum "n"= 5e
+#drum "o"= 5a
+## auto percussion  0x25
+#drum "p"= 2c %a0%s7
+
+
+{2}
+t97%b0,100%f0,0%v50%x170'0v*v1.00'p60
+'0i' %e0r1r1'0o-o1'
+$101" !!!o h4h4h2h4h4h2h4h4h2h4h4h8h8"r4
+;101
+
+
+{3}
+'0v*v.75'p75
+'0i' %e0r1r1'0o'
+$201[3" !!!o k8j16j16k8j16j16k8j16j16k8j8"]"k8j16j16k8j16j16k8k8"r4
+;201
+
+
+{4}
+'0v*v.85'p45
+'0i' %e0r1r1'0o-o1'
+$301[3" !!!o i16i8i8i16i8i8i16i16i4"]"i16i8i8i16i8i8i8"r4
+;301
+
+
+{6}
+'1v*v.75'p67
+'1i' r1r1'1o'
+$401" !!!o l8l16l16m16l16l16l16l16l32l32l16l16m4l8l16l16m16l16l16l16m16
+"^32"m16"^32"m16l16"^32"l16"^32"l16l8l16l16m16l16l16l16l16l32l32l16l16
+m4l8l16l16m16l16l16l16m8m8"r4
+;401
+
+
+{5}
+'2i' %e1'2o'
+$501'2v*v1.00''2f*v192,.05'p20p192,105[16" !!!o o16"]'2v*v1.00''2f*v192,.05'
+p105p192,20[16" !!!o n16"]
+;501
+
+
+{1}
+'3v*v1.05'p52
+'3i' m12,20,195r1r1'3o+o2'
+$602[e32r32e32r32>b32r32b32r32<d32r32d32r32e32r32e32r32g+32m6,1^32^32m6,-1
+^32^32m6,1^32^32m6,-1^32^16r8.e32r32e32r32>b32r32b32r32<d32r32d32r32e32
+r32e32r32j2,601>r8a16m12,-1^16^16r8.<]
+$601r2
+;602
+
+{7}
+r1r1 p45
+$
+^1 r1r1r2. '4v*v1.25''4i''4o+o1' d4
+^1 r1r2. '5i' "!!!o p4" ^2. %a8 m24,2 ^8 m24,-3 ^8 %r21
+;

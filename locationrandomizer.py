@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 
+from copy import copy
+from formationrandomizer import get_fset
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
-                   decompress, line_wrap, USED_LOCATIONS_TABLE,
                    UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
                    ENTRANCE_REACHABILITY_TABLE, LOCATION_MAPS_TABLE,
                    utilrandom as random)
-from copy import copy
 
 
 locations = None
@@ -15,39 +15,40 @@ reachdict = None
 mapnames = {}
 locdict = {}
 chest_id_counts = None
-for line in open(MAP_NAMES_TABLE):
-    key, value = tuple(line.strip().split(':'))
-    key = int(key, 0x10)
-    mapnames[key] = value
-
-
 mapbattlebgs = {}
-for line in open(MAP_BATTLE_BG_TABLE):
-    a, b = tuple(line.strip().split())
-    mapbattlebgs[int(a)] = int(b, 0x10)
-
 maplocations = {}
 maplocations_reverse = {}
 maplocations_override = {}
-for line in open(LOCATION_MAPS_TABLE):
-    a, b, *c = line.strip().split(':')
-    b = b.strip().strip(',').split(',')
-    locids = []
-    for locid in b:
-        if '+' in locid:
-            l = int(locid.strip('+'))
-            locids.extend([l, l+1, l+2, l+3])
-        else:
-            locids.append(int(locid))
 
-    if a not in maplocations_reverse:
-        maplocations_reverse[a] = []
-    for locid in sorted(locids):
-        maplocations[locid] = a
-        maplocations_reverse[a].append(locid)
-    if c:
-        maplocations_override[a] = c[0]
 
+def init():
+    for line in open(MAP_NAMES_TABLE):
+        key, value = tuple(line.strip().split(':'))
+        key = int(key, 0x10)
+        mapnames[key] = value
+    for line in open(MAP_BATTLE_BG_TABLE):
+        a, b = tuple(line.strip().split())
+        mapbattlebgs[int(a)] = int(b, 0x10)
+    for line in open(LOCATION_MAPS_TABLE):
+        a, b, *c = line.strip().split(':')
+        b = b.strip().strip(',').split(',')
+        locids = []
+        for locid in b:
+            if '+' in locid:
+                l = int(locid.strip('+'))
+                locids.extend([l, l+1, l+2, l+3])
+            else:
+                locids.append(int(locid))
+
+        if a not in maplocations_reverse:
+            maplocations_reverse[a] = []
+        for locid in sorted(locids):
+            maplocations[locid] = a
+            maplocations_reverse[a].append(locid)
+        if c:
+            maplocations_override[a] = c[0]
+
+init()
 
 def add_location_map(location_name, mapid):
     assert location_name in maplocations_reverse
@@ -73,6 +74,24 @@ class NPCBlock():
     def __init__(self, pointer, locid):
         self.pointer = pointer
         self.locid = locid
+        self.palette = 0
+        self.bg2_scroll = 0
+        self.membit = 0
+        self.memaddr = 0
+        self.event_addr = 0
+        self.x = 0
+        self.y = 0
+        self.show_on_vehicle = 0
+        self.speed = 0
+        self.graphics = 0
+        self.move_type = 0
+        self.sprite_priority = 0
+        self.vehicle = 0
+        self.facing = 0
+        self.no_turn_when_speaking = 0
+        self.layer_priority = 0
+        self.special_anim = 0
+        self.npcid = 0
 
     def set_id(self, npcid):
         self.npcid = npcid
@@ -86,22 +105,22 @@ class NPCBlock():
         self.membit = (value & 0x1C00000) >> 22
         self.memaddr = (value & 0xFE000000) >> 25
         self.event_addr = value & 0x3FFFF
-        
+
         byte4 = ord(f.read(1))
         self.x = byte4 & 0x7f
         self.show_on_vehicle = (byte4 & 0x80) >> 7
-        
+
         byte5 = ord(f.read(1))
         self.y = byte5 & 0x3F
         self.speed = (byte5 & 0xC0) >> 6
-        
+
         self.graphics = ord(f.read(1))
-        
+
         byte7 = ord(f.read(1))
         self.move_type = byte7 & 0xF
         self.sprite_priority = (byte7 & 0x30) >> 4
         self.vehicle = (byte7 & 0xC0) >> 6
-        
+
         byte8 = ord(f.read(1))
         self.facing = byte8 & 0x03
         self.no_turn_when_speaking = (byte8 & 0x4) >> 2
@@ -114,15 +133,11 @@ class NPCBlock():
         value = (self.event_addr | (self.palette << 18) | (self.bg2_scroll << 21)
                  | (self.membit << 22) | (self.memaddr << 25))
         write_multi(fout, value, length=4)
-        
+
         byte4 = (self.x & 0x7f) | ((self.show_on_vehicle & 0x1) << 7)
-        
         byte5 = (self.y & 0x3F) | ((self.speed & 0x3) << 6)
-
         byte6 = self.graphics
-        
         byte7 = (self.move_type & 0xF) | ((self.sprite_priority & 0x3) << 4) | ((self.vehicle & 0x3) << 6)
-
         byte8 = (self.facing & 0x03) | ((self.no_turn_when_speaking & 0x1) << 2) | ((self.layer_priority & 0x3) << 3) | ((self.special_anim & 0x7) << 5)
 
         fout.write(bytes([byte4, byte5, byte6, byte7, byte8]))
@@ -132,6 +147,10 @@ class EventBlock():
     def __init__(self, pointer, locid):
         self.pointer = pointer
         self.locid = locid
+        self.x = 0
+        self.y = 0
+        self.eventid = 0
+        self.event_addr = 0
 
     def set_id(self, eventid):
         self.eventid = eventid
@@ -158,6 +177,8 @@ class Zone():
         self.pointer = 0xF5400 + (4*zoneid)
         self.ratepointer = 0xF5800 + zoneid
         self.names = {}
+        self.setids = []
+        self.rates = 0
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -178,7 +199,6 @@ class Zone():
 
     @property
     def fsets(self):
-        from formationrandomizer import get_fset
         fsets = [get_fset(setid) for setid in self.setids]
         if self.zoneid < 0x40:
             fsets = fsets[:3]
@@ -202,16 +222,15 @@ class Zone():
             y = "ABCDEFGH"[y]
             if self.zoneid < 0x40:
                 return "World of Balance %s-%s %s" % (y, x, quadrant)
-            else:
-                return "World of Ruin %s-%s %s" % (y, x, quadrant)
-        else:
-            locid = ((self.zoneid % 0x80) * 4) + index
-            try:
-                location = get_location(locid)
-                area_name = location.area_name
-            except Exception:
-                area_name = "Unknown"
-            return area_name
+            return "World of Ruin %s-%s %s" % (y, x, quadrant)
+
+        locid = ((self.zoneid % 0x80) * 4) + index
+        try:
+            location = get_location(locid)
+            area_name = location.area_name
+        except KeyError:
+            area_name = "Unknown"
+        return area_name
 
     def set_formation_rate(self, setid=None, rate=0):
         for i, s in enumerate(self.setids):
@@ -244,14 +263,40 @@ class Location():
             self.altname = "%x %s" % (self.locid, mapnames[self.locid])
         else:
             self.altname = "%x" % self.locid
+        self.events = []
+
+        self.name_id = 0
+        self.layers_to_animate = 0
+        self._battlebg = 0
+        self.unknown0 = 0
+        self.tileproperties = 0
+        self.attacks = 0
+        self.unknown1 = 0
+        self.graphic_sets = []
+        self.tileformations = 0
+        self.mapdata = 0
+        self.unknown2 = 0
+        self.bgshift = 0
+        self.unknown3 = 0
+        self.layer12dimensions = 0
+        self.unknown4 = 0
+        self.palette_index = 0
+        self.music = 0
+        self.unknown5 = 0
+        self.width = 0
+        self.height = 0
+        self.layerpriorities = 0
+        self.entrancebackups = []
+        self.setid = 0
+        self.chests = []
+        self.npcs = []
 
     def __repr__(self):
         if self.locid in mapnames:
             return self.altname
-        elif self.name:
+        if self.name:
             return "%x %s" % (self.locid, self.name)
-        else:
-            return self.altname
+        return self.altname
 
     @property
     def chestpointer(self):
@@ -268,12 +313,11 @@ class Location():
     @property
     def area_name(self):
         if self.locid not in maplocations:
-            raise Exception("Area for location ID %s not known." % self.locid)
+            raise KeyError("Area for location ID %s not known." % self.locid)
         return maplocations[self.locid]
 
     @property
     def fsets(self):
-        from formationrandomizer import get_fset
         fset = get_fset(self.setid)
         fsets = [fset]
         if fset.sixteen_pack:
@@ -317,7 +361,7 @@ class Location():
     def treasure_ids(self):
         treasures = []
         for c in self.chests:
-            if (c.treasure):
+            if c.treasure:
                 treasures.append(c.contents)
         return treasures
 
@@ -352,8 +396,7 @@ class Location():
                     e.dest & 0x1FF == entrance.dest & 0x1FF and
                     e.destx == entrance.destx and e.desty == entrance.desty):
                 return True
-        else:
-            return False
+        return False
 
     def validate_entrances(self):
         pairs = [(e.x, e.y) for e in self.entrances]
@@ -412,19 +455,18 @@ class Location():
         index = battlebg_palettes[self.battlebg]
         return 0x270150 + (index * 0x60)
 
-        if self.palette_index == 0x2a:
+        # if self.palette_index == 0x2a:
             # starts at 0x270150
-            return 0x270510  # to 0x270570
+        #    return 0x270510  # to 0x270570
 
     @property
     def fset(self):
-        from formationrandomizer import get_fset
         return get_fset(self.setid)
 
     @property
     def field_palette(self):
         return 0x2dc480 + (256 * (self.palette_index & 0x3F))
-        #if self.palette_index == 0x2a:
+        # if self.palette_index == 0x2a:
         #    return 0x2dee80  # to 0x2def60
 
     @property
@@ -489,11 +531,11 @@ class Location():
     def make_tower_flair(self):
         towerloc = get_location(334)
         searchlight = towerloc.unknown1 & 0x3
-        layer3index = (((towerloc.graphic_sets[3] & 0xF0) >> 4) |
-                       ((towerloc.tileformations & 0x3) << 4))
+        unused_layer3index = (((towerloc.graphic_sets[3] & 0xF0) >> 4) |
+                              ((towerloc.tileformations & 0x3) << 4))
         layer3map = (towerloc.unknown2 & 0x3F) << 4
         layer3map |= (towerloc.mapdata >> 20)
-        layer3dims = towerloc.unknown4 & 0xF0
+        unused_layer3dims = towerloc.unknown4 & 0xF0
 
         self._battlebg = (towerloc._battlebg & 0xC0) | self._battlebg
         self.layers_to_animate = towerloc.layers_to_animate
@@ -644,8 +686,7 @@ class Location():
     def rank(self):
         if self.fset.setid == 0:
             return self.locid / 100.0
-        else:
-            return self.fset.rank()
+        return self.fset.rank()
 
     def mutate_chests(self, guideline=None, crazy_prices=False, no_monsters=False, uncapped_monsters=False):
         if not self.chests:
@@ -668,7 +709,7 @@ class Location():
             c.set_rank(rank)
 
         if guideline is None:
-            if len(self.chests) > 0:
+            if not self.chests:
                 values = [c.get_current_value(guideline=100)
                           for c in self.chests]
                 average_value = (sum(values)*100) // len(values)
@@ -678,7 +719,7 @@ class Location():
 
         if self.locid == 0xb4:
             return
-        elif self.locid == 0x147:
+        if self.locid == 0x147:
             guideline = random.randint(1820, 4500)
 
         random.shuffle(self.chests)
@@ -691,11 +732,11 @@ class Location():
 
             # No monster-in-a-box in the ZoneEater falling ceiling room.
             # It causes problems with the ceiling event.
-            in_falling_ceiling_room = self.locid == 280 and c.memid in range (232, 235)
+            in_falling_ceiling_room = self.locid == 280 and c.memid in range(232, 235)
             monster = False if in_falling_ceiling_room or no_monsters else None
             c.mutate_contents(guideline=guideline, crazy_prices=crazy_prices, monster=monster, uncapped_monsters=uncapped_monsters)
             if guideline is None and hasattr(c, "value") and c.value:
-                guideline = value
+                guideline = c.value
 
     def unlock_chests(self, low, high, monster=False,
                       guarantee_miab_treasure=False, enemy_limit=None, crazy_prices=False, uncapped_monsters=False):
@@ -739,7 +780,8 @@ class Location():
                 except IndexError:
                     raise Exception("NPCs out of order.")
             if nextpointer + 9 >= 0x46AC0:
-                import pdb; pdb.set_trace()
+                import pdb
+                pdb.set_trace()
                 raise Exception("Not enough space for npcs.")
             e.write_data(fout, nextpointer)
             nextpointer += 9
@@ -752,7 +794,8 @@ class Location():
         write_multi(fout, (nextpointer - 0x40000), length=2)
         for e in self.events:
             if nextpointer + 5 >= 0x41a10:
-                import pdb; pdb.set_trace()
+                import pdb
+                pdb.set_trace()
                 raise Exception("Not enough space for events.")
             e.write_data(fout, nextpointer)
             nextpointer += 5
@@ -765,6 +808,13 @@ class Entrance():
     def __init__(self, pointer=None):
         self.pointer = pointer
         self.entid = None
+        self.x = 0
+        self.y = 0
+        self.dest = 0
+        self.destx = 0
+        self.desty = 0
+        self._entrances = []
+        self.location = None
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -780,7 +830,7 @@ class Entrance():
         self.entid = entid
 
     def set_location(self, location):
-        if type(location) is int:
+        if isinstance(location, int):
             location = get_location(location)
         self.location = location
 
@@ -790,7 +840,7 @@ class Entrance():
         if loc is None:
             return None
 
-        if len(loc.entrancebackups) == 0:
+        if not loc.entrancebackups:
             return None
 
         entrance = loc.get_nearest_entrance(self.destx, self.desty)
@@ -852,7 +902,6 @@ class Entrance():
             entid = self.entid
         else:
             entid = "?"
-        destid = self.dest & 0x1FF
         return "<%s %s: %s %s>" % (self.location.locid, entid, self.x, self.y)
 
     def copy(self, entrance):
@@ -899,7 +948,7 @@ class EntranceSet():
 
     @property
     def destinations(self):
-        return set([e.destination for e in self.entrances])
+        return {e.destination for e in self.entrances}
 
     def read_data(self, filename):
         f = open(filename, 'r+b')
@@ -984,7 +1033,7 @@ def get_locations(filename=None):
     if locations is None:
         locations = [Location(i) for i in range(415)]
         if filename is None:
-            raise Exception("Please supply a filename for new locations.")
+            raise ValueError("Please supply a filename for new locations.")
         for l in locations:
             l.read_data(filename)
             l.fill_battle_bg()
@@ -1013,9 +1062,8 @@ def get_zones(filename=None):
         for z in zones:
             z.read_data(filename)
         return get_zones()
-    else:
-        assert len(zones) == 0x100
-        return zones
+    assert len(zones) == 0x100
+    return zones
 
 
 def get_location(locid):
@@ -1068,21 +1116,68 @@ def get_npcs():
     return npcs
 
 
+def map_entrance_to_exit(entrance, exit):
+    x = exit.x
+    if exit.y < 10:
+        y = exit.y + 1
+        exit.facing = 2
+    else:
+        y = exit.y - 1
+        exit.facing = 0
+        
+    entrance.dest = exit.location.locid
+    entrance.destx = x
+    entrance.desty = y
+
+
+def randomize_forest():
+    start = get_location(0x84)
+    end = get_location(0x87)
+    mids = [get_location(x) for x in (0x85, 0x86)]
+
+    location86 = get_location(0x86)
+    go_to_train_event = location86.events[0]
+    location86.events.remove(go_to_train_event)
+    world_location_exit = Entrance()
+    world_location_exit.copy(location86.entrances[1])
+    
+    location = random.choice(mids)
+    exit = random.choice(location.entrances)
+    map_entrance_to_exit(start.entrances[0], exit)
+    location2 = [m for m in mids if m.locid != location.locid][0]
+    entrances = [e for e in location.entrances if e != exit]
+    entrance = random.choice(entrances)
+    exit2 = random.choice(location2.entrances)
+    map_entrance_to_exit(entrance, exit2)
+    entrances = [e for e in location2.entrances if e != exit]
+    entrance2 = random.choice(entrances)
+    entrance2.dest = world_location_exit.dest
+    entrance2.destx = world_location_exit.destx
+    entrance2.desty = world_location_exit.desty
+    go_to_train_event.x = entrance2.x
+    go_to_train_event.y = entrance2.y
+    location2.events.append(go_to_train_event)
+
+    wrong_entrances = [e for m in mids for e in m.entrances if e not in (entrance, entrance2)]
+    wrong_exits = [e for m in (mids + [start]) for e in m.entrances]
+    for e in wrong_entrances:
+        exit = random.choice(wrong_exits)
+        map_entrance_to_exit(e, exit)
+
+
 if __name__ == "__main__":
     from sys import argv
     if len(argv) > 1:
         filename = argv[1]
     else:
         filename = "program.rom"
-    from formationrandomizer import get_formations, get_fsets, get_fset
+    from formationrandomizer import get_formations, get_fsets
     from monsterrandomizer import get_monsters
     get_monsters(filename)
     get_formations(filename)
     get_fsets(filename)
     locations = get_locations(filename)
-    from formationrandomizer import fsetdict
-    locations = get_locations("program.rom")
-    zones = get_zones("program.rom")
+    zones = get_zones(filename)
     for l in locations:
         print("%x" % (l.layers_to_animate & 2), l, end=' ')
         print()

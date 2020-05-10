@@ -17,7 +17,7 @@
 #WAVE 0x2D ~0x8E~/0x12/
 #WAVE 0x2E ~0x84~/0x17/
 
-#def global= t131 %x224 %v50 %b0,70
+#def global= t131 %x224 %v50 %b0,70 %f0,0
 
 #def str= |0 v96 o5 %e1 m48,18,239 %k-1
 #def vox= |1 v80 o4 %e1 m48,18,207 %k-1 %a9%r7

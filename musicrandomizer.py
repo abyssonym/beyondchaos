@@ -436,6 +436,20 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             return name
         return "_".join(name.split("_")[0:2])
             
+    def variant_id(name, idx):
+        if name.endswith("_sfx") or name.endswith("_vic"):
+            name = name[:-4]
+        elif name.endswith("_tr"):
+            name = name[:-3]
+        if idx == 0x29 or idx == 0x4F or (idx == 0x5D and windy_intro):
+            return name, "_sfx"
+        elif idx == 0x20:
+            return name, "_tr"
+        elif idx == 0x2F:
+            return name, "_vic"
+        else:
+            return name, ""
+        
     class SongSlot:
         def __init__(self, id, chance=0, is_pointer=True, data=b"\x00\x00\x00"):
             self.id = id
@@ -745,7 +759,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                     retry = True
             if retry: continue
             
-            mml = re.sub('[~*]', '', tierfiles[0])
+            mml = re.sub('[~`]', '', tierfiles[0])
             mml = re.sub('[?_]', '?', mml)
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,555\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>555\g<2>', mml)
@@ -757,7 +771,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             mml = re.sub("'(.*?)'", "'555\g<1>'", mml)
             tierfiles[0] = mml
             
-            mml = re.sub('[?*]', '', tierfiles[1])
+            mml = re.sub('[?`]', '', tierfiles[1])
             mml = re.sub('[~_]', '?', mml)
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,666\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>666\g<2>', mml)
@@ -771,7 +785,7 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             tierfiles[1] = mml
             
             mml = re.sub('[?_]', '', tierfiles[2])
-            mml = re.sub('[~*]', '?', mml)
+            mml = re.sub('[~`]', '?', mml)
             mml = re.sub('j([0-9]+),([0-9]+)', 'j\g<1>,777\g<2>', mml)
             mml = re.sub('([;:\$])([0-9]+)(?![,0-9])', '\g<1>777\g<2>', mml)
             mml = re.sub('\$777444([0-9])', '$333\g<1>', mml)
@@ -842,34 +856,64 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         
         #get data now, so we can keeptrying if there's not enough space
         for ident, s in songtable.items():
+            vbase, vid = variant_id(s.changeto, s.id)
             if s.changeto == '!!tierboss':
                 s.data, s.inst = process_tierboss(tierboss[ident], used_songs=used_songs)
                 s.is_pointer = False
             # case: get song from MML
-            elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")) or isfile(os.path.join(MUSIC_PATH, usage_id(s.changeto) + ".mml")):
-                mml, variant = "", ""
-                akao = {}
-                try:
-                    with open(os.path.join(MUSIC_PATH, usage_id(s.changeto)) + ".mml", 'r') as mmlf:
-                        mml = mmlf.read()
-                except IOError:
-                    pass
-                if mml:
-                    akao = process_mml(s.id, mml, usage_id(s.changeto) + ".mml")
-                if s.changeto.count("_") >= 2:
-                    variant = s.changeto[len(usage_id(s.changeto)):]
-                    if variant[0] == "_" and len(variant) > 1: variant = variant[1:]
-                    if variant not in akao:
-                        variant = ""
-                        try:
-                            with open(os.path.join(MUSIC_PATH, s.changeto) + ".mml", 'r') as mmlf:
-                                mml = mmlf.read()
-                        except IOError:
-                            mml = ""
-                        if mml:
-                            akao = process_mml(s.id, mml, s.changeto + ".mml")
+            elif isfile(os.path.join(MUSIC_PATH, s.changeto + ".mml")) or isfile(os.path.join(MUSIC_PATH, usage_id(s.changeto) + ".mml")) or isfile(os.path.join(MUSIC_PATH, vbase + vid + ".mml")):
+
+                target = vbase
+                potential_files = {}
+                found = False
+                while True:
+                    file_to_check = target + vid
+                    variant_to_check = ""
+                    while True:
+                        mml, varlist = "", {}
+                        if file_to_check in potential_files:
+                            mml, varlist = potential_files[file_to_check]
                         else:
-                            akao = {}
+                            try:
+                                with open(os.path.join(MUSIC_PATH, file_to_check + ".mml"), 'r') as mmlf:
+                                    mml = mmlf.read()
+                                varlist = get_variant_list(mml, sfxmode = True if s.id == 0x29 or s.id == 0x4F or (s.id == 0x5D and windy_intro) else False)
+                                potential_files[file_to_check] = (mml, varlist)
+                            except IOError:
+                                potential_files[file_to_check] = ("", {})
+                        if varlist and (variant_to_check in varlist or variant_to_check == ""):
+                            #we found it
+                            variant = variant_to_check
+                            found = True
+                            break
+                        elif file_to_check.count("_") >= 2:
+                            #move a _foo_ from file to variant. if last one abort
+                            file_to_check, _, variant_append = file_to_check.rpartition('_')
+                            variant_to_check = variant_append + '_' + variant_to_check
+                            if variant_to_check.endswith('_'):
+                                variant_to_check = variant_to_check[:-1]
+                        else:
+                            break
+                    #stop if we found something
+                    if found:
+                        break
+                    #we didn't find anything, so delete the last bit from target
+                    elif target.count("_") >= 2:
+                        target, _, _ = target.rpartition('_')
+                    #no results with id-specific variant, so try without
+                    elif vid:
+                        vid = ""
+                        target = vbase
+                    else:
+                        #i don't think we need an actual fail case here
+                        #that falls back to usage_id? should have already
+                        #gotten a positive on that if available
+                        mml, varlist, variant = "", {}, ""
+                        break
+                
+                #record variant
+                if variant:
+                    s.changeto = f"{file_to_check} (variant: {variant})"
                 title = re.search("(?<=#TITLE )([^;\n]*)", mml, re.IGNORECASE)
                 album = re.search("(?<=#ALBUM )([^;\n]*)", mml, re.IGNORECASE)
                 composer = re.search("(?<=#COMPOSER )([^;\n]*)", mml, re.IGNORECASE)
@@ -1369,6 +1413,8 @@ def randomize_music(fout, options_, opera=None, form_music_overrides={}):
         data = process_map_music(data)
     data = process_formation_music_by_table(data, form_music_overrides=form_music_overrides)
     
+    data = apply_sound_engine_hack(data)
+    
     fout.seek(0)
     fout.write(data)
     
@@ -1378,6 +1424,40 @@ def randomize_music(fout, options_, opera=None, form_music_overrides={}):
 ## End of core music randomizer code ##
 #######################################
 
+def apply_sound_engine_hack(data):
+    # Apply a hack to the SPC engine that prevents some crashing and other misbehavior
+    
+    #New001:  CMP   $C5, #$FF     ; $C5 == FF (test whether we are in alternate shadow mode)
+    #         BEQ   L0607         ; If so skip to E5 test
+    #         CMP   A,#$E2        ; == #$E2 Loop Start
+    #         BNE   L05F5         ; If not skip to E3 test
+    #         MOV   $C5, #$FF     ; $C5 = FF (set alternate shadow mode)
+    #L05F5:   CMP   A,#$E3        ; == #$E3 Loop End
+    #         BNE   L05FE         ; If not skip 2 instructions
+    #         CALL  $1725         ; Switch $E3: Loop End
+    #         BRA   L05DE         ; Loop
+    #L05FE:   CMP   A,#$F5        ; == #$F5 Jump to yyyy when loop count reaches xx
+    #         BNE   L0607         ; If not skip 2 instructions
+    #         CALL  $1695         ; Switch $F5: Jump to yyyy when loop count reaches xx
+    #         BRA   L05DE         ; Loop
+    #L0607:   CMP   A,#$E5        ; == #$E5 Disable Slur
+    #         BNE   L0610         ; If not skip 2 instructions
+    #         CALL  $15CF         ; Track Command $E5: Disable Slur
+    #         BRA   L05DE         ; Loop
+    #L0610:   CMP   A,#$E7        ; == #$E7 Disable Drum Roll
+    #         BNE   L062B         ; If not skip 2 instructions
+    #         CALL  $15F3         ; Track Command $E7: Disable Drum Roll
+    #         BRA   L05DE         ; Loop
+         
+    # Caveat: this hack removes shadow parsing / lookahead trace into
+    # Play SFX commands. This is not expected to cause any ill effects,
+    # but some sound effects could conceivably be altered.
+    
+    hackblob = b"\x78\xFF\xC5\xF0\x19\x68\xE2\xD0\x03\x8F\xFF\xC5\x68\xE3\xD0\x05\x3F\x25\x17\x2F\xD4\x68\xF5\xD0\x05\x3F\x95\x16\x2F\xCB\x68\xE5\xD0\x05\x3F\xCF\x15\x2F\xC2\x68\xE7\xD0\x0B\x3F\xF3\x15\x2F\xB9\x00\x00\x00\x00\x00\x00"
+    offset = 0x50B05
+    data = byte_insert(data, offset, hackblob)
+    return data
+    
 def manage_opera(fout, affect_music):
     fout.seek(0)
     data = fout.read()
@@ -1761,7 +1841,7 @@ def manage_opera(fout, affect_music):
     
 def find_sample_size(data, sidx):
     table = 0x53C5F
-    offset = bytes_to_int(data[table+sidx*3:table+sidx*3+3]) - 0xC00000
+    offset = bytes_to_int(data[table+sidx*3:table+sidx*3+3]) - 0xC00000 + 2
     loc = 0
     
     #scan BRR block headers until one has END bit set

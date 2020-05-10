@@ -1,0 +1,178 @@
+#TITLE A New World
+#ALBUM Final Fantasy V
+#COMPOSER Nobuo Uematsu
+#ARRANGED emberling
+##created with sqspcmml alpha 0.8.7a
+
+#WAVE 0x20 0x1d
+#WAVE 0x21 0x1b
+#WAVE 0x22 0x06
+#WAVE 0x23 0x0d
+#WAVE 0x24 0x6b
+#WAVE 0x25 0x07
+#WAVE 0x26 0x22
+#WAVE 0x27 0x2f
+#WAVE 0x28 0x76
+#WAVE 0x29 0x30
+
+#def 0i= |0
+#def 1i= |1
+#def 2i= |2
+#def 3i= |3
+#def 4i= |4
+#def 5i= |5
+#def 6i= |6
+#def 7i= |7
+#def 8i= |8
+#def 9i= |9
+
+#def 0o= o5
+#def 1o= o6
+#def 2o= o6
+#def 3o= o5
+#def 4o= o5
+#def 5o= o5
+#def 6o= o5
+#def 7o= o5
+#def 8o= o5
+#def 9o= o5
+
+#def 0v=   v100
+#def 0f= v1,100
+#def 1v=   v100
+#def 1f= v1,100
+#def 2v=   v100
+#def 2f= v1,100
+#def 3v=   v100
+#def 3f= v1,100
+#def 4v=   v100
+#def 4f= v1,100
+#def 5v=   v100
+#def 5f= v1,100
+#def 6v=   v100
+#def 6f= v1,100
+#def 7v=   v100
+#def 7f= v1,100
+#def 8v=   v100
+#def 8f= v1,100
+#def 9v=   v100
+#def 9f= v1,100
+
+
+{1}
+t99%b0,100%f0,0%v40%x240'2v*v1.00'p65
+'2i' m4,20,199%e1r1r2.'2o'c8d8
+$101'2o'd+2^8d+8d8>a+8<c4>g2<c8d8d+2d4a+4g2.g+8a+8<c2^8c8>a+8g+8a+4d+2
+c8d+8f2^8c+8c+8d+8f2.c8d8e2^8e8d8>b8<c4>a2<c8d8e2^8d8d8g8e2.f8g8a2^8a8
+g8f8g4e4c4.e8d1'3v*v.75'p65
+'3i' m12,20,195%e1%a7%r10'3o+o1'r2.f+8g8a2.g8f8g4<c4>e2f2^8d8e8f8e4a4c2
+a2^8a8g8f8g4e4c4e4d1^2.'2v*v1.00'p65
+'2i' m4,20,199%e1'2o'c8d8
+;101
+
+
+{2}
+'4v*v1.25'p60
+'4i' m12,20,195%e0'4v*v.50''4o'a8a8r2.'4v*v1.00'a8a8r2.
+$201'4v*v1.25'p60
+'4i' m12,20,195%e0'4o+o1'c8c8r2>g8g8<c8c8>g8g8r4a+4g+8g+8r2<d+4>g+4.<g+4
+g8f8d+8c+4.>g+4.<c+4c4.>g4.<c4>f+8f+8r2<f+4f8f8>f8f8r2a2.<e4>a2.g4f2.<
+c4>f4.<f4e8d8c8>a+2.a+4a2.a4<d2.^8>a8<d2.'5v*v.90'p80
+'5i' m12,20,199%e1'5o'f+8g8a2.g8f8g4<c4>e2f2^8d8e8f8e4a4c2a2^8a8g8f8g4
+e4c4e4d1^2.r4
+;201
+
+
+{3}
+r1r2. $
+'8v*v1.20'p55
+'8i' %r10%e0'8o'c8d8
+d+2^8d+8d8>a+8<c4>g2<c8d8d+2d4a+4g2.g+8a+8<c2^8c8>a+8g+8a+4d+2c8d+8
+f2^8c+8c+8d+8f2.'9v*v.77'p55 k15
+'9i' '9o-o1'c8d8e2^8e8d8>b8<c4>a2<c8d8e2^8d8d8g8e2.f8g8a2^8a8g8f8g4e4c4.
+e8d1r1 k0
+'4i' '4v*v1.25'p60%e0'4o'a+1a1g1a1a+1a1<d1^2.
+;
+
+
+{4}
+'1v*v.10'p70
+'1i' m12,20,195%e1'1f*v192,.25''1o'c16<c16>e16<c16>a16<c16>e16<c16>c16
+<c16>e16<c16>a16<c16>e16<c16'1f*v192,.50'>c16<c16>e16<c16>a16<c16>e16<
+c16>c16<c16>e16<c16>a16<c16>e16<c16
+$401'3v*v.45'p47
+'3i' m12,20,195%e1%a7%r9'3o'd+2f2g2a+2g+2a+2<c2d+2c+1c1>a+1^2a4r4'5v*v.65'
+p62
+'5i' m12,20,195%e1%a7%r10'5o-o1'a2b2<c2d4c8>b8a2b2<c2d2d4c4>a+4<d4e4d4
+c4e4d1^2.r4'3v*v.55'p47
+'3i' m12,20,195%e1%a7%r9'3o+o1'd1c1>a+1<c1d1c1>a1^2.r4
+;401
+
+
+{7}
+r1r1
+$501'3v*v.50'p52
+'3i' m12,20,195%e1%a7%r9'3o'c1d+2g2d+1g+2<c2>f1d+1f+1f2.r4'5v*v.65'p67
+
+'5i' m12,20,195%e1%a7%r10'5o-o1'e2g2a2b4a8g8f2g2a2b2a+4a4g4f4<c4>a4e4a4
+g1f+2.r4'3v*v.60'p52
+'3i' m12,20,195%e1%a6%r9'3o+o1'c2>a+2a2e4f8g8a2g4f4b4a4g4e4<c2>a+2b4a4
+g4e4g2e4g4f+2.r4
+;501
+
+
+{6}
+r1r1
+$601'3v*v.55'p57
+'3i' m12,20,195%e1%a7%r9'3o-o1'g1^2<c4>a+4g+1^1<c+1c1d+1^2.r4'5v*v.65'
+p72
+'5i' m12,20,195%e1%a7%r10'5o-o1'c1^2.>b4<c1^1>a+1a2<c2d1^2.r4'3v*v.75'
+p57
+'3i' m12,20,195%e1%a12%r10'3o-o2'a+8<f8a+8<d8f8d8>a+8f8>a8<e8a8<c8d8c8
+>a8e8>g8<d8g8a+8<d8>a+8g8d8>a8<e8a8<c8e8c8>a8e8>a+8<f8a+8<d8f8d8>a+8f8
+>a8<e8a8<c8e8c8>a8e8d1^2.r4
+;601
+
+
+{5}
+'0v*v.10'p70
+'0i' %e0'0f*v192,.37''0o-o1'a8<c4c8>a8<c4c8'0f*v192,.75'>a8<c4c8>a8<c4
+c8
+$701'0v*v.70'p70
+'0i' %e0'0o'c8d+4d+8c8d+4d+8c8d+4d+8c8d+4d+8c8d+4d+8c8d+4d+8c8d+4d+8c8
+d+4d+8c+8f4f8c+8f4f8c8d+4d+8c8d+4d+8c+8f4f8c+8f4f8c8f4f8c2>a8<e8f8e8>a8
+<e8f8e8>a8<e8f8e8>a8<e8>g8<e8>f8<e8f8e8>f8<e8f8e8>f8<e8f8e8>f8<e8f8e8>
+a+8<g8a8g8>a+8<g8a8g8>a8<g8a8g8>a8<g8a8g8d8g8a8g8<d8>g8a8g8d1'1v*v.80'
+p50
+'1i' %e1'1o-o2'a+8<f8a+8<d8f8d8>a+8f8>a8<e8a8<c8d8c8>a8e8>g8<d8g8a+8<d8
+>a+8g8d8>a8<e8a8<c8e8c8>a8e8>a+8<f8a+8<d8f8d8>a+8f8>a8<e8a8<c8e8c8>a8e8
+d1^2.r4
+;701
+
+
+{8}
+'6v*v.37'p62
+'6i' %e0'6o'a8a4.'7v*v.37'p67
+'7i' %e1'7o-o1'e2'6v*v.75'p62
+'6i' %e0'6o'a8a4.'7v*v.75'p67
+'7i' %e1'7o-o1'e2
+$801'6v*v1.25'p62
+'6i' %e0'6o'a8a4.'7v*v1.27'p67
+'7i' %e1'7o-o1'e2'6v*v1.25'p62
+'6i' %e0'6o'a8a4.'7v*v1.27'p67
+'7i' %e1'7o-o1'e4'6v*v1.25'p62
+'6i' %e0'6o'a4a8a4.'7v*v1.27'p67
+'7i' %e1'7o-o1'e4'6v*v1.25'p62
+'6i' %e0'6o'a4a4.a8'7v*v1.27'p67
+'7i' %e1'7o-o1'e2'6v*v1.25'p62
+'6i' %e0'6o'a4.a8'7v*v1.27'p67
+'7i' %e1'7o-o1'e4'6v*v1.25'p62
+'6i' %e0'6o'a4a4.a8'7v*v1.27'p67
+'7i' %e1'7o-o1'e4'6v*v1.25'p62
+'6i' %e0'6o'a4a8a4.'7v*v1.27'p67
+'7i' %e1'7o-o1'e4'6v*v1.25'p62
+'6i' %e0'6o'a4a8a4.'7v*v1.27'p67
+'7i' %e1'7o-o1'e2r1r1r1r1r1r1r1r1
+r1r1r1r1r1r1r1r1
+;801
+

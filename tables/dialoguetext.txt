@@ -502,6 +502,7 @@ FF=e…
 11FE=<wait 3810 frames>
 11FF=<wait 3825 frames>
 
+1402=  
 1403=   
 1404=    
 1405=     

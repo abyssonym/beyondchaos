@@ -17,7 +17,7 @@
 #WAVE 0x2B ~0x2A~/0x2A/
 #WAVE 0x2C ~0x5A~/0x11/
 
-#def global= t108 %v64 %b0,156 %x224
+#def global= t108 %v64 %b0,156 %x224 %f0,0
 
 #def oboe= |3 %a7%r10 p72 ~o6~/o6/ ~v64~/v64/ %e1 m48,18,231 ## tone 22
 #def harp= |2 %r12 p76 o5 v56 %e1 m ## tone 46

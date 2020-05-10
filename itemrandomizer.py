@@ -2,7 +2,7 @@ from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,
                    name_to_bytes, utilrandom as random,
                    Substitution)
-from skillrandomizer import SpellBlock, get_ranked_spells
+from skillrandomizer import get_ranked_spells
 # future blocks: chests, morphs, shops
 
 ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
@@ -91,23 +91,23 @@ def extend_item_breaks(fout):
     break_sub.set_location(0x22735)
     break_sub.bytestring = bytes([0x22, 0x13, 0x30, 0xF0])
     break_sub.write(fout)
-    
+
     break_sub.set_location(0x22743)
     break_sub.bytestring = bytes([0x30, 0x05])
     break_sub.write(fout)
-    
+
     break_sub.set_location(0x2274A)
     break_sub.bytestring = bytes([0xAD, 0x10, 0x34])
     break_sub.write(fout)
-    
+
     break_sub.set_location(0x229ED)
     break_sub.bytestring = bytes([0x22, 0x00, 0x30, 0xF0, 0xEA, 0xEA])
     break_sub.write(fout)
-    
+
     break_sub.set_location(0x23658)
     break_sub.bytestring = bytes([0xAD, 0x7E, 0x3A])
     break_sub.write(fout)
-    
+
     break_sub.set_location(0x303000)
     break_sub.bytestring = bytes([0xBD, 0xA4, 0x3B, 0x29, 0x0C, 0x0A, 0x0A, 0x0A, 0x0A, 0x8D, 0x89, 0x3A, 0xBD, 0x34, 0x3D, 0x8D, 0x7E, 0x3A, 0x6B, 0x08, 0xBF, 0x12, 0x50, 0xD8, 0x8D, 0x10, 0x34, 0xBF, 0x13, 0x50, 0xD8, 0x0A, 0x0A, 0x0A, 0x0A, 0x28, 0x29, 0xC0, 0x6B])
     break_sub.write(fout)
@@ -120,6 +120,44 @@ class ItemBlock:
         self.name = name
         self.degree = None
         self.banned = False
+        self.itemtype = 0
+
+        self.price = 0
+        self._rank = None
+        self.dataname = bytes()
+        self.heavy = False
+
+    @property
+    def is_tool(self):
+        return self.itemtype & 0x0f == 0x00
+
+    @property
+    def is_weapon(self):
+        return self.itemtype & 0x0f == 0x01
+
+    @property
+    def is_armor(self):
+        return self.is_body_armor or self.is_shield or self.is_helm
+
+    @property
+    def is_body_armor(self):
+        return self.itemtype & 0x0f == 0x02
+
+    @property
+    def is_shield(self):
+        return self.itemtype & 0x0f == 0x03
+
+    @property
+    def is_helm(self):
+        return self.itemtype & 0x0f == 0x04
+
+    @property
+    def is_relic(self):
+        return self.itemtype & 0x0f == 0x05
+
+    @property
+    def is_consumable(self):
+        return self.itemtype & 0x0f == 0x06
 
     def set_degree(self, value):
         self.degree = value
@@ -130,27 +168,6 @@ class ItemBlock:
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.itemtype = ord(f.read(1))
-
-        itemtype = self.itemtype & 0x0f
-        (self.is_tool, self.is_weapon, self.is_armor, self.is_relic,
-            self.is_consumable) = (False, False, False, False, False)
-        self.is_shield, self.is_helm, self.is_body_armor = False, False, False
-        if itemtype == 0x00:
-            self.is_tool = True
-        elif itemtype == 0x01:
-            self.is_weapon = True
-        elif itemtype in [2, 3, 4]:
-            self.is_armor = True
-            if itemtype == 3:
-                self.is_shield = True
-            elif itemtype == 4:
-                self.is_helm = True
-            elif itemtype == 2:
-                self.is_body_armor = True
-        elif itemtype == 0x05:
-            self.is_relic = True
-        elif itemtype == 0x06:
-            self.is_consumable = True
 
         #throwable = self.itemtype & 0x10
         #usable_battle = self.itemtype & 0x20
@@ -210,15 +227,13 @@ class ItemBlock:
                 subintify = lambda x: int(x, 0x10)
                 if ',' in value:
                     return random.choice(list(map(subintify, value.split(','))))
-                else:
-                    return subintify(value)
+                return subintify(value)
 
             if len(v) == 1:
                 return intify(v[0])
-            else:
-                return list(map(intify, v))
+            return list(map(intify, v))
 
-        name = bytes([])
+        name = bytes()
         for key, value in customdict.items():
             if key == "name_text":
                 name = name + name_to_bytes(value, 12)
@@ -277,9 +292,9 @@ class ItemBlock:
 
     @property
     def has_disabling_status(self):
-        if (self.features['statusacquire2'] & 0xf9):
+        if self.features['statusacquire2'] & 0xf9:
             return True
-        if (self.features['statusacquire3'] & 0x14):
+        if self.features['statusacquire3'] & 0x14:
             return True
         return False
 
@@ -327,8 +342,18 @@ class ItemBlock:
 
         if feature is None:
             feature = random.choice(list(STATPROTECT.keys()))
+
+        nochange = STATPROTECT[feature]
+        if feature == 'special2':
+              # Allow rare merit award bit on relics
+            if self.is_relic:
+                if random.randint(1, 10) == 10:
+                    nochange &= ~0x20
+            # Reduce chance of Genji Glove bit on non-relics
+            elif random.randint(1, 4) != 4:
+                nochange |= 0x10
         self.features[feature] = bit_mutate(self.features[feature], op="on",
-                                            nochange=STATPROTECT[feature])
+                                            nochange=nochange)
 
     def mutate_break_effect(self, always_break=False, wild_breaks=False):
         global effects_used
@@ -350,7 +375,7 @@ class ItemBlock:
         if not success:
             return
 
-        # swdtechs, blitzes, superball, and slots don't seem to work 
+        # swdtechs, blitzes, superball, and slots don't seem to work
         # correctly with procs, but they work with breaks.
         # (Mostly they just play the wrong animation, but a couple
         # softlock.)
@@ -424,7 +449,7 @@ class ItemBlock:
         new_action = random.randint(1, 0xf)
         if new_action == 0xA: # make random valiant knife effect rare
             new_action = random.randint(1, 0xf)
-            
+
         if new_action == 9: # no random dice effect
             return
 
@@ -476,8 +501,7 @@ class ItemBlock:
 
             if left:
                 return byte | (nibble << 4)
-            else:
-                return byte | nibble
+            return byte | nibble
 
         self.features['speedvigor'] = mutate_nibble(self.features['speedvigor'])
         self.features['speedvigor'] = mutate_nibble(self.features['speedvigor'], left=True)
@@ -564,16 +588,16 @@ class ItemBlock:
             self.heavy = True
 
         if extra_effects:
-            if random.randint(1,3) == 3:
+            if random.randint(1, 3) == 3:
                 self.mutate_special_action()
-            
+
             if random.randint(1, 2) == 2:
                 self.mutate_feature()
             while random.randint(1, 3) == 3:
                 self.mutate_feature()
-            
+
     def rank(self):
-        if hasattr(self, "_rank"):
+        if self._rank:
             return self._rank
 
         if self.price > 10:
@@ -715,8 +739,8 @@ def reset_equippable(items, characters, numchars=NUM_CHARS):
                 item.equippable = CHAR_MASK
 
     charequips = []
-    valid_items = [i for i in items if (not i.is_weapon and not i.is_relic
-                                    and not i.equippable & 0x4000)]
+    valid_items = [i for i in items
+                   if (not i.is_weapon and not i.is_relic and not i.equippable & 0x4000)]
     for c in range(numchars):
         myequips = []
         for i in valid_items:
@@ -852,6 +876,12 @@ def reset_special_relics(items, characters, fout):
             if random.randint(1, 5) != 5:
                 unused = unused - doneafter
 
+            # Umaro can't get magic/x-magic.
+            for t in tempchars:
+                if t.id == UMARO_ID:
+                    unused = unused - {0x02, 0x17}
+                    break
+
             if not unused:
                 continue
 
@@ -903,7 +933,7 @@ def reset_rage_blizzard(items, umaro_risk, fout):
 
 def items_from_table(tablefile):
     items = []
-    for i, line in enumerate(open(tablefile)):
+    for line in open(tablefile):
         line = line.strip()
         if line[0] == '#':
             continue
@@ -941,8 +971,7 @@ def get_item(itemid, allow_banned=False):
     if item and item.banned:
         if allow_banned:
             return item
-        else:
-            return None
+        return None
     return item
 
 
@@ -957,26 +986,26 @@ def get_ranked_items(filename=None, allow_banned=False):
     items = get_items(filename, allow_banned)
     return sorted(items, key=lambda i: i.rank())
 
-    
+
 def unhardcode_tintinabar(fout):
     # Apply Lenophis's unhardcoded tintinabar patch (solo version)
     tintinabar_sub = Substitution()
     tintinabar_sub.set_location(0x4A57)
     tintinabar_sub.bytestring = bytes([0x89, 0x40, 0xF0, 0x5C, 0x29, 0x07, 0xCD, 0x6D, 0x1A, 0xD0, 0x55, 0x20, 0xE8, 0xAE, 0xB9, 0x14, 0x16, 0x89, 0xC2, 0xD0, 0x4B, 0x20, 0x0D, 0xDF, 0xF0, 0x19, 0xB9, 0x1C, 0x16, 0x4A, 0x4A, 0xC2, 0x21, 0x29, 0xFF, 0x00, 0x79, 0x09, 0x16, 0xC5, 0x1E, 0x90, 0x02, 0xA5, 0x1E, 0x99, 0x09, 0x16, 0x7B, 0xE2, 0x20, 0xB9, 0x14, 0x16, 0x29, 0x04, 0xF0, 0x26, 0x7B, 0xA9, 0x0F, 0x8D, 0xF0, 0x11, 0xC2, 0x20, 0xEB, 0x8D, 0x96, 0x07, 0xC2, 0x20, 0xA5, 0x1E, 0x4A, 0x4A, 0x4A, 0x4A, 0x4A, 0x85, 0x1E, 0xB9, 0x09, 0x16, 0x38, 0xE5, 0x1E, 0xF0, 0x02, 0xB0, 0x02, 0x7B, 0x1A, 0x99, 0x09, 0x16, 0xC2, 0x21, 0x98, 0x69, 0x25, 0x00, 0xA8, 0x7B, 0xE2, 0x20, 0xE8, 0xE0, 0x10, 0x00, 0xD0, 0x8D, 0xFA, 0x86, 0x24, 0xFA, 0x86, 0x22, 0xFA, 0x86, 0x20, 0xFA, 0x86, 0x1E, 0x28, 0x6B])
     tintinabar_sub.write(fout)
-    
+
     tintinabar_sub.set_location(0x6CF8)
     tintinabar_sub.bytestring = bytes([0x8C, 0x48, 0x14, 0x64, 0x1B, 0xB9, 0x67, 0x08, 0x0A, 0x10, 0x11, 0x4A, 0x29, 0x07, 0xCD, 0x6D, 0x1A, 0xD0, 0x09, 0xA5, 0x1B, 0x22, 0x77, 0x0E, 0xC2, 0x20, 0xF6, 0xDE, 0xC2, 0x21, 0x98, 0x69, 0x29, 0x00, 0xA8, 0xE2, 0x20, 0xE6, 0x1B, 0xC0, 0x90, 0x02, 0xD0, 0xD9, 0x7B, 0x60])
     tintinabar_sub.write(fout)
-    
+
     tintinabar_sub.set_location(0xDEF6)
     tintinabar_sub.bytestring = bytes([0xAD, 0xD8, 0x11, 0x10, 0x11, 0xA5, 0x1B, 0x5A, 0x1A, 0xA8, 0xC2, 0x20, 0x38, 0x7B, 0x2A, 0x88, 0xD0, 0xFC, 0x0C, 0x48, 0x14, 0x7A, 0x60, 0x8C, 0x04, 0x42, 0xA9, 0x25, 0x8D, 0x06, 0x42, 0x22, 0xD4, 0x4A, 0xC0, 0x7B, 0xAD, 0x14, 0x42, 0xDA, 0x1A, 0xAA, 0xC2, 0x20, 0x38, 0x7B, 0x2A, 0xCA, 0xD0, 0xFC, 0xFA, 0x2C, 0x48, 0x14, 0xE2, 0x20, 0x60])
     tintinabar_sub.write(fout)
-    
+
     tintinabar_sub.set_location(0x31DA9)
     tintinabar_sub.bytestring = bytes([0x10, 0x03, 0x4C, 0x62, 0x2E, 0xA5, 0x09, 0x89, 0x02, 0xF0, 0x03, 0x4C, 0xC6, 0x2E, 0x10, 0x0F, 0x9C, 0x05, 0x02, 0x20, 0xA9, 0x0E, 0x20, 0xC9, 0x1D, 0x7B, 0x3A, 0x85, 0x27, 0x64, 0x26, 0x60, 0x9C, 0xDF, 0x11, 0x9C, 0x48, 0x14, 0x9C, 0x49, 0x14, 0xA2, 0x03, 0x00, 0xB5, 0x69, 0x30, 0x07, 0x22, 0x77, 0x0E, 0xC2, 0x20, 0x6C, 0xF1, 0xCA, 0x10, 0xF2, 0x60, 0x00, 0xD0, 0xF0, 0x60])
     tintinabar_sub.write(fout)
-    
+
     tintinabar_sub.set_location(0x3F16C)
     tintinabar_sub.bytestring = bytes([0xAD, 0xD8, 0x11, 0x10, 0x12, 0x7B, 0xB5, 0x69, 0x1A, 0xA8, 0x38, 0x7B, 0xC2, 0x20, 0x2A, 0x88, 0xD0, 0xFC, 0x0C, 0x48, 0x14, 0xE2, 0x20, 0x60])
     tintinabar_sub.write(fout)

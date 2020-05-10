@@ -15,7 +15,7 @@
 #WAVE 0x2B ~0x7e~/0x21/
 #WAVE 0x2C ~0x55~/0x2F/
 
-#def global= t120 %v50 %x224 %b0,70
+#def global= t120 %v50 %x224 %b0,70 %f0,0
 #def str= |0 ~o5~/o6/
 #def flt= |1 ~o6~/o6/
 #def xyl= |2 o5

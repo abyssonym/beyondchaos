@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 
-from utils import read_multi, write_multi
 from sys import argv
 from shutil import copyfile
 
+from utils import read_multi, write_multi
 
 def decompress(bytestring, simple=False, complicated=True, debug=False):
     result = bytearray([])
@@ -64,7 +64,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
 
 def recompress(bytestring):
     global buffaddr
-    bytestring = bytearray([c if type(c) is int else ord(c) for c in bytestring])
+    bytestring = bytearray([c if isinstance(c, int) else ord(c) for c in bytestring])
     result = bytearray()
     buff = bytearray(2048)
     buffaddr = 0x7DE
@@ -181,7 +181,7 @@ class Decompressor():
         #assert decompress(recompress(self.backup)) == self.backup
 
     def writeover(self, address, to_write):
-        to_write = bytes([c if type(c) is int else ord(c) for c in to_write])
+        to_write = bytes([c if isinstance(c, int) else ord(c) for c in to_write])
         if self.fakeaddress:
             address = address - self.fakeaddress
         self.data = (self.data[:address] + to_write +

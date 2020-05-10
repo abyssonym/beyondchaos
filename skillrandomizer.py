@@ -101,7 +101,7 @@ class SpellBlock:
         self.statuses = statuses
         self.has_status = sum([bin(b).count("1") for b in statuses])
         f.close()
-        
+
         self._rank = None
 
     def __cmp__(self, other):
@@ -170,7 +170,7 @@ class SpellBlock:
                 baseline = baseline * 2
 
             if self.physical:
-                baseline = baseline * 0.75
+                baseline = baseline * 0.6
             if self.unblockable:
                 baseline = baseline * 1.25
             if self.has_status:
@@ -203,7 +203,7 @@ class SpellBlock:
 
         if self.spellid in spellbans:
             baseline += abs(spellbans[self.spellid])
-        
+
         self._rank = int(baseline)
 
         return self._rank
@@ -324,7 +324,7 @@ class SpellSub(Substitution):
     def __init__(self, spellid):
         self.spellid = spellid
         self.bytestring = bytes([0xA9, self.spellid, 0x85, 0xB6, 0xA9,
-                           0x02, 0x85, 0xB5, 0x4C, 0x5F, 0x17])
+                                 0x02, 0x85, 0xB5, 0x4C, 0x5F, 0x17])
 
     def __repr__(self):
         return "Use the skill '{0}'".format(spellnames[self.spellid])
@@ -340,7 +340,7 @@ def get_spellsets(spells=None):
     # Each spellset is a tuple of (description, spell list)
     spellsets['Chaos'] = ('skill (including broken and glitchy skills)', [])
     if wildspells is None:
-        wildspells = random.sample(spells,8)
+        wildspells = random.sample(spells, 8)
     spellsets['Wild'] = ('random set of spells', wildspells)
     spellsets['Magic'] = ('magic spell', list(range(0, 0x36)))
     spellsets['Black'] = ('black magic spell', list(range(0, 0x18)))
@@ -426,8 +426,8 @@ def get_spellsets(spells=None):
     spellsets['Level'] = ('level-based skill',
                           [s for s in spells if s.level_spell])
     spellsets['Miss'] = ('skill with low accuracy',
-                        [s for s in spells if not s.unblockable and not s.level_spell and 0 < s.accuracy < 90])
-                            
+                         [s for s in spells if not s.unblockable and not s.level_spell and 0 < s.accuracy < 90])
+
     for key, desc_and_spellset in list(spellsets.items()):
         if not desc_and_spellset:
             continue
@@ -435,7 +435,7 @@ def get_spellsets(spells=None):
         if not spellset:
             continue
         # Convert lists of spell IDs into lists of spells
-        if type(spellset[0]) is int:
+        if isinstance(spellset[0], int):
             spellset = [s for s in spells if s.spellid in spellset]
         # Sort the spell set by spell ID
         spellset = sorted(set(spellset), key=lambda s: s.spellid)
@@ -449,26 +449,28 @@ class RandomSpellSub(Substitution):
     def template(self):
         if self.wild:
             return self.get_wild()
-        template = bytearray([0x20, 0x5A, 0x4B,        # get random number
-                    0x29, 0x00,              # AND the result
-                    0xAA,                    # TAX
-                    0xBF, 0x00, 0x00, 0x00,  # load byte from $addr + X
-                    0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
-                    0x64, 0xB8, 0x64, 0xB9,  # clear targets
-                    0x20, 0xC1, 0x19,  # JSR $19C1
-                    0x20, 0x51, 0x29,  # JSR $2951
-                    0x4C, 0x5F, 0x17,
-                    ])
+        template = bytearray(
+            [0x20, 0x5A, 0x4B,        # get random number
+             0x29, 0x00,              # AND the result
+             0xAA,                    # TAX
+             0xBF, 0x00, 0x00, 0x00,  # load byte from $addr + X
+             0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
+             0x64, 0xB8, 0x64, 0xB9,  # clear targets
+             0x20, 0xC1, 0x19,  # JSR $19C1
+             0x20, 0x51, 0x29,  # JSR $2951
+             0x4C, 0x5F, 0x17,
+            ])
         return template
 
     def get_wild(self):
-        template = bytearray([0x20, 0x5A, 0x4B,        # get random number
-                    0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
-                    0x64, 0xB8, 0x64, 0xB9,  # clear targets
-                    0x20, 0xC1, 0x19,  # JSR $19C1
-                    0x20, 0x51, 0x29,  # JSR $2951
-                    0x4C, 0x5F, 0x17,
-                    ])
+        template = bytearray(
+            [0x20, 0x5A, 0x4B,        # get random number
+             0x85, 0xB6, 0xA9, 0x02, 0x85, 0xB5,
+             0x64, 0xB8, 0x64, 0xB9,  # clear targets
+             0x20, 0xC1, 0x19,  # JSR $19C1
+             0x20, 0x51, 0x29,  # JSR $2951
+             0x4C, 0x5F, 0x17,
+            ])
         return template
 
     @property
@@ -531,7 +533,7 @@ class RandomSpellSub(Substitution):
     @property
     def spells_string(self):
         unique_spells = sorted(set(self.spells), key=lambda s: s.name)
-        if len(self.spells) == 0:
+        if not self.spells:
             return ""
         if len(self.spells) == len(unique_spells):
             # No repetition of spells - all equal chances
@@ -555,7 +557,7 @@ class RandomSpellSub(Substitution):
 
     def __repr__(self):
         return "Use a random {0}.\n{1}".format(self.spells_description,
-                                                self.spells_string)
+                                               self.spells_string)
 
 
 class ComboSpellSub(Substitution):
@@ -597,10 +599,10 @@ class ComboSpellSub(Substitution):
         self.bytestring.append(0x60)
         assert len(self.bytestring) == self.get_overhead()
 
-    def write(self, filename):
-        super(ComboSpellSub, self).write(filename)
+    def write(self, fout):
+        super(ComboSpellSub, self).write(fout)
         for s in self.spellsubs:
-            s.write(filename)
+            s.write(fout)
 
     def __repr__(self):
         return "Use the combo {0}.".format(
@@ -626,9 +628,9 @@ class MultiSpellSubMixin(Substitution):
             self.name = self.spellsub.name
             self.spells = self.spellsub.spells
 
-    def write(self, filename):
-        self.spellsub.write(filename)
-        super(MultiSpellSubMixin, self).write(filename)
+    def write(self, fout):
+        self.spellsub.write(fout)
+        super(MultiSpellSubMixin, self).write(fout)
 
 
 class ChainSpellSub(MultiSpellSubMixin):
@@ -638,7 +640,7 @@ class ChainSpellSub(MultiSpellSubMixin):
     def generate_bytestring(self):
         subpointer = self.location + self.get_overhead()
         self.spellsub.set_location(subpointer)
-        if not hasattr(self.spellsub, "bytestring"):
+        if not self.spellsub.bytestring:
             self.spellsub.generate_bytestring()
         high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
 
@@ -691,7 +693,7 @@ class MultipleSpellSub(MultiSpellSubMixin):
     def generate_bytestring(self):
         subpointer = self.location + self.get_overhead()
         self.spellsub.set_location(subpointer)
-        if not hasattr(self.spellsub, "bytestring"):
+        if not self.spellsub.bytestring:
             self.spellsub.generate_bytestring()
         high, low = (subpointer >> 8) & 0xFF, subpointer & 0xFF
         if isinstance(self.spellsub, RandomSpellSub):

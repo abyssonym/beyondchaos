@@ -1,8 +1,5 @@
 from dataclasses import dataclass, field
-from typing import List, Set
-import string
-
-from utils import utilrandom as random
+from typing import List, Set, Union
 
 @dataclass(frozen=True)
 class Mode:
@@ -10,7 +7,7 @@ class Mode:
     description: str
     forced_codes: List[str] = field(default_factory=list)
     prohibited_codes: List[str] = field(default_factory=list)
-    prohibited_flags: List[str] = field(default_factory=list)
+    prohibited_flags: Set[str] = field(default_factory=set)
 
 
 @dataclass(order=True, frozen=True)
@@ -27,40 +24,52 @@ class Flag:
 class Code:
     name: str
     description: str
+    long_description: str
+    category: str
     key1: str = ''
     key2: str = ''
-    
-    @property
-    def is_cyphered(self):
-        return self.key1 and self.key2
 
     def remove_from_string(self, s: str):
         name = self.name
-        if self.is_cyphered:
-            f = FourSquare(self.key1, self.key2)
-            name = f.decypher(self.name)
         if name in s:
             return True, s.replace(name, '')
         return False, s
-        
+
 
 @dataclass
 class Options:
     mode: Mode
     active_flags: Set[Flag] = field(default_factory=set)
     active_codes: Set[Code] = field(default_factory=set)
-    
+    shuffle_commands: bool = field(init=False, default=False)
+    replace_commands: bool = field(init=False, default=False)
+    sprint: bool = field(init=False, default=False)
+    fix_exploits: bool = field(init=False, default=False)
+    random_enemy_stats: bool = field(init=False, default=False)
+    random_palettes_and_names: bool = field(init=False, default=False)
+    random_items: bool = field(init=False, default=False)
+    random_character_stats: bool = field(init=False, default=False)
+    random_espers: bool = field(init=False, default=False)
+    random_treasure: bool = field(init=False, default=False)
+    random_zerker: bool = field(init=False, default=False)
+    random_blitz: bool = field(init=False, default=False)
+    random_window: bool = field(init=False, default=False)
+    random_formations: bool = field(init=False, default=False)
+    swap_sprites: bool = field(init=False, default=False)
+    random_animation_palettes: bool = field(init=False, default=False)
+    random_final_dungeon: bool = field(init=False, default=False)
+    random_dances: bool = field(init=False, default=False)
+    random_clock: bool = field(init=False, default=False)
+    shuffle_wor: bool = field(init=False, default=False)
+    randomize_forest: bool = field(init=False, default=False)
+    randomize_magicite: bool = field(init=False, default=False)
 
-    def __post_init__(self):
-        for flag in ALL_FLAGS:
-            setattr(self, flag.attr, False)
-            
     def is_code_active(self, code_name: str):
         for code in self.active_codes:
             if code.name == code_name:
                 return True
         return False
-        
+
     def is_any_code_active(self, code_names: List[str]):
         for code in self.active_codes:
             if code.name in code_names:
@@ -83,38 +92,59 @@ class Options:
                     self.activate_code("frenchvanilla")
                 return
 
-    def activate_flag(self, flag_name: str):
-        for flag in ALL_FLAGS:
-            if flag.name == flag_name:
-                self.active_flags.add(flag)
-                setattr(self, flag.attr, True)
-                return
+    def activate_flag(self, flag: Flag):
+        self.active_flags.add(flag)
+        setattr(self, flag.attr, True)
 
-    def random_unused_code(self):
-        candidates = [c for c in NORMAL_CODES
-                      if c not in self.active_codes and c.name != "repairpalette"]
-        
-        i = random.randint(1,7)
-        if i <= 2:
-            secret_codes = [c for c in NORMAL_CODES if c.is_cyphered and not self.is_code_active(c)]
-            if secret_codes:
-                candidates = secret_codes
-            
-        elif i <= 4:
-            new_codes = MAKEOVER_MODIFIER_CODES + [c for c in NORMAL_CODES if c.name in ["alasdraco"]]
-            new_codes = [c for c in new_codes
-                            if not self.is_code_active(c)]
-            if new_codes:
-                candidates = new_codes
+    def activate_from_string(self, flag_string):
+        for code in self.mode.forced_codes:
+            self.activate_code(code)
 
-        if not candidates:
-            candidates = NORMAL_CODES + MAKEOVER_MODIFIER_CODES
+        s = ""
+        flags, codes = read_options_from_string(flag_string, self.mode)
+        for code in codes:
+            if code.name in self.mode.prohibited_codes:
+                s += f"SECRET CODE: '{code.description}' is not compatible with {self.mode.name} mode.\n"
+                continue
+            s += f"SECRET CODE: {code.description} ACTIVATED\n"
+            self.activate_code(code.name)
 
-        selected = random.choice(candidates)
-        if selected.is_cyphered:
-            f = FourSquare(selected.key1, selected.key2)
-            return f.decypher(selected.name)
-        return selected.name
+        if self.is_code_active('strangejourney'):
+            self.activate_code('notawaiter')
+
+        flags -= self.mode.prohibited_flags
+        if not flags:
+            flags = {f for f in ALL_FLAGS if f not in self.mode.prohibited_flags}
+
+        for flag in flags:
+            self.activate_flag(flag)
+
+        return s
+
+
+def read_options_from_string(flag_string: str, mode: Union[Mode, str]):
+    flags = set()
+    codes = set()
+
+    if isinstance(mode, str):
+        mode = [m for m in ALL_MODES if m.name == mode][0]
+
+    for code in NORMAL_CODES + MAKEOVER_MODIFIER_CODES:
+        found, flag_string = code.remove_from_string(flag_string)
+        if found:
+            codes.add(code)
+
+    if '-' in flag_string:
+        print("NOTE: Using all flags EXCEPT the specified flags.")
+        flags = {f for f in ALL_FLAGS if f.name not in flag_string}
+    else:
+        flags = {f for f in ALL_FLAGS if f.name in flag_string}
+
+    flags -= mode.prohibited_flags
+    if not flags:
+        flags = {f for f in ALL_FLAGS if f not in mode.prohibited_flags}
+
+    return flags, codes
 
 ANCIENT_CAVE_PROHIBITED_CODES = [
     "airship",
@@ -122,16 +152,17 @@ ANCIENT_CAVE_PROHIBITED_CODES = [
     "notawaiter",
     "strangejourney",
     "worringtriad",
-    "QGWURNGNSEIMKTMDFBIX",
-    "HAKCSBKC"
+    "thescenarionottaken",
+    "mimetime"
 ]
 
 
-ANCIENT_CAVE_PROHIBITED_FLAGS = [
-"d",
-"k",
-"r",
-]
+ANCIENT_CAVE_PROHIBITED_FLAGS = {
+    "d",
+    "k",
+    "r",
+    "j",
+}
 
 ALL_MODES = [
     Mode(name="normal", description="Play through the normal story."),
@@ -153,12 +184,13 @@ ALL_MODES = [
     Mode(name="katn",
          description="Play the normal story up to Kefka at Narshe, with extra wackiness. Intended for racing.",
          forced_codes=["madworld"],
-         prohibited_codes=["airship", "alasdraco", "worringtriad", "HAKCSBKC"],
-         prohibited_flags=["d", "k", "r"]),
+         prohibited_codes=["airship", "alasdraco", "worringtriad", "mimetime"],
+         prohibited_flags={"d", "k", "r"}),
     Mode(name="dragonhunt",
          description="Kill all 8 dragons in the World of Ruin. Intended for racing.",
          forced_codes=["worringtriad"],
-         prohibited_codes=["airship", "alasdraco", "QGWURNGNSEIMKTMDFBIX"])
+         prohibited_codes=["airship", "alasdraco", "thescenarionottaken"],
+         prohibited_flags={"j"}),
 ]
 
 ALL_FLAGS = [
@@ -166,7 +198,7 @@ ALL_FLAGS = [
     Flag('w', 'replace_commands', 'Generate new commands for characters, replacing old commands.'),
     Flag('z', 'sprint', 'Always have "Sprint Shoes" effect.'),
     Flag('b', 'fix_exploits', 'Make the game more balanced by removing exploits such as Joker Doom, '
-              'Vanish/Doom, and the Evade/Mblock bug.'),
+                              'Vanish/Doom, and the Evade/Mblock bug.'),
     Flag('m', 'random_enemy_stats', 'Randomize enemy stats.'),
     Flag('c', 'random_palettes_and_names', 'Randomize palettes and names of various things.'),
     Flag('i', 'random_items', 'Randomize the stats of equippable items.'),
@@ -183,145 +215,89 @@ ALL_FLAGS = [
     Flag('g', 'random_dances', 'Randomize dances'),
     Flag('k', 'random_clock', 'Randomize the clock in Zozo'),
     Flag('r', 'shuffle_wor', 'Randomize character locations in the world of ruin.'),
+    Flag('j', 'randomize_forest', 'Randomize the phantom forest.'),
+    Flag('y', 'randomize_magicite', 'Shuffle magicite locations.'),
 ]
 
 
 NORMAL_CODES = [
-    Code('airship', "AIRSHIP MODE"),
-    Code('alasdraco', "JAM UP YOUR OPERA MODE"),
-    Code('bsiab', "UNBALANCED MONSTER CHESTS MODE"),
-    Code('partyparty', "CRAZY PARTY MODE"),
-    Code('bravenudeworld', "TINA PARTY MODE"),
-    Code('suplexwrecks', "SUPLEX MODE"),
-    Code('strangejourney', "BIZARRE ADVENTURE"),
-    Code('dearestmolulu', "ENCOUNTERLESS MODE"),
-    Code('canttouchthis', "INVINCIBILITY"),
-    Code('easymodo', "EASY MODE"),
-    Code('norng', "NO RNG MODE"),
-    Code('endless9', "ENDLESS NINE MODE"),
-    Code('equipanything', "EQUIP ANYTHING MODE"),
-    Code('collateraldamage', "ITEM BREAK MODE"),
-    Code('repairpalette', "PALETTE REPAIR"),
-    Code('llg', "LOW LEVEL GAME MODE"),
-    Code('naturalmagic', "NATURAL MAGIC MODE"),
-    Code('naturalstats', "NATURAL STATS MODE"),
-    Code('playsitself', "AUTOBATTLE MODE"),
-    Code('bingoboingo', "BINGO BONUS"),
-    Code('worringtriad', "START IN WOR"),
-    Code('metronome', "R-CHAOS MODE"),
-    Code('quikdraw', "QUIKDRAW MODE"),
-    Code('makeover', "SPRITE REPLACEMENT MODE"),
-    Code('kupokupo', "MOOGLE MODE"),
-    Code('capslockoff', "Mixed Case Names Mode"),
-    Code('replaceeverything', "REPLACE ALL SKILLS MODE"),
-    Code('allcombos', "ALL COMBOS MODE"),
-    Code('randomboost', "RANDOM BOOST MODE"),
-    Code('dancingmaduin', "RESTRICTED ESPERS MODE"),
-    Code('masseffect', "WILD EQUIPMENT EFFECT MODE"),
-    Code('darkworld', "SLASHER'S DELIGHT MODE"),
-    Code('supernatural', "SUPER NATURAL MAGIC MODE"),
-    Code('madworld', "TIERS FOR FEARS MODE"),
-    Code('randombosses', "RANDOM BOSSES MODE"),
-    Code('electricboogaloo', "WILD ITEM BREAK MODE"),
-    Code('notawaiter', "CUTSCENE SKIPS"),
-    Code('rushforpower', "OLD VARGAS FIGHT MODE"),
-    Code('johnnydmad', "MUSIC REPLACEMENT MODE"),
-    Code('johnnyachaotic', "MUSIC MANGLING MODE"),
-    #Code('sometimeszombies', "OLD CHARACTER PALETTE MODE"),
-    Code('HAKCSBKC', 'ALTERNATE GOGO MODE', key1='application', key2='octetstream'),
-    Code('QGWURNGNSEIMKTMDFBIX', 'DIVERGENT PATHS MODE', key1='power', key2='panda')
+    Code('airship', "AIRSHIP MODE", "The party will have access to the airship immediately after leaving Narshe. Chocobo stables can also be used to acquire the airship. Doing events out of order can cause softlocks.", "gamebreaking"),
+    Code('alasdraco', "JAM UP YOUR OPERA MODE", "Randomizes the sprites of Maria, Draco, Ralse, the Impresario, the flowers Maria throws from the balcony, and the weight Ultros drops, as well as the singing voices and the names of the factions.", "aesthetic"),
+    Code('allcombos', "ALL COMBOS MODE", "All skills that get replaced with something are replaced with combo skills.", "minor"),
+    Code('bingoboingo', "BINGO BONUS", "Generates a Bingo table with spells, items, equipment, and enemy squares to check off. Players can set victory requirements like achieving a line, or acquiring a certain number of points. The ROM does not interact with the bingo card.", "aesthetic"),
+    Code('bravenudeworld', "TINA PARTY MODE", "All characters use the Esper Terra sprite.", "aesthetic"),
+    Code('bsiab', "UNBALANCED MONSTER CHESTS MODE", "Reverts the monster-in-a-box selection algorithm to be (mostly) the same as versions prior to EX v3.", "minor"),
+    Code('canttouchthis', "INVINCIBILITY", "All characters have 255 Defense and 255 Magic Defense, as well as 128 Evasion and Magic Evasion.", "major"),
+    Code('capslockoff', "Mixed Case Names Mode", "Names use whatever capitalization is in the name lists instead of all caps.", "aesthetic"),
+    Code('collateraldamage', "ITEM BREAK MODE", "All pieces of equipment break for spells. Characters only have the Fight and Item commands, and enemies will use items drastically more often than usual.", "major"),
+    Code('dancingmaduin', "RESTRICTED ESPERS MODE", "Restricts Esper usage such that most Espers can only be equipped by one character. Also usually changes what spell the Paladin Shld teaches.", "major"),
+    Code('darkworld', "SLASHER'S DELIGHT MODE", "Drastically increases the difficulty of the seed, akin to a hard mode. Mostly meant to be used in conjunction with the madworld code.", "major"),
+    Code('dearestmolulu', "ENCOUNTERLESS MODE", "No random encounters occur. All encounters yield 3x EXP. Wearing a Moogle Charm or a piece of equipment with the Moogle Charm effect will cause a battle to occur on every step when encounters can be occur.", "major"),
+    Code('easymodo', "EASY MODE", "All enemies have 1 HP.", "major"),
+    Code('electricboogaloo', "WILD ITEM BREAK MODE", "Increases the list of spells that items can break and proc for. Items can break for potentially any spell, and weapons can potentially proc any spell excluding SwdTechs, Blitzes, Slots, and a couple other skills.", "minor"),
+    Code('endless9', "ENDLESS NINE MODE", "All R-[skills] are automatically changed to 9x[skills]. W-[skills] will become 8x[skills].", "major"),
+    Code('equipanything', "EQUIP ANYTHING MODE", "Items that are not equippable normally can now be equipped as weapons or shields. These often give strange defensive stats or weapon animations.", "gamebreaking"),
+    Code('fightclub', "MORE LIKE COLI-DON'T-SEE-'EM", "Does not allow you to see the coliseum rewards before betting, but you can often run from the coliseum battles to keep your item.", "minor"),
+    Code('johnnydmad', "MUSIC REPLACEMENT MODE", "Randomizes music with regard to what would make sense in a given location.", "aesthetic"),
+    Code('johnnyachaotic', "MUSIC MANGLING MODE", "Randomizes music with no regard to what would make sense in a given location.", "aesthetic"),
+    Code('kupokupo', "MOOGLE MODE", "All party members are moogles except Mog. With partyparty, all characters are moogles, except Mog, Esper Terra, and Imps.", "aesthetic"),
+    Code('llg', "LOW LEVEL GAME MODE", "Stands for Low Level Game. No encounters will yield any Experience Points.", "major"),
+    Code('madworld', "TIERS FOR FEARS MODE", 'Creates a "true tierless" seed, with enemies having a higher degree of randomization and shops being very randomized as well.', "major"),
+    Code('makeover', "SPRITE REPLACEMENT MODE", "Some sprites are replaced with new ones (like Cecil or Zero Suit Samus).", "aesthetic"),
+    Code('masseffect', "WILD EQUIPMENT EFFECT MODE", "Increases the number of rogue effects on equipment by a large amount.", "major"),
+    Code('metronome', "R-CHAOS MODE", "All characters have Fight, R-Chaos, Magic, and Item as their skillset, except for the Mime, who has Mimic instead of Fight. Berserker also only has R-Chaos.", "major"),
+    Code('mimetime', 'ALTERNATE GOGO MODE', "Gogo will be hidden somewhere in the world of ruin disguised as another character. Bring that character to him to recruit him.", "minor"),
+    Code('naturalmagic', "NATURAL MAGIC MODE", "No Espers or equipment will teach spells. The only way to learn spells is through Natural Magic.", "major"),
+    Code('naturalstats', "NATURAL STATS MODE", "No Espers will grant stat bonuses upon leveling up.", "minor"),
+    Code('norng', "NO RNG MODE", "Calls to the RNG are not made. Attacks are always critical hits, everything targets the lead character when applicable, and all attacks hit if they are able to except Instant Death. Many more additional effects occur. Cannot currently be completed without cheat codes.", "experimental"),
+    Code('notawaiter', "CUTSCENE SKIPS", "Up to Kefka at Narshe, the vast majority of mandatory cutscenes are completely removed. Optional cutscenes are not removed.", "aesthetic"),
+    Code('partyparty', "CRAZY PARTY MODE", "Kefka, Trooper, Banon, Leo, Ghost, Merchant, Esper Terra, and Soldier are mixed into the sprites that can be acquired by playable characters. Those sprites are also randomized themselves, allowing Leo to look like Edgar, for example.", "aesthetic"),
+    Code('playsitself', "AUTOBATTLE MODE", "All characters will act automatically, in a manner similar to when Coliseum fights are fought.", "major"),
+    Code('quikdraw', "QUIKDRAW MODE", "All characters look like imperial soldiers, and none of them have Gau's Rage skill.", "minor"),
+    Code('randomboost', "RANDOM BOOST MODE", "Prompts you for a randomness multiplier, which changes the range of items that can be in chests, etc. Choosing a randomness multiplier of 0(or leaving it blank) will allow any item to appear in any treasure chest.", "major"),
+    Code('randombosses', "RANDOM BOSSES MODE", "Causes boss skills to be randomized similarly to regular enemy skills. Boss skills can change to similarly powerful skills.", "minor"),
+    Code('repairpalette', "PALETTE REPAIR", "Used for testing changes to palette randomization. Not intended for actual play. Cannot proceed past Banon's scenario.", "experimental"),
+    Code('replaceeverything', "REPLACE ALL SKILLS MODE", "All vanilla skills that can be replaced, are replaced.", "minor"),
+    Code('rushforpower', "OLD VARGAS FIGHT MODE", "Reverts the Vargas fight to the way it was before Beyond Chaos EX.", "minor"),
+    Code('strangejourney', "BIZARRE ADVENTURE", "A prototype entrance randomizer, similar to the ancientcave mode. Includes all maps and event tiles, and is usually extremely hard to beat by itself.", "experimental"),
+    Code('supernatural', "SUPER NATURAL MAGIC MODE", "Makes it so that any character with the Magic command will have natural magic.", "minor"),
+    Code('suplexwrecks', "SUPLEX MODE", "All characters use the Sabin sprite, as well as having a name similar to Sabin. All characters have the Blitz and Suplex commands, and every enemy can be hit by Suplex.", "major"),
+    Code('thescenarionottaken', 'DIVERGENT PATHS MODE', "Changes the way the 3 scenarios are split up.", "major"),
+    Code('worringtriad', "START IN WOR", "The player will start in the World of Ruin, with all of the World of Balance treasure chests, along with a guaranteed set of items, and more Lores.", "major"),
 ]
 
 MAKEOVER_MODIFIER_CODES = [
-    Code('novanilla', "COMPLETE MAKEOVER MODE"),
-    Code('frenchvanilla', "EQUAL RIGHTS MAKEOVER MODE"),
-    Code('cloneparty', "CLONE COSPLAY MAKEOVER MODE")
+    Code('novanilla', "COMPLETE MAKEOVER MODE", "Same as 'makeover' except sprites from the vanilla game are guaranteed not to appear.", "aesthetic"),
+    Code('frenchvanilla', "EQUAL RIGHTS MAKEOVER MODE", "Same as 'makeover' except sprites from the vanilla game are selected with equal weight to new sprites rather than some being guaranteed to appear.", "aesthetic"),
+    Code('cloneparty', "CLONE COSPLAY MAKEOVER MODE", "Same as 'makeover' except instead of avoiding choosing different versions of the same character, it actively tries to do so.", "aesthetic")
 ]
 RESTRICTED_VANILLA_SPRITE_CODES = []
-  
+
 makeover_groups = ["boys", "girls", "kids", "pets", "potato"]
 for mg in makeover_groups:
-    no = Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE")
+    no = Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE", f"Do not select {mg} sprites.", "aesthetic")
     MAKEOVER_MODIFIER_CODES.extend([
         no,
-        Code('hate'+mg, f"RARE {mg.upper()} MODE"),
-        Code('like'+mg, f"COMMON {mg.upper()} MODE"),
-        Code('love'+mg, f"{mg.upper()} WORLD MODE")])
+        Code('hate'+mg, f"RARE {mg.upper()} MODE", f"Reduce probability of selecting {mg} sprites.", "aesthetic"),
+        Code('like'+mg, f"COMMON {mg.upper()} MODE", f"Increase probability of selecting {mg} sprites.", "aesthetic"),
+        Code('love'+mg, f"{mg.upper()} WORLD MODE", f"Select only {mg} sprites.", "aesthetic")])
     RESTRICTED_VANILLA_SPRITE_CODES.append(no)
 
 
 # TODO: do this a better way
 CAVE_CODES = [
-    Code('ancientcave', "ANCIENT CAVE MODE"),
-    Code('speedcave', "SPEED CAVE MODE"),
-    Code('racecave', "RACE CAVE MODE"),
+    Code('ancientcave', "ANCIENT CAVE MODE", "", "cave"),
+    Code('speedcave', "SPEED CAVE MODE", "", "cave"),
+    Code('racecave', "RACE CAVE MODE", "", "cave"),
 ]
 
 
 SPECIAL_CODES = [
-    Code('christmas', 'CHIRSTMAS MODE'),
-    Code('halloween', "ALL HALLOWS' EVE MODE")
+    Code('christmas', 'CHIRSTMAS MODE', '', 'holiday'),
+    Code('halloween', "ALL HALLOWS' EVE MODE", '', 'holiday')
 ]
 
 
-TOP_SECRET_CODES = [
-]
-
-ALL_CODES = NORMAL_CODES + MAKEOVER_MODIFIER_CODES + CAVE_CODES + SPECIAL_CODES + TOP_SECRET_CODES
+ALL_CODES = NORMAL_CODES + MAKEOVER_MODIFIER_CODES + CAVE_CODES + SPECIAL_CODES
 
 options_ = Options(ALL_MODES[0])
-
-
-# This is a little silly, since anyone who knows a little python can very easily recover the plaintext, but knowing a little python you can easily subvert it all kinds of ways. This at least prevents people from seeing the plaintext (or something to easy decode in one's head like ROT13) directly in the code.
-class FourSquare:
-    def __init__(self, key1: str, key2: str):
-        self.cyphertable1 = FourSquare.cyphertable_from_key(key1)
-        self.cyphertable2 = FourSquare.cyphertable_from_key(key2)
-        self.plaintable = string.ascii_lowercase.replace('j', '')
-
-    @staticmethod
-    def cyphertable_from_key(key: str):
-        key = key.upper()
-        key = key.replace('j', 'i')
-        k = set(key)
-        k_remainder = set(string.ascii_uppercase.replace('J', '')) - k
-        return sorted(k, key=key.index) + sorted(k_remainder)
-        
-    def encypher(self, plaintext: str):
-        plaintext = "".join([c for c in plaintext if c.isalpha()])
-        plaintext = plaintext.lower()
-        if len(plaintext) % 2 == 1:
-            plaintext = plaintext + 'x'
-        plaintext = plaintext.replace('j', 'i')
-        
-        cyphertext = ''
-        for i in range(0, len(plaintext), 2):
-            j = i+1
-            i_index = self.plaintable.index(plaintext[i])
-            i_row, i_col = divmod(i_index, 5)
-            j_index = self.plaintable.index(plaintext[j])
-            j_row, j_col = divmod(j_index, 5)
-            
-            cyphertext += self.cyphertable1[i_row*5 + j_col]
-            cyphertext += self.cyphertable2[j_row*5 + i_col]
-            
-        return cyphertext
-    
-    def decypher(self, cyphertext:str):
-        if len(cyphertext) % 2 == 1:
-            raise ValueError
-        if 'J' in cyphertext:
-            raise ValueError
-        
-        plaintext = ''
-        for i in range(0, len(cyphertext), 2):
-            j = i+1
-            i_index = self.cyphertable1.index(cyphertext[i])
-            i_row, i_col = divmod(i_index, 5)
-            j_index = self.cyphertable2.index(cyphertext[j])
-            j_row, j_col = divmod(j_index, 5)
-            
-            plaintext += self.plaintable[i_row*5 + j_col]
-            plaintext += self.plaintable[j_row*5 + i_col]
-
-        return plaintext[:-1] if plaintext[-1] == 'x' else plaintext

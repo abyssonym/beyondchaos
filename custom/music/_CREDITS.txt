@@ -1,34 +1,44 @@
 Song conversions:
-    Cecil188 -- ot_stillsnow
-    emberling -- blord_2tower, blord_ruins
+    Cecil188 -- dc_garden
+                fe15_whatlies
+                ot_stillsnow
+    emberling -- bl_fahrenheit, bl_rebels
+                 blord_2tower, blord_ruins
                  bof1_dawn
                  bof2_battle, bof2_dragnier
                  cc_dragonia, cc_harle, cc_home, cc_hydra, cc_life, cc_pyre,
-                 cc_world2
+                 cc_valley, cc_world2
                  crys_fields, crys_mountain, crys_tower
-                 ct_600ad, ct_battle, ct_battle2, ct_bobonga, ct_fair, ct_frog
-                 ct_keeper, ct_mountain, ct_night, ct_revolution, ct_rhythm,
-                 ct_robo, ct_schala, ct_silent, ct_sewer, ct_theme, ct_truth,
-                 ct_tylair, ct_tyran, ct_zeal
+                 ct_600ad, ct_battle, ct_battle2, ct_bike, ct_bobonga,
+                 ct_boss2, ct_factory, ct_fair, ct_final, ct_frog, ct_forest,
+                 ct_keeper, ct_mountain, ct_night, ct_omen, ct_revolution,
+                 ct_rhythm, ct_robo, ct_schala, ct_silent, ct_sewer,
+                 ct_tension, ct_theme, ct_truth, ct_tylair, ct_tyran, ct_zeal
                  cv4_beginning, cv4_chandeliers
                  ds4_dungeon, ds4_lyll, ds4_world
                  eo3_waves
                  ff2_battle2, ff2_battleb, ff2_theme
-                 ff3_battle, ff3_warrior
-                 ff4_calcobrena
-                 ff5_battle, ff5_boss, ff5_bridge, ff5_cave, ff5_curse,
-                 ff5_excastle, ff5_final, ff5_home, ff5_hurry, ff5_lenna,
-                 ff5_library, ff5_mountain, ff5_seal, ff5_theme, ff5_void,
-                 ff5_wings, ff5_world1
-                 ff7_battle, ff7_corel, ff7_costa, ff7_gun, ff7_hurry,
-                 ff7_rebirth, ff7_reunion, ff7_snow, ff7_weapon
+                 ff3_battle, ff3_hyne, ff3_warrior, ff3_world
+                 ff4_battle, ff4_calcobrena, ff4_damcyan, ff4_giant, ff4_rosa,
+                 ff4_rydia
+                 ff5_bal, ff5_battle, ff5_boss, ff5_bridge, ff5_cave,
+                 ff5_curse, ff5_dawn, ff5_excastle, ff5_final, ff5_home,
+                 ff5_hurry, ff5_lenna, ff5_library, ff5_mountain, ff5_seal,
+                 ff5_ship, ff5_theme, ff5_void, ff5_what, ff5_wings,
+                 ff5_world1, ff5_world3
+                 ff7_battle, ff7_boss, ff7_corel, ff7_costa, ff7_desert,
+                 ff7_gun, ff7_hurry, ff7_pizza, ff7_rebirth, ff7_reunion,
+                 ff7_sadbar, ff7_snow, ff7_weapon
                  ff8_battle, ff8_boss, ff8_horizon, ff8_landing, ff8_lion,
-                 ff8_mlaw, ff8_triad, ff8_witches
-                 ff9_battle, ff9_gargan, ff9_hills, ff9_hunt, ff9_rose
-                 ffx_battle, ffx_calm, ffx_gagazet, ffx_via, ffx_zanarkand
+                 ff8_mlaw, ff8_triad, ff8_witches, ff8_world
+                 ff9_battle, ff9_extraction, ff9_flamenco, ff9_gargan,
+                 ff9_hunt, ff9_rose, ff9_siege, ff9_treno, ff9_world
+                 ffx_battle, ffx_calm, ffx_gagazet, ffx_luca, ffx_via,
+                 ffx_zanarkand
                  ff12_barheim, ff12_crystal, ff12_estersand, ff12_ozmone,
-                 ff12_paramina
-                 ffmq_battle1, ffmq_battle3, ffmq_boss, ffmq_forest,
+                 ff12_paramina, ff12_prison
+                 ff14_azyslla, ff14_battlem
+                 ffmq_battle, ffmq_boss, ffmq_doom, ffmq_final, ffmq_forest,
                  ffmq_fossil, ffmq_gale, ffmq_lava, ffmq_light, ffmq_rock,
                  ffmq_tower, ffmq_tristam, ffmq_victory
                  fft_apoplexy
@@ -48,7 +58,8 @@ Song conversions:
                  ot_cliftlands, ot_oasis, ot_sunshade
                  rd_summer
                  rs2_heroes
-                 rs3_gwain, rs3_julian
+                 rs3_devil2, rs3_getpet, rs3_gwain, rs3_julian, rs3_sarah
+                 sd1s_courage
                  sd2_8bells, sd2_always, sd2_angel, sd2_boss, sd2_city,
                  sd2_desert, sd2_eternal, sd2_flammie, sd2_forest, sd2_forget,
                  sd2_ghost, sd2_hope, sd2_intruder, sd2_jema, sd2_legend,
@@ -63,9 +74,10 @@ Song conversions:
                  smb2_select
                  so2_rescue, so2_victory, so2_world1
                  st_dungeon
-                 top_cold, top_freeze, top_harmony, top_mint, top_spirit,
-                 top_treant, top_victory, top_world1, top_world3
-                 totr_arrow, totr_worlds
+                 top_cold, top_freeze, top_harmony, top_mint, top_resur, 
+                 top_spirit, top_treant, top_victory, top_world1, top_world3
+                 totr_arrow, totr_battle, totr_ruins, totr_ship, totr_sion,
+                 totr_underworld, totr_wind, totr_worlds
                  tyr_theme
                  wc2_orc1
                  xc1_valakn
@@ -73,6 +85,7 @@ Song conversions:
                  xg_boss, xg_flight, xg_lahan, xg_tears, xg_weltall
                  ys3_house, ys3_time
                  ys8_idance
+                 zlttp_darkworld, zlttp_dungeon
     Gi Nattak -- cc_arni, cc_flame, cc_miguel
                  ct_boss2
                  cv3_aquarius
@@ -91,6 +104,7 @@ Song conversions:
                  ff9_home, ff9_memoria
                  ffx_decision
                  ffmq_gale
+                 gs_venus (ripped & submitted by A Tiny Spook)
                  iog_boss, iog_womb
                  jts_stage1
                  lagoon_spirits
@@ -105,12 +119,16 @@ Song conversions:
                  sd3_faith, sd3_paths
                  sdlm_nostalgic
                  tn_evergreen
+                 wa_zed (ripped & submitted by A Tiny Spook)
                  xg_chuchu, xg_mermaid
                  ys1_wars
                  ys3_wings
                  zaol_overworld
                  zoot_storms
+    HoxNorf -- ct_boss, ct_epoch, ct_lavos, ct_magus, ct_town, ct_trial,
+               ct_undersea
     Jackimus -- ffx_seymour
+                xc1_names (ripped & submitted by A Tiny Spook)
     MetroidQuest -- ff4_boss, ff4_cave
     Royaken -- ff4_bomb, ff4_mysidia, ff4_whale
                ff7_hurry2, ff7_judgment, ff7_materia, ff7_planet
@@ -121,9 +139,11 @@ Song conversions:
                ff4_baron, ff4_illusion
     emberling & Gi Nattak -- lu1_boss
                              totr_spirit
+    Gi Nattak & Jackimus -- dq1_world_ff4 (ripped & submitted by A Tiny Spook)
 Tierboss segments:
     emberling -- ffmq_lava_dm, ff8_witches
     Gi Nattak -- cc_flame_dm
     emberling, Gi Nattak, tsushiy -- ff3_eureka_dm
+    HoxNorf, emberling -- ct_lavos_dm
     Nobuo Uematsu -- ff6_tier1_dm, ff6_tier2_dm, ff6_tier3_dm
 Samples provided by madsiur and tsushiy

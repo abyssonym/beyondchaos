@@ -1,0 +1,131 @@
+# For poems that can't fit into one text box,
+# you need to manually break them into boxes with blank lines.
+# If you don't, it'll behave weirdly.
+
+# Title: excerpt from "Jabberwocky"
+# Author: Lewis Carrol
+Twas brilig and the slithey toves
+Did gyre and gimble in the wabe
+All mimsy were the borrowgroves
+And the mome raths outgrabe
+
+---
+# Title: "Harlem"
+# Author: Langston Hughes
+
+What happens to a dream deferred?
+
+Does it dry up
+like a raisin in the sun?
+Or fester like a sore-
+and then run?
+
+Does it stink like rotten meat?
+Or crust and sugar over-
+like a syrupy sweet?
+
+Maybe it just sags
+like a heavy load.
+
+Or does it explode?
+
+---
+# Title: excerpt from "Ozymandias"
+# Author: Percy Bysshe Shelley
+
+And on the pedestal these words appear:
+“My name is Ozymandias, King of Kings.
+Look on my Works, ye Mighty and despair!”
+
+Nothing beside remains. Round the decay
+of that colossal Wreck, boundless and bare,
+The lone and level sands stretch far away.
+
+---
+# Title: excerpt from "The New Colossus"
+# Author: Emma Lazerus
+
+“Keep, ancient lands, your storied pomp!” cries she
+with silent lips. “Give me your tired, your poor,
+
+your huddled masses yearning to breathe free,
+the wretched refuse of your teeming shore.
+
+Send these, the homeless, tempest-tost to me,
+I lift my lamp beside the golden door!”
+
+---
+# Title: "This is Just to Say"
+# Author: William Carlos Williams
+
+I have eaten
+the plums
+that were in 
+the icebox
+
+and which
+you were probably
+saving
+for breakfast
+
+Forgive me
+They were delicious
+so sweet
+and so cold
+
+---
+# Title: "The Red Wheelbarrow"
+# Author: Wiliam Carlos Williams
+
+So much depends
+upon
+a red wheel
+barrow
+
+glazed with rain
+water
+beside the white
+chickens
+---
+# Title: Untitled Haiku
+# Author: Anonymous
+
+Writing a poem
+In seventeen syllables
+Is very diffi--
+
+---
+# Title: "The Tyger"
+# Author: William Blake
+
+Tyger, tyger, burning bright,
+in the forests of the night;
+What immortal hand or eye,
+Could frame thy fearful symmetry?
+
+---
+# Title: "Row, Row, Row Your Boat (Kingly version)"
+# Author: King Friday XIII
+
+Propel, propel, propel your craft,
+Gently through liquid solution.
+
+Ecstatically, ecstatically, ecstatically, ecstatically, 
+Existence is but an illusion.
+
+---
+# Title: Untitled Haiku
+# Author: R. M. Hansard
+
+The west wind whispered,
+And touched the eyelids of spring:
+Her eyes, Primroses. 
+
+---
+# Title: "Old Pond" 
+# Author: Matsuo Basho
+
+An old silent pond…
+A frog jumps into the pond,
+splash! Silence again. 
+

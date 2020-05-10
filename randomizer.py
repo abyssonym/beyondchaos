@@ -2638,7 +2638,7 @@ def manage_formations(formations, fsets):
     return formations
 
 
-def manage_formations_hidden(formations, freespaces, form_music_overrides=None):
+def manage_formations_hidden(formations, freespaces, form_music_overrides=None, no_special_events=True):
     if not form_music_overrides:
         form_music_overrides = {}
     for f in formations:
@@ -2725,6 +2725,8 @@ def manage_formations_hidden(formations, freespaces, form_music_overrides=None):
                     eids.append(eid)
         uf.set_big_enemy_ids(eids)
         uf.lookup_enemies()
+        if no_special_events:
+            uf.set_event(False)
 
         for _ in range(100):
             while True:
@@ -4620,7 +4622,8 @@ def randomize(args):
 
     form_music = {}
     if options_.random_formations:
-        manage_formations_hidden(formations, freespaces=aispaces, form_music_overrides=form_music)
+        no_special_events = not options_.is_code_active('bsiab')
+        manage_formations_hidden(formations, freespaces=aispaces, form_music_overrides=form_music, no_special_events=no_special_events)
         for m in get_monsters():
             m.write_stats(fout)
     reseed()

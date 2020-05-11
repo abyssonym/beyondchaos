@@ -3,23 +3,25 @@
 #COMPOSER Kenji Hiramatsu
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT *~ enh
+#VARIANT */ vic
+#VARIANT `~ sfx
+#VARIANT `~ tr
 
-#WAVE 0x20 ~0x49~/0x0D/
+#WAVE 0x20 ~0x49~/0x46/
 #WAVE 0x21 ~0x7F~/0x0E/
 #WAVE 0x22 ~0x08~/0x08/
 #WAVE 0x23 ~0x1A~/0x1A/
 #WAVE 0x24 ~0x0A~/0x07/
-#WAVE 0x25 ~0x67~/0x3E/
+#WAVE 0x25 ~0x67~/0x1B/
 #WAVE 0x26 ~0x6F~/0x00/
 #WAVE 0x27 ~0x02~/0x02/
 
 #WAVE 0x2A ~0x22~/0x22/
 #WAVE 0x2B ~0x7E~/0x14/
-#WAVE 0x2C ~0x6D~/0x12/
+#WAVE 0x2C ~0x6D~/0x8E/
 #WAVE 0x2D ~0x68~/0x00/
-#WAVE 0x2E ~0x66~/0x17/
+#WAVE 0x2E ~0x66~/0x84/
 
 #def global= t124 %v50 %b0,70 %f0,0
 
@@ -69,10 +71,11 @@ p80 [<c+r>[3c+r]] f+f+rerc+ref+8r4.
 ##8 guitar @ o4+1/-1, bass o4+2
 $1 p70 {gtr}~|6 v112 o5~ /@1 v60 o3 %s4/ %e1{}
 'gm'l16 a+b8a+b8a+b f+f+bf+ p90 'go'<dc+>%l1bf+%l0
-p64 {bas}|7 v96 ~<~/o6/ %e0 {} $109 e4<d8>e<e>f+<f+>f+8<f+8>f+<f+>
->brb j1,0 brbr<e^2>   brb<drerf+8>f+af+braa
+p64 {bas}|7 v96 ~<~/o6/ %e0 {} ##$109 e4<d8>e<e>f+<f+>f+8<f+8>f+<f+>
+[j1,109]                       ##>brb j1,0
+brbr<e^2>   brb<drerf+8>f+af+braa
 ##12 bass o3+2
-a+br4<a+br4rbr8 [j2,114%j109$114 l16
+a+br4<a+br4rbr8 [j1,109] l16
 <f+rarb8.g+8f+4> br8b4.rb8b8a8
 ##16 bass o3+2
 g2.r4 g4<d4g+32a8..f+8>g8 f+8.<c+8.>f+4f+b<f+c+>f+a b8.<brbabararae>ar
@@ -80,12 +83,12 @@ g2.r4 g4<d4g+32a8..f+8>g8 f+8.<c+8.>f+4f+b<f+c+>f+a b8.<brbabararae>ar
 g+8r<d32e32^8g+8.eg+8e8>g+8  f+8.b8.<f+2^8  c+2f+32g8..e4  [f+r>[3f+r]<]
 f+f+rerc+eff+r4..>
 ##25 bass o3+2
-$125 [3b4.<b4>b8<b8>b8 m10>] %k0o5 f+4.<f+4>f+8<f+8>f+8 j1,0
+[j1,125] ##$125 [3b4.<b4>b8<b8>b8 m10>] %k0o5 f+4.<f+4>f+8<f+8>f+8 j1,0
 ##29 bass o3+2
 e8.<ereded>e<e>f+ea<e>b  f+8.<f+rf+ef+rf+ec+f+c+>af+
 brbr<b8>b<a8>a<a8e>a8.  grgr<gd>gf+rf+f+ra8<c+8>
 ##33 bass o3+2
-[j2,137%j125$137 l16
+[j1,125] l16
 ##37 bass o3+2<
 e8.<eredere>ae<e>eb<e>  g8.<grgf+g[4c8]
 [3f+f+>f+rj3f+r<]<f+16m12,-12^8.r2.
@@ -98,11 +101,14 @@ l16 b1 ^2^8<b4.<b1^1
 {brs}|1 v40 ~>~ m48,18,239 {}p90 <r2b2 p50 bbrbr<c+r>a+ t124 r2
 ;1
 
+$109 l16 e4<d8>e<e>f+<f+>f+8<f+8>f+<f+> >brb ]
+$125 l16 [3b4.<b4>b8<b8>b8 m10>] %k0o5 f+4.<f+4>f+8<f+8>f+8 ]
+
 {2}
 {str}|0 v80 ~o3~/o4/ %e1 m48,18,239 {} %r14 p40 l16
 ##2 str low o4-1/<
 bb<de p30
-$202 l8 [[3f+.e.>b<]l16drdrde8.$0] j1,0
+[j1,202] ##$202 l8 [[3f+.e.>b<]l16drdrde8.] j1,0
 ## strings low o5-1/
 l16 [8c+d] f+f+8e8c+8ef+2
 ##8 bone (mirror horn1 p100) o5+2>
@@ -118,9 +124,9 @@ c+8.>b2^8^g+a ~%r13~b4b4a4f+4 <c+8dc+r>arb4rr4
 {net}|4 v64 ~>~// {} p65 %r12 aabb<c+c+ d8.e8.c+8d8.e8.c+8 
 ##20 clarinet2(3) o6/-1<, horn o4
 >b2^8b8a+8b8  <f+8.e8.%a2p20b2^8 %ab2g4b4 b1 bbrbrbbb<c+8
-{hrn}|2 ~v88~/v80/ ~o4~/o4/ {}p55%r8 $225 [3f+8a8f+8
+{hrn}|2 ~v88~/v80/ ~o4~/o4/ {}p55%r8 [j1,225] ##$225 [3f+8a8f+8
 ##25 horn o4
-b8.a8.f+4] f+8b8<d8 c+4.d8e4>a4 j1,0
+#^ ##b8.a8.f+4] f+8b8<d8 c+4.d8e4>a4 j1,0
 ##29 string2 o6-1/, bell o5+1
 {str}|0 ~v80~ ~<~/o6/m48,18,239 {}p40%r8 b2^8a8<d8c+8> b1
 {bel}@3 v96 ~<~ %y4%s1~%r11~ ~m~{}p70 b8b8<d8>ba8a<e8c+8>a8 g8b8<d8f+e8>f+f+8g+8a+8
@@ -137,10 +143,13 @@ b8.a8.f+4] f+8b8<d8 c+4.d8e4>a4 j1,0
 {brs}|1 ~v80~ ~~/</ {}p60 f+f+rf+rf+rf+r2
 ;2
 
+$202 l8 [[3f+.e.>b<]l16drdrde8.] ]
+$225 l16 [3f+8a8f+8      b8.a8.f+4] f+8b8<d8 c+4.d8e4>a4 ]
+     
 {3}
 r4
 ##2 brass high o6/+1
-{brs}|1 v80 ~o6~/o7/ %e1 m48,18,239 {} %r11 p55 [j2,306%j202 $306
+{brs}|1 v80 ~o6~/o7/ %e1 m48,18,239 {} %r11 p55 [j1,202]
 ##6 brass high/4 o4/+1<<
 ~o4~/o5/ p75 v127 %r0 v48,48b4 v144,127^2.
 {brs}v80 ~o6~/o7/{} l16 %r14 aa8a8a8aa2
@@ -149,7 +158,7 @@ r4
 c+8.>b2^8^f+f+  l4ggaa  l16[a8bararg+^2]
 ##12 string2 o5-1/<
 {str}|0 ~v80~ ~~/</ m48,18,239 {}p40 %r9
-[j2,314%j412$314 l16r2.<f+g+ab<c+8.>b8.r8r2
+[j1,412] l16r2.<f+g+ab<c+8.>b8.r8r2
 ##16 string2 o5-1/<<
 {sstr}v56 ~>~/>/ m48,18,223 %a5 {}
  b1<d4c+4^e4..e4.c+4. %r%r9def+a b2.b8<c+8
@@ -163,7 +172,7 @@ p30 d8.c+8.>b2^8< e8.d8.c+2^8 f+8.e8.d4d8e8f+8 >a4.b8<c+4>a4
 %r10 b2..<f+f+ e1 a1 <c+4.d8e4a4
 ##37 pet2 (as brass) o5/+1
 {brs}|1 v80 ~>~/>/ m48,18,239 {}p75
-[j2,338%j537$338 l16 f+8a8a8  b8r4<f+8r4f+8r8> a+8r2..
+[j1,537] l16 f+8a8a8  b8r4<f+8r4f+8r8> a+8r2..
 ##41 string2 o4-1/
 {str}|0 ~o3~/o4/ {}p90%r10 [3b4.a4.b8j3a8]<c+8 d4f+4e4c+4>
 ##45 string2 o4-1/<<<
@@ -187,7 +196,8 @@ $4 {hrn}|2 ~v88~// ~>~/o4/ m48,18,223 {} %r17p30 l8 b<d>b<
 ##8 horn2 o5
 %r10 l16 f+8.e2^8^>b<c+  l4dc+de  l16[c+8dc+r>arb^2<]
 ##12 clarinet2 o6/-1>
-{net}|4 v64 ~<~//{} p70 %r11 $412 f+8.e2^8.>b<c+ d4c+4d4e4 j1,0 c+8dc+r>arb4rf+g+ab <c+8.>b4rr2
+{net}|4 v64 ~<~//{} p70 %r11 [j1,412] ##$412 f+8.e2^8.>b<c+ d4c+4d4e4 j1,0
+c+8dc+r>arb4rf+g+ab <c+8.>b4rr2
 ##16 guitar1 o4+1/-1
 {gtr}~|6 v112 ~ /@1 v60 > %s4/ m48,18,239{}
 'gm''gvl'g4.'go'<d4d8d4>'gm'd4.'go'a4a8a4
@@ -195,16 +205,17 @@ $4 {hrn}|2 ~v88~// ~>~/o4/ m48,18,223 {} %r17p30 l8 b<d>b<
 ##20 guitar1 o4+1/-1, bone
 'go'g4.b2r8 r4.b4.r4 <f+4e4c+4>b4 <[8c+r] >f+f+rf+rf+f+f+f+r
 ##24 into 25 bone o4+2
-{bone}|3 v40 ~<~/o6/{}p100%r10 [j2,428%j225$428
+{bone}|3 v40 ~<~/o6/{}p100%r10 [j1,225]
 ##29 brass1 o5/+1, guitar o4+1/-1, brass o5/+1
 {brs}|1 v80 ~>~//{}p75 l16
-$429 g[3gr]gg8f+8g8f+8 f+[3f+r]f+f+8 j1,0 e8c+8e8 f+8
+[j1,429] ##$429 g[3gr]gg8f+8g8f+8 f+[3f+r]f+f+8 j1,0
+e8c+8e8 f+8
 {gtr}~|6 v112 ~ /@1 v60 o3 %s4/{}'go' r4^[3ara] [3gr]gf+ r8
 {brs}|1 v80 ~~/o6/{}%r11 f+8g+8a+8
 ##33 brass o5/+1<
 b2..<dd e2..de f+2..ef+ a2e2
 ##37 pet1 (as clarinet) o5/-1, horn (as bone) o5+2
-{net}|4 v64 ~>~/o4/{}p90 [j2,438%j429$438 l16
+{net}|4 v64 ~>~/o4/{}p90 [j1,429] l16
 {bone}|3 v40 ~<~/o6/{}%r9p65
 b8<d8e8 f+f+r4f+f+r4f+f+r8 f+r p30v72 f+8e8d8e8d8a8f+8
 ##41 string1 o4-1/
@@ -214,6 +225,9 @@ r1r1 p60 [[6b]aa]<d8d8e8e8f+8f+8a4
 ##49 string o3-1/ -> o6-1/
 ~o2~/o3/v127c+1 v80~o5~/o6/%r19 bb8b8<c+8>a+^8
 ;4
+
+$412 l16 f+8.e2^8.>b<c+ d4c+4d4e4 ]
+$429 l16 g[3gr]gg8f+8g8f+8 f+[3f+r]f+f+8 ]
 
 {5}
 r4
@@ -240,13 +254,14 @@ b2 {net}|4 v64 ~>~/o4/ m48,18,223{}p75%r12 g+4.r8 f+8.f+8.b2^8
 ~>~/o5/ p64 "5c1" ^2^8
 {net}|4 ~~/>/{}p50v32%r11 a8<c+8>a8  <f+2^8c+dedc+>a a4.g8f+4e4
 ##29 brass2 o5/+1, strings2 o5-1/, horn o4
-{brs}|1 v80 ~~/o6/ {}p95  [j2,530%j537$530 l16 a8f+8a8 b8
+{brs}|1 v80 ~~/o6/ {}p95  [j1,537] l16 a8f+8a8 b8
 {str}|0 ~>~/>/ {}p50%r19v112 b8<d8>ba8a<e8c+8>a8g8b8<d8f+e8>f+
 {hrn}|2 ~v88~// ~~/>/ %e1 m48,18,223 {}p55%r8 f+8g+8a+8
 ##33 horn o4
-$533 [3b8.a8.f+4j3f+8a8f+8] f+8b8<d8 c+4.d8e4>a4 j1,0
+[j1,533] ##$533 [3b8.a8.f+4j3f+8a8f+8] f+8b8<d8 c+4.d8e4>a4 j1,0
 ##37 clarinet o5/-1
-{net}|4 v64 ~<~// {}p50 $537 [bbrbrbrbb8j2a8<d8c+8>] j1,0 b8a8e8
+{net}|4 v64 ~<~// {}p50 [j1,537] ##$537 [bbrbrbrbb8j2a8<d8c+8>] j1,0
+b8a8e8
 v40f+f+r4<f+f+r4f+f+r8> a+8r2..
 ##41 perc o5, bluestring o4-1/>
 /</%e0mp64"5!!c2.p4" "p4.q4.p4" "p4.o4.h4"%e1
@@ -258,6 +273,9 @@ b1.^8<c+8f+4>b1^1
 {bas}|7 v96 ~~// %e0 m{}p64 f+f+8f+8f+8f+r2 %e1
 ~>~
 ;5
+
+$533 l16 [3b8.a8.f+4j3f+8a8f+8] f+8b8<d8 c+4.d8e4>a4 ]
+$537 l16 [bbrbrbrbb8j2a8<d8c+8>] ]
 
 {6}
 r4
@@ -299,12 +317,12 @@ p64[[3"c8.c4^16"]^4^16"c8."]
 ##6
 "c2"[4"k8"] l16 "^o8o8o8.s8.ss4"
 ##8
-$7 l8 $708 "c4.hho"[7"h"]"ohh" j1,0
+$7 l8 [j1,708] ":h:" ##$708 "c4.hho"[7"h"]"ohh" j1,0
 ["c4..c16^2"]
 ##12 
-[j2,714%j708$714":h:" l16"c4..c^2" "s+8.s+4.s+8.s+8s+8"
+[j1,708]":h:" l16"c4..c^2" "s+8.s+4.s+8.s+8s+8"
 ##16
-[j2,718%j708$718":h:"  l8[[5"h"]"ohh"]
+[j1,708]":h:"  l8[[5"h"]"ohh"]
 ##20 
 "c4.hhohh" "c4.c4.v4" "c4.c2^8" "c1" "s+8.s+8.s+8s+2"
 ##25
@@ -323,6 +341,9 @@ r1r1r1 "p4.p4.p-4"
 l16 "x2" v64p80v96,127%g1[8"!oz"]%g0p64 "!!oo8o8o8o4.s8."
 ;7
 
+$708 l8 ":s:"  "c4.hho"[7"h"]"ohh" ]
+
+*
 {8}
 {str}|0 v80 ~o4~/o5/ %e1{} ~%r13~ l16 p60
 ##2 str high o5-1/<, clarinet o6/-1
@@ -348,15 +369,16 @@ r4.c+4r4. >f+r8f+r8<c+4r4. r1
 {str}|0 v80 ~o3~//{}v192,96 %g1[12b24<c+24>]%g0
 {brs}|1 v80 ~o5~/o6/{} f+f+rerc+eff+r4..
 ##25 guitar o4+1/-1
-{gtr}~|6 v112 ~ /@1 v60 o3 %s4/{}%k5 $825'gm'f+4.'go'f+4'gm'f+8'go'f+8'gm'f+8 j1,0
-%k3 [j2,827%j825$827 %k1 [j2,828%j825$828 %k0 [j2,829%j825$829 l16
+{gtr}~|6 v112 ~ /@1 v60 o3 %s4/{}%k5
+[j1,825]  ##$825'gm'f+4.'go'f+4'gm'f+8'go'f+8'gm'f+8 j1,0
+%k3 [j1,825] %k1 [j1,825] %k0 [j1,825] l16
 ##29 crash, trumpet as net o6/-1, crash, bone o4+2
 %e0mp64"c4^"
 {net}|4 ~<~// %e1{}p55v32 b8b8.a8 r2^ brbb8a8f+8a8
 ~>~//%e0p64"5!!c1c2^8"
 {bone}|3 v40 ~<~/</ %e1 m48,18,239 {}p100%r10 f+8g+8a+8
 ##33 bone o4+2
-[j2,837%j533$837 l16
+[j1,533] l16
 ##37 brass (as petb) o5/+1<
 {pet}|1 ~v32~/v32/ ~>~//{}p55
 r2br8.br8.br4..brv80b8<d8e8  f+f+r4f+f+r4f+f+r8 f+8r2..
@@ -368,3 +390,10 @@ l16 %e0mp64[3"!!!o i4i8ij"] "i4p-8ij" "p-4i8ij" [3"!!!o i4i8ij"]
 ##49
 [4"k4"]"z1"%e1
 ;8
+*
+
+$825 'gm'f+4.'go'f+4'gm'f+8'go'f+8'gm'f+8 ]
+
+`
+{8}r;
+`

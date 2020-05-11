@@ -1,0 +1,121 @@
+#TITLE Theme of SION
+#ALBUM Treasure of the Rudras
+#COMPOSER Ryuji Sasai
+#ARRANGED emberling
+##created with sqspcmml alpha 0.4.2
+
+#WAVE 0x20 0x06
+#WAVE 0x21 0x2c
+#WAVE 0x22 0x96
+#WAVE 0x23 0x03
+#WAVE 0x24 0x20
+#WAVE 0x25 0x78
+
+#WAVE 0x28 0x46
+#WAVE 0x29 0x9e
+
+#def 0i= |0
+#def 1i= |1
+#def 2i= |2
+#def 3i= |3
+#def 4i= |4
+#def 5i= |5
+
+#def 0o= o6
+#def 1o= o9
+#def 2o= o6
+#def 3o= o6
+#def 4o= o6
+#def 5o= o6
+
+#def 0v= v100
+#def 0f= v1,100
+#def 1v= v100
+#def 1f= v1,100
+#def 2v= v100
+#def 2f= v1,100
+#def 3v= v50
+#def 3f= v1,50
+#def 4v= v100
+#def 4f= v1,100
+#def 5v= v150
+#def 5f= v1,150
+
+#def bel= |9 o5 v100
+#def str= |8 o5 v100
+
+{1}
+{'Note table: 168 120 96 48 36 24 12'}
+%x255{'27 131'}t110{'04 100 1'} %b0,85 %f0,0 %v30
+{'02 25'}{'05'}%e1$
+'4i''4o' p64'4v*v1.27''4v*v.40'%a15%y7%s7%r17m[%k-5
+g2^8c8d+8g8a+16a16a+2^4.a8>a8<c8d+8g8c8d+8g8g+16g16g+2^8g16f16d+16d16c4
+d8d+4c8>g8d+8<d+8.f8.g2^8f2^4.d+16d16c2>c16d+16g+16<c16>d16f16a+16<d16
+]
+'5i''5o''5v*v.19' '5v*v.40'%a9%y0%s7%r10m24,4,193g2c8d+8g8a+8a2c4.c16
+d16d+4f8g4c8d+8a+8a16g+16a2^4.g+8a+4%k5d4d8e8f8e16d16c2>e8f8g8c8e8a8<c8
+e8c8d8e8d8.>a+8.<f8e8r16f8r16g8;
+
+{2}
+{'Note table: 192 120 96 72 48 24 255'}
+{'05'}%e1$
+'2i''2o' '2v*v1.00'
+p64'2v*v.40'%a15%y7%s5%r10m48,4,213[%k-21>e8b8<e8>e4.e8f+8g8<d8g8>g2^8
+c+8g8b8c+2^8c8g8<c8>c4<c8>d8a8e8b8<e8>e4.e8f+8g8<d8g8>g4.a8b8c+8e8a8c+4.
+e8f+8c8g8<c8>c4<c8>d8f+8<]
+'1i''1o''1v*v.15' %a15%y0%s5%r0'1v*v.50'%k-31
+>d1g1f1g1a+1c1a1a+2<c2;
+
+{3}
+{'Note table: 120 96 72 48 36 24 12'}
+{'05'}%e1$[
+'0i''0o''0v*v.08' '0v*v1.27'
+p94'0v*v.17'%a13%y0%s7%r10m48,4,213[%k10r8>e16<r8.>e2^8<]r8>c16<r8.>c2^8
+<r8>c16<r8.>c4.d4<[%k2r8>g+16<r8.>g+2^8<]r8>a+16<r8.>a+2^8<r8>g+16<r8.
+>g+4.g4<]%a13%y0%s7%r0>f2^8g8g+8<c8>a+1c2g+4g8g+8f1g+2g4f4g2g+4a+4g2<c4
+>a+8<c8>g+2g8.f8.d+8;
+
+{4}
+{'Note table: 192 120 96 48 36 24 12'}
+{'05'}%e1$
+'0i''0o' '0v*v1.27'p34
+'0v*v.17'%a13%y0%s7%r10m48,4,213[[%k-3r8c+16r8.c+2^8]r8>a+16<r8.>a+2^8
+<r8>a+16<r8.>a+4.<c4r8>a+16<r8.>a+2^8<r8>g+16<r8.>g+2^8<r8>a+16<r8.>a+2^8
+<r8>a+16<r8.>a+4.g+4<]%a13%y0%s7%r0p94>f1g1c+2f4d+8f8d+1f+1g+1g+2<c2>a+2
+g+8.d+8.c8;
+
+{5}
+{'Note table: 120 96 72 48 36 24 12'}
+%e1$
+'0i''0o' '0v*v1.27'p64'0v*v.21'
+%a13%y0%s7%r10m48,4,213[%k-15r8a+16r8.a+2^8r8g+16r8.g+2^8r8g16r8.g2^8r8
+f+16r8.f+4.g+4r8f16r8.f2^8r8f16r8.f2^8r8g16r8.g2^8r8f+16r8.f+4.d+4]%a13
+%y0%s7%r0p34c+2^8d+8f8g+8>a+2g+8g8f8d+8f2c+8d+8f8g+8g4.f8d+2a+2f+8g+8a+8
+<c+8>d+2g+4<c4>f2d+4c+8c8f+2g+8.d+8.g+8;
+
+{8}
+%e1'??v*v1.27'$r1^1^1^1^1^1^1^1^1^1^1^1^1^1^1^1
+'3i''3o' p40{'17 0'}%a10
+%y0%s7%r26p0,192,127'3v*v.32'[[4%k2c16>g+16f16c16<][4%k4c16>g+16d+16c16
+<]][4%k3c16>g16e16c16<][4%k5c16>g16e16c16<][4%k2c16>g16d+16c16<][%k3c16
+>g16e16c16<][%k5c16>g16e16c16<]p;
+
+{7}
+{'Note table: 192 120 96 72 48 24 255'}
+%e1$k1
+'2i''2o' '2v*v.63'p4'2v*v.40'
+%a15%y7%s5%r10m48,4,192p0,12,127[%k-21>e8b8<e8>e4.e8f+8g8<d8g8>g2^8c+8
+g8b8c+2^8c8g8<c8>c4<c8>d8a8e8b8<e8>e4.e8f+8g8<d8g8>g4.a8b8c+8e8a8c+4.e8
+f+8c8g8<c8>c4<c8>d8f+8<]
+'1i''1o''1v*v.09' p4'1v*v.40'%a6%y0%s5%r4%k-31
+>d1g1f1g1a+1c1a1a+2<c2;
+
+{6}
+{'Note table: 168 120 96 48 36 24 12'}
+%e1 $ r64
+'bel*v.20+o1' p64%a15%y5%s1%r10[%k-5
+g2^8c8d+8g8a+16a16a+2^4.a8>a8<c8d+8g8c8d+8g8g+16g16g+2^8g16f16d+16d16c4
+d8d+4c8>g8d+8<d+8.f8.g2^8f2^4.d+16d16c2>c16d+16g+16<c16>d16f16a+16<d16
+]
+'str*v.33+o1' %a15%y0%s5%r0%k-31
+&189 >d1g1f1g1a+1c1a1a+2<c2;

@@ -1,0 +1,140 @@
+#TITLE Sarah's Theme
+#ALBUM Romancing SaGa 3
+#COMPOSER Kenji Ito
+#ARRANGED emberling
+##created with sqspcmml beta 1.1.2
+
+#WAVE 0x20 0x57
+#WAVE 0x21 0x85
+#WAVE 0x22 0x42
+#WAVE 0x23 0x4E
+#WAVE 0x24 0x35
+#WAVE 0x25 0x1B
+#WAVE 0x26 0x43
+
+#def 0i=   |0
+#def 0o=   o5
+#def 0v=   v100
+#def 0f= v1,100
+
+#def 1i=   |1
+#def 1o=   o5
+#def 1v=   v100
+#def 1f= v1,100
+
+#def 2i=   |2
+#def 2o=   o5
+#def 2v=   v100
+#def 2f= v1,100
+
+#def 3i=   |3
+#def 3o=   o5
+#def 3v=   v100
+#def 3f= v1,100
+
+#def 4i=   |4
+#def 4o=   o7
+#def 4v=   v133
+#def 4f= v1,133
+
+#def 5i=   |5
+#def 5o=   o6
+#def 5v=   v100
+#def 5f= v1,100
+
+#def 6i=   |6
+#def 6o=   o5
+#def 6v=   v100
+#def 6f= v1,100
+
+## auto percussion  0x20
+#drum "h"= 5e
+#drum "i"= 5a
+## auto percussion  0x21
+#drum "j"= 5a
+
+
+{1}
+t83%v25%b0,80%f0,0
+$101
+'0i' '0o'p38'0v*v.42'r8" !!!o h8"p46"i8"p38"h8"
+'1i' p46'1v*v.52'" !!!o j8"^8
+'0i' p38'0v*v.42'r8" !!!o h8"
+'1i' p46'1v*v.52'" !!!o j8"^4.
+;101
+
+
+{2}
+
+'2i' p67%a13%r16%e1
+$201'2o''2v*v.52'g+4e4c+4f+2^4g+4b4a4f+2^4d4e4f+4g+4e4g+4a4b4<c+4>b2^4
+'2v*v.40'[r4e2r4f+2]r4d2r4e2r4f+2r4f+4e4r4f+2r2r4'2v*v.37'r4d2r4e2r4c+2
+r4f+2r4f+2r4e2r4e2r4>b4<c+4r4d2r4f2r4e4f4f+4g+4a4^4d2r4e2r4c+2r4f+2r4c+2
+r4f+4e4
+;201
+
+
+{3}
+
+'2i' p61%r15%e1
+$301'2o-o1''2v*v.49'r4a2^4<d2^4c+2^4d2>r4b2^4<c+2^4d2^4e2'2v*v.39'>>a8
+<e8g+2d8a8<c+2>c+8g+8b2d8a8<c+2>>b8<f+8a2c+8g+8b2d8a8<c+2>e8b8<c+4>b4f+8
+<c+8e2^2^4'2v*v.35'>>b8<f+8a2e8b8<d2>>a8<e8g+2f+8<c+8e2>d8a8<c+2>e8b8<
+d2>>a8<e8b2>a8<e8g4a4>b8<f+8a2d8a8<c2>c+8g+8b2>f+8<c+8b4<c+4>>b8<f+8a2
+e8b8<d2>>a8<e8g+2d8a8<c+2>>a8<e8g+2d8a8<c+4>b4
+;301
+
+
+{4}
+p64%e1
+$401[7r2r4]r4'3v*v.51''3o'
+'3i' %a8b4a4g+4e4c+4f+2^4g+4b4a4f+2^4d4e4f+4g+4e4b4a8g+8a2^2r4a8g+8a2^4
+'3f*v96,.28'^4^8r8
+'4i' '4v*v.27'm40,16,203'4o'd8c+8d8f+8a8<c+8>b2a4g+4e4b4a8g+8f+2b4.a+8
+b8<c+8d4>g+4b4a2^4e2^8r8d8c+8d8f+8a8<c+8>b2^4<c+4.>g+8a8b8a2^8r8b4<c+4
+d4c+4.>b8a4g+2^4'4f*v96,.20'^2^8^16r16r2r4r2r4m
+;401
+
+
+{8}
+%e1
+$801[7r2r4]r2'5v*v.61''5o-o2'
+'5i' %r16p30p48,98d48e48g+48b48<d48e48g+48b48<d48e48g+48b48[9r2r4]r4>>
+p30p48,98f+48a48b48<c+48f+48a48b48<c+48f+48a48b48<c+48p48,30e48c+48>a48
+f+48e48c+48>a48f+48e48c+48>a48f+48[7r2r4]r4p30p48,98g48a48b48<d48g48a48
+b48<d48g48a48b48<d48p48,30e48c+48>a48g48e48c+48>a48g48e48c+48>a48g48[5
+r2r4]r2p30p48,98e48g+48b48<d48e48g+48b48<d48e48g+48b48<d48[p98p48,30e48
+c+48>a48g+48e48c+48>a48g+48r2r12r2r4<<]
+;801
+
+
+{5}
+
+$501
+'2i' p54%r14%e1'2o-o1''2v*v.43'r8e8^2r8a8^2r8g+8^2r8a8^2r8f+8^2r8g+8^2
+r8a8^2r8b8^2'6v*v.37'
+'6i' p38%a8'6o-o1'e2^4f+2^4e2^4f+2^4d2^4e2^4f+2^4^2e4f+2e4g+4f+4e4d2^4
+e2d4c+4e4d4c+2^4d4.c+8d8e8f+4e4d4c+2^4^4d4e4d4.c+8d8e8f4g4a4g+4e4d4c+4
+d4e4d2^4e2d4c+4d4e4'6v*v.41'f+4a4g+4e2^4f+4a4g+4
+;501
+
+
+{6}
+
+$601
+'2i' p61%r13%e1'2o-o2''2v*v.43'a2^4<d2^4c+2^4d2^4>b2^4<c+2^4d2^4e2^4p75
+%a8'6v*v.46'
+'6i' '6o-o2'g+2^4<c+2^4>b2^4<c+2^4>a2^4b2^4<c+2^4>b4a4g+4b4<c+2^4>b4a4
+a8g+8a2g+2f+4g+2b4b4a4g+4f+2^8g+8g+2^4g+4b4a4g2^4a8g+8a2a2<d4>b2^4a2^4
+f+4g+4a4g+2^4g+2^4<c+2^4>g+4a4b4<c+2d4
+;601
+
+
+{7}
+%e1
+$701[8r2r4]p90%a13'6v*v.49'
+'6i' '6o-o3'a2^4<d2^4c+2^4d2^4>b2^4<c+2^4d2^4e2>b4f+2^4^2<c+4>b2^4<e4d8
+c+8>b4a2g+4f+2<e4d2^4e2>b4a2^4^4b4<c+4>b2^4<d2f4c+2f4>f+2^4b2^4<e4d8c+8
+>b4a2^4<d2^4>a2^4<d2e4
+;701
+

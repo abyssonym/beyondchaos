@@ -1,0 +1,245 @@
+#TITLE Luca
+#ALBUM Final Fantasy X
+#COMPOSER Junya Nakano
+#ARRANGED emberling
+
+#WAVE 0x20 0x44 santur
+#WAVE 0x21 0x97 guitar
+#WAVE 0x22 0x43 strings
+#WAVE 0x23 0x64 vox
+#WAVE 0x24 0x9E steel drum
+#WAVE 0x25 0x18 bass
+#WAVE 0x28 0x22 kick
+#WAVE 0x29 0x14 snare
+#WAVE 0x2A 0x88 ride
+#WAVE 0x2B 0x2e conga
+
+#def init= t146 %x255 %v30 %b0,100 %f0,0
+
+#def san= |0 o6 p96 'c' %y2%s1%r14
+#def gtr= |1 o6 p32 'g' %y2%s5%r17
+#def str= |2 o4 p64 's' %a7%r2
+#def vox= |3 o4 p64 'v'
+#def sdr= |4 o5 p64 'd'
+#def bas= |5 o7 p64 'b'
+#def epi= @3 o5 p64 'e' %y3%s3%r14
+
+#def er= %r22^8%r14
+
+#def c= v28
+#def g= v56
+#def s= v40
+#def v= v80
+#def d= v32
+#def b= v127
+#def e= v40
+
+#drum "j"=5g   p68 %e0 |8 v60
+#drum "k"=5g   p68 %e0 |8 v80
+#drum "s"=6c+  p68 %e0 |9 v80
+#drum "t"=6c+  p68 %e0 |9 v60
+#drum "u"=5b   p68 %e0 |9 v24 %a9
+#drum "v"=5b   p68 %e0 |9 v30 %a9
+#drum "s+"=6c+ p68 %e0 |9 v80 %a
+#drum "t+"=6c+ p68 %e0 |9 v60 %a
+
+#drum "p"=5a %e1 p40 |A v15
+#drum "q"=5a %e1 p40 |A v40,20 
+#drum "r"=5a %e1 p40 |A v20
+#def 'q'=v40,20
+#def 'pq'=v15'q'
+
+#drum "a"=5g  %e0 p104 |B v40
+#drum "b"=5g  %e0 p104 |B v30
+#drum "c"=6g  %e0 p104 |B v40
+#drum "d"=6g  %e0 p104 |B v30
+#drum "e"=6a  %e0 p104 |B v50 %r30
+#drum "f"=6a  %e0 p104 |B v40 %r30
+#drum "a+"=5g %e0 p104 |B v40 %r
+#drum "b+"=5g %e0 p104 |B v30 %r
+#drum "c+"=6g %e0 p104 |B v40 %r
+#drum "d+"=6g %e0 p104 |B v30 %r
+
+#cdef ( %l1
+#cdef ) %l0
+
+{1} 'init' %e1
+'gtr' [4rf2r4>a+4.<rf4d+4.]
+$[
+'gtr' [4rf2r4>a+4.<rf4d+4.]
+##17
+[4 rf4d+4>f2d+4<f4d+4. ]
+##25
+> [8 >g+<<f>g+<d+>d+f4a+>g+<d+a+<f4d+4>f ]
+##41
+['vox' %r22 b
+'epi' [3b'er']a+4a+8 %r22 ^2.
+'vox+o1' %r22 c+
+'epi' [3b'er']a+4a+8 %r22 ^2.
+'vox+o1' %r22 d+
+'epi' [3b'er']a+4a+8 %r22 ^2.
+'vox+o1' f+32%r25^16.
+'epi' [3b'er']j2 a+4a+8 %r22 ^2.] [a+.a+16'er']a+a+a+
+]##105
+'gtr' [8 rg+2r4c+4.rg+4f+4. ]
+;
+
+{2} %e1
+[4'gtr' r4.d+4>f^2a+2rf]
+$[m
+[4'gtr' r4.d+4>f^2a+2rf]
+##17
+[4 r4a+4.r4a+4.a+2rf ]
+##25
+'bas-o2' m48,18,207
+[g+.d+.>g+1f+^2    g+1^4.<f+^2>
+g+1^4.f+2<d+    ^>g+2.f+2.<c+4.]
+##41
+[[rc+r>f+r<erg+4d+r2.
+rc+rf+r>erj2g+4<d+r2r4]
+j2 g+4<d+r2r8>a<]
+g+.g+16r g+.g+16r g+4r
+]##105
+'gtr' [8 r4.f+4>g+^2<c+2r>g+< ]
+;
+
+{3} %e1 
+'str+o1' d+1^1 c1>g+1 f+1^1 %r15 ^1^1
+$[
+'san+o1+%y1' m10,18,223
+[4 d+ &48 [4 ^4.>g+4<c+4>f+2<c+4>g+4<d+]]
+##17
+#^^
+##25
+#^^
+##41
+m [8
+'epi-o1' rg+
+'sdr+o1-p52' g+
+'epi-o1' g+'er'a+
+'sdr+o1-p52' g+
+'epi-o1' j8g+4g+
+'sdr+o1-p53' g+r4.g+r
+] g+.g+16'er'
+'sdr+o1-p53' g+r16
+'epi-o1' g+16'er'g+
+'sdr+o1-p53' g+
+'epi-o1' g+
+]##105
+[ 'str+o1' f+1^1 d+1>b1< j2 c+1^1 %r15 ^1^1 ] e1^1 %r15 ^1^1
+;
+
+{4}
+["r4pr4p4r4prprppr"
+"r4pr4p4r4pr8."'pq'[6"r32"]"rrp"]
+$[ "!!!o"
+[4"r4pr4p4r4prprppr"
+"r4pr4p4r4pr8."'pq'[6"r32"]"rrp"]
+##17
+#^^
+##25
+# s..t ..k.  .j.. s.k.    ..k. .j..  j..j s.v.
+# s..t ..k.  .j.. s.kv    ..k. .j..  j.ju s.t.
+# s..t ..k.  .j.. s.k.    ..k. .j..  j.ju s.v.
+# s..t ..k.  .j.. s.kv    ..k. .j..  j.ju s.t.
+[ "!!!o" l16 [
+" s8.t8.k8.j8.s8k4    k8.j8.j8.j s8v8"
+"s+8.t8.k8.j8.s8kv8.  k8.j8.j8jus+8t8" 
+" s8.t8.k8.j8.s8k4    k8.j8.j8jus+8v8"
+"s+8.t8.k8.j8.s8kv8.  k8.j8.j8jus+8"j2"t8" ] ":s+:vt+"
+# s..t ..k.  .j.. s.k.    ..k. .j..  j..j s.v.
+# s..t ..k.  .j.. s.kv    ..k. .j..  j.ju s.t.
+# s..t ..k.  .j.. s.k.    ..k. .j..  j.ju s.v.
+# s..t ..k.  .j.. s.kv    ..k. .j..  j.ju s.vt
+##41
+]#^^
+]##105
+"!!!o" l8
+[4"r4pr4p4r4prprppr"
+"r4pr4p4r4pr8."'pq'[6"r32"]"rrp"]
+;
+
+{5} %e1
+'gtr-o1' [4 r2d+4.r4d+2.r ]
+$[
+'gtr-o1' [4 r2d+4.r4d+2.r ]
+##17
+> [4 g+2<d+4.r>g+2.r4 ]
+##25
+['str+o1' d+1^1 c1>g+1 f+1^1 %r15 ^1^1 ]
+##41
+[8
+'epi' re
+'sdr+p53' g+
+'epi' e'er'f+
+'sdr+p53' g+
+'epi' j8g+4g+
+'sdr+p53' g+r4.g+r
+] g+.g+16'er'
+'sdr+p53' g+r16
+'epi' g+16'er'g+
+'sdr+p53' g+
+'epi' g+
+]##105
+'gtr-o1' [8 r2f+4.r4f+2.r ]
+;
+
+{6} %e1
+'str-%a4' ([16d+][8c]>[8g+][16f+]) %r16 ^1^1
+$[
+'san-o1*v1.2' m12,20,215 k1
+[16 >g+4.< g+d+<c+4>f+>g+4.<<c+>d+g+4<d+> ] k0
+##17
+#^^
+##25
+#^^
+##41
+m ['vox' %r22 e
+'epi' [c+'er']d+'er'd+4d+8 %r22 ^2.
+'vox' %r22 f+
+'epi' [c+'er']d+'er'd+4d+8 %r22 ^2.
+'vox' %r22 g+
+'epi' [c+'er']d+'er'd+4d+8 %r22 ^2.
+'vox' b32%r25^16.
+'epi' [c+'er']d+'er'j2 d+4d+8 %r22 ^2.] [d+.d+16'er']d+d+d+
+]##105
+[ 'str-%a4' ([16f+][8d+]>[8b]< j2,6 [16c+]) %r16 ^1^1 ] $6 [16e]) %r16 ^1^1
+;
+
+{7} %e1
+'gtr-o2' [4 g+1g+2.r4]
+$[
+'gtr-o2' [4 g+1g+2.r4]
+##17
+"!!!o" [5
+["^ b c f4  f4  b+"
+"b a d f  ^2     "
+"^ a+d f4  b+4 b "
+"^ a d f4"j2"f d+b "] l16 ["!o fd+b"] ]
+##25
+#^^
+##41
+#^^
+]##105
+'gtr-o2' [8 b1b2.r4 ]
+;
+
+{8} %e1
+'gtr-o1' [4 r4a+4.r4.r1]
+$[
+'gtr-o1' [4 r4a+4.r4.r1]
+##17
+"!!!o"
+["v. u. v. u. v v "   "^v. u. v. u. v"
+ "v. u. v. u. v. v16" "^v. u. v. u. v"]
+##25
+"!!!o"
+[8"r4pr4p4r4prprppr"
+"r4pr4p4r4pr8."'pq'[6"r32"]"rrp"]
+##41
+#^^
+]##105
+'gtr' [8 r4c+4.r4.r1 ]
+;
+
+

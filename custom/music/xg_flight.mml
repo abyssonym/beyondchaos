@@ -3,8 +3,9 @@
 #COMPOSER Yasunori Mitsuda
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT ~* enh
+#VARIANT /* nat
+#VARIANT ~_ tr
 
 #WAVE 0x20 ~0x46~/0x0D/ strings
 #WAVE 0x21 ~0x6a~/0x1A/ deep brass
@@ -13,7 +14,7 @@
 #WAVE 0x24 ~0x1B~/0x1B/ harp
 #WAVE 0x28 ~0x16~/0x16/ timpani
 #WAVE 0x29 ~0x81~/0x14/ snare
-#WAVE 0x2A ~0x12~/0x12/ crash
+#WAVE 0x2A *~0x12~/0x12/* _0x8E_ crash
 
 #def global= t147%v50%x224%b0,70%f0,0
 

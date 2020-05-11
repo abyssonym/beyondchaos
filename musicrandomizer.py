@@ -9,7 +9,7 @@ from copy import copy
 from locationrandomizer import get_locations, get_location
 from dialoguemanager import set_dialogue_var, set_pronoun, patch_dialogue, load_patch_file
 from utils import (utilrandom as random, open_mei_fallback as open)
-from mml2mfvi import mml_to_akao
+from mml2mfvi import mml_to_akao, get_variant_list
 
 
 try:
@@ -319,7 +319,7 @@ def insert_instruments(fout, metadata_pos= False):
             print("WARNING: malformed instrument info '{}'".format(smp))
             continue
         name, loop, pitch, adsr = inst[0:4]
-        filename = name + '.brr'
+        filename = (name + '.brr').lower()
         
         try:
             with open(os.path.join('data', 'samples', filename), 'rb') as f:
@@ -420,6 +420,8 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
     native_prefix = "ff6_"
     isetsize = 0x20
     
+    windy_intro = random.choice([True, False, False])
+    
     def spoil(txt):
         global spoiler
         if 'Music' not in spoiler: spoiler['Music'] = []
@@ -513,13 +515,9 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
     # build choice lists
     intensitytable = {}
     for song in songconfig.items('Imports'):
-        if song[0].endswith("_tr") or song[0].endswith("_dm") or song[0].endswith("_vic"): continue
         canbe = [s.strip() for s in song[1].split(',')]
         intense, epic = 0, 0
         event_mults = {}
-        if f_mchaos:
-            for ident, s in songtable.items():
-                s.choices.append(song[0])
         for c in canbe:
             if not c: continue
             if c[0] in eventmodes and ":" not in c:
@@ -530,6 +528,9 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         static_mult = 1
         for k, v in event_mults.items():
             static_mult *= v
+        if f_mchaos:
+            for ident, s in songtable.items():
+                s.choices.append(song[0]*static_mult)
         for c in canbe:
             if not c: continue
             if ":" in c and c[0] in eventmodes:
@@ -601,7 +602,8 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         # 4. battle0 and battle1 chosen from I<boss0, G<max(50,boss1), sorted by G
         # 5. battle2 and battle3 chosen from I<boss2, G>battle1
         def intensity_subset(imin=0, gmin=0, imax=99, gmax=99):
-            return {k: v for k, v in intensitytable.items() if v[0] >= imin and v[0] <= imax and v[1] >= gmin and v[1] <= gmax and usage_id(k) not in used_songs}
+            subset = {k: v for k, v in intensitytable.items() if v[0] >= imin and v[0] <= imax and v[1] >= gmin and v[1] <= gmax and usage_id(k) not in used_songs}
+            return subset
             
         battlecount = len(battleids) + len(bossids)
         while len(intensitytable) < battlecount:
@@ -634,14 +636,21 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             bossprog = [b[0] for b in bossprog]
         else:
             tries=0
+            event_g_max = 33 if not f_mchaos else random.randint(33,50)
+            event_i_min = 33 if not f_mchaos else random.randint(20,33)
+            boss2_g_min = 66 if not f_mchaos else random.randint(40,66)
+            boss2_i_min = 60 if not f_mchaos else random.randint(40,60)
+            boss1_g_min = 22 if not f_mchaos else random.randint(10,30)
+            battle1_g_max = 50 if not f_mchaos else random.randint(50,70)
+            battle1_g_cap = 80 if not f_mchaos else random.randint(80,95)
             while True:
                 try:
-                    event, (ei, eg) = random.choice(list(intensity_subset(imin=33, gmax=33).items()))
-                    bt = min(ei,60) 
+                    event, (ei, eg) = random.choice(list(intensity_subset(imin=event_i_min, gmax=event_g_max).items()))
+                    bt = min(ei,boss2_i_min) 
 
-                    super, (si, sg) = random.choice(list(intensity_subset(imin=bt, gmin=66).items()))
-                    boss, (bi, bg) = random.choice(list(intensity_subset(imin=bt, gmin=max(22,eg), gmax=sg).items()))
-                    wt = min(80,max(bg, 50))
+                    super, (si, sg) = random.choice(list(intensity_subset(imin=bt, gmin=boss2_g_min).items()))
+                    boss, (bi, bg) = random.choice(list(intensity_subset(imin=bt, gmin=max(boss1_g_min,eg), gmax=sg).items()))
+                    wt = min(battle1_g_cap,max(bg, battle1_g_max))
                     balance = random.sample(list(intensity_subset(imax=bt, gmax=wt).items()), 2)
                     if balance[0][1][0] + balance[0][1][1] > balance[1][1][0] + balance[1][1][1]:
                         boutside, (boi, bog) = balance[1]
@@ -694,13 +703,13 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             return False
         return True
         
-    def process_mml(id, orig_mml, name):
-        def ruin_increment(m):
+    def process_mml(id, orig_mml, name, variant="_default_"):
+        def wind_increment(m):
             val = int(m.group(1))
-            if val in [3, 4, 5, 6, 11, 12, 13, 14]:
+            if val in [1, 2, 3, 4, 5, 6, 9, 10, 11, 12, 13, 14]:
                 val += 2
             elif val in [7, 8, 15, 16]: 
-                val -= 4
+                val -= 6
             return "{{{}}}".format(val)
             return m.group(0)
             
@@ -710,11 +719,11 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         if id == 0x29:
             sfx = "sfx_zozo.mmlappend"
             is_sfxv = True
-        elif id == 0x4F or (id == 0x5D and random.choice([True, False, False])):
+        elif id == 0x4F or (id == 0x5D and windy_intro):
             sfx = "sfx_wor.mmlappend"
             is_sfxv = True
             try:
-                mml = re.sub("\{[^}]*?([0-9]+)[^}]*?\}", ruin_increment, mml)
+                mml = re.sub("\{[^}']*?([0-9]+)[^}]*?\}", wind_increment, mml)
             except ValueError:
                 print("WARNING: failed to add wind sounds ({})".format(name))
         elif id == 0x20:
@@ -730,9 +739,9 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             except IOError:
                 print("couldn't open {}".format(sfx))
                 
-        akaov = mml_to_akao(mml, name, is_sfxv)
-        if id == 0x5D and len(bytes(akaov["_default_"][0], encoding="latin-1")) > 0x1002:
-            akaov = mml_to_akao(orig_mml, name, False)
+        akaov = mml_to_akao(mml, name, is_sfxv, variant=variant)
+        if id == 0x5D and len(akaov[0]) > 0x1002:
+            akaov = mml_to_akao(orig_mml, name, False, variant=variant)
         return akaov
     
     def process_tierboss(opts, used_songs=[]):
@@ -799,8 +808,8 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
             mml = "#VARIANT / \n#VARIANT ? ignore \n" + tierfiles[0] + tierfiles[1] + tierfiles[2]
             
             akao = mml_to_akao(mml, str(tiernames), variant='_default_')
-            inst = bytes(akao['_default_'][1], encoding='latin-1')
-            akao = bytes(akao['_default_'][0], encoding='latin-1')
+            inst = akao[1]
+            akao = akao[0]
 
             ## uncomment to debug tierboss MML
             #with open("lbdebug.mml", "w") as f:
@@ -923,26 +932,18 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
                 composer = composer.group(0) if composer else "??"
                 arranged = arranged.group(0) if arranged else "??"
                 metadata[s.changeto] = TrackMetadata(title, album, composer, arranged)
-                if not akao:
+                if not varlist:
                     print("couldn't find valid mml for {}".format(s.changeto))
                     keeptrying = True
                     break
-                if variant and variant in akao:
-                    s.data = bytes(akao[variant][0], encoding='latin-1')
-                    s.inst = bytes(akao[variant][1], encoding='latin-1')
+                if variant and variant in varlist:
+                    variant_request = variant
                 else:
-                    s.data = bytes(akao['_default_'][0], encoding='latin-1')
-                    s.inst = bytes(akao['_default_'][1], encoding='latin-1')
+                    variant_request = '_default_'
+                s.data, s.inst = process_mml(s.id, mml, file_to_check + ".mml", variant=variant_request)
                 s.is_pointer = False
                 if max(list(s.inst)) > instcount:
-                    if 'nopatch' in akao:
-                        s.inst = bytes(akao['nopatch'][1], encoding='latin-1')
-                        s.data = bytes(akao['nopatch'][0], encoding='latin-1')
-                    elif 'nat' in akao:
-                        s.inst = bytes(akao['nat'][1], encoding='latin-1')
-                        s.data = bytes(akao['nat'][0], encoding='latin-1')
-                    else:
-                        print("WARNING: instrument out of range in {}".format(s.changeto + ".mml"))
+                    print("WARNING: instrument out of range in {}".format(s.changeto + ".mml"))
             # case: get song from source ROM
             elif not isfile(os.path.join(MUSIC_PATH, s.changeto + "_data.bin")):
                 target = s.changeto[len(native_prefix):]
@@ -1019,14 +1020,14 @@ def process_custom_music(data_in, eventmodes="", opera=None, f_randomize=True, f
         # force opera music if opera is randomized
         if opera:
             songtable['aria'].is_pointer = False
-            songtable['aria'].data = bytes(opera['aria'][0], encoding='latin-1')
-            songtable['aria'].inst = bytes(opera['aria'][1], encoding='latin-1')
+            songtable['aria'].data = opera['aria'][0]
+            songtable['aria'].inst = opera['aria'][1]
             songtable['opera_draco'].is_pointer = False
-            songtable['opera_draco'].data = bytes(opera['overture'][0], encoding='latin-1')
-            songtable['opera_draco'].inst = bytes(opera['overture'][1], encoding='latin-1')
+            songtable['opera_draco'].data = opera['overture'][0]
+            songtable['opera_draco'].inst = opera['overture'][1]
             songtable['wed_duel'].is_pointer = False
-            songtable['wed_duel'].data = bytes(opera['duel'][0], encoding='latin-1')
-            songtable['wed_duel'].inst = bytes(opera['duel'][1], encoding='latin-1')
+            songtable['wed_duel'].data = opera['duel'][0]
+            songtable['wed_duel'].inst = opera['duel'][1]
             
         # try to fit it all in!
         if f_preserve:
@@ -1738,7 +1739,18 @@ def manage_opera(fout, affect_music):
         ("Nintendo", "Sega"),
         ("Subs", "Dubs"),
         ("vampires", "werewolves"),
-        ("Guardia", "the Mystics")
+        ("Guardia", "the Mystics"),
+        ("the Ascians", "the Scions"),
+        ("Garlemald", "Eorzea"),
+        ("Garlemald", "Ala Mhigo"),
+        ("Garlemald", "Doma"),
+        ("Ul'dah", "Sil'dih"),
+        ("Amdapor", "Mhach"),
+        ("Amdapor", "Nym"),
+        ("Nym", "Mhach"),
+        ("Ishgard", "Dravania"),
+        ("the Oronir", "the Dotharl"),
+        ("Allag", "Meracydia")
         ]
     factions = random.choice(factions)
     if random.choice([False, True]):

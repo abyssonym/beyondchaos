@@ -1,0 +1,120 @@
+#TITLE Walk Over
+#ALBUM Star Ocean: The Second Story
+#COMPOSER Motoi Sakuraba
+#ARRANGED emberling
+
+#WAVE 0x20 0x9A trumpet
+#WAVE 0x21 0x31 harp
+#WAVE 0x22 0x0D strings
+#WAVE 0x23 0x94 bass strings
+#WAVE 0x28 0x56 snare
+#WAVE 0x29 0x16 timpani
+
+#def init= t84 %x240 %v40 %b0,85 %f0,0
+
+#def pet= |0 't' o5 p64 m48,18,231 %r10
+#def hrp= |1 'h' o4 p80 m
+#def str= |2 's' o5 p64 m48,18,207
+#def bas= |3 'b' o6 p64 m
+#def tmp= |9 'k' o5 p64 m
+
+#def t= v48
+#def h= v64
+#def s= v36
+#def b= v64
+#def k= v127
+
+#def x= %r25^16%r10
+
+#drum "q"=6d+ |8 p64 v56
+#drum "r"=6d+ |8 p64 v64
+#drum "s"=6d+ |8 p64 v72
+
+
+{1} 'init' %e1 $ 
+['pet+o1' l16
+e'x'edc+>ba4^'x'  gab'x'<dc+>b'x'a'x'b'x'
+<c+8.'x'e'x'>b8.'x'<e'x'    dc+>bab<f+e4^'x'
+##5
+f+g+a'x'[d'x'>a'x'<]    g+ab'x'e'x'>b'x'<e'x'>g+'x'
+<[c+def+ed] g+f+edc+>b<ag+f+e>bg+
+]
+##17
+'str+o1-p16*v1.2' %a5%r7 l8
+a4.%r21^4. %r7a4.%r21^4. %r7a4.%r21^ %r7a8%r21^ %r7<c+2^8.%r21^16>
+%y a4.g4.a4.e4. a4.g+8a8b8a2.
+;
+
+{2} %e1 $
+['bas-o2-p4'
+a2. g2. a4.e4. d4.e4.    
+##5
+d2. e2. a2. e2.
+]
+##17
+[f2. a2. d2. a2.]
+;
+
+{3} %e1 $
+['str-p8+o1' %r9
+e2. d2. e2. d4.e4.
+##5
+d2. e2. e.f+.e.f+. e2.
+]
+##17
+'str+o1-p16*v1.2' %a5%r7
+r4.g4.%r21^4. %r7e4.%r21^4. %r7g+%r21^ %r7b%r21^2.
+'pet' l8
+a4.g4.a4.e4.a4.g+aba2.
+;
+
+{4} %e1 $
+['str+p4' %a7%r3
+a2. g2. a4.g+4. f+4.a4g+
+##5
+f+2. g+2. a2. a4.g+4.
+]
+##17
+< [c2. c+2. d2. c+2.]
+;
+
+{5} %e1 $
+['str+p8' %a6%r5
+c+2. >b2.< c+4.>b4. a4.b4.
+##5
+a2. b2. <c+.d.c+.d.> b2.
+]
+##17
+< [f2. e2. f+2. e2.]
+;
+
+{6} %e1 $
+['hrp+o1' l16
+e8edc+>ba4.  gab8<dc+>b8a8b8
+<c+4e8>b4<e8    dc+>bab<f+e4.
+##5
+f+g+a8[d8>a8<]    g+ab8e8>b8<e8>g+8
+<[c+def+ed] g+f+edc+>b<ag+f+e>bg+
+]
+##17
+[24<a8>a8]
+;
+
+{7} $ l16
+[8 r4. "s32q32q32r32sqs8"
+r2r8 "rs"]
+##17
+r1.r1.
+[":q:sqqsqqs8q8s8" "sq32q32q32q32sqqs8q8sq"]
+;
+
+{8} $
+[
+'tmp-o3'
+[3 a1.]
+< l16 'k*v.6' [a8.dad] [3e8b8]
+]
+##17
+'k' > a1. a1. <
+'k*v.6' [3f8<c8>][3a8e8][3d8a8][3a8e8]
+;

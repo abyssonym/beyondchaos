@@ -3,13 +3,14 @@
 #COMPOSER Masanao Akahori
 #ARRANGED emberling
 
-#VARIANT ~ enh
-#VARIANT / nat
+#VARIANT \~ enh
+#VARIANT \/ nat
+#VARIANT _~ tr
 
 #WAVE 0x20 ~0x1C~/0x1C/ bass
 #WAVE 0x21 ~0x95~/0x00/ lead2 (pluck)
 #WAVE 0x22 ~0x7C~/0x0B/ fat synth
-#WAVE 0x23 ~0x74~/0x36/ lead1 (square)
+#WAVE 0x23 ~0xA0~/0x36/ lead1 (square)
 #WAVE 0x24 ~0x3E~/0x3E/ marimba
 #WAVE 0x25 ~0x42~/0x20/ vibraphone
 #WAVE 0x26 ~0x72~/0x0E/ trumpet
@@ -25,17 +26,17 @@
 #def global= t135 %x224 %v50 %b0,70 %f0,0
 
 #def 06= |0 %e0 %k-1 o6      m
-#def 08=~|1~%e1 %k-1~o6~%r15%a13 m48,18,239 /@0o5%y1%s1/
+#def 08=~|1~%e1 %k-1~o6~\%r15%a13\ m48,18,239 /@0o5%y1%s1/
 #def 10= |2 %e1 %k-6~o6~     m48,18,239 /o7/
 #def 11= |3 %e1 %k8  o6 %r12 m48,18,239
 #def 12= |4 %e1 %k8  o6 %r15 m %y5%s0 
 #def 13= |5 %e1 %k-3~o5~%a11 m48,18,239 /o6/
-#def 14= |6 %e1 %k4     %r15 ~m~/m48,18,239/         
+#def 14= |6 %e1 %k4     \%r15\ ~m~/m48,18,239/         
 #def 15= |7 %e1 %k4  o6 %r13 m48,18,239
 #def l3=~|2~/|7/%k4  o6 %r13 m48,18,239 %e1
 #def t3=~|7~%e1 %k-6~o6~     m48,18,239 /|6o7/
 #def t0= |6 %e1 %k-6 ~o6~/o7/ ~m~/m48,18,239/
-#def d0=~|1~%e1 %k-6~o7~%r15%a11 m48,18,239 /@0o6%y1%s1/
+#def d0=~|1~%e1 %k-6~o7~\%r15%a11\ m48,18,239 /@0o6%y1%s1/
 
 #def 06a= '06' p64 v32
 #def 08a= '08' p74 ~v100~/v50/
@@ -63,7 +64,7 @@
 #drum "s"=5a |B v96 %e0 %k0 p64
 #drum "h"=5a |F v48 %e0 %k0 p64
 #drum "o"=5f |C v72 %e0 %k0 p64
-#drum "y"=5b |C v72 %e1 %k0 p64
+#drum "y"=5b |C v72 \%e1\ %k0 p64
 #drum "c"=5f |E v72 %e0 %k0 p64
 #drum "t"=4b |D v96 %e0 %k0 p89
 #drum "u"=4g |D v96 %e0 %k0 p64
@@ -110,13 +111,17 @@ r8]'14a'>da<ef<f4'13a'<(fd+)'^'f-4    '10a'<'^'f-4c+4>'^'g4d+4
 "!!!oy8"'14b'>ea<eb<g4'13a'<(gf)'^'g-4    r8'14b'>d+g+<d+a+<g4'13a'<(gf)'^'g-4
 '14b'r8>a<da<e<c4'13a'<(gf)'^'g-4    '14b'>g<cdg<cdg<c>>gb<dgb<dgb
 ##
-$222 ["!!!oy8"'10b'<fd+rfd+rfrfd+rd+fr    r8fd+rfd+rfrfd+rd+fr    j2
-r8fd+rfd+rfrfd+rd+fr    r8m6,-1f+d+rfd+rfrf+g+rf+fr]  j1,0
+[j1,222] ##$222 ["!!!oy8"'10b'<fd+rfd+rfrfd+rd+fr    r8fd+rfd+rfrfd+rd+fr    j2
+         ##r8fd+rfd+rfrfd+rd+fr    r8m6,-1f+d+rfd+rfrf+g+rf+fr]  j1,0
 '10c'd+8.'^^'f-2^<c8.'^'d- ^1
 ##
-[j2,226%j222$226    r8fd+rfd+rfrfd+rd+fr
+[j1,222] ##[j2,226%j222$226
+    r8fd+rfd+rfrfd+rd+fr
 '10a'>'^'a-8.a+8.<c8>'^'c-8.a+8.a8
 ;
+
+$222 l16 ["!!!oy8"'10b'<fd+rfd+rfrfd+rd+fr    r8fd+rfd+rfrfd+rd+fr    j2
+r8fd+rfd+rfrfd+rd+fr    r8m6,-1f+d+rfd+rfrf+g+rf+fr]  ]
 
 {3}
 $
@@ -211,13 +216,17 @@ b<c+d+2.'^'g4    a+4b8a+4f+4
 '08e'a+8'^'b2.f8    g8g+4.a+4.'^'b4
 a+2f2    '^'f-8e8r8f8r8g4
 ##
-$722 '10b'<[3r8c+crc+crc+rc+crcc+r]    r8c+crc+crc+rd+frd+c+r
-[2r8c+crc+crc+rc+crcc+r] j1,0
+[j1,722]  ##$722 '10b'<[3r8c+crc+crc+rc+crcc+r]    r8c+crc+crc+rd+frd+c+r
+          ##[2r8c+crc+crc+rc+crcc+r] j1,0
 r2.."!!!o o8"    r4."o8c8cc8cc8"
 ##
-[j2,726%j722$726    r8c+crc+crc+rc+crcc+r
+[j1,722]  ##[j2,726%j722$726
+    r8c+crc+crc+rc+crcc+r
 '10d'>'^'a-8.a+8.<c8>'^'c-8.a+8.a8
 ;
+
+$722 l16 '10b'<[3r8c+crc+crc+rc+crcc+r]    r8c+crc+crc+rd+frd+c+r
+[2r8c+crc+crc+rc+crcc+r] ]
 
 {8}
 $

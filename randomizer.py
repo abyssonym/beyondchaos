@@ -6,7 +6,6 @@ import re
 import sys
 from sys import argv
 from shutil import copyfile
-import itertools
 import os
 from hashlib import md5
 
@@ -53,7 +52,7 @@ from wor import manage_wor_recruitment, manage_wor_skip
 
 
 VERSION = "4"
-BETA = True
+BETA = False
 VERSION_ROMAN = "IV"
 if BETA:
     VERSION_ROMAN += " BETA"

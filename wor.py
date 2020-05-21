@@ -505,7 +505,7 @@ def _start_of_wor_event(fout, alternate_gogo):
     ]
 
     if alternate_gogo:
-        new_events += [0xDA, 0x4B] # Set Gogo NPC bit
+        new_events = [0xDA, 0x4B] + new_events # Set Gogo NPC bit
 
     # bits that get set at the start of the world of ruin
     wor_bits_sub = Substitution()

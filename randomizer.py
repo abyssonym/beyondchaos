@@ -4608,7 +4608,7 @@ def randomize(args):
         manage_dragons()
     reseed()
 
-    if options_.random_final_dungeon and not options_.is_code_active('ancientcave') and not options_.is_code_active('strangejourney'):
+    if options_.randomize_forest and not options_.is_code_active('ancientcave') and not options_.is_code_active('strangejourney'):
         randomize_forest()
     reseed()
 

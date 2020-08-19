@@ -2689,7 +2689,7 @@ def manage_formations(formations, fsets):
     return formations
 
 
-def manage_formations_hidden(formations, freespaces, form_music_overrides=None):
+def manage_formations_hidden(formations, freespaces, form_music_overrides=None, no_special_events=True):
     if not form_music_overrides:
         form_music_overrides = {}
     for f in formations:
@@ -2776,6 +2776,8 @@ def manage_formations_hidden(formations, freespaces, form_music_overrides=None):
                     eids.append(eid)
         uf.set_big_enemy_ids(eids)
         uf.lookup_enemies()
+        if no_special_events:
+            uf.set_event(False)
 
         for _ in range(100):
             while True:
@@ -4594,6 +4596,12 @@ def randomize(args):
             m.screw_tutorial_bosses(old_vargas_fight=options_.is_code_active('rushforpower'))
             m.write_stats(fout)
 
+    # This needs to be before manage_monster_appearance or some of the monster palettes will be messed up.
+    esper_replacements = {}
+    if options_.randomize_magicite:
+        esper_replacements = randomize_magicite(fout, sourcefile)
+    reseed()
+
     if options_.random_palettes_and_names and options_.random_enemy_stats:
         mgs = manage_monster_appearance(monsters,
                                         preserve_graphics=preserve_graphics)
@@ -4609,11 +4617,6 @@ def randomize(args):
     if options_.random_character_stats:
         # do this after items
         manage_equipment(items)
-    reseed()
-
-    esper_replacements = {}
-    if options_.randomize_magicite:
-        esper_replacements = randomize_magicite(fout, sourcefile)
     reseed()
 
     esperrage_spaces = [FreeBlock(0x26469, 0x26469 + 919)]
@@ -4707,7 +4710,8 @@ def randomize(args):
 
     form_music = {}
     if options_.random_formations:
-        manage_formations_hidden(formations, freespaces=aispaces, form_music_overrides=form_music)
+        no_special_events = not options_.is_code_active('bsiab')
+        manage_formations_hidden(formations, freespaces=aispaces, form_music_overrides=form_music, no_special_events=no_special_events)
         for m in get_monsters():
             m.write_stats(fout)
     reseed()

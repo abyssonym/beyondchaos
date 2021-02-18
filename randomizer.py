@@ -4475,19 +4475,19 @@ def randomize(args):
             dummy_item(dirk)
             assert not dummy_item(dirk)
     if options_.random_enemy_stats and options_.random_treasure and options_.random_character_stats:
-        if random.randint(1, 10) != 10:
-            rename_card = get_item(231)
-            rename_card.become_another(tier="low")
-            rename_card.write_stats(fout)
+        rename_card = get_item(231)
+        rename_card.become_another(tier="low")
+        rename_card.write_stats(fout)
+        dummy_item(rename_card)
 
-            weapon_anim_fix = Substitution()
-            weapon_anim_fix.set_location(0x19DB8)
-            weapon_anim_fix.bytestring = bytes([0x22, 0x80, 0x30, 0xF0])
-            weapon_anim_fix.write(fout)
+        weapon_anim_fix = Substitution()
+        weapon_anim_fix.set_location(0x19DB8)
+        weapon_anim_fix.bytestring = bytes([0x22, 0x80, 0x30, 0xF0])
+        weapon_anim_fix.write(fout)
 
-            weapon_anim_fix.set_location(0x303080)
-            weapon_anim_fix.bytestring = bytes([0xE0, 0xE8, 0x02, 0xB0, 0x05, 0xBF, 0x00, 0xE4, 0xEC, 0x6B, 0xDA, 0xC2, 0x20, 0x8A, 0xE9, 0xF0, 0x02, 0xAA, 0x29, 0xFF, 0x00, 0xE2, 0x20, 0xBF, 0x00, 0x31, 0xF0, 0xFA, 0x6B])
-            weapon_anim_fix.write(fout)
+        weapon_anim_fix.set_location(0x303080)
+        weapon_anim_fix.bytestring = bytes([0xE0, 0xE8, 0x02, 0xB0, 0x05, 0xBF, 0x00, 0xE4, 0xEC, 0x6B, 0xDA, 0xC2, 0x20, 0x8A, 0xE9, 0xF0, 0x02, 0xAA, 0x29, 0xFF, 0x00, 0xE2, 0x20, 0xBF, 0x00, 0x31, 0xF0, 0xFA, 0x6B])
+        weapon_anim_fix.write(fout)
     reseed()
 
     items = get_ranked_items()

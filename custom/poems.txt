@@ -100,6 +100,7 @@ Is very diffi--
 
 Tyger, tyger, burning bright,
 in the forests of the night;
+
 What immortal hand or eye,
 Could frame thy fearful symmetry?
 

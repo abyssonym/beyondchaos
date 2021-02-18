@@ -26,8 +26,6 @@ class Code:
     description: str
     long_description: str
     category: str
-    key1: str = ''
-    key2: str = ''
 
     def remove_from_string(self, s: str):
         name = self.name

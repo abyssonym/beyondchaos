@@ -888,61 +888,6 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
     return new_palette
 
 
-def decompress(bytestring, simple=False, complicated=False, debug=False):
-    result = ""
-    buff = [chr(0)] * 2048
-    buffaddr = 0x7DE
-    while bytestring:
-        flags, bytestring = ord(bytestring[0]), bytestring[1:]
-        for i in range(8):
-            if not bytestring:
-                break
-
-            if flags & (1 << i):
-                byte, bytestring = bytestring[0], bytestring[1:]
-                result += byte
-                buff[buffaddr] = byte
-                buffaddr += 1
-                if buffaddr == 0x800:
-                    buffaddr = 0
-                if debug:
-                    print("%x" % ord(byte), end=' ')
-            else:
-                low, high, bytestring = (
-                    ord(bytestring[0]), ord(bytestring[1]), bytestring[2:])
-                seekaddr = low | ((high & 0x07) << 8)
-                length = ((high & 0xF8) >> 3) + 3
-                if simple:
-                    copied = "".join([buff[seekaddr]] * length)
-                elif complicated:
-                    cycle = buffaddr - seekaddr
-                    if cycle < 0:
-                        cycle += 0x800
-                    subbuff = "".join((buff+buff)[seekaddr:seekaddr+cycle])
-                    while len(subbuff) < length:
-                        subbuff = subbuff + subbuff
-                    copied = "".join(subbuff[:length])
-                else:
-                    copied = "".join((buff+buff)[seekaddr:seekaddr+length])
-                assert len(copied) == length
-                result += copied
-                if debug:
-                    print("%x" % seekaddr, length, end=' ')
-                while copied:
-                    byte, copied = copied[0], copied[1:]
-                    buff[buffaddr] = byte
-                    buffaddr += 1
-                    if buffaddr == 0x800:
-                        buffaddr = 0
-                    if debug:
-                        print("%x" % ord(byte), end=' ')
-            if debug:
-                print()
-                import pdb
-                pdb.set_trace()
-    return result
-
-
 def line_wrap(things, width=16):
     newthings = []
     while things:

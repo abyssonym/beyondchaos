@@ -222,7 +222,7 @@ Convergent BC05A 97 5C C0 3F 80 FB C1 01 D2 CC F0 00 B2 BD CF 00 4D 12 3F B2 A9 
 # Entering Cresent Mountain
 Normal BC228 D2 84 DB F7 FE
 # CYAN: Is this it?
-# GAU's “treasure”?
+# GAU's "treasure"?
 Normal BC608 D3 BB D0 41 D3 84 D3 85 D3 86 D3 7B D3 7C DB F7 B2 37 6A 01 C0 27 01 E3 8A 00 FE
 # Boat to Nikeah
 Convergent A8D22 97 5C D0 44 D3 CC D7 2A B2 4C AD 00 FE

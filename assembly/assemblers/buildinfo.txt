@@ -1,0 +1,10 @@
+Windows and Linux are built on Linux.  mingw-w64 is used for the Windows builds on Linux.
+It's a lot easier to use Ubuntu with mingw to build the Windows builds than on Windows itself,
+especially when it's really easy to install Ubuntu on Windows.
+
+Windows x86-64:
+	make compiler=x86_64-w64-mingw32-g++ platform=windows build=release link="-s -static -lws2_32 -lole32" -f GNUmakefile
+Windows i386:
+	make compiler=i686-w64-mingw32-g++ platform=windows build=release link="-s -static -lws2_32 -lole32" -f GNUmakefile
+Linux x86-64:
+	make compiler=g++ build=release -f GNUmakefile

@@ -3,6 +3,8 @@ from collections import defaultdict
 import random
 import re
 
+import assemblymanager
+
 try:
     from sys import _MEIPASS
     MEI = True
@@ -58,14 +60,20 @@ SKIP_EVENTS_TABLE = path.join(tblpath, "skipevents.txt")
 DIVERGENT_TABLE = path.join(tblpath, "divergentedits.txt")
 MAGICITE_TABLE = path.join(tblpath, "magicite.txt")
 
-custom_path = "custom"
-MALE_NAMES_TABLE = path.join(custom_path, "malenames.txt")
-FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
-SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
-MOOGLE_NAMES_TABLE = path.join(custom_path, "mooglenames.txt")
-DANCE_NAMES_TABLE = path.join(custom_path, "dancenames.txt")
-PASSWORDS_TABLE = path.join(custom_path, "passwords.txt")
-POEMS_TABLE = path.join(custom_path, "poems.txt")
+CUSTOM_PATH = "custom"
+MALE_NAMES_TABLE = path.join(CUSTOM_PATH, "malenames.txt")
+FEMALE_NAMES_TABLE = path.join(CUSTOM_PATH, "femalenames.txt")
+SPRITE_REPLACEMENT_TABLE = path.join(CUSTOM_PATH, "spritereplacements.txt")
+MOOGLE_NAMES_TABLE = path.join(CUSTOM_PATH, "mooglenames.txt")
+DANCE_NAMES_TABLE = path.join(CUSTOM_PATH, "dancenames.txt")
+PASSWORDS_TABLE = path.join(CUSTOM_PATH, "passwords.txt")
+POEMS_TABLE = path.join(CUSTOM_PATH, "poems.txt")
+
+HIROM = 0xC00000
+NEW_ROM_SIZE = 0x400000
+
+assembly_patches = None
+
 
 def open_mei_fallback(filename, mode='r', encoding=None):
     if not MEI:
@@ -172,6 +180,13 @@ reverse_dialoguetexttable["1104"] = "<wait 60 frames>"
 
 def hex2int(hexstr):
     return int(hexstr, 16)
+
+
+def pointer16_to_bytes(pointer):
+    return bytes([pointer & 0xFF, (pointer >> 8) & 0xFF])
+
+def pointer24_to_bytes(pointer):
+    return bytes([pointer & 0xFF, (pointer >> 8) & 0xFF, (pointer >> 16) & 0xFF])
 
 
 def shuffle_key_values(d):
@@ -886,6 +901,19 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         new_palette = list(map(components_to_color, new_palette))
 
     return new_palette
+
+
+def load_asm_patches():
+    global assembly_patches
+    assembly_patches = assemblymanager.load_all_patches()
+
+
+def get_asm_patch(name):
+    return assembly_patches[name]
+
+
+def apply_asm_patch(fout, name):
+    assembly_patches[name].write(fout)
 
 
 def decompress(bytestring, simple=False, complicated=False, debug=False):

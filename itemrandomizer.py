@@ -577,6 +577,7 @@ class ItemBlock:
                 self.mutate_special_action()
             if 10 <= x < 20 and not learned:
                 self.mutate_learning()
+                learned = True
             if 20 <= x < 50 and not broken:
                 self.mutate_break_effect(wild_breaks=wild_breaks)
                 broken = True
@@ -588,8 +589,14 @@ class ItemBlock:
             self.heavy = True
 
         if extra_effects:
-            if random.randint(1, 3) == 3:
+            if random.randint(1, 4) == 4:
                 self.mutate_special_action()
+            if not learned and random.randint(1, 4):
+                self.mutate_learning()
+                learned = True
+            if not broken and random.randint(1, 4):
+                self.mutate_break_effect(wild_breaks=wild_breaks)
+                broken = True
 
             if random.randint(1, 2) == 2:
                 self.mutate_feature()

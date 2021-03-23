@@ -46,7 +46,6 @@ from utils import (COMMAND_TABLE, LOCATION_TABLE, LOCATION_PALETTE_TABLE,
                    HIROM, NEW_ROM_SIZE,
                    get_long_battle_text_pointer,
                    load_asm_patches, get_asm_patch, apply_asm_patch,
-                   pointer16_to_bytes, pointer24_to_bytes,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -1988,7 +1987,7 @@ def manage_items(items, changed_commands=None):
         if i.features['special2'] & 0x38 and i.is_relic:
             auto_equip_relics.append(i.itemid)
 
-    assert(auto_equip_relics)
+    assert auto_equip_relics
 
     if use_new_asm:
         apply_asm_patch(fout, "auto_equip")
@@ -4223,7 +4222,7 @@ def randomize(args):
 
     # Fake arguments for test mode.
     if TEST_ON and len(normal_args) < 2:
-        normal_args = [ TEST_FILE, TEST_SEED ]
+        normal_args = [TEST_FILE, TEST_SEED]
 
     if do_sleep:
         sleep(0.5)
@@ -4235,8 +4234,8 @@ def randomize(args):
     # Load assembly patches, building if requested.
     if build_asm_all:
         assemblymanager.build_all_patches(NEW_ROM_SIZE)
-    elif build_asm_only != None:
-        assemblymanager.build_patch_set([ build_asm_only ], NEW_ROM_SIZE)
+    elif build_asm_only is not None:
+        assemblymanager.build_patch_set([build_asm_only], NEW_ROM_SIZE)
     load_asm_patches()
 
     # Ask the user where to find the ROM.
@@ -4786,11 +4785,11 @@ def randomize(args):
     if options_.is_code_active('johnnybquiet'):
         add_music_disable_option(fout)
     reseed()
-    
+
     if options_.is_code_active('myriaequip'):
         improved_party_gear_screen(fout)
     reseed()
-    
+
     if options_.is_code_active('suplexwrecks'):
         manage_suplex(commands, monsters)
     reseed()

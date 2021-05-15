@@ -126,6 +126,9 @@ class ItemBlock:
         self._rank = None
         self.dataname = bytes()
         self.heavy = False
+        self.equippable = 0
+        self.features = {}
+        self.weapon_animation = []
 
     @property
     def is_tool(self):

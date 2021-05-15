@@ -1830,10 +1830,11 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
             candidates = bosses
         else:
             candidates = nonbosses
-        index = candidates.index(m)
-
+            
         candidates = [c for c in candidates
                       if abs(c.stats["level"] - m.stats["level"]) <= 20]
+
+        index = candidates.index(m)
 
         def get_swap_index(to_swap):
             to_swap = mutate_index(index, len(candidates),

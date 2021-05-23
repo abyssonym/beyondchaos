@@ -308,7 +308,7 @@ def build_65816_patch(name, bass_path, new_rom_size):
     if run_start is not None:
         patched_ranges += [[run_start, i - run_start]]
 
-    if patched_ranges:
+    if not patched_ranges:
         raise AssemblerError("No data patched!")
 
     # Verify the format of the export table.

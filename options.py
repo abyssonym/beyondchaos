@@ -88,6 +88,8 @@ class Options:
                     self.activate_code("makeover")
                 if code in RESTRICTED_VANILLA_SPRITE_CODES:
                     self.activate_code("frenchvanilla")
+                if code_name == 'h*ck':
+                    self.activate_code('heck')
                 return
 
     def activate_flag(self, flag: Flag):
@@ -236,6 +238,8 @@ NORMAL_CODES = [
     Code('endless9', "ENDLESS NINE MODE", "All R-[skills] are automatically changed to 9x[skills]. W-[skills] will become 8x[skills].", "major"),
     Code('equipanything', "EQUIP ANYTHING MODE", "Items that are not equippable normally can now be equipped as weapons or shields. These often give strange defensive stats or weapon animations.", "gamebreaking"),
     Code('fightclub', "MORE LIKE COLI-DON'T-SEE-'EM", "Does not allow you to see the coliseum rewards before betting, but you can often run from the coliseum battles to keep your item.", "minor"),
+    Code('heck', "WATCH YOUR LANGUAGE MODE", "Don't add extra cursed items besides the Cursed Shield and Cursed Ring", "minor"),
+    Code('h*ck', "HORRIBLE NIGHT TO HAVE A CURSED RING MODE", "Don't add extra cursed items besides the Cursed Shield and Cursed Ring, and don't allow uncursing the Cursed Ring", "minor"),
     Code('johnnydmad', "MUSIC REPLACEMENT MODE", "Randomizes music with regard to what would make sense in a given location.", "aesthetic"),
     Code('johnnyachaotic', "MUSIC MANGLING MODE", "Randomizes music with no regard to what would make sense in a given location.", "aesthetic"),
     Code('kupokupo', "MOOGLE MODE", "All party members are moogles except Mog. With partyparty, all characters are moogles, except Mog, Esper Terra, and Imps.", "aesthetic"),
@@ -262,7 +266,6 @@ NORMAL_CODES = [
     Code('suplexwrecks', "SUPLEX MODE", "All characters use the Sabin sprite, as well as having a name similar to Sabin. All characters have the Blitz and Suplex commands, and every enemy can be hit by Suplex.", "major"),
     Code('thescenarionottaken', 'DIVERGENT PATHS MODE', "Changes the way the 3 scenarios are split up.", "major"),
     Code('worringtriad', "START IN WOR", "The player will start in the World of Ruin, with all of the World of Balance treasure chests, along with a guaranteed set of items, and more Lores.", "major"),
-    
     Code('johnnybquiet', "MUSIC DISABLE OPTION", "Music can be turned on/off in the Config menu.  Compatible with other music codes.", "aesthetic"),
     Code('myriaequip', "ENABLE MYRIA'S PARTY EQUIP", "Enables Myria's new party equip screen. (REQUIRES partyparty OR makeover OR WILL CRASH)", "aesthetic"),
 ]

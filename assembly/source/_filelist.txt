@@ -1,5 +1,6 @@
 ; List of .asm files to build.
 auto_equip
+cursed_tweak
 enable_esper_magic
 enable_morph
 enable_mpoint

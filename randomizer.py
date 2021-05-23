@@ -19,7 +19,7 @@ from dialoguemanager import manage_dialogue_patches, get_dialogue, set_dialogue,
 from esperrandomizer import (get_espers, allocate_espers, randomize_magicite)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS,
                                  get_formations, get_fsets, get_formation)
-from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
+from itemrandomizer import (ItemType, setup_cursed_items, reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield, unhardcode_tintinabar)
 from locationrandomizer import (get_locations, get_location, get_zones, get_npcs, randomize_forest)
@@ -2090,7 +2090,7 @@ def manage_equipment(items):
 
         equippable_items = [i for i in items if i.equippable & (1 << c.id)]
         equippable_items = [i for i in equippable_items if not i.has_disabling_status]
-        equippable_items = [i for i in equippable_items if not i.banned]
+        equippable_items = [i for i in equippable_items if not i.banned and not i.cursed]
         if random.randint(1, 4) < 4:
             equippable_items = [i for i in equippable_items if not i.imp_only]
         for equiptype, func in equippable_dict.items():
@@ -4561,20 +4561,36 @@ def randomize(args):
             dirk.write_stats(fout)
             dummy_item(dirk)
             assert not dummy_item(dirk)
+
     if options_.random_enemy_stats and options_.random_treasure and options_.random_character_stats:
         rename_card = get_item(231)
-        rename_card.become_another(tier="low")
-        rename_card.write_stats(fout)
-        dummy_item(rename_card)
+        can_uncurse_ring = not options_.is_code_active('h*ck')
+        add_random_curses = can_uncurse_ring and not options_.is_code_active('heck')
 
-        weapon_anim_fix = Substitution()
-        weapon_anim_fix.set_location(0x19DB8)
-        weapon_anim_fix.bytestring = bytes([0x22, 0x80, 0x30, 0xF0])
-        weapon_anim_fix.write(fout)
+        # if adding the ring can be uncursed, it's only into relics, so this is unnecessary.
+        if not can_uncurse_ring:
+            rename_card.become_another(tier='low')
+            rename_card.banned = False
+            rename_card.write_stats(fout)
 
-        weapon_anim_fix.set_location(0x303080)
-        weapon_anim_fix.bytestring = bytes([0xE0, 0xE8, 0x02, 0xB0, 0x05, 0xBF, 0x00, 0xE4, 0xEC, 0x6B, 0xDA, 0xC2, 0x20, 0x8A, 0xE9, 0xF0, 0x02, 0xAA, 0x29, 0xFF, 0x00, 0xE2, 0x20, 0xBF, 0x00, 0x31, 0xF0, 0xFA, 0x6B])
-        weapon_anim_fix.write(fout)
+            weapon_anim_fix = Substitution()
+            weapon_anim_fix.set_location(0x19DB8)
+            weapon_anim_fix.bytestring = bytes([0x22, 0x80, 0x30, 0xF0])
+            weapon_anim_fix.write(fout)
+
+            weapon_anim_fix.set_location(0x303080)
+            weapon_anim_fix.bytestring = bytes([0xE0, 0xE8, 0x02, 0xB0, 0x05, 0xBF, 0x00, 0xE4, 0xEC, 0x6B, 0xDA, 0xC2, 0x20, 0x8A, 0xE9, 0xF0, 0x02, 0xAA, 0x29, 0xFF, 0x00, 0xE2, 0x20, 0xBF, 0x00, 0x31, 0xF0, 0xFA, 0x6B])
+            weapon_anim_fix.write(fout)
+
+        else:
+            rename_card.become_another(tier='low', item_type=ItemType.RELIC)
+            rename_card.write_stats(fout)
+            dummy_item(rename_card)
+
+            curse_log = setup_cursed_items(fout, add_random_curses=add_random_curses)
+            if curse_log:
+                log(curse_log, 'cursed items')
+
     reseed()
 
     items = get_ranked_items()
@@ -4800,7 +4816,7 @@ def randomize(args):
     reseed()
 
     if options_.is_code_active('notawaiter') and not options_.is_code_active('ancientcave'):
-        print("Cutscenes are currently skipped up to Kefka @ Narshe")
+        print("All cutscenes are currently skipped up to Kefka @ Narshe.")
         manage_skips()
     reseed()
 

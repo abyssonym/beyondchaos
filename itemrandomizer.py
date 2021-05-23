@@ -1,8 +1,14 @@
-from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
+import enum
+
+from typing import Dict, Optional, Tuple
+
+from skillrandomizer import get_ranked_spells
+from utils import (get_asm_patch, HIROM, hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,
                    name_to_bytes, utilrandom as random,
                    Substitution)
-from skillrandomizer import get_ranked_spells
+
+
 # future blocks: chests, morphs, shops
 
 ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
@@ -112,6 +118,15 @@ def extend_item_breaks(fout):
     break_sub.bytestring = bytes([0xBD, 0xA4, 0x3B, 0x29, 0x0C, 0x0A, 0x0A, 0x0A, 0x0A, 0x8D, 0x89, 0x3A, 0xBD, 0x34, 0x3D, 0x8D, 0x7E, 0x3A, 0x6B, 0x08, 0xBF, 0x12, 0x50, 0xD8, 0x8D, 0x10, 0x34, 0xBF, 0x13, 0x50, 0xD8, 0x0A, 0x0A, 0x0A, 0x0A, 0x28, 0x29, 0xC0, 0x6B])
     break_sub.write(fout)
 
+class ItemType(enum.Enum):
+    TOOL = 0
+    WEAPON = 1
+    BODY_ARMOR = 2
+    SHIELD = 3
+    HELM = 4
+    RELIC = 5
+    CONSUMABLE = 6
+
 
 class ItemBlock:
     def __init__(self, itemid, pointer, name):
@@ -126,6 +141,8 @@ class ItemBlock:
         self._rank = None
         self.dataname = bytes()
         self.heavy = False
+        self.uncurses_to = None
+        self.uncurses_from = None
 
     @property
     def is_tool(self):
@@ -158,6 +175,18 @@ class ItemBlock:
     @property
     def is_consumable(self):
         return self.itemtype & 0x0f == 0x06
+
+    @property
+    def item_type(self) -> ItemType:
+        value = self.itemtype & 0x0f
+        for _item_type in ItemType:
+            if value == _item_type.value:
+                return _item_type
+        raise ValueError(f'Invalid item type {value} for item {self.name}({self.itemid}).')
+
+    @property
+    def cursed(self) -> bool:
+        return self.uncurses_to is not None
 
     def set_degree(self, value):
         self.degree = value
@@ -208,13 +237,15 @@ class ItemBlock:
     def ban(self):
         self.banned = True
 
-    def become_another(self, customdict=None, tier=None):
+    def become_another(self, customdict: Optional[Dict] = None, tier: Optional[str] = None, item_type: Optional[ItemType] = None):
         customs = get_custom_items()
         if customdict is None:
             if tier is None:
                 candidates = [customs[key] for key in sorted(customs)]
             else:
                 candidates = [customs[key] for key in sorted(customs) if customs[key]["tier"] == tier]
+            if item_type:
+                candidates = [c for c in candidates if int(c['itemtype'], 16) & 0x0F == item_type.value]
             customdict = random.choice(candidates)
 
         for key in self.features:
@@ -352,6 +383,13 @@ class ItemBlock:
             # Reduce chance of Genji Glove bit on non-relics
             elif random.randint(1, 4) != 4:
                 nochange |= 0x10
+        if self.cursed:
+            if feature == 'statusacquire2':
+                nochange |= 0x14
+            elif feature == 'statusacquire3':
+                nochange |= 0x06
+            elif feature == 'special1':
+                nochange |= 0xC7
         self.features[feature] = bit_mutate(self.features[feature], op="on",
                                             nochange=nochange)
 
@@ -596,6 +634,9 @@ class ItemBlock:
             while random.randint(1, 3) == 3:
                 self.mutate_feature()
 
+        if self.cursed and self.itemid not in [0x66, 0xC2]:
+            curse_item(self)
+
     def rank(self):
         if self._rank:
             return self._rank
@@ -701,6 +742,7 @@ UMARO_ID = 13
 
 def reset_equippable(items, characters, numchars=NUM_CHARS):
     global changed_commands
+
     prevents = [i for i in items if i.prevent_encounters]
     for item in prevents:
         while True:
@@ -772,13 +814,18 @@ def reset_equippable(items, characters, numchars=NUM_CHARS):
                 continue
             item.equippable |= (1 << random.randint(0, numchars-1))
 
-    paladin_equippable = None
+    # Make sure the cursed shield and paladin shield are linked to each other no matter what
+    # other settings are on, so they have the same equippable flags
+    cursed_shield = get_item(0x66)
+    paladin_shield = get_item(0x67)
+    cursed_shield.uncurses_to = paladin_shield
+    paladin_shield.uncurses_from = cursed_shield
+
     for item in items:
-        if item.itemid in [0x66, 0x67]:
-            if paladin_equippable is not None:
-                item.equippable = paladin_equippable
-            else:
-                paladin_equippable = item.equippable
+        if item.uncurses_to is not None:
+            uncursed_item = item.uncurses_to
+            item.equippable = uncursed_item.equippable
+            uncursed_item.uncurses_from = item
 
     if 0x10 not in changed_commands:
         for item in items:
@@ -965,7 +1012,7 @@ def get_items(filename=None, allow_banned=False):
     return get_items()
 
 
-def get_item(itemid, allow_banned=False):
+def get_item(itemid, allow_banned=False) -> Optional[ItemBlock]:
     global itemdict
     item = itemdict[itemid]
     if item and item.banned:
@@ -1009,3 +1056,139 @@ def unhardcode_tintinabar(fout):
     tintinabar_sub.set_location(0x3F16C)
     tintinabar_sub.bytestring = bytes([0xAD, 0xD8, 0x11, 0x10, 0x12, 0x7B, 0xB5, 0x69, 0x1A, 0xA8, 0x38, 0x7B, 0xC2, 0x20, 0x2A, 0x88, 0xD0, 0xFC, 0x0C, 0x48, 0x14, 0xE2, 0x20, 0x60])
     tintinabar_sub.write(fout)
+
+
+def _set_cursed_pair(fout, cursed_item: ItemBlock, uncursed_item: ItemBlock, fight_count: int):
+    #curse_item(cursed_item)
+    uncursed_item.equippable |= 0x00FF
+    cursed_item.equippable = uncursed_item.equippable
+    cursed_item.uncurses_to = uncursed_item
+    uncursed_item.uncurses_from = cursed_item
+    #cursed_item.write_stats(fout)
+    #uncursed_item.write_stats(fout)
+
+
+def create_cursed_pair(fout, item_type: ItemType) -> Tuple[ItemBlock, ItemBlock, int]:
+    candidates = get_ranked_items()
+    candidates = [c for c in candidates if c.item_type == item_type]
+    size = len(candidates)
+    cursed_index = random.randrange(0, size // 2)
+    uncursed_min = max(cursed_index + 1, cursed_index + size // 8)
+    uncursed_index = min(size, uncursed_min + random.randint(0, size // 4) + random.randint(0, size // 8))
+
+    cursed_item = candidates[cursed_index]
+    uncursed_item = candidates[uncursed_index]
+    fight_count = 255 * (uncursed_index - cursed_index) // size
+    _set_cursed_pair(fout, cursed_item, uncursed_item, fight_count)
+    return cursed_item, uncursed_item, fight_count
+
+
+def pair_cursed_item(fout, cursed_item: ItemBlock) -> Tuple[ItemBlock, int]:
+    candidates = get_ranked_items()
+    candidates = [c for c in candidates if c.item_type == cursed_item.item_type]
+    size = len(candidates)
+    cursed_index = candidates.index(cursed_item)
+    uncursed_min = max(cursed_index + 1, cursed_index + size // 8)
+    uncursed_index = min(size, uncursed_min + random.randint(0, size // 16) + random.randint(0, size // 16))
+
+    cursed_item = candidates[cursed_index]
+    uncursed_item = candidates[uncursed_index]
+    fight_count = 255 * (uncursed_index - cursed_index) // size
+    _set_cursed_pair(fout, cursed_item, uncursed_item, fight_count)
+    return uncursed_item, fight_count
+
+
+def _curse_nybbles(byte: int):
+    high = (byte & 0x70  >>  4) * (-1 if byte & 0x80 else 1)
+    low = byte & 0x07 * (-1 if byte & 0x08 else 1)
+    high = max(-7, high - random.randint(0, 5) - random.randint(0, 2))
+    low = max(-7, low - random.randint(0, 5) - random.randint(0, 2))
+
+    return (0 if high >= 0 else 0x80) | abs(high) << 4 | (0 if low >= 0 else 0x80) | abs(low)
+
+
+def _stats_curse(item: ItemBlock):
+    item.features['power'] = item.features['power'] // 4 + random.randint(0, item.features['power'] // 2) + random.randint(0, item.features['power'] // 4)
+    item.features['hitmdef'] = item.features['hitmdef'] // 4 + random.randint(0, item.features['hitmdef'] // 2) + random.randint(0, item.features['hitmdef'] // 4)
+    item.features['magstam'] = _curse_nybbles(item.features['magstam'])
+    item.features['speedvigor'] = _curse_nybbles(item.features['speedvigor'])
+
+
+def _elements_curse(item: ItemBlock):
+    if item.is_weapon:
+        item.features['elements'] = 0xFF
+        return
+
+    normals = ~(item.features['elements'] | item.features['elemabsorbs'] | item.features['elemnulls'] | item.features['elemweaks']) & 0xff
+
+    item.features['elemweaks'] |= normals
+    item.features['elements'] = item.features['elemnulls']
+    item.features['elemnulls'] = item.features['elemabsorbs']
+    item.features['elemabsorbs'] = 0
+
+def _status_curse(item: ItemBlock):
+    item.features['statusprotect1'] = 0
+    item.features['statusprotect2'] = 0
+
+    item.features['statusacquire2'] = bit_mutate(item.features['statusacquire2'], op='on', nochange=0xEB)
+    item.features['statusacquire3'] = bit_mutate(item.features['statusacquire3'], op='on', nochange=0xF9)
+
+
+def curse_item(item: ItemBlock):
+    item.dataname = bytes([item.dataname[0]]) + name_to_bytes('Cursed', 12)
+    item.features['special1'] &= 0x83
+    num_curses = 1 + random.randint(0, 2) + random.randint(0, 1)
+    fs = random.choices([_status_curse, _stats_curse, _elements_curse], k=num_curses)
+    for f in fs:
+        f(item)
+
+def setup_cursed_items(fout, add_random_curses: bool) -> str:
+    cursed_tweak = get_asm_patch("cursed_tweak")
+    cursed_tweak.write(fout)
+    cursed_table = cursed_tweak.exports['equip_table_a'] - HIROM
+    uncursed_table = cursed_tweak.exports['equip_table_b'] - HIROM
+    fight_count_table = cursed_tweak.exports['fights_table'] - HIROM
+
+    cursed = bytes([0x66, 0xC2])    # cursed shield, cursed ring
+    uncursed = bytes([0x67, 0xE7])   # paladin shield, rename card
+    fight_counts = bytes([0xFF, 0x7F])
+    pair_count = 2
+
+    logstr = ''
+    if add_random_curses:
+        cursable_types = [ItemType.HELM, ItemType.BODY_ARMOR, ItemType.WEAPON]
+        random.shuffle(cursable_types)
+        items = get_ranked_items()
+        for item_type in cursable_types:
+            uncursed_item = None
+            while pair_count < 8 and random.randint(1, pair_count + 1) == pair_count + 1:
+                cursed_item = uncursed_item
+                if cursed_item:
+                    uncursed_item, fight_count = pair_cursed_item(fout, cursed_item)
+                else:
+                    cursed_item, uncursed_item, fight_count = create_cursed_pair(fout, item_type)
+                fight_count = 5
+                cursed = cursed + bytes([cursed_item.itemid])
+                uncursed = uncursed + bytes([uncursed_item.itemid])
+                fight_counts = fight_counts + bytes([fight_count])
+                pair_count += 1
+
+                logstr += f'{cursed_item.name} changes to {uncursed_item.name} after {fight_count} fights.\n'
+                items_of_type = [i for i in items if i.item_type == item_type]
+                if items_of_type.index(uncursed_item) > 3 * len(items_of_type) // 4:
+                    break
+
+    fout.seek(cursed_table)
+    fout.write(cursed)
+    fout.seek(uncursed_table)
+    fout.write(uncursed)
+    fout.seek(fight_count_table)
+    fout.write(fight_counts)
+
+    for cursed_index, uncursed_index in zip(cursed, uncursed):
+        cursed_item = get_item(cursed_index, allow_banned=True)
+        uncursed_item = get_item(uncursed_index, allow_banned=True)
+        cursed_item.uncurses_to = uncursed_item
+        uncursed_item.uncurses_to = cursed_item
+
+    return logstr

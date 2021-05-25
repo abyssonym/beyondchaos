@@ -4,7 +4,7 @@ from functools import reduce
 from itertools import chain, repeat
 from typing import List
 
-from dialoguemanager import patch_dialogue, set_dialogue_var, set_location_name
+from dialoguemanager import get_battle_text, patch_dialogue, set_battle_text, set_dialogue_var, set_location_name
 from itemrandomizer import get_item
 from monsterrandomizer import change_enemy_name, get_monster, MonsterGraphicBlock
 from skillrandomizer import get_ranked_spells, get_spell
@@ -410,6 +410,9 @@ def randomize_magicite(fout, sourcefile):
 
     phoenix_replacement = shuffled_espers[espers_by_name["Phoenix"].id]
     set_location_name(71, f"{phoenix_replacement.name.upper()} CAVE")
+    ramuh_replacement = shuffled_espers[espers_by_name["Ramuh"].id]
+    text = get_battle_text(0x1d)
+    set_battle_text(0x1d, text.replace('Ramuh', ramuh_replacement.name))
 
     esper_monsters = [(0x108, "Shiva"), (0x109, "Ifrit"), (0x114, "Tritoch"), (0x115, "Tritoch"), (0x144, "Tritoch")]
 

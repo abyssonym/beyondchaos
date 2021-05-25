@@ -182,11 +182,11 @@ def set_pronoun(name, gender, force=True):
 
     return gender
 
-def patch_dialogue(id, from_text, to_text, index=None, battle=False):
+def patch_dialogue(idx, from_text, to_text, index=None, battle=False):
     patches = dialogue_patches_battle if battle else dialogue_patches
-    if id not in patches:
-        patches[id] = {}
-    patches[id][(from_text.lower(), index)] = to_text
+    if idx not in patches:
+        patches[idx] = {}
+    patches[idx][(from_text.lower(), index)] = to_text
 
 def get_dialogue(idx: int):
     return script[idx]
@@ -198,6 +198,9 @@ def set_dialogue(idx: int, text: str):
 
 def set_location_name(idx: int, text: str):
     location_names[idx] = text
+
+def get_battle_text(idx: int):
+    return battle_text[idx]
 
 def set_battle_text(idx: int, text: str):
     battle_text[idx] = text

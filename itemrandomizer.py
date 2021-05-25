@@ -2,6 +2,7 @@ import enum
 
 from typing import Dict, Optional, Tuple
 
+from dialoguemanager import set_battle_message
 from skillrandomizer import get_ranked_spells
 from utils import (get_asm_patch, HIROM, hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,
@@ -824,6 +825,7 @@ def reset_equippable(items, characters, numchars=NUM_CHARS):
     for item in items:
         if item.uncurses_to is not None:
             uncursed_item = item.uncurses_to
+            uncursed_item.equippable |= 0x00ff
             item.equippable = uncursed_item.equippable
             uncursed_item.uncurses_from = item
 
@@ -1143,7 +1145,8 @@ def curse_item(item: ItemBlock):
         f(item)
 
 def setup_cursed_items(fout, add_random_curses: bool) -> str:
-    cursed_tweak = get_asm_patch("cursed_tweak")
+    set_battle_message(42, 'Dispelled curse on equipment')
+    cursed_tweak = get_asm_patch('cursed_tweak')
     cursed_tweak.write(fout)
     cursed_table = cursed_tweak.exports['equip_table_a'] - HIROM
     uncursed_table = cursed_tweak.exports['equip_table_b'] - HIROM

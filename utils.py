@@ -3,6 +3,8 @@ from collections import defaultdict
 import random
 import re
 
+from typing import Dict
+
 import assemblymanager
 
 try:
@@ -29,6 +31,8 @@ COMMAND_TABLE = path.join(tblpath, "commandcodes.txt")
 CHAR_TABLE = path.join(tblpath, "charcodes.txt")
 TEXT_TABLE = path.join(tblpath, "text.txt")
 SHORT_TEXT_TABLE = path.join(tblpath, "shorttext.txt")
+BATTLE_TEXT_TABLE = path.join(tblpath, "battletext.txt")
+MENU_TEXT_TABLE = path.join(tblpath, "menutext.txt")
 DIALOGUE_TEXT_TABLE = path.join(tblpath, "dialoguetext.txt")
 ENEMY_NAMES_TABLE = path.join(tblpath, "enemynames.txt")
 MODIFIERS_TABLE = path.join(tblpath, "moves.txt")
@@ -133,7 +137,7 @@ class AutoLearnRageSub(Substitution):
 
         super(AutoLearnRageSub, self).write(fout)
 
-
+# deprecated: use menu text or battle text
 texttable = {}
 f = open(TEXT_TABLE)
 for line in f:
@@ -143,7 +147,7 @@ for line in f:
 texttable[' '] = 'FE'
 f.close()
 
-
+# deprecated: use menu text or battle text
 def name_to_bytes(name, length):
     name = [hex2int(texttable[c]) for c in name]
     assert len(name) <= length
@@ -151,7 +155,7 @@ def name_to_bytes(name, length):
         name.append(0xFF)
     return bytes(name)
 
-
+# deprecated: use menu text or battle text
 shorttexttable = {}
 f = open(SHORT_TEXT_TABLE)
 for line in f:
@@ -161,22 +165,30 @@ for line in f:
 shorttexttable[' '] = 'FF'
 f.close()
 
+reverse_shorttexttable = {v: k for k, v in shorttexttable.items()}
 
-dialoguetexttable = {}
-f = open(DIALOGUE_TEXT_TABLE, encoding='utf8')
-for line in f:
-    line = line.strip('\n')
-    if not line:
-        continue
-    value, string = tuple(line.split('=', 1))
-    if string not in dialoguetexttable:
-        dialoguetexttable[string] = value
-f.close()
+def parse_table(table_filename: str) -> Dict[str, str]:
+    table = {}
+    with open(table_filename, encoding='utf8') as f:
+        for line in f:
+            line = line.split('#')[0].strip('\n')
+            if not line:
+                continue
+            value, string = tuple(line.split('=', 1))
+            if string not in table:
+                table[string] = value
+    return table
 
 
+dialoguetexttable = parse_table(DIALOGUE_TEXT_TABLE)
 reverse_dialoguetexttable = {v: k for k, v in dialoguetexttable.items()}
 reverse_dialoguetexttable["1104"] = "<wait 60 frames>"
 
+battletexttable = parse_table(BATTLE_TEXT_TABLE)
+reverse_battletexttable = {v: k for k, v in battletexttable.items()}
+
+menutexttable = parse_table(MENU_TEXT_TABLE)
+reverse_menutexttable = {v: k for k, v in menutexttable.items()}
 
 def hex2int(hexstr):
     return int(hexstr, 16)
@@ -194,58 +206,6 @@ def shuffle_key_values(d):
     random.shuffle(keys)
     shuffled = dict(zip(keys, d.values()))
     d.update(shuffled)
-
-def dialogue_to_bytes(text, null_terminate=True):
-    bs = []
-    i = 0
-    while i < len(text):
-        if text[i] == " ":
-            spaces = re.match(" +", text[i:]).group(0)
-            count = len(spaces)
-            j = i + count
-            hexstr = dialoguebytetable.get(text[i:j], "")
-            if not hexstr:
-                hexstr = dialoguebytetable.get(text[i])
-                j = i + 1
-            i = j
-        elif text[i] == "<":
-            j = text.find(">", i) + 1
-            hexstr = dialoguetexttable.get(text[i:j], "")
-            i = j
-        elif i < len(text) - 1 and text[i:i+2] in dialoguetexttable:
-            hexstr = dialoguetexttable[text[i:i+2]]
-            i += 2
-        else:
-            hexstr = dialoguetexttable[text[i]]
-            i += 1
-
-        if hexstr != "":
-            bs.extend(bytes.fromhex(hexstr))
-
-    if null_terminate and bs[-1] != 0x0:
-        bs.append(0x0)
-    return bytes(bs)
-
-
-def bytes_to_dialogue(bs):
-    text = []
-    i = 0
-    while i < len(bs):
-        c = bs[i]
-        if c == b'\x00':
-            break
-        d = bs[i+1] if i + 1 < len(bs) else None
-        if d and f"{c:02X}{d:02X}" in reverse_dialoguetexttable:
-            text.append(reverse_dialoguetexttable[f"{c:02X}{d:02X}"])
-            i += 2
-        elif f"{c:02X}" in reverse_dialoguetexttable:
-            text.append(reverse_dialoguetexttable[f"{c:02X}"])
-            i += 1
-        else:
-            print(bs[i], f"{c:02X}{d:02X}" if d else f"{c:02X}")
-            raise ValueError
-
-    return "".join(text)
 
 
 def get_long_battle_text_pointer(f, index):

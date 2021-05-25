@@ -9,7 +9,7 @@
 
 import os
 import re
-from utils import dialoguetexttable, bytes_to_dialogue, utilrandom as random, open_mei_fallback as open, read_multi, write_multi
+from utils import battletexttable, dialoguetexttable, open_mei_fallback as open, read_multi, reverse_battletexttable, reverse_dialoguetexttable, utilrandom as random, write_multi
 
 try:
     from sys import _MEIPASS
@@ -43,6 +43,15 @@ location_name_ptrs = {}
 location_names = {}
 location_name_bin = bytes()
 
+battle_text_ptrs = {}
+battle_text = {}
+battle_bin = bytes()
+
+battle_message_ptrs = {}
+battle_messages = {}
+battle_message_bin = bytes()
+
+
 def safepath(vpath):
     # NEW
     # this prepends the absolute file path of the parent/calling script
@@ -53,32 +62,40 @@ def safepath(vpath):
         return vpath
     return [vpath, os.path.join(_MEIPASS, vpath)]
 
-#need to use a different table here, so redefined
+
 def dialogue_to_bytes(text, null_terminate=True):
+    return text_to_bytes(text, dialoguebytetable, null_terminate)
+
+def battle_text_to_bytes(text, null_terminate=True):
+    return text_to_bytes(text, battletexttable, null_terminate)
+
+def text_to_bytes(text, byte_table, null_terminate=True):
     bs = []
     i = 0
+    if not text:
+        return bytes()
     while i < len(text):
         if text[i] == " ":
             spaces = re.match(" +", text[i:]).group(0)
             count = len(spaces)
             j = i + count
-            hexstr = dialoguebytetable.get(text[i:j], "")
+            hexstr = byte_table.get(text[i:j], "")
             if not hexstr:
-                hexstr = dialoguebytetable.get(text[i])
+                hexstr = byte_table.get(text[i])
                 j = i + 1
             i = j
         elif text[i] == "<":
             j = text.find(">", i) + 1
-            hexstr = dialoguebytetable.get(text[i:j], "")
+            hexstr = byte_table.get(text[i:j], "")
             i = j
-        elif i < len(text) - 1 and text[i:i+2] in dialoguebytetable:
-            hexstr = dialoguebytetable[text[i:i+2]]
+        elif i < len(text) - 1 and text[i:i+2] in byte_table:
+            hexstr = byte_table[text[i:i+2]]
             i += 2
         elif text[i] == "$":
             hexstr = text[i+1:i+3]
             i += 3
         else:
-            hexstr = dialoguebytetable[text[i]]
+            hexstr = byte_table[text[i]]
             i += 1
 
         if hexstr != "":
@@ -91,6 +108,32 @@ def dialogue_to_bytes(text, null_terminate=True):
         bs.append(0x0)
 
     return bytes(bs)
+
+def bytes_to_dialogue(bs):
+    return bytes_to_text(bs, reverse_dialoguetexttable)
+
+def bytes_to_battle_text(bs):
+    return bytes_to_text(bs, reverse_battletexttable)
+
+def bytes_to_text(bs, text_table):
+    text = []
+    i = 0
+    while i < len(bs):
+        c = bs[i]
+        if c == b'\x00':
+            break
+        d = bs[i+1] if i + 1 < len(bs) else None
+        if d is not None and f"{c:02X}{d:02X}" in text_table:
+            text.append(text_table[f"{c:02X}{d:02X}"])
+            i += 2
+        elif f"{c:02X}" in text_table:
+            text.append(text_table[f"{c:02X}"])
+            i += 1
+        else:
+            print(bs[i], f"{c:02X}{d:02X}" if d is not None else f"{c:02X}")
+            raise ValueError
+
+    return "".join(text)
 
 
 def set_dialogue_var(k, v):
@@ -145,16 +188,23 @@ def patch_dialogue(id, from_text, to_text, index=None, battle=False):
         patches[id] = {}
     patches[id][(from_text.lower(), index)] = to_text
 
-def get_dialogue(idx):
+def get_dialogue(idx: int):
     return script[idx]
 
-def set_dialogue(idx, text):
+def set_dialogue(idx: int, text: str):
     global script_edited
     script[idx] = text
     script_edited = True
 
-def set_location_name(idx, text):
+def set_location_name(idx: int, text: str):
     location_names[idx] = text
+
+def set_battle_text(idx: int, text: str):
+    battle_text[idx] = text
+
+def set_battle_message(idx: int, msg: str):
+    battle_messages[idx] = msg
+
 
 def load_patch_file(fn):
     filepath = os.path.join('data', 'script', fn + ".txt")
@@ -375,4 +425,82 @@ def write_location_names(fout):
 
     fout.seek(0x268400)
     assert len(new_ptrs) <= 0x375
+    fout.write(new_ptrs)
+
+def read_battle_text(f):
+    #load existing script & pointer table
+    f.seek(0xFE1E0)
+    battle_text_bin = f.read(0x1270)
+
+    f.seek(0xFDFE0)
+    for idx in range(0x100):
+        battle_text_ptrs[idx] = read_multi(f, 2) - 0xE1E0
+
+    for idx in range(0x100):
+        start = battle_text_ptrs[idx]
+        end = battle_text_ptrs.get(idx+1, battle_text_bin.find(b'\0', start) + 1)
+        battle_text[idx] = bytes_to_battle_text(battle_text_bin[start:end])
+
+def write_battle_text(fout):
+    new_battle_text = b""
+    new_ptrs = b""
+    offset_start = 0xE1E0
+    offset = offset_start
+    for idx, text in battle_text.items():
+        lastlength = len(new_battle_text) - (offset - offset_start)
+
+        offset += lastlength
+        if offset > 0x10EFF:
+            print(f"battle text addressing overflow at index {idx}")
+            raise IndexError
+        new_battle_text += battle_text_to_bytes(text)
+        new_ptrs += bytes([offset & 0xFF, (offset >> 8) & 0xFF])
+    #print(f"new script: ${len(new_script):X} bytes")
+
+    #write to file
+    fout.seek(0xFE1E0)
+    assert len(new_battle_text) <= 0x1270
+    fout.write(new_battle_text)
+
+    fout.seek(0xFDFE0)
+    assert len(new_ptrs) <= 0x200
+    fout.write(new_ptrs)
+
+def read_battle_messages(f):
+    #load existing script & pointer table
+    f.seek(0x11F000)
+    battle_message_bin = f.read(0x7A0)
+
+    f.seek(0x11F7A0)
+    for idx in range(0x100):
+        battle_message_ptrs[idx] = read_multi(f, 2) - 0xF000
+
+    for idx in range(0x100):
+        start = battle_message_ptrs[idx]
+        end = battle_message_ptrs.get(idx+1, battle_message_bin.find(b'\0', start) + 1)
+        battle_messages[idx] = bytes_to_battle_text(battle_message_bin[start:end])
+
+def write_battle_messages(fout):
+    new_battle_messages = b""
+    new_ptrs = b""
+    offset_start = 0xF000
+    offset = offset_start
+    for idx, text in battle_messages.items():
+        lastlength = len(new_battle_messages) - (offset - offset_start)
+
+        offset += lastlength
+        if offset > 0xEFFFF:
+            print(f"battle message addressing overflow at index {idx}")
+            raise IndexError
+        new_battle_messages += battle_text_to_bytes(text)
+        new_ptrs += bytes([offset & 0xFF, (offset >> 8) & 0xFF])
+    #print(f"new script: ${len(new_script):X} bytes")
+
+    #write to file
+    fout.seek(0x11F000)
+    assert len(new_battle_messages) <= 0x7A0
+    fout.write(new_battle_messages)
+
+    fout.seek(0x11F7A0)
+    assert len(new_ptrs) <= 0x200
     fout.write(new_ptrs)

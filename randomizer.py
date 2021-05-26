@@ -4881,6 +4881,7 @@ def randomize(args):
     if options_.is_code_active('thescenarionottaken'):
         no_kutan_skip(fout)
 
+    apply_asm_patch(fout, 'shorter_skill_name_fix')
     write_all_locations_misc()
     for fs in fsets:
         fs.write_data(fout)

@@ -11,5 +11,6 @@ learn_hacks
 music_disable_option
 natmag_learn
 randomize_final_party_order
+shorter_skill_name_fix
 sketch_fix
 ungray_statscreen

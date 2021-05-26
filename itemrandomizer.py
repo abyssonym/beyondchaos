@@ -1060,7 +1060,7 @@ def unhardcode_tintinabar(fout):
     tintinabar_sub.write(fout)
 
 
-def _set_cursed_pair(fout, cursed_item: ItemBlock, uncursed_item: ItemBlock, fight_count: int):
+def _set_cursed_pair(fout, cursed_item: ItemBlock, uncursed_item: ItemBlock):
     #curse_item(cursed_item)
     uncursed_item.equippable |= 0x00FF
     cursed_item.equippable = uncursed_item.equippable
@@ -1070,33 +1070,30 @@ def _set_cursed_pair(fout, cursed_item: ItemBlock, uncursed_item: ItemBlock, fig
     #uncursed_item.write_stats(fout)
 
 
-def create_cursed_pair(fout, item_type: ItemType) -> Tuple[ItemBlock, ItemBlock, int]:
+def select_cursed_item(item_type: ItemType) -> ItemBlock:
     candidates = get_ranked_items()
     candidates = [c for c in candidates if c.item_type == item_type]
     size = len(candidates)
     cursed_index = random.randrange(0, size // 2)
-    uncursed_min = max(cursed_index + 1, cursed_index + size // 8)
-    uncursed_index = min(size, uncursed_min + random.randint(0, size // 4) + random.randint(0, size // 8))
-
-    cursed_item = candidates[cursed_index]
-    uncursed_item = candidates[uncursed_index]
-    fight_count = 255 * (uncursed_index - cursed_index) // size
-    _set_cursed_pair(fout, cursed_item, uncursed_item, fight_count)
-    return cursed_item, uncursed_item, fight_count
+    return candidates[cursed_index]
 
 
-def pair_cursed_item(fout, cursed_item: ItemBlock) -> Tuple[ItemBlock, int]:
+def select_uncursed_item(cursed_item: ItemBlock, iteration: int = 1) -> Tuple[ItemBlock, int]:
     candidates = get_ranked_items()
     candidates = [c for c in candidates if c.item_type == cursed_item.item_type]
     size = len(candidates)
     cursed_index = candidates.index(cursed_item)
+    if cursed_index == size - 1:
+        return cursed_item, 0
+
     uncursed_min = max(cursed_index + 1, cursed_index + size // 8)
-    uncursed_index = min(size, uncursed_min + random.randint(0, size // 16) + random.randint(0, size // 16))
+    r1 = max(2, size // (8 * 2 * iteration))
+    r2 = size // 4 if iteration == 1 else max(2, r1 // 2)
+    uncursed_index = min(size - 1, uncursed_min + random.randint(0, size // r1) + random.randint(0, size // r2))
 
     cursed_item = candidates[cursed_index]
     uncursed_item = candidates[uncursed_index]
-    fight_count = 255 * (uncursed_index - cursed_index) // size
-    _set_cursed_pair(fout, cursed_item, uncursed_item, fight_count)
+    fight_count = min(255, 255 * iteration * (uncursed_index - cursed_index) // size)
     return uncursed_item, fight_count
 
 
@@ -1118,7 +1115,9 @@ def _stats_curse(item: ItemBlock):
 
 def _elements_curse(item: ItemBlock):
     if item.is_weapon:
-        item.features['elements'] = 0xFF
+        elements = random.sample(range(8), random.randint(3, 8))
+        for e in elements:
+            item.features['elements'] |= 1 << e
         return
 
     normals = ~(item.features['elements'] | item.features['elemabsorbs'] | item.features['elemnulls'] | item.features['elemweaks']) & 0xff
@@ -1132,8 +1131,12 @@ def _status_curse(item: ItemBlock):
     item.features['statusprotect1'] = 0
     item.features['statusprotect2'] = 0
 
-    item.features['statusacquire2'] = bit_mutate(item.features['statusacquire2'], op='on', nochange=0xEB)
-    item.features['statusacquire3'] = bit_mutate(item.features['statusacquire3'], op='on', nochange=0xF9)
+    status_acquire_2 = item.features['statusacquire2']
+    status_acquire_3 = item.features['statusacquire3']
+    
+    while status_acquire_2 == item.features['statusacquire2'] and status_acquire_3 == item.features['statusacquire3']:
+        item.features['statusacquire2'] = bit_mutate(item.features['statusacquire2'], op='on', nochange=0xEB)
+        item.features['statusacquire3'] = bit_mutate(item.features['statusacquire3'], op='on', nochange=0xF9)
 
 
 def curse_item(item: ItemBlock):
@@ -1164,17 +1167,15 @@ def setup_cursed_items(fout, add_random_curses: bool) -> str:
         items = get_ranked_items()
         for item_type in cursable_types:
             uncursed_item = None
-            while pair_count < 8 and random.randint(1, pair_count + 1) == pair_count + 1:
-                cursed_item = uncursed_item
-                if cursed_item:
-                    uncursed_item, fight_count = pair_cursed_item(fout, cursed_item)
-                else:
-                    cursed_item, uncursed_item, fight_count = create_cursed_pair(fout, item_type)
-                fight_count = 5
+            iteration = 1
+            while pair_count < 8 and random.randint(1, 2 + iteration) == 2 + iteration:
+                cursed_item = uncursed_item or select_cursed_item(item_type)
+                uncursed_item, fight_count = select_uncursed_item(cursed_item, iteration)
                 cursed = cursed + bytes([cursed_item.itemid])
                 uncursed = uncursed + bytes([uncursed_item.itemid])
                 fight_counts = fight_counts + bytes([fight_count])
                 pair_count += 1
+                iteration += 1
 
                 logstr += f'{cursed_item.name} changes to {uncursed_item.name} after {fight_count} fights.\n'
                 items_of_type = [i for i in items if i.item_type == item_type]
@@ -1191,7 +1192,6 @@ def setup_cursed_items(fout, add_random_curses: bool) -> str:
     for cursed_index, uncursed_index in zip(cursed, uncursed):
         cursed_item = get_item(cursed_index, allow_banned=True)
         uncursed_item = get_item(uncursed_index, allow_banned=True)
-        cursed_item.uncurses_to = uncursed_item
-        uncursed_item.uncurses_to = cursed_item
+        _set_cursed_pair(fout, cursed_item, uncursed_item)
 
     return logstr

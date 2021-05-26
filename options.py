@@ -1,5 +1,9 @@
 from dataclasses import dataclass, field
 from typing import List, Set, Union
+from utils import SPRITE_REPLACEMENT_TABLE, open_mei_fallback
+
+from sprite_replacement import SpriteReplacement
+
 
 @dataclass(frozen=True)
 class Mode:
@@ -271,14 +275,19 @@ MAKEOVER_MODIFIER_CODES = [
 ]
 RESTRICTED_VANILLA_SPRITE_CODES = []
 
-makeover_groups = ["boys", "girls", "kids", "pets", "potato"]
+with open_mei_fallback(SPRITE_REPLACEMENT_TABLE) as f:
+    known_replacements = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
+
+makeover_groups = {g for s in known_replacements for g in s.groups}
+print(makeover_groups)
+
 for mg in makeover_groups:
-    no = Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE", f"Do not select {mg} sprites.", "aesthetic")
+    no = Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE", f"Do not select {mg} sprites.", "makeover")
     MAKEOVER_MODIFIER_CODES.extend([
         no,
-        Code('hate'+mg, f"RARE {mg.upper()} MODE", f"Reduce probability of selecting {mg} sprites.", "aesthetic"),
-        Code('like'+mg, f"COMMON {mg.upper()} MODE", f"Increase probability of selecting {mg} sprites.", "aesthetic"),
-        Code('love'+mg, f"{mg.upper()} WORLD MODE", f"Select only {mg} sprites.", "aesthetic")])
+        Code('hate'+mg, f"RARE {mg.upper()} MODE", f"Reduce probability of selecting {mg} sprites.", "makeover"),
+        Code('like'+mg, f"COMMON {mg.upper()} MODE", f"Increase probability of selecting {mg} sprites.", "makeover"),
+        Code('love'+mg, f"{mg.upper()} WORLD MODE", f"Select only {mg} sprites.", "makeover")])
     RESTRICTED_VANILLA_SPRITE_CODES.append(no)
 
 

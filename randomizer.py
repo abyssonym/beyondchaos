@@ -4240,7 +4240,7 @@ def randomize(args):
                 except IOError:
                     pass
 
-            speeddial_opts['!'] = '-dfklu partyparty makeover johnnydmad'
+            speeddial_opts['!'] = '-dfklu partyparty makeover johnnydmad lovesoup'
 
             mode_num = None
             while mode_num not in range(len(ALL_MODES)):

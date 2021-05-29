@@ -269,19 +269,18 @@ NORMAL_CODES = [
 ]
 
 MAKEOVER_MODIFIER_CODES = [
-    Code('novanilla', "COMPLETE MAKEOVER MODE", "Same as 'makeover' except sprites from the vanilla game are guaranteed not to appear.", "aesthetic"),
-    Code('frenchvanilla', "EQUAL RIGHTS MAKEOVER MODE", "Same as 'makeover' except sprites from the vanilla game are selected with equal weight to new sprites rather than some being guaranteed to appear.", "aesthetic"),
-    Code('cloneparty', "CLONE COSPLAY MAKEOVER MODE", "Same as 'makeover' except instead of avoiding choosing different versions of the same character, it actively tries to do so.", "aesthetic")
+    Code('novanilla', "COMPLETE MAKEOVER MODE", "Sprites from the vanilla game are guaranteed not to appear.", "aesthetic"),
+    Code('frenchvanilla', "EQUAL RIGHTS MAKEOVER MODE", "Sprites from the vanilla game are selected with equal weight to new sprites rather than some being guaranteed to appear.", "aesthetic"),
+    Code('cloneparty', "CLONE COSPLAY MAKEOVER MODE", "Instead of avoiding choosing different versions of the same character, it actively tries to do so.", "aesthetic")
 ]
 RESTRICTED_VANILLA_SPRITE_CODES = []
 
 with open_mei_fallback(SPRITE_REPLACEMENT_TABLE) as f:
     known_replacements = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
 
-makeover_groups = {g for s in known_replacements for g in s.groups}
-print(makeover_groups)
+makeover_tags = {g for s in known_replacements for g in s.groups}
 
-for mg in makeover_groups:
+for mg in makeover_tags:
     no = Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE", f"Do not select {mg} sprites.", "makeover")
     MAKEOVER_MODIFIER_CODES.extend([
         no,

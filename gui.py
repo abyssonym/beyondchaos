@@ -1,11 +1,12 @@
 import configparser
+import re
 import sys
 from subprocess import call
 from PyQt5 import QtGui, QtCore
-from PyQt5.QtCore import pyqtRemoveInputHook
+from PyQt5.QtCore import pyqtRemoveInputHook, QRect
 from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, \
     QHBoxLayout, QLineEdit, QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, \
-    QTabWidget, QInputDialog, QScrollArea, QMessageBox
+    QTabWidget, QInputDialog, QScrollArea, QMessageBox, QButtonGroup, QFormLayout
 
 import options
 import randomizer
@@ -36,7 +37,7 @@ class Window(QWidget):
         super().__init__()
 
         # window geometry data
-        self.title = "Beyond Chaos Randomizer"
+        self.title = "Beyond Chaos EX Randomizer"
         self.left = 200
         self.top = 200
         self.width = 700
@@ -55,6 +56,7 @@ class Window(QWidget):
         self.experimental = {}
         self.gamebreaking = {}
         self.major = {}
+        self.makeover ={}
         self.minor = {}
         self.simple = {}
         self.dictionaries = [self.simple, self.aesthetic, self.major,
@@ -88,6 +90,7 @@ class Window(QWidget):
         self.updateDictionaries()
         self.updateFlagString()
         self.updateFlagCheckboxes()
+        self.updateMakeoverRadios()
 
     def InitWindow(self):
         self.setWindowTitle(self.title)
@@ -103,7 +106,7 @@ class Window(QWidget):
         # Primary Vertical Box Layout
         vbox = QVBoxLayout()
 
-        titleLabel = QLabel("Beyond Chaos EX Randomizer (v4.0.1)")
+        titleLabel = QLabel("Beyond Chaos EX Randomizer (v5.0.0)")
         font = QtGui.QFont("Arial", 24, QtGui.QFont.Black)
         titleLabel.setFont(font)
         titleLabel.setAlignment(QtCore.Qt.AlignCenter)
@@ -224,7 +227,32 @@ class Window(QWidget):
 
 
         ############## Checkboxes and inline descriptions #####################
+        tags = sorted(options.makeover_tags)
 
+        makeover_group = QGroupBox()
+        makeover_layout = QFormLayout()
+        
+        groups=dict()
+        for tag in tags:
+
+            h = QHBoxLayout()
+            groups[tag] = QButtonGroup(makeover_group)
+            groups[tag].setExclusive(True)
+            for level in ['none', 'less', 'normal', 'more', 'only']:
+                radioButton = QRadioButton(f'{level}')
+                radioButton.setObjectName(f'{level}{tag}')
+
+                radioButton.setChecked(level == 'normal' if tag != 'soup' else level =='only' )
+                radioButton.clicked.connect(lambda checked, tag=tag, level=level: self.updateMakeoverTag(tag, level))
+                h.addWidget(radioButton)
+                groups[tag].addButton(radioButton)
+            
+            h.addStretch()
+            
+            makeover_layout.addRow(tag, h)
+        makeover_group.setLayout(makeover_layout)
+
+        
         # loop to add tab objects to 'tabs' TabWidget
         for t, d, names in zip(self.tablist, self.dictionaries, tabNames):
             tabObj = QScrollArea()
@@ -236,6 +264,8 @@ class Window(QWidget):
                 #cbox.setCheckable(True)
                 #cbox.setToolTip(flagdesc['explanation'])
                 cbox.clicked.connect(lambda checked: self.flagButtonClicked())
+            if names == 'Aesthetic':
+                tablayout.addWidget(makeover_group)
             t.setLayout(tablayout)
             #tablayout.addStretch(1)
             tabObj.setWidgetResizable(True)
@@ -330,11 +360,15 @@ class Window(QWidget):
                 d = self.major
             elif code.category == "minor":
                 d = self.minor
+            elif code.category == "makeover":
+                continue
             else:
                 print(f"Code {code.name} does not have a valid category.")
                 continue
 
             d[code.name] = {'explanation': code.long_description, 'checked': False}
+
+        self.makeover = {tag: 'normal' if tag != 'soup' else 'only' for tag in options.makeover_tags}
 
         for flag in sorted(options.ALL_FLAGS):
             self.simple[flag.name] = {'explanation': flag.description, 'checked': True}
@@ -400,6 +434,7 @@ class Window(QWidget):
         self.updateDictionaries()
         self.updateFlagString()
         self.updateFlagCheckboxes()
+        self.updateMakeoverRadios()
 
 
     # when flag UI button is checked, update corresponding dictionary values
@@ -411,9 +446,14 @@ class Window(QWidget):
                     d[c.value]['checked'] = True
                 else:
                     d[c.value]['checked'] = False
+
+        self.enableMakeoverOptions(self.aesthetic['makeover']['checked'])
         self.updateDictionaries()
         self.updateFlagString()
 
+    def updateMakeoverTag(self, tag, level):
+        self.makeover[tag] = level
+        self.updateFlagString()
 
     # Opens file dialog to select rom file and assigns it to value in parent/Window class
     def openFileChooser(self):
@@ -435,8 +475,8 @@ class Window(QWidget):
         if 'speeddial' in config:
             for k, v in config['speeddial'].items():
                 if 'speeddial_{k}' not in self.savedPresets:
-                    self.savedPresets[f'speeddial_{k}'] = f"4.normal.{v}."
-        self.savedPresets['recommended new player preset'] = "4.normal.-dfklu partyparty makeover johnnydmad."
+                    self.savedPresets[f'speeddial_{k}'] = f"5.normal.{v}."
+        self.savedPresets['recommended new player preset'] = "5.normal.-dfklu partyparty makeover johnnydmad lovesoup."
 
     # Reads dictionary data from text file and populates class dictionaries
     def loadPreset(self, flagdict):
@@ -459,7 +499,12 @@ class Window(QWidget):
         for flag in flags:
             self.simple[flag.name]['checked'] = True
 
+        for tag in self.makeover.keys():
+            self.makeover[tag] = 'normal' if tag != 'soup' else 'only'
+
+        reverse_tag_levels = {'no': 'none', 'hate': 'less', 'like': 'more', 'love': 'only'}
         for code in codes:
+            print(code)
             if code.category == "aesthetic":
                 d = self.aesthetic
             elif code.category == "experimental":
@@ -470,6 +515,10 @@ class Window(QWidget):
                 d = self.major
             elif code.category == "minor":
                 d = self.minor
+            elif code.category == "makeover":
+                m = re.match(r'(no|hate|like|love)(\w+)', code.name)
+                self.makeover[m.group(2)] = reverse_tag_levels.get(m.group(1), 'normal')
+                continue
             else:
                 print(f"Code {code.name} does not have a valid category.")
                 continue
@@ -484,6 +533,7 @@ class Window(QWidget):
         # call functions to update UI based upon preset data loaded from file
         self.updateFlagString()
         self.updateFlagCheckboxes()
+        self.updateMakeoverRadios()
         self.updateModeSelection()
 
     # Get seed generation parameters from UI to prepare for seed generation
@@ -535,19 +585,19 @@ class Window(QWidget):
     # read each dictionary and update text field showing flag codes based upon
     #    flags denoted as 'True'
     def updateFlagString(self):
-        temp = ""
+        temp = []
         space = False
         for d in self.dictionaries:
             for flagname, flagdesc in d.items():
-                if space:
-                    temp += " "
-                    space = False
-
                 if flagdesc['checked']:
-                    temp += flagname
-                    space = True
+                    temp.append(flagname)
 
-        self.flags = temp
+        if self.aesthetic['makeover']['checked']:
+            tag_levels = {'none': 'no', 'less': 'hate', 'more': 'like', 'only': 'love'}
+            for tag, level in self.makeover.items():
+                if level != 'normal':
+                    temp .append(f'{tag_levels[level]}{tag}')
+        self.flags = ' '.join(temp)
         self.flagString.setText(self.flags)
 
     # read through dictionaries and set flag checkboxes as 'checked'
@@ -565,6 +615,24 @@ class Window(QWidget):
                     c.setProperty('checked', True)
                 else:
                     c.setProperty('checked', False)
+        self.enableMakeoverOptions(self.aesthetic['makeover']['checked'])
+
+    def enableMakeoverOptions(self, enable):
+        tab = self.tablist[1]  # this sucks
+        for radio in tab.findChildren(QRadioButton):
+            radio.setEnabled(enable)
+        for checkbox in tab.findChildren(FlagCheckBox):
+            if checkbox.value in ['novanilla', 'frenchvanilla', 'cloneparty']:
+                checkbox.setEnabled(enable)
+        
+    def updateMakeoverRadios(self):
+        tab = self.tablist[1]  # this sucks
+
+        for tag in options.makeover_tags:
+            level = self.makeover[tag]
+            radio = tab.findChild(QRadioButton, f'{level}{tag}')
+            radio.setChecked(True)
+            
 
     # when radio button is checked, update the main class variable
     def updateRadioSelection(self, mode):

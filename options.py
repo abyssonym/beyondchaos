@@ -254,6 +254,7 @@ NORMAL_CODES = [
     Code('norng', "NO RNG MODE", "Calls to the RNG are not made. Attacks are always critical hits, everything targets the lead character when applicable, and all attacks hit if they are able to except Instant Death. Many more additional effects occur. Cannot currently be completed without cheat codes.", "experimental"),
     Code('notawaiter', "CUTSCENE SKIPS", "Up to Kefka at Narshe, the vast majority of mandatory cutscenes are completely removed. Optional cutscenes are not removed.", "aesthetic"),
     Code('partyparty', "CRAZY PARTY MODE", "Kefka, Trooper, Banon, Leo, Ghost, Merchant, Esper Terra, and Soldier are mixed into the sprites that can be acquired by playable characters. Those sprites are also randomized themselves, allowing Leo to look like Edgar, for example.", "aesthetic"),
+    Code('penultima', "PENULTIMATE MODE", "Ultima cannot be learned by any means.", "minor"),
     Code('playsitself', "AUTOBATTLE MODE", "All characters will act automatically, in a manner similar to when Coliseum fights are fought.", "major"),
     Code('quikdraw', "QUIKDRAW MODE", "All characters look like imperial soldiers, and none of them have Gau's Rage skill.", "minor"),
     Code('randomboost', "RANDOM BOOST MODE", "Prompts you for a randomness multiplier, which changes the range of items that can be in chests, etc. Choosing a randomness multiplier of 0(or leaving it blank) will allow any item to appear in any treasure chest.", "major"),

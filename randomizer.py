@@ -51,9 +51,9 @@ from utils import (COMMAND_TABLE, LOCATION_TABLE, LOCATION_PALETTE_TABLE,
 from wor import manage_wor_recruitment, manage_wor_skip
 
 
-VERSION = "4"
+VERSION = "5"
 BETA = False
-VERSION_ROMAN = "IV"
+VERSION_ROMAN = "V"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False
@@ -735,6 +735,7 @@ def manage_commands_new(commands):
     freespaces.append(FreeBlock(0x2A65A, 0x2A800))
     freespaces.append(FreeBlock(0x2FAAC, 0x2FC6D))
 
+    allow_ultima = not options_.is_code_active('penultima')
     multibannedlist = [0x63, 0x58, 0x5B]
 
     def multibanned(spells):
@@ -747,6 +748,7 @@ def manage_commands_new(commands):
     valid = sorted(valid - set(["row", "def"]))
     used = []
     all_spells = get_ranked_spells(sourcefile)
+
     randomskill_names = set([])
     for c in commands.values():
         if c.name in NEVER_REPLACE:
@@ -803,6 +805,8 @@ def manage_commands_new(commands):
                         return False
                     if s.spellid in used:
                         return False
+                    if s.name == 'Ultima' and not allow_ultima:
+                        return False
                     return s.rank() <= power
 
                 valid_spells = list(filter(spell_is_valid, all_spells))
@@ -857,6 +861,8 @@ def manage_commands_new(commands):
                 c.set_retarget(fout)
                 valid_spells = [v for v in all_spells if
                                 v.spellid <= 0xED and v.valid]
+                if not allow_ultima:
+                    valid_spells = [v for v in valid_spells if v.name != 'Ultima']
 
                 if scount == 1:
                     s = RandomSpellSub()
@@ -915,6 +921,8 @@ def manage_commands_new(commands):
 
                 def spell_is_valid(s, p):
                     if not s.valid:
+                        return False
+                    if s.name == 'Ultima' and not allow_ultima:
                         return False
                     #if multibanned(s.spellid):
                     #    return False
@@ -1217,6 +1225,8 @@ def manage_natural_magic():
             level = max(level, 1)
 
             newspell = spellids[index]
+            if options_.is_code_active('penultima') and get_spell(newspell).name == 'Ultima':
+                continue
             if newspell in used:
                 continue
             break
@@ -1926,6 +1936,7 @@ def manage_items(items, changed_commands=None):
     crazy_prices = options_.is_code_active('madworld')
     extra_effects = options_.is_code_active('masseffect')
     wild_breaks = options_.is_code_active('electricboogaloo')
+    allow_ultima = not options_.is_code_active('penultima')
 
     set_item_changed_commands(changed_commands)
     unhardcode_tintinabar(fout)
@@ -1934,7 +1945,7 @@ def manage_items(items, changed_commands=None):
     auto_equip_relics = []
 
     for i in items:
-        i.mutate(always_break=always_break, crazy_prices=crazy_prices, extra_effects=extra_effects, wild_breaks=wild_breaks)
+        i.mutate(always_break=always_break, crazy_prices=crazy_prices, extra_effects=extra_effects, wild_breaks=wild_breaks, allow_ultima=allow_ultima)
         i.unrestrict()
         i.write_stats(fout)
         if i.features['special2'] & 0x38 and i.is_relic:
@@ -2274,7 +2285,7 @@ def manage_espers(freespaces, replacements=None):
     espers = get_espers(sourcefile)
     random.shuffle(espers)
     for e in espers:
-        e.generate_spells(tierless=options_.is_code_active('madworld'))
+        e.generate_spells(tierless=options_.is_code_active('madworld'), allow_ultima=not options_.is_code_active('penultima'))
         e.generate_bonus()
 
     if replacements:
@@ -4032,7 +4043,7 @@ def manage_dances():
 
 def nerf_paladin_shield():
     paladin_shield = get_item(0x67)
-    paladin_shield.mutate_learning()
+    paladin_shield.mutate_learning(not options_.is_code_active('penultima'))
     paladin_shield.write_stats(fout)
 
 

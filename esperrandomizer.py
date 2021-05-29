@@ -199,16 +199,21 @@ class EsperBlock:
             fout.write(b'\xFF')
         fout.write(bytes([self.bonus]))
 
-    def get_candidates(self, rank, set_lower=True, allow_quick=False):
+    def get_candidates(self, rank, set_lower=True, allow_quick=False, allow_ultima=True):
         candidates = get_candidates(rank, set_lower=set_lower)
         if not allow_quick:
             quick = [s for s in candidates if s.name == "Quick"]
             if quick:
                 quick = quick[0]
                 candidates.remove(quick)
+        if not allow_ultima:
+            ultima = [s for s in candidates if s.name == "Ultima"]
+            if ultima:
+                ultima = ultima[0]
+                candidates.remove(ultima)
         return candidates
 
-    def generate_spells(self, tierless=False):
+    def generate_spells(self, tierless=False, allow_ultima=True):
         global used
 
         self.spells, self.learnrates = [], []
@@ -218,7 +223,7 @@ class EsperBlock:
         rank = min(rank, max(rankbounds.keys()))
 
         if random.randint(1, 10) != 10:
-            candidates = self.get_candidates(rank, set_lower=not tierless, allow_quick=tierless)
+            candidates = self.get_candidates(rank, set_lower=not tierless, allow_quick=tierless, allow_ultima=allow_ultima)
             if candidates:
                 s = random.choice(candidates)
                 self.spells.append(s)
@@ -226,7 +231,7 @@ class EsperBlock:
 
         rank = self.rank
         for _ in range(random.randint(0, 2) + random.randint(0, 2)):
-            candidates = self.get_candidates(rank, set_lower=False, allow_quick=tierless)
+            candidates = self.get_candidates(rank, set_lower=False, allow_quick=tierless, allow_ultima=allow_ultima)
             if candidates:
                 s = random.choice(candidates)
                 if s in self.spells:

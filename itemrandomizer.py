@@ -2,7 +2,7 @@ from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
                    CUSTOM_ITEMS_TABLE, mutate_index,
                    name_to_bytes, utilrandom as random,
                    Substitution)
-from skillrandomizer import get_ranked_spells
+from skillrandomizer import get_ranked_spells, get_spell
 # future blocks: chests, morphs, shops
 
 ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
@@ -426,11 +426,15 @@ class ItemBlock:
         self.features['elemnulls'] = elemshuffle(self.features['elemnulls'])
         self.features['elemweaks'] = elemshuffle(self.features['elemweaks'])
 
-    def mutate_learning(self):
+    def mutate_learning(self, allow_ultima):
         if not self.is_armor and not self.is_relic:
             return
 
-        spell, rank = self.pick_a_spell(magic_only=True)
+        if allow_ultima:
+            filter_func = lambda s: s.name != 'Ultima'
+        else:
+            filter_func = lambda s: True
+        spell, rank = self.pick_a_spell(magic_only=True, custom=filter_func)
         if self.degree:
             learnrate = self.degree
         else:
@@ -559,7 +563,7 @@ class ItemBlock:
 
         self.price = min(self.price, 65000)
 
-    def mutate(self, always_break=False, crazy_prices=False, extra_effects=False, wild_breaks=False):
+    def mutate(self, always_break=False, crazy_prices=False, extra_effects=False, wild_breaks=False, allow_ultima=True):
         global changed_commands
         self.mutate_stats()
         self.mutate_price(crazy_prices=crazy_prices)
@@ -572,14 +576,17 @@ class ItemBlock:
                 self.mutate_break_effect(wild_breaks=wild_breaks)
                 broken = True
         if self.itemid == 0xE6:
-            self.mutate_learning()
+            self.mutate_learning(allow_ultima)
+            learned = True
+        if not allow_ultima and get_spell(self.features['learnspell']).name == 'Ultima':
+            self.mutate_learning(False)
             learned = True
         while random.randint(1, 5) == 5:
             x = random.randint(0, 99)
             if x < 10:
                 self.mutate_special_action()
             if 10 <= x < 20 and not learned:
-                self.mutate_learning()
+                self.mutate_learning(allow_ultima)
                 learned = True
             if 20 <= x < 50 and not broken:
                 self.mutate_break_effect(wild_breaks=wild_breaks)
@@ -595,7 +602,7 @@ class ItemBlock:
             if random.randint(1, 4) == 4:
                 self.mutate_special_action()
             if not learned and random.randint(1, 4):
-                self.mutate_learning()
+                self.mutate_learning(allow_ultima)
                 learned = True
             if not broken and random.randint(1, 4):
                 self.mutate_break_effect(wild_breaks=wild_breaks)

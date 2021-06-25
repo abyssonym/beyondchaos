@@ -1,5 +1,6 @@
 import itertools
 import os
+import pathlib
 
 from character import get_characters
 from options import options_
@@ -341,16 +342,16 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
     replace_candidates = []
     for r in known_replacements:
         whitelisted = False
-        for g in r.groups:
+        for tag in r.tags:
             if not r.weight:
                 break
-            if g in whitelist:
+            if tag in whitelist:
                 whitelisted = True
-            if options_.is_code_active("no"+g):
+            if options_.is_code_active('no' + tag):
                 r.weight = 0
-            elif  options_.is_code_active("hate"+g):
+            elif  options_.is_code_active('hate' + tag):
                 r.weight /= 3
-            elif  options_.is_code_active("like"+g):
+            elif  options_.is_code_active('like' + tag):
                 r.weight *= 2
         if whitelist and not whitelisted:
             r.weight = 0
@@ -398,6 +399,23 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
     return swap_to
 
 
+SPRITE_DATA_START = 0x150000
+SPRITE_DATA_END = 0x183000
+SPRITE_ANIM_TILEMAP_BEGIN = 0xCE3A
+SPRITE_POINTERS_BEGIN = 0xD0F2
+SPRITE_BANKS_BEGIN = 0xD23C
+SPRITE_BANKS_END = 0xD386
+def load_sprite_sizes(f):
+    f.seek(SPRITE_POINTERS_BEGIN)
+    ptrs = [read_multi(f) for _ in range(SPRITE_POINTERS_BEGIN, SPRITE_BANKS_BEGIN, 2)]
+    banks = [(read_multi(f) & 0xff) << 16 for _ in range(SPRITE_BANKS_BEGIN, SPRITE_BANKS_END, 2)]
+
+    ptrs = [bank + ptr for bank, ptr in zip(banks, ptrs)]
+    sizes = [b - a for a, b in zip(ptrs[:-1], ptrs[1:])]
+
+    return ptrs, sizes
+
+
 def manage_character_appearance(fout, preserve_graphics=False):
     characters = get_characters()
     wild = options_.is_code_active('partyparty')
@@ -409,6 +427,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
     christmas_mode = options_.is_code_active('christmas')
     sprite_swap_mode = options_.is_code_active('makeover') and not (sabin_mode or tina_mode or soldier_mode or moogle_mode or ghost_mode)
     new_palette_mode = not options_.is_code_active('sometimeszombies')
+    opera_mode = options_.is_code_active('alasdraco')
 
     if new_palette_mode:
         # import recolors for incompatible base sprites
@@ -493,9 +512,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     sprite_ids = list(range(0x16))
 
-    ssizes = ([0x16A0] * 0x10) + ([0x1560] * 6)
-    spointers = dict([(c, sum(ssizes[:c]) + 0x150000) for c in sprite_ids])
-    ssizes = dict(list(zip(sprite_ids, ssizes)))
+    spointers, ssizes = load_sprite_sizes(fout)
 
     char_portraits = {}
     char_portrait_palettes = {}
@@ -630,11 +647,68 @@ def manage_character_appearance(fout, preserve_graphics=False):
         newsprite = newsprite[:ssizes[c]]
         fout.write(newsprite)
 
-    # celes in chains
-    fout.seek(0x159500)
-    chains = fout.read(192)
-    fout.seek(0x17D660)
-    fout.write(chains)
+    if sprite_swap_mode and not opera_mode and 6 in swap_to.keys():
+        try:
+            g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].opera_filename), "rb")
+        except IOError:
+            pass
+        else:
+            opera_sprite = g.read(ssizes[26])
+            pointer = spointers[26]
+            fout.seek(pointer)
+            fout.write(opera_sprite)
+            g.close()
+
+    if (sprite_swap_mode and 6 in swap_to) or change_to[6] != 6:
+        chains_sprite = None
+        if sprite_swap_mode and 6 in swap_to:
+            try:
+                with open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].chains_filename), "rb") as g:
+                    chains_sprite = g.read(ssizes[65])
+            except IOError:
+                pass
+        
+        if not chains_sprite:
+            fout.seek(spointers[6] + 0x6A * 0x20)
+            chains_sprite = fout.read(ssizes[65])
+        fout.seek(spointers[65])
+        fout.write(chains_sprite)
+
+    #esper_fly_front: 121
+    #hair_bottom: 123
+    #esper_fly_back: 152
+    #hair_top: 162 & 163
+    if sprite_swap_mode and 0 in swap_to:
+        try:
+            with open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].hair_filename), "rb") as g:
+                hair_bottom_sprite = g.read(ssizes[123])
+                hair_top_left_sprite = g.read(ssizes[162])
+                hair_top_right_sprite = g.read(ssizes[163])
+        except IOError:
+            pass
+        else:
+            fout.seek(spointers[123])
+            fout.write(hair_bottom_sprite)
+            fout.seek(spointers[162])
+            fout.write(hair_top_left_sprite)
+            fout.seek(spointers[183])
+            fout.write(hair_top_right_sprite)
+
+    if sprite_swap_mode and 18 in swap_to:
+        try:
+            with open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].esper_fly_filename), "rb") as g:
+                esper_fly_front_sprite = g.read(ssizes[121])
+                esper_fly_front_sprite2 = g.read(ssizes[122])
+                esper_fly_back_sprite = g.read(ssizes[152])
+        except IOError:
+            pass
+        else:
+            fout.seek(spointers[121])
+            fout.write(esper_fly_front_sprite)
+            fout.seek(spointers[122])
+            fout.write(esper_fly_front_sprite2)
+            fout.seek(spointers[152])
+            fout.write(esper_fly_back_sprite)
 
     manage_palettes(fout, change_to, char_ids)
 

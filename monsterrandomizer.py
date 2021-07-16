@@ -616,7 +616,7 @@ class MonsterBlock:
         fout.write(attack)
 
         fout.seek(self.specialeffectpointer)
-        fout.write(bytes(random.randint(0, 0x21)))
+        fout.write(bytes([random.randint(0, 0x21)]))
 
         candidates = sorted(set(range(0, 0x5A)) - set([0, 0x1C]))
         self.attackanimation = random.choice(candidates)

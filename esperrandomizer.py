@@ -51,7 +51,6 @@ used_bonuses = set([])
 
 
 def get_candidates(myrank, set_lower=True):
-    global used
     upper_bound = rankbounds.get(myrank, 999) or 999
     lower_bound = rankbounds.get(myrank-1, 0) if set_lower else 0
 
@@ -214,8 +213,6 @@ class EsperBlock:
         return candidates
 
     def generate_spells(self, tierless=False, allow_ultima=True):
-        global used
-
         self.spells, self.learnrates = [], []
         rank = self.rank
         if random.randint(1, 5) == 5:
@@ -369,12 +366,12 @@ def randomize_magicite(fout, sourcefile):
 
     # Shuffle all remaining espers
     for rank in range(0, 5):
-        remaining_keys = [e.id for e in espers if e.id not in shuffled_espers.keys() and e.rank <= rank]
+        remaining_keys = [e.id for e in espers if e.id not in shuffled_espers and e.rank <= rank]
         remaining_values = [e for e in espers if e not in shuffled_espers.values() and e.rank <= max(rank + 1, 2)]
         random.shuffle(remaining_values)
         shuffled_espers.update(zip(remaining_keys, remaining_values))
 
-    assert(sorted([e.id for e in espers], key=id) == sorted(shuffled_espers.keys()))
+    assert(sorted([e.id for e in espers], key=id) == sorted(shuffled_espers))
     assert(sorted(espers, key=id) == sorted(shuffled_espers.values(), key=id))
 
     locations = [e.location for e in espers]

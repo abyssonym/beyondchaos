@@ -4,6 +4,7 @@ from utils import (write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    make_table, utilrandom as random)
 from skillrandomizer import get_spell, get_ranked_spells
+from formationrandomizer import get_formations, get_fset, get_fsets
 from itemrandomizer import get_ranked_items, get_item
 from namerandomizer import generate_attack, generate_name
 
@@ -179,10 +180,12 @@ class MonsterBlock:
         self.oldlevel = 0
         self.items = []
         self.original_drops = []
+        self.controls = []
+        self.rages = []
+        self.sketches = []
+        self.ai = -1
 
     def determine_location(self):
-        from formationrandomizer import get_formations, get_fsets
-        from locationrandomizer import get_locations, get_zones
         formations = {f for f in get_formations()
                       if self in f.present_enemies}
         fsets = [fs for fs in get_fsets() if len(fs.formations) == 4]
@@ -191,7 +194,6 @@ class MonsterBlock:
             return ''
 
         def score_location(location):
-            from locationrandomizer import Zone
             score = 0
             fsets = location.fsets
             for fset in fsets:
@@ -1869,7 +1871,6 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
                 in_narshe_caves = False
 
                 for id in [0x39, 0x3A]:
-                    from formationrandomizer import get_fset
                     fset = get_fset(id)
                     for f in fset.formations:
                         if m in f.present_enemies or n in f.present_enemies:
@@ -1897,7 +1898,6 @@ class MonsterGraphicBlock:
         self.palette_values = []
 
     def read_data(self, filename):
-        global palette_pools
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.graphics = read_multi(f, length=2)

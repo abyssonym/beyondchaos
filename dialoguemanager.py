@@ -216,8 +216,6 @@ def read_dialogue(fout):
         script[idx] = bytes_to_dialogue(script_bin[start:end])
 
 def manage_dialogue_patches(fout):
-    global script_bin
-
     #don't do anything unless we need to
     if not dialogue_patches and not dialogue_patches_battle and not script_edited:
         return

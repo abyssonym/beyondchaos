@@ -8,7 +8,7 @@ from utils import read_multi, write_multi, mutate_index, utilrandom as random, S
 
 valid_ids = list(range(1, 0x200))
 banned_formids = [0, 0x1d7]
-extra_miabs = []
+_extra_miabs = []
 orphaned_formations = None
 used_formations = []
 done_items = []
@@ -115,12 +115,12 @@ def add_extra_miab(setid):
     setid |= 0x100
     fset = [fs for fs in get_fsets() if fs.setid == setid][0]
     formation = fset.formations[0]
-    if formation not in extra_miabs:
-        extra_miabs.append(fset.formations[0])
+    if formation not in _extra_miabs:
+        _extra_miabs.append(fset.formations[0])
 
 
 def get_extra_miabs(lowest_rank):
-    candidates = [f for f in extra_miabs if f.rank() >= lowest_rank and
+    candidates = [f for f in _extra_miabs if f.rank() >= lowest_rank and
                   f.formid not in banned_formids]
     return sorted(candidates, key=lambda f: f.rank())
 
@@ -267,8 +267,6 @@ class ChestBlock:
         self.chestid = chestid
 
     def read_data(self, filename):
-        global extra_miabs
-
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.position = read_multi(f, length=2)
@@ -316,15 +314,15 @@ class ChestBlock:
     def description(self):
         if self.monster:
             from formationrandomizer import get_fset
-            s = 'Enemy {0:03d}: '.format(self.effective_id)
+            s = f'Enemy {self.effective_id:03d}: '
             fset = get_fset(self.contents + 0x100)
             s += fset.formations[0].description(renamed=True, simple=True)
         elif self.empty:
-            s = 'Empty! ({0:03d})'.format(self.effective_id)
+            s = f'Empty! ({self.effective_id:03d})'
         else:
-            s = 'Treasure {0:03d}: '.format(self.effective_id)
+            s = f'Treasure {self.effective_id:03d}: '
             if self.gold:
-                s += '%s GP' % (self.contents * 100)
+                s += f'{self.contents * 100} GP'
             else:
                 item = get_item(self.contents)
                 s += item.name
@@ -409,7 +407,7 @@ class ChestBlock:
     def mutate_contents(self, guideline=None, monster=None,
                         guarantee_miab_treasure=False, enemy_limit=None,
                         uniqueness=False, crazy_prices=False, uncapped_monsters=False):
-        global used_formations, done_items
+        global done_items
 
         if self.do_not_mutate and self.contents is not None:
             return
@@ -504,13 +502,13 @@ class ChestBlock:
 event_mem_id = 281
 multiple_event_items = []
 class EventItem:
-    def __init__(self, content_type, contents, pointer, cutscene_skip_pointer=None, postfix_bytes=[], monster=None, text=True, multiple=False):
+    def __init__(self, content_type, contents, pointer, cutscene_skip_pointer=None, postfix_bytes=None, monster=None, text=True, multiple=False):
         global event_mem_id
         self.content_type = content_type
         self.contents = contents
         self.pointer = pointer
         self.cutscene_skip_pointer = cutscene_skip_pointer
-        self.postfix_bytes = postfix_bytes
+        self.postfix_bytes = postfix_bytes or []
         self.monster = False if not text else monster
         self.text = text
         self.mem_id = event_mem_id
@@ -528,7 +526,7 @@ class EventItem:
         c.contents = self.contents
         desc = c.description
         if self.mem_id in multiple_event_items:
-            desc = '*%s' % desc
+            desc = f'*{desc}'
         return desc
 
     def mutate_contents(self, cutscene_skip=False, crazy_prices=False, no_monsters=False, uncapped_monsters=False):

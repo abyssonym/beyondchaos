@@ -963,7 +963,6 @@ def items_from_table(tablefile):
 
 
 def get_items(filename=None, allow_banned=False):
-    global itemdict
     if itemdict:
         to_return = [i for i in list(itemdict.values()) if i]
         if not allow_banned:
@@ -983,7 +982,6 @@ def get_items(filename=None, allow_banned=False):
 
 
 def get_item(itemid, allow_banned=False):
-    global itemdict
     item = itemdict[itemid]
     if item and item.banned:
         if allow_banned:

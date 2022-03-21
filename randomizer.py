@@ -8,19 +8,21 @@ from sys import argv
 from shutil import copyfile
 import os
 from hashlib import md5
+from itertools import product
+from string import ascii_letters as alpha
 
 from ancient import manage_ancient
 from appearance import manage_character_appearance
 from character import get_characters, get_character, equip_offsets
-from chestrandomizer import mutate_event_items, get_event_items
+from chestrandomizer import mutate_event_items, get_event_items, add_orphaned_formation, get_orphaned_formations
 from decompress import Decompressor
 from dialoguemanager import manage_dialogue_patches, get_dialogue, set_dialogue, read_dialogue, read_location_names, write_location_names
 from esperrandomizer import (get_espers, allocate_espers, randomize_magicite)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS,
                                  get_formations, get_fsets, get_formation)
-from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
+from itemrandomizer import (extend_item_breaks, reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
-                            reset_cursed_shield, unhardcode_tintinabar)
+                            reset_cursed_shield, set_item_changed_commands, unhardcode_tintinabar)
 from locationrandomizer import (get_locations, get_location, get_zones, get_npcs, randomize_forest)
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu,
                           show_original_names, improve_dance_menu, y_equip_relics, fix_gogo_portrait)
@@ -138,10 +140,10 @@ def log_chests():
         if l.area_name not in areachests:
             areachests[l.area_name] = ''
         areachests[l.area_name] += l.chest_contents + '\n'
-    for area_name in event_items:
+    for area_name, area_items in event_items.items():
         if area_name not in areachests:
             areachests[area_name] = ''
-        areachests[area_name] += '\n'.join([e.description for e in event_items[area_name]])
+        areachests[area_name] += '\n'.join([e.description for e in area_items])
     for area_name in sorted(areachests):
         chests = areachests[area_name]
         chests = '\n'.join(sorted(chests.strip().split('\n')))
@@ -1928,7 +1930,6 @@ def manage_colorize_animations():
 
 
 def manage_items(items, changed_commands=None):
-    from itemrandomizer import (set_item_changed_commands, extend_item_breaks)
     always_break = options_.is_code_active('collateraldamage')
     crazy_prices = options_.is_code_active('madworld')
     extra_effects = options_.is_code_active('masseffect')
@@ -2868,7 +2869,6 @@ def manage_formations_hidden(formations, freespaces, form_music_overrides=None, 
 
 
 def assign_unused_enemy_formations():
-    from chestrandomizer import add_orphaned_formation, get_orphaned_formations
     get_orphaned_formations()
     siegfried = get_monster(0x37)
     chupon = get_monster(0x40)
@@ -2933,7 +2933,6 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
                 paldict[l.field_palette].add(l)
         l.write_data(fout)
 
-    from itertools import product
     if freespaces is None:
         freespaces = [FreeBlock(0x271530, 0x271650)]
 
@@ -3322,8 +3321,7 @@ def create_dimensional_vortex():
             continue
         a.dest, a.destx, a.desty = b.dest, b.destx, b.desty
 
-    for r in duplicate_entrance_dict:
-        s = duplicate_entrance_dict[r]
+    for r, s in duplicate_entrance_dict.items():
         r.dest, r.destx, r.desty = s.dest, s.destx, s.desty
 
     entrancesets = entrancesets[:0x19F]
@@ -3492,7 +3490,6 @@ def manage_opening():
         text.append(0)
         d.writeover(address, bytes(text))
 
-    from string import ascii_letters as alpha
     consonants = ''.join([c for c in alpha if c not in 'aeiouy'])
     flag_names = [f.name for f in options_.active_flags]
     display_flags = sorted([a for a in alpha if a in flag_names])
@@ -4575,7 +4572,6 @@ def randomize(args):
     start_in_wor = options_.is_code_active('worringtriad')
     if options_.random_character_stats:
         # do this after swapping beserk
-        from itemrandomizer import set_item_changed_commands
         set_item_changed_commands(changed_commands)
         loglist = reset_special_relics(items, characters, fout)
         for name, before, after in loglist:

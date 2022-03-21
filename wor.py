@@ -1318,9 +1318,9 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
     # assign a palette to each character
     partymembers = [c for c in characters if 1 <= c.id <= 12]
     for character in partymembers:
-        id = character.id
+        c_id = character.id
         palette = character.palette
-        wor_sub.bytestring += bytes([0x43, id, palette])
+        wor_sub.bytestring += bytes([0x43, c_id, palette])
 
     # obtain all locations with WoB treasures
     wobtreasurelocs = []

@@ -647,7 +647,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
         newsprite = newsprite[:ssizes[c]]
         fout.write(newsprite)
 
-    if sprite_swap_mode and not opera_mode and 6 in swap_to.keys():
+    if sprite_swap_mode and not opera_mode and 6 in swap_to:
         try:
             g = open_mei_fallback(os.path.join('custom', 'sprites', swap_to[c].opera_filename), 'rb')
         except IOError:

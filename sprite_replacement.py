@@ -6,13 +6,13 @@ class SpriteReplacement:
         self.file = pathlib.Path(file.strip())
         self.name = name.strip()
         self.gender = gender.strip().lower()
-        self.size = 0x16A0 if riding is not None and riding.lower() == "true" else 0x1560
+        self.size = 0x16A0 if riding is not None and riding.lower() == 'true' else 0x1560
         self.uniqueids = [s.strip() for s in uniqueids.split('|')] if uniqueids else []
         self.tags = [s.strip() for s in tags.split('|')] if tags else []
-        if self.gender == "female":
-            self.tags.append("girls")
-        if self.gender == "male":
-            self.tags.append("boys")
+        if self.gender == 'female':
+            self.tags.append('girls')
+        if self.gender == 'male':
+            self.tags.append('boys')
         self.weight = 1.0
 
         if fallback_portrait_id == '':

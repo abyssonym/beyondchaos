@@ -48,14 +48,14 @@ class Formation():
             if name not in counter:
                 counter[name] = 0
             counter[name] += 1
-        s = ""
+        s = ''
         for name, count in sorted(counter.items()):
-            s = ', '.join([s, "%s x%s" % (name, count)])
+            s = ', '.join([s, '%s x%s' % (name, count)])
         s = s[2:]
         if simple:
             return s
-        s = "%s (%x)" % (s, self.formid)
-        #s += " " + " ".join(["%x" % e.id for e in self.present_enemies])
+        s = '%s (%x)' % (s, self.formid)
+        #s += ' ' + ' '.join(['%x' % e.id for e in self.present_enemies])
         return s
 
     @property
@@ -294,9 +294,9 @@ class Formation():
 
     def copy_data(self, other):
         attributes = [
-            "mouldbyte", "enemies_present", "enemy_ids",
-            "enemy_pos", "bosses", "misc1", "misc2", "eventscript",
-            "misc3"]
+            'mouldbyte', 'enemies_present', 'enemy_ids',
+            'enemy_pos', 'bosses', 'misc1', 'misc2', 'eventscript',
+            'misc3']
         for attribute in attributes:
             value = getattr(other, attribute)
             value = type(value)(value)
@@ -356,13 +356,13 @@ class FormationSet():
         self.sixteen_pack = False
 
     def __repr__(self):
-        s = ""
-        s += "SET ID %x\n" % self.setid
+        s = ''
+        s += 'SET ID %x\n' % self.setid
         for f in self.formations:
-            s += "%s " % f.formid
+            s += '%s ' % f.formid
             for i in range(8):
                 s += '* ' if f.misc1 & (1 << i) else '  '
-            s += str([e.name for e in f.present_enemies]) + "\n"
+            s += str([e.name for e in f.present_enemies]) + '\n'
         return s.strip()
 
     @property
@@ -526,7 +526,7 @@ def get_fset(setid):
     return fsetdict[setid]
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from sys import argv
     filename = argv[1]
     monsters = get_monsters(filename)

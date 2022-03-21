@@ -24,7 +24,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                 if buffaddr == 0x800:
                     buffaddr = 0
                 if debug:
-                    print("%x" % ord(byte), end=' ')
+                    print('%x' % ord(byte), end=' ')
             else:
                 low, high, bytestring = (
                     bytestring[0], bytestring[1], bytestring[2:])
@@ -34,7 +34,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                     copied = [buff[seekaddr]] * length
                 elif complicated:
                     if buffaddr == seekaddr:
-                        raise Exception("buffaddr equals seekaddr")
+                        raise Exception('buffaddr equals seekaddr')
                     cycle = buffaddr - seekaddr
                     if cycle < 0:
                         cycle += 0x800
@@ -47,7 +47,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                 assert len(copied) == length
                 result += copied
                 if debug:
-                    print("%x" % seekaddr, length, end=' ')
+                    print('%x' % seekaddr, length, end=' ')
                 while copied:
                     byte, copied = copied[0], copied[1:]
                     buff[buffaddr] = byte
@@ -55,7 +55,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                     if buffaddr == 0x800:
                         buffaddr = 0
                     if debug:
-                        print("%x" % ord(byte), end=' ')
+                        print('%x' % ord(byte), end=' ')
             if debug:
                 print()
                 import pdb; pdb.set_trace()
@@ -98,7 +98,7 @@ def recompress(bytestring):
             goodloop = None
             loopbuff = buff[:buffaddr]
             #if len(loopbuff) < 35:
-            #    loopbuff = "".join(buff) + loopbuff
+            #    loopbuff = ''.join(buff) + loopbuff
             for k in range(j+1, 35):
                 searchstr = bytestring[:k]
                 for h in range(1, len(searchstr)+1):
@@ -162,7 +162,7 @@ def decompress_at_location(filename, address):
     f = open(filename, 'r+b')
     f.seek(address)
     size = read_multi(f, length=2)
-    #print "Size is %s" % size
+    #print 'Size is %s' % size
     bytestring = f.read(size)
     decompressed = decompress(bytestring, complicated=True)
     return decompressed
@@ -195,7 +195,7 @@ class Decompressor():
     def compress_and_write(self, fout):
         compressed = recompress(self.data)
         size = len(compressed)
-        #print "Recompressed is %s" % size
+        #print 'Recompressed is %s' % size
         if self.maxaddress:
             length = self.maxaddress - self.address
             fout.seek(self.address)
@@ -204,15 +204,15 @@ class Decompressor():
         write_multi(fout, size, length=2)
         fout.write(bytes(compressed))
         if self.maxaddress and fout.tell() >= self.maxaddress:
-            raise Exception("Recompressed data out of bounds.")
+            raise Exception('Recompressed data out of bounds.')
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     sourcefile = argv[1]
     outfile = argv[2]
     copyfile(sourcefile, outfile)
     d = Decompressor(0x2686C, fakeaddress=0x7E5000, maxaddress=0x28A70)
     d.read_data(sourcefile)
-    print(["%x" % i for i in d.get_bytestring(0x7E7C43, 0x20)])
+    print(['%x' % i for i in d.get_bytestring(0x7E7C43, 0x20)])
     d.writeover(0x7E50F7, [0x0] * 57)
     d.writeover(0x7E501A, [0xEA] * 3)
     d.compress_and_write(outfile)

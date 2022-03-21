@@ -3,13 +3,13 @@
 from utils import (ENEMY_NAMES_TABLE, MODIFIERS_TABLE, MOVES_TABLE,
                    NAMEGEN_TABLE, utilrandom as random)
 
-modifiers = [line.strip() for line in open(MODIFIERS_TABLE)]
-moves = [line.strip() for line in open(MOVES_TABLE)]
-enemynames = [line.strip() for line in open(ENEMY_NAMES_TABLE).readlines()]
+modifiers = [line.strip() for line in open(MODIFIERS_TABLE, encoding='utf_8')]
+moves = [line.strip() for line in open(MOVES_TABLE, encoding='utf_8')]
+enemynames = [line.strip() for line in open(ENEMY_NAMES_TABLE, encoding='utf_8').readlines()]
 
 generator = {}
 lookback = None
-for line in open(NAMEGEN_TABLE):
+for line in open(NAMEGEN_TABLE, encoding='utf_8'):
     key, values = tuple(line.strip().split())
     generator[key] = values
     if not lookback:
@@ -24,7 +24,7 @@ def generate_name(size=None, maxsize=10):
 
     def has_vowel(text):
         for c in text:
-            if c.lower() in "aeiouy":
+            if c.lower() in 'aeiouy':
                 return True
         return False
 
@@ -41,7 +41,7 @@ def generate_name(size=None, maxsize=10):
                                         and has_vowel(name[-2:])):
                 if len(name) <= size - lookback:
                     if len(name) + len(key) < maxsize:
-                        name += " "
+                        name += ' '
                     name += random.choice(starts)
                     continue
                 else:
@@ -53,7 +53,7 @@ def generate_name(size=None, maxsize=10):
 
         for ename in enemynames:
             if name == ename:
-                name = ""
+                name = ''
                 break
 
         if name:
@@ -62,7 +62,7 @@ def generate_name(size=None, maxsize=10):
                     length = min(len(name), len(ename))
                     if name[:length] == ename[:length]:
 
-                        name = ""
+                        name = ''
                         break
 
         if len(name) >= size:
@@ -78,7 +78,7 @@ def generate_attack():
             if len(modifier) + len(move) <= 10:
                 break
     else:
-        modifier = ""
+        modifier = ''
         if random.randint(1, 4) != 4:
             candidates = list(moves)
         else:
@@ -87,9 +87,9 @@ def generate_attack():
         move = random.choice(candidates)
 
     if len(modifier) + len(move) < 10:
-        return ("%s %s" % (modifier, move)).strip()
+        return ('%s %s' % (modifier, move)).strip()
     return modifier + move
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     for i in range(0x100):
         print(generate_name())

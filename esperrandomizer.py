@@ -27,23 +27,23 @@ bonus_ranks = {
     4: [0x6]}  # Lv -1 bonus decided elsewhere
 
 bonus_strings = {
-    0: "HP + 10%",
-    1: "HP + 30%",
-    2: "HP + 50%",
-    3: "MP + 10%",
-    4: "MP + 30%",
-    5: "MP + 50%",
-    6: "HP + 100%",
-    7: "LV - 1",
-    8: "LV + 50%",
-    9: "STR + 1",
-    0xA: "STR + 2",
-    0xB: "SPD + 1",
-    0xC: "SPD + 2",
-    0xD: "STA + 1",
-    0xE: "STA + 2",
-    0xF: "MAG + 1",
-    0x10: "MAG + 2"}
+    0: 'HP + 10%',
+    1: 'HP + 30%',
+    2: 'HP + 50%',
+    3: 'MP + 10%',
+    4: 'MP + 30%',
+    5: 'MP + 50%',
+    6: 'HP + 100%',
+    7: 'LV - 1',
+    8: 'LV + 50%',
+    9: 'STR + 1',
+    0xA: 'STR + 2',
+    0xB: 'SPD + 1',
+    0xC: 'SPD + 2',
+    0xD: 'STA + 1',
+    0xE: 'STA + 2',
+    0xF: 'MAG + 1',
+    0x10: 'MAG + 2'}
 
 spells = None
 used = set([])
@@ -103,7 +103,7 @@ def allocate_espers(ancient_cave, espers, characters, fout, replacements=None):
     ]
 
     for e in espers:
-        e.chars = ", ".join([c.newname for c in characters if c.id in chars_for_esper[e.id]])
+        e.chars = ', '.join([c.newname for c in characters if c.id in chars_for_esper[e.id]])
 
     # do substitution
     esper_allocator_sub = Substitution()
@@ -159,18 +159,18 @@ class EsperBlock:
 
     def __repr__(self):
         assert len(self.spells) == len(self.learnrates)
-        s = self.name.upper() + "\n"
+        s = self.name.upper() + '\n'
         for spell, learnrate in zip(self.spells, self.learnrates):
-            s += "{0:6}  x{1}\n".format(spell.name, learnrate)
-        s += "BONUS: "
+            s += '{0:6}  x{1}\n'.format(spell.name, learnrate)
+        s += 'BONUS: '
         if self.bonus in bonus_strings:
             s += bonus_strings[self.bonus]
         else:
-            s += "None"
+            s += 'None'
         chars = getattr(self, 'chars', None)
         if chars:
-            s += "\nEQUIPPED BY: " + chars
-        s += "\nLOCATION: " + self.location
+            s += '\nEQUIPPED BY: ' + chars
+        s += '\nLOCATION: ' + self.location
         return s
 
     def read_data(self, filename):
@@ -202,12 +202,12 @@ class EsperBlock:
     def get_candidates(self, rank, set_lower=True, allow_quick=False, allow_ultima=True):
         candidates = get_candidates(rank, set_lower=set_lower)
         if not allow_quick:
-            quick = [s for s in candidates if s.name == "Quick"]
+            quick = [s for s in candidates if s.name == 'Quick']
             if quick:
                 quick = quick[0]
                 candidates.remove(quick)
         if not allow_ultima:
-            ultima = [s for s in candidates if s.name == "Ultima"]
+            ultima = [s for s in candidates if s.name == 'Ultima']
             if ultima:
                 ultima = ultima[0]
                 candidates.remove(ultima)
@@ -312,18 +312,18 @@ def randomize_magicite(fout, sourcefile):
     espers = get_espers(sourcefile)
     shuffled_espers = {}
     espers_by_name = {e.name: e for e in espers}
-    esper_graphics = [MonsterGraphicBlock(pointer=0x127780 + (5*i), name="") for i in range(len(espers))]
+    esper_graphics = [MonsterGraphicBlock(pointer=0x127780 + (5*i), name='') for i in range(len(espers))]
     for eg in esper_graphics:
         eg.read_data(sourcefile)
 
     # Ifrit's esper graphics are large. But he has separate enemy graphics that are fine.
     ifrit_graphics = copy.copy(get_monster(0x109).graphics)
-    ifrit_id = espers_by_name["Ifrit"].id
+    ifrit_id = espers_by_name['Ifrit'].id
     esper_graphics[ifrit_id] = ifrit_graphics
 
     # Pick the replacements for Ragnarok/Crusader out of high-rank espers
     high_rank_espers = [e for e in espers if e.rank >= 4]
-    replace_ids = [espers_by_name[name].id for name in ["Ragnarok", "Crusader"]]
+    replace_ids = [espers_by_name[name].id for name in ['Ragnarok', 'Crusader']]
     special_espers = select_magicite(high_rank_espers, replace_ids)
     shuffled_espers.update(special_espers)
 
@@ -332,17 +332,17 @@ def randomize_magicite(fout, sourcefile):
     small_espers = [e for e in espers
                     if not esper_graphics[e.id].large and e not in shuffled_espers.values()]
     low_ranked_small_espers = [e for e in small_espers if e.rank < 3]
-    replace_ids = [espers_by_name[name].id for name in ["Shiva", "Ifrit"]]
+    replace_ids = [espers_by_name[name].id for name in ['Shiva', 'Ifrit']]
     enemy_espers = select_magicite(low_ranked_small_espers, replace_ids)
     shuffled_espers.update(enemy_espers)
 
     remaining_small_espers = [e for e in small_espers if e not in enemy_espers.values()]
-    replace_ids = [espers_by_name["Tritoch"].id]
+    replace_ids = [espers_by_name['Tritoch'].id]
     enemy_espers = select_magicite(remaining_small_espers, replace_ids)
     shuffled_espers.update(enemy_espers)
 
     # TODO: maybe allow tritoch to be big if we skip cutscenes
-    #tritoch_id = [e.id for e in espers if e.name == "Tritoch"][0]
+    #tritoch_id = [e.id for e in espers if e.name == 'Tritoch'][0]
     #if esper_graphics[tritoch_id].large:
     #    tritoch_formations = [0x1BF, 0x1C0, 0x1E7, 0x1E8]
     #    for g in tritoch_formations:
@@ -352,8 +352,8 @@ def randomize_magicite(fout, sourcefile):
     #        f.write_data(fout)
 
     # Make sure Odin's replacement levels up
-    odin_id = espers_by_name["Odin"].id
-    raiden_id = espers_by_name["Raiden"].id
+    odin_id = espers_by_name['Odin'].id
+    raiden_id = espers_by_name['Raiden'].id
 
     while True:
         odin_candidates = [e for e in espers if e not in shuffled_espers.values() and e.rank <= 3]
@@ -392,7 +392,7 @@ def randomize_magicite(fout, sourcefile):
             instruction = ord(s.read(1))
             esper_index = ord(s.read(1))
             if instruction not in [0x86, 0x87] or esper_index < 0x36 or esper_index > 0x50:
-                print("Error in magicite table")
+                print('Error in magicite table')
                 return
             magicite.append(Magicite(address, esper_index - 0x36, dialogue))
 
@@ -402,21 +402,21 @@ def randomize_magicite(fout, sourcefile):
         new_name = shuffled_espers[m.original_esper_index].name
 
         for d in m.dialogue:
-            patch_dialogue(d, original_name, "{"+ original_name + "}")
-            patch_dialogue(d, original_name + "'s", "{"+ original_name + "Possessive}")
-            dotted_name = "".join(chain(*zip(original_name, repeat('.'))))[:-1]
-            patch_dialogue(d, dotted_name, "{" + original_name + "Dotted}")
+            patch_dialogue(d, original_name, '{'+ original_name + '}')
+            patch_dialogue(d, original_name + "'s", '{'+ original_name + 'Possessive}')
+            dotted_name = ''.join(chain(*zip(original_name, repeat('.'))))[:-1]
+            patch_dialogue(d, dotted_name, '{' + original_name + 'Dotted}')
         set_dialogue_var(original_name, new_name)
-        set_dialogue_var(original_name + "Possessive", new_name + "'s")
-        dotted_new_name = "".join(chain(*zip(new_name, repeat('.'))))[:-1]
-        set_dialogue_var(original_name + "Dotted", dotted_new_name)
+        set_dialogue_var(original_name + 'Possessive', new_name + "'s")
+        dotted_new_name = ''.join(chain(*zip(new_name, repeat('.'))))[:-1]
+        set_dialogue_var(original_name + 'Dotted', dotted_new_name)
         fout.seek(m.address + 1)
         fout.write(bytes([m.esper_index + 0x36]))
 
-    phoenix_replacement = shuffled_espers[espers_by_name["Phoenix"].id]
-    set_location_name(71, f"{phoenix_replacement.name.upper()} CAVE")
+    phoenix_replacement = shuffled_espers[espers_by_name['Phoenix'].id]
+    set_location_name(71, f'{phoenix_replacement.name.upper()} CAVE')
 
-    esper_monsters = [(0x108, "Shiva"), (0x109, "Ifrit"), (0x114, "Tritoch"), (0x115, "Tritoch"), (0x144, "Tritoch")]
+    esper_monsters = [(0x108, 'Shiva'), (0x109, 'Ifrit'), (0x114, 'Tritoch'), (0x115, 'Tritoch'), (0x144, 'Tritoch')]
 
     for monster_id, name in esper_monsters:
         monster = get_monster(monster_id)
@@ -428,7 +428,7 @@ def randomize_magicite(fout, sourcefile):
         monster.graphics.write_data(fout)
 
     ragnarok = get_item(27)
-    ragnarok.dataname = bytes([0xd9]) + name_to_bytes(shuffled_espers[espers_by_name["Ragnarok"].id].name, 12)
+    ragnarok.dataname = bytes([0xd9]) + name_to_bytes(shuffled_espers[espers_by_name['Ragnarok'].id].name, 12)
     ragnarok.write_stats(fout)
 
     return shuffled_espers

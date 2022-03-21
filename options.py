@@ -89,9 +89,9 @@ class Options:
             if code.name == code_name:
                 self.active_codes.add(code)
                 if code in MAKEOVER_MODIFIER_CODES:
-                    self.activate_code("makeover")
+                    self.activate_code('makeover')
                 if code in RESTRICTED_VANILLA_SPRITE_CODES:
-                    self.activate_code("frenchvanilla")
+                    self.activate_code('frenchvanilla')
                 return
 
     def activate_flag(self, flag: Flag):
@@ -102,13 +102,13 @@ class Options:
         for code in self.mode.forced_codes:
             self.activate_code(code)
 
-        s = ""
+        s = ''
         flags, codes = read_options_from_string(flag_string, self.mode)
         for code in codes:
             if code.name in self.mode.prohibited_codes:
                 s += f"SECRET CODE: '{code.description}' is not compatible with {self.mode.name} mode.\n"
                 continue
-            s += f"SECRET CODE: {code.description} ACTIVATED\n"
+            s += f'SECRET CODE: {code.description} ACTIVATED\n'
             self.activate_code(code.name)
 
         if self.is_code_active('strangejourney'):
@@ -137,7 +137,7 @@ def read_options_from_string(flag_string: str, mode: Union[Mode, str]):
             codes.add(code)
 
     if '-' in flag_string:
-        print("NOTE: Using all flags EXCEPT the specified flags.")
+        print('NOTE: Using all flags EXCEPT the specified flags.')
         flags = {f for f in ALL_FLAGS if f.name not in flag_string}
     else:
         flags = {f for f in ALL_FLAGS if f.name in flag_string}
@@ -149,50 +149,50 @@ def read_options_from_string(flag_string: str, mode: Union[Mode, str]):
     return flags, codes
 
 ANCIENT_CAVE_PROHIBITED_CODES = [
-    "airship",
-    "alasdraco",
-    "notawaiter",
-    "strangejourney",
-    "worringtriad",
-    "thescenarionottaken",
-    "mimetime"
+    'airship',
+    'alasdraco',
+    'notawaiter',
+    'strangejourney',
+    'worringtriad',
+    'thescenarionottaken',
+    'mimetime'
 ]
 
 
 ANCIENT_CAVE_PROHIBITED_FLAGS = {
-    "d",
-    "k",
-    "r",
-    "j",
+    'd',
+    'k',
+    'r',
+    'j',
 }
 
 ALL_MODES = [
-    Mode(name="normal", description="Play through the normal story."),
-    Mode(name="ancientcave",
-         description="Play through a long randomized dungeon.",
-         forced_codes=["ancientcave"],
+    Mode(name='normal', description='Play through the normal story.'),
+    Mode(name='ancientcave',
+         description='Play through a long randomized dungeon.',
+         forced_codes=['ancientcave'],
          prohibited_codes=ANCIENT_CAVE_PROHIBITED_CODES,
          prohibited_flags=ANCIENT_CAVE_PROHIBITED_FLAGS),
-    Mode(name="speedcave",
-         description="Play through a medium-sized randomized dungeon.",
-         forced_codes=["speedcave", "ancientcave"],
+    Mode(name='speedcave',
+         description='Play through a medium-sized randomized dungeon.',
+         forced_codes=['speedcave', 'ancientcave'],
          prohibited_codes=ANCIENT_CAVE_PROHIBITED_CODES,
          prohibited_flags=ANCIENT_CAVE_PROHIBITED_FLAGS),
-    Mode(name="racecave",
-         description="Play through a short randomized dungeon.",
-         forced_codes=["racecave", "speedcave", "ancientcave"],
+    Mode(name='racecave',
+         description='Play through a short randomized dungeon.',
+         forced_codes=['racecave', 'speedcave', 'ancientcave'],
          prohibited_codes=ANCIENT_CAVE_PROHIBITED_CODES,
          prohibited_flags=ANCIENT_CAVE_PROHIBITED_FLAGS),
-    Mode(name="katn",
-         description="Play the normal story up to Kefka at Narshe, with extra wackiness. Intended for racing.",
-         forced_codes=["madworld"],
-         prohibited_codes=["airship", "alasdraco", "worringtriad", "mimetime"],
-         prohibited_flags={"d", "k", "r"}),
-    Mode(name="dragonhunt",
-         description="Kill all 8 dragons in the World of Ruin. Intended for racing.",
-         forced_codes=["worringtriad"],
-         prohibited_codes=["airship", "alasdraco", "thescenarionottaken"],
-         prohibited_flags={"j"}),
+    Mode(name='katn',
+         description='Play the normal story up to Kefka at Narshe, with extra wackiness. Intended for racing.',
+         forced_codes=['madworld'],
+         prohibited_codes=['airship', 'alasdraco', 'worringtriad', 'mimetime'],
+         prohibited_flags={'d', 'k', 'r'}),
+    Mode(name='dragonhunt',
+         description='Kill all 8 dragons in the World of Ruin. Intended for racing.',
+         forced_codes=['worringtriad'],
+         prohibited_codes=['airship', 'alasdraco', 'thescenarionottaken'],
+         prohibited_flags={'j'}),
 ]
 
 ALL_FLAGS = [
@@ -223,56 +223,56 @@ ALL_FLAGS = [
 
 
 NORMAL_CODES = [
-    Code('airship', "AIRSHIP MODE", "The party will have access to the airship immediately after leaving Narshe. Chocobo stables can also be used to acquire the airship. Doing events out of order can cause softlocks.", "gamebreaking"),
-    Code('alasdraco', "JAM UP YOUR OPERA MODE", "Randomizes the sprites of Maria, Draco, Ralse, the Impresario, the flowers Maria throws from the balcony, and the weight Ultros drops, as well as the singing voices and the names of the factions.", "aesthetic"),
-    Code('allcombos', "ALL COMBOS MODE", "All skills that get replaced with something are replaced with combo skills.", "minor"),
-    Code('bingoboingo', "BINGO BONUS", "Generates a Bingo table with spells, items, equipment, and enemy squares to check off. Players can set victory requirements like achieving a line, or acquiring a certain number of points. The ROM does not interact with the bingo card.", "aesthetic"),
-    Code('bravenudeworld', "TINA PARTY MODE", "All characters use the Esper Terra sprite.", "aesthetic"),
-    Code('bsiab', "UNBALANCED MONSTER CHESTS MODE", "Reverts the monster-in-a-box selection algorithm to be (mostly) the same as versions prior to EX v3.", "minor"),
-    Code('canttouchthis', "INVINCIBILITY", "All characters have 255 Defense and 255 Magic Defense, as well as 128 Evasion and Magic Evasion.", "major"),
-    Code('capslockoff', "Mixed Case Names Mode", "Names use whatever capitalization is in the name lists instead of all caps.", "aesthetic"),
-    Code('collateraldamage', "ITEM BREAK MODE", "All pieces of equipment break for spells. Characters only have the Fight and Item commands, and enemies will use items drastically more often than usual.", "major"),
-    Code('dancingmaduin', "RESTRICTED ESPERS MODE", "Restricts Esper usage such that most Espers can only be equipped by one character. Also usually changes what spell the Paladin Shld teaches.", "major"),
-    Code('darkworld', "SLASHER'S DELIGHT MODE", "Drastically increases the difficulty of the seed, akin to a hard mode. Mostly meant to be used in conjunction with the madworld code.", "major"),
-    Code('dearestmolulu', "ENCOUNTERLESS MODE", "No random encounters occur. All encounters yield 3x EXP. Wearing a Moogle Charm or a piece of equipment with the Moogle Charm effect will cause a battle to occur on every step when encounters can be occur.", "major"),
-    Code('easymodo', "EASY MODE", "All enemies have 1 HP.", "major"),
-    Code('electricboogaloo', "WILD ITEM BREAK MODE", "Increases the list of spells that items can break and proc for. Items can break for potentially any spell, and weapons can potentially proc any spell excluding SwdTechs, Blitzes, Slots, and a couple other skills.", "minor"),
-    Code('endless9', "ENDLESS NINE MODE", "All R-[skills] are automatically changed to 9x[skills]. W-[skills] will become 8x[skills].", "major"),
-    Code('equipanything', "EQUIP ANYTHING MODE", "Items that are not equippable normally can now be equipped as weapons or shields. These often give strange defensive stats or weapon animations.", "gamebreaking"),
-    Code('fightclub', "MORE LIKE COLI-DON'T-SEE-'EM", "Does not allow you to see the coliseum rewards before betting, but you can often run from the coliseum battles to keep your item.", "minor"),
-    Code('johnnydmad', "MUSIC REPLACEMENT MODE", "Randomizes music with regard to what would make sense in a given location.", "aesthetic"),
-    Code('johnnyachaotic', "MUSIC MANGLING MODE", "Randomizes music with no regard to what would make sense in a given location.", "aesthetic"),
-    Code('kupokupo', "MOOGLE MODE", "All party members are moogles except Mog. With partyparty, all characters are moogles, except Mog, Esper Terra, and Imps.", "aesthetic"),
-    Code('llg', "LOW LEVEL GAME MODE", "Stands for Low Level Game. No encounters will yield any Experience Points.", "major"),
-    Code('madworld', "TIERS FOR FEARS MODE", 'Creates a "true tierless" seed, with enemies having a higher degree of randomization and shops being very randomized as well.', "major"),
-    Code('makeover', "SPRITE REPLACEMENT MODE", "Some sprites are replaced with new ones (like Cecil or Zero Suit Samus).", "aesthetic"),
-    Code('masseffect', "WILD EQUIPMENT EFFECT MODE", "Increases the number of rogue effects on equipment by a large amount.", "major"),
-    Code('metronome', "R-CHAOS MODE", "All characters have Fight, R-Chaos, Magic, and Item as their skillset, except for the Mime, who has Mimic instead of Fight. Berserker also only has R-Chaos.", "major"),
-    Code('mimetime', 'ALTERNATE GOGO MODE', "Gogo will be hidden somewhere in the world of ruin disguised as another character. Bring that character to him to recruit him.", "minor"),
-    Code('naturalmagic', "NATURAL MAGIC MODE", "No Espers or equipment will teach spells. The only way to learn spells is through Natural Magic.", "major"),
-    Code('naturalstats', "NATURAL STATS MODE", "No Espers will grant stat bonuses upon leveling up.", "minor"),
-    Code('norng', "NO RNG MODE", "Calls to the RNG are not made. Attacks are always critical hits, everything targets the lead character when applicable, and all attacks hit if they are able to except Instant Death. Many more additional effects occur. Cannot currently be completed without cheat codes.", "experimental"),
-    Code('notawaiter', "CUTSCENE SKIPS", "Up to Kefka at Narshe, the vast majority of mandatory cutscenes are completely removed. Optional cutscenes are not removed.", "aesthetic"),
-    Code('partyparty', "CRAZY PARTY MODE", "Kefka, Trooper, Banon, Leo, Ghost, Merchant, Esper Terra, and Soldier are mixed into the sprites that can be acquired by playable characters. Those sprites are also randomized themselves, allowing Leo to look like Edgar, for example.", "aesthetic"),
-    Code('penultima', "PENULTIMATE MODE", "Ultima cannot be learned by any means.", "minor"),
-    Code('playsitself', "AUTOBATTLE MODE", "All characters will act automatically, in a manner similar to when Coliseum fights are fought.", "major"),
-    Code('quikdraw', "QUIKDRAW MODE", "All characters look like imperial soldiers, and none of them have Gau's Rage skill.", "minor"),
-    Code('randomboost', "RANDOM BOOST MODE", "Prompts you for a randomness multiplier, which changes the range of items that can be in chests, etc. Choosing a randomness multiplier of 0(or leaving it blank) will allow any item to appear in any treasure chest.", "major"),
-    Code('randombosses', "RANDOM BOSSES MODE", "Causes boss skills to be randomized similarly to regular enemy skills. Boss skills can change to similarly powerful skills.", "minor"),
-    Code('repairpalette', "PALETTE REPAIR", "Used for testing changes to palette randomization. Not intended for actual play. Cannot proceed past Banon's scenario.", "experimental"),
-    Code('replaceeverything', "REPLACE ALL SKILLS MODE", "All vanilla skills that can be replaced, are replaced.", "minor"),
-    Code('rushforpower', "OLD VARGAS FIGHT MODE", "Reverts the Vargas fight to the way it was before Beyond Chaos EX.", "minor"),
-    Code('strangejourney', "BIZARRE ADVENTURE", "A prototype entrance randomizer, similar to the ancientcave mode. Includes all maps and event tiles, and is usually extremely hard to beat by itself.", "experimental"),
-    Code('supernatural', "SUPER NATURAL MAGIC MODE", "Makes it so that any character with the Magic command will have natural magic.", "minor"),
-    Code('suplexwrecks', "SUPLEX MODE", "All characters use the Sabin sprite, as well as having a name similar to Sabin. All characters have the Blitz and Suplex commands, and every enemy can be hit by Suplex.", "major"),
-    Code('thescenarionottaken', 'DIVERGENT PATHS MODE', "Changes the way the 3 scenarios are split up.", "major"),
-    Code('worringtriad', "START IN WOR", "The player will start in the World of Ruin, with all of the World of Balance treasure chests, along with a guaranteed set of items, and more Lores.", "major"),
+    Code('airship', 'AIRSHIP MODE', 'The party will have access to the airship immediately after leaving Narshe. Chocobo stables can also be used to acquire the airship. Doing events out of order can cause softlocks.', 'gamebreaking'),
+    Code('alasdraco', 'JAM UP YOUR OPERA MODE', 'Randomizes the sprites of Maria, Draco, Ralse, the Impresario, the flowers Maria throws from the balcony, and the weight Ultros drops, as well as the singing voices and the names of the factions.', 'aesthetic'),
+    Code('allcombos', 'ALL COMBOS MODE', 'All skills that get replaced with something are replaced with combo skills.', 'minor'),
+    Code('bingoboingo', 'BINGO BONUS', 'Generates a Bingo table with spells, items, equipment, and enemy squares to check off. Players can set victory requirements like achieving a line, or acquiring a certain number of points. The ROM does not interact with the bingo card.', 'aesthetic'),
+    Code('bravenudeworld', 'TINA PARTY MODE', 'All characters use the Esper Terra sprite.', 'aesthetic'),
+    Code('bsiab', 'UNBALANCED MONSTER CHESTS MODE', 'Reverts the monster-in-a-box selection algorithm to be (mostly) the same as versions prior to EX v3.', 'minor'),
+    Code('canttouchthis', 'INVINCIBILITY', 'All characters have 255 Defense and 255 Magic Defense, as well as 128 Evasion and Magic Evasion.', 'major'),
+    Code('capslockoff', 'Mixed Case Names Mode', 'Names use whatever capitalization is in the name lists instead of all caps.', 'aesthetic'),
+    Code('collateraldamage', 'ITEM BREAK MODE', 'All pieces of equipment break for spells. Characters only have the Fight and Item commands, and enemies will use items drastically more often than usual.', 'major'),
+    Code('dancingmaduin', 'RESTRICTED ESPERS MODE', 'Restricts Esper usage such that most Espers can only be equipped by one character. Also usually changes what spell the Paladin Shld teaches.', 'major'),
+    Code('darkworld', "SLASHER'S DELIGHT MODE", 'Drastically increases the difficulty of the seed, akin to a hard mode. Mostly meant to be used in conjunction with the madworld code.', 'major'),
+    Code('dearestmolulu', 'ENCOUNTERLESS MODE', 'No random encounters occur. All encounters yield 3x EXP. Wearing a Moogle Charm or a piece of equipment with the Moogle Charm effect will cause a battle to occur on every step when encounters can be occur.', 'major'),
+    Code('easymodo', 'EASY MODE', 'All enemies have 1 HP.', 'major'),
+    Code('electricboogaloo', 'WILD ITEM BREAK MODE', 'Increases the list of spells that items can break and proc for. Items can break for potentially any spell, and weapons can potentially proc any spell excluding SwdTechs, Blitzes, Slots, and a couple other skills.', 'minor'),
+    Code('endless9', 'ENDLESS NINE MODE', 'All R-[skills] are automatically changed to 9x[skills]. W-[skills] will become 8x[skills].', 'major'),
+    Code('equipanything', 'EQUIP ANYTHING MODE', 'Items that are not equippable normally can now be equipped as weapons or shields. These often give strange defensive stats or weapon animations.', 'gamebreaking'),
+    Code('fightclub', "MORE LIKE COLI-DON'T-SEE-'EM", 'Does not allow you to see the coliseum rewards before betting, but you can often run from the coliseum battles to keep your item.', 'minor'),
+    Code('johnnydmad', 'MUSIC REPLACEMENT MODE', 'Randomizes music with regard to what would make sense in a given location.', 'aesthetic'),
+    Code('johnnyachaotic', 'MUSIC MANGLING MODE', 'Randomizes music with no regard to what would make sense in a given location.', 'aesthetic'),
+    Code('kupokupo', 'MOOGLE MODE', 'All party members are moogles except Mog. With partyparty, all characters are moogles, except Mog, Esper Terra, and Imps.', 'aesthetic'),
+    Code('llg', 'LOW LEVEL GAME MODE', 'Stands for Low Level Game. No encounters will yield any Experience Points.', 'major'),
+    Code('madworld', 'TIERS FOR FEARS MODE', 'Creates a "true tierless" seed, with enemies having a higher degree of randomization and shops being very randomized as well.', 'major'),
+    Code('makeover', 'SPRITE REPLACEMENT MODE', 'Some sprites are replaced with new ones (like Cecil or Zero Suit Samus).', 'aesthetic'),
+    Code('masseffect', 'WILD EQUIPMENT EFFECT MODE', 'Increases the number of rogue effects on equipment by a large amount.', 'major'),
+    Code('metronome', 'R-CHAOS MODE', 'All characters have Fight, R-Chaos, Magic, and Item as their skillset, except for the Mime, who has Mimic instead of Fight. Berserker also only has R-Chaos.', 'major'),
+    Code('mimetime', 'ALTERNATE GOGO MODE', 'Gogo will be hidden somewhere in the world of ruin disguised as another character. Bring that character to him to recruit him.', 'minor'),
+    Code('naturalmagic', 'NATURAL MAGIC MODE', 'No Espers or equipment will teach spells. The only way to learn spells is through Natural Magic.', 'major'),
+    Code('naturalstats', 'NATURAL STATS MODE', 'No Espers will grant stat bonuses upon leveling up.', 'minor'),
+    Code('norng', 'NO RNG MODE', 'Calls to the RNG are not made. Attacks are always critical hits, everything targets the lead character when applicable, and all attacks hit if they are able to except Instant Death. Many more additional effects occur. Cannot currently be completed without cheat codes.', 'experimental'),
+    Code('notawaiter', 'CUTSCENE SKIPS', 'Up to Kefka at Narshe, the vast majority of mandatory cutscenes are completely removed. Optional cutscenes are not removed.', 'aesthetic'),
+    Code('partyparty', 'CRAZY PARTY MODE', 'Kefka, Trooper, Banon, Leo, Ghost, Merchant, Esper Terra, and Soldier are mixed into the sprites that can be acquired by playable characters. Those sprites are also randomized themselves, allowing Leo to look like Edgar, for example.', 'aesthetic'),
+    Code('penultima', 'PENULTIMATE MODE', 'Ultima cannot be learned by any means.', 'minor'),
+    Code('playsitself', 'AUTOBATTLE MODE', 'All characters will act automatically, in a manner similar to when Coliseum fights are fought.', 'major'),
+    Code('quikdraw', 'QUIKDRAW MODE', "All characters look like imperial soldiers, and none of them have Gau's Rage skill.", 'minor'),
+    Code('randomboost', 'RANDOM BOOST MODE', 'Prompts you for a randomness multiplier, which changes the range of items that can be in chests, etc. Choosing a randomness multiplier of 0(or leaving it blank) will allow any item to appear in any treasure chest.', 'major'),
+    Code('randombosses', 'RANDOM BOSSES MODE', 'Causes boss skills to be randomized similarly to regular enemy skills. Boss skills can change to similarly powerful skills.', 'minor'),
+    Code('repairpalette', 'PALETTE REPAIR', "Used for testing changes to palette randomization. Not intended for actual play. Cannot proceed past Banon's scenario.", 'experimental'),
+    Code('replaceeverything', 'REPLACE ALL SKILLS MODE', 'All vanilla skills that can be replaced, are replaced.', 'minor'),
+    Code('rushforpower', 'OLD VARGAS FIGHT MODE', 'Reverts the Vargas fight to the way it was before Beyond Chaos EX.', 'minor'),
+    Code('strangejourney', 'BIZARRE ADVENTURE', 'A prototype entrance randomizer, similar to the ancientcave mode. Includes all maps and event tiles, and is usually extremely hard to beat by itself.', 'experimental'),
+    Code('supernatural', 'SUPER NATURAL MAGIC MODE', 'Makes it so that any character with the Magic command will have natural magic.', 'minor'),
+    Code('suplexwrecks', 'SUPLEX MODE', 'All characters use the Sabin sprite, as well as having a name similar to Sabin. All characters have the Blitz and Suplex commands, and every enemy can be hit by Suplex.', 'major'),
+    Code('thescenarionottaken', 'DIVERGENT PATHS MODE', 'Changes the way the 3 scenarios are split up.', 'major'),
+    Code('worringtriad', 'START IN WOR', 'The player will start in the World of Ruin, with all of the World of Balance treasure chests, along with a guaranteed set of items, and more Lores.', 'major'),
 ]
 
 MAKEOVER_MODIFIER_CODES = [
-    Code('novanilla', "COMPLETE MAKEOVER MODE", "Sprites from the vanilla game are guaranteed not to appear.", "aesthetic"),
-    Code('frenchvanilla', "EQUAL RIGHTS MAKEOVER MODE", "Sprites from the vanilla game are selected with equal weight to new sprites rather than some being guaranteed to appear.", "aesthetic"),
-    Code('cloneparty', "CLONE COSPLAY MAKEOVER MODE", "Instead of avoiding choosing different versions of the same character, it actively tries to do so.", "aesthetic")
+    Code('novanilla', 'COMPLETE MAKEOVER MODE', 'Sprites from the vanilla game are guaranteed not to appear.', 'aesthetic'),
+    Code('frenchvanilla', 'EQUAL RIGHTS MAKEOVER MODE', 'Sprites from the vanilla game are selected with equal weight to new sprites rather than some being guaranteed to appear.', 'aesthetic'),
+    Code('cloneparty', 'CLONE COSPLAY MAKEOVER MODE', 'Instead of avoiding choosing different versions of the same character, it actively tries to do so.', 'aesthetic')
 ]
 RESTRICTED_VANILLA_SPRITE_CODES = []
 
@@ -282,20 +282,20 @@ with open_mei_fallback(SPRITE_REPLACEMENT_TABLE) as f:
 makeover_tags = {tag for s in known_replacements for tag in s.tags}
 
 for mg in makeover_tags:
-    no = Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE", f"Do not select {mg} sprites.", "makeover")
+    no = Code('no'+mg, f'NO {mg.upper()} ALLOWED MODE', f'Do not select {mg} sprites.', 'makeover')
     MAKEOVER_MODIFIER_CODES.extend([
         no,
-        Code('hate'+mg, f"RARE {mg.upper()} MODE", f"Reduce probability of selecting {mg} sprites.", "makeover"),
-        Code('like'+mg, f"COMMON {mg.upper()} MODE", f"Increase probability of selecting {mg} sprites.", "makeover"),
-        Code('love'+mg, f"{mg.upper()} WORLD MODE", f"Select only {mg} sprites.", "makeover")])
+        Code('hate'+mg, f'RARE {mg.upper()} MODE', f'Reduce probability of selecting {mg} sprites.', 'makeover'),
+        Code('like'+mg, f'COMMON {mg.upper()} MODE', f'Increase probability of selecting {mg} sprites.', 'makeover'),
+        Code('love'+mg, f'{mg.upper()} WORLD MODE', f'Select only {mg} sprites.', 'makeover')])
     RESTRICTED_VANILLA_SPRITE_CODES.append(no)
 
 
 # TODO: do this a better way
 CAVE_CODES = [
-    Code('ancientcave', "ANCIENT CAVE MODE", "", "cave"),
-    Code('speedcave', "SPEED CAVE MODE", "", "cave"),
-    Code('racecave', "RACE CAVE MODE", "", "cave"),
+    Code('ancientcave', 'ANCIENT CAVE MODE', '', 'cave'),
+    Code('speedcave', 'SPEED CAVE MODE', '', 'cave'),
+    Code('racecave', 'RACE CAVE MODE', '', 'cave'),
 ]
 
 

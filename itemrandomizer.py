@@ -5,25 +5,25 @@ from utils import (hex2int, write_multi, read_multi, ITEM_TABLE,
 from skillrandomizer import get_ranked_spells, get_spell
 # future blocks: chests, morphs, shops
 
-ITEM_STATS = ["learnrate", "learnspell", "fieldeffect",
-              "statusprotect1", "statusprotect2", "statusacquire3",
-              "statboost1", "special1", "statboost2", "special2",
-              "special3", "targeting", "elements", "speedvigor",
-              "magstam", "breakeffect", "otherproperties", "power",
-              "hitmdef", "elemabsorbs", "elemnulls", "elemweaks",
-              "statusacquire2", "mblockevade", "specialaction"]
+ITEM_STATS = ['learnrate', 'learnspell', 'fieldeffect',
+              'statusprotect1', 'statusprotect2', 'statusacquire3',
+              'statboost1', 'special1', 'statboost2', 'special2',
+              'special3', 'targeting', 'elements', 'speedvigor',
+              'magstam', 'breakeffect', 'otherproperties', 'power',
+              'hitmdef', 'elemabsorbs', 'elemnulls', 'elemweaks',
+              'statusacquire2', 'mblockevade', 'specialaction']
 
-STATPROTECT = {"fieldeffect": 0xdc,
-               "statusprotect1": 0x00,
-               "statusprotect2": 0x00,
-               "statusacquire3": 0x00,
-               "statboost1": 0x00,
-               "special1": 0x00,
-               "statboost2": 0x02,
-               "special2": 0x28,
-               "special3": 0x60,
-               "otherproperties": 0xdf,
-               "statusacquire2": 0x00}
+STATPROTECT = {'fieldeffect': 0xdc,
+               'statusprotect1': 0x00,
+               'statusprotect2': 0x00,
+               'statusacquire3': 0x00,
+               'statboost1': 0x00,
+               'special1': 0x00,
+               'statboost2': 0x02,
+               'special2': 0x28,
+               'special3': 0x60,
+               'otherproperties': 0xdf,
+               'statusacquire2': 0x00}
 
 all_spells = None
 effects_used = []
@@ -66,19 +66,19 @@ def get_custom_items():
     return get_custom_items()
 
 
-def bit_mutate(byte, op="on", nochange=0x00):
-    if op == "on":
+def bit_mutate(byte, op='on', nochange=0x00):
+    if op == 'on':
         bit = 1 << random.randint(0, 7)
         if bit & nochange:
             return byte
         byte = byte | bit
-    elif op == "off":
+    elif op == 'off':
         bit = 1 << random.randint(0, 7)
         if bit & nochange:
             return byte
         bit = 0xff ^ bit
         byte = byte & bit
-    elif op == "invert":
+    elif op == 'invert':
         bit = 1 << random.randint(0, 7)
         if bit & nochange:
             return byte
@@ -182,12 +182,12 @@ class ItemBlock:
         stats = list(f.read(len(ITEM_STATS)))
         self.features = dict(list(zip(ITEM_STATS, stats)))
 
-        # move flags for "randomly cast" and "destroy if used"
+        # move flags for 'randomly cast' and 'destroy if used'
         # so breakeffect can use the full range of spells
         if not self.is_consumable:
-            break_flags = self.features["breakeffect"] & 0xC0
-            self.features["otherproperties"] |= break_flags >> 4
-            self.features["breakeffect"] &= ~0xC0
+            break_flags = self.features['breakeffect'] & 0xC0
+            self.features['otherproperties'] |= break_flags >> 4
+            self.features['breakeffect'] &= ~0xC0
 
         self.price = read_multi(f, length=2)
 
@@ -202,9 +202,9 @@ class ItemBlock:
         self.dataname = list(f.read(13))
 
         # unhardcoded tintinabar patch moves the tintinabar flag
-        if self.features["fieldeffect"] & 0x80:
-            self.features["fieldeffect"] &= ~0x80
-            self.features["special2"] |= 0x80
+        if self.features['fieldeffect'] & 0x80:
+            self.features['fieldeffect'] &= ~0x80
+            self.features['special2'] |= 0x80
 
         f.close()
 
@@ -217,7 +217,7 @@ class ItemBlock:
             if tier is None:
                 candidates = [customs[key] for key in sorted(customs)]
             else:
-                candidates = [customs[key] for key in sorted(customs) if customs[key]["tier"] == tier]
+                candidates = [customs[key] for key in sorted(customs) if customs[key]['tier'] == tier]
             customdict = random.choice(candidates)
 
         for key in self.features:
@@ -238,15 +238,15 @@ class ItemBlock:
 
         name = bytes()
         for key, value in customdict.items():
-            if key == "name_text":
+            if key == 'name_text':
                 name = name + name_to_bytes(value, 12)
-            elif key == "description":
+            elif key == 'description':
                 pass
-            elif key == "tier":
+            elif key == 'tier':
                 pass
             else:
                 value = convert_value(value)
-                if key == "name_icon":
+                if key == 'name_icon':
                     name = bytes([value]) + name
                 elif hasattr(self, key):
                     setattr(self, key, value)
@@ -355,7 +355,7 @@ class ItemBlock:
             # Reduce chance of Genji Glove bit on non-relics
             elif random.randint(1, 4) != 4:
                 nochange |= 0x10
-        self.features[feature] = bit_mutate(self.features[feature], op="on",
+        self.features[feature] = bit_mutate(self.features[feature], op='on',
                                             nochange=nochange)
 
     def mutate_break_effect(self, always_break=False, wild_breaks=False):
@@ -473,7 +473,7 @@ class ItemBlock:
             self.features['power'] = self.features['power'] + random.randint(0, diff) + random.randint(0, diff)
             self.features['power'] = int(min(0xFF, max(0, self.features['power'])))
 
-            if "Dice" in self.name:
+            if 'Dice' in self.name:
                 return
 
             diff = min(self.features['hitmdef'], 0xFF-self.features['hitmdef'])

@@ -2,7 +2,7 @@ from dialoguemanager import get_dialogue, set_dialogue
 from utils import open_mei_fallback, Substitution, utilrandom as random, PASSWORDS_TABLE, POEMS_TABLE
 
 
-POEM_PAGE_BREAK = "<wait 390 frames><wait 1 frame><page>"
+POEM_PAGE_BREAK = '<wait 390 frames><wait 1 frame><page>'
 
 
 def randomize_poem(fout):
@@ -20,10 +20,10 @@ def randomize_poem(fout):
                     page_break = True
                 continue
 
-            if line.startswith("---") and current_poem:
-                current_poem.append("<wait 390 frames><wait 1 frame>")
+            if line.startswith('---') and current_poem:
+                current_poem.append('<wait 390 frames><wait 1 frame>')
                 wait += 1
-                poems.append(("".join(current_poem), wait))
+                poems.append((''.join(current_poem), wait))
                 current_poem = []
                 page_break = False
                 wait = 0
@@ -34,7 +34,7 @@ def randomize_poem(fout):
                 wait += 1
                 page_break = False
             elif current_poem:
-                current_poem.append("<line>")
+                current_poem.append('<line>')
             current_poem.append(line)
 
     if not poems:
@@ -61,7 +61,7 @@ def randomize_passwords():
             if not line:
                 continue
 
-            if line.startswith("------") and i < len(passwords) - 1:
+            if line.startswith('------') and i < len(passwords) - 1:
                 i += 1
                 continue
 
@@ -69,8 +69,8 @@ def randomize_passwords():
 
     if all(passwords):
         text = get_dialogue(0xE0)
-        text = text.replace("Rose bud", random.choice(passwords[0]))
-        text = text.replace("Courage", random.choice(passwords[1]))
-        text = text.replace("Failure", random.choice(passwords[2]))
+        text = text.replace('Rose bud', random.choice(passwords[0]))
+        text = text.replace('Courage', random.choice(passwords[1]))
+        text = text.replace('Failure', random.choice(passwords[2]))
 
         set_dialogue(0xE0, text)

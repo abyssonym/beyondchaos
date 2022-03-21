@@ -11,10 +11,10 @@ from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel
 import options
 import randomizer
 
-print("Loading Complete! Any errors shown here should be reported to Green Knight")
+print('Loading Complete! Any errors shown here should be reported to Green Knight')
 
 if sys.version_info[0] < 3:
-    raise Exception("Python 3 or a more recent version is required. Report this to Green Knight")
+    raise Exception('Python 3 or a more recent version is required. Report this to Green Knight')
 
 # Extended QButton widget to hold flag value - NOT USED PRESENTLY
 class FlagButton(QPushButton):
@@ -37,18 +37,18 @@ class Window(QWidget):
         super().__init__()
 
         # window geometry data
-        self.title = "Beyond Chaos EX Randomizer"
+        self.title = 'Beyond Chaos EX Randomizer'
         self.left = 200
         self.top = 200
         self.width = 700
         self.height = 600
 
         # values to be sent to randomizer
-        self.romText = ""
-        self.version = "4"
-        self.mode = "normal" # default
-        self.seed = ""
-        self.flags = ""
+        self.romText = ''
+        self.version = '4'
+        self.mode = 'normal' # default
+        self.seed = ''
+        self.flags = ''
 
 
         # dictionaries to hold flag data
@@ -106,8 +106,8 @@ class Window(QWidget):
         # Primary Vertical Box Layout
         vbox = QVBoxLayout()
 
-        titleLabel = QLabel("Beyond Chaos EX Randomizer (v5.0.0)")
-        font = QtGui.QFont("Arial", 24, QtGui.QFont.Black)
+        titleLabel = QLabel('Beyond Chaos EX Randomizer (v5.0.0)')
+        font = QtGui.QFont('Arial', 24, QtGui.QFont.Black)
         titleLabel.setFont(font)
         titleLabel.setAlignment(QtCore.Qt.AlignCenter)
         titleLabel.setMargin(25)
@@ -125,20 +125,20 @@ class Window(QWidget):
         topGroupBox = QGroupBox()
         TopHBox = QHBoxLayout()
 
-        romLabel = QLabel("ROM:")
+        romLabel = QLabel('ROM:')
         TopHBox.addWidget(romLabel)
         self.romInput = QLineEdit()
-        self.romInput.setPlaceholderText("Required - Will save to presets")
+        self.romInput.setPlaceholderText('Required - Will save to presets')
         self.romInput.setReadOnly(True)
         TopHBox.addWidget(self.romInput)
 
-        browseButton = QPushButton("Browse")
+        browseButton = QPushButton('Browse')
         browseButton.clicked.connect(lambda: self.openFileChooser())
         TopHBox.addWidget(browseButton)
-        seedLabel = QLabel("Seed:")
+        seedLabel = QLabel('Seed:')
         TopHBox.addWidget(seedLabel)
         self.seedInput = QLineEdit()
-        self.seedInput.setPlaceholderText("Optional - WILL NOT SAVE TO PRESETS!")
+        self.seedInput.setPlaceholderText('Optional - WILL NOT SAVE TO PRESETS!')
         TopHBox.addWidget(self.seedInput)
 
         topGroupBox.setLayout(TopHBox)
@@ -154,55 +154,55 @@ class Window(QWidget):
 
         # ------------ Part one (left side) of middle section - Mode radio buttons -------
 
-        self.middleLeftGroupBox.setTitle("Select Mode")
+        self.middleLeftGroupBox.setTitle('Select Mode')
         midLeftVBox = QVBoxLayout()
 
-        radioButton = QRadioButton("Normal (Default)")
-        radioButton.setToolTip("Play through the normal story")
+        radioButton = QRadioButton('Normal (Default)')
+        radioButton.setToolTip('Play through the normal story')
         radioButton.setChecked(True)
-        radioButton.mode = "normal"
-        radioButton.clicked.connect(lambda: self.updateRadioSelection("normal"))
+        radioButton.mode = 'normal'
+        radioButton.clicked.connect(lambda: self.updateRadioSelection('normal'))
         midLeftVBox.addWidget(radioButton)
 
-        radioButton = QRadioButton("Ancient Cave")
-        radioButton.setToolTip("Play though a long randomized dungeon")
-        radioButton.mode = "ancientcave"
-        radioButton.clicked.connect(lambda: self.updateRadioSelection("ancientcave"))
+        radioButton = QRadioButton('Ancient Cave')
+        radioButton.setToolTip('Play though a long randomized dungeon')
+        radioButton.mode = 'ancientcave'
+        radioButton.clicked.connect(lambda: self.updateRadioSelection('ancientcave'))
         midLeftVBox.addWidget(radioButton)
 
-        radioButton = QRadioButton("Speed Cave")
-        radioButton.setToolTip("Play through a medium-sized randomized dungeon")
-        radioButton.mode = "speedcave"
-        radioButton.clicked.connect(lambda: self.updateRadioSelection("speedcave"))
+        radioButton = QRadioButton('Speed Cave')
+        radioButton.setToolTip('Play through a medium-sized randomized dungeon')
+        radioButton.mode = 'speedcave'
+        radioButton.clicked.connect(lambda: self.updateRadioSelection('speedcave'))
         midLeftVBox.addWidget(radioButton)
 
-        radioButton = QRadioButton("Race Cave")
-        radioButton.setToolTip("Play through a short randomized dungeon")
-        radioButton.mode = "racecave"
-        radioButton.clicked.connect(lambda: self.updateRadioSelection("racecave"))
+        radioButton = QRadioButton('Race Cave')
+        radioButton.setToolTip('Play through a short randomized dungeon')
+        radioButton.mode = 'racecave'
+        radioButton.clicked.connect(lambda: self.updateRadioSelection('racecave'))
         midLeftVBox.addWidget(radioButton)
 
-        radioButton = QRadioButton("Kefka@Narshe")
-        radioButton.setToolTip("Play the normal story up to Kefka at Narshe, "
-                               "with extra wackiness. Intended for racing.")
-        radioButton.mode = "katn"
-        radioButton.clicked.connect(lambda: self.updateRadioSelection("katn"))
+        radioButton = QRadioButton('Kefka@Narshe')
+        radioButton.setToolTip('Play the normal story up to Kefka at Narshe, '
+                               'with extra wackiness. Intended for racing.')
+        radioButton.mode = 'katn'
+        radioButton.clicked.connect(lambda: self.updateRadioSelection('katn'))
         midLeftVBox.addWidget(radioButton)
 
-        radioButton = QRadioButton("Dragon Hunt")
-        radioButton.setToolTip("Kill all 8 dragons in the World of Ruin. Intended for racing.")
-        radioButton.mode = "dragonhunt"
-        radioButton.clicked.connect(lambda: self.updateRadioSelection("dragonhunt"))
+        radioButton = QRadioButton('Dragon Hunt')
+        radioButton.setToolTip('Kill all 8 dragons in the World of Ruin. Intended for racing.')
+        radioButton.mode = 'dragonhunt'
+        radioButton.clicked.connect(lambda: self.updateRadioSelection('dragonhunt'))
         midLeftVBox.addWidget(radioButton)
 
         self.middleLeftGroupBox.setLayout(midLeftVBox)
         # ------------- Part one (left side) end ----------------------------------------------
 
         # ------------- Part two (right side) of middle section - Flag tabs -----------------
-        middleRightGroupBox = QGroupBox("Flag Selection")
+        middleRightGroupBox = QGroupBox('Flag Selection')
         tabVBoxLayout = QVBoxLayout()
         tabs = QTabWidget()
-        tabNames = ["Simple", "Aesthetic", "Major", "Minor", "Experimental", "Gamebreaking"]
+        tabNames = ['Simple', 'Aesthetic', 'Major', 'Minor', 'Experimental', 'Gamebreaking']
 
         ############## Only checkboxes, no inline description ###############
 
@@ -280,13 +280,13 @@ class Window(QWidget):
         widgetVBoxLayout = QVBoxLayout()
         widgetV.setLayout(widgetVBoxLayout)
 
-        widgetVBoxLayout.addWidget(QLabel("Text-string of selected flags:"))
+        widgetVBoxLayout.addWidget(QLabel('Text-string of selected flags:'))
 
         self.flagString.setReadOnly(True)
-        self.flagString.setStyleSheet("background:lightgrey;")
+        self.flagString.setStyleSheet('background:lightgrey;')
         widgetVBoxLayout.addWidget(self.flagString)
 
-        saveButton = QPushButton("Save flags selection")
+        saveButton = QPushButton('Save flags selection')
         saveButton.clicked.connect(lambda: self.saveSeed())
         widgetVBoxLayout.addWidget(saveButton)
 
@@ -295,8 +295,8 @@ class Window(QWidget):
         flagTextWidget = QGroupBox()
         flagTextHBox = QHBoxLayout()
         flagTextHBox.addWidget(widgetV)
-        clearUiButton = QPushButton("Reset")
-        clearUiButton.setStyleSheet("font-size:12px; height:60px")
+        clearUiButton = QPushButton('Reset')
+        clearUiButton.setStyleSheet('font-size:12px; height:60px')
         clearUiButton.clicked.connect(lambda: self.clearUI())
         flagTextHBox.addWidget(clearUiButton)
         flagTextWidget.setLayout(flagTextHBox)
@@ -319,23 +319,23 @@ class Window(QWidget):
         bottomGroupBox = QGroupBox()
         bottomHBox = QHBoxLayout()
 
-        bottomHBox.addWidget(QLabel("Saved flag selection: "))
+        bottomHBox.addWidget(QLabel('Saved flag selection: '))
 
-        self.comboBox.addItem("Select a preset")
+        self.comboBox.addItem('Select a preset')
         for string in self.savedPresets:
             self.comboBox.addItem(string)
         self.comboBox.currentTextChanged.connect(lambda: self.updatePresetDropdown())
         bottomHBox.addWidget(self.comboBox)
 
 
-        deleteButton = QPushButton("Delete selection")
+        deleteButton = QPushButton('Delete selection')
         deleteButton.clicked.connect(lambda: self.deleteSeed())
         bottomHBox.addWidget(deleteButton)
 
         bottomHBox.addStretch(1)
 
-        generateButton = QPushButton("Generate Seed")
-        generateButton.setStyleSheet("font:bold; font-size:18px; height:48px; width:150px")
+        generateButton = QPushButton('Generate Seed')
+        generateButton.setStyleSheet('font:bold; font-size:18px; height:48px; width:150px')
         generateButton.clicked.connect(lambda: self.generateSeed())
         bottomHBox.addWidget(generateButton)
 
@@ -350,20 +350,20 @@ class Window(QWidget):
     #   puts data into separate dictionaries
     def initCodes(self):
         for code in options.NORMAL_CODES + options.MAKEOVER_MODIFIER_CODES:
-            if code.category == "aesthetic":
+            if code.category == 'aesthetic':
                 d = self.aesthetic
-            elif code.category == "experimental":
+            elif code.category == 'experimental':
                 d = self.experimental
-            elif code.category == "gamebreaking":
+            elif code.category == 'gamebreaking':
                 d = self.gamebreaking
-            elif code.category == "major":
+            elif code.category == 'major':
                 d = self.major
-            elif code.category == "minor":
+            elif code.category == 'minor':
                 d = self.minor
-            elif code.category == "makeover":
+            elif code.category == 'makeover':
                 continue
             else:
-                print(f"Code {code.name} does not have a valid category.")
+                print(f'Code {code.name} does not have a valid category.')
                 continue
 
             d[code.name] = {'explanation': code.long_description, 'checked': False}
@@ -376,9 +376,9 @@ class Window(QWidget):
 
     # opens input dialog to get a name to assign a desired seed flagset, then saves flags and selected mode to the cfg file
     def saveSeed(self):
-        text, okPressed = QInputDialog.getText(self, "Save Seed", "Enter a name for this flagset", QLineEdit.Normal, "")
+        text, okPressed = QInputDialog.getText(self, 'Save Seed', 'Enter a name for this flagset', QLineEdit.Normal, '')
         if okPressed and text != '':
-            self.savedPresets[text] = f"{self.version}.{self.mode}.{self.flags}."
+            self.savedPresets[text] = f'{self.version}.{self.mode}.{self.flags}.'
             config = configparser.ConfigParser()
             config.read('bcex.cfg')
             config['presets'] = self.savedPresets
@@ -394,8 +394,8 @@ class Window(QWidget):
     def deleteSeed(self):
         seed = self.comboBox.currentText()
 
-        if not seed == "Select a preset":
-            response = QMessageBox.question(self, 'Delete confimation', f"Do you want to delete \'{seed}\'?",
+        if not seed == 'Select a preset':
+            response = QMessageBox.question(self, 'Delete confimation', f"Do you want to delete '{seed}'?",
                                             QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
             if response == QMessageBox.Yes:
                 del self.savedPresets[seed]
@@ -407,7 +407,7 @@ class Window(QWidget):
     # if the only saved preset is deleted, or user selects initial value of
     #   'Select a preset' then the UI is reset (mainly to avoid runtime errors)
     def updatePresetDropdown(self):
-        if self.comboBox.currentIndex() != 0: # text = "Select a preset"
+        if self.comboBox.currentIndex() != 0: # text = 'Select a preset'
             selectedPreset = self.comboBox.currentText()
             self.loadPreset(selectedPreset)
         else:
@@ -417,9 +417,9 @@ class Window(QWidget):
     # clear/reset UI and clear window object variables. Then reset data dictionaries
     #   to the default state of unset/unchecked flags and mode
     def clearUI(self):
-        self.mode = "normal"
-        self.seed = ""
-        self.flags = ""
+        self.mode = 'normal'
+        self.seed = ''
+        self.flags = ''
         self.seedInput.setText(self.seed)
         self.flagString.setText(self.flags)
 
@@ -458,7 +458,7 @@ class Window(QWidget):
     # Opens file dialog to select rom file and assigns it to value in parent/Window class
     def openFileChooser(self):
         file_path = QFileDialog.getOpenFileName(self, 'Open File', './',
-                                                filter="ROMs (*.smc *.sfc *.fig);;All Files(*.*)")
+                                                filter='ROMs (*.smc *.sfc *.fig);;All Files(*.*)')
 
         # display file location in text input field
         self.romInput.setText(str(file_path[0]))
@@ -475,8 +475,8 @@ class Window(QWidget):
         if 'speeddial' in config:
             for k, v in config['speeddial'].items():
                 if 'speeddial_{k}' not in self.savedPresets:
-                    self.savedPresets[f'speeddial_{k}'] = f"5.normal.{v}."
-        self.savedPresets['recommended new player preset'] = "5.normal.-dfklu partyparty makeover johnnydmad lovesoup."
+                    self.savedPresets[f'speeddial_{k}'] = f'5.normal.{v}.'
+        self.savedPresets['recommended new player preset'] = '5.normal.-dfklu partyparty makeover johnnydmad lovesoup.'
 
     # Reads dictionary data from text file and populates class dictionaries
     def loadPreset(self, flagdict):
@@ -486,7 +486,7 @@ class Window(QWidget):
             mode = parts[1]
             flagstring = parts[2]
         except KeyError:
-            QMessageBox.about(self, "Error", "Invalid preset!")
+            QMessageBox.about(self, 'Error', 'Invalid preset!')
             self.savedPresets.remove(flagdict)
             return
 
@@ -505,22 +505,22 @@ class Window(QWidget):
         reverse_tag_levels = {'no': 'none', 'hate': 'less', 'like': 'more', 'love': 'only'}
         for code in codes:
             print(code)
-            if code.category == "aesthetic":
+            if code.category == 'aesthetic':
                 d = self.aesthetic
-            elif code.category == "experimental":
+            elif code.category == 'experimental':
                 d = self.experimental
-            elif code.category == "gamebreaking":
+            elif code.category == 'gamebreaking':
                 d = self.gamebreaking
-            elif code.category == "major":
+            elif code.category == 'major':
                 d = self.major
-            elif code.category == "minor":
+            elif code.category == 'minor':
                 d = self.minor
-            elif code.category == "makeover":
+            elif code.category == 'makeover':
                 m = re.match(r'(no|hate|like|love)(\w+)', code.name)
                 self.makeover[m.group(2)] = reverse_tag_levels.get(m.group(1), 'normal')
                 continue
             else:
-                print(f"Code {code.name} does not have a valid category.")
+                print(f'Code {code.name} does not have a valid category.')
                 continue
 
             d[code.name]['checked'] = True
@@ -542,27 +542,27 @@ class Window(QWidget):
     def generateSeed(self):
 
         self.romText = self.romInput.text()
-        if self.romText == "":  # Checks if user ROM is blank
-            QMessageBox.about(self, "Error", "You need to select a FFVI rom!")
+        if self.romText == '':  # Checks if user ROM is blank
+            QMessageBox.about(self, 'Error', 'You need to select a FFVI rom!')
         else:
             self.seed = self.seedInput.text()
 
             displaySeed = self.seed
-            if self.seed == "":
-                displaySeed = "(none)" # pretty-printing :)
+            if self.seed == '':
+                displaySeed = '(none)' # pretty-printing :)
 
-            flags = (self.flags).strip().replace(" ", "\n----") # more pretty-printing
+            flags = (self.flags).strip().replace(' ', '\n----') # more pretty-printing
 
             # This makes the flag string more readable in the confirm dialog
-            message = ((f"Rom: {self.romText}\n"
-                        f"Seed: {displaySeed}\n"
-                        f"Mode: {self.mode}\n"
-                        f"Flags: \n----{flags}\n"
-                        f"(Hyphens are not actually used in seed generation)"))
-            messBox = QMessageBox.question(self, "Confirm Seed Generation?", message, QMessageBox.Yes| QMessageBox.Cancel)
+            message = ((f'Rom: {self.romText}\n'
+                        f'Seed: {displaySeed}\n'
+                        f'Mode: {self.mode}\n'
+                        f'Flags: \n----{flags}\n'
+                        f'(Hyphens are not actually used in seed generation)'))
+            messBox = QMessageBox.question(self, 'Confirm Seed Generation?', message, QMessageBox.Yes| QMessageBox.Cancel)
             if messBox == 16384:  # User selects confirm/accept/yes option
-                finalFlags = self.flags.replace(" ", "")
-                bundle = f"{self.version}.{self.mode}.{finalFlags}.{self.seed}"
+                finalFlags = self.flags.replace(' ', '')
+                bundle = f'{self.version}.{self.mode}.{finalFlags}.{self.seed}'
                 # remove spam if the randomizer asks for input
                 # TODO: guify that stuff
                 # Hash check can be moved out to when you pick the file.
@@ -571,15 +571,15 @@ class Window(QWidget):
                 QtCore.pyqtRemoveInputHook()
                 # TODO: put this in a new thread
                 try:
-                    result_file = randomizer.randomize(args=['gui.py', self.romText, bundle, "test"])
-                #call(["py", "randomizer.py", self.romText, bundle, "test"])
+                    result_file = randomizer.randomize(args=['gui.py', self.romText, bundle, 'test'])
+                #call(['py', 'randomizer.py', self.romText, bundle, 'test'])
                 # Running the randomizer twice in one session doesn't work because of global state.
                 # Exit so people don't try it.
                 # TODO: fix global state then remove this
                 except Exception as e:
-                    QMessageBox.critical(self, "Error creating ROM", str(e), QMessageBox.Ok)
+                    QMessageBox.critical(self, 'Error creating ROM', str(e), QMessageBox.Ok)
                 else:
-                    QMessageBox.information(self, "Successfully created ROM", f"Result file: {result_file}", QMessageBox.Ok)
+                    QMessageBox.information(self, 'Successfully created ROM', f'Result file: {result_file}', QMessageBox.Ok)
                 sys.exit()
 
     # read each dictionary and update text field showing flag codes based upon
@@ -652,7 +652,7 @@ class Window(QWidget):
 
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     App = QApplication(sys.argv)
     window = Window()
     sys.exit(App.exec())

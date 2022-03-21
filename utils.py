@@ -6,66 +6,66 @@ import re
 try:
     from sys import _MEIPASS
     MEI = True
-    tblpath = path.join(_MEIPASS, "tables")
+    tblpath = path.join(_MEIPASS, 'tables')
 except ImportError:
     # This is new
     # this prepends the absolute file path of the parent/calling script
     #   to the 'tables' directory - GreenKnight5
     bundle_dir = path.dirname(path.abspath(__file__))
-    tblpath = path.join(bundle_dir, "tables")
+    tblpath = path.join(bundle_dir, 'tables')
 
-    # tblpath = "tables"
+    # tblpath = 'tables'
     MEI = False
 
-ENEMY_TABLE = path.join(tblpath, "enemycodes.txt")
-ITEM_TABLE = path.join(tblpath, "itemcodes.txt")
-SPELL_TABLE = path.join(tblpath, "spellcodes.txt")
-SPELLBANS_TABLE = path.join(tblpath, "spellbans.txt")
-ESPER_TABLE = path.join(tblpath, "espercodes.txt")
-CHEST_TABLE = path.join(tblpath, "chestcodes.txt")
-COMMAND_TABLE = path.join(tblpath, "commandcodes.txt")
-CHAR_TABLE = path.join(tblpath, "charcodes.txt")
-TEXT_TABLE = path.join(tblpath, "text.txt")
-SHORT_TEXT_TABLE = path.join(tblpath, "shorttext.txt")
-DIALOGUE_TEXT_TABLE = path.join(tblpath, "dialoguetext.txt")
-ENEMY_NAMES_TABLE = path.join(tblpath, "enemynames.txt")
-MODIFIERS_TABLE = path.join(tblpath, "moves.txt")
-MOVES_TABLE = path.join(tblpath, "moves.txt")
-LOCATION_TABLE = path.join(tblpath, "locationformations.txt")
-LOCATION_PALETTE_TABLE = path.join(tblpath, "locationpaletteswaps.txt")
-BATTLE_BG_PALETTE_TABLE = path.join(tblpath, "battlebgpalettes.txt")
-CHARACTER_PALETTE_TABLE = path.join(tblpath, "charpaloptions.txt")
-EVENT_PALETTE_TABLE = path.join(tblpath, "eventpalettes.txt")
-MAP_NAMES_TABLE = path.join(tblpath, "mapnames.txt")
-USED_LOCATIONS_TABLE = path.join(tblpath, "usedlocs.txt")
-UNUSED_LOCATIONS_TABLE = path.join(tblpath, "unusedlocs.txt")
-TOWER_LOCATIONS_TABLE = path.join(tblpath, "finaldungeonmaps.txt")
-TOWER_CHECKPOINTS_TABLE = path.join(tblpath, "finaldungeoncheckpoints.txt")
-ANCIENT_CHECKPOINTS_TABLE = path.join(tblpath, "ancientcheckpoints.txt")
-MAP_BATTLE_BG_TABLE = path.join(tblpath, "mapbattlebgs.txt")
-ENTRANCE_REACHABILITY_TABLE = path.join(tblpath, "reachability.txt")
-FINAL_BOSS_AI_TABLE = path.join(tblpath, "finalai.txt")
-TREASURE_ROOMS_TABLE = path.join(tblpath, "treasurerooms.txt")
-NAMEGEN_TABLE = path.join(tblpath, "generator.txt")
-CUSTOM_ITEMS_TABLE = path.join(tblpath, "customitems.txt")
-SHOP_TABLE = path.join(tblpath, "shopcodes.txt")
-LOCATION_MAPS_TABLE = path.join(tblpath, "locationmaps.txt")
-WOB_TREASURE_TABLE = path.join(tblpath, "wobonlytreasure.txt")
-WOR_ITEMS_TABLE = path.join(tblpath, "worstartingitems.txt")
-WOB_EVENTS_TABLE = path.join(tblpath, "wobeventbits.txt")
-RIDING_SPRITE_TABLE = path.join(tblpath, "ridingsprites.txt")
-SKIP_EVENTS_TABLE = path.join(tblpath, "skipevents.txt")
-DIVERGENT_TABLE = path.join(tblpath, "divergentedits.txt")
-MAGICITE_TABLE = path.join(tblpath, "magicite.txt")
+ENEMY_TABLE = path.join(tblpath, 'enemycodes.txt')
+ITEM_TABLE = path.join(tblpath, 'itemcodes.txt')
+SPELL_TABLE = path.join(tblpath, 'spellcodes.txt')
+SPELLBANS_TABLE = path.join(tblpath, 'spellbans.txt')
+ESPER_TABLE = path.join(tblpath, 'espercodes.txt')
+CHEST_TABLE = path.join(tblpath, 'chestcodes.txt')
+COMMAND_TABLE = path.join(tblpath, 'commandcodes.txt')
+CHAR_TABLE = path.join(tblpath, 'charcodes.txt')
+TEXT_TABLE = path.join(tblpath, 'text.txt')
+SHORT_TEXT_TABLE = path.join(tblpath, 'shorttext.txt')
+DIALOGUE_TEXT_TABLE = path.join(tblpath, 'dialoguetext.txt')
+ENEMY_NAMES_TABLE = path.join(tblpath, 'enemynames.txt')
+MODIFIERS_TABLE = path.join(tblpath, 'moves.txt')
+MOVES_TABLE = path.join(tblpath, 'moves.txt')
+LOCATION_TABLE = path.join(tblpath, 'locationformations.txt')
+LOCATION_PALETTE_TABLE = path.join(tblpath, 'locationpaletteswaps.txt')
+BATTLE_BG_PALETTE_TABLE = path.join(tblpath, 'battlebgpalettes.txt')
+CHARACTER_PALETTE_TABLE = path.join(tblpath, 'charpaloptions.txt')
+EVENT_PALETTE_TABLE = path.join(tblpath, 'eventpalettes.txt')
+MAP_NAMES_TABLE = path.join(tblpath, 'mapnames.txt')
+USED_LOCATIONS_TABLE = path.join(tblpath, 'usedlocs.txt')
+UNUSED_LOCATIONS_TABLE = path.join(tblpath, 'unusedlocs.txt')
+TOWER_LOCATIONS_TABLE = path.join(tblpath, 'finaldungeonmaps.txt')
+TOWER_CHECKPOINTS_TABLE = path.join(tblpath, 'finaldungeoncheckpoints.txt')
+ANCIENT_CHECKPOINTS_TABLE = path.join(tblpath, 'ancientcheckpoints.txt')
+MAP_BATTLE_BG_TABLE = path.join(tblpath, 'mapbattlebgs.txt')
+ENTRANCE_REACHABILITY_TABLE = path.join(tblpath, 'reachability.txt')
+FINAL_BOSS_AI_TABLE = path.join(tblpath, 'finalai.txt')
+TREASURE_ROOMS_TABLE = path.join(tblpath, 'treasurerooms.txt')
+NAMEGEN_TABLE = path.join(tblpath, 'generator.txt')
+CUSTOM_ITEMS_TABLE = path.join(tblpath, 'customitems.txt')
+SHOP_TABLE = path.join(tblpath, 'shopcodes.txt')
+LOCATION_MAPS_TABLE = path.join(tblpath, 'locationmaps.txt')
+WOB_TREASURE_TABLE = path.join(tblpath, 'wobonlytreasure.txt')
+WOR_ITEMS_TABLE = path.join(tblpath, 'worstartingitems.txt')
+WOB_EVENTS_TABLE = path.join(tblpath, 'wobeventbits.txt')
+RIDING_SPRITE_TABLE = path.join(tblpath, 'ridingsprites.txt')
+SKIP_EVENTS_TABLE = path.join(tblpath, 'skipevents.txt')
+DIVERGENT_TABLE = path.join(tblpath, 'divergentedits.txt')
+MAGICITE_TABLE = path.join(tblpath, 'magicite.txt')
 
-custom_path = "custom"
-MALE_NAMES_TABLE = path.join(custom_path, "malenames.txt")
-FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
-SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
-MOOGLE_NAMES_TABLE = path.join(custom_path, "mooglenames.txt")
-DANCE_NAMES_TABLE = path.join(custom_path, "dancenames.txt")
-PASSWORDS_TABLE = path.join(custom_path, "passwords.txt")
-POEMS_TABLE = path.join(custom_path, "poems.txt")
+custom_path = 'custom'
+MALE_NAMES_TABLE = path.join(custom_path, 'malenames.txt')
+FEMALE_NAMES_TABLE = path.join(custom_path, 'femalenames.txt')
+SPRITE_REPLACEMENT_TABLE = path.join(custom_path, 'spritereplacements.txt')
+MOOGLE_NAMES_TABLE = path.join(custom_path, 'mooglenames.txt')
+DANCE_NAMES_TABLE = path.join(custom_path, 'dancenames.txt')
+PASSWORDS_TABLE = path.join(custom_path, 'passwords.txt')
+POEMS_TABLE = path.join(custom_path, 'poems.txt')
 
 def open_mei_fallback(filename, mode='r', encoding=None):
     if not MEI:
@@ -127,7 +127,7 @@ class AutoLearnRageSub(Substitution):
 
 
 texttable = {}
-f = open(TEXT_TABLE)
+f = open(TEXT_TABLE, encoding='utf_8')
 for line in f:
     line = line.strip()
     char, value = tuple(line.split())
@@ -145,7 +145,7 @@ def name_to_bytes(name, length):
 
 
 shorttexttable = {}
-f = open(SHORT_TEXT_TABLE)
+f = open(SHORT_TEXT_TABLE, encoding='utf_8')
 for line in f:
     line = line.strip()
     char, value = tuple(line.split())
@@ -167,7 +167,7 @@ f.close()
 
 
 reverse_dialoguetexttable = {v: k for k, v in dialoguetexttable.items()}
-reverse_dialoguetexttable["1104"] = "<wait 60 frames>"
+reverse_dialoguetexttable['1104'] = '<wait 60 frames>'
 
 
 def hex2int(hexstr):
@@ -184,18 +184,18 @@ def dialogue_to_bytes(text, null_terminate=True):
     bs = []
     i = 0
     while i < len(text):
-        if text[i] == " ":
-            spaces = re.match(" +", text[i:]).group(0)
+        if text[i] == ' ':
+            spaces = re.match(' +', text[i:]).group(0)
             count = len(spaces)
             j = i + count
-            hexstr = dialoguebytetable.get(text[i:j], "")
+            hexstr = dialoguebytetable.get(text[i:j], '')
             if not hexstr:
                 hexstr = dialoguebytetable.get(text[i])
                 j = i + 1
             i = j
-        elif text[i] == "<":
-            j = text.find(">", i) + 1
-            hexstr = dialoguetexttable.get(text[i:j], "")
+        elif text[i] == '<':
+            j = text.find('>', i) + 1
+            hexstr = dialoguetexttable.get(text[i:j], '')
             i = j
         elif i < len(text) - 1 and text[i:i+2] in dialoguetexttable:
             hexstr = dialoguetexttable[text[i:i+2]]
@@ -204,7 +204,7 @@ def dialogue_to_bytes(text, null_terminate=True):
             hexstr = dialoguetexttable[text[i]]
             i += 1
 
-        if hexstr != "":
+        if hexstr != '':
             bs.extend(bytes.fromhex(hexstr))
 
     if null_terminate and bs[-1] != 0x0:
@@ -220,17 +220,17 @@ def bytes_to_dialogue(bs):
         if c == b'\x00':
             break
         d = bs[i+1] if i + 1 < len(bs) else None
-        if d and f"{c:02X}{d:02X}" in reverse_dialoguetexttable:
-            text.append(reverse_dialoguetexttable[f"{c:02X}{d:02X}"])
+        if d and f'{c:02X}{d:02X}' in reverse_dialoguetexttable:
+            text.append(reverse_dialoguetexttable[f'{c:02X}{d:02X}'])
             i += 2
-        elif f"{c:02X}" in reverse_dialoguetexttable:
-            text.append(reverse_dialoguetexttable[f"{c:02X}"])
+        elif f'{c:02X}' in reverse_dialoguetexttable:
+            text.append(reverse_dialoguetexttable[f'{c:02X}'])
             i += 1
         else:
-            print(bs[i], f"{c:02X}{d:02X}" if d else f"{c:02X}")
+            print(bs[i], f'{c:02X}{d:02X}' if d else f'{c:02X}')
             raise ValueError
 
-    return "".join(text)
+    return ''.join(text)
 
 
 def get_long_battle_text_pointer(f, index):
@@ -282,7 +282,7 @@ def get_dialogue_index(f, address):
 
 
 battlebg_palettes = {}
-f = open(BATTLE_BG_PALETTE_TABLE)
+f = open(BATTLE_BG_PALETTE_TABLE, encoding='utf_8')
 for line in f:
     line = line.strip()
     bg, palette = tuple(line.split())
@@ -324,7 +324,7 @@ def write_multi(f, value, length=2, reverse=True):
         vals.append(value & 0xFF)
         value = value >> 8
     if len(vals) > length:
-        raise Exception("Value length mismatch.")
+        raise Exception('Value length mismatch.')
 
     while len(vals) < length:
         vals.append(0x00)
@@ -889,7 +889,7 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
 
 
 def decompress(bytestring, simple=False, complicated=False, debug=False):
-    result = ""
+    result = ''
     buff = [chr(0)] * 2048
     buffaddr = 0x7DE
     while bytestring:
@@ -906,28 +906,28 @@ def decompress(bytestring, simple=False, complicated=False, debug=False):
                 if buffaddr == 0x800:
                     buffaddr = 0
                 if debug:
-                    print("%x" % ord(byte), end=' ')
+                    print('%x' % ord(byte), end=' ')
             else:
                 low, high, bytestring = (
                     ord(bytestring[0]), ord(bytestring[1]), bytestring[2:])
                 seekaddr = low | ((high & 0x07) << 8)
                 length = ((high & 0xF8) >> 3) + 3
                 if simple:
-                    copied = "".join([buff[seekaddr]] * length)
+                    copied = ''.join([buff[seekaddr]] * length)
                 elif complicated:
                     cycle = buffaddr - seekaddr
                     if cycle < 0:
                         cycle += 0x800
-                    subbuff = "".join((buff+buff)[seekaddr:seekaddr+cycle])
+                    subbuff = ''.join((buff+buff)[seekaddr:seekaddr+cycle])
                     while len(subbuff) < length:
                         subbuff = subbuff + subbuff
-                    copied = "".join(subbuff[:length])
+                    copied = ''.join(subbuff[:length])
                 else:
-                    copied = "".join((buff+buff)[seekaddr:seekaddr+length])
+                    copied = ''.join((buff+buff)[seekaddr:seekaddr+length])
                 assert len(copied) == length
                 result += copied
                 if debug:
-                    print("%x" % seekaddr, length, end=' ')
+                    print('%x' % seekaddr, length, end=' ')
                 while copied:
                     byte, copied = copied[0], copied[1:]
                     buff[buffaddr] = byte
@@ -935,7 +935,7 @@ def decompress(bytestring, simple=False, complicated=False, debug=False):
                     if buffaddr == 0x800:
                         buffaddr = 0
                     if debug:
-                        print("%x" % ord(byte), end=' ')
+                        print('%x' % ord(byte), end=' ')
             if debug:
                 print()
                 import pdb
@@ -967,34 +967,34 @@ def get_matrix_reachability(M):
 
 
 def make_table(cols):
-    table = ""
+    table = ''
     num_rows = max(len(c) for c in cols)
     for i, c in enumerate(cols):
         while len(c) < num_rows:
-            c.append("")
+            c.append('')
         maxwidth = max(len(b) for b in c)
         new_c = []
         for b in c:
             while len(b) < maxwidth:
-                b += " "
+                b += ' '
             new_c.append(b)
         cols[i] = new_c
 
     while any(cols):
         cols = [c for c in cols if c]
         row = list(zip(*cols))[0]
-        row = " | ".join(row)
-        row = "| %s |" % row
-        table = "\n".join([table, row])
+        row = ' | '.join(row)
+        row = '| %s |' % row
+        table = '\n'.join([table, row])
         cols = [col[1:] for col in cols]
     table = table.strip()
-    fullwidth = max([len(r.strip()) for r in table.split("\n")])
-    horizborder = "-" * (fullwidth - 2)
-    horizborder = "/%s\\" % horizborder
-    table = "\n".join([horizborder, table, horizborder[::-1]])
+    fullwidth = max([len(r.strip()) for r in table.split('\n')])
+    horizborder = '-' * (fullwidth - 2)
+    horizborder = '/%s\\' % horizborder
+    table = '\n'.join([horizborder, table, horizborder[::-1]])
     return table
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     M = [[1, 0, 0, 1],
          [0, 1, 0, 0],
          [0, 0, 1, 1],

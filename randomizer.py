@@ -32,7 +32,7 @@ from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monster
 from musicrandomizer import randomize_music, manage_opera, insert_instruments
 from options import ALL_MODES, ALL_FLAGS, options_
 from patches import allergic_dog, banon_life3, vanish_doom, evade_mblock, death_abuse, no_kutan_skip, show_coliseum_rewards
-from shoprandomizer import (get_shops, buy_owned_breakable_tools)
+from shoprandomizer import (mutate_shops, buy_owned_breakable_tools)
 from sillyclowns import randomize_passwords, randomize_poem
 from skillrandomizer import (SpellBlock, CommandBlock, SpellSub, ComboSpellSub,
                              RandomSpellSub, MultipleSpellSub, ChainSpellSub,
@@ -89,7 +89,6 @@ randlog = {}
 
 
 def log(text, section):
-    global randlog
     if section not in randlog:
         randlog[section] = []
     if "\n" in text:
@@ -100,7 +99,6 @@ def log(text, section):
 
 
 def get_logstring(ordering=None):
-    global randlog
     s = ""
     if ordering is None:
         ordering = sorted([o for o in randlog if o is not None])
@@ -2896,20 +2894,10 @@ def assign_unused_enemy_formations():
 
 
 def manage_shops():
-    buyables = set([])
-    descriptions = []
     crazy_shops = options_.is_code_active("madworld")
+    log_function = log if not options_.is_code_active("ancientcave") else None
 
-    for s in get_shops(sourcefile):
-        s.mutate_items(fout, crazy_shops)
-        s.mutate_misc()
-        s.write_data(fout)
-        buyables |= set(s.items)
-        descriptions.append(str(s))
-
-    if not options_.is_code_active("ancientcave"):
-        for d in sorted(descriptions):
-            log(d, section="shops")
+    buyables = randomize_shops(fout, sourcefile, log_function, crazy_shops)
 
     return buyables
 

@@ -38,14 +38,14 @@ class ShopBlock:
 
     def __repr__(self):
         multiplier = price_multipliers[self.discount]
-        s = "%s %s\n" % (self.name, self.shoptype_pretty)
+        s = f'{self.name} {self.shoptype_pretty}\n'
         s = s.upper()
         if self.discount == 2:
-            s += "Discounts for female characters.\n"
+            s += 'Discounts for female characters.\n'
         items = [get_item(i) for i in self.items]
         items = [i for i in items if i is not None]
         for i in items:
-            s2 = "{0:13} {1:>5}\n".format(i.name, int(i.price * multiplier))
+            s2 = f'{i.name:13} {int(i.price * multiplier):>5}\n'
             s += s2
         return s.strip()
 
@@ -59,8 +59,8 @@ class ShopBlock:
 
     @property
     def shoptype_pretty(self):
-        shoptypes = {1: "weapons", 2: "armor", 3: "items",
-                     4: "relics", 5: "misc"}
+        shoptypes = {1: 'weapons', 2: 'armor', 3: 'items',
+                     4: 'relics', 5: 'misc'}
         return shoptypes[self.shoptype]
 
     def mutate_misc(self):
@@ -190,10 +190,10 @@ def get_shops(sourcefile):
     if all_shops:
         return all_shops
 
-    shop_names = [line.strip() for line in open(SHOP_TABLE).readlines()]
+    shop_names = [line.strip() for line in open(SHOP_TABLE, encoding='utf_8').readlines()]
     all_shops = []
     for i, name in zip(range(0x80), shop_names):
-        if "unused" in name.lower():
+        if 'unused' in name.lower():
             continue
         pointer = 0x47AC0 + (9*i)
         s = ShopBlock(pointer, name)
@@ -202,3 +202,38 @@ def get_shops(sourcefile):
         all_shops.append(s)
 
     return get_shops(sourcefile)
+
+def guarantee_healing_before_koltz():
+    koltz_shop_ids = [4, 8] # Figaro Castle and S. Figaro item shops
+    healing_items = [232, 233, 234] # Tonic, Potion, X-Potion
+    koltz_shops = list(filter(lambda s: s.shopid in koltz_shop_ids, all_shops))
+    for s in koltz_shops:
+        available_healing_items = filter(lambda i: i in healing_items, s.items)
+        if list(available_healing_items):
+            break
+    else:
+        shop = random.choice(koltz_shops)
+        shop.items[-1] = random.choice(healing_items)
+        shop.items = sorted(shop.items)
+
+def mutate_shops(fout, sourcefile, log_function, crazy_shops=False):
+    get_shops(sourcefile)
+    buyables = set([])
+    descriptions = []
+
+    for s in all_shops:
+        s.mutate_items(fout, crazy_shops)
+        s.mutate_misc()
+
+    guarantee_healing_before_koltz()
+
+    for s in all_shops:
+        s.write_data(fout)
+        buyables |= set(s.items)
+        descriptions.append(str(s))
+
+    if log_function:
+        for d in sorted(descriptions):
+            log_function(d, section='shops')
+
+    return buyables

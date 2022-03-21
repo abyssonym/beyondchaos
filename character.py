@@ -55,7 +55,7 @@ class CharacterBlock:
         self.stats = {}
 
     def __repr__(self):
-        s = '{0:02d}. {1}'.format(self.id+1, self.newname) + '\n'
+        s = f'{self.id+1:02d}. {self.newname}\n'
         command_names = []
         for c in self.command_objs:
             if c is not None:
@@ -63,13 +63,13 @@ class CharacterBlock:
         s += 'Commands: '
         s += ', '.join(command_names) + '\n'
         if self.original_appearance and self.new_appearance:
-            s += 'Looks like: %s\n' % self.new_appearance
-            s += 'Originally: %s\n' % self.original_appearance
+            s += f'Looks like: {self.new_appearance}\n'
+            s += f'Originally: {self.original_appearance}\n'
 
         from utils import make_table
         statblurbs = {}
         for name in CHARSTATNAMES:
-            blurb = '{0:8} {1}'.format(name.upper() + ':', self.stats[name])
+            blurb = f'{name.upper() + ":":8} {self.stats[name]}'
             statblurbs[name] = blurb
         column1 = [statblurbs[n] for n in ['hp', 'mp', 'evade', 'mblock']]
         column2 = [statblurbs[n] for n in ['vigor', 'm.power', 'speed', 'stamina']]
@@ -80,11 +80,11 @@ class CharacterBlock:
             s += ', '.join([n.name for n in self.get_notable_equips()])
             s += '\n'
         if self.wor_location is not None:
-            s += 'World of Ruin location: %s\n' % self.wor_location
+            s += f'World of Ruin location: {self.wor_location}\n'
         if self.natural_magic:
             s += 'Has natural magic.\n'
             for level, spell in self.natural_magic:
-                s += '  LV %s - %s\n' % (level, spell.name)
+                s += f'  LV {level} - {spell.name}\n'
         return s.strip()
 
     def get_notable_equips(self):

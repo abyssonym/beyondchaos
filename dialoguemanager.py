@@ -297,7 +297,7 @@ def read_script(idx, battle=False):
 
 def split_line(line):
     line = line.replace("’", "'")
-    split = re.split("(\$..|[A-Za-z']+|[^$A-Za-z']+)", line)
+    split = re.split(r"(\$..|[A-Za-z']+|[^$A-Za-z']+)", line)
     return [s for s in split if len(s)]
 
 def patch(text, token):
@@ -305,7 +305,7 @@ def patch(text, token):
         return None
     #print(f'patching {text}', end='')
     while True:
-        match = re.search('\{(.+)\}', text)
+        match = re.search(r'\{(.+)\}', text)
         if not match:
             break
 

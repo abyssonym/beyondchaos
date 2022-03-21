@@ -161,7 +161,7 @@ class EsperBlock:
         assert len(self.spells) == len(self.learnrates)
         s = self.name.upper() + '\n'
         for spell, learnrate in zip(self.spells, self.learnrates):
-            s += '{0:6}  x{1}\n'.format(spell.name, learnrate)
+            s += f'{spell.name:6}  x{learnrate}\n'
         s += 'BONUS: '
         if self.bonus in bonus_strings:
             s += bonus_strings[self.bonus]

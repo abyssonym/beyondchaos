@@ -24,7 +24,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                 if buffaddr == 0x800:
                     buffaddr = 0
                 if debug:
-                    print('%x' % ord(byte), end=' ')
+                    print(f'{ord(byte):x}', end=' ')
             else:
                 low, high, bytestring = (
                     bytestring[0], bytestring[1], bytestring[2:])
@@ -47,7 +47,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                 assert len(copied) == length
                 result += copied
                 if debug:
-                    print('%x' % seekaddr, length, end=' ')
+                    print(f'{seekaddr:x}', length, end=' ')
                 while copied:
                     byte, copied = copied[0], copied[1:]
                     buff[buffaddr] = byte
@@ -55,7 +55,7 @@ def decompress(bytestring, simple=False, complicated=True, debug=False):
                     if buffaddr == 0x800:
                         buffaddr = 0
                     if debug:
-                        print('%x' % ord(byte), end=' ')
+                        print(f'{ord(byte):x}', end=' ')
             if debug:
                 print()
                 import pdb; pdb.set_trace()
@@ -212,7 +212,7 @@ if __name__ == '__main__':
     copyfile(sourcefile, outfile)
     d = Decompressor(0x2686C, fakeaddress=0x7E5000, maxaddress=0x28A70)
     d.read_data(sourcefile)
-    print(['%x' % i for i in d.get_bytestring(0x7E7C43, 0x20)])
+    print([f'{i}' for i in d.get_bytestring(0x7E7C43, 0x20)])
     d.writeover(0x7E50F7, [0x0] * 57)
     d.writeover(0x7E501A, [0xEA] * 3)
     d.compress_and_write(outfile)

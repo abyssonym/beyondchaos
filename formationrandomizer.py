@@ -50,11 +50,11 @@ class Formation():
             counter[name] += 1
         s = ''
         for name, count in sorted(counter.items()):
-            s = ', '.join([s, '%s x%s' % (name, count)])
+            s = ', '.join([s, f'{name} x{count}'])
         s = s[2:]
         if simple:
             return s
-        s = '%s (%x)' % (s, self.formid)
+        s = f's ({self.formid:x})'
         #s += ' ' + ' '.join(['%x' % e.id for e in self.present_enemies])
         return s
 
@@ -357,9 +357,9 @@ class FormationSet():
 
     def __repr__(self):
         s = ''
-        s += 'SET ID %x\n' % self.setid
+        s += f'SET ID {self.setid:x}\n'
         for f in self.formations:
-            s += '%s ' % f.formid
+            s += f'{f.formid} '
             for i in range(8):
                 s += '* ' if f.misc1 & (1 << i) else '  '
             s += str([e.name for e in f.present_enemies]) + '\n'

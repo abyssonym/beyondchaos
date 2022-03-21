@@ -32,7 +32,7 @@ def manage_map_names(fout):
     pointers = {}
     for i in range(1, 101):
         pointers[i] = fout.tell()
-        room_name = 'Room %s' % i
+        room_name = f'Room {i}'
         room_name = bytes([text[c] for c in room_name]) + b'\x00'
         fout.write(room_name)
         #fout.write(chr(0))
@@ -959,7 +959,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
     assert not optional_chars
 
     if pointer >= 0xb6965:
-        raise Exception('Cave events out of bounds. %x' % pointer)
+        raise Exception(f'Cave events out of bounds. {pointer:x}')
 
     # lower encounter rate
     dungeon_rates = [0x38, 0, 0x20, 0, 0xb0, 0, 0x00, 1,

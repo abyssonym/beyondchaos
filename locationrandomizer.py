@@ -221,8 +221,8 @@ class Zone():
             x = str(x + 1)
             y = 'ABCDEFGH'[y]
             if self.zoneid < 0x40:
-                return 'World of Balance %s-%s %s' % (y, x, quadrant)
-            return 'World of Ruin %s-%s %s' % (y, x, quadrant)
+                return f'World of Balance ' 
+            return f'World of Ruin {y}-{x} {quadrant}'
 
         locid = ((self.zoneid % 0x80) * 4) + index
         try:
@@ -260,9 +260,9 @@ class Location():
             self.entrance_set.location = self
         self.name = None
         if self.locid in mapnames:
-            self.altname = '%x %s' % (self.locid, mapnames[self.locid])
+            self.altname = f'{self.locid:x} {mapnames[self.locid]}'
         else:
-            self.altname = '%x' % self.locid
+            self.altname = f'{self.locid:x}'
         self.events = []
 
         self.name_id = 0
@@ -295,7 +295,7 @@ class Location():
         if self.locid in mapnames:
             return self.altname
         if self.name:
-            return '%x %s' % (self.locid, self.name)
+            return f'{self.locid:x} {self.name}'
         return self.altname
 
     @property
@@ -313,7 +313,7 @@ class Location():
     @property
     def area_name(self):
         if self.locid not in maplocations:
-            raise KeyError('Area for location ID %s not known.' % self.locid)
+            raise KeyError(f'Area for location ID {self.locid} not known.')
         return maplocations[self.locid]
 
     @property
@@ -339,9 +339,9 @@ class Location():
                 count = counts[c.effective_id]
             else:
                 count = 1
-                desc = '?%s' % desc
+                desc = f'?{desc}'
             if count >= 2:
-                desc = '*%s' % desc
+                desc = f'*{desc}'
             if 'Enemy' in desc:
                 enemies.append(desc)
             elif 'Treasure' in desc:
@@ -401,8 +401,7 @@ class Location():
     def validate_entrances(self):
         pairs = [(e.x, e.y) for e in self.entrances]
         if len(pairs) != len(set(pairs)):
-            raise Exception('Duplicate entrances found on map %s.' %
-                            self.locid)
+            raise Exception(f'Duplicate entrances found on map {self.locid}.')
 
     def collapse_entids(self):
         entrances = self.entrances
@@ -902,7 +901,7 @@ class Entrance():
             entid = self.entid
         else:
             entid = '?'
-        return '<%s %s: %s %s>' % (self.location.locid, entid, self.x, self.y)
+        return f'<{self.location.locid} {entid}: {self.x} {self.y}>'
 
     def copy(self, entrance):
         for attribute in ['x', 'y', 'dest', 'destx', 'desty',
@@ -1179,5 +1178,5 @@ if __name__ == '__main__':
     locations = get_locations(filename)
     zones = get_zones(filename)
     for l in locations:
-        print('%x' % (l.layers_to_animate & 2), l, end=' ')
+        print(f'{(l.layers_to_animate & 2):x}', l, end=' ')
         print()

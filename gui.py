@@ -246,13 +246,13 @@ class Window(QWidget):
                 radioButton.clicked.connect(lambda checked, tag=tag, level=level: self.updateMakeoverTag(tag, level))
                 h.addWidget(radioButton)
                 groups[tag].addButton(radioButton)
-            
+
             h.addStretch()
-            
+
             makeover_layout.addRow(tag, h)
         makeover_group.setLayout(makeover_layout)
 
-        
+
         # loop to add tab objects to 'tabs' TabWidget
         for t, d, names in zip(self.tablist, self.dictionaries, tabNames):
             tabObj = QScrollArea()
@@ -624,7 +624,7 @@ class Window(QWidget):
         for checkbox in tab.findChildren(FlagCheckBox):
             if checkbox.value in ['novanilla', 'frenchvanilla', 'cloneparty']:
                 checkbox.setEnabled(enable)
-        
+
     def updateMakeoverRadios(self):
         tab = self.tablist[1]  # this sucks
 
@@ -632,7 +632,7 @@ class Window(QWidget):
             level = self.makeover[tag]
             radio = tab.findChild(QRadioButton, f'{level}{tag}')
             radio.setChecked(True)
-            
+
 
     # when radio button is checked, update the main class variable
     def updateRadioSelection(self, mode):

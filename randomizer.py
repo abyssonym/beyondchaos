@@ -110,13 +110,12 @@ def get_logstring(ordering=None):
     s += '\n'
     for sectnum, section in enumerate(ordering):
         sectnum += 1
-        s += '-{0:02d}- {1}\n'.format(
-            sectnum, ' '.join([word.capitalize() for word in section.split()]))
+        s += f'-{sectnum:02d}- {" ".join([word.capitalize() for word in section.split()])}\n'
 
     for sectnum, section in enumerate(ordering):
         sectnum += 1
         s += '\n' + '=' * 60 + '\n'
-        s += '-{0:02d}- {1}\n'.format(sectnum, section.upper())
+        s += f'-{sectnum:02d}- {section.upper()}\n'
         s += '-' * 60 + '\n'
         datas = sorted(randlog[section])
         newlines = False
@@ -157,7 +156,7 @@ def log_break_learn_items():
     for i in breakable:
         spell = get_spell(i.features['breakeffect'])
         indestructible = not i.features['otherproperties'] & 0x08
-        s2 = '{0:13}  {1}'.format(i.name + ':', spell.name)
+        s2 = f'{i.name + ":":13}  {spell.name}'
         if indestructible:
             s2 += ' (indestructible)'
         s += s2 + '\n'
@@ -167,7 +166,7 @@ def log_break_learn_items():
     for i in learnable:
         spell = get_spell(i.features['learnspell'])
         rate = i.features['learnrate']
-        s += '{0:13}  {1} x{2}\n'.format(i.name + ':', spell.name, rate)
+        s += f'{i.name + ":":13}  {spell.name} x{rate}\n'
     log(s, 'item magic')
 
 
@@ -470,7 +469,7 @@ def randomize_slots(filename, fout, pointer):
                 break
         if spell:
             from skillrandomizer import spellnames
-            slotString = '%s: %s' % (slotNames[i], spellnames[spell.spellid])
+            slotString = f'{slotNames[i]} {spellnames[spell.spellid]}'
             log(slotString, 'slots')
             used.append(spell.spellid)
             fout.seek(pointer+i)
@@ -1074,7 +1073,7 @@ def manage_commands_new(commands):
             else:
                 newname = f'{s.count}x{newname}'
         elif isinstance(s, ChainSpellSub):
-            newname = '?-%s' % newname
+            newname = f'?-{newname}'
 
         # Disable menu screens for replaced commands.
         for i, name in enumerate(['swdtech', 'blitz', 'lore', 'rage', 'dance']):
@@ -2387,9 +2386,7 @@ def manage_treasure(monsters, shops=True, no_charm_drops=False):
             winname = '????????????'
         else:
             winname = win_obj.name
-        s = '{0:12} -> {1:12}  :  LV {2:02d} {3}'.format(
-            wager_obj.name, winname, opponent_obj.stats['level'],
-            opponent_obj.display_name)
+        s = f'{wager_obj.name:12} -> {winname:12}  :  LV {opponent_obj.stats["level"]:02d} {opponent_obj.display_name}'
         log(s, section='colosseum')
 
 
@@ -2549,7 +2546,7 @@ def manage_blitz():
             newcmd += [0x00]
         blitzstr = [display_inputs[j] for j in newcmd if j in display_inputs]
         blitzstr = ', '.join(blitzstr)
-        blitzstr = '%s. %s' % (i+1, blitzstr)
+        blitzstr = f'{i+1}. {blitzstr}'
         log(blitzstr, section='blitz inputs')
         newcmd += [(newlength+1) * 2]
         fout.seek(current)
@@ -3004,7 +3001,7 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
 
         for p in palettes:
             if p in done:
-                raise Exception('Already recolored palette %x' % p)
+                raise Exception(f'Already recolored palette {p:x}')
             fout.seek(p)
             raw_palette = [read_multi(fout, length=2) for i in range(0x80)]
             new_palette = transformer(raw_palette)
@@ -3318,7 +3315,7 @@ def create_dimensional_vortex():
             if value <= 3:
                 break
             else:
-                s += '%s ' % value
+                s += f'{value} '
         else:
             continue
         if (b.dest & 0x1FF) == (a.location.locid & 0x1FF):
@@ -3571,7 +3568,7 @@ def manage_auction_house():
             elif value == 0xc1:
                 pointer += 5
             else:
-                raise Exception('Unknown auction house byte %x %x' % (pointer, value))
+                raise Exception(f'Unknown auction house byte {pointer:x} {value:x}')
             fout.seek(pointer)
             oldaddr = read_multi(fout, 2)
             assert oldaddr in new_format
@@ -3700,10 +3697,10 @@ def manage_bingo():
         midborder = '+' + '+'.join(['-'*12]*len(grid)) + '+'
         s = midborder + '\n'
         for row in grid:
-            flags = ['{0:^12}'.format(c.bingoflag.upper()) for c in row]
-            names = ['{0:^12}'.format(c.bingoname) for c in row]
-            scores = ['{0:^12}'.format('%s Points' % c.bingoscore)
-                      for c in row]
+            flags = [f'{c.bingoflag.upper():^12}' for c in row]
+            names = [f'{c.bingoname^12}' for c in row]
+            points = f'{c.bingoscore} Points'
+            scores = [f'{points:^12}' for c in row]
             flags = '|'.join(flags)
             names = '|'.join(names)
             scores = '|'.join(scores)
@@ -3720,9 +3717,9 @@ def manage_bingo():
         scorelists = {x:dict({}) for x in 'aims'}
         random.seed(seed + (i**2))
         grid, flaggrid, displaygrid = [], [], []
-        filename = 'bingo.%s.%s.txt' % (seed, i)
-        s = 'Beyond Chaos Bingo Card %s-%s\n' % (i, difficulty)
-        s += 'Seed: %s\n' % seed
+        filename = f'bingo.{seed}.{i}.txt'
+        s = f'Beyond Chaos Bingo Card {i}-{difficulty}\n'
+        s += f'Seed: {seed}\n'
         for y in range(size):
             for g in [grid, flaggrid, displaygrid]:
                 g.append([])
@@ -3998,10 +3995,10 @@ def manage_dances():
     for i, dance in enumerate(dance_names):
         from skillrandomizer import spellnames
         dance_names = [spellnames[dances[i*4 + j]] for j in range(4)]
-        dancestr = '%s:\n  ' % dance
+        dancestr = f'{dance}:\n  '
         frequencies = [7, 6, 2, 1]
         for frequency, dance_name in zip(frequencies, dance_names):
-            dancestr += '{0}/16 {1:<12} '.format(frequency, dance_name)
+            dancestr += f'{frequency}/16 {dance_name:<12} '
         dancestr = dancestr.rstrip()
         log(dancestr, 'dances')
 
@@ -4057,7 +4054,7 @@ def sabin_hint(commands):
         command_id = sabin.battle_commands[0]
 
     command = [c for c in commands.values() if c.id == command_id][0]
-    hint = 'My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {}.'.format(command.name)
+    hint = f'My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {command.name}.'
 
     set_dialogue(0xb9, hint)
 
@@ -4065,7 +4062,7 @@ def sabin_hint(commands):
 def house_hint():
     skill = get_collapsing_house_help_skill()
 
-    hint = f'There are monsters inside! They keep {skill}ing everyone who goes in to help. You using suitable Relics?'.format(skill)
+    hint = f'There are monsters inside! They keep {skill}ing everyone who goes in to help. You using suitable Relics?'
     set_dialogue(0x8A4, hint)
 
 
@@ -4147,7 +4144,7 @@ def randomize(args):
         args[1] = TEST_FILE
         args[2] = TEST_SEED
     sleep(0.5)
-    print('You are using Beyond Chaos EX randomizer version "%s".' % VERSION)
+    print(f'You are using Beyond Chaos EX randomizer version "{VERSION}".')
     if BETA:
         print('WARNING: This version is a beta! Things may not work correctly.')
 
@@ -4202,7 +4199,7 @@ def randomize(args):
                 raise Exception('File not found.')
         else:
             raise Exception('File not found.')
-        print('Success! Using valid rom file: %s\n' % sourcefile)
+        print(f'Success! Using valid rom file: {sourcefile}\n')
     del f
 
     saveflags = False
@@ -4245,7 +4242,7 @@ def randomize(args):
             while mode_num not in range(len(ALL_MODES)):
                 print('Available modes:\n')
                 for i, mode in enumerate(ALL_MODES):
-                    print('{}. {} - {}'.format(i+1, mode.name, mode.description))
+                    print(f'{i+1}. {mode.name} - {mode.description}')
                 mode_str = input('\nEnter desired mode number or name:\n').strip()
                 try:
                     mode_num = int(mode_str) - 1
@@ -4262,7 +4259,7 @@ def randomize(args):
             print(flaghelptext + '\n')
             print('Save frequently used flag sets by adding 0: through 9: before the flags.')
             for k, v in sorted(speeddial_opts.items()):
-                print('    %s: %s' % (k, v))
+                print('    {k}: {v}')
             print()
             flags = input('Please input your desired flags (blank for '
                           'all of them):\n> ').strip()
@@ -4271,10 +4268,10 @@ def randomize(args):
                 dial = ''.join(c for c in flags[0] if c in '0123456789')
                 if len(dial) == 1:
                     speeddial_opts[dial] = flags[1]
-                    print("\nSaving flags '%s' in slot %s" % (flags[1], dial))
+                    print(f"\nSaving flags '{flags[1]}' in slot {dial}")
                     saveflags = True
                 flags = flags[1]
-            fullseed = '.%i.%s.%s' % (mode_num+1, flags, fullseed)
+            fullseed = f'.{mode_num+1}.{flags}.{fullseed}'
             print()
 
     try:
@@ -4363,7 +4360,7 @@ def randomize(args):
     if version and version != VERSION:
         print('WARNING! Version mismatch! '
               'This seed will not produce the expected result!')
-    s = 'Using seed: %s.%s.%s.%s' % (VERSION, options_.mode.name, flags, seed)
+    s = f'Using seed: {VERSION}.{options_.mode.name}.{flags}.{seed}'
     print(s)
     log(s, section=None)
     log('This is a game guide generated for the Beyond Chaos EX FF6 randomizer.',
@@ -4584,8 +4581,7 @@ def randomize(args):
         for name, before, after in loglist:
             beforename = [c for c in commands.values() if c.id == before][0].name
             aftername = [c for c in commands.values() if c.id == after][0].name
-            logstr = '{0:13} {1:7} -> {2:7}'.format(
-                name + ':', beforename.lower(), aftername.lower())
+            logstr = f'{name + ":":13} {beforename.lower():7} -> {aftername.lower():7}'
             log(logstr, section='command-change relics')
         reset_cursed_shield(fout)
 
@@ -4857,7 +4853,7 @@ def randomize(args):
     manage_dialogue_patches(fout)
     write_location_names(fout)
 
-    rewrite_title(text='FF6 BCEX %s' % seed)
+    rewrite_title(text=f'FF6 BCEX {seed}')
     fout.close()
     rewrite_checksum()
 
@@ -4881,7 +4877,7 @@ def randomize(args):
     f.write(get_logstring())
     f.close()
 
-    print('Randomization successful. Output filename: %s\n' % outfile)
+    print(f'Randomization successful. Output filename: {outfile}\n')
 
     if options_.is_code_active('bingoboingo'):
         manage_bingo()
@@ -4898,14 +4894,14 @@ if __name__ == '__main__':
         randomize(args=args)
         input('Press enter to close this program. ')
     except Exception as e:
-        print('ERROR: %s' % e)
+        print(f'ERROR: {e}')
         import traceback
         traceback.print_exc()
         if fout:
             fout.close()
         if outfile is not None:
             print('Please try again with a different seed.')
-            input('Press enter to delete %s and quit. ' % outfile)
+            input(f'Press enter to delete {outfile} and quit. ')
             os.remove(outfile)
         else:
             input('Press enter to quit. ')

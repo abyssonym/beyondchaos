@@ -252,7 +252,7 @@ class MonsterBlock:
                 power = (power // 2) + 1
             else:
                 power = str(power // 2) + '.5'
-            s = 'attack x%s' % power
+            s = f'attack x{power}'
         elif special & 0x3F > 0x31:
             s = 'reflect break?'
         else:
@@ -269,7 +269,7 @@ class MonsterBlock:
         full24 = bin(self.immunities[0] | (self.immunities[1] << 8) |
                      (self.immunities[2] << 16))
         full24 = full24[2:]
-        full24 = '{0:0>24}'.format(full24)
+        full24 = f'{full24:0>24}'
         if full24.count('1') > full24.count('0'):
             # show vulnerabilities
             s = 'VULNERABLE: '
@@ -329,7 +329,7 @@ class MonsterBlock:
         if changed_commands is None:
             changed_commands = []
         s = ('~' * 40) + '\n'
-        s += self.display_name + ' (Level %s)' % self.stats['level'] + '\n'
+        s += f'{self.display_name} (Level {self.stats["level"]})\n'
 
         def make_column(statnames):
             rows = []
@@ -347,7 +347,7 @@ class MonsterBlock:
                 values[newname] = value
 
             valuewidth = max(len(str(v)) for v in values.values())
-            substr = '{0:%s} {1:%s}' % (namewidth, valuewidth)
+            substr = f'{namewidth:%s} {valuewidth:%s}'
             for name in statnames:
                 name = get_shortname(name)
                 value = values[name]
@@ -381,44 +381,43 @@ class MonsterBlock:
             others = sorted([key for key in others if others[key]])
             s += 'OTHER: ' + ', '.join(others) + '\n'
 
-        s += "SPECIAL '%s': %s\n" % (self.attackname,
-                                     self.special_effect_str)
+        s += f"SPECIAL '{self.attackname}': {self.special_effect_str}\n"
 
         skills = self.get_skillset(ids_only=False)
         skills = [z for z in skills
                   if z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]]
         if skills:
             names = sorted([z.name for z in skills])
-            s += 'SKILLS: %s\n' % ', '.join(names)
+            s += f'SKILLS: {", ".join(names)}\n'
 
         if self.rages and 0x10 not in changed_commands:
             rages = [get_spell(r).name for r in self.rages]
             rages = [r if r != 'Special' else self.attackname for r in rages]
-            s += 'RAGE: %s\n' % ', '.join(rages)
+            s += f'RAGE: {", ".join(rages)}\n'
 
         lores = self.get_lores()
         if lores and 0x0C not in changed_commands:
-            s += 'LORE: %s\n' % ', '.join([l.name for l in lores])
+            s += f'LORE: {", ".join([l.name for l in lores])}\n'
 
         if not self.is_boss and 0x0E not in changed_commands:
             controls = [get_spell(c).name for c in self.controls if c != 0xFF]
             controls = [r if r != 'Special' else self.attackname for r in controls]
-            s += 'CONTROL: %s\n' % ', '.join(sorted(controls))
+            s += f'CONTROL: {", ".join(sorted(controls))}\n'
 
         if 0x0D not in changed_commands:
             sketches = [get_spell(c).name for c in self.sketches]
             sketches = [r if r != 'Special' else self.attackname for r in sketches]
-            s += 'SKETCH: %s\n' % ', '.join(sketches)
+            s += f'SKETCH: {", ".join(sketches)}\n'
 
         steals = [i.name for i in self.steals if i]
         drops = [i.name for i in self.drops if i]
-        s += ('STEAL: %s' % ', '.join(steals)).strip() + '\n'
-        s += ('DROPS: %s' % ', '.join(drops)).strip() + '\n'
+        s += f'STEAL: {", ".join(steals).strip()}\n'
+        s += f'DROPS: {", ".join(drops).strip()}\n'
 
         if not self.cantmorph:
-            s += 'MORPH (%s%%): %s\n' % (self.morphrate, ', '.join(
-                sorted([i.name for i in self.get_morph_items()])))
-        s += ('LOCATION: %s' % self.display_location).strip() + '\n'
+            morph_items = ', '.join(sorted([i.name for i in self.get_morph_items()]))
+            s += f'MORPH ({self.morphrate}%%): {morph_items}\n'
+        s += f'LOCATION: {self.display_location.strip()}\n'
 
         return s.strip()
 
@@ -429,7 +428,7 @@ class MonsterBlock:
             if hasattr(self, 'auxloc'):
                 location = self.auxloc
             elif not self.is_boss:
-                location = 'Missing %x' % self.id
+                location = f'Missing {self.id:x}'
         return location
 
     @property
@@ -467,7 +466,7 @@ class MonsterBlock:
 
     @property
     def pretty_aiscript(self):
-        hexify = lambda c: '%x' % ord(c)
+        hexify = lambda c: f'{ord(c):x}'
         output = ''
         for action in self.aiscript:
             output += ' '.join(map(hexify, action)) + '\n'
@@ -1830,7 +1829,7 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
             candidates = bosses
         else:
             candidates = nonbosses
-            
+
         candidates = [c for c in candidates
                       if abs(c.stats['level'] - m.stats['level']) <= 20]
 

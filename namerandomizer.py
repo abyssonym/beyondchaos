@@ -87,7 +87,7 @@ def generate_attack():
         move = random.choice(candidates)
 
     if len(modifier) + len(move) < 10:
-        return ('%s %s' % (modifier, move)).strip()
+        return f'{modifier} {move}'.strip()
     return modifier + move
 
 if __name__ == '__main__':

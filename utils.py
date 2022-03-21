@@ -906,7 +906,7 @@ def decompress(bytestring, simple=False, complicated=False, debug=False):
                 if buffaddr == 0x800:
                     buffaddr = 0
                 if debug:
-                    print('%x' % ord(byte), end=' ')
+                    print(f'{ord(byte):x}', end=' ')
             else:
                 low, high, bytestring = (
                     ord(bytestring[0]), ord(bytestring[1]), bytestring[2:])
@@ -927,7 +927,7 @@ def decompress(bytestring, simple=False, complicated=False, debug=False):
                 assert len(copied) == length
                 result += copied
                 if debug:
-                    print('%x' % seekaddr, length, end=' ')
+                    print(f'{seekaddr:x}', length, end=' ')
                 while copied:
                     byte, copied = copied[0], copied[1:]
                     buff[buffaddr] = byte
@@ -935,7 +935,7 @@ def decompress(bytestring, simple=False, complicated=False, debug=False):
                     if buffaddr == 0x800:
                         buffaddr = 0
                     if debug:
-                        print('%x' % ord(byte), end=' ')
+                        print(f'{ord(byte):x}', end=' ')
             if debug:
                 print()
                 import pdb
@@ -984,13 +984,13 @@ def make_table(cols):
         cols = [c for c in cols if c]
         row = list(zip(*cols))[0]
         row = ' | '.join(row)
-        row = '| %s |' % row
+        row = f'| {row} |'
         table = '\n'.join([table, row])
         cols = [col[1:] for col in cols]
     table = table.strip()
     fullwidth = max([len(r.strip()) for r in table.split('\n')])
     horizborder = '-' * (fullwidth - 2)
-    horizborder = '/%s\\' % horizborder
+    horizborder = f'/{horizborder}\\'
     table = '\n'.join([horizborder, table, horizborder[::-1]])
     return table
 

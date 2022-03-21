@@ -433,7 +433,7 @@ class Cluster:
 
     def __repr__(self):
         display = '; '.join([str(e) for e in self.entrances])
-        display = '%s %s' % (self.clusterid, display)
+        display = f'{self.clusterid} {display}'
         return display
 
 
@@ -453,7 +453,7 @@ class RestStop(Cluster):
         RestStop.counter += 1
 
     def __repr__(self):
-        return 'Rest stop rank %s' % self.rank
+        return f'Rest stop rank {self.rank}'
 
 
 def get_clusters():
@@ -729,7 +729,7 @@ class Segment:
             entid = self.entids[i]
             if entid is None:
                 entid = '?'
-            display += '%s %s\n' % (entid, cluster)
+            display += f'{entid} {cluster}\n'
             if not isinstance(self, InterSegment):
                 if i < len(self.intersegments):
                     display += str(self.intersegments[i]) + '\n'
@@ -737,8 +737,8 @@ class Segment:
         if not display:
             display = '.'
         if not isinstance(self, InterSegment):
-            display += '\nCONNECT %s' % self.consolidated_links
-            display += '\nONE-WAY %s' % self.oneway_entrances
+            display += f'\nCONNECT {self.consolidated_links}'
+            display += f'\nONE-WAY {self.oneway_entrances}'
         return display
 
 

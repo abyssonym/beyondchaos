@@ -22,14 +22,14 @@ maplocations_override = {}
 
 
 def init():
-    for line in open(MAP_NAMES_TABLE):
+    for line in open(MAP_NAMES_TABLE, encoding='utf_8'):
         key, value = tuple(line.strip().split(':'))
         key = int(key, 0x10)
         mapnames[key] = value
-    for line in open(MAP_BATTLE_BG_TABLE):
+    for line in open(MAP_BATTLE_BG_TABLE, encoding='utf_8'):
         a, b = tuple(line.strip().split())
         mapbattlebgs[int(a)] = int(b, 0x10)
-    for line in open(LOCATION_MAPS_TABLE):
+    for line in open(LOCATION_MAPS_TABLE, encoding='utf_8'):
         a, b, *c = line.strip().split(':')
         b = b.strip().strip(',').split(',')
         locids = []
@@ -1079,7 +1079,7 @@ def get_unused_locations(filename=None):
         return unused_locs
 
     unused_locs = set([])
-    for line in open(UNUSED_LOCATIONS_TABLE):
+    for line in open(UNUSED_LOCATIONS_TABLE, encoding='utf_8'):
         locid = int(line.strip(), 0x10)
         loc = get_location(locid)
         unused_locs.add(loc)
@@ -1092,7 +1092,7 @@ def lookup_reachable_entrances(entrance):
     global reachdict
     if not reachdict:
         reachdict = {}
-        for line in open(ENTRANCE_REACHABILITY_TABLE):
+        for line in open(ENTRANCE_REACHABILITY_TABLE, encoding='utf_8'):
             locid, ents = line.strip().split(':')
             locid = int(locid)
             ents = list(map(int, ents.split(',')))

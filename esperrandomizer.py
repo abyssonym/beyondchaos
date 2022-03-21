@@ -382,7 +382,7 @@ def randomize_magicite(fout, sourcefile):
         e.location = locations[i]
 
     with open(sourcefile, 'br') as s:
-        for line in open(MAGICITE_TABLE, 'r'):
+        for line in open(MAGICITE_TABLE, 'r', encoding='utf_8'):
             line = line.split('#')[0].strip()
             l = line.split(',')
             address = int(l[0], 16)
@@ -441,7 +441,7 @@ def get_espers(sourcefile):
         return all_espers
 
     all_espers = []
-    for i, line in enumerate(open(ESPER_TABLE)):
+    for i, line in enumerate(open(ESPER_TABLE, encoding='utf_8')):
         line = line.strip()
         if line[0] == '#':
             continue

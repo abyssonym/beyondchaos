@@ -20,7 +20,7 @@ def get_characters():
     if character_list:
         return character_list
 
-    for i, line in enumerate(open(CHAR_TABLE)):
+    for i, line in enumerate(open(CHAR_TABLE, encoding='utf_8')):
         line = line.strip()
         if line[0] == '#':
             continue

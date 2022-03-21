@@ -1324,7 +1324,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
 
     # obtain all locations with WoB treasures
     wobtreasurelocs = []
-    for line in open(WOB_TREASURE_TABLE):
+    for line in open(WOB_TREASURE_TABLE, encoding='utf_8'):
         line = line.strip()
         wobtreasurelocs.append(line)
 
@@ -1351,7 +1351,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
     # give the player a basic set of items.  These items are intended to
     # reflect the items a player would probably have by the time they get this
     # far, so that they aren't missing basic supplies they would have in almost any seed.
-    for line in open(WOR_ITEMS_TABLE):
+    for line in open(WOR_ITEMS_TABLE, encoding='utf_8'):
         line = line.strip().split(',')
         for i in range(0, int(line[1])):
             wor_sub.bytestring += bytes([0x80, int(line[0], 16)])
@@ -1367,7 +1367,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
     wor_sub2.bytestring = bytearray([])
 
     # set most of the event bits that would have been set in the WoB
-    for line in open(WOB_EVENTS_TABLE):
+    for line in open(WOB_EVENTS_TABLE, encoding='utf_8'):
         line = line.strip().split(',')
         setbit = int(line[1], 16)  # if 1, set the bit from the txt file
         bit = line[0]  # the bit to set/clear from the txt file

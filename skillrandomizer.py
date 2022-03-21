@@ -3,7 +3,7 @@ from utils import (hex2int, int2bytes, Substitution, SPELL_TABLE,
 
 spelldict = {}
 spellnames = {}
-f = open(SPELL_TABLE)
+f = open(SPELL_TABLE, encoding='utf_8')
 for line in f:
     line = line.strip()
     while '  ' in line:
@@ -13,7 +13,7 @@ for line in f:
 f.close()
 
 spellbans = {}
-f = open(SPELLBANS_TABLE)
+f = open(SPELLBANS_TABLE, encoding='utf_8')
 for line in f:
     line = line.strip()
     if line[0] == '#':

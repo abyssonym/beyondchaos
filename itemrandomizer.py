@@ -45,7 +45,7 @@ def get_custom_items():
         return customs
 
     customname, customdict = None, None
-    for line in open(CUSTOM_ITEMS_TABLE):
+    for line in open(CUSTOM_ITEMS_TABLE, encoding='utf_8'):
         while '  ' in line:
             line = line.replace('  ', ' ')
         line = line.strip()
@@ -950,7 +950,7 @@ def reset_rage_blizzard(items, umaro_risk, fout):
 
 def items_from_table(tablefile):
     items = []
-    for line in open(tablefile):
+    for line in open(tablefile, encoding='utf_8'):
         line = line.strip()
         if line[0] == '#':
             continue

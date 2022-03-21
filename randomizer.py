@@ -363,7 +363,7 @@ class WindowBlock():
 
 def commands_from_table(tablefile):
     commands = []
-    for i, line in enumerate(open(tablefile)):
+    for i, line in enumerate(open(tablefile, encoding='utf_8')):
         line = line.strip()
         if line[0] == '#':
             continue
@@ -1484,7 +1484,7 @@ def manage_skips():
             return
         handleNormal(split_line)
 
-    for line in open(SKIP_EVENTS_TABLE):
+    for line in open(SKIP_EVENTS_TABLE, encoding='utf_8'):
         # If 'Foo' precedes a line in skipEvents.txt, call 'handleFoo'
         line = line.split('#')[0].strip()  # Ignore everything after '#'
         if not line:
@@ -2906,7 +2906,7 @@ def get_namelocdict():
     if namelocdict:
         return namelocdict
 
-    for line in open(LOCATION_TABLE):
+    for line in open(LOCATION_TABLE, encoding='utf_8'):
         line = line.strip().split(',')
         name, encounters = line[0], line[1:]
         encounters = list(map(hex2int, encounters))
@@ -2941,7 +2941,7 @@ def manage_colorize_dungeons(locations=None, freespaces=None):
         freespaces = [FreeBlock(0x271530, 0x271650)]
 
     done = []
-    for line in open(LOCATION_PALETTE_TABLE):
+    for line in open(LOCATION_PALETTE_TABLE, encoding='utf_8'):
         line = line.strip()
         if line[0] == '#':
             continue
@@ -4126,7 +4126,7 @@ def expand_rom():
 
 
 def diverge(fout):
-    for line in open(DIVERGENT_TABLE):
+    for line in open(DIVERGENT_TABLE, encoding='utf_8'):
         line = line.strip().split('#')[0]  # Ignore everything after '#'
         if not line:
             continue
@@ -4230,7 +4230,7 @@ def randomize(args):
             else:
                 try:
                     savedflags = []
-                    with open('savedflags.txt', 'r') as sff:
+                    with open('savedflags.txt', 'r', encoding='utf_8') as sff:
                         savedflags = [l.strip() for l in sff.readlines() if ':' in l]
                     for line in savedflags:
                         line = line.split(':')
@@ -4314,7 +4314,7 @@ def randomize(args):
                 config['speeddial'] = {}
             config['ROM']['Path'] = sourcefile
             config['speeddial'].update({k:v for k, v in speeddial_opts.items() if k != '!'})
-            with open('bcex.cfg', 'w') as cfg_file:
+            with open('bcex.cfg', 'w', encoding='utf_8') as cfg_file:
                 config.write(cfg_file)
         except:
             print("Couldn't save flag string\n")

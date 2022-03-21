@@ -520,7 +520,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     riding_sprites = {}
     try:
-        f = open(RIDING_SPRITE_TABLE, 'r')
+        f = open(RIDING_SPRITE_TABLE, 'r', encoding='utf_8')
     except IOError:
         pass
     else:
@@ -722,7 +722,7 @@ def manage_palettes(fout, change_to, char_ids):
     characters = get_characters()
     npcs = get_npcs()
     charpal_options = {}
-    for line in open(CHARACTER_PALETTE_TABLE):
+    for line in open(CHARACTER_PALETTE_TABLE, encoding='utf_8'):
         if line[0] == '#':
             continue
         charid, palettes = tuple(line.strip().split(':'))
@@ -870,7 +870,7 @@ def manage_palettes(fout, change_to, char_ids):
     recolor_palette(0x12ee20, 16)
     recolor_palette(0x12ef20, 16)
 
-    for line in open(EVENT_PALETTE_TABLE):
+    for line in open(EVENT_PALETTE_TABLE, encoding='utf_8'):
         if line[0] == '#':
             continue
         line = line.split(' ')

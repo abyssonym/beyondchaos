@@ -119,7 +119,7 @@ def randomize_enemy_name(fout, enemy_id):
 def read_ai_table(table):
     aiscripts = {}
     name = None
-    for line in open(table):
+    for line in open(table, encoding='utf_8'):
         line = line.strip()
         if not line or line[0] == '#':
             continue

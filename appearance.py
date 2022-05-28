@@ -13,6 +13,7 @@ from utils import (CHARACTER_PALETTE_TABLE, EVENT_PALETTE_TABLE, FEMALE_NAMES_TA
                    open_mei_fallback, read_multi, shuffle_char_hues,
                    Substitution, utilrandom as random, write_multi)
 
+
 def recolor_character_palette(fout, pointer, palette=None, flesh=False, middle=True, santa=False, skintones=None, char_hues=None, trance=False):
     fout.seek(pointer)
     if palette is None:
@@ -408,7 +409,7 @@ SPRITE_BANKS_END = 0xD386
 def load_sprite_sizes(f):
     f.seek(SPRITE_POINTERS_BEGIN)
     ptrs = [read_multi(f) for _ in range(SPRITE_POINTERS_BEGIN, SPRITE_BANKS_BEGIN, 2)]
-    banks = [(read_multi(f) & 0xff) << 16 for _ in range(SPRITE_BANKS_BEGIN, SPRITE_BANKS_END, 2)]
+    banks = [((read_multi(f) & 0xff) << 16) - 0xc00000 for _ in range(SPRITE_BANKS_BEGIN, SPRITE_BANKS_END, 2)]
 
     ptrs = [bank + ptr for bank, ptr in zip(banks, ptrs)]
     sizes = [b - a for a, b in zip(ptrs[:-1], ptrs[1:])]
@@ -649,7 +650,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     if sprite_swap_mode and not opera_mode and 6 in swap_to.keys():
         try:
-            g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].opera_filename), "rb")
+            g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[6].opera_filename), "rb")
         except IOError:
             pass
         else:
@@ -663,7 +664,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
         chains_sprite = None
         if sprite_swap_mode and 6 in swap_to:
             try:
-                with open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].chains_filename), "rb") as g:
+                with open_mei_fallback(os.path.join("custom", "sprites", swap_to[6].chains_filename), "rb") as g:
                     chains_sprite = g.read(ssizes[65])
             except IOError:
                 pass
@@ -680,7 +681,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
     #hair_top: 162 & 163
     if sprite_swap_mode and 0 in swap_to:
         try:
-            with open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].hair_filename), "rb") as g:
+            with open_mei_fallback(os.path.join("custom", "sprites", swap_to[0].hair_filename), "rb") as g:
                 hair_bottom_sprite = g.read(ssizes[123])
                 hair_top_left_sprite = g.read(ssizes[162])
                 hair_top_right_sprite = g.read(ssizes[163])
@@ -696,7 +697,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     if sprite_swap_mode and 18 in swap_to:
         try:
-            with open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].esper_fly_filename), "rb") as g:
+            with open_mei_fallback(os.path.join("custom", "sprites", swap_to[18].esper_fly_filename), "rb") as g:
                 esper_fly_front_sprite = g.read(ssizes[121])
                 esper_fly_front_sprite2 = g.read(ssizes[122])
                 esper_fly_back_sprite = g.read(ssizes[152])

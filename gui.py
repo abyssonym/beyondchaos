@@ -4,9 +4,9 @@ import sys
 from subprocess import call
 from PyQt5 import QtGui, QtCore
 from PyQt5.QtCore import pyqtRemoveInputHook, QRect
-from PyQt5.QtWidgets import QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox, \
-    QHBoxLayout, QLineEdit, QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication, \
-    QTabWidget, QInputDialog, QScrollArea, QMessageBox, QButtonGroup, QFormLayout
+from PyQt5.QtWidgets import (QPushButton, QCheckBox, QWidget, QVBoxLayout, QLabel, QGroupBox,
+    QHBoxLayout, QLineEdit, QRadioButton, QGridLayout, QComboBox, QFileDialog, QApplication,
+    QTabWidget, QInputDialog, QScrollArea, QMessageBox, QButtonGroup, QFormLayout)
 
 import options
 import randomizer
@@ -24,11 +24,32 @@ class FlagButton(QPushButton):
         self.value = value
 
 # Extended QCheckBox widget to hold flag value - CURRENTLY USED
-class FlagCheckBox(QCheckBox):
-    def __init__(self, text, value):
-        super(FlagCheckBox, self).__init__()
-        self.setText(text)
-        self.value = value
+class FlagCheckBox(QWidget):
+    def __init__(self, text, value, description):
+        super().__init__()
+        layout = QHBoxLayout()
+        self._checkbox = QCheckBox()
+        self._checkbox.setText(text)
+        self._checkbox.value = value
+        self._checkbox.setStyleSheet('min-width: 100px;')
+        self._label = QLabel(description)
+        self._label.setWordWrap(True)
+        self._label.setAlignment(QtCore.Qt.AlignLeft)
+        self._label.setStyleSheet('min-width: 400px')
+        layout.addWidget(self._checkbox)
+        layout.addWidget(self._label)
+        layout.addStretch()
+        layout.setContentsMargins(4, 4, 4, 4)
+        self.setLayout(layout)
+
+    @property
+    def clicked(self):
+        return self._checkbox.clicked
+
+
+    @property
+    def value(self):
+        return self._checkbox.value
 
 
 class Window(QWidget):
@@ -41,11 +62,11 @@ class Window(QWidget):
         self.left = 200
         self.top = 200
         self.width = 700
-        self.height = 600
+        self.height = 800
 
         # values to be sent to randomizer
         self.romText = ""
-        self.version = "4"
+        self.version = "5"
         self.mode = "normal" # default
         self.seed = ""
         self.flags = ""
@@ -110,19 +131,17 @@ class Window(QWidget):
         font = QtGui.QFont("Arial", 24, QtGui.QFont.Black)
         titleLabel.setFont(font)
         titleLabel.setAlignment(QtCore.Qt.AlignCenter)
-        titleLabel.setMargin(25)
         vbox.addWidget(titleLabel)
 
 
-        vbox.addWidget(self.GroupBoxOneLayout()) # Adding first/top groupbox to the layout
-        vbox.addWidget(self.GroupBoxTwoLayout()) # Adding second/middle groupbox
-        vbox.addWidget(self.GroupBoxThreeLayout()) # Adding third/bottom groupbox
+        vbox.addLayout(self.GroupBoxOneLayout()) # Adding first/top groupbox to the layout
+        vbox.addLayout(self.GroupBoxTwoLayout()) # Adding second/middle groupbox
+        vbox.addLayout(self.GroupBoxThreeLayout()) # Adding third/bottom groupbox
 
         self.setLayout(vbox)
 
     # Top groupbox consisting of ROM selection, and Seed number input
     def GroupBoxOneLayout(self):
-        topGroupBox = QGroupBox()
         TopHBox = QHBoxLayout()
 
         romLabel = QLabel("ROM:")
@@ -141,15 +160,12 @@ class Window(QWidget):
         self.seedInput.setPlaceholderText("Optional - WILL NOT SAVE TO PRESETS!")
         TopHBox.addWidget(self.seedInput)
 
-        topGroupBox.setLayout(TopHBox)
-
-        return topGroupBox
+        return TopHBox
 
 
     # Middle groupbox of sub-groupboxes. Consists of left section (game mode selection)
     #   and right section (flag selection -> tab-sorted)
     def GroupBoxTwoLayout(self):
-        groupBoxTwo = QGroupBox()
         middleHBox = QHBoxLayout()
 
         # ------------ Part one (left side) of middle section - Mode radio buttons -------
@@ -247,10 +263,9 @@ class Window(QWidget):
                 h.addWidget(radioButton)
                 groups[tag].addButton(radioButton)
             
-            h.addStretch()
-            
             makeover_layout.addRow(tag, h)
         makeover_group.setLayout(makeover_layout)
+        makeover_group.setStyleSheet('max-width: 500px')
 
         
         # loop to add tab objects to 'tabs' TabWidget
@@ -259,7 +274,7 @@ class Window(QWidget):
             tabs.addTab(tabObj, names)
             tablayout = QVBoxLayout()
             for flagname, flagdesc in d.items():
-                cbox = FlagCheckBox(f"{flagname}  -  {flagdesc['explanation']}", flagname)
+                cbox = FlagCheckBox(flagname, flagname, flagdesc['explanation'])
                 tablayout.addWidget(cbox)
                 #cbox.setCheckable(True)
                 #cbox.setToolTip(flagdesc['explanation'])
@@ -267,7 +282,8 @@ class Window(QWidget):
             if names == 'Aesthetic':
                 tablayout.addWidget(makeover_group)
             t.setLayout(tablayout)
-            #tablayout.addStretch(1)
+            tablayout.addStretch(1)
+            tablayout.setSpacing(0)
             tabObj.setWidgetResizable(True)
             tabObj.setWidget(t)
 
@@ -292,16 +308,14 @@ class Window(QWidget):
 
         # This part makes a group box and adds the selected-flags display
         #   and a button to clear the UI
-        flagTextWidget = QGroupBox()
         flagTextHBox = QHBoxLayout()
         flagTextHBox.addWidget(widgetV)
         clearUiButton = QPushButton("Reset")
         clearUiButton.setStyleSheet("font-size:12px; height:60px")
         clearUiButton.clicked.connect(lambda: self.clearUI())
         flagTextHBox.addWidget(clearUiButton)
-        flagTextWidget.setLayout(flagTextHBox)
 
-        tabVBoxLayout.addWidget(flagTextWidget)
+        tabVBoxLayout.addLayout(flagTextHBox)
         middleRightGroupBox.setLayout(tabVBoxLayout)
         # ------------- Part two (right) end ---------------------------------------
 
@@ -309,14 +323,12 @@ class Window(QWidget):
         # add widgets to HBoxLayout and assign to middle groupbox layout
         middleHBox.addWidget(self.middleLeftGroupBox)
         middleHBox.addWidget(middleRightGroupBox)
-        groupBoxTwo.setLayout(middleHBox)
 
-        return groupBoxTwo
+        return middleHBox
 
 
     # Bottom groupbox consisting of saved seeds selection box, and button to generate seed
     def GroupBoxThreeLayout(self):
-        bottomGroupBox = QGroupBox()
         bottomHBox = QHBoxLayout()
 
         bottomHBox.addWidget(QLabel("Saved flag selection: "))
@@ -339,8 +351,7 @@ class Window(QWidget):
         generateButton.clicked.connect(lambda: self.generateSeed())
         bottomHBox.addWidget(generateButton)
 
-        bottomGroupBox.setLayout(bottomHBox)
-        return bottomGroupBox
+        return bottomHBox
 
     # --------------------------------------------------------------------------------
     # -------------- NO MORE LAYOUT DESIGN PAST THIS POINT ---------------------------

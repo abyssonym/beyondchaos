@@ -9,7 +9,7 @@
 
 import os
 import re
-from utils import dialoguetexttable, bytes_to_dialogue, utilrandom as random, open_mei_fallback as open, read_multi, write_multi
+from utils import bytes_to_dialogue, dialogue_to_bytes, dialoguetexttable, reverse_dialoguetexttable, battledialoguetexttable, reverse_battledialoguetexttable, get_long_battle_text_pointer, utilrandom as random, open_mei_fallback as open, read_multi, write_multi
 
 try:
     from sys import _MEIPASS
@@ -17,18 +17,6 @@ try:
 except ImportError:
     MEI = False
 
-textdialoguetable = {v:k for k, v in dialoguetexttable.items()}
-for i in range(0xFF):
-    if f"{i:02X}" not in textdialoguetable:
-        textdialoguetable[f"{i:02X}"] = f"${i:02X}"
-textdialoguetable["63"] = "'"
-
-dialoguebytetable = {}
-for k, v in dialoguetexttable.items():
-    dialoguebytetable[k] = v
-for i in range(0xFF):
-    dialoguebytetable[f"${i:02X}"] = f"{i:02X}"
-dialoguebytetable["'"] = dialoguebytetable["’"]
 
 dialogue_vars = {}
 dialogue_flags = set()
@@ -37,6 +25,9 @@ dialogue_patches_battle = {}
 script_ptrs = {}
 script = {}
 script_bin = bytes()
+battle_script_ptrs = {}
+battle_script = {}
+battle_script_bin = bytes()
 script_edited = False
 
 location_name_ptrs = {}
@@ -52,45 +43,6 @@ def safepath(vpath):
     if not MEI:
         return vpath
     return [vpath, os.path.join(_MEIPASS, vpath)]
-
-#need to use a different table here, so redefined
-def dialogue_to_bytes(text, null_terminate=True):
-    bs = []
-    i = 0
-    while i < len(text):
-        if text[i] == " ":
-            spaces = re.match(" +", text[i:]).group(0)
-            count = len(spaces)
-            j = i + count
-            hexstr = dialoguebytetable.get(text[i:j], "")
-            if not hexstr:
-                hexstr = dialoguebytetable.get(text[i])
-                j = i + 1
-            i = j
-        elif text[i] == "<":
-            j = text.find(">", i) + 1
-            hexstr = dialoguebytetable.get(text[i:j], "")
-            i = j
-        elif i < len(text) - 1 and text[i:i+2] in dialoguebytetable:
-            hexstr = dialoguebytetable[text[i:i+2]]
-            i += 2
-        elif text[i] == "$":
-            hexstr = text[i+1:i+3]
-            i += 3
-        else:
-            hexstr = dialoguebytetable[text[i]]
-            i += 1
-
-        if hexstr != "":
-            bs.extend(bytes.fromhex(hexstr))
-
-    if not bs:
-        return bytes([0x0])
-
-    if null_terminate and bs[-1] != 0x0:
-        bs.append(0x0)
-
-    return bytes(bs)
 
 
 def set_dialogue_var(k, v):
@@ -144,6 +96,7 @@ def patch_dialogue(id, from_text, to_text, index=None, battle=False):
     if id not in patches:
         patches[id] = {}
     patches[id][(from_text.lower(), index)] = to_text
+        
 
 def get_dialogue(idx):
     return script[idx]
@@ -151,6 +104,14 @@ def get_dialogue(idx):
 def set_dialogue(idx, text):
     global script_edited
     script[idx] = text
+    script_edited = True
+
+def get_battle_dialogue(idx):
+    return battle_script[idx]
+
+def set_battle_dialogue(idx, text):
+    global script_edited
+    battle_script[idx] = text
     script_edited = True
 
 def set_location_name(idx, text):
@@ -171,11 +132,16 @@ def load_patch_file(fn):
         print(f"failed to open data/script/{fn}.txt")
         return
     for i, line in enumerate(lines):
+        battle = False
         s = line.split(':', 1)
+        index = s[0].strip()
+        if index[0] == 'b':
+            index = index[1:]
+            battle = True
         try:
-            script_idx = int(s[0].strip())
+            script_idx = int(index)
         except ValueError:
-            print(f"{fn}.txt: line {i} - {s[0]} is not a valid caption index")
+            print(f"{fn}.txt: line {i} - {s[0].strip()} is not a valid caption index")
             continue
         changes = s[1].rstrip('\n').split('|')
         for c in changes:
@@ -193,15 +159,13 @@ def load_patch_file(fn):
                 match_idx = None
             if chgto == "*":
                 chgto = None
-            patch_dialogue(script_idx, chgfrom, chgto, index=match_idx)
+            patch_dialogue(script_idx, chgfrom, chgto, index=match_idx, battle=battle)
 
 
 def read_dialogue(fout):
     #load existing script & pointer table
     fout.seek(0xD0000)
     script_bin = fout.read(0x1F0FF)
-
-    #TODO battle script
 
     fout.seek(0xCE600)
     bankidx = read_multi(fout, 2)
@@ -215,19 +179,22 @@ def read_dialogue(fout):
             end = script_bin.find(b'\x00', start)
         script[idx] = bytes_to_dialogue(script_bin[start:end])
 
-def manage_dialogue_patches(fout):
-    global script_bin
+    fout.seek(0x10D200)
+    battle_script_bin = fout.read(0x2aff)
+    fout.seek(0x10D000)
+    for idx in range(256):
+        battle_script_ptrs[idx] = read_multi(fout,2) - 0xd200
+    
+    for idx in range(256):
+        start = battle_script_ptrs[idx]
+        end = battle_script_ptrs.get(idx+1, 0)
+        if end == 0:
+            end = battle_script_bin.find(b'\x00', start)
+        battle_script[idx] = bytes_to_dialogue(battle_script_bin[start:end], table=reverse_battledialoguetexttable)
 
-    #don't do anything unless we need to
-    if not dialogue_patches and not dialogue_patches_battle and not script_edited:
-        return
 
-    #TODO battle pointers
-
-    #print(f"original script size is ${len(script_bin):X} bytes")
-
-    #apply changes to dialogue
-    for idx, patches in dialogue_patches.items():
+def _apply_patches(script, patch_dict):
+    for idx, patches in patch_dict.items():
         line = split_line(script[idx])
 
         #print(f"patching line {idx}")
@@ -248,11 +215,30 @@ def manage_dialogue_patches(fout):
                 try:
                     if line[i+1][0] == " ":
                         line[i+1] = "" if len(line[i+1]) < 2 else line[i+1][1:]
+                    elif line[1-1][0] == " ":
+                        line[i-1] = "" if len(line[i-1]) < 2 else line[i-1][1:]
                 except IndexError:
                     pass
         new_text = "".join(line)
         #print(f"  new: {new_text}")
         script[idx] = new_text
+
+
+def manage_dialogue_patches(fout):
+    global script_bin
+
+    #don't do anything unless we need to
+    if not dialogue_patches and not dialogue_patches_battle and not script_edited:
+        return
+
+    _apply_patches(script, dialogue_patches)
+    _apply_patches(battle_script, dialogue_patches_battle)
+    #TODO battle pointers
+
+    #print(f"original script size is ${len(script_bin):X} bytes")
+
+    #apply changes to dialogue
+    
 
     new_script = b""
     new_ptrs = b""
@@ -284,20 +270,39 @@ def manage_dialogue_patches(fout):
     write_multi(fout, first_high_index)
     assert len(new_ptrs) <= 0x19FE
     fout.write(new_ptrs)
+    
+    new_battle_script = b""
+    new_battle_ptrs = b""
+    offset = 0
+    base = 0xD200  # pointers are relative to 0x100000
+    for idx, text in battle_script.items():
+        lastlength = len(new_battle_script) - offset
+        offset += lastlength
+        new_battle_script += dialogue_to_bytes(text, table=battledialoguetexttable)
+        ptr = offset + base
+        new_battle_ptrs += bytes([ptr & 0xFF, (ptr >> 8) & 0xFF])
 
-def read_script(idx, battle=False):
+    fout.seek(0x10D200)
+    assert len(new_battle_script) <= 0x2AFF
+    fout.write(new_battle_script)
+    
+    fout.seek(0x10D000)
+    assert len(new_battle_ptrs) <= 0x200
+    fout.write(new_battle_ptrs)
+
+def read_script(idx, table=reverse_dialoguetexttable):
     loc = script_ptrs[idx]
     dialogue = []
     while loc < len(script_bin):
         if script_bin[loc] == 0:
             break
-        dialogue.append(textdialoguetable[f"{script_bin[loc]:02X}"])
+        dialogue.append(table[f"{script_bin[loc]:02X}"])
         loc += 1
     return "".join(dialogue)
 
 def split_line(line):
     line = line.replace('’', "'")
-    split = re.split("(\$..|[A-Za-z']+|[^$A-Za-z']+)", line)
+    split = re.split("(\$..|(?:[A-Za-z']\.)+[A-Za-z]|[A-Za-z']+|[^$A-Za-z']+)", line)
     return [s for s in split if len(s)]
 
 def patch(text, token):
@@ -326,7 +331,7 @@ def patch(text, token):
             else:
                 var = dialogue_vars[match[1].lower()]
 
-            if match[1].upper() == token:
+            if token.upper() == token:
                 var = var.upper()
             elif token[0] in "ABCDEFGHIJKLMNOPQRSTUVWXYZ":
                 try:

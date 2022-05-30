@@ -400,11 +400,11 @@ def randomize_magicite(fout, sourcefile):
         original_name = espers[m.original_esper_index].name
         m.esper_index = shuffled_espers[m.original_esper_index].id
         new_name = shuffled_espers[m.original_esper_index].name
+        dotted_name = "".join(chain(*zip(original_name, repeat('.'))))[:-1]
 
         for d in m.dialogue:
             patch_dialogue(d, original_name, "{"+ original_name + "}")
             patch_dialogue(d, original_name + "'s", "{"+ original_name + "Possessive}")
-            dotted_name = "".join(chain(*zip(original_name, repeat('.'))))[:-1]
             patch_dialogue(d, dotted_name, "{" + original_name + "Dotted}")
         set_dialogue_var(original_name, new_name)
         set_dialogue_var(original_name + "Possessive", new_name + "'s")

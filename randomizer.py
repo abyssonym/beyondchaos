@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import configparser
-from time import time, sleep, gmtime
+from time import time, sleep
 import re
 import sys
 from sys import argv
@@ -18,6 +18,7 @@ from dialoguemanager import manage_dialogue_patches, get_dialogue, set_dialogue,
 from esperrandomizer import (get_espers, allocate_espers, randomize_magicite)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS,
                                  get_formations, get_fsets, get_formation)
+from holiday import activate_holiday, activate_holiday_post_random, hail_demon_chocobo
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield, unhardcode_tintinabar)
@@ -41,7 +42,6 @@ from towerrandomizer import randomize_tower
 from utils import (COMMAND_TABLE, LOCATION_TABLE, LOCATION_PALETTE_TABLE,
                    FINAL_BOSS_AI_TABLE, SKIP_EVENTS_TABLE, DANCE_NAMES_TABLE,
                    DIVERGENT_TABLE,
-                   get_long_battle_text_pointer,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -644,6 +644,14 @@ def manage_commands(commands):
         if options_.is_code_active('collateraldamage'):
             c.set_battle_command(1, command_id=0xFF)
             c.set_battle_command(2, command_id=0xFF)
+            c.set_battle_command(3, command_id=1)
+            c.write_battle_commands(fout)
+            continue
+
+        if c.id == 0 and options_.is_code_active('dragonball'):
+            c.set_battle_command(0, command_id=0)
+            c.set_battle_command(1, command_id=3)
+            c.set_battle_command(2, command_id=0xa)
             c.set_battle_command(3, command_id=1)
             c.write_battle_commands(fout)
             continue
@@ -3862,73 +3870,6 @@ def manage_clock():
     text = re.sub(r'four', clock_number_text[wrong_seconds[1]], text)
     set_dialogue(0x425, text)
 
-
-def manage_santa():
-    for index in [0x72, 0x75, 0x7c, 0x8e, 0x17e, 0x1e1, 0x1e7, 0x1eb, 0x20f, 0x35c, 0x36d, 0x36e, 0x36f, 0x372, 0x3a9, 0x53a, 0x53f, 0x53f, 0x57c, 0x580, 0x5e9, 0x5ec, 0x5ee, 0x67e, 0x684, 0x686, 0x6aa, 0x6b3, 0x6b7, 0x6ba, 0x6ef, 0xa40, 0x717, 0x721, 0x723, 0x726, 0x775, 0x777, 0x813, 0x814, 0x818, 0x823, 0x851, 0x869, 0x86b, 0x86c, 0x89a, 0x89b, 0x89d, 0x8a3, 0x8a5, 0x8b1, 0x8b6, 0x8b8, 0x8c6, 0x8ca, 0x8cb, 0x8d2, 0x8d4, 0x913, 0x934, 0x959, 0x95d, 0x960, 0x979, 0x990, 0x9ae, 0x9e7, 0x9ef, 0xa07, 0xa35, 0xb76, 0xba0, 0xbc2, 0xbc9]:
-        text = get_dialogue(index)
-        text = re.sub(r'Kefka', "Santa", text)
-        set_dialogue(index, text)
-
-    SANTAsub = Substitution()
-    SANTAsub.bytestring = bytes([0x32, 0x20, 0x2D, 0x33, 0x20])
-    for index in [0x24, 0x72, 0x76, 0x77, 0x78, 0x7a, 0x7c, 0x7d, 0x7f, 0x80, 0x90, 0x90, 0x94, 0x97, 0x9e, 0x9f, 0x1eb, 0x1eb, 0x203, 0x204, 0x205, 0x206, 0x207, 0x207, 0x207, 0x209, 0x20a, 0x20b, 0x20c, 0x20e, 0x210, 0x35b, 0x35c, 0x35c, 0x35d, 0x36b, 0x36c, 0x377, 0x55c, 0x55d, 0x55e, 0x56d, 0x56f, 0x570, 0x573, 0x575, 0x576, 0x585, 0x587, 0x66d, 0x674, 0x6b4, 0x6b5, 0x6b6, 0x80f, 0x813, 0x815, 0x819, 0x81a, 0x81b, 0x81c, 0x81d, 0x81e, 0x81f, 0x820, 0x821, 0x85d, 0x85e, 0x861, 0x862, 0x863, 0x866, 0x867, 0x868, 0x869, 0x86d, 0x86e, 0x871, 0xbab, 0xbac, 0xbad, 0xbaf, 0xbb2, 0xbc0, 0xbc1, 0xbc3, 0xbc4, 0xbc6, 0xbc8, 0xbca, 0xc0b]:
-        text = get_dialogue(index)
-        text = re.sub(r'KEFKA', "SANTA", text)
-        set_dialogue(index, text)
-
-    BattleSantasub = Substitution()
-    BattleSantasub.bytestring = bytes([0x92, 0x9A, 0xA7, 0xAD, 0x9A])
-    for location in [0xFCB54, 0xFCBF4, 0xFCD34]:
-        BattleSantasub.set_location(location)
-        BattleSantasub.write(fout)
-    for index, offset in [(0x30, 0x4), (0x5F, 0x4), (0x64, 0x1A), (0x66, 0x5), (0x86, 0x14), (0x93, 0xE), (0xCE, 0x59), (0xD9, 0x9), (0xE3, 0xC), (0xE8, 0xD)]:
-        BattleSantasub.set_location(get_long_battle_text_pointer(fout, index) + offset)
-        BattleSantasub.write(fout)
-
-    BattleSANTAsub = Substitution()
-    BattleSANTAsub.bytestring = bytes([0x92, 0x80, 0x8D, 0x93, 0x80])
-    for location in [0x479B6, 0x479BC, 0x479C2, 0x479C8, 0x479CE, 0x479D4, 0x479DA]:
-        BattleSANTAsub.set_location(location)
-        BattleSANTAsub.write(fout)
-    for index, offset in [(0x1F, 0x0), (0x2F, 0x0), (0x31, 0x0), (0x57, 0x0), (0x58, 0x0), (0x5A, 0x0), (0x5C, 0x0), (0x5D, 0x0), (0x60, 0x0), (0x62, 0x0), (0x63, 0x0), (0x65, 0x0), (0x85, 0x0), (0x87, 0x0), (0x8d, 0x0), (0x91, 0x0), (0x94, 0x0), (0x95, 0x0), (0xCD, 0x0), (0xCE, 0x0), (0xCF, 0x0), (0xDA, 0x0), (0xE5, 0x0), (0xE7, 0x0), (0xE9, 0x0), (0xEA, 0x0), (0xEB, 0x0), (0xEC, 0x0), (0xED, 0x0), (0xEE, 0x0), (0xEF, 0x0), (0xF5, 0x0)]:
-        BattleSANTAsub.set_location(get_long_battle_text_pointer(fout, index) + offset)
-        BattleSANTAsub.write(fout)
-
-
-def manage_spookiness():
-    n_o_e_s_c_a_p_e_sub = Substitution()
-    n_o_e_s_c_a_p_e_sub.bytestring = bytes([0x4B, 0xAE, 0x42])
-    locations = [0xCA1C8, 0xCA296, 0xB198B]
-    if not options_.is_code_active('notawaiter'):
-        locations.extend([0xA89BF, 0xB1963])
-    for location in locations:
-        n_o_e_s_c_a_p_e_sub.set_location(location)
-        n_o_e_s_c_a_p_e_sub.write(fout)
-
-    n_o_e_s_c_a_p_e_bottom_sub = Substitution()
-    n_o_e_s_c_a_p_e_bottom_sub.bytestring = bytes([0x4B, 0xAE, 0xC2])
-    for location in [0xA6325]:
-        n_o_e_s_c_a_p_e_bottom_sub.set_location(location)
-        n_o_e_s_c_a_p_e_bottom_sub.write(fout)
-
-    nowhere_to_run_sub = Substitution()
-    nowhere_to_run_sub.bytestring = bytes([0x4B, 0xB3, 0x42])
-    locations = [0xCA215, 0xCA270, 0xC8293]
-    if not options_.is_code_active('notawaiter'):
-        locations.extend([0xB19B5, 0xB19F0])
-    for location in locations:
-        nowhere_to_run_sub.set_location(location)
-        nowhere_to_run_sub.write(fout)
-
-    nowhere_to_run_bottom_sub = Substitution()
-    nowhere_to_run_bottom_sub.bytestring = bytes([0x4B, 0xB3, 0xC2])
-    locations = [0xCA7EE]
-    if not options_.is_code_active('notawaiter'):
-        locations.append(0xCA2F0)
-    for location in locations:
-        nowhere_to_run_bottom_sub.set_location(location)
-        nowhere_to_run_bottom_sub.write(fout)
-
 def manage_dances():
     if options_.is_code_active('madworld'):
         spells = get_ranked_spells(sourcefile)
@@ -4389,14 +4330,7 @@ def randomize(args):
     characters = get_characters()
 
     activation_string = options_.activate_from_string(flags)
-
-    tm = gmtime(seed)
-    if tm.tm_mon == 12 and (tm.tm_mday == 24 or tm.tm_mday == 25):
-        options_.activate_code('christmas')
-        activation_string += "CHRISTMAS MODE ACTIVATED\n"
-    elif tm.tm_mon == 10 and tm.tm_mday == 31:
-        options_.activate_code('halloween')
-        activation_string += "ALL HALLOWS' EVE MODE ACTIVATED\n"
+    activation_string += activate_holiday(seed, options_)
 
     print(activation_string)
 
@@ -4448,6 +4382,8 @@ def randomize(args):
             ALWAYS_REPLACE += ["rage"]
         if options_.is_code_active('sketch'):
             NEVER_REPLACE += ["sketch"]
+        if options_.is_code_active('dragonball'):
+            NEVER_REPLACE += ["blitz"]
         _, freespaces = manage_commands_new(commands)
         improve_gogo_status_menu(fout)
     reseed()
@@ -4680,12 +4616,7 @@ def randomize(args):
     reseed()
 
     if options_.is_code_active('halloween'):
-        demon_chocobo_sub = Substitution()
-        fout.seek(0x2d0000 + 896 * 7)
-        demon_chocobo_sub.bytestring = fout.read(896)
-        for i in range(7):
-            demon_chocobo_sub.set_location(0x2d0000 + 896 * i)
-            demon_chocobo_sub.write(fout)
+        hail_demon_chocobo(fout)
 
     if options_.random_window or options_.is_code_active('christmas') or options_.is_code_active('halloween'):
         for i in range(8):
@@ -4716,7 +4647,6 @@ def randomize(args):
     reseed()
 
     if options_.is_code_active('notawaiter') and not options_.is_code_active('ancientcave'):
-        print("Cutscenes are currently skipped up to Kefka @ Narshe")
         manage_skips()
     reseed()
 
@@ -4842,10 +4772,7 @@ def randomize(args):
         if item.banned:
             assert not dummy_item(item)
 
-    if options_.is_code_active('christmas') and not options_.is_code_active('ancientcave'):
-        manage_santa()
-    elif options_.is_code_active('halloween') and not options_.is_code_active('ancientcave'):
-        manage_spookiness()
+    activate_holiday_post_random(fout, options_, commands)
 
     banon_life3(fout)
     allergic_dog(fout)

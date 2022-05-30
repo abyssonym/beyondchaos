@@ -301,7 +301,8 @@ CAVE_CODES = [
 
 SPECIAL_CODES = [
     Code('christmas', 'CHIRSTMAS MODE', '', 'holiday'),
-    Code('halloween', "ALL HALLOWS' EVE MODE", '', 'holiday')
+    Code('halloween', "ALL HALLOWS' EVE MODE", '', 'holiday'),
+    Code('dragonball', 'PICCOLO DAY MODE', '', 'holiday'),
 ]
 
 

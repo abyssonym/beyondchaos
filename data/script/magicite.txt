@@ -1,0 +1,51 @@
+627:piece->*|of->*|Magicite->{Magicite_piece}
+1117:Magicite->{Magicite_plural}
+1118:Magicite->{Magicite_plural}
+1127:Magicite->{Magicite_plural}
+1133:Magicite->{Magicite_singular}
+1134:Magicite->{Magicite_singular}
+1135:Magicite->{Magicite_singular}
+1136:Magicite->{Magicite_singular}
+1380:Magicite->{Magicite_singular}
+1381:Magicite->{Magicite_singular}
+1386:Magicite->{Magicite_plural}
+1391:Magicite->{Magicite_plural}
+1392:Magicite->{Magicite_pieces}|shards->*
+1421:Magicite->{Magicite_singular}
+1506:Magicite->{Magicite_singular}
+1524:Magicite->a {Magicite_singular}
+1525:Magicite->{Magicite_singular}
+1526:Magicite->{Magicite_singular}
+1532:Magicite->{Magicite_singular}
+1533:Magicite->{Magicite_singular}
+1534:Magicite->{Magicite_singular}
+1535:Magicite->{Magicite_singular}
+1572:Magicite->{Magicite_singular}
+2012:Magicite->{Magicite_plural}
+2067:Magicite->{Magicite_singular}
+2074:Magicite->{Magicite_singular}
+2076:Magicite->{Magicite_singular}
+2081:Magicite->{Magicite_plural}
+2118:Magicite->{Magicite_plural}
+2273:Magicite->{Magicite_singular}
+2330:Magicite->{Magicite_singular}
+2398:Magicite->{Magicite_plural}|gives->give
+2410:Magicite->a {Magicite_singular}
+2416:Magicite->{Magicite_singular}
+2417:Magicite->{Magicite_piece}|shard->*
+2594:Magicite->a {Magicite_singular}
+2599:Magicite->{Magicite_singular}
+2601:Magicite's->{Magicite_singular}'s
+2617:Magicite->{Magicite_plural}
+2618:Magicite->{Magicite_singular}
+2723:Magicite->a {Magicite_singular}
+2728:Magicite->{Magicite_singular}
+2729:Magicite->{Magicite_singular}
+2733:Magicite->{Magicite_singular}
+2755:Magicite->{Magicite_singular}
+2756:Magicite->{Magicite_singular}
+2799:Magicite->{Magicite_singular}
+2974:piece->*|of->*|Magicite->{Magicite_piece}
+2975:Magicite->{Magicite_singular}
+3025:Magicite->{Magicite_plural}
+3031:piece->*|of->*|Magicite->{Magicite_piece}

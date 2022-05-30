@@ -131,7 +131,8 @@ def manage_character_names(fout, change_to, male):
     soldier_mode = options_.is_code_active('quikdraw')
     moogle_mode = options_.is_code_active('kupokupo')
     ghost_mode = options_.is_code_active('halloween')
-
+    dragonball_mode = options_.is_code_active('dragonball')
+    
     names = []
     if tina_mode:
         names = ["Tina"] * 30 + ["MADUIN"] + ["Tina"] * 3
@@ -207,6 +208,9 @@ def manage_character_names(fout, change_to, male):
 
             names.append(name)
 
+    if dragonball_mode:
+        names[0] = "GOKU"
+
     umaro_name = names[13]
     for umaro_id in [0x10f, 0x110]:
         change_enemy_name(fout, umaro_id, umaro_name)
@@ -281,8 +285,17 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
     clone_mode = options_.is_code_active('cloneparty')
     replace_all = options_.is_code_active('novanilla') or options_.is_code_active('frenchvanilla')
     external_vanillas = False if options_.is_code_active('novanilla') else (options_.is_code_active('frenchvanilla') or clone_mode)
+    dragonball_mode = options_.is_code_active('dragonball')
+
+    swap_to = {}
+    
+    if dragonball_mode:
+        goku_sprite = SpriteReplacement("goku.bin", "Goku", "male", "true", 0, "goku-p.bin", "goku", path=pathlib.Path('data', 'sprites'))
+        swap_to[0] = goku_sprite
+        swap_to[0x12] = goku_sprite  # but with different palette for Super Saiyan
+
     if not sprite_swap_mode:
-        return []
+        return swap_to
 
     f = open_mei_fallback(SPRITE_REPLACEMENT_TABLE)
     known_replacements = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
@@ -364,9 +377,10 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
         female_candidates = [c for c in replace_candidates if c.gender == "female"]
         male_candidates = [c for c in replace_candidates if c.gender == "male"]
         neutral_candidates = [c for c in replace_candidates if c.gender != "male" and c.gender != "female"]
-
-    swap_to = {}
+    
     for char_id in random.sample(char_ids, len(char_ids)):
+        if dragonball_mode and char_id == 0:
+            continue
         if not is_replaced[char_id]:
             continue
         if wild:
@@ -528,7 +542,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
         for line in f.readlines():
             char_id, filename = line.strip().split(',', 1)
             try:
-                g = open_mei_fallback(os.path.join("custom", "sprites", filename), "rb")
+                g = open_mei_fallback(filename, "rb")
             except IOError:
                 continue
 
@@ -595,8 +609,8 @@ def manage_character_appearance(fout, preserve_graphics=False):
                 use_fallback = False
 
                 try:
-                    g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].portrait_filename), "rb")
-                    h = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].portrait_palette_filename), "rb")
+                    g = open_mei_fallback(swap_to[c].portrait_filename, "rb")
+                    h = open_mei_fallback(swap_to[c].portrait_palette_filename, "rb")
                 except IOError:
                     use_fallback = True
                     print("failed to load portrait %s for %s, using fallback" %(swap_to[c].portrait_filename, swap_to[c].name))
@@ -631,7 +645,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
         if sprite_swap_mode and c in swap_to:
             try:
-                g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[c].file), "rb")
+                g = open_mei_fallback(swap_to[c].file, "rb")
             except IOError:
                 newsprite = sprites[change_to[c]]
                 for ch in characters:
@@ -650,7 +664,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     if sprite_swap_mode and not opera_mode and 6 in swap_to.keys():
         try:
-            g = open_mei_fallback(os.path.join("custom", "sprites", swap_to[6].opera_filename), "rb")
+            g = open_mei_fallback(swap_to[6].opera_filename, "rb")
         except IOError:
             pass
         else:
@@ -664,7 +678,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
         chains_sprite = None
         if sprite_swap_mode and 6 in swap_to:
             try:
-                with open_mei_fallback(os.path.join("custom", "sprites", swap_to[6].chains_filename), "rb") as g:
+                with open_mei_fallback(swap_to[6].chains_filename, "rb") as g:
                     chains_sprite = g.read(ssizes[65])
             except IOError:
                 pass
@@ -681,7 +695,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
     #hair_top: 162 & 163
     if sprite_swap_mode and 0 in swap_to:
         try:
-            with open_mei_fallback(os.path.join("custom", "sprites", swap_to[0].hair_filename), "rb") as g:
+            with open_mei_fallback(swap_to[0].hair_filename, "rb") as g:
                 hair_bottom_sprite = g.read(ssizes[123])
                 hair_top_left_sprite = g.read(ssizes[162])
                 hair_top_right_sprite = g.read(ssizes[163])
@@ -697,7 +711,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     if sprite_swap_mode and 18 in swap_to:
         try:
-            with open_mei_fallback(os.path.join("custom", "sprites", swap_to[18].esper_fly_filename), "rb") as g:
+            with open_mei_fallback(swap_to[18].esper_fly_filename, "rb") as g:
                 esper_fly_front_sprite = g.read(ssizes[121])
                 esper_fly_front_sprite2 = g.read(ssizes[122])
                 esper_fly_back_sprite = g.read(ssizes[152])

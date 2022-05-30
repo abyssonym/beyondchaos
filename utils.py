@@ -28,6 +28,7 @@ CHAR_TABLE = path.join(tblpath, "charcodes.txt")
 TEXT_TABLE = path.join(tblpath, "text.txt")
 SHORT_TEXT_TABLE = path.join(tblpath, "shorttext.txt")
 DIALOGUE_TEXT_TABLE = path.join(tblpath, "dialoguetext.txt")
+BATTLE_DIALOGUE_TEXT_TABLE = path.join(tblpath, "battledialoguetext.txt")
 ENEMY_NAMES_TABLE = path.join(tblpath, "enemynames.txt")
 MODIFIERS_TABLE = path.join(tblpath, "moves.txt")
 MOVES_TABLE = path.join(tblpath, "moves.txt")
@@ -164,10 +165,33 @@ for line in f:
     if string not in dialoguetexttable:
         dialoguetexttable[string] = value
 f.close()
-
+dialoguetexttable["'"] = dialoguetexttable["’"]
 
 reverse_dialoguetexttable = {v: k for k, v in dialoguetexttable.items()}
 reverse_dialoguetexttable["1104"] = "<wait 60 frames>"
+reverse_dialoguetexttable["63"] = "'"
+
+for i in range(0xFF):
+    dialoguetexttable[f"${i:02X}"] = f"{i:02X}"
+    
+for i in range(0xFF):
+    if f"{i:02X}" not in reverse_dialoguetexttable:
+        reverse_dialoguetexttable[f"{i:02X}"] = f"${i:02X}"
+
+battledialoguetexttable = {}
+f = open(BATTLE_DIALOGUE_TEXT_TABLE, encoding='utf8')
+for line in f:
+    line = line.strip('\n')
+    if not line:
+        continue
+    value, string = tuple(line.split('=', 1))
+    if string not in battledialoguetexttable:
+        battledialoguetexttable[string] = value
+f.close()
+battledialoguetexttable["'"] = battledialoguetexttable["’"]
+
+reverse_battledialoguetexttable = {v: k for k, v in battledialoguetexttable.items()}
+reverse_battledialoguetexttable["C3"] = "'"
 
 
 def hex2int(hexstr):
@@ -180,7 +204,7 @@ def shuffle_key_values(d):
     shuffled = dict(zip(keys, d.values()))
     d.update(shuffled)
 
-def dialogue_to_bytes(text, null_terminate=True):
+def dialogue_to_bytes(text, null_terminate=True, table=dialoguetexttable):
     bs = []
     i = 0
     while i < len(text):
@@ -188,31 +212,34 @@ def dialogue_to_bytes(text, null_terminate=True):
             spaces = re.match(" +", text[i:]).group(0)
             count = len(spaces)
             j = i + count
-            hexstr = dialoguebytetable.get(text[i:j], "")
+            hexstr = table.get(text[i:j], "")
             if not hexstr:
-                hexstr = dialoguebytetable.get(text[i])
+                hexstr = table.get(text[i])
                 j = i + 1
             i = j
         elif text[i] == "<":
             j = text.find(">", i) + 1
-            hexstr = dialoguetexttable.get(text[i:j], "")
+            hexstr = table.get(text[i:j], "")
             i = j
-        elif i < len(text) - 1 and text[i:i+2] in dialoguetexttable:
-            hexstr = dialoguetexttable[text[i:i+2]]
+        elif i < len(text) - 1 and text[i:i+2] in table:
+            hexstr = table[text[i:i+2]]
             i += 2
+        elif text[i] == "$":
+            hexstr = text[i+1:i+3]
+            i += 3
         else:
-            hexstr = dialoguetexttable[text[i]]
+            hexstr = table[text[i]]
             i += 1
 
         if hexstr != "":
             bs.extend(bytes.fromhex(hexstr))
 
-    if null_terminate and bs[-1] != 0x0:
+    if null_terminate and (not bs or bs[-1] != 0x0):
         bs.append(0x0)
     return bytes(bs)
 
 
-def bytes_to_dialogue(bs):
+def bytes_to_dialogue(bs, table=reverse_dialoguetexttable):
     text = []
     i = 0
     while i < len(bs):
@@ -220,14 +247,15 @@ def bytes_to_dialogue(bs):
         if c == b'\x00':
             break
         d = bs[i+1] if i + 1 < len(bs) else None
-        if d and f"{c:02X}{d:02X}" in reverse_dialoguetexttable:
-            text.append(reverse_dialoguetexttable[f"{c:02X}{d:02X}"])
+        if d is not None and f"{c:02X}{d:02X}" in table:
+            text.append(table[f"{c:02X}{d:02X}"])
             i += 2
-        elif f"{c:02X}" in reverse_dialoguetexttable:
-            text.append(reverse_dialoguetexttable[f"{c:02X}"])
+        elif f"{c:02X}" in table:
+            text.append(table[f"{c:02X}"])
             i += 1
         else:
-            print(bs[i], f"{c:02X}{d:02X}" if d else f"{c:02X}")
+            print(i, len(bs), d)
+            print(bs[i], f"{c:02X}{d:02X}" if d is not None else f"{c:02X}")
             raise ValueError
 
     return "".join(text)

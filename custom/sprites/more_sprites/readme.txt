@@ -1,0 +1,1 @@
+This folder isn't meaningful. It's just here to demonstrate the ability to put sprites in different folders.

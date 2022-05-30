@@ -1,7 +1,12 @@
 from os import path
 from collections import defaultdict
+import pathlib
 import random
 import re
+
+from typing import List
+
+from sprite_replacement import SpriteReplacement
 
 try:
     from sys import _MEIPASS
@@ -62,11 +67,12 @@ MAGICITE_TABLE = path.join(tblpath, "magicite.txt")
 custom_path = "custom"
 MALE_NAMES_TABLE = path.join(custom_path, "malenames.txt")
 FEMALE_NAMES_TABLE = path.join(custom_path, "femalenames.txt")
-SPRITE_REPLACEMENT_TABLE = path.join(custom_path, "spritereplacements.txt")
 MOOGLE_NAMES_TABLE = path.join(custom_path, "mooglenames.txt")
 DANCE_NAMES_TABLE = path.join(custom_path, "dancenames.txt")
 PASSWORDS_TABLE = path.join(custom_path, "passwords.txt")
 POEMS_TABLE = path.join(custom_path, "poems.txt")
+CUSTOM_SPRITES_PATH = pathlib.Path(custom_path, 'sprites')
+
 
 def open_mei_fallback(filename, mode='r', encoding=None):
     if not MEI:
@@ -77,6 +83,26 @@ def open_mei_fallback(filename, mode='r', encoding=None):
     except IOError:
         f = open(path.join(_MEIPASS, filename), mode, encoding=encoding)
     return f
+
+
+def get_sprites_path():
+    if not MEI:
+        return CUSTOM_SPRITES_PATH
+        
+    else:
+        return CUSTOM_SPRITES_PATH if CUSTOM_SPRITES_PATH.exists() else pathlib.Path(_MEIPASS, CUSTOM_SPRITES_PATH)
+
+
+def load_custom_sprites() -> List[SpriteReplacement]:
+    path = get_sprites_path()
+    
+    replacements = []
+    sprite_files = path.glob('**/sprites.csv')
+    for file in sprite_files:
+        with open_mei_fallback(file, 'r') as f:
+            sprites = [SpriteReplacement(*line.strip().split(','), path=file.parent) for line in f.readlines()]
+            replacements.extend(sprites)
+    return replacements        
 
 
 class Substitution:

@@ -8,8 +8,8 @@ from locationrandomizer import get_npcs
 from monsterrandomizer import change_enemy_name
 from sprite_replacement import SpriteReplacement
 from utils import (CHARACTER_PALETTE_TABLE, EVENT_PALETTE_TABLE, FEMALE_NAMES_TABLE, MALE_NAMES_TABLE,
-                   MOOGLE_NAMES_TABLE, RIDING_SPRITE_TABLE, SPRITE_REPLACEMENT_TABLE,
-                   generate_character_palette, get_palette_transformer, hex2int, name_to_bytes,
+                   MOOGLE_NAMES_TABLE, RIDING_SPRITE_TABLE,
+                   generate_character_palette, get_palette_transformer, hex2int, load_custom_sprites, name_to_bytes,
                    open_mei_fallback, read_multi, shuffle_char_hues,
                    Substitution, utilrandom as random, write_multi)
 
@@ -297,9 +297,7 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
     if not sprite_swap_mode:
         return swap_to
 
-    f = open_mei_fallback(SPRITE_REPLACEMENT_TABLE)
-    known_replacements = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
-    f.close()
+    known_replacements = load_custom_sprites()
 
     #uniqueids for sprites pulled from rom
     vuids = {0: "terra", 1: "locke", 2: "cyan", 3: "shadow", 4: "edgar", 5: "sabin", 6: "celes", 7: "strago", 8: "relm", 9: "setzer", 10: "moogle", 11: "gau", 12: "gogo6", 13: "umaro", 16: "leo", 17: "banon", 18: "terra", 21: "kefka"}

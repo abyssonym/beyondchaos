@@ -1,6 +1,6 @@
 from dataclasses import dataclass, field
 from typing import List, Set, Union
-from utils import SPRITE_REPLACEMENT_TABLE, open_mei_fallback
+from utils import load_custom_sprites
 
 from sprite_replacement import SpriteReplacement
 
@@ -276,10 +276,8 @@ MAKEOVER_MODIFIER_CODES = [
 ]
 RESTRICTED_VANILLA_SPRITE_CODES = []
 
-with open_mei_fallback(SPRITE_REPLACEMENT_TABLE) as f:
-    known_replacements = [SpriteReplacement(*line.strip().split(',')) for line in f.readlines()]
 
-makeover_tags = {tag for s in known_replacements for tag in s.tags}
+makeover_tags = {tag for s in load_custom_sprites() for tag in s.tags}
 
 for mg in makeover_tags:
     no = Code('no'+mg, f"NO {mg.upper()} ALLOWED MODE", f"Do not select {mg} sprites.", "makeover")

@@ -939,6 +939,14 @@ def reset_special_relics(items, characters, fout):
     return loglist
 
 
+def get_dragoon_boots_command(fout, commands):
+    ptr = sperelic[0x04][0]
+    fout.seek(ptr)
+    command_id = ord(fout.read(1))
+
+    return [c for c in commands.values() if c.id == command_id][0].name
+
+
 def reset_rage_blizzard(items, umaro_risk, fout):
     for item in items:
         if item.itemid not in [0xC5, 0xC6]:

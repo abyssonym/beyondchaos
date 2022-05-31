@@ -2049,11 +2049,14 @@ def get_collapsing_house_help_skill():
                                        (z.target_everyone and not z.target_one_side_only)) and
                                    z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]])
 
+    if all_skills:
+        worst_skill = max(all_skills, key=lambda s: s.rank())
+
     if status_specials:
         sleep_index = ranked.index(specialdict["sleep"])
         worst_special = max(status_specials, key=ranked.index)
         worst_special_index = ranked.index(worst_special)
-        if worst_special_index >= sleep_index or not all_skills or random.choice([True, False]):
+        if worst_special_index >= sleep_index or not worst_skill or worst_skill.rank() < 19:
             status = reverse_specialdict[worst_special]
             if status == "zombie":
                 status = "zombify"
@@ -2063,8 +2066,7 @@ def get_collapsing_house_help_skill():
                 status = status[:-1]
             return status
 
-    if all_skills:
-        worst_skill = max(all_skills, key=lambda s: s.rank())
+    if worst_skill:
         return worst_skill.name + "-"
 
     return "battl"

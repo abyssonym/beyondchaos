@@ -19,6 +19,7 @@ from dialoguemanager import manage_dialogue_patches, get_dialogue, set_dialogue,
 from esperrandomizer import (get_espers, allocate_espers, randomize_magicite)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS,
                                  get_formations, get_fsets, get_formation)
+from hints import setup_hints
 from holiday import activate_holiday, activate_holiday_post_random, hail_demon_chocobo
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
@@ -30,7 +31,7 @@ from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monster
                                get_metamorphs, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table,
                                change_enemy_name, randomize_enemy_name,
-                               get_collapsing_house_help_skill, manage_monster_appearance)
+                               manage_monster_appearance)
 from musicrandomizer import randomize_music, manage_opera, insert_instruments
 from options import ALL_MODES, ALL_FLAGS, options_
 from patches import allergic_dog, banon_life3, vanish_doom, evade_mblock, death_abuse, no_kutan_skip, show_coliseum_rewards
@@ -3721,40 +3722,6 @@ def nerf_paladin_shield():
     paladin_shield.write_stats(fout)
 
 
-def sprint_shoes_hint():
-    sprint_shoes = get_item(0xE6)
-    spell_id = sprint_shoes.features['learnspell']
-    spellname = get_spell(spell_id).name
-    hint = f"Equip relics to gain a variety of abilities!<page>These teach me {spellname}!"
-
-    set_dialogue(0xb8, hint)
-
-    # disable fade to black relics tutorial
-    sprint_sub = Substitution()
-    sprint_sub.set_location(0xA790E)
-    sprint_sub.bytestring = b'\xFE'
-    sprint_sub.write(fout)
-
-
-def sabin_hint(commands):
-    sabin = get_character(0x05)
-    command_id = sabin.battle_commands[1]
-    if not command_id or command_id == 0xFF:
-        command_id = sabin.battle_commands[0]
-
-    command = [c for c in commands.values() if c.id == command_id][0]
-    hint = "My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {}.".format(command.name)
-
-    set_dialogue(0xb9, hint)
-
-
-def house_hint():
-    skill = get_collapsing_house_help_skill()
-
-    hint = f"There are monsters inside! They keep {skill}ing everyone who goes in to help. You using suitable Relics?".format(skill)
-    set_dialogue(0x8A4, hint)
-
-
 def start_with_random_espers():
     fout.seek(0xC9ab6)
     fout.write(bytes([0xB2, 0x00, 0x50, 0xF0 - 0xCA]))
@@ -4428,9 +4395,6 @@ def randomize(args):
     if options_.mode.name == "katn":
         start_with_random_espers()
     reseed()
-
-    if options_.random_enemy_stats or options_.random_formations:
-        house_hint()
     reseed()
     reseed()
 
@@ -4515,11 +4479,7 @@ def randomize(args):
     if not options_.is_code_active('fightclub'):
         show_coliseum_rewards(fout)
 
-    if options_.replace_commands or options_.shuffle_commands:
-        sabin_hint(commands)
-
-    if options_.sprint:
-        sprint_shoes_hint()
+    setup_hints(fout, options_, commands)
 
     if options_.mode.name == "katn":
         the_end_comes_beyond_katn()

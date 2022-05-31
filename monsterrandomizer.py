@@ -2068,3 +2068,68 @@ def get_collapsing_house_help_skill():
         return worst_skill.name + "-"
 
     return "battl"
+
+
+def manage_monster_appearance(monsters, sourcefile, fout, preserve_graphics=False):
+    mgs = [m.graphics for m in monsters]
+    esperptr = 0x127000 + (5*384)
+    espers = []
+    for j in range(32):
+        mg = MonsterGraphicBlock(pointer=esperptr + (5*j), name="")
+        mg.read_data(sourcefile)
+        espers.append(mg)
+        mgs.append(mg)
+
+    for m in monsters:
+        g = m.graphics
+        pp = g.palette_pointer
+        others = [h for h in mgs if h.palette_pointer == pp + 0x10]
+        if others:
+            g.palette_data = g.palette_data[:0x10]
+
+    nonbosses = [m for m in monsters if not m.is_boss and not m.boss_death]
+    bosses = [m for m in monsters if m.is_boss or m.boss_death]
+    assert not set(bosses) & set(nonbosses)
+    nonbossgraphics = [m.graphics.graphics for m in nonbosses]
+    bosses = [m for m in bosses if m.graphics.graphics not in nonbossgraphics]
+
+    for i, m in enumerate(nonbosses):
+        if "Chupon" in m.name:
+            m.update_pos(6, 6)
+            m.update_size(8, 16)
+        if "Siegfried" in m.name:
+            m.update_pos(8, 8)
+            m.update_size(8, 8)
+        candidates = nonbosses[i:]
+        m.mutate_graphics_swap(candidates)
+        name = randomize_enemy_name(fout, m.id)
+        m.changed_name = name
+
+    done = {}
+    freepointer = 0x127820
+    for m in monsters:
+        mg = m.graphics
+        if m.id == 0x12a and not preserve_graphics:
+            idpair = "KEFKA 1"
+        if m.id in REPLACE_ENEMIES + [0x172]:
+            mg.set_palette_pointer(freepointer)
+            freepointer += 0x40
+            continue
+        else:
+            idpair = (m.name, mg.palette_pointer)
+
+        if idpair not in done:
+            mg.mutate_palette()
+            done[idpair] = freepointer
+            freepointer += len(mg.palette_data)
+            mg.write_data(fout, palette_pointer=done[idpair])
+        else:
+            mg.write_data(fout, palette_pointer=done[idpair],
+                          no_palette=True)
+
+    for mg in espers:
+        mg.mutate_palette()
+        mg.write_data(fout, palette_pointer=freepointer)
+        freepointer += len(mg.palette_data)
+
+    return mgs

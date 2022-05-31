@@ -664,9 +664,7 @@ class Location():
         f.seek(self.eventpointer)
         begin = read_multi(f, length=2)
         end = read_multi(f, length=2)
-        numevents = (end - begin) / 5.0
-        assert numevents == round(numevents)
-        numevents = int(numevents)
+        numevents = (end - begin) // 5
         self.events = []
         for i in range(numevents):
             pointer = begin + (i*5) + 0x40000
@@ -1163,6 +1161,65 @@ def randomize_forest():
     for e in wrong_entrances:
         exit = random.choice(wrong_exits)
         map_entrance_to_exit(e, exit)
+
+
+def write_all_locations_misc(fout):
+    _write_all_chests(fout)
+    _write_all_npcs(fout)
+    _write_all_events(fout)
+    _write_all_entrances(fout)
+
+
+def _write_all_chests(fout):
+    locations = get_locations()
+    locations = sorted(locations, key=lambda l: l.locid)
+
+    nextpointer = 0x2d8634
+    for l in locations:
+        nextpointer = l.write_chests(fout, nextpointer=nextpointer)
+
+
+def _write_all_npcs(fout):
+    locations = get_locations()
+    locations = sorted(locations, key=lambda l: l.locid)
+
+    nextpointer = 0x41d52
+    for l in locations:
+        if hasattr(l, "restrank"):
+            nextpointer = l.write_npcs(fout, nextpointer=nextpointer,
+                                       ignore_order=True)
+        else:
+            nextpointer = l.write_npcs(fout, nextpointer=nextpointer)
+            
+    #print(f'NPCs left: {(0x46AC0 - nextpointer) // 9}')
+
+
+def _write_all_events(fout):
+    locations = get_locations()
+    locations = sorted(locations, key=lambda l: l.locid)
+
+    nextpointer = 0x40342
+    for l in locations:
+        nextpointer = l.write_events(fout, nextpointer=nextpointer)
+    #print(f'events left: {(0x41a10 - nextpointer) // 5}')
+
+
+def _write_all_entrances(fout):
+    entrancesets = [l.entrance_set for l in get_locations()]
+    entrancesets = entrancesets[:0x19F]
+    nextpointer = 0x1FBB00 + (len(entrancesets) * 2) + 2
+    longnextpointer = 0x2DF480 + (len(entrancesets) * 2) + 2
+    total = 0
+    for e in entrancesets:
+        total += len(e.entrances)
+        nextpointer, longnextpointer = e.write_data(fout, nextpointer,
+                                                    longnextpointer)
+    fout.seek(e.pointer + 2)
+    write_multi(fout, (nextpointer - 0x1fbb00), length=2)
+    fout.seek(e.longpointer + 2)
+    write_multi(fout, (longnextpointer - 0x2df480), length=2)
+    #print(f'entrances left: {(0x1FDA00 - nextpointer) // 6}')
+    #print(f'long entrances left: {(0x2DFE00 - longnextpointer) // 7}')
 
 
 if __name__ == "__main__":

@@ -11,6 +11,7 @@ from hashlib import md5
 
 from ancient import manage_ancient
 from appearance import manage_character_appearance
+from bingo import manage_bingo
 from character import get_characters, get_character, equip_offsets
 from chestrandomizer import mutate_event_items, get_event_items
 from decompress import Decompressor
@@ -22,14 +23,14 @@ from holiday import activate_holiday, activate_holiday_post_random, hail_demon_c
 from itemrandomizer import (reset_equippable, get_ranked_items, get_item,
                             reset_special_relics, reset_rage_blizzard,
                             reset_cursed_shield, unhardcode_tintinabar)
-from locationrandomizer import (get_locations, get_location, get_zones, get_npcs, randomize_forest)
+from locationrandomizer import (get_locations, get_location, get_zones, randomize_forest, write_all_locations_misc)
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu,
                           show_original_names, improve_dance_menu, y_equip_relics, fix_gogo_portrait)
 from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monsters,
                                get_metamorphs, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table,
                                change_enemy_name, randomize_enemy_name,
-                               get_collapsing_house_help_skill)
+                               get_collapsing_house_help_skill, manage_monster_appearance)
 from musicrandomizer import randomize_music, manage_opera, insert_instruments
 from options import ALL_MODES, ALL_FLAGS, options_
 from patches import allergic_dog, banon_life3, vanish_doom, evade_mblock, death_abuse, no_kutan_skip, show_coliseum_rewards
@@ -57,7 +58,7 @@ VERSION_ROMAN = "V"
 if BETA:
     VERSION_ROMAN += " BETA"
 TEST_ON = False
-TEST_SEED = "44.abcefghijklmnopqrstuvwxyz-partyparty.42069"
+TEST_SEED = "44.abcefghijklmnopqrstuvwxyz partyparty.42069"
 TEST_FILE = "program.rom"
 seed, flags = None, None
 seedcounter = 1
@@ -1427,9 +1428,6 @@ def manage_sprint():
 
 
 def manage_skips():
-    # To identify if this cutscene skip is active in a ROM, look for the bytestring:
-    # 41 6E 64 53 68 65 61 74 68 57 61 73 54 68 65 72 65 54 6F 6F
-    # at 0xCAA9F
     characters = get_characters()
 
     def writeToAddress(address, event):
@@ -1683,8 +1681,6 @@ def manage_rng():
     fout.write(bytes(numbers))
 
 
-
-
 def manage_balance(newslots=True):
     vanish_doom(fout)
     evade_mblock(fout)
@@ -1854,71 +1850,6 @@ def manage_monsters():
         m.write_stats(fout)
 
     return monsters
-
-
-def manage_monster_appearance(monsters, preserve_graphics=False):
-    mgs = [m.graphics for m in monsters]
-    esperptr = 0x127000 + (5*384)
-    espers = []
-    for j in range(32):
-        mg = MonsterGraphicBlock(pointer=esperptr + (5*j), name="")
-        mg.read_data(sourcefile)
-        espers.append(mg)
-        mgs.append(mg)
-
-    for m in monsters:
-        g = m.graphics
-        pp = g.palette_pointer
-        others = [h for h in mgs if h.palette_pointer == pp + 0x10]
-        if others:
-            g.palette_data = g.palette_data[:0x10]
-
-    nonbosses = [m for m in monsters if not m.is_boss and not m.boss_death]
-    bosses = [m for m in monsters if m.is_boss or m.boss_death]
-    assert not set(bosses) & set(nonbosses)
-    nonbossgraphics = [m.graphics.graphics for m in nonbosses]
-    bosses = [m for m in bosses if m.graphics.graphics not in nonbossgraphics]
-
-    for i, m in enumerate(nonbosses):
-        if "Chupon" in m.name:
-            m.update_pos(6, 6)
-            m.update_size(8, 16)
-        if "Siegfried" in m.name:
-            m.update_pos(8, 8)
-            m.update_size(8, 8)
-        candidates = nonbosses[i:]
-        m.mutate_graphics_swap(candidates)
-        name = randomize_enemy_name(fout, m.id)
-        m.changed_name = name
-
-    done = {}
-    freepointer = 0x127820
-    for m in monsters:
-        mg = m.graphics
-        if m.id == 0x12a and not preserve_graphics:
-            idpair = "KEFKA 1"
-        if m.id in REPLACE_ENEMIES + [0x172]:
-            mg.set_palette_pointer(freepointer)
-            freepointer += 0x40
-            continue
-        else:
-            idpair = (m.name, mg.palette_pointer)
-
-        if idpair not in done:
-            mg.mutate_palette()
-            done[idpair] = freepointer
-            freepointer += len(mg.palette_data)
-            mg.write_data(fout, palette_pointer=done[idpair])
-        else:
-            mg.write_data(fout, palette_pointer=done[idpair],
-                          no_palette=True)
-
-    for mg in espers:
-        mg.mutate_palette()
-        mg.write_data(fout, palette_pointer=freepointer)
-        freepointer += len(mg.palette_data)
-
-    return mgs
 
 
 def manage_colorize_animations():
@@ -2423,59 +2354,6 @@ def manage_chests():
     for m in get_monsters():
         m.write_stats(fout)
 
-def write_all_locations_misc():
-    write_all_chests()
-    write_all_npcs()
-    write_all_events()
-    write_all_entrances()
-
-
-def write_all_chests():
-    locations = get_locations()
-    locations = sorted(locations, key=lambda l: l.locid)
-
-    nextpointer = 0x2d8634
-    for l in locations:
-        nextpointer = l.write_chests(fout, nextpointer=nextpointer)
-
-
-def write_all_npcs():
-    locations = get_locations()
-    locations = sorted(locations, key=lambda l: l.locid)
-
-    nextpointer = 0x41d52
-    for l in locations:
-        if hasattr(l, "restrank"):
-            nextpointer = l.write_npcs(fout, nextpointer=nextpointer,
-                                       ignore_order=True)
-        else:
-            nextpointer = l.write_npcs(fout, nextpointer=nextpointer)
-
-
-def write_all_events():
-    locations = get_locations()
-    locations = sorted(locations, key=lambda l: l.locid)
-
-    nextpointer = 0x40342
-    for l in locations:
-        nextpointer = l.write_events(fout, nextpointer=nextpointer)
-
-
-def write_all_entrances():
-    entrancesets = [l.entrance_set for l in get_locations()]
-    entrancesets = entrancesets[:0x19F]
-    nextpointer = 0x1FBB00 + (len(entrancesets) * 2) + 2
-    longnextpointer = 0x2DF480 + (len(entrancesets) * 2) + 2
-    total = 0
-    for e in entrancesets:
-        total += len(e.entrances)
-        nextpointer, longnextpointer = e.write_data(fout, nextpointer,
-                                                    longnextpointer)
-    fout.seek(e.pointer + 2)
-    write_multi(fout, (nextpointer - 0x1fbb00), length=2)
-    fout.seek(e.longpointer + 2)
-    write_multi(fout, (longnextpointer - 0x2df480), length=2)
-
 
 def manage_blitz():
     blitzspecptr = 0x47a40
@@ -2900,9 +2778,6 @@ def assign_unused_enemy_formations():
         add_orphaned_formation(uf)
 
 
-
-
-
 def manage_shops():
     buyables = set([])
     descriptions = []
@@ -3212,7 +3087,7 @@ def manage_tower():
     locations = get_locations()
     randomize_tower(filename=sourcefile)
     for l in locations:
-        if l.locid in [0x154, 0x155] + list(range(104, 108)):
+        if l.locid in [0x154, 0x155]:
             # leo's thamasa, etc
             # TODO: figure out consequences of 0x154
             l.entrance_set.entrances = []
@@ -3225,12 +3100,6 @@ def manage_tower():
                     thamasa_map_sub.write(fout)
         l.write_data(fout)
 
-    npc = [n for n in get_npcs() if n.event_addr == 0x233B8][0]
-    npc.event_addr = 0x233A6
-    narshe_beginner_sub = Substitution()
-    narshe_beginner_sub.bytestring = bytes([0x4B, 0xE5, 0x00])
-    narshe_beginner_sub.set_location(0xC33A6)
-    narshe_beginner_sub.write(fout)
 
 def manage_strange_events():
     shadow_recruit_sub = Substitution()
@@ -3642,142 +3511,6 @@ def manage_auction_house():
         opening_bid = str(auction_item[4])
 
         set_dialogue(auction_item[3], f'<line>        “<item>”!<page><line>Do I hear {opening_bid} GP?!')
-
-
-def manage_bingo():
-    target_score = 200.0
-    print("WELCOME TO BEYOND CHAOS BINGO MODE")
-    print("Include what type of squares? (blank for all)")
-    print("    a   Abilities\n"
-          "    i   Items\n"
-          "    m   Monsters\n"
-          "    s   Spells")
-    bingoflags = input("> ").strip()
-    if not bingoflags:
-        bingoflags = "aims"
-    bingoflags = [c for c in "aims" if c in bingoflags]
-
-    print("What size grid? (default: 5)")
-    size = input("> ").strip()
-    if not size:
-        size = 5
-    else:
-        size = int(size)
-    target_score = float(target_score) * (size**2)
-
-    print("What difficulty level? Easy, Normal, or Hard? (e/n/h)")
-    difficulty = input("> ").strip()
-    if not difficulty:
-        difficulty = "n"
-    else:
-        difficulty = difficulty[0].lower()
-        if difficulty not in "enh":
-            difficulty = "n"
-
-    print("Generate how many cards? (default: 1)")
-    numcards = input("> ").strip()
-    if not numcards:
-        numcards = 1
-    else:
-        numcards = int(numcards)
-    print("Generating Bingo cards, please wait.")
-
-    skills = get_ranked_spells()
-    spells = [s for s in skills if s.spellid <= 0x35]
-    abilities = [s for s in skills if 0x54 <= s.spellid <= 0xED]
-    monsters = get_ranked_monsters()
-    items = get_ranked_items()
-    monsters = [m for m in monsters if m.display_location and
-                "missing" not in m.display_location.lower() and
-                "unknown" not in m.display_location.lower() and
-                m.display_name.strip('_')]
-    monsterskills = set([])
-    for m in monsters:
-        ids = set(m.get_skillset(ids_only=True))
-        monsterskills |= ids
-    abilities = [s for s in abilities if s.spellid in monsterskills]
-    if difficulty == 'e':
-        left, right = lambda x: 0, lambda x: len(x)//2
-    elif difficulty == 'h':
-        left, right = lambda x: len(x)//2, len
-    else:
-        left, right = lambda x: 0, len
-
-    abilities = abilities[left(abilities):right(abilities)]
-    items = items[left(items):right(items)]
-    monsters = monsters[left(monsters):right(monsters)]
-    spells = spells[left(spells):right(spells)]
-
-    difficulty = {'e': "Easy",
-                  'n': "Normal",
-                  'h': "Hard"}[difficulty]
-    flagnames = {'a': "Ability",
-                 'i': "Item",
-                 'm': "Enemy",
-                 's': "Spell"}
-
-    def generate_card(grid):
-        midborder = "+" + "+".join(["-"*12]*len(grid)) + "+"
-        s = midborder + "\n"
-        for row in grid:
-            flags = ["{0:^12}".format(c.bingoflag.upper()) for c in row]
-            names = ["{0:^12}".format(c.bingoname) for c in row]
-            scores = ["{0:^12}".format("%s Points" % c.bingoscore)
-                      for c in row]
-            flags = "|".join(flags)
-            names = "|".join(names)
-            scores = "|".join(scores)
-            rowstr = "|" + "|\n|".join([flags, names, scores]) + "|"
-            s += rowstr + "\n"
-            s += midborder + "\n"
-        return s.strip()
-
-    for i in range(numcards):
-        flaglists = {'a': list(abilities),
-                     'i': list(items),
-                     'm': list(monsters),
-                     's': list(spells)}
-        scorelists = {x:dict({}) for x in "aims"}
-        random.seed(seed + (i**2))
-        grid, flaggrid, displaygrid = [], [], []
-        filename = "bingo.%s.%s.txt" % (seed, i)
-        s = "Beyond Chaos Bingo Card %s-%s\n" % (i, difficulty)
-        s += "Seed: %s\n" % seed
-        for y in range(size):
-            for g in [grid, flaggrid, displaygrid]:
-                g.append([])
-            for x in range(size):
-                flagoptions = set(bingoflags)
-                if y > 0 and flaggrid[y-1][x] in flagoptions:
-                    flagoptions.remove(flaggrid[y-1][x])
-                if x > 0 and flaggrid[y][x-1] in flagoptions:
-                    flagoptions.remove(flaggrid[y][x-1])
-                if not flagoptions:
-                    flagoptions = set(bingoflags)
-                chosenflag = random.choice(sorted(flagoptions))
-                flaggrid[y].append(chosenflag)
-                chosen = random.choice(flaglists[chosenflag])
-                flaglists[chosenflag].remove(chosen)
-                scorelists[chosenflag][chosen] = (x, y)
-                grid[y].append(chosen)
-        for flag in bingoflags:
-            scoredict = scorelists[flag]
-            chosens = list(scoredict.keys())
-            scoresum = sum([c.rank() for c in chosens])
-            multiplier = target_score / scoresum
-            for c in chosens:
-                c.bingoscore = int(round(c.rank() * multiplier, -2))
-                c.bingoflag = flagnames[flag]
-                c.bingoname = (c.display_name if hasattr(c, "display_name")
-                               else c.name)
-
-        assert len(grid) == size
-        assert len(grid[0]) == size
-        s2 = generate_card(grid)
-        s += "\n" + s2
-        f = open(filename, "w+")
-        f.write(s)
-        f.close()
 
 
 def manage_clock():
@@ -4462,7 +4195,7 @@ def randomize(args):
     reseed()
 
     if options_.random_palettes_and_names and options_.random_enemy_stats:
-        mgs = manage_monster_appearance(monsters,
+        mgs = manage_monster_appearance(monsters, sourcefile, fout,
                                         preserve_graphics=preserve_graphics)
     reseed()
 
@@ -4709,7 +4442,7 @@ def randomize(args):
     if options_.is_code_active('thescenarionottaken'):
         no_kutan_skip(fout)
 
-    write_all_locations_misc()
+    write_all_locations_misc(fout)
     for fs in fsets:
         fs.write_data(fout)
 
@@ -4823,7 +4556,7 @@ def randomize(args):
     print("Randomization successful. Output filename: %s\n" % outfile)
 
     if options_.is_code_active('bingoboingo'):
-        manage_bingo()
+        manage_bingo(seed)
 
     return outfile
 

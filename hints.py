@@ -79,7 +79,7 @@ def _school_hints(fout, options_, commands):
             rage_text = '<page>Press the B button twice on Rages in the Skill menu to see what they do.'
         else:
             rage_text = ''
-        elif options_.random_dances:
+        if options_.random_dances:
             dance_text = '<page>Select Dances in the Skill menu to see what abilities they can use.'
         else:
             dance_text = ''

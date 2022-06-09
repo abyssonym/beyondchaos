@@ -40,7 +40,7 @@ FIXED_ENTRANCES, REMOVE_ENTRANCES = [], []
 
 locexchange = {}
 old_entrances = {}
-towerlocids = [int(line.strip(), 0x10) for line in open(TOWER_LOCATIONS_TABLE)]
+towerlocids = [int(line.strip(), 0x10) for line in open(TOWER_LOCATIONS_TABLE, encoding='utf_8')]
 map_bans = []
 newfsets = {}
 clusters = None
@@ -50,9 +50,9 @@ def get_new_formations(areaname, supplement=True):
     from randomizer import get_namelocdict
     namelocdict = get_namelocdict()
     setids = set([])
-    for key in namelocdict:
+    for key, value in namelocdict:
         if type(key) is str and areaname in key:
-            setids |= set(namelocdict[key])
+            setids |= set(value)
 
     fsets = [fs for fs in get_fsets() if fs.setid in setids]
     formations = set([])
@@ -297,7 +297,7 @@ def remap_maps(routes):
     assert len(set(ranked_locations)) == len(set(newlocations))
 
     ranked_locations = [l for l in ranked_locations
-                        if not hasattr(l, "restrank")]
+                        if not hasattr(l, 'restrank')]
     for i, loc in enumerate(ranked_locations):
         loc.ancient_rank = i
         loc.make_tower_basic()
@@ -339,7 +339,7 @@ def remap_maps(routes):
         ranked334 = s334segment.ranked_clusters
         if (ranked292.index(s292cluster) > ranked292.index(g334cluster) and
                 ranked334.index(s334cluster) > ranked334.index(g292cluster)):
-            raise Exception("Dungeon cannot be completed with this layout.")
+            raise Exception('Dungeon cannot be completed with this layout.')
 
     return newlocations, unused_maps
 
@@ -356,7 +356,7 @@ class Cluster:
 
     @property
     def has_adjacent_entrances(self):
-        if hasattr(self, "_has_adjacent_entrances"):
+        if hasattr(self, '_has_adjacent_entrances'):
             return self._has_adjacent_entrances
 
         for e1 in self.entrances:
@@ -364,7 +364,7 @@ class Cluster:
                 if e1 == e2:
                     continue
                 if e1.x == e2.x and e1.y == e2.y:
-                    raise Exception("ERROR: Overlapping entrances")
+                    raise Exception('ERROR: Overlapping entrances')
                 if ((e1.x == e2.x and abs(e1.y - e2.y) == 1) or
                         (abs(e1.x - e2.x) == 1 and e1.y == e2.y)):
                     self._has_adjacent_entrances = True
@@ -432,8 +432,8 @@ class Cluster:
         return free
 
     def __repr__(self):
-        display = "; ".join([str(e) for e in self.entrances])
-        display = "%s %s" % (self.clusterid, display)
+        display = '; '.join([str(e) for e in self.entrances])
+        display = f'{self.clusterid} {display}'
         return display
 
 
@@ -453,7 +453,7 @@ class RestStop(Cluster):
         RestStop.counter += 1
 
     def __repr__(self):
-        return "Rest stop rank %s" % self.rank
+        return f'Rest stop rank {self.rank}'
 
 
 def get_clusters():
@@ -462,7 +462,7 @@ def get_clusters():
         return clusters
 
     clusters = []
-    for i, line in enumerate(open(ENTRANCE_REACHABILITY_TABLE)):
+    for i, line in enumerate(open(ENTRANCE_REACHABILITY_TABLE, encoding='utf_8')):
         locid, entids = line.strip().split(':')
         locid = int(locid)
         entids = list(map(int, entids.split(',')))
@@ -488,7 +488,7 @@ class Segment:
         self.clusters = []
         self.entids = []
         for locid, entid in checkpoints:
-            if locid == "R":
+            if locid == 'R':
                 c = RestStop(rank=entid)
                 self.clusters.append(c)
                 self.entids.append(None)
@@ -600,11 +600,11 @@ class Segment:
                     if intercands:
                         break
                 else:
-                    raise Exception("No available intersegments.")
+                    raise Exception('No available intersegments.')
                 chosen = random.choice(intercands)
                 excands = (chosen.get_external_candidates(num=1))
                 if excands is None:
-                    raise Exception("Routing error.")
+                    raise Exception('Routing error.')
                 links.append((aent, excands[0]))
                 a.entering, a.exiting = True, True
 
@@ -619,12 +619,12 @@ class Segment:
                         links.append((c, d))
                         break
                     else:
-                        raise Exception("No exit segment available.")
+                        raise Exception('No exit segment available.')
             elif not inter.empty:
                 if not b.singleton:
                     excands = inter.get_external_candidates(num=2)
                     if excands is None:
-                        raise Exception("No exit segment available. (2)")
+                        raise Exception('No exit segment available. (2)')
                     random.shuffle(excands)
                     links.append((bent, excands[1]))
                     b.entering = True
@@ -661,7 +661,7 @@ class Segment:
                         break
                     i += -1
                 if inter.empty:
-                    raise Exception("Routing error.")
+                    raise Exception('Routing error.')
                 excands = inter.get_external_candidates(num=1)
                 links.append((aent, excands[0]))
                 a.entering = True
@@ -724,21 +724,21 @@ class Segment:
                     self.intersegments[i].need += 1
 
     def __repr__(self):
-        display = ""
+        display = ''
         for i, cluster in enumerate(self.clusters):
             entid = self.entids[i]
             if entid is None:
                 entid = '?'
-            display += "%s %s\n" % (entid, cluster)
+            display += f'{entid} {cluster}\n'
             if not isinstance(self, InterSegment):
                 if i < len(self.intersegments):
-                    display += str(self.intersegments[i]) + "\n"
+                    display += str(self.intersegments[i]) + '\n'
         display = display.strip()
         if not display:
-            display = "."
+            display = '.'
         if not isinstance(self, InterSegment):
-            display += "\nCONNECT %s" % self.consolidated_links
-            display += "\nONE-WAY %s" % self.oneway_entrances
+            display += f'\nCONNECT {self.consolidated_links}'
+            display += f'\nONE-WAY {self.oneway_entrances}'
         return display
 
 
@@ -767,7 +767,7 @@ class InterSegment(Segment):
         for c in self.clusters:
             if entrance in c.entrances:
                 return c
-        raise Exception("Could not find related cluster.")
+        raise Exception('Could not find related cluster.')
 
     def calculate_distance(self, a, b):
         reachable = [a]
@@ -787,7 +787,7 @@ class InterSegment(Segment):
                         return i
                     if dest is not None and dest not in reachable:
                         reachable.append(dest)
-        raise Exception("Clusters not connected.")
+        raise Exception('Clusters not connected.')
 
     def get_max_edge_distance(self, clusters):
         if len(clusters) == 1:
@@ -998,7 +998,7 @@ class Route:
             loc.party_id = party_id
 
     def __repr__(self):
-        display = "\n---\n".join([str(s) for s in self.segments])
+        display = '\n---\n'.join([str(s) for s in self.segments])
 
         return display
 
@@ -1028,14 +1028,14 @@ def parse_checkpoints():
 
     done, fixed, remove, oneway = [], [], [], []
     routes = [list([]) for _ in range(3)]
-    for line in open(checkpoints):
+    for line in open(checkpoints, encoding='utf_8'):
         line = line.strip()
         if not line or line[0] == '#':
             continue
         if line[0] == 'R':
             rank = int(line[1:])
             for route in routes:
-                route[-1].append(("R", rank))
+                route[-1].append(('R', rank))
         elif line[0] == '&':
             locid, entids = ent_text_to_ints(line[1:])
             for e in entids:
@@ -1050,12 +1050,12 @@ def parse_checkpoints():
             first, second = tuple(line)
             oneway.append((first, second))
         else:
-            if line.startswith("!"):
-                line = line.strip("!")
+            if line.startswith('!'):
+                line = line.strip('!')
                 for route in routes:
                     route.append([])
-            elif line.startswith("$"):
-                line = line.strip("$")
+            elif line.startswith('$'):
+                line = line.strip('$')
                 for route in routes:
                     subroute = route[-1]
                     head, tail = subroute[0], subroute[1:]
@@ -1085,7 +1085,7 @@ def parse_checkpoints():
                     subroute.insert(index, second)
                     done = True
         if not done:
-            raise Exception("Unknown oneway rule")
+            raise Exception('Unknown oneway rule')
 
     for route in routes:
         for i, _ in enumerate(route):
@@ -1244,14 +1244,14 @@ def randomize_fanatics(unused_locids):
     pitstops = [get_location(i) for i in [365, 367, 368, 369]]
     num_new_levels = random.randint(0, 1) + random.randint(1, 2)
     unused_locations = [get_location(l) for l in unused_locids]
-    fsets = get_new_fsets("fanatics", 10, supplement=False)
+    fsets = get_new_fsets('fanatics', 10, supplement=False)
     for _ in range(num_new_levels):
         stair = unused_locations.pop()
         stop = unused_locations.pop()
         stair.copy(random.choice(stairs[1:-1]))
         stop.copy(random.choice(pitstops[1:]))
-        add_location_map("Fanatics Tower", stair.locid)
-        add_location_map("Fanatics Tower", stop.locid)
+        add_location_map('Fanatics Tower', stair.locid)
+        add_location_map('Fanatics Tower', stop.locid)
         index = random.randint(1, len(stairs)-1)
         stairs.insert(index, stair)
         pitstops.insert(index, stop)
@@ -1327,7 +1327,7 @@ def randomize_tower(filename, ancient=False, nummaps=None):
 def make_secret_treasure_room(mapid, beltroom):
     from itemrandomizer import get_secret_item
     candidates = []
-    for line in open(TREASURE_ROOMS_TABLE):
+    for line in open(TREASURE_ROOMS_TABLE, encoding='utf_8'):
         locid, entid, chestid = tuple(map(int, line.strip().split(',')))
         location = get_location(locid)
         entrance = location.get_entrance(entid)
@@ -1381,14 +1381,14 @@ def make_secret_treasure_room(mapid, beltroom):
     return newlocation, beltroom
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from randomizer import get_monsters
-    get_monsters(filename="program.rom")
-    get_formations(filename="program.rom")
-    get_fsets(filename="program.rom")
-    get_locations(filename="program.rom")
+    get_monsters(filename='program.rom')
+    get_formations(filename='program.rom')
+    get_fsets(filename='program.rom')
+    get_locations(filename='program.rom')
 
-    routes = randomize_tower("program.rom", ancient=True)
+    routes = randomize_tower('program.rom', ancient=True)
     for route in routes:
         print(route)
         print()

@@ -3,7 +3,7 @@ from utils import (hex2int, int2bytes, Substitution, SPELL_TABLE,
 
 spelldict = {}
 spellnames = {}
-f = open(SPELL_TABLE)
+f = open(SPELL_TABLE, encoding='utf_8')
 for line in f:
     line = line.strip()
     while '  ' in line:
@@ -13,13 +13,13 @@ for line in f:
 f.close()
 
 spellbans = {}
-f = open(SPELLBANS_TABLE)
+f = open(SPELLBANS_TABLE, encoding='utf_8')
 for line in f:
     line = line.strip()
     if line[0] == '#':
         continue
     spellid, modifier, name, ban = tuple(line.split(','))
-    if ban == "ban":
+    if ban == 'ban':
         modifier = int(modifier) * -1
     spellbans[hex2int(spellid)] = int(modifier)
 f.close()
@@ -99,7 +99,7 @@ class SpellBlock:
         self.petrify = statuses[0] & 0x40
         self.condemned = statuses[1] & 0x1
         self.statuses = statuses
-        self.has_status = sum([bin(b).count("1") for b in statuses])
+        self.has_status = sum([bin(b).count('1') for b in statuses])
         f.close()
 
         self._rank = None
@@ -327,7 +327,7 @@ class SpellSub(Substitution):
                                  0x02, 0x85, 0xB5, 0x4C, 0x5F, 0x17])
 
     def __repr__(self):
-        return "Use the skill '{0}'".format(spellnames[self.spellid])
+        return f"Use the skill '{spellnames[self.spellid]}'"
 
 wildspells = None
 
@@ -500,7 +500,7 @@ class RandomSpellSub(Substitution):
         self.name = spellclass
         desc, spellset = spellsets[spellclass]
         self.spells_description = desc
-        if spellclass.lower() in ["chaos"] or len(valid_spells) == 0:
+        if spellclass.lower() in ['chaos'] or len(valid_spells) == 0:
             self.wild = True
             self.spells = []
             return
@@ -510,7 +510,7 @@ class RandomSpellSub(Substitution):
         spellset = sorted([s for s in spellset if s in valid_spells],
                           key=lambda s: s.spellid)
         if len(spellset) < 3:
-            raise ValueError("Spellset %s not big enough." % spellclass)
+            raise ValueError(f'Spellset {spellclass} not big enough.')
 
         for setlength in [8, 16, 32]:
             if len(spellset) <= setlength:
@@ -534,11 +534,11 @@ class RandomSpellSub(Substitution):
     def spells_string(self):
         unique_spells = sorted(set(self.spells), key=lambda s: s.name)
         if not self.spells:
-            return ""
+            return ''
         if len(self.spells) == len(unique_spells):
             # No repetition of spells - all equal chances
-            return ("Equal chance of any of the following:\n  " +
-                    ", ".join(spell.name for spell in unique_spells))
+            return ('Equal chance of any of the following:\n  ' +
+                    ', '.join(spell.name for spell in unique_spells))
         # Else, let's try to pretty-print things a bit...
         descs = []
         last_count = -1
@@ -548,16 +548,15 @@ class RandomSpellSub(Substitution):
             desc = unique_s.name
             c = self.spells.count(unique_s)
             if c != last_count:
-                desc = "\n  ({0}/{1} chance each)  {2}".format(c, len(self.spells), desc)
+                desc = f'\n  ({c}/{len(self.spells)} chance each)  {desc}'
                 last_count = c
             else:
-                desc = ", " + desc
+                desc = ', ' + desc
             descs.append(desc)
         return ''.join(descs)
 
     def __repr__(self):
-        return "Use a random {0}.\n{1}".format(self.spells_description,
-                                               self.spells_string)
+        return f'Use a random {self.spells_description}.\n{self.spells_string}'
 
 
 class ComboSpellSub(Substitution):
@@ -605,8 +604,7 @@ class ComboSpellSub(Substitution):
             s.write(fout)
 
     def __repr__(self):
-        return "Use the combo {0}.".format(
-            " + ".join([s.name for s in self.spells]))
+        return f'Use the combo {" + ".join([s.name for s in self.spells])}.'
 
 
 
@@ -663,15 +661,11 @@ class ChainSpellSub(MultiSpellSubMixin):
 
     def __repr__(self):
         if isinstance(self.spellsub, RandomSpellSub):
-            return "??? times, use a random {0}.\n{1}".format(
-                self.spellsub.spells_description,
-                self.spellsub.spells_string)
+            return f'??? times, use a random {self.spellsub.spells_description}.\n{self.spellsub.spells_string}'
         elif isinstance(self.spellsub, ComboSpellSub):
-            return "??? times, use the combo {0}.".format(
-                " + ".join([s.name for s in self.spellsub.spells]))
+            return f'??? times, use the combo {" + ".join([s.name for s in self.spellsub.spells])}.'
         else:
-            return "??? times, use the skill '{0}'".format(
-                spellnames[self.spellsub.spellid])
+            return f"??? times, use the skill '{spellnames[self.spellsub.spellid]}'"
 
 
 class MultipleSpellSub(MultiSpellSubMixin):
@@ -711,13 +705,8 @@ class MultipleSpellSub(MultiSpellSubMixin):
 
     def __repr__(self):
         if isinstance(self.spellsub, RandomSpellSub):
-            return "{0} times, use a random {1}.\n{2}".format(
-                self.count, self.spellsub.spells_description,
-                self.spellsub.spells_string)
+            return f'{self.count} times, use a random {self.spellsub.spells_description}.\n{self.spellsub.spells_string}'
         elif isinstance(self.spellsub, ComboSpellSub):
-            return "{0} times, use the combo {1}.".format(
-                self.count,
-                " + ".join([s.name for s in self.spellsub.spells]))
+            return f'{self.count} times, use the combo {" + ".join([s.name for s in self.spellsub.spells])}.'
         else:
-            return "{0} times, use the skill '{1}'".format(
-                self.count, spellnames[self.spellsub.spellid])
+            return f"{self.count} times, use the skill '{spellnames[self.spellsub.spellid]}'"

@@ -1,9 +1,10 @@
 from character import get_characters, get_character
+from chestrandomizer import get_2pack
 from esperrandomizer import get_espers
 from formationrandomizer import (REPLACE_FORMATIONS, NOREPLACE_FORMATIONS, get_formations, get_fsets,
                                  get_formation, get_fset)
 from itemrandomizer import get_item
-from locationrandomizer import get_locations, get_location, get_npcs
+from locationrandomizer import get_locations, get_location, get_npcs, NPCBlock, EventBlock
 from monsterrandomizer import REPLACE_ENEMIES, get_monsters
 from shoprandomizer import get_shops
 from towerrandomizer import randomize_tower
@@ -24,15 +25,15 @@ def get_npc_palettes():
 
 def manage_map_names(fout):
     fout.seek(0xEF101)
-    text = ("ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-            "abcdefghijklmnopqrstuvwxyz"
-            "0123456789")
+    text = ('ABCDEFGHIJKLMNOPQRSTUVWXYZ'
+            'abcdefghijklmnopqrstuvwxyz'
+            '0123456789')
     text = dict([(c, i + 0x20) for (i, c) in enumerate(text)])
-    text[" "] = 0x7F
+    text[' '] = 0x7F
     pointers = {}
     for i in range(1, 101):
         pointers[i] = fout.tell()
-        room_name = "Room %s" % i
+        room_name = f'Room {i}'
         room_name = bytes([text[c] for c in room_name]) + b'\x00'
         fout.write(room_name)
         #fout.write(chr(0))
@@ -86,7 +87,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
         gau.write_battle_commands(fout)
 
     to_dummy = [get_item(0xF6), get_item(0xF7)]
-    dummy_names = ["Pebble", "Tissue"]
+    dummy_names = ['Pebble', 'Tissue']
     for dummy_name, item in zip(dummy_names, to_dummy):
         name = bytes([0xFF]) + name_to_bytes(dummy_name, 12)
         item.dataname = name
@@ -160,7 +161,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
         fout.seek(cptr)
         level = ord(fout.read(1))
         level &= 0xF3
-        if i >= 14 or options_.is_code_active("speedcave") and i not in starting:
+        if i >= 14 or options_.is_code_active('speedcave') and i not in starting:
             level |= 0b1000
         fout.seek(cptr)
         fout.write(bytes([level]))
@@ -190,7 +191,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
                                     0x40, n, i])
         c.slotid = n
 
-    runaway = random.choice([c for c in characters if hasattr(c, "slotid")
+    runaway = random.choice([c for c in characters if hasattr(c, 'slotid')
                              and c.id == c.slotid]).slotid
     if runaway in starting:
         byte, bit = runaway // 8, runaway % 8
@@ -252,16 +253,16 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
     shadow_leaving_sub.write(fout)
 
     esperevents = [
-        "Ramuh", "Ifrit", "Shiva", "Siren", "Terrato", "Shoat", "Maduin",
-        "Bismark", "Stray", "Palidor", "Tritoch", "Odin", "Raiden", "Bahamut",
-        "Alexandr", "Crusader", "Ragnarok", "Kirin", "ZoneSeek", "Carbunkl",
-        "Phantom", "Sraphim", "Golem", "Unicorn", "Fenrir", "Starlet",
-        "Phoenix"]
+        'Ramuh', 'Ifrit', 'Shiva', 'Siren', 'Terrato', 'Shoat', 'Maduin',
+        'Bismark', 'Stray', 'Palidor', 'Tritoch', 'Odin', 'Raiden', 'Bahamut',
+        'Alexandr', 'Crusader', 'Ragnarok', 'Kirin', 'ZoneSeek', 'Carbunkl',
+        'Phantom', 'Sraphim', 'Golem', 'Unicorn', 'Fenrir', 'Starlet',
+        'Phoenix']
     esperevents = dict([(n, i) for (i, n) in enumerate(esperevents)])
     espers = list(get_espers(sourcefile))
     num_espers = 3
     for i in range(num_espers):
-        if options_.is_code_active("speedcave"):
+        if options_.is_code_active('speedcave'):
             esperrank = 999
         else:
             esperrank = 0
@@ -306,35 +307,34 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
     tower_msg_sub.set_location(0xA03A7)
     tower_msg_sub.write(fout)
 
-    from locationrandomizer import NPCBlock, EventBlock
     falcon = get_location(0xb)
     save_point = NPCBlock(pointer=None, locid=falcon.locid)
     attributes = {
-        "graphics": 0x6f, "palette": 6, "x": 20, "y": 8,
-        "show_on_vehicle": False, "speed":  0,
-        "event_addr": 0x5eb3, "facing": 3,
-        "no_turn_when_speaking": False, "layer_priority": 0,
-        "special_anim": 2,
-        "memaddr": 0, "membit": 0, "bg2_scroll": 0,
-        "move_type": 0, "sprite_priority": 1, "vehicle": 0}
+        'graphics': 0x6f, 'palette': 6, 'x': 20, 'y': 8,
+        'show_on_vehicle': False, 'speed':  0,
+        'event_addr': 0x5eb3, 'facing': 3,
+        'no_turn_when_speaking': False, 'layer_priority': 0,
+        'special_anim': 2,
+        'memaddr': 0, 'membit': 0, 'bg2_scroll': 0,
+        'move_type': 0, 'sprite_priority': 1, 'vehicle': 0}
     for key, value in attributes.items():
         setattr(save_point, key, value)
     save_point.set_id(len(falcon.npcs))
     falcon.npcs.append(save_point)
     save_event = EventBlock(pointer=None, locid=falcon.locid)
-    attributes = {"event_addr": 0x29aeb, "x": 20, "y": 8}
+    attributes = {'event_addr': 0x29aeb, 'x': 20, 'y': 8}
     for key, value in attributes.items():
         setattr(save_event, key, value)
     falcon.events.append(save_event)
     partyswitch = NPCBlock(pointer=None, locid=falcon.locid)
     attributes = {
-        "graphics": 0x17, "palette": 0, "x": 16, "y": 6,
-        "show_on_vehicle": False, "speed":  0,
-        "event_addr": 0x047d, "facing": 2,
-        "no_turn_when_speaking": False, "layer_priority": 0,
-        "special_anim": 0,
-        "memaddr": 0, "membit": 0, "bg2_scroll": 0,
-        "move_type": 0, "sprite_priority": 0, "vehicle": 0, "npcid": 2}
+        'graphics': 0x17, 'palette': 0, 'x': 16, 'y': 6,
+        'show_on_vehicle': False, 'speed':  0,
+        'event_addr': 0x047d, 'facing': 2,
+        'no_turn_when_speaking': False, 'layer_priority': 0,
+        'special_anim': 0,
+        'memaddr': 0, 'membit': 0, 'bg2_scroll': 0,
+        'move_type': 0, 'sprite_priority': 0, 'vehicle': 0, 'npcid': 2}
     for key, value in attributes.items():
         setattr(partyswitch, key, value)
     falcon.npcs.append(partyswitch)
@@ -351,9 +351,9 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
     pilot_sub.set_location(0xC2110)
     pilot_sub.write(fout)
 
-    if options_.is_code_active("racecave"):
+    if options_.is_code_active('racecave'):
         randomize_tower(filename=sourcefile, ancient=True, nummaps=50)
-    elif options_.is_code_active("speedcave"):
+    elif options_.is_code_active('speedcave'):
         randomize_tower(filename=sourcefile, ancient=True, nummaps=85)
     else:
         randomize_tower(filename=sourcefile, ancient=True, nummaps=300)
@@ -378,7 +378,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
         if formation.formid in [0x1a4, 0x1d4, 0x1d5, 0x1d6, 0x1e4,
                                 0x1e2, 0x1ff, 0x1bd, 0x1be]:
             return False
-        if (options_.is_code_active("racecave")
+        if (options_.is_code_active('racecave')
                 and formation.formid in [0x162, 0x1c8, 0x1d3]):
             return False
         return True
@@ -401,7 +401,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
                     and f.get_music() != 0]):
                 return False
         best_drop = formation.get_best_drop()
-        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or options_.is_code_active("madworld")):
+        if best_drop and (best_drop.price <= 2 or best_drop.price >= 30000 or options_.is_code_active('madworld')):
             return True
         return False
 
@@ -430,7 +430,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
     random.shuffle(ch_bgs)
 
     for l in get_locations():
-        if not hasattr(l, "ancient_rank"):
+        if not hasattr(l, 'ancient_rank'):
             l.entrance_set.entrances = []
             l.entrance_set.longentrances = []
             l.chests = []
@@ -519,7 +519,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
               3: (8000, 0xA5F),
               4: (30000, 0xA64)}
 
-    if options_.is_code_active("racecave"):
+    if options_.is_code_active('racecave'):
         partyswitch_template = [
             0x4B, None, None,
             0x4B, 0x86, 0x83,
@@ -600,7 +600,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
     shops = get_shops(sourcefile)
     shopranks = {}
     itemshops = [s for s in shops
-                 if s.shoptype_pretty in ["items", "misc"]]
+                 if s.shoptype_pretty in ['items', 'misc']]
     othershops = [s for s in shops if s not in itemshops]
     othershops = othershops[random.randint(0, len(othershops)//2):]
     itemshops = sorted(random.sample(itemshops, 5), key=lambda p: p.rank())
@@ -625,17 +625,17 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
     for i in range(5):
         levelmusic[i] = dungeonmusics.pop()
 
-    locations = [l for l in get_locations() if hasattr(l, "ancient_rank")]
+    locations = [l for l in get_locations() if hasattr(l, 'ancient_rank')]
     locations = sorted(locations, key=lambda l: l.ancient_rank)
-    restlocs = [l for l in locations if hasattr(l, "restrank")]
+    restlocs = [l for l in locations if hasattr(l, 'restrank')]
     ban_musics = [0, 36, 56, 57, 58, 73, 74, 75] + list(levelmusic.values())
     restmusics = [m for m in range(1, 85) if m not in ban_musics]
     random.shuffle(restmusics)
 
-    optional_chars = [c for c in characters if hasattr(c, "slotid")]
+    optional_chars = [c for c in characters if hasattr(c, 'slotid')]
     optional_chars = [c for c in optional_chars if c.slotid == runaway or
                       (c.id not in starting and c.id in charcands)]
-    if options_.is_code_active("speedcave"):
+    if options_.is_code_active('speedcave'):
         while len(optional_chars) < 24:
             if random.choice([True, True, False]):
                 supplement = [c for c in optional_chars if c.id >= 14 or
@@ -681,7 +681,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
                 allysub.bytestring += [0xD4, 0xF0 | chosen.slotid,
                                        0xD4, 0xE0 | chosen.slotid,
                                        0xD7, mem_addr]
-                if chosen.id >= 14 or options_.is_code_active("speedcave"):
+                if chosen.id >= 14 or options_.is_code_active('speedcave'):
                     allysub.bytestring += [0x77, chosen.slotid,
                                            0x8b, chosen.slotid, 0x7F,
                                            0x8c, chosen.slotid, 0x7F,
@@ -756,26 +756,26 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
         graphics = random.randint(14, 62)
         palette = random.choice(npc_palettes[graphics])
         attributes = {
-            "graphics": graphics, "palette": palette, "x": 52, "y": 16,
-            "show_on_vehicle": False, "speed":  0,
-            "event_addr": event_addr, "facing": 2,
-            "no_turn_when_speaking": False, "layer_priority": 0,
-            "special_anim": 0,
-            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
-            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
+            'graphics': graphics, 'palette': palette, 'x': 52, 'y': 16,
+            'show_on_vehicle': False, 'speed':  0,
+            'event_addr': event_addr, 'facing': 2,
+            'no_turn_when_speaking': False, 'layer_priority': 0,
+            'special_anim': 0,
+            'memaddr': 0, 'membit': 0, 'bg2_scroll': 0,
+            'move_type': 0, 'sprite_priority': 0, 'vehicle': 0}
         for key, value in attributes.items():
             setattr(innkeeper, key, value)
         l.npcs.append(innkeeper)
 
         unequipper = NPCBlock(pointer=None, locid=l.locid)
         attributes = {
-            "graphics": 0x1e, "palette": 3, "x": 49, "y": 16,
-            "show_on_vehicle": False, "speed":  0,
-            "event_addr": 0x23510, "facing": 2,
-            "no_turn_when_speaking": False, "layer_priority": 0,
-            "special_anim": 0,
-            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
-            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
+            'graphics': 0x1e, 'palette': 3, 'x': 49, 'y': 16,
+            'show_on_vehicle': False, 'speed':  0,
+            'event_addr': 0x23510, 'facing': 2,
+            'no_turn_when_speaking': False, 'layer_priority': 0,
+            'special_anim': 0,
+            'memaddr': 0, 'membit': 0, 'bg2_scroll': 0,
+            'move_type': 0, 'sprite_priority': 0, 'vehicle': 0}
         for key, value in attributes.items():
             setattr(unequipper, key, value)
         l.npcs.append(unequipper)
@@ -783,13 +783,13 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
         event_addr = (savesub.location - 0xa0000) & 0x3FFFF
         pay_to_save = NPCBlock(pointer=None, locid=l.locid)
         attributes = {
-            "graphics": 0x6f, "palette": 6, "x": 47, "y": 4,
-            "show_on_vehicle": False, "speed":  0,
-            "event_addr": event_addr, "facing": 3,
-            "no_turn_when_speaking": False, "layer_priority": 0,
-            "special_anim": 2,
-            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
-            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
+            'graphics': 0x6f, 'palette': 6, 'x': 47, 'y': 4,
+            'show_on_vehicle': False, 'speed':  0,
+            'event_addr': event_addr, 'facing': 3,
+            'no_turn_when_speaking': False, 'layer_priority': 0,
+            'special_anim': 2,
+            'memaddr': 0, 'membit': 0, 'bg2_scroll': 0,
+            'move_type': 0, 'sprite_priority': 0, 'vehicle': 0}
         for key, value in attributes.items():
             setattr(pay_to_save, key, value)
         l.npcs.append(pay_to_save)
@@ -799,13 +799,13 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
             if len(final_loc.npcs) < 2:
                 final_save = NPCBlock(pointer=None, locid=l.locid)
                 attributes = {
-                    "graphics": 0x6f, "palette": 6, "x": 82, "y": 43,
-                    "show_on_vehicle": False, "speed":  0,
-                    "event_addr": event_addr, "facing": 3,
-                    "no_turn_when_speaking": False, "layer_priority": 0,
-                    "special_anim": 2,
-                    "memaddr": 0, "membit": 0, "bg2_scroll": 0,
-                    "move_type": 0, "sprite_priority": 0, "vehicle": 0, "npcid": 1}
+                    'graphics': 0x6f, 'palette': 6, 'x': 82, 'y': 43,
+                    'show_on_vehicle': False, 'speed':  0,
+                    'event_addr': event_addr, 'facing': 3,
+                    'no_turn_when_speaking': False, 'layer_priority': 0,
+                    'special_anim': 2,
+                    'memaddr': 0, 'membit': 0, 'bg2_scroll': 0,
+                    'move_type': 0, 'sprite_priority': 0, 'vehicle': 0, 'npcid': 1}
                 for key, value in attributes.items():
                     setattr(final_save, key, value)
                 final_loc.npcs.append(final_save)
@@ -828,13 +828,13 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
         graphics = random.randint(14, 62)
         palette = random.choice(npc_palettes[graphics])
         attributes = {
-            "graphics": graphics, "palette": palette, "x": 39, "y": 11,
-            "show_on_vehicle": False, "speed":  0,
-            "event_addr": event_addr, "facing": 1,
-            "no_turn_when_speaking": False, "layer_priority": 0,
-            "special_anim": 0,
-            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
-            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
+            'graphics': graphics, 'palette': palette, 'x': 39, 'y': 11,
+            'show_on_vehicle': False, 'speed':  0,
+            'event_addr': event_addr, 'facing': 1,
+            'no_turn_when_speaking': False, 'layer_priority': 0,
+            'special_anim': 0,
+            'memaddr': 0, 'membit': 0, 'bg2_scroll': 0,
+            'move_type': 0, 'sprite_priority': 0, 'vehicle': 0}
         for key, value in attributes.items():
             setattr(shopkeeper, key, value)
         l.npcs.append(shopkeeper)
@@ -849,13 +849,13 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
             event_addr = ally_addrs[chosen.id, l.party_id, len(l.npcs)]
             ally = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
-                "graphics": chargraphics[chosen.id],
-                "palette": chosen.palette,
-                "x": 54, "y": 18, "show_on_vehicle": False, "speed":  0,
-                "event_addr": event_addr,
-                "facing": 2, "no_turn_when_speaking": False, "layer_priority": 0,
-                "special_anim": 0, "memaddr": byte, "membit": bit,
-                "bg2_scroll": 0, "move_type": 0, "sprite_priority": 0, "vehicle": 0}
+                'graphics': chargraphics[chosen.id],
+                'palette': chosen.palette,
+                'x': 54, 'y': 18, 'show_on_vehicle': False, 'speed':  0,
+                'event_addr': event_addr,
+                'facing': 2, 'no_turn_when_speaking': False, 'layer_priority': 0,
+                'special_anim': 0, 'memaddr': byte, 'membit': bit,
+                'bg2_scroll': 0, 'move_type': 0, 'sprite_priority': 0, 'vehicle': 0}
             for key, value in attributes.items():
                 setattr(ally, key, value)
             l.npcs.append(ally)
@@ -870,13 +870,13 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
                         byte, bit = (chosen.slotid // 8) + 0x1b, chosen.slotid % 8
                     event_addr = ally_addrs[chosen.id, l.party_id, len(l.npcs)]
                     attributes = {
-                        "graphics": chargraphics[chosen.id],
-                        "palette": chosen.palette,
-                        "x": 53, "y": 18, "show_on_vehicle": False, "speed":  0,
-                        "event_addr": event_addr,
-                        "facing": 2, "no_turn_when_speaking": False, "layer_priority": 0,
-                        "special_anim": 0, "memaddr": byte, "membit": bit,
-                        "bg2_scroll": 0, "move_type": 0, "sprite_priority": 0, "vehicle": 0}
+                        'graphics': chargraphics[chosen.id],
+                        'palette': chosen.palette,
+                        'x': 53, 'y': 18, 'show_on_vehicle': False, 'speed':  0,
+                        'event_addr': event_addr,
+                        'facing': 2, 'no_turn_when_speaking': False, 'layer_priority': 0,
+                        'special_anim': 0, 'memaddr': byte, 'membit': bit,
+                        'bg2_scroll': 0, 'move_type': 0, 'sprite_priority': 0, 'vehicle': 0}
                     ally = NPCBlock(pointer=None, locid=l.locid)
                     for key, value in attributes.items():
                         setattr(ally, key, value)
@@ -915,13 +915,13 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
             byte, bit = event_value // 8, event_value % 8
             magicite = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
-                "graphics": 0x5B, "palette": 2, "x": 44+i, "y": 16,
-                "show_on_vehicle": False, "speed":  0,
-                "event_addr": event_addr, "facing": 0,
-                "no_turn_when_speaking": True, "layer_priority": 2,
-                "special_anim": 2,
-                "memaddr": byte + 0x17, "membit": bit, "bg2_scroll": 0,
-                "move_type": 0, "sprite_priority": 0, "vehicle": 0}
+                'graphics': 0x5B, 'palette': 2, 'x': 44+i, 'y': 16,
+                'show_on_vehicle': False, 'speed':  0,
+                'event_addr': event_addr, 'facing': 0,
+                'no_turn_when_speaking': True, 'layer_priority': 2,
+                'special_anim': 2,
+                'memaddr': byte + 0x17, 'membit': bit, 'bg2_scroll': 0,
+                'move_type': 0, 'sprite_priority': 0, 'vehicle': 0}
             for key, value in attributes.items():
                 setattr(magicite, key, value)
             l.npcs.append(magicite)
@@ -930,13 +930,13 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
         pointer = make_challenge_event(l, pointer)
         enemy = NPCBlock(pointer=None, locid=l.locid)
         attributes = {
-            "graphics": 0x3e, "palette": 2, "x": 42, "y": 6,
-            "show_on_vehicle": False, "speed":  0,
-            "event_addr": event_addr, "facing": 2,
-            "no_turn_when_speaking": False, "layer_priority": 0,
-            "special_anim": 0,
-            "memaddr": 0, "membit": 0, "bg2_scroll": 0,
-            "move_type": 0, "sprite_priority": 0, "vehicle": 0}
+            'graphics': 0x3e, 'palette': 2, 'x': 42, 'y': 6,
+            'show_on_vehicle': False, 'speed':  0,
+            'event_addr': event_addr, 'facing': 2,
+            'no_turn_when_speaking': False, 'layer_priority': 0,
+            'special_anim': 0,
+            'memaddr': 0, 'membit': 0, 'bg2_scroll': 0,
+            'move_type': 0, 'sprite_priority': 0, 'vehicle': 0}
         for key, value in attributes.items():
             setattr(enemy, key, value)
         l.npcs.append(enemy)
@@ -945,13 +945,13 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
             event_addr = (pswitch_sub.location - 0xa0000) & 0x3FFFF
             partyswitch = NPCBlock(pointer=None, locid=l.locid)
             attributes = {
-                "graphics": 0x17, "palette": 0, "x": 55, "y": 16,
-                "show_on_vehicle": False, "speed":  0,
-                "event_addr": event_addr, "facing": 2,
-                "no_turn_when_speaking": False, "layer_priority": 0,
-                "special_anim": 0,
-                "memaddr": 0, "membit": 0, "bg2_scroll": 0,
-                "move_type": 0, "sprite_priority": 0, "vehicle": 0}
+                'graphics': 0x17, 'palette': 0, 'x': 55, 'y': 16,
+                'show_on_vehicle': False, 'speed':  0,
+                'event_addr': event_addr, 'facing': 2,
+                'no_turn_when_speaking': False, 'layer_priority': 0,
+                'special_anim': 0,
+                'memaddr': 0, 'membit': 0, 'bg2_scroll': 0,
+                'move_type': 0, 'sprite_priority': 0, 'vehicle': 0}
             for key, value in attributes.items():
                 setattr(partyswitch, key, value)
             l.npcs.append(partyswitch)
@@ -959,7 +959,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
     assert not optional_chars
 
     if pointer >= 0xb6965:
-        raise Exception("Cave events out of bounds. %x" % pointer)
+        raise Exception(f'Cave events out of bounds. {pointer:x}')
 
     # lower encounter rate
     dungeon_rates = [0x38, 0, 0x20, 0, 0xb0, 0, 0x00, 1,
@@ -982,20 +982,20 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
                     for e in l.events:
                         if e.x % 128 == n.x % 128 and e.y % 128 == n.y % 128:
                             if success:
-                                raise Exception("Duplicate events found.")
+                                raise Exception('Duplicate events found.')
                             e.event_addr = 0x5EB3
                             success = True
                     if not success:
-                        raise Exception("No corresponding event found.")
+                        raise Exception('No corresponding event found.')
         for e in l.entrances:
             e.dest |= 0x800
         rank = l.ancient_rank
         l.name_id = min(rank, 0xFF)
 
-        if not hasattr(l, "restrank"):
-            if hasattr(l, "secret_treasure") and l.secret_treasure:
+        if not hasattr(l, 'restrank'):
+            if hasattr(l, 'secret_treasure') and l.secret_treasure:
                 pass
-            elif l.locid == 334 or not hasattr(l, "routerank"):
+            elif l.locid == 334 or not hasattr(l, 'routerank'):
                 l.music = 58
             elif l.routerank in levelmusic:
                 l.music = levelmusic[l.routerank]
@@ -1079,7 +1079,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
                     formation.write_data(fout)
             fset.write_data(fout)
 
-        if not (hasattr(l, "secret_treasure") and l.secret_treasure):
+        if not (hasattr(l, 'secret_treasure') and l.secret_treasure):
             if options_.is_code_active('speedcave') or rank == 0:
                 low = random.randint(0, 400)
                 high = random.randint(low, low*5)
@@ -1109,7 +1109,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
     final_cut.bytestring = bytearray([0x3F, 0x0E, 0x00,
                                       0x3F, 0x0F, 0x00,
                                      ])
-    if not options_.is_code_active("racecave"):
+    if not options_.is_code_active('racecave'):
         final_cut.bytestring += bytearray([0x9D,
                                            0x4D, 0x65, 0x33,
                                            0xB2, 0xA9, 0x5E, 0x00])
@@ -1144,7 +1144,7 @@ def manage_ancient(options_, fout, sourcefile, form_music_overrides=None):
                 if key > 0:
                     final_cut.bytestring += bytearray([0x3F, c, key])
         final_cut.bytestring += bytearray([0x99, 0x03, locked & 0xFF, locked >> 8])
-        from chestrandomizer import get_2pack
+
         event_bosses = {
             1: [0xC18A4, 0xC184B],
             2: [0xC16DD, 0xC171D, 0xC1756],

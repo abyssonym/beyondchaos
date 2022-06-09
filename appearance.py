@@ -92,35 +92,35 @@ def make_palette_repair(fout, main_palette_changes):
 
 
 NAME_ID_DICT = {
-    0: "Terra",
-    1: "Locke",
-    2: "Cyan",
-    3: "Shadow",
-    4: "Edgar",
-    5: "Sabin",
-    6: "Celes",
-    7: "Strago",
-    8: "Relm",
-    9: "Setzer",
-    0xa: "Mog",
-    0xb: "Gau",
-    0xc: "Gogo",
-    0xd: "Umaro",
-    0xe: "Trooper",
-    0xf: "Imp",
-    0x10: "Leo",
-    0x11: "Banon",
-    0x12: "Esper Terra",
-    0x13: "Merchant",
-    0x14: "Ghost",
-    0x15: "Kefka"}
+    0: 'Terra',
+    1: 'Locke',
+    2: 'Cyan',
+    3: 'Shadow',
+    4: 'Edgar',
+    5: 'Sabin',
+    6: 'Celes',
+    7: 'Strago',
+    8: 'Relm',
+    9: 'Setzer',
+    0xa: 'Mog',
+    0xb: 'Gau',
+    0xc: 'Gogo',
+    0xd: 'Umaro',
+    0xe: 'Trooper',
+    0xf: 'Imp',
+    0x10: 'Leo',
+    0x11: 'Banon',
+    0x12: 'Esper Terra',
+    0x13: 'Merchant',
+    0x14: 'Ghost',
+    0x15: 'Kefka'}
 
 
 def sanitize_names(names):
     delchars = ''.join(c for c in map(chr, range(256)) if not c.isalnum() and c not in "!?/:\"'-.")
     table = str.maketrans(dict.fromkeys(delchars))
     names = [name.translate(table) for name in names]
-    return [name[:6] for name in names if name != ""]
+    return [name[:6] for name in names if name != '']
 
 
 def manage_character_names(fout, change_to, male):
@@ -135,23 +135,23 @@ def manage_character_names(fout, change_to, male):
     
     names = []
     if tina_mode:
-        names = ["Tina"] * 30 + ["MADUIN"] + ["Tina"] * 3
+        names = ['Tina'] * 30 + ['MADUIN'] + ['Tina'] * 3
     elif sabin_mode:
-        names = ["Teabin", "Loabin", "Cyabin", "Shabin", "Edabin", "Sabin",
-                 "Ceabin", "Stabin", "Reabin", "Seabin", "Moabin", "Gaubin",
-                 "Goabin", "Umabin", "Baabin", "Leabin", "??abin", "??abin",
-                 "Kuabin", "Kuabin", "Kuabin", "Kuabin", "Kuabin", "Kuabin",
-                 "Kuabin", "Kuabin", "Kuabin", "Kaabin", "Moabin", "??abin",
-                 "MADUIN", "??abin", "Viabin", "Weabin"]
+        names = ['Teabin', 'Loabin', 'Cyabin', 'Shabin', 'Edabin', 'Sabin',
+                 'Ceabin', 'Stabin', 'Reabin', 'Seabin', 'Moabin', 'Gaubin',
+                 'Goabin', 'Umabin', 'Baabin', 'Leabin', '??abin', '??abin',
+                 'Kuabin', 'Kuabin', 'Kuabin', 'Kuabin', 'Kuabin', 'Kuabin',
+                 'Kuabin', 'Kuabin', 'Kuabin', 'Kaabin', 'Moabin', '??abin',
+                 'MADUIN', '??abin', 'Viabin', 'Weabin']
     elif moogle_mode:
-        names = ["Kumop", "Kupo", "Kupek", "Kupop", "Kumama", "Kuku",
-                 "Kutan", "Kupan", "Kushu", "Kurin", "Mog", "Kuru",
-                 "Kamog", "Kumaro", "Banon", "Leo", "?????", "?????",
-                 "Cyan", "Shadow", "Edgar", "Sabin", "Celes", "Strago",
-                 "Relm", "Setzer", "Gau", "Gogo"]
+        names = ['Kumop', 'Kupo', 'Kupek', 'Kupop', 'Kumama', 'Kuku',
+                 'Kutan', 'Kupan', 'Kushu', 'Kurin', 'Mog', 'Kuru',
+                 'Kamog', 'Kumaro', 'Banon', 'Leo', '?????', '?????',
+                 'Cyan', 'Shadow', 'Edgar', 'Sabin', 'Celes', 'Strago',
+                 'Relm', 'Setzer', 'Gau', 'Gogo']
 
-        gba_moogle_names = ["Moglin", "Mogret", "Moggie", "Molulu", "Moghan",
-                            "Moguel", "Mogsy", "Mogwin", "Mog", "Mugmug", "Cosmog"]
+        gba_moogle_names = ['Moglin', 'Mogret', 'Moggie', 'Molulu', 'Moghan',
+                            'Moguel', 'Mogsy', 'Mogwin', 'Mog', 'Mugmug', 'Cosmog']
 
         random_name_ids = []
 
@@ -300,7 +300,7 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
     known_replacements = load_custom_sprites()
 
     #uniqueids for sprites pulled from rom
-    vuids = {0: "terra", 1: "locke", 2: "cyan", 3: "shadow", 4: "edgar", 5: "sabin", 6: "celes", 7: "strago", 8: "relm", 9: "setzer", 10: "moogle", 11: "gau", 12: "gogo6", 13: "umaro", 16: "leo", 17: "banon", 18: "terra", 21: "kefka"}
+    vuids = {0: 'terra', 1: 'locke', 2: 'cyan', 3: 'shadow', 4: 'edgar', 5: 'sabin', 6: 'celes', 7: 'strago', 8: 'relm', 9: 'setzer', 10: 'moogle', 11: 'gau', 12: 'gogo6', 13: 'umaro', 16: 'leo', 17: 'banon', 18: 'terra', 21: 'kefka'}
 
     #determine which character ids are makeover'd
     blacklist = set()
@@ -320,37 +320,37 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
     if external_vanillas:
         #include vanilla characters, but using the same system/chances as all others
         og_replacements = [
-            SpriteReplacement("ogterra.bin", "Terra", "female", "true", 0, None, "terra"),
-            SpriteReplacement("oglocke.bin", "Locke", "male", "true", 1, None, "locke"),
-            SpriteReplacement("ogcyan.bin", "Cyan", "male", "true", 2, None, "cyan"),
-            SpriteReplacement("ogshadow.bin", "Shadow", "male", "true", 3, None, "shadow"),
-            SpriteReplacement("ogedgar.bin", "Edgar", "male", "true", 4, None, "edgar"),
-            SpriteReplacement("ogsabin.bin", "Sabin", "male", "true", 5, None, "sabin"),
-            SpriteReplacement("ogceles.bin", "Celes", "female", "true", 6, None, "celes"),
-            SpriteReplacement("ogstrago.bin", "Strago", "male", "true", 7, None, "strago"),
-            SpriteReplacement("ogrelm.bin", "Relm", "female", "true", 8, None, "relm", "kids"),
-            SpriteReplacement("ogsetzer.bin", "Setzer", "male", "true", 9, None, "setzer"),
-            SpriteReplacement("ogmog.bin", "Mog", "neutral", "true", 10, None, "moogle"),
-            SpriteReplacement("oggau.bin", "Gau", "male", "true", 11, None, "gau", "kids"),
-            SpriteReplacement("oggogo.bin", "Gogo", "neutral", "true", 12, None, "gogo6"),
-            SpriteReplacement("ogumaro.bin", "Umaro", "neutral", "true", 13, None, "umaro")]
+            SpriteReplacement('ogterra.bin', 'Terra', 'female', 'true', 0, None, 'terra'),
+            SpriteReplacement('oglocke.bin', 'Locke', 'male', 'true', 1, None, 'locke'),
+            SpriteReplacement('ogcyan.bin', 'Cyan', 'male', 'true', 2, None, 'cyan'),
+            SpriteReplacement('ogshadow.bin', 'Shadow', 'male', 'true', 3, None, 'shadow'),
+            SpriteReplacement('ogedgar.bin', 'Edgar', 'male', 'true', 4, None, 'edgar'),
+            SpriteReplacement('ogsabin.bin', 'Sabin', 'male', 'true', 5, None, 'sabin'),
+            SpriteReplacement('ogceles.bin', 'Celes', 'female', 'true', 6, None, 'celes'),
+            SpriteReplacement('ogstrago.bin', 'Strago', 'male', 'true', 7, None, 'strago'),
+            SpriteReplacement('ogrelm.bin', 'Relm', 'female', 'true', 8, None, 'relm', 'kids'),
+            SpriteReplacement('ogsetzer.bin', 'Setzer', 'male', 'true', 9, None, 'setzer'),
+            SpriteReplacement('ogmog.bin', 'Mog', 'neutral', 'true', 10, None, 'moogle'),
+            SpriteReplacement('oggau.bin', 'Gau', 'male', 'true', 11, None, 'gau', 'kids'),
+            SpriteReplacement('oggogo.bin', 'Gogo', 'neutral', 'true', 12, None, 'gogo6'),
+            SpriteReplacement('ogumaro.bin', 'Umaro', 'neutral', 'true', 13, None, 'umaro')]
         if wild:
             og_replacements.extend([
-                SpriteReplacement("ogtrooper.bin", "Trooper", "neutral", "true", 14),
-                SpriteReplacement("ogimp.bin", "Imp", "neutral", "true", 15),
-                SpriteReplacement("ogleo.bin", "Leo", "male", "true", 16, None, "leo"),
-                SpriteReplacement("ogbanon.bin", "Banon", "male", "true", 17, None, "banon"),
-                SpriteReplacement("ogesperterra.bin", "Esper Terra", "female", "true", 0, "esperterra-p.bin", "terra"),
-                SpriteReplacement("ogmerchant.bin", "Merchant", "male", "true", 1),
-                SpriteReplacement("ogghost.bin", "Ghost", "neutral", "true", 18),
-                SpriteReplacement("ogkefka.bin", "Kefka", "male", "true", 17, "kefka-p.bin", "kefka")])
+                SpriteReplacement('ogtrooper.bin', 'Trooper', 'neutral', 'true', 14),
+                SpriteReplacement('ogimp.bin', 'Imp', 'neutral', 'true', 15),
+                SpriteReplacement('ogleo.bin', 'Leo', 'male', 'true', 16, None, 'leo'),
+                SpriteReplacement('ogbanon.bin', 'Banon', 'male', 'true', 17, None, 'banon'),
+                SpriteReplacement('ogesperterra.bin', 'Esper Terra', 'female', 'true', 0, 'esperterra-p.bin', 'terra'),
+                SpriteReplacement('ogmerchant.bin', 'Merchant', 'male', 'true', 1),
+                SpriteReplacement('ogghost.bin', 'Ghost', 'neutral', 'true', 18),
+                SpriteReplacement('ogkefka.bin', 'Kefka', 'male', 'true', 17, 'kefka-p.bin', 'kefka')])
         if clone_mode:
             used_vanilla = [NAME_ID_DICT[vswaps[n]] for i, n in enumerate(char_ids) if not is_replaced[i]]
             og_replacements = [r for r in og_replacements if r.name not in used_vanilla]
         known_replacements.extend(og_replacements)
 
     #weight selection based on no*/hate*/like*/love* codes
-    whitelist = [c.name[4:] for c in options_.active_codes if c.name.startswith("love")]
+    whitelist = [c.name[4:] for c in options_.active_codes if c.name.startswith('love')]
     replace_candidates = []
     for r in known_replacements:
         whitelisted = False
@@ -372,10 +372,10 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
 
     #select sprite replacements
     if not wild:
-        female_candidates = [c for c in replace_candidates if c.gender == "female"]
-        male_candidates = [c for c in replace_candidates if c.gender == "male"]
-        neutral_candidates = [c for c in replace_candidates if c.gender != "male" and c.gender != "female"]
-    
+        female_candidates = [c for c in replace_candidates if c.gender == 'female']
+        male_candidates = [c for c in replace_candidates if c.gender == 'male']
+        neutral_candidates = [c for c in replace_candidates if c.gender != 'male' and c.gender != 'female']
+
     for char_id in random.sample(char_ids, len(char_ids)):
         if dragonball_mode and char_id == 0:
             continue
@@ -407,7 +407,7 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
             blacklist.update(swap_to[char_id].uniqueids)
             candidates.remove(swap_to[char_id])
         else:
-            print(f"custom sprite pool for {char_id} empty, using a vanilla sprite")
+            print(f'custom sprite pool for {char_id} empty, using a vanilla sprite')
 
     return swap_to
 
@@ -444,13 +444,13 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     if new_palette_mode:
         # import recolors for incompatible base sprites
-        recolors = [("cyan", 0x152D40, 0x16A0), ("mog", 0x15E240, 0x16A0),
-                    ("umaro", 0x162620, 0x16A0), ("dancer", 0x1731C0, 0x5C0),
-                    ("lady", 0x1748C0, 0x5C0)]
+        recolors = [('cyan', 0x152D40, 0x16A0), ('mog', 0x15E240, 0x16A0),
+                    ('umaro', 0x162620, 0x16A0), ('dancer', 0x1731C0, 0x5C0),
+                    ('lady', 0x1748C0, 0x5C0)]
         for rc in recolors:
-            filename = os.path.join("data", "sprites", "RC" + rc[0] + ".bin")
+            filename = os.path.join('data', 'sprites', 'RC' + rc[0] + '.bin')
             try:
-                with open_mei_fallback(filename, "rb") as f:
+                with open_mei_fallback(filename, 'rb') as f:
                     sprite = f.read()
             except OSError:
                 continue
@@ -533,14 +533,14 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     riding_sprites = {}
     try:
-        f = open(RIDING_SPRITE_TABLE, "r")
+        f = open(RIDING_SPRITE_TABLE, 'r', encoding='utf_8')
     except IOError:
         pass
     else:
         for line in f.readlines():
             char_id, filename = line.strip().split(',', 1)
             try:
-                g = open_mei_fallback(filename, "rb")
+                g = open_mei_fallback(filename, 'rb')
             except IOError:
                 continue
 
@@ -607,11 +607,11 @@ def manage_character_appearance(fout, preserve_graphics=False):
                 use_fallback = False
 
                 try:
-                    g = open_mei_fallback(swap_to[c].portrait_filename, "rb")
-                    h = open_mei_fallback(swap_to[c].portrait_palette_filename, "rb")
+                    g = open_mei_fallback(swap_to[c].portrait_filename, 'rb')
+                    h = open_mei_fallback(swap_to[c].portrait_palette_filename, 'rb')
                 except IOError:
                     use_fallback = True
-                    print("failed to load portrait %s for %s, using fallback" %(swap_to[c].portrait_filename, swap_to[c].name))
+                    print(f'failed to load portrait {swap_to[c].portrait_filename} for {swap_to[c].name}, using fallback')
                 else:
                     new_portrait_data = g.read(0x320)
                     new_portrait_palette_data = h.read(0x20)
@@ -643,7 +643,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
         if sprite_swap_mode and c in swap_to:
             try:
-                g = open_mei_fallback(swap_to[c].file, "rb")
+                g = open_mei_fallback(swap_to[c].file, 'rb')
             except IOError:
                 newsprite = sprites[change_to[c]]
                 for ch in characters:
@@ -660,9 +660,9 @@ def manage_character_appearance(fout, preserve_graphics=False):
         newsprite = newsprite[:ssizes[c]]
         fout.write(newsprite)
 
-    if sprite_swap_mode and not opera_mode and 6 in swap_to.keys():
+    if sprite_swap_mode and not opera_mode and 6 in swap_to:
         try:
-            g = open_mei_fallback(swap_to[6].opera_filename, "rb")
+            g = open_mei_fallback(swap_to[6].opera_filename, 'rb')
         except IOError:
             pass
         else:
@@ -676,11 +676,11 @@ def manage_character_appearance(fout, preserve_graphics=False):
         chains_sprite = None
         if sprite_swap_mode and 6 in swap_to:
             try:
-                with open_mei_fallback(swap_to[6].chains_filename, "rb") as g:
+                with open_mei_fallback(swap_to[6].chains_filename, 'rb') as g:
                     chains_sprite = g.read(ssizes[65])
             except IOError:
                 pass
-        
+
         if not chains_sprite:
             fout.seek(spointers[6] + 0x6A * 0x20)
             chains_sprite = fout.read(ssizes[65])
@@ -693,7 +693,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
     #hair_top: 162 & 163
     if sprite_swap_mode and 0 in swap_to:
         try:
-            with open_mei_fallback(swap_to[0].hair_filename, "rb") as g:
+            with open_mei_fallback(swap_to[0].hair_filename, 'rb') as g:
                 hair_bottom_sprite = g.read(ssizes[123])
                 hair_top_left_sprite = g.read(ssizes[162])
                 hair_top_right_sprite = g.read(ssizes[163])
@@ -709,7 +709,7 @@ def manage_character_appearance(fout, preserve_graphics=False):
 
     if sprite_swap_mode and 18 in swap_to:
         try:
-            with open_mei_fallback(swap_to[18].esper_fly_filename, "rb") as g:
+            with open_mei_fallback(swap_to[18].esper_fly_filename, 'rb') as g:
                 esper_fly_front_sprite = g.read(ssizes[121])
                 esper_fly_front_sprite2 = g.read(ssizes[122])
                 esper_fly_back_sprite = g.read(ssizes[152])
@@ -735,7 +735,7 @@ def manage_palettes(fout, change_to, char_ids):
     characters = get_characters()
     npcs = get_npcs()
     charpal_options = {}
-    for line in open(CHARACTER_PALETTE_TABLE):
+    for line in open(CHARACTER_PALETTE_TABLE, encoding='utf_8'):
         if line[0] == '#':
             continue
         charid, palettes = tuple(line.strip().split(':'))
@@ -883,7 +883,7 @@ def manage_palettes(fout, change_to, char_ids):
     recolor_palette(0x12ee20, 16)
     recolor_palette(0x12ef20, 16)
 
-    for line in open(EVENT_PALETTE_TABLE):
+    for line in open(EVENT_PALETTE_TABLE, encoding='utf_8'):
         if line[0] == '#':
             continue
         line = line.split(' ')

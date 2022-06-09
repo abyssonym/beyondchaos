@@ -540,7 +540,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
         locke_event_pointers_2 = [p + 12 for p in locke_event_pointers_2]
     recruit_info = [
         WoRRecruitInfo(
-            label="Phoenix Cave",
+            label='Phoenix Cave',
             event_pointers=locke_event_pointers + locke_event_pointers_2,
             recruited_bit_pointers=[0xc3195],
             location_npcs=[(0x139, 0)],
@@ -550,7 +550,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             num_name_bytes=4,
             name_show_full_party=True),
         WoRRecruitInfo(
-            label="Mt. Zozo",
+            label='Mt. Zozo',
             event_pointers=[0xc429c, 0xc429e, 0xc42a2, 0xc42a4, 0xc42a7, 0xc42aa],
             recruited_bit_pointers=[0xc42ae],
             location_npcs=[(0xb5, 2), (0xb4, 8)],
@@ -559,7 +559,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             name_pointer=0xC402A,
             num_name_bytes=4),
         WoRRecruitInfo(
-            label="Collapsing House",
+            label='Collapsing House',
             event_pointers=[0xa6c0e, 0xc5aa8, 0xc5aaa, 0xc5aae, 0xc5ab0, 0xc5ab3, 0xc5ab6],
             recruited_bit_pointers=[0xc5aba],
             location_npcs=[(0x131, 1)],
@@ -593,7 +593,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             num_name_bytes=5,
             name_npcs=list(range(3)) + list(range(4, 6))),
         WoRRecruitInfo(
-            label="Mobliz",
+            label='Mobliz',
             event_pointers=[0xc49d1, 0xc49d3, 0xc49da, 0xc49de, 0xc49e2, 0xc4a01, 0xc4a03, 0xc4a0c, 0xc4a0d, 0xc4a2b, 0xc4a37, 0xc4a3a, 0xc4a43, 0xc4a79, 0xc4a7b, 0xc4ccf, 0xc4cd1, 0xc4cd5, 0xc4cd7, 0xc4cdb, 0xc4cde, 0xc4ce1, 0xc4ce5, 0xc4cf4, 0xc4cf6, 0xc5040, 0xc5042, 0xc5048, 0xc504a, 0xc504d, 0xc5050],
             recruited_bit_pointers=[0xc4cd9, 0xc4cfa, 0xc5046],
             location_npcs=[(0x09A, 1), (0x09A, 2), (0x096, 0), (0x09E, 13)],
@@ -605,7 +605,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             name_extra=[0x73, 0x32, 0x33, 0x01, 0x02, 0x04, 0x14], # Keep door open
             name_camera=(-2, 4)),
         WoRRecruitInfo(
-            label="Moogle Cave",
+            label='Moogle Cave',
             event_pointers=[0xC3A2D, 0xC3A2F, 0xC3A33, 0xC3A35, 0xC3A38, 0xC3A3B, 0xC3A4D, 0xC3A4E, 0xC3A50, 0xC3A52, 0xC3A53, 0xC3A55, 0xC3AAD, 0xC3AAE, 0xC3AB0, 0xC3ACC, 0xC3AD9, 0xC3ADB, 0xC3ADF, 0xC3AE2, 0xC3AE5],
             recruited_bit_pointers=[0xC3A3F, 0xC3A58],
             shop_menu_bit_pointers=[0xC3A5A],
@@ -618,7 +618,7 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
             num_name_bytes=None
         ),
         WoRRecruitInfo(
-            label="Sasquatch Cave",
+            label='Sasquatch Cave',
             event_pointers=[0xCD79B, 0xCD79C, 0xCD79E, 0xCD7A0, 0xCD7A1, 0xCD7A4, 0xCD81D, 0xCD820],
             recruited_bit_pointers=[0xCD7A6],
             shop_menu_bit_pointers=[0xCD7A8],
@@ -638,13 +638,13 @@ def _shuffle_recruit_locations(fout, random_treasure, include_gau, alternate_gog
         if alternate_gogo:
             recruit_info.append(alt_zone_eater_recruit)
         else:
-            recruit_info.append(WoRRecruitInfo("Falcon", [], [], [], dialogue_pointers=[0xa07], old_char_id=0xB, special=falcon_recruit, name_pointer=None, num_name_bytes=None))
+            recruit_info.append(WoRRecruitInfo('Falcon', [], [], [], dialogue_pointers=[0xa07], old_char_id=0xB, special=falcon_recruit, name_pointer=None, num_name_bytes=None))
 
     if not alternate_gogo:
         candidates.append(0x0C)
         recruit_info.append(
             WoRRecruitInfo(
-                label="ZoneEater",
+                label='ZoneEater',
                 event_pointers=[0xB81DB, 0xB81DC, 0xB81DE, 0xB81E0, 0xB81E1, 0xB81E3, 0xB81E6, 0xB81E7, 0xB81E9, 0xB81EB, 0xB81EF, 0xB81F2, 0xB824A, 0xB824E],
                 recruited_bit_pointers=[0xB823E],
                 shop_menu_bit_pointers=[0xB823C],
@@ -727,7 +727,7 @@ def _manage_gogo_recruitment(fout, collapsing_house_char):
 
     location = random.choice(location_candidates)
     gogo_location = get_location(location['map'])
-    get_character(0xc).wor_location = f"{str(gogo_location)[3:]} as {get_character(char_index).newname}"
+    get_character(0xc).wor_location = f'{str(gogo_location)[3:]} as {get_character(char_index).newname}'
     gogo_npc = NPCBlock(None, gogo_location.locid)
     gogo_npc.npcid = len(gogo_location.npcs)
 
@@ -1172,7 +1172,7 @@ def _setup_alternate_zone_eater(fout, include_gau):
 
     global alt_zone_eater_recruit
     alt_zone_eater_recruit = WoRRecruitInfo(
-        label="ZoneEater",
+        label='ZoneEater',
         event_pointers=[gau_event.location + len(bytes_1) + 1, gau_event.location + len(bytes_1) + 3,
                         gau_event.location + len(bytes_1) + len(bytes_2) + 1,
                         gau_event.location + len(bytes_1) + len(bytes_2) + 3,
@@ -1231,7 +1231,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
         # there's no command to set a char's level, so I'ma
         # do something hacky and continually set Mog/Strago's
         # properties.  Each of them will consider the other's
-        # level as the "party average".  Strago will be
+        # level as the 'party average'.  Strago will be
         # boosted 2 levels above this average, and Mog will
         # be boosted 5 levels, which effectively see-saws
         # their levels upwards until they are around the
@@ -1318,13 +1318,13 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
     # assign a palette to each character
     partymembers = [c for c in characters if 1 <= c.id <= 12]
     for character in partymembers:
-        id = character.id
+        c_id = character.id
         palette = character.palette
-        wor_sub.bytestring += bytes([0x43, id, palette])
+        wor_sub.bytestring += bytes([0x43, c_id, palette])
 
     # obtain all locations with WoB treasures
     wobtreasurelocs = []
-    for line in open(WOB_TREASURE_TABLE):
+    for line in open(WOB_TREASURE_TABLE, encoding='utf_8'):
         line = line.strip()
         wobtreasurelocs.append(line)
 
@@ -1343,7 +1343,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
     # give WoB event items
     event_items = get_event_items()
     for l in event_items:
-        if l.upper() in wobtreasurelocs + ["FIGARO CASTLE"]:
+        if l.upper() in wobtreasurelocs + ['FIGARO CASTLE']:
             for e in event_items[l]:
                 if e.content_type == 0x40 and not e.multiple:
                     wor_sub.bytestring += bytes([0x80, e.contents])
@@ -1351,7 +1351,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
     # give the player a basic set of items.  These items are intended to
     # reflect the items a player would probably have by the time they get this
     # far, so that they aren't missing basic supplies they would have in almost any seed.
-    for line in open(WOR_ITEMS_TABLE):
+    for line in open(WOR_ITEMS_TABLE, encoding='utf_8'):
         line = line.strip().split(',')
         for i in range(0, int(line[1])):
             wor_sub.bytestring += bytes([0x80, int(line[0], 16)])
@@ -1367,15 +1367,15 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
     wor_sub2.bytestring = bytearray([])
 
     # set most of the event bits that would have been set in the WoB
-    for line in open(WOB_EVENTS_TABLE):
+    for line in open(WOB_EVENTS_TABLE, encoding='utf_8'):
         line = line.strip().split(',')
         setbit = int(line[1], 16)  # if 1, set the bit from the txt file
         bit = line[0]  # the bit to set/clear from the txt file
-        if bit == "2FB":
+        if bit == '2FB':
             if wor_free_char is None:
                 setbit = 0
             else:
-                bit = "2F" + hex(wor_free_char)[2]
+                bit = '2F' + hex(wor_free_char)[2]
         firstbyte = 0xD1 + int(bit[0:1], 16) * 2 - setbit
         lastbyte = int(bit[1:], 16)
         wor_sub2.bytestring += bytearray([firstbyte, lastbyte])
@@ -1451,7 +1451,7 @@ def manage_wor_skip(fout, wor_free_char=0xB, airship=False, dragon=False, altern
             0xFE,
         ])
 
-        text = "<SETZER>: But first we need to kill the dragons!"
+        text = '<SETZER>: But first we need to kill the dragons!'
         set_dialogue(0x9AF, text)
 
     else:

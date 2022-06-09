@@ -22,14 +22,14 @@ maplocations_override = {}
 
 
 def init():
-    for line in open(MAP_NAMES_TABLE):
+    for line in open(MAP_NAMES_TABLE, encoding='utf_8'):
         key, value = tuple(line.strip().split(':'))
         key = int(key, 0x10)
         mapnames[key] = value
-    for line in open(MAP_BATTLE_BG_TABLE):
+    for line in open(MAP_BATTLE_BG_TABLE, encoding='utf_8'):
         a, b = tuple(line.strip().split())
         mapbattlebgs[int(a)] = int(b, 0x10)
-    for line in open(LOCATION_MAPS_TABLE):
+    for line in open(LOCATION_MAPS_TABLE, encoding='utf_8'):
         a, b, *c = line.strip().split(':')
         b = b.strip().strip(',').split(',')
         locids = []
@@ -215,21 +215,21 @@ class Zone():
             index = self.zoneid % 0x40
             x = index % 8
             y = index // 8
-            quadrants = [["NW", "NE"],
-                         ["SW", "SE"]]
+            quadrants = [['NW', 'NE'],
+                         ['SW', 'SE']]
             quadrant = quadrants[int(y >= 4)][int(x >= 4)]
             x = str(x + 1)
-            y = "ABCDEFGH"[y]
+            y = 'ABCDEFGH'[y]
             if self.zoneid < 0x40:
-                return "World of Balance %s-%s %s" % (y, x, quadrant)
-            return "World of Ruin %s-%s %s" % (y, x, quadrant)
+                return f'World of Balance ' 
+            return f'World of Ruin {y}-{x} {quadrant}'
 
         locid = ((self.zoneid % 0x80) * 4) + index
         try:
             location = get_location(locid)
             area_name = location.area_name
         except KeyError:
-            area_name = "Unknown"
+            area_name = 'Unknown'
         return area_name
 
     def set_formation_rate(self, setid=None, rate=0):
@@ -242,7 +242,7 @@ class Zone():
     def write_data(self, fout):
         # Do not write new set ids... let the locations do that.
         #fout.seek(self.pointer)
-        #fout.write("".join(map(chr, self.setids)))
+        #fout.write(''.join(map(chr, self.setids)))
         fout.seek(self.ratepointer)
         fout.write(bytes([self.rates]))
 
@@ -260,9 +260,9 @@ class Location():
             self.entrance_set.location = self
         self.name = None
         if self.locid in mapnames:
-            self.altname = "%x %s" % (self.locid, mapnames[self.locid])
+            self.altname = f'{self.locid:x} {mapnames[self.locid]}'
         else:
-            self.altname = "%x" % self.locid
+            self.altname = f'{self.locid:x}'
         self.events = []
 
         self.name_id = 0
@@ -295,7 +295,7 @@ class Location():
         if self.locid in mapnames:
             return self.altname
         if self.name:
-            return "%x %s" % (self.locid, self.name)
+            return f'{self.locid:x} {self.name}'
         return self.altname
 
     @property
@@ -313,7 +313,7 @@ class Location():
     @property
     def area_name(self):
         if self.locid not in maplocations:
-            raise KeyError("Area for location ID %s not known." % self.locid)
+            raise KeyError(f'Area for location ID {self.locid} not known.')
         return maplocations[self.locid]
 
     @property
@@ -339,22 +339,22 @@ class Location():
                 count = counts[c.effective_id]
             else:
                 count = 1
-                desc = "?%s" % desc
+                desc = f'?{desc}'
             if count >= 2:
-                desc = "*%s" % desc
-            if "Enemy" in desc:
+                desc = f'*{desc}'
+            if 'Enemy' in desc:
                 enemies.append(desc)
-            elif "Treasure" in desc:
+            elif 'Treasure' in desc:
                 treasures.append(desc)
-            elif "Empty!" in desc:
+            elif 'Empty!' in desc:
                 treasures.append(desc)
             else:
-                raise Exception("Received unknown chest contents type.")
-        s = ""
+                raise Exception('Received unknown chest contents type.')
+        s = ''
         for t in sorted(treasures):
-            s = "\n".join([s, t])
+            s = '\n'.join([s, t])
         for e in sorted(enemies):
-            s = "\n".join([s, e])
+            s = '\n'.join([s, e])
         return s.strip()
 
     @property
@@ -401,8 +401,7 @@ class Location():
     def validate_entrances(self):
         pairs = [(e.x, e.y) for e in self.entrances]
         if len(pairs) != len(set(pairs)):
-            raise Exception("Duplicate entrances found on map %s." %
-                            self.locid)
+            raise Exception(f'Duplicate entrances found on map {self.locid}.')
 
     def collapse_entids(self):
         entrances = self.entrances
@@ -556,7 +555,7 @@ class Location():
         self.attacks = towerloc.attacks
         self.music = towerloc.music
         self.make_warpable()
-        add_location_map("Final Dungeon", self.locid)
+        add_location_map('Final Dungeon', self.locid)
 
     def make_warpable(self):
         self.layers_to_animate |= 2
@@ -583,21 +582,21 @@ class Location():
                     attribute = bytes(attribute)
                 fout.write(attribute)
 
-        write_attributes("name_id", "layers_to_animate", "_battlebg",
-                         "unknown0", "tileproperties", "attacks",
-                         "unknown1", "graphic_sets")
+        write_attributes('name_id', 'layers_to_animate', '_battlebg',
+                         'unknown0', 'tileproperties', 'attacks',
+                         'unknown1', 'graphic_sets')
 
         write_multi(fout, self.tileformations, length=2, reverse=True)
         write_multi(fout, self.mapdata, length=4, reverse=True)
 
         write_attributes(
-            "unknown2", "bgshift", "unknown3", "layer12dimensions",
-            "unknown4")
+            'unknown2', 'bgshift', 'unknown3', 'layer12dimensions',
+            'unknown4')
 
         write_multi(fout, self.palette_index, length=3)
 
-        write_attributes("music", "unknown5", "width", "height",
-                         "layerpriorities")
+        write_attributes('music', 'unknown5', 'width', 'height',
+                         'layerpriorities')
         try:
             assert fout.tell() == self.pointer + 0x21
         except:
@@ -608,11 +607,11 @@ class Location():
 
     def copy(self, location):
         attributes = [
-            "name_id", "layers_to_animate", "_battlebg", "unknown0",
-            "tileproperties", "attacks", "unknown1", "graphic_sets",
-            "tileformations", "mapdata", "unknown2", "bgshift", "unknown3",
-            "layer12dimensions", "unknown4", "palette_index", "music",
-            "unknown5", "width", "height", "layerpriorities",
+            'name_id', 'layers_to_animate', '_battlebg', 'unknown0',
+            'tileproperties', 'attacks', 'unknown1', 'graphic_sets',
+            'tileformations', 'mapdata', 'unknown2', 'bgshift', 'unknown3',
+            'layer12dimensions', 'unknown4', 'palette_index', 'music',
+            'unknown5', 'width', 'height', 'layerpriorities',
             ]
         for attribute in attributes:
             if not hasattr(location, attribute):
@@ -733,7 +732,7 @@ class Location():
             in_falling_ceiling_room = self.locid == 280 and c.memid in range(232, 235)
             monster = False if in_falling_ceiling_room or no_monsters else None
             c.mutate_contents(guideline=guideline, crazy_prices=crazy_prices, monster=monster, uncapped_monsters=uncapped_monsters)
-            if guideline is None and hasattr(c, "value") and c.value:
+            if guideline is None and hasattr(c, 'value') and c.value:
                 guideline = c.value
 
     def unlock_chests(self, low, high, monster=False,
@@ -758,7 +757,7 @@ class Location():
         write_multi(fout, (nextpointer - 0x2d8634), length=2)
         for c in self.chests:
             if nextpointer + 5 > 0x2d8e5a:
-                raise Exception("Not enough space for treasure chests.")
+                raise Exception('Not enough space for treasure chests.')
             c.write_data(fout, nextpointer)
             nextpointer += 5
         fout.seek(self.chestpointer + 2)
@@ -776,11 +775,11 @@ class Location():
                 try:
                     e = [v for v in self.npcs if v.npcid == i][0]
                 except IndexError:
-                    raise Exception("NPCs out of order.")
+                    raise Exception('NPCs out of order.')
             if nextpointer + 9 >= 0x46AC0:
                 import pdb
                 pdb.set_trace()
-                raise Exception("Not enough space for npcs.")
+                raise Exception('Not enough space for npcs.')
             e.write_data(fout, nextpointer)
             nextpointer += 9
         fout.seek(self.npcpointer + 2)
@@ -794,7 +793,7 @@ class Location():
             if nextpointer + 5 >= 0x41a10:
                 import pdb
                 pdb.set_trace()
-                raise Exception("Not enough space for events.")
+                raise Exception('Not enough space for events.')
             e.write_data(fout, nextpointer)
             nextpointer += 5
         fout.seek(self.eventpointer + 2)
@@ -876,7 +875,7 @@ class Entrance():
 
     @property
     def reachable_entrances(self):
-        if hasattr(self, "_entrances") and self._entrances is not None:
+        if hasattr(self, '_entrances') and self._entrances is not None:
             return self._entrances
         entrances = lookup_reachable_entrances(self)
         self._entrances = entrances
@@ -887,7 +886,7 @@ class Entrance():
 
     def write_data(self, fout, nextpointer):
         if nextpointer >= 0x1FDA00:
-            raise Exception("Not enough room for entrances.")
+            raise Exception('Not enough room for entrances.')
         fout.seek(nextpointer)
         fout.write(bytes([self.x]))
         fout.write(bytes([self.y]))
@@ -896,15 +895,15 @@ class Entrance():
         fout.write(bytes([self.desty]))
 
     def __repr__(self):
-        if hasattr(self, "entid") and self.entid is not None:
+        if hasattr(self, 'entid') and self.entid is not None:
             entid = self.entid
         else:
-            entid = "?"
-        return "<%s %s: %s %s>" % (self.location.locid, entid, self.x, self.y)
+            entid = '?'
+        return f'<{self.location.locid} {entid}: {self.x} {self.y}>'
 
     def copy(self, entrance):
-        for attribute in ["x", "y", "dest", "destx", "desty",
-                          "location", "entid"]:
+        for attribute in ['x', 'y', 'dest', 'destx', 'desty',
+                          'location', 'entid']:
             setattr(self, attribute, getattr(entrance, attribute))
 
 
@@ -922,7 +921,7 @@ class LongEntrance(Entrance):
 
     def write_data(self, fout, nextpointer):
         if nextpointer >= 0x2DFE00:
-            raise Exception("Not enough room for long entrances.")
+            raise Exception('Not enough room for long entrances.')
         fout.seek(nextpointer)
         fout.write(bytes([self.x]))
         fout.write(bytes([self.y]))
@@ -932,7 +931,7 @@ class LongEntrance(Entrance):
         fout.write(bytes([self.desty]))
 
     def copy(self, entrance):
-        for attribute in ["x", "y", "dest", "destx", "desty", "width"]:
+        for attribute in ['x', 'y', 'dest', 'destx', 'desty', 'width']:
             setattr(self, attribute, getattr(entrance, attribute))
 
 
@@ -991,12 +990,12 @@ class EntranceSet():
         self.location.uniqify_entrances()
         for e in self.entrances:
             if nextpointer + 6 > 0x1fda00:
-                raise Exception("Too many entrance triggers.")
+                raise Exception('Too many entrance triggers.')
             e.write_data(fout, nextpointer)
             nextpointer += 6
         for e in self.longentrances:
             if longnextpointer + 7 >= 0x2dfe00:
-                raise Exception("Too many long entrance triggers.")
+                raise Exception('Too many long entrance triggers.')
             e.write_data(fout, longnextpointer)
             longnextpointer += 7
         return nextpointer, longnextpointer
@@ -1031,7 +1030,7 @@ def get_locations(filename=None):
     if locations is None:
         locations = [Location(i) for i in range(415)]
         if filename is None:
-            raise ValueError("Please supply a filename for new locations.")
+            raise ValueError('Please supply a filename for new locations.')
         for l in locations:
             l.read_data(filename)
             l.fill_battle_bg()
@@ -1056,7 +1055,7 @@ def get_zones(filename=None):
     if zones is None:
         zones = [Zone(i) for i in range(0x100)]
         if filename is None:
-            raise Exception("Please supply a filename for new zones.")
+            raise Exception('Please supply a filename for new zones.')
         for z in zones:
             z.read_data(filename)
         return get_zones()
@@ -1077,7 +1076,7 @@ def get_unused_locations(filename=None):
         return unused_locs
 
     unused_locs = set([])
-    for line in open(UNUSED_LOCATIONS_TABLE):
+    for line in open(UNUSED_LOCATIONS_TABLE, encoding='utf_8'):
         locid = int(line.strip(), 0x10)
         loc = get_location(locid)
         unused_locs.add(loc)
@@ -1090,13 +1089,13 @@ def lookup_reachable_entrances(entrance):
     global reachdict
     if not reachdict:
         reachdict = {}
-        for line in open(ENTRANCE_REACHABILITY_TABLE):
+        for line in open(ENTRANCE_REACHABILITY_TABLE, encoding='utf_8'):
             locid, ents = line.strip().split(':')
             locid = int(locid)
             ents = list(map(int, ents.split(',')))
             for ent in ents:
                 if (locid, ent) in reachdict:
-                    raise Exception("Duplicate reachability in table.")
+                    raise Exception('Duplicate reachability in table.')
                 reachdict[(locid, ent)] = ents
 
     key = entrance.location.locid, entrance.entid
@@ -1185,7 +1184,7 @@ def _write_all_npcs(fout):
 
     nextpointer = 0x41d52
     for l in locations:
-        if hasattr(l, "restrank"):
+        if hasattr(l, 'restrank'):
             nextpointer = l.write_npcs(fout, nextpointer=nextpointer,
                                        ignore_order=True)
         else:
@@ -1222,12 +1221,12 @@ def _write_all_entrances(fout):
     #print(f'long entrances left: {(0x2DFE00 - longnextpointer) // 7}')
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     from sys import argv
     if len(argv) > 1:
         filename = argv[1]
     else:
-        filename = "program.rom"
+        filename = 'program.rom'
     from formationrandomizer import get_formations, get_fsets
     from monsterrandomizer import get_monsters
     get_monsters(filename)
@@ -1236,5 +1235,5 @@ if __name__ == "__main__":
     locations = get_locations(filename)
     zones = get_zones(filename)
     for l in locations:
-        print("%x" % (l.layers_to_animate & 2), l, end=' ')
+        print(f'{(l.layers_to_animate & 2):x}', l, end=' ')
         print()

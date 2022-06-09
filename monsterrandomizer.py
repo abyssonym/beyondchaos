@@ -4,6 +4,7 @@ from utils import (write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    make_table, utilrandom as random)
 from skillrandomizer import get_spell, get_ranked_spells
+from formationrandomizer import get_formations, get_fset, get_fsets
 from itemrandomizer import get_ranked_items, get_item
 from namerandomizer import generate_attack, generate_name
 
@@ -36,38 +37,38 @@ monsterdict = {}
 globalweights, avgs = None, {}
 
 statusdict = {
-    "blind": (0, 0x01),
-    "zombie": (0, 0x02),
-    "poison": (0, 0x04),
-    "magitek": (0, 0x08),
-    "vanish": (0, 0x10),
-    "imp": (0, 0x20),
-    "petrify": (0, 0x40),
-    "death": (0, 0x80),
-    "condemned": (1, 0x01),
-    "near death": (1, 0x02),
-    "image": (1, 0x04),
-    "mute": (1, 0x08),
-    "berserk": (1, 0x10),
-    "confuse": (1, 0x20),
-    "seizure": (1, 0x40),
-    "sleep": (1, 0x80),
-    "float": (2, 0x01),
-    "regen": (2, 0x02),
-    "slow": (2, 0x04),
-    "haste": (2, 0x08),
-    "stop": (2, 0x10),
-    "shell": (2, 0x20),
-    "protect": (2, 0x40),
-    "reflect": (2, 0x80),
-    "cover": (3, 0x01),
-    "runic": (3, 0x02),
-    "reraise": (3, 0x04),
-    "morph": (3, 0x08),
-    "casting": (3, 0x10),
-    "disappear": (3, 0x20),
-    "interceptor": (3, 0x40),
-    "floating": (3, 0x80)}
+    'blind': (0, 0x01),
+    'zombie': (0, 0x02),
+    'poison': (0, 0x04),
+    'magitek': (0, 0x08),
+    'vanish': (0, 0x10),
+    'imp': (0, 0x20),
+    'petrify': (0, 0x40),
+    'death': (0, 0x80),
+    'condemned': (1, 0x01),
+    'near death': (1, 0x02),
+    'image': (1, 0x04),
+    'mute': (1, 0x08),
+    'berserk': (1, 0x10),
+    'confuse': (1, 0x20),
+    'seizure': (1, 0x40),
+    'sleep': (1, 0x80),
+    'float': (2, 0x01),
+    'regen': (2, 0x02),
+    'slow': (2, 0x04),
+    'haste': (2, 0x08),
+    'stop': (2, 0x10),
+    'shell': (2, 0x20),
+    'protect': (2, 0x40),
+    'reflect': (2, 0x80),
+    'cover': (3, 0x01),
+    'runic': (3, 0x02),
+    'reraise': (3, 0x04),
+    'morph': (3, 0x08),
+    'casting': (3, 0x10),
+    'disappear': (3, 0x20),
+    'interceptor': (3, 0x40),
+    'floating': (3, 0x80)}
 reverse_statusdict = {value: key for (key, value) in list(statusdict.items())}
 
 early_bosses = [
@@ -78,25 +79,25 @@ early_bosses = [
     300  # ultros 1
 ]
 
-elemlist = ["fire", "ice", "bolt", "bio", "wind", "pearl", "earth", "water"]
+elemlist = ['fire', 'ice', 'bolt', 'bio', 'wind', 'pearl', 'earth', 'water']
 
-ranked = ["casting", "near death", "floating", "regen", "poison", "blind",
-          "shell", "protect", "vanish", "image", "hp drain", "haste",
-          "reflect", "mp drain", "seizure",
-          "condemned", "slow", "mute", "imp", "berserk", "reraise",
-          "sleep", "confuse", "stop", "petrify", "zombie",
-          "morph", "frozen", "death", "interceptor", "magitek",
-          "rage", "dance", "disappear"]
+ranked = ['casting', 'near death', 'floating', 'regen', 'poison', 'blind',
+          'shell', 'protect', 'vanish', 'image', 'hp drain', 'haste',
+          'reflect', 'mp drain', 'seizure',
+          'condemned', 'slow', 'mute', 'imp', 'berserk', 'reraise',
+          'sleep', 'confuse', 'stop', 'petrify', 'zombie',
+          'morph', 'frozen', 'death', 'interceptor', 'magitek',
+          'rage', 'dance', 'disappear']
 specialdict = [k for (k, v) in sorted(statusdict.items(),
                                       key=lambda k_v: k_v[1])]
 specialdict = {k: i for (i, k) in enumerate(specialdict)}
-specialdict["rage"] = 0x18
-specialdict["dance"] = 0x10
-del specialdict["float"]
-del specialdict["cover"]
-specialdict["frozen"] = 0x19
-specialdict["hp drain"] = 0x30
-specialdict["mp drain"] = 0x31
+specialdict['rage'] = 0x18
+specialdict['dance'] = 0x10
+del specialdict['float']
+del specialdict['cover']
+specialdict['frozen'] = 0x19
+specialdict['hp drain'] = 0x30
+specialdict['mp drain'] = 0x31
 reverse_specialdict = {v: k for (k, v) in specialdict.items()}
 ranked = [specialdict[key] for key in ranked]
 
@@ -119,7 +120,7 @@ def randomize_enemy_name(fout, enemy_id):
 def read_ai_table(table):
     aiscripts = {}
     name = None
-    for line in open(table):
+    for line in open(table, encoding='utf_8'):
         line = line.strip()
         if not line or line[0] == '#':
             continue
@@ -164,7 +165,7 @@ class MonsterBlock:
         self.aiscript = None
         self.ambusher = False
         self.set_id(monster_id)
-        self.attackname = "Special"
+        self.attackname = 'Special'
         self.graphics = None
         self.morph = 0
         self.misc1 = 0
@@ -179,19 +180,20 @@ class MonsterBlock:
         self.oldlevel = 0
         self.items = []
         self.original_drops = []
+        self.controls = []
+        self.rages = []
+        self.sketches = []
+        self.ai = -1
 
     def determine_location(self):
-        from formationrandomizer import get_formations, get_fsets
-        from locationrandomizer import get_locations, get_zones
         formations = {f for f in get_formations()
                       if self in f.present_enemies}
         fsets = [fs for fs in get_fsets() if len(fs.formations) == 4]
         fsets = [fs for fs in fsets if formations & set(fs.formations)]
         if not fsets:
-            return ""
+            return ''
 
         def score_location(location):
-            from locationrandomizer import Zone
             score = 0
             fsets = location.fsets
             for fset in fsets:
@@ -236,12 +238,12 @@ class MonsterBlock:
             for z in zones:
                 areas.append(z.get_area_name())
 
-        areas = [a for a in areas if a.lower() != "bad"]
-        if len(areas) > 1 and areas[0] == "Final Dungeon":
-            areas.remove("Final Dungeon")
-            areas.insert(1, "Final Dungeon")
+        areas = [a for a in areas if a.lower() != 'bad']
+        if len(areas) > 1 and areas[0] == 'Final Dungeon':
+            areas.remove('Final Dungeon')
+            areas.insert(1, 'Final Dungeon')
 
-        return ", ".join(areas[:2])
+        return ', '.join(areas[:2])
 
     @property
     def special_effect_str(self):
@@ -251,17 +253,17 @@ class MonsterBlock:
             if power % 2:
                 power = (power // 2) + 1
             else:
-                power = str(power // 2) + ".5"
-            s = "attack x%s" % power
+                power = str(power // 2) + '.5'
+            s = f'attack x{power}'
         elif special & 0x3F > 0x31:
-            s = "reflect break?"
+            s = 'reflect break?'
         else:
-            s = ""
+            s = ''
             if not self.special & 0x40:
-                s += "damage + "
+                s += 'damage + '
             s += reverse_specialdict[special & 0x3F]
         if self.special & 0x80:
-            s += " (unblockable)"
+            s += ' (unblockable)'
         return s
 
     @property
@@ -269,14 +271,14 @@ class MonsterBlock:
         full24 = bin(self.immunities[0] | (self.immunities[1] << 8) |
                      (self.immunities[2] << 16))
         full24 = full24[2:]
-        full24 = "{0:0>24}".format(full24)
-        if full24.count("1") > full24.count("0"):
+        full24 = f'{full24:0>24}'
+        if full24.count('1') > full24.count('0'):
             # show vulnerabilities
-            s = "VULNERABLE: "
+            s = 'VULNERABLE: '
             on_equals = False
         else:
             # show immunities
-            s = "IMMUNE: "
+            s = 'IMMUNE: '
             on_equals = True
         statuses = []
         for index, byte in enumerate(self.immunities):
@@ -286,8 +288,8 @@ class MonsterBlock:
                     statcode = (index, bit)
                     statuses.append(reverse_statusdict[statcode])
         if not statuses:
-            statuses = ["Nothing"]
-        s += ", ".join(sorted(statuses)) + "\n"
+            statuses = ['Nothing']
+        s += ', '.join(sorted(statuses)) + '\n'
         statuses = []
         for index, byte in enumerate(self.statuses):
             for i in range(8):
@@ -296,22 +298,22 @@ class MonsterBlock:
                     statcode = (index, bit)
                     statuses.append(reverse_statusdict[statcode])
         if statuses:
-            s += "AUTO: "
-            s += ", ".join(sorted(statuses))
+            s += 'AUTO: '
+            s += ', '.join(sorted(statuses))
         return s.strip()
 
     @property
     def elements_str(self):
         nullify = self.absorb | self.null
         weak = self.weakness
-        s = ""
+        s = ''
         elements = []
         for i in range(8):
             if nullify & (1 << i):
                 elements.append(elemlist[i])
         if elements:
-            s += "NULLIFY: "
-            s += ", ".join(elements)
+            s += 'NULLIFY: '
+            s += ', '.join(elements)
         elements = []
         for i in range(8):
             if nullify & (1 << i):
@@ -320,16 +322,16 @@ class MonsterBlock:
                 elements.append(elemlist[i])
         if elements:
             if s:
-                s += ";  "
-            s += "WEAK: "
-            s += ", ".join(elements)
+                s += ';  '
+            s += 'WEAK: '
+            s += ', '.join(elements)
         return s.strip()
 
     def get_description(self, changed_commands=None):
         if changed_commands is None:
             changed_commands = []
-        s = ("~" * 40) + "\n"
-        s += self.display_name + " (Level %s)" % self.stats['level'] + "\n"
+        s = ('~' * 40) + '\n'
+        s += f'{self.display_name} (Level {self.stats["level"]})\n'
 
         def make_column(statnames):
             rows = []
@@ -347,17 +349,17 @@ class MonsterBlock:
                 values[newname] = value
 
             valuewidth = max(len(str(v)) for v in values.values())
-            substr = "{0:%s} {1:%s}" % (namewidth, valuewidth)
+            substr = f'{namewidth:%s} {valuewidth:%s}'
             for name in statnames:
                 name = get_shortname(name)
                 value = values[name]
                 rows.append(substr.format(
-                    name.upper() + ":", value))
+                    name.upper() + ':', value))
 
             width = max(len(row) for row in rows)
             for i, row in enumerate(rows):
                 while len(row) < width:
-                    row += " "
+                    row += ' '
                 rows[i] = row
             return rows
 
@@ -365,60 +367,59 @@ class MonsterBlock:
         cols.append(make_column(['hp', 'mp', 'xp', 'gp']))
         cols.append(make_column(['attack', 'def', 'mpow', 'mdef']))
         cols.append(make_column(['speed', 'hit%', 'evade%', 'mblock%']))
-        s += make_table(cols) + "\n"
+        s += make_table(cols) + '\n'
         elements_str = self.elements_str
         if elements_str:
-            s += elements_str + "\n"
-        s += self.statuses_str + "\n"
+            s += elements_str + '\n'
+        s += self.statuses_str + '\n'
 
-        others = {"humanoid": self.humanoid,
-                  "undead": self.undead,
-                  "ambusher": self.ambusher,
+        others = {'humanoid': self.humanoid,
+                  'undead': self.undead,
+                  'ambusher': self.ambusher,
                   "can't escape": self.cantrun,
-                  "difficult to run": self.hardrun,
-                  "dies at MP zero": self.mpdeath}
+                  'difficult to run': self.hardrun,
+                  'dies at MP zero': self.mpdeath}
         if any(others.values()):
             others = sorted([key for key in others if others[key]])
-            s += "OTHER: " + ", ".join(others) + "\n"
+            s += 'OTHER: ' + ', '.join(others) + '\n'
 
-        s += 'SPECIAL "%s": %s\n' % (self.attackname,
-                                     self.special_effect_str)
+        s += f"SPECIAL '{self.attackname}': {self.special_effect_str}\n"
 
         skills = self.get_skillset(ids_only=False)
         skills = [z for z in skills
                   if z.spellid not in [0xEE, 0xEF, 0xFE, 0xFF]]
         if skills:
             names = sorted([z.name for z in skills])
-            s += "SKILLS: %s\n" % ", ".join(names)
+            s += f'SKILLS: {", ".join(names)}\n'
 
         if self.rages and 0x10 not in changed_commands:
             rages = [get_spell(r).name for r in self.rages]
-            rages = [r if r != "Special" else self.attackname for r in rages]
-            s += "RAGE: %s\n" % ", ".join(rages)
+            rages = [r if r != 'Special' else self.attackname for r in rages]
+            s += f'RAGE: {", ".join(rages)}\n'
 
         lores = self.get_lores()
         if lores and 0x0C not in changed_commands:
-            s += "LORE: %s\n" % ", ".join([l.name for l in lores])
+            s += f'LORE: {", ".join([l.name for l in lores])}\n'
 
         if not self.is_boss and 0x0E not in changed_commands:
             controls = [get_spell(c).name for c in self.controls if c != 0xFF]
-            controls = [r if r != "Special" else self.attackname for r in controls]
-            s += "CONTROL: %s\n" % ", ".join(sorted(controls))
+            controls = [r if r != 'Special' else self.attackname for r in controls]
+            s += f'CONTROL: {", ".join(sorted(controls))}\n'
 
         if 0x0D not in changed_commands:
             sketches = [get_spell(c).name for c in self.sketches]
-            sketches = [r if r != "Special" else self.attackname for r in sketches]
-            s += "SKETCH: %s\n" % ", ".join(sketches)
+            sketches = [r if r != 'Special' else self.attackname for r in sketches]
+            s += f'SKETCH: {", ".join(sketches)}\n'
 
         steals = [i.name for i in self.steals if i]
         drops = [i.name for i in self.drops if i]
-        s += ("STEAL: %s" % ", ".join(steals)).strip() + "\n"
-        s += ("DROPS: %s" % ", ".join(drops)).strip() + "\n"
+        s += f'STEAL: {", ".join(steals).strip()}\n'
+        s += f'DROPS: {", ".join(drops).strip()}\n'
 
         if not self.cantmorph:
-            s += "MORPH (%s%%): %s\n" % (self.morphrate, ", ".join(
-                sorted([i.name for i in self.get_morph_items()])))
-        s += ("LOCATION: %s" % self.display_location).strip() + "\n"
+            morph_items = ', '.join(sorted([i.name for i in self.get_morph_items()]))
+            s += f'MORPH ({self.morphrate}%%): {morph_items}\n'
+        s += f'LOCATION: {self.display_location.strip()}\n'
 
         return s.strip()
 
@@ -426,15 +427,15 @@ class MonsterBlock:
     def display_location(self):
         location = self.determine_location()
         if not location.strip():
-            if hasattr(self, "auxloc"):
+            if hasattr(self, 'auxloc'):
                 location = self.auxloc
             elif not self.is_boss:
-                location = "Missing %x" % self.id
+                location = f'Missing {self.id:x}'
         return location
 
     @property
     def display_name(self):
-        if hasattr(self, "changed_name"):
+        if hasattr(self, 'changed_name'):
             return self.changed_name.strip('_')
         return self.name.strip('_')
 
@@ -467,10 +468,10 @@ class MonsterBlock:
 
     @property
     def pretty_aiscript(self):
-        hexify = lambda c: "%x" % ord(c)
-        output = ""
+        hexify = lambda c: f'{ord(c):x}'
+        output = ''
         for action in self.aiscript:
-            output += " ".join(map(hexify, action)) + "\n"
+            output += ' '.join(map(hexify, action)) + '\n'
         return output.strip()
 
     @property
@@ -513,7 +514,7 @@ class MonsterBlock:
         candidates = [c for c in candidates if
                       c.width == self.width and c.height == self.height]
         candidates = [c for c in candidates if c.graphics.graphics not in [0, 0x5376]]
-        candidates = [c for c in candidates if c.name != "_"*10]
+        candidates = [c for c in candidates if c.name != '_'*10]
 
         if not self.graphics.large:
             if self.miny <= 3:
@@ -623,7 +624,7 @@ class MonsterBlock:
 
     def mutate_graphics_swap(self, candidates):
         chosen = self.choose_graphics(candidates)
-        #print "SWAP %s (%s) <-> %s (%s)" % (self.name, self.graphicname,
+        #print 'SWAP %s (%s) <-> %s (%s)' % (self.name, self.graphicname,
         #                                    chosen.name, chosen.graphicname)
         a, b = self.graphicname, chosen.graphicname
         self.graphicname, chosen.graphicname = b, a
@@ -633,7 +634,7 @@ class MonsterBlock:
 
     def mutate_graphics_copy(self, candidates):
         chosen = self.choose_graphics(candidates)
-        #print "BOSSCOPY %s %s" % (self.name, chosen.name)
+        #print 'BOSSCOPY %s %s' % (self.name, chosen.name)
         #print chosen.graphics.graphics
         self.graphics.copy_data(chosen.graphics)
         self.copy_visible(chosen)
@@ -729,10 +730,10 @@ class MonsterBlock:
             round(max(self.stats['mp'], factor * max(s.mp for s in skillset))))
 
     def mutate_ai(self, options_, change_skillset=True, safe_solo_terra=True):
-        itembreaker = options_.is_code_active("collateraldamage")
-        if self.name[:2] == "L." and not options_.is_code_active("randombosses"):
+        itembreaker = options_.is_code_active('collateraldamage')
+        if self.name[:2] == 'L.' and not options_.is_code_active('randombosses'):
             change_skillset = False
-        elif "guardian" in self.name.lower():
+        elif 'guardian' in self.name.lower():
             return
 
         skillset = set(self.get_skillset())
@@ -745,9 +746,9 @@ class MonsterBlock:
             e = s1.unreflectable == s2.unreflectable
             f = s1.abort_on_allies == s2.abort_on_allies
             return a and b and c and d and e and f
-        if options_.mode.name == "katn":
+        if options_.mode.name == 'katn':
             restricted = [0xEA, 0xC8]
-        elif options_.is_code_active("madworld"):
+        elif options_.is_code_active('madworld'):
             restricted = []
         else:
             restricted = [0x13, 0x14]
@@ -931,7 +932,7 @@ class MonsterBlock:
                 assert 0x81 not in action
             newscript.append(action)
 
-        assert len(b"".join(newscript)) == len(b"".join(self.aiscript))
+        assert len(b''.join(newscript)) == len(b''.join(self.aiscript))
         self.aiscript = newscript
 
     def read_ai(self, filename):
@@ -946,7 +947,7 @@ class MonsterBlock:
                 numargs = AICODES[ord(value)]
                 args = f.read(numargs)
             except KeyError:
-                args = b""
+                args = b''
             script.append(bytearray(value + args))
             if ord(value) == 0xFF:
                 if seen:
@@ -967,7 +968,7 @@ class MonsterBlock:
 
     @property
     def aiscriptsize(self):
-        return len(b"".join(self.aiscript))
+        return len(b''.join(self.aiscript))
 
     def write_ai(self, fout):
         for (i, action) in enumerate(self.aiscript):
@@ -980,7 +981,7 @@ class MonsterBlock:
         write_multi(fout, self.ai, length=2)
         pointer = self.ai + 0xF8700
         fout.seek(pointer)
-        fout.write(b"".join(self.aiscript))
+        fout.write(b''.join(self.aiscript))
 
     @property
     def humanoid(self):
@@ -1112,9 +1113,9 @@ class MonsterBlock:
         if name == 'tunnelarmr':
             self.stats['hp'] = 1000 + random.randint(0, 150) + random.randint(0, 150)
             self.aiscript = self.aiscript[4:]
-        if name == "leader":
+        if name == 'leader':
             self.stats['hp'] = 400 + random.randint(0, 50) + random.randint(0, 50)
-        if name in ("merchant", "officer"):
+        if name in ('merchant', 'officer'):
             stealmessage = bytearray([0xFC, 0x01, 0x05, 0x05])
             deathmessage = bytearray([0xFC, 0x12, 0x00, 0x00])
             index = self.aiscript.index(stealmessage)
@@ -1139,7 +1140,7 @@ class MonsterBlock:
             self.stats['level'] += random.randint(10, 30)
 
     def mutate_misc(self):
-        # invert "escapable" bit
+        # invert 'escapable' bit
         if self.is_boss:
             if random.randint(1, 500) == 500:
                 self.misc2 = self.misc2 ^ 0x08
@@ -1164,10 +1165,10 @@ class MonsterBlock:
                 self.misc1 = self.misc1 ^ 0x80
 
     def tweak_fanatics(self):
-        if self.name[:2] == "L.":
+        if self.name[:2] == 'L.':
             level = int(self.name[2:4])
             self.stats['level'] = level
-        elif self.name.lower() == "magimaster":
+        elif self.name.lower() == 'magimaster':
             self.treasure_boost()
             level = 99
             self.stats['level'] = level
@@ -1252,25 +1253,25 @@ class MonsterBlock:
                 continue
 
             status = bitdict[(byte, bit)]
-            if status in ["zombie", "magitek", "petrify", "death", "disappear"]:
+            if status in ['zombie', 'magitek', 'petrify', 'death', 'disappear']:
                 if self.is_boss or random.randint(1, 1000) != 1000:
                     continue
-            if status in ["condemned", "mute", "berserk",
-                          "stop", "confuse", "sleep"]:
+            if status in ['condemned', 'mute', 'berserk',
+                          'stop', 'confuse', 'sleep']:
                 if self.is_boss and random.randint(1, 100) != 100:
                     continue
                 elif not self.is_boss and random.randint(1, 10) != 10:
                     continue
-            if status in ["reraise", "runic", "cover", "image"]:
+            if status in ['reraise', 'runic', 'cover', 'image']:
                 if random.randint(1, 10) != 10:
                     continue
-            if status in ["blind", "poison", "imp", "seizure", "slow"]:
+            if status in ['blind', 'poison', 'imp', 'seizure', 'slow']:
                 if self.is_boss and random.randint(1, 10) != 10:
                     continue
                 elif not self.is_boss and random.choice([True, False]):
                     continue
-            if status in ["vanish", "image"]:
-                if self.stats["level"] < 22 or self.id in [0x11a, 0x12a]:
+            if status in ['vanish', 'image']:
+                if self.stats['level'] < 22 or self.id in [0x11a, 0x12a]:
                     continue
                 elif random.choice([True, False]):
                     continue
@@ -1409,7 +1410,7 @@ class MonsterBlock:
 
         ranked_items = sorted(items, key=lambda i: i.rank())
         item = ranked_items[index]
-        #print "%s/%s" % (self.stats['level'], HIGHEST_LEVEL), item.name
+        #print '%s/%s' % (self.stats['level'], HIGHEST_LEVEL), item.name
         return item
 
     def get_spell_appropriate(self, spell_list=None):
@@ -1638,9 +1639,9 @@ class MonsterBlock:
         self.special = special
 
     def mutate(self, options_, change_skillset=None, safe_solo_terra=True):
-        randombosses = options_.is_code_active("randombosses")
-        darkworld = options_.is_code_active("darkworld")
-        madworld = options_.is_code_active("madworld")
+        randombosses = options_.is_code_active('randombosses')
+        darkworld = options_.is_code_active('darkworld')
+        madworld = options_.is_code_active('madworld')
 
         if change_skillset is None:
             change_skillset = randombosses or not (self.is_boss or self.boss_death)
@@ -1675,15 +1676,15 @@ class MonsterBlock:
     def swap_ai(self, other):
         if self.boss_death != other.boss_death:
             return
-        for attribute in ["ai", "aiscript", "controls", "sketches",
-                          "rages", "special"]:
+        for attribute in ['ai', 'aiscript', 'controls', 'sketches',
+                          'rages', 'special']:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
             setattr(other, attribute, a)
 
     def swap_stats(self, other):
-        attributes = ["stats", "misc2", "absorb", "null",
-                      "weakness", "morph", "items"]
+        attributes = ['stats', 'misc2', 'absorb', 'null',
+                      'weakness', 'morph', 'items']
         samplesize = random.randint(1, len(attributes))
         sample = random.sample(attributes, samplesize)
         for attribute in sample:
@@ -1693,16 +1694,16 @@ class MonsterBlock:
 
     def copy_all(self, other, everything=True):
         attributes = [
-            "ai", "aiscript", "controls", "sketches", "stats",
-            "absorb", "null", "weakness", "special", "morph", "items",
-            "misc1", "misc2", "immunities", "statuses", "attackanimation"]
-        if "aiptr" in attributes:
-            attributes.remove("aiptr")  # don't copy this, yo
+            'ai', 'aiscript', 'controls', 'sketches', 'stats',
+            'absorb', 'null', 'weakness', 'special', 'morph', 'items',
+            'misc1', 'misc2', 'immunities', 'statuses', 'attackanimation']
+        if 'aiptr' in attributes:
+            attributes.remove('aiptr')  # don't copy this, yo
         if not everything:
             samplesize = random.randint(0, len(attributes))
             attributes = random.sample(attributes, samplesize)
             attributes = sorted(set(attributes) -
-                                set(["ai", "aiptr", "aiscript"]))
+                                set(['ai', 'aiptr', 'aiscript']))
 
         for attribute in attributes:
             value = getattr(other, attribute)
@@ -1747,9 +1748,9 @@ class MonsterBlock:
         total = 0
         for key in sorted(avgs):
             weighted = weights[key] * funcs[key](self) / avgs[key]
-            if key == "level":
+            if key == 'level':
                 weighted *= LEVELFACTOR
-            elif key == "hp":
+            elif key == 'hp':
                 weighted *= HPFACTOR
             total += weighted
 
@@ -1822,7 +1823,7 @@ def get_ranked_monsters(filename=None, bosses=True):
 def shuffle_monsters(monsters, safe_solo_terra=True):
     monsters = sorted(monsters, key=lambda m: m.rank())
     monsters = [m for m in monsters if m.name.strip('_')]
-    monsters = [m for m in monsters if m.display_name[:2] != "L."]
+    monsters = [m for m in monsters if m.display_name[:2] != 'L.']
     bosses = [m for m in monsters if m.is_boss or m.boss_death]
     nonbosses = [m for m in monsters if m not in bosses]
     for m in monsters:
@@ -1830,9 +1831,9 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
             candidates = bosses
         else:
             candidates = nonbosses
-            
+
         candidates = [c for c in candidates
-                      if abs(c.stats["level"] - m.stats["level"]) <= 20]
+                      if abs(c.stats['level'] - m.stats['level']) <= 20]
 
         index = candidates.index(m)
 
@@ -1870,7 +1871,6 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
                 in_narshe_caves = False
 
                 for id in [0x39, 0x3A]:
-                    from formationrandomizer import get_fset
                     fset = get_fset(id)
                     for f in fset.formations:
                         if m in f.present_enemies or n in f.present_enemies:
@@ -1898,7 +1898,6 @@ class MonsterGraphicBlock:
         self.palette_values = []
 
     def read_data(self, filename):
-        global palette_pools
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.graphics = read_multi(f, length=2)
@@ -1931,13 +1930,13 @@ class MonsterGraphicBlock:
         palette_pools[self.graphics].add(self.palette_data)
 
     def swap_data(self, other):
-        for attribute in ["graphics", "size_template", "palette_data"]:
+        for attribute in ['graphics', 'size_template', 'palette_data']:
             a, b = getattr(self, attribute), getattr(other, attribute)
             setattr(self, attribute, b)
             setattr(other, attribute, a)
 
     def copy_data(self, other):
-        for attribute in ["graphics", "size_template", "palette_data", "large"]:
+        for attribute in ['graphics', 'size_template', 'palette_data', 'large']:
             value = getattr(other, attribute)
             if isinstance(value, list):
                 value = list(value)
@@ -1965,7 +1964,7 @@ class MonsterGraphicBlock:
             palette &= 0x7FFF
 
         if palette_pointer > 0x12a800:
-            raise Exception("Palette pointer out of bounds.")
+            raise Exception('Palette pointer out of bounds.')
 
         fout.seek(self.pointer)
         write_multi(fout, self.graphics, length=2)
@@ -2053,23 +2052,23 @@ def get_collapsing_house_help_skill():
         worst_skill = max(all_skills, key=lambda s: s.rank())
 
     if status_specials:
-        sleep_index = ranked.index(specialdict["sleep"])
+        sleep_index = ranked.index(specialdict['sleep'])
         worst_special = max(status_specials, key=ranked.index)
         worst_special_index = ranked.index(worst_special)
         if worst_special_index >= sleep_index or not worst_skill or worst_skill.rank() < 19:
             status = reverse_specialdict[worst_special]
-            if status == "zombie":
-                status = "zombify"
-            elif status[-2:] == "ed":
+            if status == 'zombie':
+                status = 'zombify'
+            elif status[-2:] == 'ed':
                 status = status[:-2]
-            elif status[-1] == "e":
+            elif status[-1] == 'e':
                 status = status[:-1]
             return status
 
     if worst_skill:
-        return worst_skill.name + "-"
+        return worst_skill.name + '-'
 
-    return "battl"
+    return 'battl'
 
 
 def manage_monster_appearance(monsters, sourcefile, fout, preserve_graphics=False):
@@ -2077,7 +2076,7 @@ def manage_monster_appearance(monsters, sourcefile, fout, preserve_graphics=Fals
     esperptr = 0x127000 + (5*384)
     espers = []
     for j in range(32):
-        mg = MonsterGraphicBlock(pointer=esperptr + (5*j), name="")
+        mg = MonsterGraphicBlock(pointer=esperptr + (5*j), name='')
         mg.read_data(sourcefile)
         espers.append(mg)
         mgs.append(mg)
@@ -2096,10 +2095,10 @@ def manage_monster_appearance(monsters, sourcefile, fout, preserve_graphics=Fals
     bosses = [m for m in bosses if m.graphics.graphics not in nonbossgraphics]
 
     for i, m in enumerate(nonbosses):
-        if "Chupon" in m.name:
+        if 'Chupon' in m.name:
             m.update_pos(6, 6)
             m.update_size(8, 16)
-        if "Siegfried" in m.name:
+        if 'Siegfried' in m.name:
             m.update_pos(8, 8)
             m.update_size(8, 8)
         candidates = nonbosses[i:]

@@ -84,7 +84,7 @@ def banon_life3(fout):
         #06FA
         0xA9, 0x06,       # LDA #$06
         #06FC
-        0x8D, 0x6E, 0x3A, # STA $3A6E      (Banon fell... "End of combat" method #6)
+        0x8D, 0x6E, 0x3A, # STA $3A6E      (Banon fell... 'End of combat' method #6)
         #06FF
         0xEA,
     ]

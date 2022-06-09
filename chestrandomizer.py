@@ -8,7 +8,7 @@ from utils import read_multi, write_multi, mutate_index, utilrandom as random, S
 
 valid_ids = list(range(1, 0x200))
 banned_formids = [0, 0x1d7]
-extra_miabs = []
+_extra_miabs = []
 orphaned_formations = None
 used_formations = []
 done_items = []
@@ -43,11 +43,11 @@ def get_orphaned_formations(old_version=False):
     event_enemies = OLD_EVENT_ENEMIES if old_version else EVENT_ENEMIES
     for m in monsters:
         if m.id in event_enemies:
-            m.auxloc = "Event Battle"
+            m.auxloc = 'Event Battle'
             continue
         if not m.is_boss:
             location = m.determine_location()
-            if "missing" in location.lower() or not location.strip():
+            if 'missing' in location.lower() or not location.strip():
                 formations = {f for f in get_formations()
                               if m in f.present_enemies and not f.has_boss}
                 formations = sorted(formations, key=lambda f: f.formid)
@@ -85,7 +85,7 @@ def get_appropriate_formations():
                   if all(e.display_name.strip('_') for e in f.present_enemies)]
 
     def get_enames(f):
-        return " ".join(sorted([e.display_name for e in f.present_enemies]))
+        return ' '.join(sorted([e.display_name for e in f.present_enemies]))
 
     form_enames = [get_enames(f) for f in formations]
     for f in list(formations):
@@ -115,12 +115,12 @@ def add_extra_miab(setid):
     setid |= 0x100
     fset = [fs for fs in get_fsets() if fs.setid == setid][0]
     formation = fset.formations[0]
-    if formation not in extra_miabs:
-        extra_miabs.append(fset.formations[0])
+    if formation not in _extra_miabs:
+        _extra_miabs.append(fset.formations[0])
 
 
 def get_extra_miabs(lowest_rank):
-    candidates = [f for f in extra_miabs if f.rank() >= lowest_rank and
+    candidates = [f for f in _extra_miabs if f.rank() >= lowest_rank and
                   f.formid not in banned_formids]
     return sorted(candidates, key=lambda f: f.rank())
 
@@ -130,7 +130,7 @@ def get_valid_chest_id():
     try:
         valid = valid_ids[0]
     except IndexError:
-        raise Exception("Not enough chest IDs available.")
+        raise Exception('Not enough chest IDs available.')
     mark_taken_id(valid)
     return valid
 
@@ -241,7 +241,7 @@ def select_monster_in_a_box(rank, value, clock, guarantee_miab_treasure, enemy_l
 
     chosen = candidates[index]
     for m in chosen.present_enemies:
-        m.auxloc = "Monster-in-a-Box"
+        m.auxloc = 'Monster-in-a-Box'
 
     banned_formids.append(chosen.formid)
     used_formations.append(chosen)
@@ -267,8 +267,6 @@ class ChestBlock:
         self.chestid = chestid
 
     def read_data(self, filename):
-        global extra_miabs
-
         f = open(filename, 'r+b')
         f.seek(self.pointer)
         self.position = read_multi(f, length=2)
@@ -316,15 +314,15 @@ class ChestBlock:
     def description(self):
         if self.monster:
             from formationrandomizer import get_fset
-            s = "Enemy {0:03d}: ".format(self.effective_id)
+            s = f'Enemy {self.effective_id:03d}: '
             fset = get_fset(self.contents + 0x100)
             s += fset.formations[0].description(renamed=True, simple=True)
         elif self.empty:
-            s = "Empty! ({0:03d})".format(self.effective_id)
+            s = f'Empty! ({self.effective_id:03d})'
         else:
-            s = "Treasure {0:03d}: ".format(self.effective_id)
+            s = f'Treasure {self.effective_id:03d}: '
             if self.gold:
-                s += "%s GP" % (self.contents * 100)
+                s += f'{self.contents * 100} GP'
             else:
                 item = get_item(self.contents)
                 s += item.name
@@ -344,7 +342,7 @@ class ChestBlock:
         nextid = get_valid_chest_id()
         if nextid >= 0x100:
             if nextid >= 0x200:
-                raise Exception("Too many chests.")
+                raise Exception('Too many chests.')
             self.content_type |= 1
         else:
             self.content_type &= 0xFE
@@ -376,7 +374,7 @@ class ChestBlock:
                 if guideline is not None:
                     value = guideline // 100
                 else:
-                    raise Exception("No guideline provided for empty chest.")
+                    raise Exception('No guideline provided for empty chest.')
             else:
                 value = self.contents
         elif self.monster:
@@ -409,7 +407,7 @@ class ChestBlock:
     def mutate_contents(self, guideline=None, monster=None,
                         guarantee_miab_treasure=False, enemy_limit=None,
                         uniqueness=False, crazy_prices=False, uncapped_monsters=False):
-        global used_formations, done_items
+        global done_items
 
         if self.do_not_mutate and self.contents is not None:
             return
@@ -504,13 +502,13 @@ class ChestBlock:
 event_mem_id = 281
 multiple_event_items = []
 class EventItem:
-    def __init__(self, content_type, contents, pointer, cutscene_skip_pointer=None, postfix_bytes=[], monster=None, text=True, multiple=False):
+    def __init__(self, content_type, contents, pointer, cutscene_skip_pointer=None, postfix_bytes=None, monster=None, text=True, multiple=False):
         global event_mem_id
         self.content_type = content_type
         self.contents = contents
         self.pointer = pointer
         self.cutscene_skip_pointer = cutscene_skip_pointer
-        self.postfix_bytes = postfix_bytes
+        self.postfix_bytes = postfix_bytes or []
         self.monster = False if not text else monster
         self.text = text
         self.mem_id = event_mem_id
@@ -528,7 +526,7 @@ class EventItem:
         c.contents = self.contents
         desc = c.description
         if self.mem_id in multiple_event_items:
-            desc = "*%s" % desc
+            desc = f'*{desc}'
         return desc
 
     def mutate_contents(self, cutscene_skip=False, crazy_prices=False, no_monsters=False, uncapped_monsters=False):
@@ -589,9 +587,9 @@ class EventItem:
             event_item_sub.write(fout)
 
             # Change Lone Wolf text to say item placeholder instead of gold hairpin
-            text = ("<line>Grrrr…<line>"
+            text = ('<line>Grrrr…<line>'
                     "You’ll never get this<line>" +
-                    ("“<item>”!" if self.content_type == 0x40 else "“<GP>00 GP”!"))
+                    ('“<item>”!' if self.content_type == 0x40 else '“<GP>00 GP”!'))
             set_dialogue(0x6e5, text)
 
             # Because it takes up more slightly space
@@ -602,13 +600,13 @@ class EventItem:
 
 # TODO: Maybe this should be in a text file
 event_items_dict = {
-    "Narshe (WoB)" : [
+    'Narshe (WoB)' : [
         EventItem(0x40, 0xF6, 0xCA00A, cutscene_skip_pointer=0xC9F87, monster=False, text=False),
         EventItem(0x40, 0xF6, 0xCA00C, cutscene_skip_pointer=0xC9F89, monster=False, text=False),
         EventItem(0x40, 0xCD, 0xCD59E, monster=False),
     ],
 
-    "Figaro Castle":[
+    'Figaro Castle':[
         EventItem(0x40, 0xAA, 0xA66B4, cutscene_skip_pointer=0xA6633, monster=False, text=False),
     ],
 
@@ -617,22 +615,22 @@ event_items_dict = {
         EventItem(0x40, 0xD1, 0xAFFD2, cutscene_skip_pointer=0xAFDE7, monster=False),
     ],
 
-    "Mobliz (WoB)" : [
+    'Mobliz (WoB)' : [
         EventItem(0x40, 0xE5, 0xC6883, monster=False),
     ],
 
-    "Crescent Mountain" : [
+    'Crescent Mountain' : [
         EventItem(0x40, 0xE8, 0xBC432, postfix_bytes=[0x45, 0x45, 0x45], monster=False),
     ],
 
-    "Sealed Gate" : [
+    'Sealed Gate' : [
         EventItem(0x40, 0xAE, 0xB30E5, postfix_bytes=[0xD4, 0x4D, 0xFE]),
         EventItem(0x40, 0xAC, 0xB3103, postfix_bytes=[0xD4, 0x4E, 0xFE]),
         EventItem(0x40, 0xF5, 0xB3121, postfix_bytes=[0xD4, 0x4F, 0xFE]), # in vanilla: says Remedy, gives Soft. Changed to give Remedy.
         EventItem(0x80, 0x14, 0xB313F, postfix_bytes=[0xD4, 0x50, 0xFE]), # in vanilla: says 2000 GP, gives 293 GP. Changed to give 2000 GP.
     ],
 
-    "Vector" : [
+    'Vector' : [
         EventItem(0x40, 0xE5, 0xC9257, monster=False),
         EventItem(0x40, 0xDF, 0xC926C, monster=False),
     ],
@@ -644,11 +642,11 @@ event_items_dict = {
         EventItem(0x40, 0xF4, 0xB4B42, postfix_bytes=[0xD4, 0x5C, 0x3A, 0xFE]), # in vanilla: says Remedy, gives Soft. Changed to give Remedy.
     ],
 
-    "Doma Castle" : [
+    'Doma Castle' : [
         EventItem(0x40, 0x30, 0xB99F4, monster=False, text=False),
     ],
 
-    "Kohlingen" : [
+    'Kohlingen' : [
         EventItem(0x40, 0xEA, 0xC3240, monster=False),
         EventItem(0x40, 0xF0, 0xC3242, monster=False),
         EventItem(0x40, 0xED, 0xC3244, monster=False),
@@ -657,12 +655,12 @@ event_items_dict = {
         EventItem(0x40, 0x09, 0xC324A, postfix_bytes=[0xFD, 0xFD, 0xFD], monster=False),
         ],
 
-    "Narshe (WoR)" : [
+    'Narshe (WoR)' : [
         EventItem(0x40, 0x1B, 0xC0B67, monster=False),
         EventItem(0x40, 0x66, 0xC0B80, postfix_bytes=[0xFD, 0xD0, 0xB8, 0xFD, 0xFD], monster=False),
     ],
 
-    "Fanatics Tower" : [
+    'Fanatics Tower' : [
         EventItem(0x40, 0x21, 0xC5598, postfix_bytes=[0xFD, 0xFD, 0xFD], monster=False),
     ]
     }
@@ -690,13 +688,13 @@ def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monster
 
     event_item_sub.set_location(0xD613)
     event_item_sub.bytestring = bytes([
-        # 6D : (2 bytes) Give item to party and show message "Received <Item>!"
+        # 6D : (2 bytes) Give item to party and show message 'Received <Item>!'
         0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x83, 0x05, 0x20, 0xFC, 0xAC, 0x20, 0x06, 0x4D, 0xA9, 0x08, 0x85, 0xEB, 0x80, 0x59,
 
-        # 6E (2 bytes) Give 100 * param GP to party and show message "Found <N> GP!" (It's 100 * param GP because that's what treasure chests do, but it doesn't need to be.)
+        # 6E (2 bytes) Give 100 * param GP to party and show message 'Found <N> GP!' (It's 100 * param GP because that's what treasure chests do, but it doesn't need to be.)
         0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x02, 0x42, 0xA9, 0x64, 0x8D, 0x03, 0x42, 0xEA, 0xEA, 0xEA, 0xAC, 0x16, 0x42, 0x84, 0x22, 0x64, 0x24, 0xC2, 0x21, 0x98, 0x6D, 0x60, 0x18, 0x8D, 0x60, 0x18, 0x7B, 0xE2, 0x20, 0x6D, 0x62, 0x18, 0x8D, 0x62, 0x18, 0xC9, 0x98, 0x90, 0x13, 0xAE, 0x60, 0x18, 0xE0, 0x7F, 0x96, 0x90, 0x0B, 0xA2, 0x7F, 0x96, 0x8E, 0x60, 0x18, 0xA9, 0x98, 0x8D, 0x62, 0x18, 0x20, 0x06, 0x4D, 0x20, 0xE5, 0x02, 0xA9, 0x10, 0x85, 0xEB, 0x80, 0x0E,
 
-        # 6F : (2 bytes) Show "Monster-in-a-box!" and start battle with formation from param
+        # 6F : (2 bytes) Show 'Monster-in-a-box!' and start battle with formation from param
         0xA5, 0xEB, 0x85, 0x1A, 0x8D, 0x89, 0x07, 0x20, 0x06, 0x4D, 0xA9, 0x40, 0x85, 0xEB,
 
         # Common code used by all three functions. Finishes setting parameters to jump into action B2 (call event subroutine)
@@ -717,18 +715,18 @@ def mutate_event_items(fout, cutscene_skip=False, crazy_prices=False, no_monster
 
     # End some text boxes early so they don't show the item.
     early_end_texts = [
-        (0x137, "I understand your unease.<line>"
-                "But even as we speak, innocent lives are being lost…<page>"
-                "Please. We need your abilities.<line>"
-                "This relic will keep you safe."),
-        (0x13e, "BANON: A lucky charm. Take it!"),
-        (0x30e, "I heard…<line>"
-                "In my name you send Lola many things…<page>"
-                "I wish to thank you.<line>"
-                "Please accept this as a token of my appreciation."),
-        (0x6ce, "Took the treasure from Lone Wolf, the pickpocket!"),
-        (0x752, "And this is from the Emperor himself…"),
-        (0x754, "Your behavior at the banquet was impeccable. Please take this as well!")
+        (0x137, 'I understand your unease.<line>'
+                'But even as we speak, innocent lives are being lost…<page>'
+                'Please. We need your abilities.<line>'
+                'This relic will keep you safe.'),
+        (0x13e, 'BANON: A lucky charm. Take it!'),
+        (0x30e, 'I heard…<line>'
+                'In my name you send Lola many things…<page>'
+                'I wish to thank you.<line>'
+                'Please accept this as a token of my appreciation.'),
+        (0x6ce, 'Took the treasure from Lone Wolf, the pickpocket!'),
+        (0x752, 'And this is from the Emperor himself…'),
+        (0x754, 'Your behavior at the banquet was impeccable. Please take this as well!')
     ]
     for index, text in early_end_texts:
         set_dialogue(index, text)

@@ -23,7 +23,7 @@ def _sprint_shoes_hint(fout):
     sprint_shoes = get_item(0xE6)
     spell_id = sprint_shoes.features['learnspell']
     spellname = get_spell(spell_id).name
-    hint = f"Equip relics to gain a variety of abilities!<page>These teach me {spellname}!"
+    hint = f'Equip relics to gain a variety of abilities!<page>These teach me {spellname}!'
 
     set_dialogue(0xb8, hint)
 
@@ -41,7 +41,7 @@ def _sabin_hint(commands):
         command_id = sabin.battle_commands[0]
 
     command = [c for c in commands.values() if c.id == command_id][0]
-    hint = "My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {}.".format(command.name)
+    hint = f'My husband, Duncan, is a world-famous martial artist!<page>He is a master of the art of {command.name}.'
 
     set_dialogue(0xb9, hint)
 
@@ -49,7 +49,7 @@ def _sabin_hint(commands):
 def _house_hint():
     skill = get_collapsing_house_help_skill()
 
-    hint = f"There are monsters inside! They keep {skill}ing everyone who goes in to help. You using suitable Relics?".format(skill)
+    hint = f'There are monsters inside! They keep {skill}ing everyone who goes in to help. You using suitable Relics?'.format(skill)
     set_dialogue(0x8A4, hint)
 
 

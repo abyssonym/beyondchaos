@@ -331,7 +331,7 @@ class MonsterBlock:
         if changed_commands is None:
             changed_commands = []
         s = ('~' * 40) + '\n'
-        s += f'{self.display_name} (Level {self.stats["level"]})\n'
+        s += f'{self.display_name} (Level {self.stats['level']})\n'
 
         def make_column(statnames):
             rows = []
@@ -2111,7 +2111,7 @@ def manage_monster_appearance(monsters, sourcefile, fout, preserve_graphics=Fals
     for m in monsters:
         mg = m.graphics
         if m.id == 0x12a and not preserve_graphics:
-            idpair = "KEFKA 1"
+            idpair = 'KEFKA 1'
         if m.id in REPLACE_ENEMIES + [0x172]:
             mg.set_palette_pointer(freepointer)
             freepointer += 0x40

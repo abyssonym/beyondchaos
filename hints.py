@@ -83,7 +83,7 @@ def _school_hints(fout, options_, commands):
             dance_text = '<page>Select Dances in the Skill menu to see what abilities they can use.'
         else:
             dance_text = ''
-        set_dialogue(0x25f, f'Beyond Chaos has improved menu features!{items_text}{rage_text}{dance_text}')
+        set_dialogue(0x25f, f'Beyond Chaos has improved menu features!<page>You can press the Y button to switch between the Equip and Relics menus{items_text}{rage_text}{dance_text}')
 
     if options_.replace_commands or options_.random_enemy_stats:
         set_dialogue(0x26d, "It's a good idea to use “Float” as much as possible! You never know when a Quake will show up!")

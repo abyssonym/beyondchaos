@@ -87,7 +87,7 @@ water
 beside the white
 chickens
 ---
-# Title: Untitled Haiku
+# Title: Untitled Haiku (It's actually a senryu because it doesn't have a cutting word or season word, but it was called a haiku.)
 # Author: Anonymous
 
 Writing a poem
@@ -106,7 +106,7 @@ Could frame thy fearful symmetry?
 
 ---
 # Title: "Row, Row, Row Your Boat (Kingly version)"
-# Author: King Friday XIII
+# Author: Fred Rogers
 
 Propel, propel, propel your craft,
 Gently through liquid solution.

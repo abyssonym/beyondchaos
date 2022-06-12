@@ -4256,7 +4256,7 @@ def randomize(args):
             print(flaghelptext + '\n')
             print('Save frequently used flag sets by adding 0: through 9: before the flags.')
             for k, v in sorted(speeddial_opts.items()):
-                print('    {k}: {v}')
+                print(f'    {k}: {v}')
             print()
             flags = input('Please input your desired flags (blank for '
                           'all of them):\n> ').strip()

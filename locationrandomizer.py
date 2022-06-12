@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 
 from copy import copy
-from formationrandomizer import get_fset
+import formationrandomizer
+import monsterrandomizer
 from utils import (read_multi, write_multi, battlebg_palettes, MAP_NAMES_TABLE,
                    UNUSED_LOCATIONS_TABLE, MAP_BATTLE_BG_TABLE,
                    ENTRANCE_REACHABILITY_TABLE, LOCATION_MAPS_TABLE,
@@ -199,7 +200,7 @@ class Zone():
 
     @property
     def fsets(self):
-        fsets = [get_fset(setid) for setid in self.setids]
+        fsets = [formationrandomizer.get_fset(setid) for setid in self.setids]
         if self.zoneid < 0x40:
             fsets = fsets[:3]
         return fsets
@@ -318,11 +319,11 @@ class Location():
 
     @property
     def fsets(self):
-        fset = get_fset(self.setid)
+        fset = formationrandomizer.get_fset(self.setid)
         fsets = [fset]
         if fset.sixteen_pack:
             f = fset.setid
-            fsets.extend([get_fset(i) for i in [f+1, f+2, f+3]])
+            fsets.extend([formationrandomizer.get_fset(i) for i in [f+1, f+2, f+3]])
         return fsets
 
     @property
@@ -460,7 +461,7 @@ class Location():
 
     @property
     def fset(self):
-        return get_fset(self.setid)
+        return formationrandomizer.get_fset(self.setid)
 
     @property
     def field_palette(self):
@@ -1170,11 +1171,9 @@ if __name__ == '__main__':
         filename = argv[1]
     else:
         filename = 'program.rom'
-    from formationrandomizer import get_formations, get_fsets
-    from monsterrandomizer import get_monsters
-    get_monsters(filename)
-    get_formations(filename)
-    get_fsets(filename)
+    monsterrandomizer.get_monsters(filename)
+    formationrandomizer.get_formations(filename)
+    formationrandomizer.get_fsets(filename)
     locations = get_locations(filename)
     zones = get_zones(filename)
     for l in locations:

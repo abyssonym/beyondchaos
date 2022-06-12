@@ -2,7 +2,7 @@
 
 from math import log
 
-from monsterrandomizer import monsterdict, get_monsters
+import monsterrandomizer
 from utils import read_multi, write_multi, utilrandom as random
 
 # Guardian x4, Broken Dirt Drgn, Kefka + Ice Dragon
@@ -258,7 +258,7 @@ class Formation():
             if self.bosses & (1 << i):
                 eid += 0x100
             self.big_enemy_ids.append(eid)
-            self.enemies.append(monsterdict[eid])
+            self.enemies.append(monsterrandomizer.monsterdict[eid])
             enemy_pos = self.enemy_pos[i]
             x, y = enemy_pos >> 4, enemy_pos & 0xF
             self.enemies[i].update_pos(x, y)
@@ -529,7 +529,7 @@ def get_fset(setid):
 if __name__ == '__main__':
     from sys import argv
     filename = argv[1]
-    monsters = get_monsters(filename)
+    monsters = monsterrandomizer.get_monsters(filename)
     for m in monsters:
         m.read_stats(filename)
     formations = get_formations(filename=filename)

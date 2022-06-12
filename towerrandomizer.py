@@ -50,7 +50,7 @@ def get_new_formations(areaname, supplement=True):
     from randomizer import get_namelocdict
     namelocdict = get_namelocdict()
     setids = set([])
-    for key, value in namelocdict:
+    for key, value in namelocdict.items():
         if type(key) is str and areaname in key:
             setids |= set(value)
 

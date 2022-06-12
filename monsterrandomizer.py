@@ -4,8 +4,9 @@ from utils import (write_multi, read_multi, ENEMY_TABLE,
                    name_to_bytes, get_palette_transformer, mutate_index,
                    make_table, utilrandom as random)
 from skillrandomizer import get_spell, get_ranked_spells
-from formationrandomizer import get_formations, get_fset, get_fsets
+import formationrandomizer
 from itemrandomizer import get_ranked_items, get_item
+import locationrandomizer
 from namerandomizer import generate_attack, generate_name
 
 
@@ -186,9 +187,9 @@ class MonsterBlock:
         self.ai = -1
 
     def determine_location(self):
-        formations = {f for f in get_formations()
+        formations = {f for f in formationrandomizer.get_formations()
                       if self in f.present_enemies}
-        fsets = [fs for fs in get_fsets() if len(fs.formations) == 4]
+        fsets = [fs for fs in formationrandomizer.get_fsets() if len(fs.formations) == 4]
         fsets = [fs for fs in fsets if formations & set(fs.formations)]
         if not fsets:
             return ''
@@ -199,16 +200,16 @@ class MonsterBlock:
             for fset in fsets:
                 for formation in fset.formations[:3]:
                     if self in formation.present_enemies:
-                        if isinstance(location, Zone):
+                        if isinstance(location, locationrandomizer.Zone):
                             score += 5
                             break
                         else:
                             score += 5 * formation.present_enemies.count(self)
-                if score and isinstance(location, Zone):
+                if score and isinstance(location, locationrandomizer.Zone):
                     continue
                 formation = fset.formations[3]
                 if self in formation.present_enemies:
-                    if isinstance(location, Zone):
+                    if isinstance(location, locationrandomizer.Zone):
                         score += 1
                         continue
                     else:
@@ -216,9 +217,8 @@ class MonsterBlock:
             score = score / float(len(fsets))
             return score
 
-        locations = get_locations()
         fsets = set(fsets)
-        locations = [l for l in get_locations()
+        locations = [l for l in locationrandomizer.get_locations()
                      if l.attacks and l.setid != 0 and set(l.fsets) & fsets]
 
         areas = []
@@ -230,7 +230,7 @@ class MonsterBlock:
                         areas.append(l.area_name)
                 except Exception:
                     continue
-        zones = [z for z in get_zones()[:0x80]
+        zones = [z for z in locationrandomizer.get_zones()[:0x80]
                  if z.valid and set(z.fsets) & fsets]
 
         if zones:
@@ -349,12 +349,10 @@ class MonsterBlock:
                 values[newname] = value
 
             valuewidth = max(len(str(v)) for v in values.values())
-            substr = f'{namewidth:%s} {valuewidth:%s}'
             for name in statnames:
                 name = get_shortname(name)
                 value = values[name]
-                rows.append(substr.format(
-                    name.upper() + ':', value))
+                rows.append(f'{name.upper() + ":":{namewidth}} {value:{valuewidth}}')
 
             width = max(len(row) for row in rows)
             for i, row in enumerate(rows):
@@ -756,9 +754,8 @@ class MonsterBlock:
         banned = restricted
         # No blizzard, mega volt, or tek laser in solo terra
         if safe_solo_terra:
-            from formationrandomizer import get_fset
             for id in [0x39, 0x3A]:
-                fset = get_fset(id)
+                fset = formationrandomizer.get_fset(id)
                 for f in fset.formations:
                     if self in f.present_enemies:
                         banned.extend([0xB5, 0xB8, 0xBA])
@@ -1871,7 +1868,7 @@ def shuffle_monsters(monsters, safe_solo_terra=True):
                 in_narshe_caves = False
 
                 for id in [0x39, 0x3A]:
-                    fset = get_fset(id)
+                    fset = formationrandomizer.get_fset(id)
                     for f in fset.formations:
                         if m in f.present_enemies or n in f.present_enemies:
                             in_narshe_caves = True
@@ -2035,9 +2032,8 @@ def get_metamorphs(filename=None):
 def get_collapsing_house_help_skill():
     status_specials = []
     all_skills = []
-    from formationrandomizer import get_fset
     for id in [0x80]:
-        fset = get_fset(id)
+        fset = formationrandomizer.get_fset(id)
         for f in fset.formations:
             for m in f.present_enemies:
                 if not m.physspecial and not m.goodspecial:

@@ -2,11 +2,11 @@ import dataclasses
 
 from chestrandomizer import get_event_items
 from character import get_character, get_characters
-from dialoguemanager import get_dialogue, set_dialogue
+from dialoguemanager import bytes_to_dialogue, get_dialogue, set_dialogue
 from locationrandomizer import get_location, get_locations, NPCBlock
 from monsterrandomizer import change_enemy_name
 from utils import (WOB_TREASURE_TABLE, WOR_ITEMS_TABLE, WOB_EVENTS_TABLE,
-                   read_multi, Substitution, utilrandom as random, write_multi, bytes_to_dialogue)
+                   read_multi, Substitution, utilrandom as random, write_multi)
 
 
 alt_zone_eater_recruit = None
@@ -496,16 +496,18 @@ def manage_wor_recruitment(fout, shuffle_wor, random_treasure, include_gau, alte
 
 
 def _start_of_wor_event(fout, alternate_gogo):
-    new_events = [
+    new_events = []
+
+    if alternate_gogo:
+        new_events += [0xDA, 0x4B] # Set Gogo NPC bit
+
+    new_events += [
         # Set names for Mog, Gogo, Umaro in case they appear in text
         0x7F, 0x0C, 0x0C, # Set name for GOGO
         0x7F, 0x0D, 0x0D, # Set name for UMARO
         0xC0, 0x9F, 0x82, 0xB3, 0x5E, 0x00, # If Mog recruited in WoB, jump to return
         0x7F, 0x0A, 0x0A # Set name for MOG
     ]
-
-    if alternate_gogo:
-        new_events = [0xDA, 0x4B] + new_events # Set Gogo NPC bit
 
     # bits that get set at the start of the world of ruin
     wor_bits_sub = Substitution()

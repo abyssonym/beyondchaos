@@ -1,0 +1,16 @@
+; List of .asm files to build.
+auto_equip
+cursed_tweak
+enable_esper_magic
+enable_morph
+enable_mpoint
+enable_xmagic_menu
+fanatics_fix
+improved_party_gear_screen
+learn_hacks
+music_disable_option
+natmag_learn
+randomize_final_party_order
+shorter_skill_name_fix
+sketch_fix
+ungray_statscreen

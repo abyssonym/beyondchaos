@@ -4,9 +4,10 @@ import pathlib
 import random
 import re
 
-from typing import List
+from typing import Dict, List
 
 from sprite_replacement import SpriteReplacement
+import assemblymanager
 
 try:
     from sys import _MEIPASS
@@ -22,7 +23,6 @@ except ImportError:
     # tblpath = 'tables'
     MEI = False
 
-
 ENEMY_TABLE = path.join(tblpath, 'enemycodes.txt')
 ITEM_TABLE = path.join(tblpath, 'itemcodes.txt')
 SPELL_TABLE = path.join(tblpath, 'spellcodes.txt')
@@ -34,7 +34,8 @@ CHAR_TABLE = path.join(tblpath, 'charcodes.txt')
 TEXT_TABLE = path.join(tblpath, 'text.txt')
 SHORT_TEXT_TABLE = path.join(tblpath, 'shorttext.txt')
 DIALOGUE_TEXT_TABLE = path.join(tblpath, 'dialoguetext.txt')
-BATTLE_DIALOGUE_TEXT_TABLE = path.join(tblpath, 'battledialoguetext.txt')
+BATTLE_TEXT_TABLE = path.join(tblpath, 'battletext.txt')
+MENU_TEXT_TABLE = path.join(tblpath, 'menutext.txt')
 ENEMY_NAMES_TABLE = path.join(tblpath, 'enemynames.txt')
 MODIFIERS_TABLE = path.join(tblpath, 'moves.txt')
 MOVES_TABLE = path.join(tblpath, 'moves.txt')
@@ -73,6 +74,11 @@ DANCE_NAMES_TABLE = path.join(custom_path, 'dancenames.txt')
 PASSWORDS_TABLE = path.join(custom_path, 'passwords.txt')
 POEMS_TABLE = path.join(custom_path, 'poems.txt')
 CUSTOM_SPRITES_PATH = pathlib.Path(custom_path, 'sprites')
+
+HIROM = 0xC00000
+NEW_ROM_SIZE = 0x400000
+
+assembly_patches = None
 
 
 def open_mei_fallback(filename, mode='r', encoding=None):
@@ -153,7 +159,7 @@ class AutoLearnRageSub(Substitution):
 
         super(AutoLearnRageSub, self).write(fout)
 
-
+# deprecated: use menu text or battle text
 texttable = {}
 f = open(TEXT_TABLE, encoding='utf_8')
 for line in f:
@@ -163,7 +169,7 @@ for line in f:
 texttable[' '] = 'FE'
 f.close()
 
-
+# deprecated: use menu text or battle text
 def name_to_bytes(name, length):
     name = [hex2int(texttable[c]) for c in name]
     assert len(name) <= length
@@ -171,7 +177,7 @@ def name_to_bytes(name, length):
         name.append(0xFF)
     return bytes(name)
 
-
+# deprecated: use menu text or battle text
 shorttexttable = {}
 f = open(SHORT_TEXT_TABLE, encoding='utf_8')
 for line in f:
@@ -181,19 +187,24 @@ for line in f:
 shorttexttable[' '] = 'FF'
 f.close()
 
+reverse_shorttexttable = {v: k for k, v in shorttexttable.items()}
 
-dialoguetexttable = {}
-f = open(DIALOGUE_TEXT_TABLE, encoding='utf8')
-for line in f:
-    line = line.strip('\n')
-    if not line:
-        continue
-    value, string = tuple(line.split('=', 1))
-    if string not in dialoguetexttable:
-        dialoguetexttable[string] = value
-f.close()
+
+def parse_table(table_filename: str) -> Dict[str, str]:
+    table = {}
+    with open(table_filename, encoding='utf8') as f:
+        for line in f:
+            line = line.split('#')[0].strip('\n')
+            if not line:
+                continue
+            value, string = tuple(line.split('=', 1))
+            if string not in table:
+                table[string] = value
+    return table
+
+
+dialoguetexttable = parse_table(DIALOGUE_TEXT_TABLE)
 dialoguetexttable["'"] = dialoguetexttable["’"]
-
 reverse_dialoguetexttable = {v: k for k, v in dialoguetexttable.items()}
 reverse_dialoguetexttable['1104'] = '<wait 60 frames>'
 reverse_dialoguetexttable['63'] = "'"
@@ -205,24 +216,23 @@ for i in range(0xFF):
     if f'{i:02X}' not in reverse_dialoguetexttable:
         reverse_dialoguetexttable[f'{i:02X}'] = f'${i:02X}'
 
-battledialoguetexttable = {}
-f = open(BATTLE_DIALOGUE_TEXT_TABLE, encoding='utf8')
-for line in f:
-    line = line.strip('\n')
-    if not line:
-        continue
-    value, string = tuple(line.split('=', 1))
-    if string not in battledialoguetexttable:
-        battledialoguetexttable[string] = value
-f.close()
-battledialoguetexttable["'"] = battledialoguetexttable["’"]
+battletexttable = parse_table(BATTLE_TEXT_TABLE)
+battletexttable["'"] = battletexttable["’"]
+reverse_battletexttable = {v: k for k, v in battletexttable.items()}
+reverse_battletexttable['C3'] = "'"
 
-reverse_battledialoguetexttable = {v: k for k, v in battledialoguetexttable.items()}
-reverse_battledialoguetexttable['C3'] = "'"
-
+menutexttable = parse_table(MENU_TEXT_TABLE)
+reverse_menutexttable = {v: k for k, v in menutexttable.items()}
 
 def hex2int(hexstr):
     return int(hexstr, 16)
+
+
+def pointer16_to_bytes(pointer):
+    return bytes([pointer & 0xFF, (pointer >> 8) & 0xFF])
+
+def pointer24_to_bytes(pointer):
+    return bytes([pointer & 0xFF, (pointer >> 8) & 0xFF, (pointer >> 16) & 0xFF])
 
 
 def shuffle_key_values(d):
@@ -230,62 +240,6 @@ def shuffle_key_values(d):
     random.shuffle(keys)
     shuffled = dict(zip(keys, d.values()))
     d.update(shuffled)
-
-def dialogue_to_bytes(text, null_terminate=True, table=dialoguetexttable):
-    bs = []
-    i = 0
-    while i < len(text):
-        if text[i] == ' ':
-            spaces = re.match(' +', text[i:]).group(0)
-            count = len(spaces)
-            j = i + count
-            hexstr = table.get(text[i:j], '')
-            if not hexstr:
-                hexstr = table.get(text[i])
-                j = i + 1
-            i = j
-        elif text[i] == '<':
-            j = text.find('>', i) + 1
-            hexstr = table.get(text[i:j], '')
-            i = j
-        elif i < len(text) - 1 and text[i:i+2] in table:
-            hexstr = table[text[i:i+2]]
-            i += 2
-        elif text[i] == "$":
-            hexstr = text[i+1:i+3]
-            i += 3
-        else:
-            hexstr = table[text[i]]
-            i += 1
-
-        if hexstr != '':
-            bs.extend(bytes.fromhex(hexstr))
-
-    if null_terminate and (not bs or bs[-1] != 0x0):
-        bs.append(0x0)
-    return bytes(bs)
-
-
-def bytes_to_dialogue(bs, table=reverse_dialoguetexttable):
-    text = []
-    i = 0
-    while i < len(bs):
-        c = bs[i]
-        if c == b'\x00':
-            break
-        d = bs[i+1] if i + 1 < len(bs) else None
-        if d is not None and f'{c:02X}{d:02X}' in table:
-            text.append(table[f'{c:02X}{d:02X}'])
-            i += 2
-        elif f'{c:02X}' in table:
-            text.append(table[f'{c:02X}'])
-            i += 1
-        else:
-            print(i, len(bs), d)
-            print(bs[i], f'{c:02X}{d:02X}' if d is not None else f'{c:02X}')
-            raise ValueError
-
-    return ''.join(text)
 
 
 def get_long_battle_text_pointer(f, index):
@@ -941,6 +895,19 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
         new_palette = list(map(components_to_color, new_palette))
 
     return new_palette
+
+
+def load_asm_patches():
+    global assembly_patches
+    assembly_patches = assemblymanager.load_all_patches()
+
+
+def get_asm_patch(name):
+    return assembly_patches[name]
+
+
+def apply_asm_patch(fout, name):
+    assembly_patches[name].write(fout)
 
 
 def decompress(bytestring, simple=False, complicated=False, debug=False):

@@ -92,6 +92,8 @@ class Options:
                     self.activate_code('makeover')
                 if code in RESTRICTED_VANILLA_SPRITE_CODES:
                     self.activate_code('frenchvanilla')
+                if code_name == 'h*ck':
+                    self.activate_code('heck')
                 return
 
     def activate_flag(self, flag: Flag):
@@ -240,6 +242,8 @@ NORMAL_CODES = [
     Code('endless9', 'ENDLESS NINE MODE', 'All R-[skills] are automatically changed to 9x[skills]. W-[skills] will become 8x[skills].', 'major'),
     Code('equipanything', 'EQUIP ANYTHING MODE', 'Items that are not equippable normally can now be equipped as weapons or shields. These often give strange defensive stats or weapon animations.', 'gamebreaking'),
     Code('fightclub', "MORE LIKE COLI-DON'T-SEE-'EM", 'Does not allow you to see the coliseum rewards before betting, but you can often run from the coliseum battles to keep your item.', 'minor'),
+    Code('heck', 'WATCH YOUR LANGUAGE MODE', "Don't add extra cursed items besides the Cursed Shield and Cursed Ring", 'minor'),
+    Code('h*ck', 'HORRIBLE NIGHT TO HAVE A CURSED RING MODE', "Don't add extra cursed items besides the Cursed Shield and Cursed Ring, and don't allow uncursing the Cursed Ring", 'minor'),
     Code('johnnydmad', 'MUSIC REPLACEMENT MODE', 'Randomizes music with regard to what would make sense in a given location.', 'aesthetic'),
     Code('johnnyachaotic', 'MUSIC MANGLING MODE', 'Randomizes music with no regard to what would make sense in a given location.', 'aesthetic'),
     Code('kupokupo', 'MOOGLE MODE', 'All party members are moogles except Mog. With partyparty, all characters are moogles, except Mog, Esper Terra, and Imps.', 'aesthetic'),
@@ -249,6 +253,7 @@ NORMAL_CODES = [
     Code('masseffect', 'WILD EQUIPMENT EFFECT MODE', 'Increases the number of rogue effects on equipment by a large amount.', 'major'),
     Code('metronome', 'R-CHAOS MODE', 'All characters have Fight, R-Chaos, Magic, and Item as their skillset, except for the Mime, who has Mimic instead of Fight. Berserker also only has R-Chaos.', 'major'),
     Code('mimetime', 'ALTERNATE GOGO MODE', 'Gogo will be hidden somewhere in the world of ruin disguised as another character. Bring that character to him to recruit him.', 'minor'),
+    Code('myriaequip', "ENABLE MYRIA'S PARTY EQUIP", "Enables Myria's new party equip screen. (REQUIRES partyparty OR makeover OR WILL CRASH)", 'aesthetic'),
     Code('naturalmagic', 'NATURAL MAGIC MODE', 'No Espers or equipment will teach spells. The only way to learn spells is through Natural Magic.', 'major'),
     Code('naturalstats', 'NATURAL STATS MODE', 'No Espers will grant stat bonuses upon leveling up.', 'minor'),
     Code('norng', 'NO RNG MODE', 'Calls to the RNG are not made. Attacks are always critical hits, everything targets the lead character when applicable, and all attacks hit if they are able to except Instant Death. Many more additional effects occur. Cannot currently be completed without cheat codes.', 'experimental'),

@@ -1,0 +1,138 @@
+# ROM (header)   CPU address
+# 02AFE1-02B11F  C2ADE1-C2AF1F  Status effect names
+# 02E285-02E381  C2E085-C2E181  Battle submenu terms
+# 031C26-031C89  C31A26-C31A89  Load/Save Screen terms
+# 03391B-033A57  C3371B-C33857  Main Menu terms
+# 034B0D-034D4F  C3490D-C34B4F  Config Screen terms
+# 035E4A-035F04  C35C4A-C35D04  Skill Screen terms
+# 035A8B-035A96  C3588B-C35896  "MP Needed"
+# 036671-03672C  C36471-C3652C  Status screen terms
+# 036AE5-036AF9  C368E5-C368F9  "Please enter a name."
+# 037C97-037CE4  C37A97-C37AE4  Party Selection screen terms
+# 038F18-03904F  C38D18-C38E4F  Item Screen terms
+# 03A4BC-03A623  C3A2BC-C3A423  Equip/Relic Screen terms
+# 03AE8C-03AEA9  C3AC8C-C3ACA9  Final Battle Order Screen terms
+# 03AF9C-03AFB6  C3AD9C-C3ADB6  Colosseum Screen terms
+# 03B608-03B636  C3B408-C3B436  Colosseum Subscreen terms
+# 03C4FE-03C605  C3C2FE-C3C405  Shop Screen terms
+# 047AC0-047C3F  C478C0-C47A3F  Actor names
+# 0EFDA0-0EFE9F  CEFBA0-CEFC9F  Rare item names
+# 0F3E40-0F3E9F  CF3C40-CF3C9F  SwdTech names
+# 0FC250-0FD13F  CFC050-CFCF3F  Monster names
+# 1000AE-100146  CFFEAE-CFFF46  Esper bonuses
+# 127100-12716F  D26F00-D26F6F  Item class names
+# 12B500-12C1FF  D2B300-D2BFFF  Item names
+# 18D0A0-18D172  D8CEA0-D8CF72  Command names
+# 18EAC8-18EB0D  D8E8C8-D8E90D  Naming Screen characters
+# 26F767-2701FF  E6F567-E6FFFF  Attack names
+
+
+00=<end>
+01=<line>
+80=A
+81=B
+82=C
+83=D
+84=E
+85=F
+86=G
+87=H
+88=I
+89=J
+8A=K
+8B=L
+8C=M
+8D=N
+8E=O
+8F=P
+90=Q
+91=R
+92=S
+93=T
+94=U
+95=V
+96=W
+97=X
+98=Y
+99=Z
+9A=a
+9B=b
+9C=c
+9D=d
+9E=e
+9F=f
+A0=g
+A1=h
+A2=i
+A3=j
+A4=k
+A5=l
+A6=m
+A7=n
+A8=o
+A9=p
+AA=q
+AB=r
+AC=s
+AD=t
+AE=u
+AF=v
+B0=w
+B1=x
+B2=y
+B3=z
+B4=0
+B5=1
+B6=2
+B7=3
+B8=4
+B9=5
+BA=6
+BB=7
+BC=8
+BD=9
+BE=!
+BF=?
+C0=/
+C1=:
+C2=”
+C3=’
+C4=-
+C5=.
+C6=,
+C7=…
+C8=;
+C9=#
+CA=+
+CB=(
+CC=)
+CD=%
+CE=~
+CF=<glyph $CF>
+D2==
+D3=<dotted line>
+D4=<N arrow>
+D5=<E arrow>
+D6=<SW arrow>
+D7=×
+D8=<Dirk icon>
+D9=<Sword icon>
+DA=<Lance icon>
+DB=<Knife icon>
+DC=<Rod icon>
+DD=<Brush icon>
+DE=<Stars icon>
+DF=<Special icon>
+E0=<Gambler icon>
+E1=<Claw icon>
+E2=<Shield icon>
+E3=<Helmet icon>
+E4=<Armor icon>
+E5=<Tool icon>
+E6=<Skean icon>
+E7=<Relic icon>
+E8=<White Magic icon>
+E9=<Black Magic icon>
+EA=<Grey Magic icon>
+FE= 
+FF=<special space>

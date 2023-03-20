@@ -13,22 +13,24 @@ from string import ascii_letters as alpha
 
 from ancient import manage_ancient
 from appearance import manage_character_appearance
+import assemblymanager
 from bingo import manage_bingo
 from character import get_characters, get_character, equip_offsets
 from chestrandomizer import mutate_event_items, get_event_items, add_orphaned_formation, get_orphaned_formations
 from decompress import Decompressor
-from dialoguemanager import manage_dialogue_patches, get_dialogue, set_dialogue, read_dialogue, read_location_names, write_location_names
+from dialoguemanager import get_dialogue, manage_dialogue_patches, read_battle_text, read_battle_messages, read_dialogue, read_location_names, set_dialogue, write_battle_messages, write_battle_text, write_location_names
 from esperrandomizer import (get_espers, allocate_espers, randomize_magicite)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS,
                                  get_formations, get_fsets, get_formation)
 from hints import setup_hints
 from holiday import activate_holiday, activate_holiday_post_random, hail_demon_chocobo
-from itemrandomizer import (extend_item_breaks, reset_equippable, get_ranked_items, get_item,
+from itemrandomizer import (ItemType, extend_item_breaks, get_ranked_items, get_item, reset_equippable,
                             reset_special_relics, reset_rage_blizzard,
-                            reset_cursed_shield, set_item_changed_commands, unhardcode_tintinabar)
+                            reset_cursed_shield, set_item_changed_commands, setup_cursed_items, unhardcode_tintinabar)
 from locationrandomizer import (get_locations, get_location, get_zones, randomize_forest, write_all_locations_misc)
 from menufeatures import (improve_item_display, improve_gogo_status_menu, improve_rage_menu,
-                          show_original_names, improve_dance_menu, y_equip_relics, fix_gogo_portrait)
+                          show_original_names, improve_dance_menu, y_equip_relics, fix_gogo_portrait,
+                          add_music_disable_option, improved_party_gear_screen)
 from monsterrandomizer import (REPLACE_ENEMIES, MonsterGraphicBlock, get_monsters,
                                get_metamorphs, get_ranked_monsters,
                                shuffle_monsters, get_monster, read_ai_table,
@@ -46,6 +48,8 @@ from towerrandomizer import randomize_tower
 from utils import (COMMAND_TABLE, LOCATION_TABLE, LOCATION_PALETTE_TABLE,
                    FINAL_BOSS_AI_TABLE, SKIP_EVENTS_TABLE, DANCE_NAMES_TABLE,
                    DIVERGENT_TABLE,
+                   HIROM, NEW_ROM_SIZE,
+                   load_asm_patches, get_asm_patch, apply_asm_patch,
                    Substitution, shorttexttable, name_to_bytes,
                    hex2int, int2bytes, read_multi, write_multi,
                    generate_swapfunc, shift_middle, get_palette_transformer,
@@ -61,12 +65,13 @@ VERSION_ROMAN = 'V'
 if BETA:
     VERSION_ROMAN += ' BETA'
 TEST_ON = False
-TEST_SEED = '44.abcefghijklmnopqrstuvwxyz partyparty.42069'
-TEST_FILE = 'program.rom'
+TEST_SEED = "5.normal.abcefghijklmnopqrstuvwxyz-partyparty-johnnyachaotic.42069"
+TEST_FILE = "program.rom"
 seed, flags = None, None
 seedcounter = 1
 sourcefile, outfile = None, None
 fout = None
+use_new_asm = True
 
 
 NEVER_REPLACE = ['fight', 'item', 'magic', 'row', 'def', 'magitek', 'lore',
@@ -500,86 +505,100 @@ def auto_learn_rage():
 def manage_commands(commands):
     characters = get_characters()
 
-    learn_lore_sub = Substitution()
-    learn_lore_sub.bytestring = bytes([0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00, 0x00])
-    learn_lore_sub.set_location(0x236E4)
-    learn_lore_sub.write(fout)
+    # Lores can be learned by anyone.
+    # Dances can be learned by anyone.
+    # Bushido and Blitz can be learned by anyone reaching those levels.
+    # Handle multiple of these happening together in one battle.
+    if use_new_asm:
+        apply_asm_patch(fout, "learn_hacks")
+    else:
+        learn_lore_sub = Substitution()
+        learn_lore_sub.bytestring = bytes([0xEA, 0xEA, 0xF4, 0x00, 0x00, 0xF4, 0x00, 0x00])
+        learn_lore_sub.set_location(0x236E4)
+        learn_lore_sub.write(fout)
 
-    learn_dance_sub = Substitution()
-    learn_dance_sub.bytestring = bytes([0xEA] * 2)
-    learn_dance_sub.set_location(0x25EE8)
-    learn_dance_sub.write(fout)
+        learn_dance_sub = Substitution()
+        learn_dance_sub.bytestring = bytes([0xEA] * 2)
+        learn_dance_sub.set_location(0x25EE8)
+        learn_dance_sub.write(fout)
 
-    learn_swdtech_sub = Substitution()
-    learn_swdtech_sub.bytestring = bytes([0xEB,       # XBA
-                                          0x48,       # PHA
-                                          0xEB,       # XBA
-                                          0xEA])
-    learn_swdtech_sub.set_location(0x261C7)
-    learn_swdtech_sub.write(fout)
-    learn_swdtech_sub.bytestring = bytes([0x4C, 0xDA, 0xA1, 0x60])
-    learn_swdtech_sub.set_location(0xA18A)
-    learn_swdtech_sub.write(fout)
+        learn_swdtech_sub = Substitution()
+        learn_swdtech_sub.bytestring = bytes([0xEB,       # XBA
+                                              0x48,       # PHA
+                                              0xEB,       # XBA
+                                              0xEA])
+        learn_swdtech_sub.set_location(0x261C7)
+        learn_swdtech_sub.write(fout)
+        learn_swdtech_sub.bytestring = bytes([0x4C, 0xDA, 0xA1, 0x60])
+        learn_swdtech_sub.set_location(0xA18A)
+        learn_swdtech_sub.write(fout)
 
-    learn_blitz_sub = Substitution()
-    learn_blitz_sub.bytestring = bytes([0xF0, 0x09])
-    learn_blitz_sub.set_location(0x261CE)
-    learn_blitz_sub.write(fout)
-    learn_blitz_sub.bytestring = bytes([0xD0, 0x04])
-    learn_blitz_sub.set_location(0x261D3)
-    learn_blitz_sub.write(fout)
-    learn_blitz_sub.bytestring = bytes([0x68,       # PLA
-                                        0xEB,       # XBA
-                                        0xEA, 0xEA, 0xEA, 0xEA, 0xEA])
-    learn_blitz_sub.set_location(0x261D9)
-    learn_blitz_sub.write(fout)
-    learn_blitz_sub.bytestring = bytes([0xEA] * 4)
-    learn_blitz_sub.set_location(0x261E3)
-    learn_blitz_sub.write(fout)
-    learn_blitz_sub.bytestring = bytes([0xEA])
-    learn_blitz_sub.set_location(0xA200)
-    learn_blitz_sub.write(fout)
+        learn_blitz_sub = Substitution()
+        learn_blitz_sub.bytestring = bytes([0xF0, 0x09])
+        learn_blitz_sub.set_location(0x261CE)
+        learn_blitz_sub.write(fout)
+        learn_blitz_sub.bytestring = bytes([0xD0, 0x04])
+        learn_blitz_sub.set_location(0x261D3)
+        learn_blitz_sub.write(fout)
+        learn_blitz_sub.bytestring = bytes([0x68,       # PLA
+                                            0xEB,       # XBA
+                                            0xEA, 0xEA, 0xEA, 0xEA, 0xEA])
+        learn_blitz_sub.set_location(0x261D9)
+        learn_blitz_sub.write(fout)
+        learn_blitz_sub.bytestring = bytes([0xEA] * 4)
+        learn_blitz_sub.set_location(0x261E3)
+        learn_blitz_sub.write(fout)
+        learn_blitz_sub.bytestring = bytes([0xEA])
+        learn_blitz_sub.set_location(0xA200)
+        learn_blitz_sub.write(fout)
 
-    learn_multiple_sub = Substitution()
-    learn_multiple_sub.set_location(0xA1B4)
-    reljump = 0xFE - (learn_multiple_sub.location - 0xA186)
-    learn_multiple_sub.bytestring = bytes([0xF0, reljump])
-    learn_multiple_sub.write(fout)
+        learn_multiple_sub = Substitution()
+        learn_multiple_sub.set_location(0xA1B4)
+        reljump = 0xFE - (learn_multiple_sub.location - 0xA186)
+        learn_multiple_sub.bytestring = bytes([0xF0, reljump])
+        learn_multiple_sub.write(fout)
 
-    learn_multiple_sub.set_location(0xA1D6)
-    reljump = 0xFE - (learn_multiple_sub.location - 0xA18A)
-    learn_multiple_sub.bytestring = bytes([0xF0, reljump])
-    learn_multiple_sub.write(fout)
+        learn_multiple_sub.set_location(0xA1D6)
+        reljump = 0xFE - (learn_multiple_sub.location - 0xA18A)
+        learn_multiple_sub.bytestring = bytes([0xF0, reljump])
+        learn_multiple_sub.write(fout)
 
-    learn_multiple_sub.set_location(0x261DD)
-    learn_multiple_sub.bytestring = bytes([0xEA] * 3)
-    learn_multiple_sub.write(fout)
+        learn_multiple_sub.set_location(0x261DD)
+        learn_multiple_sub.bytestring = bytes([0xEA] * 3)
+        learn_multiple_sub.write(fout)
 
+    # Start with only one Rage.
     rage_blank_sub = Substitution()
     rage_blank_sub.bytestring = bytes([0x01] + ([0x00] * 31))
     rage_blank_sub.set_location(0x47AA0)
     rage_blank_sub.write(fout)
 
-    eems = EnableEsperMagicSub()
-    eems.set_location(0x3F091)
-    eems.write(fout)
+    if use_new_asm:
+        apply_asm_patch(fout, "enable_esper_magic")
+    else:
+        eems = EnableEsperMagicSub()
+        eems.set_location(0x3F091)
+        eems.write(fout)
 
-    # Let x-magic user use magic menu.
-    enable_xmagic_menu_sub = Substitution()
-    enable_xmagic_menu_sub.bytestring = bytes([
-        0xDF, 0x78, 0x4D, 0xC3, # CMP $C34D78,X
-        0xF0, 0x07, # BEQ
-        0xE0, 0x01, 0x00, # CPX #$0001
-        0xD0, 0x02, # BNE
-        0xC9, 0x17, # CMP #$17
-        0x6b        # RTL
-    ])
-    enable_xmagic_menu_sub.set_location(0x3F09B)
-    enable_xmagic_menu_sub.write(fout)
+    # Let X-Magic users use out-of-battle Magic menu.
+    if use_new_asm:
+        apply_asm_patch(fout, "enable_xmagic_menu")
+    else:
+        enable_xmagic_menu_sub = Substitution()
+        enable_xmagic_menu_sub.bytestring = bytes([
+            0xDF, 0x78, 0x4D, 0xC3, # CMP $C34D78,X
+            0xF0, 0x07, # BEQ
+            0xE0, 0x01, 0x00, # CPX #$0001
+            0xD0, 0x02, # BNE
+            0xC9, 0x17, # CMP #$17
+            0x6b        # RTL
+        ])
+        enable_xmagic_menu_sub.set_location(0x3F09B)
+        enable_xmagic_menu_sub.write(fout)
 
-    enable_xmagic_menu_sub.bytestring = bytes([0x22, 0x9B, 0xF0, 0xC3])
-    enable_xmagic_menu_sub.set_location(0x34d56)
-    enable_xmagic_menu_sub.write(fout)
+        enable_xmagic_menu_sub.bytestring = bytes([0x22, 0x9B, 0xF0, 0xC3])
+        enable_xmagic_menu_sub.set_location(0x34d56)
+        enable_xmagic_menu_sub.write(fout)
 
     # Prevent Runic, SwdTech, and Capture from being disabled/altered
     protect_battle_commands_sub = Substitution()
@@ -588,28 +607,46 @@ def manage_commands(commands):
     protect_battle_commands_sub.set_location(0x252E9)
     protect_battle_commands_sub.write(fout)
 
-    enable_morph_sub = Substitution()
-    enable_morph_sub.bytestring = bytes([0xEA] * 2)
-    enable_morph_sub.set_location(0x25410)
-    enable_morph_sub.write(fout)
-
-    enable_mpoint_sub = Substitution()
-    enable_mpoint_sub.bytestring = bytes([0xEA] * 2)
-    enable_mpoint_sub.set_location(0x25E38)
-    enable_mpoint_sub.write(fout)
-
-    ungray_statscreen_sub = Substitution()
-    ungray_statscreen_sub.bytestring = bytes([0x20, 0x6F, 0x61, 0x30, 0x26, 0xEA, 0xEA, 0xEA])
-    ungray_statscreen_sub.set_location(0x35EE1)
-    ungray_statscreen_sub.write(fout)
-
-    fanatics_fix_sub = Substitution()
-    if options_.is_code_active('metronome'):
-        fanatics_fix_sub.bytestring = bytes([0xA9, 0x1D])
+    if use_new_asm:
+        apply_asm_patch(fout, "enable_morph")
+        apply_asm_patch(fout, "enable_mpoint")
+        apply_asm_patch(fout, "ungray_statscreen")
     else:
-        fanatics_fix_sub.bytestring = bytes([0xA9, 0x15])
-    fanatics_fix_sub.set_location(0x2537E)
-    fanatics_fix_sub.write(fout)
+        enable_morph_sub = Substitution()
+        enable_morph_sub.bytestring = bytes([0xEA] * 2)
+        enable_morph_sub.set_location(0x25410)
+        enable_morph_sub.write(fout)
+
+        enable_mpoint_sub = Substitution()
+        enable_mpoint_sub.bytestring = bytes([0xEA] * 2)
+        enable_mpoint_sub.set_location(0x25E38)
+        enable_mpoint_sub.write(fout)
+
+        ungray_statscreen_sub = Substitution()
+        ungray_statscreen_sub.bytestring = bytes([0x20, 0x6F, 0x61, 0x30, 0x26, 0xEA, 0xEA, 0xEA])
+        ungray_statscreen_sub.set_location(0x35EE1)
+        ungray_statscreen_sub.write(fout)
+
+    if use_new_asm:
+        fanatics_fix = get_asm_patch("fanatics_fix")
+        fanatics_fix.write(fout)
+        fanatics_fix_command_offset = fanatics_fix.exports["replacement_command"] - HIROM
+    else:
+        fanatics_fix_sub = Substitution()
+        fanatics_fix_sub.bytestring = bytes([0xA9])
+        fanatics_fix_sub.set_location(0x2537E)
+        fanatics_fix_sub.write(fout)
+        fanatics_fix_command_offset = 0x2537E + 1
+
+    fanatics_fix_command_sub = Substitution()
+    magitekcmd = [c for c in commands.values() if c.name == "magitek"][0]
+    defcmd = [c for c in commands.values() if c.name == "def"][0]
+    if options_.is_code_active('metronome'):
+        fanatics_fix_command_sub.bytestring = bytes([magitekcmd.id])
+    else:
+        fanatics_fix_command_sub.bytestring = bytes([defcmd.id])
+    fanatics_fix_command_sub.set_location(fanatics_fix_command_offset)
+    fanatics_fix_command_sub.write(fout)
 
     invalid_commands = ['fight', 'item', 'magic', 'xmagic',
                         'def', 'row', 'summon', 'revert']
@@ -1200,18 +1237,25 @@ def manage_natural_magic():
     except ValueError:
         return
 
-    natmag_learn_sub = Substitution()
-    natmag_learn_sub.set_location(0xa182)
-    natmag_learn_sub.bytestring = bytes([0x22, 0x73, 0x08, 0xF0] + [0xEA] * 4)
-    natmag_learn_sub.write(fout)
+    if use_new_asm:
+        natmag_learn = get_asm_patch("natmag_learn")
+        natmag_learn.write(fout)
+        natmag_learn_table = natmag_learn.exports["magic_table"] - HIROM
+    else:
+        natmag_learn_sub = Substitution()
+        natmag_learn_sub.set_location(0xa182)
+        natmag_learn_sub.bytestring = bytes([0x22, 0x73, 0x08, 0xF0] + [0xEA] * 4)
+        natmag_learn_sub.write(fout)
 
-    natmag_learn_sub.set_location(0x261b6)
-    natmag_learn_sub.bytestring = bytes([0x22, 0x4B, 0x08, 0xF0] + [0xEA] * 10)
-    natmag_learn_sub.write(fout)
+        natmag_learn_sub.set_location(0x261b6)
+        natmag_learn_sub.bytestring = bytes([0x22, 0x4B, 0x08, 0xF0] + [0xEA] * 10)
+        natmag_learn_sub.write(fout)
 
-    natmag_learn_sub.set_location(0x30084B)
-    natmag_learn_sub.bytestring = bytes([0xC9, 0x0C, 0xB0, 0x23, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0xEB, 0x48, 0x85, 0x0B, 0xAE, 0xF4, 0x00, 0x86, 0x09, 0x7B, 0xEB, 0xA9, 0x80, 0x85, 0x0C, 0x22, 0xAB, 0x08, 0xF0, 0x68, 0xEB, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xC9, 0x0C, 0xB0, 0xFB, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0x8D, 0x02, 0x42, 0xA9, 0x36, 0x8D, 0x03, 0x42, 0xB9, 0x08, 0x16, 0x85, 0x0B, 0xC2, 0x20, 0xAD, 0x16, 0x42, 0x18, 0x69, 0x6E, 0x1A, 0x85, 0x09, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xA9, 0xFF, 0x85, 0x0C, 0x22, 0xAB, 0x08, 0xF0, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xA0, 0x10, 0x00, 0xA5, 0x08, 0xC2, 0x20, 0x29, 0xFF, 0x00, 0xEB, 0x4A, 0x4A, 0x4A, 0xAA, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xBF, 0xE1, 0x08, 0xF0, 0xC5, 0x0B, 0xF0, 0x02, 0xB0, 0x11, 0x5A, 0xBF, 0xE0, 0x08, 0xF0, 0xA8, 0xB1, 0x09, 0xC9, 0xFF, 0xF0, 0x04, 0xA5, 0x0C, 0x91, 0x09, 0x7A, 0xE8, 0xE8, 0x88, 0xD0, 0xE0, 0x6B] + [0xFF] * 2 * 16 * 12)
-    natmag_learn_sub.write(fout)
+        natmag_learn_sub.set_location(0x30084B)
+        natmag_learn_sub.bytestring = bytes([0xC9, 0x0C, 0xB0, 0x23, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0xEB, 0x48, 0x85, 0x0B, 0xAE, 0xF4, 0x00, 0x86, 0x09, 0x7B, 0xEB, 0xA9, 0x80, 0x85, 0x0C, 0x22, 0xAB, 0x08, 0xF0, 0x68, 0xEB, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xC9, 0x0C, 0xB0, 0xFB, 0x48, 0xDA, 0x5A, 0x0B, 0xF4, 0x00, 0x15, 0x2B, 0x85, 0x08, 0x8D, 0x02, 0x42, 0xA9, 0x36, 0x8D, 0x03, 0x42, 0xB9, 0x08, 0x16, 0x85, 0x0B, 0xC2, 0x20, 0xAD, 0x16, 0x42, 0x18, 0x69, 0x6E, 0x1A, 0x85, 0x09, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xA9, 0xFF, 0x85, 0x0C, 0x22, 0xAB, 0x08, 0xF0, 0x2B, 0x7A, 0xFA, 0x68, 0x6B, 0xA0, 0x10, 0x00, 0xA5, 0x08, 0xC2, 0x20, 0x29, 0xFF, 0x00, 0xEB, 0x4A, 0x4A, 0x4A, 0xAA, 0xA9, 0x00, 0x00, 0xE2, 0x20, 0xBF, 0xE1, 0x08, 0xF0, 0xC5, 0x0B, 0xF0, 0x02, 0xB0, 0x11, 0x5A, 0xBF, 0xE0, 0x08, 0xF0, 0xA8, 0xB1, 0x09, 0xC9, 0xFF, 0xF0, 0x04, 0xA5, 0x0C, 0x91, 0x09, 0x7A, 0xE8, 0xE8, 0x88, 0xD0, 0xE0, 0x6B] + [0xFF] * 2 * 16 * 12)
+        natmag_learn_sub.write(fout)
+
+        natmag_learn_table = 0x3008e0
 
     spells = get_ranked_spells(sourcefile, magic_only=True)
     spellids = [s.spellid for s in spells]
@@ -1252,7 +1296,7 @@ def manage_natural_magic():
             candidate.natural_magic.append((level, newspell))
         candidate.natural_magic = sorted(candidate.natural_magic, key=lambda s: (s[0], s[1].spellid))
         for i, (level, newspell) in enumerate(candidate.natural_magic):
-            pointer = 0x3008e0 + candidate.id * 32 + (2*i)
+            pointer = natmag_learn_table + candidate.id * 32 + (2*i)
             fout.seek(pointer)
             fout.write(bytes([newspell.spellid]))
             fout.write(bytes([level]))
@@ -1695,15 +1739,18 @@ def manage_balance(newslots=True):
     sealed_kefka = get_monster(0x174)
 
     if not options_.is_code_active('sketch'):
-        sketch_fix_sub = Substitution()
-        sketch_fix_sub.set_location(0x2F5C6)
-        sketch_fix_sub.bytestring = bytes([
-            0x80, 0xCA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0x4C, 0x09, 0xF8,
-            0xA0, 0x00, 0x28, 0x22, 0x09, 0xB1, 0xC1, 0xA9, 0x01, 0x1C, 0x8D, 0x89, 0xA0, 0x03, 0x00,
-            0xB1, 0x76, 0x0A, 0xAA, 0xC2, 0x20, 0xBD, 0x01, 0x20, 0x90, 0x02,
-            0x7B, 0x3A, 0xAA, 0x7B, 0xE2, 0x20, 0x22, 0xD1, 0x24, 0xC1, 0x80, 0xD7,
-        ])
-        sketch_fix_sub.write(fout)
+        if use_new_asm:
+            apply_asm_patch(fout, "sketch_fix")
+        else:
+            sketch_fix_sub = Substitution()
+            sketch_fix_sub.set_location(0x2F5C6)
+            sketch_fix_sub.bytestring = bytes([
+                0x80, 0xCA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0xEA, 0x4C, 0x09, 0xF8,
+                0xA0, 0x00, 0x28, 0x22, 0x09, 0xB1, 0xC1, 0xA9, 0x01, 0x1C, 0x8D, 0x89, 0xA0, 0x03, 0x00,
+                0xB1, 0x76, 0x0A, 0xAA, 0xC2, 0x20, 0xBD, 0x01, 0x20, 0x90, 0x02,
+                0x7B, 0x3A, 0xAA, 0x7B, 0xE2, 0x20, 0x22, 0xD1, 0x24, 0xC1, 0x80, 0xD7,
+            ])
+            sketch_fix_sub.write(fout)
 
 
 def manage_magitek():
@@ -1889,54 +1936,57 @@ def manage_items(items, changed_commands=None):
         if i.features['special2'] & 0x38 and i.is_relic:
             auto_equip_relics.append(i.itemid)
 
-    assert(auto_equip_relics)
+    assert auto_equip_relics
 
-    auto_equip_sub = Substitution()
-    auto_equip_sub.set_location(0x39EF9)
-    auto_equip_sub.bytestring = bytes([0xA0, 0xF1,])
-    auto_equip_sub.write(fout)
+    if use_new_asm:
+        apply_asm_patch(fout, "auto_equip")
+    else:
+        auto_equip_sub = Substitution()
+        auto_equip_sub.set_location(0x39EF9)
+        auto_equip_sub.bytestring = bytes([0xA0, 0xF1,])
+        auto_equip_sub.write(fout)
 
-    auto_equip_sub.set_location(0x3F1A0)
-    auto_equip_sub.bytestring = bytes([
-        0x20, 0xF2, 0x93,
-        0xB9, 0x23, 0x00,
-        0xC5, 0xB0,
-        0xD0, 0x09,
-        0xB9, 0x24, 0x00,
-        0xC5, 0xB1,
-        0xD0, 0x02,
-        0x80, 0x4C,
-        0x64, 0x99,
-        0xA5, 0xB0,
-        0x20, 0x21, 0x83,
-        0xAE, 0x34, 0x21,
-        0xBF, 0x0C, 0x50, 0xD8,
-        0x29, 0x38,
-        0x85, 0xFE,
-        0xA5, 0xB1,
-        0x20, 0x21, 0x83,
-        0xAE, 0x34, 0x21,
-        0xBF, 0x0C, 0x50, 0xD8,
-        0x29, 0x38,
-        0x04, 0xFE,
-        0xB9, 0x23, 0x00,
-        0x20, 0x21, 0x83,
-        0xAE, 0x34, 0x21,
-        0xBF, 0x0C, 0x50, 0xD8,
-        0x29, 0x38,
-        0x85, 0xFF,
-        0xB9, 0x24, 0x00,
-        0x20, 0x21, 0x83,
-        0xAE, 0x34, 0x21,
-        0xBF, 0x0C, 0x50, 0xD8,
-        0x29, 0x38,
-        0x04, 0xFF,
-        0xA5, 0xFE,
-        0xC5, 0xFF,
-        0xF0, 0x02,
-        0xE6, 0x99,
-        0x60])
-    auto_equip_sub.write(fout)
+        auto_equip_sub.set_location(0x3F1A0)
+        auto_equip_sub.bytestring = bytes([
+            0x20, 0xF2, 0x93,
+            0xB9, 0x23, 0x00,
+            0xC5, 0xB0,
+            0xD0, 0x09,
+            0xB9, 0x24, 0x00,
+            0xC5, 0xB1,
+            0xD0, 0x02,
+            0x80, 0x4C,
+            0x64, 0x99,
+            0xA5, 0xB0,
+            0x20, 0x21, 0x83,
+            0xAE, 0x34, 0x21,
+            0xBF, 0x0C, 0x50, 0xD8,
+            0x29, 0x38,
+            0x85, 0xFE,
+            0xA5, 0xB1,
+            0x20, 0x21, 0x83,
+            0xAE, 0x34, 0x21,
+            0xBF, 0x0C, 0x50, 0xD8,
+            0x29, 0x38,
+            0x04, 0xFE,
+            0xB9, 0x23, 0x00,
+            0x20, 0x21, 0x83,
+            0xAE, 0x34, 0x21,
+            0xBF, 0x0C, 0x50, 0xD8,
+            0x29, 0x38,
+            0x85, 0xFF,
+            0xB9, 0x24, 0x00,
+            0x20, 0x21, 0x83,
+            0xAE, 0x34, 0x21,
+            0xBF, 0x0C, 0x50, 0xD8,
+            0x29, 0x38,
+            0x04, 0xFF,
+            0xA5, 0xFE,
+            0xC5, 0xFF,
+            0xF0, 0x02,
+            0xE6, 0x99,
+            0x60])
+        auto_equip_sub.write(fout)
 
     return items
 
@@ -1989,7 +2039,7 @@ def manage_equipment(items):
 
         equippable_items = [i for i in items if i.equippable & (1 << c.id)]
         equippable_items = [i for i in equippable_items if not i.has_disabling_status]
-        equippable_items = [i for i in equippable_items if not i.banned]
+        equippable_items = [i for i in equippable_items if not i.banned and not i.cursed]
         if random.randint(1, 4) < 4:
             equippable_items = [i for i in equippable_items if not i.imp_only]
         for equiptype, func in equippable_dict.items():
@@ -3217,42 +3267,45 @@ def create_dimensional_vortex():
 
 
 def randomize_final_party_order():
-    code = bytes([
-        0x20, 0x99, 0xAA,       # JSR $AA99
-        0xA9, 0x00,             # LDA #00
-        0xA8,                   # TAY
-        0xAD, 0x1E, 0x02,       # LDA $021E (frame counter)
-        0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
-        0x8D, 0x6D, 0x1F,       # STA $1F6D
-        # 21 bytes
-        0xEE, 0x6D, 0x1F,       # INC $1F6D
-        0xAD, 0x6D, 0x1F,       # LDA $1F6D
-        0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
-        0xAA,                   # TAX
-        0xBF, 0x00, 0xFD, 0xC0, # LDA $C0FD00,X
-        0x29, 0x0F,             # AND $0F, Get bottom 4 bits
-        0xC9, 0x0B,             # CMP $0B
-        0xB0, 0xEC,             # BCS 20 bytes back
-        0xAA,                   # TAX
+    if use_new_asm:
+        apply_asm_patch(fout, "randomize_final_party_order")
+    else:
+        code = bytes([
+            0x20, 0x99, 0xAA,       # JSR $AA99
+            0xA9, 0x00,             # LDA #00
+            0xA8,                   # TAY
+            0xAD, 0x1E, 0x02,       # LDA $021E (frame counter)
+            0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
+            0x8D, 0x6D, 0x1F,       # STA $1F6D
+            # 21 bytes
+            0xEE, 0x6D, 0x1F,       # INC $1F6D
+            0xAD, 0x6D, 0x1F,       # LDA $1F6D
+            0x6D, 0xA3, 0x1F,       # ADC $1FA3 (encounter seed addition)
+            0xAA,                   # TAX
+            0xBF, 0x00, 0xFD, 0xC0, # LDA $C0FD00,X
+            0x29, 0x0F,             # AND $0F, Get bottom 4 bits
+            0xC9, 0x0B,             # CMP $0B
+            0xB0, 0xEC,             # BCS 20 bytes back
+            0xAA,                   # TAX
 
-        # 14 bytes
-        0xB9, 0x05, 0x02,       # LDA $0205,Y
-        0x48,                   # PHA
-        0xBD, 0x05, 0x02,       # LDA $0205,X
-        0x99, 0x05, 0x02,       # STA $0205,Y
-        0x68,                   # PLA
-        0x9D, 0x05, 0x02,       # STA $0205,X
+            # 14 bytes
+            0xB9, 0x05, 0x02,       # LDA $0205,Y
+            0x48,                   # PHA
+            0xBD, 0x05, 0x02,       # LDA $0205,X
+            0x99, 0x05, 0x02,       # STA $0205,Y
+            0x68,                   # PLA
+            0x9D, 0x05, 0x02,       # STA $0205,X
 
-        # 6 bytes
-        0xC8,                   # INY
-        0x98,                   # TYA
-        0xC9, 0x0C,             # CMP $0C
-        0x90, 0xD7,             # BCC 41 bytes back
+            # 6 bytes
+            0xC8,                   # INY
+            0x98,                   # TYA
+            0xC9, 0x0C,             # CMP $0C
+            0x90, 0xD7,             # BCC 41 bytes back
 
-        0x60,                   # RTS
-    ])
-    fout.seek(0x3AA25)
-    fout.write(code)
+            0x60,                   # RTS
+        ])
+        fout.seek(0x3AA25)
+        fout.write(code)
 
 
 def dummy_item(item):
@@ -3754,10 +3807,10 @@ def the_end_comes_beyond_crusader():
 
 def expand_rom():
     fout.seek(0, 2)
-    if fout.tell() < 0x400000:
+    if fout.tell() < NEW_ROM_SIZE:
         expand_sub = Substitution()
         expand_sub.set_location(fout.tell())
-        expand_sub.bytestring = bytes([0x00] * (0x400000 - fout.tell()))
+        expand_sub.bytestring = bytes([0x00] * (NEW_ROM_SIZE - fout.tell()))
         expand_sub.write(fout)
 
 
@@ -3775,21 +3828,56 @@ def diverge(fout):
 
 
 def randomize(args):
-    global outfile, sourcefile, flags, seed, fout, ALWAYS_REPLACE, NEVER_REPLACE
+    global outfile, sourcefile, flags, seed, fout, use_new_asm, ALWAYS_REPLACE, NEVER_REPLACE, TEST_ON
 
-    if TEST_ON:
-        while len(args) < 3:
-            args.append(None)
-        args[1] = TEST_FILE
-        args[2] = TEST_SEED
-    sleep(0.5)
+    # Parse the command line for special options not directly related to seed choice.
+    normal_args = []
+    do_sleep = True
+    use_new_asm = True
+    build_asm_all = False
+    build_asm_only = None
+    for arg in args[1:]:
+        if arg[:2] == "--":
+            if arg == "--test":
+                TEST_ON = True
+            elif arg == "--no-sleep":
+                do_sleep = False
+            elif arg == "--new-asm":
+                use_new_asm = True
+            elif arg == "--old-asm":
+                use_new_asm = False
+            elif arg == "--build-asm":
+                build_asm_all = True
+            elif arg[:12] == "--build-asm=":
+                build_asm_only = arg[12:]
+            else:
+                raise NameError("Unknown command-line option " + arg)
+        else:
+            normal_args.append(arg)
+
+    # Fake arguments for test mode.
+    if TEST_ON and len(normal_args) < 2:
+        normal_args = [TEST_FILE, TEST_SEED]
+
+    if do_sleep:
+        sleep(0.5)
+
     print(f'You are using Beyond Chaos EX randomizer version "{VERSION}".')
+
     if BETA:
         print('WARNING: This version is a beta! Things may not work correctly.')
 
+    # Load assembly patches, building if requested.
+    if build_asm_all:
+        assemblymanager.build_all_patches(NEW_ROM_SIZE)
+    elif build_asm_only is not None:
+        assemblymanager.build_patch_set([build_asm_only], NEW_ROM_SIZE)
+    load_asm_patches()
+
+    # Ask the user where to find the ROM.
     previous_rom_path = ''
-    if len(args) > 2:
-        sourcefile = args[1].strip()
+    if len(normal_args) >= 2:
+        sourcefile = normal_args[0].strip()
     else:
         try:
             config = configparser.ConfigParser()
@@ -3851,8 +3939,8 @@ def randomize(args):
 
     speeddial_opts = {}
 
-    if len(args) > 2:
-        fullseed = args[2].strip()
+    if len(normal_args) >= 2:
+        fullseed = normal_args[1].strip()
     else:
         fullseed = input('Please input a seed value (blank for a random '
                          'seed):\n> ').strip()
@@ -4043,6 +4131,8 @@ def randomize(args):
 
     read_dialogue(fout)
     read_location_names(fout)
+    read_battle_messages(fout)
+    read_battle_text(fout)
 
     if options_.shuffle_commands or options_.replace_commands or options_.random_treasure:
         auto_recruit_gau(stays_in_wor=not options_.shuffle_wor and not options_.is_code_active('mimetime'))
@@ -4104,20 +4194,36 @@ def randomize(args):
             dirk.write_stats(fout)
             dummy_item(dirk)
             assert not dummy_item(dirk)
+
     if options_.random_enemy_stats and options_.random_treasure and options_.random_character_stats:
         rename_card = get_item(231)
-        rename_card.become_another(tier='low')
-        rename_card.write_stats(fout)
-        dummy_item(rename_card)
+        can_uncurse_ring = not options_.is_code_active('h*ck')
+        add_random_curses = can_uncurse_ring and not options_.is_code_active('heck')
 
-        weapon_anim_fix = Substitution()
-        weapon_anim_fix.set_location(0x19DB8)
-        weapon_anim_fix.bytestring = bytes([0x22, 0x80, 0x30, 0xF0])
-        weapon_anim_fix.write(fout)
+        # if adding the ring can be uncursed, it's only into relics, so this is unnecessary.
+        if not can_uncurse_ring:
+            rename_card.become_another(tier='low')
+            rename_card.banned = False
+            rename_card.write_stats(fout)
 
-        weapon_anim_fix.set_location(0x303080)
-        weapon_anim_fix.bytestring = bytes([0xE0, 0xE8, 0x02, 0xB0, 0x05, 0xBF, 0x00, 0xE4, 0xEC, 0x6B, 0xDA, 0xC2, 0x20, 0x8A, 0xE9, 0xF0, 0x02, 0xAA, 0x29, 0xFF, 0x00, 0xE2, 0x20, 0xBF, 0x00, 0x31, 0xF0, 0xFA, 0x6B])
-        weapon_anim_fix.write(fout)
+            weapon_anim_fix = Substitution()
+            weapon_anim_fix.set_location(0x19DB8)
+            weapon_anim_fix.bytestring = bytes([0x22, 0x80, 0x30, 0xF0])
+            weapon_anim_fix.write(fout)
+
+            weapon_anim_fix.set_location(0x303080)
+            weapon_anim_fix.bytestring = bytes([0xE0, 0xE8, 0x02, 0xB0, 0x05, 0xBF, 0x00, 0xE4, 0xEC, 0x6B, 0xDA, 0xC2, 0x20, 0x8A, 0xE9, 0xF0, 0x02, 0xAA, 0x29, 0xFF, 0x00, 0xE2, 0x20, 0xBF, 0x00, 0x31, 0xF0, 0xFA, 0x6B])
+            weapon_anim_fix.write(fout)
+
+        else:
+            rename_card.become_another(tier='low', item_type=ItemType.RELIC)
+            rename_card.write_stats(fout)
+            dummy_item(rename_card)
+
+            curse_log = setup_cursed_items(fout, add_random_curses=add_random_curses)
+            if curse_log:
+                log(curse_log, 'cursed items')
+
     reseed()
 
     items = get_ranked_items()
@@ -4318,6 +4424,14 @@ def randomize(args):
         manage_colorize_animations()
     reseed()
 
+    if options_.is_code_active('johnnybquiet'):
+        add_music_disable_option(fout)
+    reseed()
+
+    if options_.is_code_active('myriaequip'):
+        improved_party_gear_screen(fout)
+    reseed()
+
     if options_.is_code_active('suplexwrecks'):
         manage_suplex(commands, monsters)
     reseed()
@@ -4387,6 +4501,7 @@ def randomize(args):
     if options_.is_code_active('thescenarionottaken'):
         no_kutan_skip(fout)
 
+    apply_asm_patch(fout, 'shorter_skill_name_fix')
     write_all_locations_misc(fout)
     for fs in fsets:
         fs.write_data(fout)
@@ -4469,6 +4584,8 @@ def randomize(args):
 
     manage_dialogue_patches(fout)
     write_location_names(fout)
+    write_battle_text(fout)
+    write_battle_messages(fout)
 
     rewrite_title(text=f'FF6 BCEX {seed}')
     fout.close()
@@ -4504,12 +4621,12 @@ def randomize(args):
 
 if __name__ == '__main__':
     args = list(argv)
-    if len(argv) > 3 and argv[3].strip().lower() == 'test' or TEST_ON:
-        randomize(args=args)
-        sys.exit()
     try:
         randomize(args=args)
-        input('Press enter to close this program. ')
+        if TEST_ON:
+            sys.exit()
+        else:
+            input("Press enter to close this program. ")
     except Exception as e:
         print(f'ERROR: {e}')
         import traceback
@@ -4522,3 +4639,4 @@ if __name__ == '__main__':
             os.remove(outfile)
         else:
             input('Press enter to quit. ')
+        sys.exit(1)

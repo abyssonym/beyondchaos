@@ -2274,13 +2274,13 @@ def manage_espers(freespaces, replacements=None):
     return freespaces
 
 
-def manage_treasure(monsters, shops=True, no_charm_drops=False):
+def manage_treasure(monsters, shops=True, no_charm_drops=False, guarantee_hidon_drop=False):
     for mm in get_metamorphs():
         mm.mutate_items()
         mm.write_data(fout)
 
     for m in monsters:
-        m.mutate_items()
+        m.mutate_items(guarantee_hidon_drop)
         if no_charm_drops:
             charms = [222, 223]
             while any(x in m.drops for x in charms):
@@ -4270,7 +4270,9 @@ def randomize(args):
 
         # do this after hidden formations
         katn = options_.mode.name == 'katn'
-        manage_treasure(monsters, shops=True, no_charm_drops=katn)
+        # If hidon isn't guaranteed to have a cool lore, just give him a good drop.
+        guarantee_hidon_drop = options_.random_enemy_stats
+        manage_treasure(monsters, shops=True, no_charm_drops=katn, guarantee_hidon_drop=guarantee_hidon_drop)
         if not options_.is_code_active('ancientcave'):
             manage_chests()
             mutate_event_items(fout, cutscene_skip=options_.is_code_active('notawaiter'), crazy_prices=options_.is_code_active('madworld'), no_monsters=katn, uncapped_monsters=options_.is_code_active('bsiab'))

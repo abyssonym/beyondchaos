@@ -274,7 +274,7 @@ def read_dialogue(fout):
         end = battle_script_ptrs.get(idx+1, 0)
         if end == 0:
             end = battle_script_bin.find(b'\x00', start)
-        battle_script[idx] = bytes_to_dialogue(battle_script_bin[start:end], table=reverse_battletexttable)
+        battle_script[idx] = bytes_to_battle_text(battle_script_bin[start:end])
 
 
 def _apply_patches(script, patch_dict):
@@ -362,7 +362,7 @@ def manage_dialogue_patches(fout):
     for idx, text in battle_script.items():
         lastlength = len(new_battle_script) - offset
         offset += lastlength
-        new_battle_script += dialogue_to_bytes(text, table=battletexttable)
+        new_battle_script += battle_text_to_bytes(text)
         ptr = offset + base
         new_battle_ptrs += bytes([ptr & 0xFF, (ptr >> 8) & 0xFF])
 

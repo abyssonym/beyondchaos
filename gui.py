@@ -51,6 +51,12 @@ class FlagCheckBox(QWidget):
     def value(self):
         return self._checkbox.value
 
+    @property
+    def isChecked(self):
+        return self._checkbox.isChecked
+
+    def setChecked(self, value: bool):
+        self._checkbox.setChecked(value)
 
 class Window(QWidget):
 
@@ -622,9 +628,9 @@ class Window(QWidget):
                 value = c.value
                 #print(value + str(d[value]['checked']))
                 if d[value]['checked']:
-                    c.setProperty('checked', True)
+                    c.setChecked(True)
                 else:
-                    c.setProperty('checked', False)
+                    c.setChecked(False)
         self.enableMakeoverOptions(self.aesthetic['makeover']['checked'])
 
     def enableMakeoverOptions(self, enable):

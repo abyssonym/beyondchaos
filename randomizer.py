@@ -18,7 +18,7 @@ from bingo import manage_bingo
 from character import get_characters, get_character, equip_offsets
 from chestrandomizer import mutate_event_items, get_event_items, add_orphaned_formation, get_orphaned_formations
 from decompress import Decompressor
-from dialoguemanager import get_dialogue, manage_dialogue_patches, read_battle_text, read_battle_messages, read_dialogue, read_location_names, set_dialogue, write_battle_messages, write_battle_text, write_location_names
+from dialoguemanager import get_dialogue, manage_dialogue_patches, read_battle_messages, read_dialogue, read_location_names, set_dialogue, write_battle_messages, write_location_names
 from esperrandomizer import (get_espers, allocate_espers, randomize_magicite)
 from formationrandomizer import (REPLACE_FORMATIONS, KEFKA_EXTRA_FORMATION, NOREPLACE_FORMATIONS,
                                  get_formations, get_fsets, get_formation)
@@ -4132,7 +4132,6 @@ def randomize(args):
     read_dialogue(fout)
     read_location_names(fout)
     read_battle_messages(fout)
-    read_battle_text(fout)
 
     if options_.shuffle_commands or options_.replace_commands or options_.random_treasure:
         auto_recruit_gau(stays_in_wor=not options_.shuffle_wor and not options_.is_code_active('mimetime'))
@@ -4584,7 +4583,6 @@ def randomize(args):
 
     manage_dialogue_patches(fout)
     write_location_names(fout)
-    write_battle_text(fout)
     write_battle_messages(fout)
 
     rewrite_title(text=f'FF6 BCEX {seed}')

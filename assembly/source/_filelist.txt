@@ -1,4 +1,5 @@
 ; List of .asm files to build.
+alphabetize_rage_skill_menu
 auto_equip
 cursed_tweak
 enable_esper_magic

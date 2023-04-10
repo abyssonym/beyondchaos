@@ -1149,12 +1149,10 @@ def improve_rage_menu(fout):
         0xAD, 0x08, 0x00, #LDA $0008        ; No-autofire keys
         0x29, 0x80, # AND #$80 ; Pushing A?
         0xF0, 0x16, # BEQ end ; Branch if not
-        0xAD, 0x4B, 0x00, # LDA $004B        ; Selected slot
-        0x4A, # LSR
-        0x4A, # LSR
-        0x4A, # LSR
-        0xA8, # TAY
-        0xAD, 0x4B, 0x00, # LDA $004B        ; Selected slot
+        0xAE, 0x4B, 0x00, # LDX $004B        ; Selected slot
+        0xBF, 0x16, 0x14, 0xF0, # LDA $F01416,X
+        
+        0x20, 0x86, 0x13, # JSR $1386   ; this is dumb, but I need to squeeze in a couple of bytes. It's almost like I should have this in assembly so the pointers get updated automatically
         0x29, 0x07, # AND #$07
         0xAA, # TAX
         0xBF, 0x40, 0x11, 0xF0, # LDA $F01140,X   ; 2^X
@@ -1603,6 +1601,18 @@ def improve_rage_menu(fout):
         0x24, 0x00, 0xD0, 0xFB, 0x78, 0xAD, 0x44, 0x00, 0x8D, 0x00, 0x21, 0xAD,
         0x43, 0x00, 0x8D, 0x0C, 0x42, 0xAD, 0xB5, 0x00, 0x8D, 0x06, 0x21, 0x9C,
         0xAE, 0x00, 0x6B])
+    rage_sub.write(fout)
+
+    rage_sub.set_location(0x301386)
+    rage_sub.bytestring = bytes([
+        0x48, # PHA
+        0x4A, # LSR
+        0x4A, # LSR
+        0x4A, # LSR
+        0xA8, # TAY
+        0x68, # PLA
+        0x60, # RTS
+    ])
     rage_sub.write(fout)
 
     _rage_dance_common(fout)

@@ -2064,7 +2064,7 @@ def manage_reorder_rages(freespaces):
     monsters = sorted(monsters, key=lambda m: m.display_name)
     monsters = [m for m in monsters if m.id <= 0xFE]
     assert len(monsters) == 255
-    monster_order = [m.id for m in monsters]
+    monster_order = [m.id for m in monsters] + [0xFF]
 
     reordered_rages_sub = Substitution()
     reordered_rages_sub.bytestring = monster_order
@@ -4501,6 +4501,7 @@ def randomize(args):
         no_kutan_skip(fout)
 
     apply_asm_patch(fout, 'shorter_skill_name_fix')
+    apply_asm_patch(fout, 'alphabetize_rage_skill_menu')
     write_all_locations_misc(fout)
     for fs in fsets:
         fs.write_data(fout)

@@ -1347,10 +1347,12 @@ class MonsterBlock:
             self.null &= denullify
             self.absorb &= denullify
 
-    def mutate_items(self):
+    def mutate_items(self, guarantee_hidon_drop=False):
         if random.choice([True, False]):
             random.shuffle(self.items)
 
+        if self.display_name == 'Hidon' and guarantee_hidon_drop:
+            self.items = self.steals + [0x3C, 0x3C]  # guarantee drop Magus Rod
         items = get_ranked_items()
         itemids = [i.itemid for i in items]
         new_items = []

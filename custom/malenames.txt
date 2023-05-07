@@ -164,3 +164,5 @@ Genta
 Lupin
 Jigen
 Goemon
+Loid
+Bond

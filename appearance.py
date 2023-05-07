@@ -293,6 +293,8 @@ def get_sprite_swaps(char_ids, male, female, vswaps):
         goku_sprite = SpriteReplacement("goku.bin", "Goku", "male", "true", 0, "goku-p.bin", "goku", path=pathlib.Path('data', 'sprites'))
         swap_to[0] = goku_sprite
         swap_to[0x12] = goku_sprite  # but with different palette for Super Saiyan
+        piccolo_sprite = SpriteReplacement("piccolo.bin", "Piccolo", "male", "true", 5, "piccolo-p.bin", "piccolo", path=pathlib.Path('data', 'sprites'))
+        swap_to[0x16] = piccolo_sprite
 
     if not sprite_swap_mode:
         return swap_to
@@ -659,6 +661,19 @@ def manage_character_appearance(fout, preserve_graphics=False):
             newsprite = sprites[change_to[c]]
         newsprite = newsprite[:ssizes[c]]
         fout.write(newsprite)
+
+    # Special case for Gestahl
+    if 0x16 in swap_to:
+        try:
+            g = open_mei_fallback(swap_to[0x16].file, 'rb')
+        except IOError:
+            pass
+        else:
+            gestahl_sprite = g.read(ssizes[1])
+            g.close()
+            fout.seek(spointers[0x16])
+            gestahl_sprite = gestahl_sprite[:0x500] + gestahl_sprite[0xD40:0xD60] + gestahl_sprite[0xD80:0xDA0] + gestahl_sprite[0xDC0:0xDE0] + gestahl_sprite[0x1040:0x1080] + gestahl_sprite[0x10C0:0x1140] + gestahl_sprite[0xA20:0xAE0]
+            fout.write(gestahl_sprite)
 
     if sprite_swap_mode and not opera_mode and 6 in swap_to:
         try:

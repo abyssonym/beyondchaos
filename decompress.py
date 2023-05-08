@@ -3,168 +3,130 @@
 from sys import argv
 from shutil import copyfile
 
-from utils import read_multi, write_multi
+from utils import read_multi
 
-def decompress(bytestring, simple=False, complicated=True, debug=False):
-    result = bytearray([])
-    buff = bytearray(2048)
-    buffaddr = 0x7DE
+WINDOW_SIZE = 0x800
+WINDOW_START = 0x7de # why start here?
 
-    while bytestring:
-        flags, bytestring = bytestring[0], bytestring[1:]
-        for i in range(8):
-            if not bytestring:
+MIN_MULTI_LENGTH = 3
+MAX_MULTI_LENGTH = 34
+MAX_COMPRESS_SIZE = 2 ** 16 - 1
+
+def recompress(data):
+    result = []
+    data_index = 0
+
+    group = []
+    control_byte = 0
+    control_bit = 1
+
+    byte_positions = {} # lists of sorted positions each byte occurs at
+    window_indices = {} # start indices of byte_positions within current window
+    for index, byte in enumerate(data):
+        if byte in byte_positions:
+            byte_positions[byte].append(index)
+        else:
+            byte_positions[byte] = [index]
+            window_indices[byte] = 0
+
+    while data_index < len(data):
+        longest_length = 0
+        longest_start = 0
+
+        start_byte = data[data_index]
+        for x in range(window_indices[start_byte], len(byte_positions[start_byte])):
+            position = byte_positions[start_byte][x]
+
+            if position >= data_index:
+                # window has not reached position yet, skip the rest of the positions
                 break
+            if position < data_index - WINDOW_SIZE:
+                # position is no longer within the window, increment window index for this byte and go to next position
+                window_indices[start_byte] += 1
+                continue
 
-            if flags & (1 << i):
-                byte, bytestring = bytestring[0], bytestring[1:]
-                result.append(byte)
-                buff[buffaddr] = byte
-                buffaddr += 1
-                if buffaddr == 0x800:
-                    buffaddr = 0
-                if debug:
-                    print("%x" % ord(byte), end=' ')
-            else:
-                low, high, bytestring = (
-                    bytestring[0], bytestring[1], bytestring[2:])
-                seekaddr = low | ((high & 0x07) << 8)
-                length = ((high & 0xF8) >> 3) + 3
-                if simple:
-                    copied = [buff[seekaddr]] * length
-                elif complicated:
-                    if buffaddr == seekaddr:
-                        raise Exception("buffaddr equals seekaddr")
-                    cycle = buffaddr - seekaddr
-                    if cycle < 0:
-                        cycle += 0x800
-                    subbuff = (buff+buff)[seekaddr:seekaddr+cycle]
-                    while len(subbuff) < length:
-                        subbuff = subbuff + subbuff
-                    copied = subbuff[:length]
-                else:
-                    copied = (buff+buff)[seekaddr:seekaddr+length]
-                assert len(copied) == length
-                result += copied
-                if debug:
-                    print("%x" % seekaddr, length, end=' ')
-                while copied:
-                    byte, copied = copied[0], copied[1:]
-                    buff[buffaddr] = byte
-                    buffaddr += 1
-                    if buffaddr == 0x800:
-                        buffaddr = 0
-                    if debug:
-                        print("%x" % ord(byte), end=' ')
-            if debug:
-                print()
-                import pdb; pdb.set_trace()
-    return result
+            try:
+                length = 1
+                while length < MAX_MULTI_LENGTH and data[data_index + length] == data[position + length]:
+                    length += 1
+            except IndexError:
+                pass
 
-
-def recompress(bytestring):
-    global buffaddr
-    bytestring = bytearray([c if isinstance(c, int) else ord(c) for c in bytestring])
-    result = bytearray()
-    buff = bytearray(2048)
-    buffaddr = 0x7DE
-
-    def add_buff(c):
-        global buffaddr
-        buff[buffaddr] = c
-        buffaddr += 1
-        buffaddr = buffaddr % 0x800
-
-    while bytestring:
-        control = 0x00
-        subresult = bytearray()
-        for i in range(8):
-            searchbuff = (buff + buff)
-            for j in range(3, 35):
-                searchstr = bytestring[:j]
-                if searchstr not in searchbuff:
+            if length > longest_length:
+                longest_length = length
+                longest_start = position
+                if length == MAX_MULTI_LENGTH:
                     break
-                location = searchbuff.find(searchstr)
-                if location == buffaddr:
-                    location = searchbuff[location+1:].find(searchstr)
-                    if location < 0:
-                        break
-                    location = buffaddr + location + 1
-                    if location % 0x800 == buffaddr:
-                        break
-            else:
-                j = 0
-            j = j - 1
-            goodloop = None
-            loopbuff = buff[:buffaddr]
-            #if len(loopbuff) < 35:
-            #    loopbuff = "".join(buff) + loopbuff
-            for k in range(j+1, 35):
-                searchstr = bytestring[:k]
-                for h in range(1, len(searchstr)+1):
-                    loopstr = searchstr[:h]
-                    mult = (len(searchstr) // len(loopstr)) + 1
-                    if searchstr == (loopstr * mult)[:len(searchstr)]:
-                        if loopbuff.endswith(loopstr):
-                            j = k
-                            goodloop = loopstr
-            if len(bytestring) <= 8:
-                j = 0
-            if j >= 3:
-                substr = bytestring[:j]
-                bytestring = bytestring[j:]
-                if not goodloop:
-                    index = searchbuff.find(substr)
-                    if index % 0x800 == buffaddr:
-                        index = searchbuff[index+1:].find(substr)
-                        index += buffaddr + 1
-                        assert index >= 0
-                        assert index % 0x800 != buffaddr
-                else:
-                    index = len(loopbuff) - len(goodloop)
-                if index < 0:
-                    index += 0x800
-                index = index % 0x800
 
-                try:
-                    assert 0 <= index < 0x800
-                    assert (j-3) & 0xFFE0 == 0
-                except:
-                    import pdb; pdb.set_trace()
-                value = index << 5
-                value = value | (j - 3)
-                while substr:
-                    c = substr[0]
-                    substr = substr[1:]
-                    add_buff(c)
-                byte1 = index & 0xFF
-                byte2 = (index >> 8) | ((j-3) << 3)
-                assert byte1 | ((byte2 & 0x07) << 8) == index
-                assert ((byte2 & 0xF8) >> 3) + 3 == j
-                subresult += bytes([byte1, byte2])
+        if longest_length >= MIN_MULTI_LENGTH:
+            length_start = ((longest_start + WINDOW_START) % WINDOW_SIZE) | ((longest_length - MIN_MULTI_LENGTH) << 11)
+            group.extend(list(length_start.to_bytes(2, "little")))
+            data_index += longest_length
+        else:
+            control_byte = control_byte | control_bit
+            group.append(data[data_index])
+            data_index += 1
+
+        control_bit <<= 1
+        if control_bit > 0xff:
+            result.append(control_byte)
+            result.extend(group)
+            control_byte = 0
+            control_bit = 1
+            group = []
+
+    result.append(control_byte)
+    result.extend(group)
+
+    size = len(result) + 2
+    if size > MAX_COMPRESS_SIZE:
+        print(f"error: compress: data too large (compressed size {size} > {MAX_COMPRESS_SIZE})")
+        size = MAX_COMPRESS_SIZE
+    return list(size.to_bytes(2, "little")) + result
+
+def decompress(data):
+    window = [0] * WINDOW_SIZE
+    window_index = WINDOW_START
+
+    result = []
+    data_index = 2 # first two bytes should be len(data)
+    assert int.from_bytes(data[ : data_index], byteorder = "little") == len(data)
+    while data_index < len(data):
+        control_byte = data[data_index]
+        data_index += 1
+
+        control_bit = 1
+        while control_bit <= 0xff and data_index < len(data):
+            if control_bit & control_byte:
+                # copy single value from data
+                value = data[data_index]
+                data_index += 1
+                result.append(value)
+                window[window_index] = value
+                window_index = (window_index + 1) % WINDOW_SIZE
             else:
-                control |= (1 << i)
-                if bytestring:
-                    c, bytestring = bytestring[0], bytestring[1:]
-                else:
-                    c = 0
-                subresult.append(c)
-                add_buff(c)
-        result += bytes([control]) + subresult
-        if not bytestring and (
-                control != 0xFF
-                or not subresult.endswith(bytes([0, 0]))):
-            result += b'\xFF' + bytes(8)
+                # copy multiple values from window
+                length_start = int.from_bytes(data[data_index : data_index + 2], byteorder = "little")
+                data_index += 2
+
+                length = (length_start >> 11) + MIN_MULTI_LENGTH
+                start = length_start % WINDOW_SIZE
+                for position in range(start, start + length):
+                    value = window[position % WINDOW_SIZE]
+                    result.append(value)
+                    window[window_index] = value
+                    window_index = (window_index + 1) % WINDOW_SIZE
+            control_bit <<= 1
     return result
-
 
 def decompress_at_location(filename, address):
     f = open(filename, 'r+b')
     f.seek(address)
     size = read_multi(f, length=2)
     #print "Size is %s" % size
+    f.seek(address)
     bytestring = f.read(size)
-    decompressed = decompress(bytestring, complicated=True)
+    decompressed = bytearray(decompress(bytestring))
     return decompressed
 
 
@@ -177,8 +139,7 @@ class Decompressor():
 
     def read_data(self, filename):
         self.data = decompress_at_location(filename, self.address)
-        self.backup = str(self.data)
-        #assert decompress(recompress(self.backup)) == self.backup
+        #assert decompress(recompress(self.data)) == list(self.data)
 
     def writeover(self, address, to_write):
         to_write = bytes([c if isinstance(c, int) else ord(c) for c in to_write])
@@ -194,14 +155,12 @@ class Decompressor():
 
     def compress_and_write(self, fout):
         compressed = recompress(self.data)
-        size = len(compressed)
-        #print "Recompressed is %s" % size
+        #print "Recompressed is %s" % len(compressed)
         if self.maxaddress:
             length = self.maxaddress - self.address
             fout.seek(self.address)
             fout.write(bytes([0xFF]*length))
         fout.seek(self.address)
-        write_multi(fout, size, length=2)
         fout.write(bytes(compressed))
         if self.maxaddress and fout.tell() >= self.maxaddress:
             raise Exception("Recompressed data out of bounds.")

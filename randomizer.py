@@ -3348,16 +3348,17 @@ def manage_opening():
 
     # removing white logo screen
     d.writeover(0x501A, [0xEA] * 3)
-    d.writeover(0x50F7, [0] * 62)
+    d.writeover(0x50F7, [0xEA] * 58)
+    d.writeover(0x5131, [0] * 0x04)
     d.writeover(0x5135, [0] * 0x20)
     d.writeover(0x7445, [0] * 0x20)
-    d.writeover(0x5155, [0] * 80)
+    d.writeover(0x5155, [0xEA] * 80)
 
     # removing notices/symbols
     bg_color = d.get_bytestring(0x7BA5, 2)
     d.writeover(0x7BA7, bg_color)
     d.writeover(0x52F7, [0xEA] * 3)
-    d.writeover(0x5306, [0] * 57)
+    d.writeover(0x5306, [0xEA] * 56)
 
     def mutate_palette_set(addresses, transformer=None):
         if transformer is None:
@@ -4126,6 +4127,7 @@ def randomize(args):
         'The randomization is very thorough, so it may take some time.\n'
         'Please be patient and wait for "randomization successful" to appear.')
 
+    start_time = time()
     if options_.is_code_active('thescenarionottaken'):
         diverge(fout)
 
@@ -4611,8 +4613,10 @@ def randomize(args):
     f = open(outlog, 'w+')
     f.write(get_logstring())
     f.close()
+    end_time = time()
 
-    print(f'Randomization successful. Output filename: {outfile}\n')
+    print('Randomization successful. Output filename: %s' % outfile)
+    print('Time elapsed: %f\n' % (end_time - start_time))
 
     if options_.is_code_active('bingoboingo'):
         manage_bingo(seed)

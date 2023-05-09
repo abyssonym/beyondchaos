@@ -897,6 +897,19 @@ def generate_character_palette(skintones_unused=None, char_hues_unused=None, tra
     return new_palette
 
 
+def load_asm_patches():
+    global assembly_patches
+    assembly_patches = assemblymanager.load_all_patches()
+
+
+def get_asm_patch(name):
+    return assembly_patches[name]
+
+
+def apply_asm_patch(fout, name):
+    assembly_patches[name].write(fout)
+
+
 def line_wrap(things, width=16):
     newthings = []
     while things:

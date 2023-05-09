@@ -1,14 +1,15 @@
 FF6 Beyond Chaos EX Randomizer
 a fork of Abyssonym's FF6 Beyond Chaos Randomizer
-Version:    4.0
-Date:       2020-05-10
+Version:    5.0
+Date:       2023-05-08
 URL:        https://github.com/subtractionsoup/beyondchaos/releases/latest
 Beyond Chaos Discord:    https://discord.gg/S3G3UXy
 
 --- QUICKSTART ---
 Requirements:
     FF3 US 1.0 ROM
-    If not running Windows, install Python 3.7+.
+	For Windows users: Windows 10+
+    For non-Windows users Windows, install Python 3.11+.
 
 Setup:
 	Windows:
@@ -16,14 +17,12 @@ Setup:
 		
 	Linux/Mac:
 		Download the source files and extract them to a folder of your choice.
-		Install Python 3.7 or higher. (It DOES NOT work with python 2.)
-		Open a command prompt, navigate to the folder you chose, and type "pip3 install -r requirements.txt"
+		Install Python 3.11 or higher.
+		Open a command prompt, navigate to the folder you chose, and type "pip install -r requirements.txt"
 
 Running the randomizer:
     Windows:
 		Run beyondchaos_ex.exe.
-
-		If you're using a version prior to Windows 10 and get an error message, try this: https://support.microsoft.com/en-us/help/2999226/update-for-universal-c-runtime-in-windows
 
     Other users:
 		Run "gui.py" using Python version 3.7+

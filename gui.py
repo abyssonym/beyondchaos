@@ -67,7 +67,7 @@ class Window(QWidget):
         self.title = 'Beyond Chaos EX Randomizer'
         self.left = 200
         self.top = 200
-        self.width = 700
+        self.width = 740
         self.height = 800
 
         # values to be sent to randomizer

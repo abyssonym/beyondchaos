@@ -811,7 +811,7 @@ class Entrance():
         self.dest = 0
         self.destx = 0
         self.desty = 0
-        self._entrances = []
+        self._entrances = None
         self.location = None
 
     def read_data(self, filename):

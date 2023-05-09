@@ -331,7 +331,7 @@ class MonsterBlock:
         if changed_commands is None:
             changed_commands = []
         s = ('~' * 40) + '\n'
-        s += f'{self.display_name} (Level {self.stats['level']})\n'
+        s += f"{self.display_name} (Level {self.stats['level']})\n"
 
         def make_column(statnames):
             rows = []
